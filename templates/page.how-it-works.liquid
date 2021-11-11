@@ -1,132 +1,297 @@
 <style>
-.search-container {
-    display: none;
+.search-container{
+  display: none;
 }
-.how_it_works {
-    width: 100%;
-    height: 410px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
-    padding: 40px 0;
-    background-color: #F6F6F9;
-    text-align: center;
-    margin-bottom: 30px;
+.how_title_module {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 40px 0;
+  background-color: #F6F6F9;
+  text-align: center;
 }
-.h_title_box{
+.how_title_box{
 	vertical-align: middle;  
-    height: 258px;
-    width: 690px;
+  width: 690px;
 }
-  .h-title1{
-  	margin-bottom: 0px;
-    font-size: 60px;
-    font-weight: bold;
-    text-align: center;
-    color: #222222;
+.how-title1{
+  margin-bottom: 0px;
+  font-size: 32px;
+  line-height: 48px;
+  font-weight: bold;
+  text-align: center;
+  color: #222222;
+  font-weight: 500;
+}
+.how-title2{
+  font-size: 14px;
+  line-height: 24px;
+  color: #222222;
+  font-weight: 500;
+  text-align: inherit;
+}
+.btn-default {
+  width: 234px;
+  height: 56px;
+  background-color: #F9423A;
+  color: #fff;
+  text-transform: inherit;
+  font-size: 16px;
+  letter-spacing: inherit;
+}
+
+.how_container{
+  padding: 0 14px;
+}
+.how_container_title{
+  padding: 40px 20px 60px;
+  text-align: center;
+  font-size: 24px;
+  color: #222222;
+  line-height: 32px;
+}
+.how_module_item{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+  border-bottom: 1px solid rgba(34,34,34,.08);
+}
+.how_module_item:last-child{
+  margin-bottom: 0;
+  border-bottom: 0;
+}
+.how_module_left img{
+  max-width: 295px;
+}
+.how_module_right{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.how_index_number{
+  border-radius: 25px;
+  background-color: #222222;
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  color: #ffff;
+  font-size: 16px;
+  line-height: 32px;
+  text-align: center;
+  margin-top: 35px;
+}
+.how_right_title{
+  font-size: 16px;
+  color: #222222;
+  height: 32px;
+  line-height: 32px;
+}
+.how_right_content{
+  font-size: 13px;
+  color: #222222;
+  line-height: 24px;
+  text-align: center;
+  padding-bottom: 40px;
+}
+
+.how_banner_module{
+  padding: 20px 20px 60px;
+  display: flex;
+  align-items: center;
+}
+.how_banner{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 110px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center right;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+}
+.how_banner_left{
+  padding: 15px;
+}
+.how_banner_left img{
+  width: 74px;
+  height: 74px;
+}
+.how_banner_right{
+  display: flex;
+  flex-direction: column;
+  margin-left: 15px;
+}
+.how_banner_title{
+  font-size: 14px;
+  line-height: 24px;
+  color: #222222;
+}
+.how_banner_btn{
+  background: #fff;
+  text-align: center;
+  color: #F9423A;
+  font-size: 12px;
+  padding: 5px 10px;
+  margin: 5px 0;
+  border-radius: 3px;
+  max-width: 88px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,.5);
+}
+.how_banner_footer{
+  font-size: 10px;
+  color: #222222;
+}
+
+/* PC端样式 */
+@media screen and (min-width: 750px) {
+  .how_container{
+    max-width: 1022px;
+    margin: 0 auto;
   }
-  .h-title2,
-  .container h2{
+  .how_module_item{
+    flex-direction: row;
+    padding-bottom: 100px;
+    margin-bottom: 100px;
+  }
+  .how_module_left{
+    margin-right: 93px;
+  }
+  .how_module_item:nth-child(2n+1) .how_module_left{
+    order: 2;
+    margin-right: 0;
+    margin-left: 93px;
+  }
+  .how_module_right{
+    align-items: start;
+  }
+  .how_index_number{
+    margin-top: 0;
+  }
+  .how_right_title{
+    margin: 8px 0;
+  }
+  .how_right_content{
+    text-align: left;
+    padding-bottom: 0;
+  }
+
+  .how_banner_module{
+    max-width: 1372px;
+    margin: 0 auto;
+  }
+  .how_banner_left{
+    margin-left: 212px;
+  }
+  .how_banner_left img{
+    width: 150px;
+    height: 150px;
+  }
+  .how_banner_right{
+    margin-left: 65px;
+    flex-direction: row;
+    align-items: center;
+  }
+  .how_banner_title{
+    font-size: 32px;
+    line-height: 58px;
+    max-width: 476px;
+  }
+  .how_banner_btn{
+    margin: 5px auto;
+    max-width: 177px;
+    font-size: 20px;
+  }
+  .how_banner_footer {
     font-size: 16px;
     line-height: 32px;
-    
   }
-  .btn-default {
-    width: 234px;
-    height: 56px;
-    background-color: #F9423A;
-    color: #fff;
-    text-transform: inherit;
-    font-size: 16px;
-    font-weight: bold;
-    letter-spacing: inherit;
 }
-  .4-steps{
-    width: 100%;
-    
-  }
-  .container {
-    margin-right: auto;
-    margin-left: auto;
-    
-}
-  .container_title{
-    margin-top: 70px;
-    text-align: center;
-    font-size: 30px;
-    color: #222222;
-    font-weight: bold;
-  
-  }
-  .container-left-1{
-  	margin-left: 204px;
-    margin-top: 60px;
-    width: 30%;
-  
-  }
-  
-  .container-left-1 img{
-  	width: 351.62px;
-    height: 227.66px;
-  
-  }
-  .container-right-1{
-  	margin-right: 210px;
-    margin-top: 60px;
-    width: 38%;
-  
-  }
-  .number{
-    border-radius: 25px;
-    background-color: #222222;
-    width: 20px;
-    height: 20px;
-    text-align: center;
-    vertical-align: middle;
-    color: #ffff;
-    margin-left: 13px;
-  }
-  .container h3{
-    margin-top: 20px;
-    font-size: 24px;
-    color: #222222;
-    text-align: inherit;
-  }
-  .steps-1{
-  	display: flex;
-    justify-content: space-between;
-    align-items: flex-start; 
-    width: 1300px;
-  }
-  .container h2{
-  	text-align: inherit;
-  }
 </style>
-<div >
-  <div class="how_it_works">
-    <div class="h_title_box">
-    <h1 class="h-title1">How it works</h1>
-    <h2 class="h-title2">Mademine simplifies and automates the process of sourcing and creating print on demand products at the best prices on the market.</h2>
-    <p class="h-title3"><a href="#" class=" btn btn-default">Start selling</a></p>    
-    </div>  
+
+{% comment %} 顶部标题模块 {% endcomment %}
+<div class="how_title_module">
+  <div class="how_title_box">
+    <h1 class="how-title1">How it works</h1>
+    <h2 class="how-title2">Mademine simplifies and automates the process of sourcing and creating print on demand products at the best prices on the market.</h2>
+    <p class="how-title3"><a href="#" class="btn btn-default">Start selling</a></p>
   </div>
-  <div class="4-steps" >
-	<div class="container">
-      <h1 class="container_title">Enjoy Mademine services in 4 easy steps</h1>
-      <div class="steps-1">
-      <div class="container-left-1">
-			<img src="https://assets.sunzi.cool/mademine/how-test1.png" class="img-responsive" alt="">
-		</div>
-      <div class="container-right-1">
-           <div class="number">1</div>
-			<h3>Pick</h3>
-			<h2>Our catalog has over 300 products such as t-shirts, mugs, socks, and home accessories ready for you to customize. Pick the most suitable product for your business based on print provider location, fulfillment time and price.</h5>
-		
-		</div>
+</div>
+{% comment %} 详情内容模块 {% endcomment %}
+<div id="how_container" class="how_container">
+  <h1 class="how_container_title">Enjoy Mademine services in 4 easy steps</h1>
+
+  {% comment %} 列表数据通过JS动态渲染
+  <div class="how_module_item">
+    // 左侧/上侧 图片模块
+    <div class="how_module_left">
+      <img src="https://assets.sunzi.cool/mademine/how-test1.png" alt="">
+    </div>
+    // 右侧/下侧 文字模块
+    <div class="how_module_right">
+      <div class="how_index_number">1</div>
+      <div class="how_right_title">Pick</div>
+      <div class="how_right_content">Our catalog has over 300 products such as t-shirts, mugs, socks, and home accessories ready for you to customize. Pick the most suitable product for your business based on print provider location, fulfillment time and price.</div>
+    </div>
+  </div>
+  {% endcomment %}
+
+</div>
+{% comment %} 底部Banner模块 {% endcomment %}
+<div class="how_banner_module">
+  <div class="how_banner" style="background-image: url({{ 'how_banner.png' | asset_img_url: 'master' }})">
+    <div class="how_banner_left">
+      <img src="{{ 'how_light_bulb.png' | asset_img_url: 'master' }}" alt="Banner">
+    </div>
+    <div class="how_banner_right">
+      <div class="how_banner_title">Already found what you were looking for?</div>
+      <div class="how_banner_bf">
+        <div class="how_banner_btn">Start Selling</div>
+        <div class="how_banner_footer">Make it happen right now.</div>
       </div>
+    </div>
+  </div>
 </div>
 
-
-
-</div>
+<script>
+  /* 模块列表数据 */
+  const moduleList = [{
+    imgUrl: 'https://assets.sunzi.cool/mademine/how-test1.png',
+    title: 'Pick',
+    content: 'Our catalog has over 300 products such as t-shirts, mugs, socks, and home accessories ready for you to customize. Pick the most suitable product for your business based on print provider location, fulfillment time and price.'
+  },{
+    imgUrl: 'https://assets.sunzi.cool/mademine/how-test2.png',
+    title: 'Customize',
+    content: 'Use our free Mockup Generator to apply your designs to your chosen products. Easily upload your design, switch between color options, and preview your products on high-quality images. The mockup is designed to easily add products to your online store.'
+  },{
+    imgUrl: 'https://assets.sunzi.cool/mademine/how-test3.png',
+    title: 'Publish',
+    content: 'Once you’re happy with your custom product, publish it to your online store automatically. Mademine is integrated with leading eCommerce platforms such as Shopify, Etsy, Wix and more so you can sell to millions of online shoppers effortlessly.'
+  },{
+    imgUrl: 'https://assets.sunzi.cool/mademine/how-test4.png',
+    title: 'Relax',
+    content: 'When you make a sale, and your product passes Quality Control, it is sent to production and thereafter, shipped directly to your customer. You can easily track this process from your Mademine account. Focus on growing your brand while we take care of the rest.'
+  }]
+  // 循环渲染数据
+  let moduleTemplate = '';
+  moduleList.forEach((item, index) => {
+    const template = `
+    <div class="how_module_item">
+      <div class="how_module_left">
+        <img src="${item.imgUrl}" alt="${item.title}">
+      </div>
+      <div class="how_module_right">
+        <div class="how_index_number">${index + 1}</div>
+        <div class="how_right_title">${item.title}</div>
+        <div class="how_right_content">${item.content}</div>
+      </div>
+    </div>
+    `
+    moduleTemplate+=template;
+  });
+  $('#how_container').append(moduleTemplate);
+</script>
