@@ -1,0 +1,563 @@
+<style>
+.mjn_search_box	a:hover{color:#000}
+.mjn_search_box img{width:100%;}
+.mjn_search_box{ 
+  display: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0px;
+  right: 0px;
+  z-index: 10000;
+  padding: 0px;
+  width: 100%;
+  background: rgba(0,0,0,.7);
+}
+.mjn_search_personalise{
+  min-height: 550px;
+  background: #f7f8f9;
+  width: 100%;
+  position: relative;
+}
+.header-container.type5.sticky-header .mjn_search_box{   
+  position: fixed;
+  TOP: 0;
+  bottom: auto;
+}
+/* .mjn_search_box:after{
+  content:'';
+  background:rgba(0,0,0,.7);
+  height:100%;
+  width:100%;
+  left:0;
+  top:550px;
+  z-index:-1;
+  position: fixed;
+} */
+.mjn_search_box_input{
+  max-width: 1200px;
+  margin: auto;
+  padding: 3rem 0;
+  display: flex;
+  justify-content: center;
+  ALIGN-ITEMS: center;	
+}
+.mjn_search_box_input input{	
+  width: 100%;
+  border-radius: 30px;
+  height: 60px;
+  padding: 0 2rem;
+  font-size: 1.3rem;
+  background: #fff;
+}
+.input-search {
+  position:relative;    
+  width: 60%;
+}
+.input-search i {
+  position: absolute;
+  font-size: 26px;
+  color: #656161;
+  right: 2.2rem;
+  top: 24%; 
+  cursor: pointer;
+}
+.suggest-close{ 
+  font-size: 32px;
+  margin-left: 2rem;
+}
+.mjn_search_box_content{ 
+  display: flex;   
+  MAX-WIDTH: 1240PX;
+  JUSTIFY-CONTENT: CENTER;
+  MARGIN: AUTO;
+}
+.mjn_search_box_content ul{
+  width:15%;
+}
+.mjn_search_box_content ul.one LI{
+  margin:0;
+  padding:1.2rem;    
+  font-size: 14px;
+  cursor: pointer;
+  color:#0a0204;
+} 
+.mjn_search_box_content ul.one LI.active{
+  background:#fff;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 14px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.mjn_search_box_content ul.two	{   
+  BACKGROUND: #FFF;
+  padding: 10PX 5PX;
+  width:85%;
+  display: flex;
+  justify-content: flex-start;
+}
+.mjn_search_box_content ul.two li{
+  width: -webkit-calc(20% - 10px); 
+  width: calc(20% - 10px);
+  margin: 0 5px;
+  min-height: 260px;
+}
+
+.mjn_search_box_content ul.two li .price{
+  margin:12px 10px;
+  text-align: left;
+  display: flex;
+}
+.mjn_search_box_content ul.two li p{
+  margin-bottom:0;
+  font-size: 12px;
+}
+.mjn_search_box_content ul.two li .special-price{
+  color:#e9034d;
+  font-weight: 600; 
+}
+.mjn_search_box_content ul.two li .old-price{
+  color: #8d8d8d;
+  text-decoration: line-through;
+  margin-left:3px;
+}
+.mjn_search_box_content ul.two li .product-name { 
+  margin: 0 10px;
+  font-size: 12px;
+  font-weight: 400;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: left;
+} 
+.mjn_search_box_content .two .skeleton{ 
+  overflow: hidden;
+  position: relative;
+  height:15px;
+  background: #eee;
+  display: block;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+.mjn_search_box_content .two .skeleton:after{
+  content: ' ';
+  display: block;
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 38%;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(251, 251, 251, .45) 25%, rgba(255, 255, 255, .6) 50%, rgba(251, 251, 251, .45) 75%, rgba(255, 255, 255, 0) 100%);
+  animation: search-loading 1.5s linear infinite;
+}
+.mjn_search_box_content .two .skeleton:nth-child(1) {
+  height: 200px;
+  max-width: 200px;
+}
+.mjn_search_box_content .two .skeleton:nth-child(2) {
+  max-width: 80px;
+}
+
+.mjn_search_box_bottom{  
+  max-width: 1240px;
+  padding: 3rem 0;
+  font-size: 18px;
+  margin: auto;
+  min-height: 104px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.mjn_search_box_bottom i{
+  background: #000;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 18px;
+  padding: 0.5rem;
+  margin-left: 1rem;
+  line-height: 1;
+}
+.mjn_search_box_bottom a{
+  padding-right:2rem;
+  display: inline-flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+@keyframes search-loading {
+  0% {
+    left: -100%;
+  }
+
+  to {
+    left: 100%;
+    opacity: 0;
+  }
+}
+.mjn_search_box .mjn__loading {
+  font-size: 0;
+  padding-right: 2rem; 
+}
+.mjn_search_box .mjn__loading .circle {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+}
+.mjn_search_box .mjn__loading .circle i {
+  width:10px;
+  height: 10px;
+  margin: 0 2px;
+  background-color: #a5a5a5;
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: big-and-small 1.4s infinite ease-in-out both;
+  animation: big-and-small 1.4s infinite ease-in-out both;
+}
+.mjn_search_box .mjn__loading .circle i:first-child {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+.mjn_search_box .mjn__loading .circle i:nth-child(2) {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+.mjn_search_box .mjn__loading  i {
+  font-weight: normal;
+}
+body.disable-scroll-y{
+  overflow: hidden;
+  height: 100vh;
+}
+@-webkit-keyframes big-and-small {
+  0%, 80%, 100% { -webkit-transform: scale(0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+@keyframes big-and-small {
+  0%, 80%, 100% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 40% {
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+  }
+}
+@media(max-width:768px){
+  .mjn_search_box_input{
+    padding: 3rem 0 2rem;
+  }
+  .mjn_search_box_input input{
+    height: 40px;
+  }
+  .input-search i{
+    top: 21%;    
+    font-size: 20px;
+    right: 1.2rem;
+  }
+  .mjn_search_box_content{
+    flex-flow: column;
+  }
+  .mjn_search_box_content ul{
+    width: 100%;
+    display: flex;
+    flex-flow: wrap;
+  }
+  .mjn_search_box_content ul.one{
+    margin-bottom: 1rem;
+  }
+  .mjn_search_box_content ul.two{
+    width: 100%;
+  }
+  .mjn_search_box_content ul.one li{
+    width: 46%;
+    text-align: left;
+    margin-left: 4%;
+    padding: .5rem 1.2rem;
+  }
+  .mjn_search_box_content ul.one li.active{
+    background: transparent;
+  }
+  .mjn_search_box_content ul.two li{
+    width: -webkit-calc(50% - 10px);
+    width: calc(50% - 10px);
+    min-height: 230px;
+  }
+  .mjn_search_box_content ul.two li .product-name{
+    display: block;
+  }
+  .mjn_search_box_content ul.two li .price{
+    margin: 12px 10px 0;
+  }
+  .mjn_search_box{
+    position: fixed;
+    min-height: unset;
+    overflow: scroll;
+    height: 100vh;
+  }
+  .mjn_search_box:after{
+    display:none;
+  }
+  .mjn_search_box_bottom{
+    padding: 1rem 0;
+    margin: auto;
+    min-height: auto;
+  }
+  .mjn_search_box_bottom a{
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 10px;
+  }
+  .mjn_search_box_bottom a span{
+    font-size: 12px;
+  }
+}
+</style>
+<div class="mjn_search_box">
+  <div class="mjn_search_personalise">
+    <div class="mjn_search_box_input">
+      <div class="input-search">
+        <input id="mjnSearch" type="text" autocomplete="off" name="q" value="" class="input-text" maxlength="128" placeholder="Cherche ici...">
+        <i class="icon photofont photo-sousuo1"></i>
+      </div>
+      <a href="javascript:;" onclick="closeSearch()"><i class="photofont icon photo-close suggest-close"></i></a> 
+    </div>
+    <div class="mjn_search_box_content">
+     <ul class="one"></ul>
+     <ul class="two"></ul>
+    </div>
+    <div class="skeletonBox" style="display:none">
+      <li>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+      </li>
+      <li>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+      </li>
+      <li>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+      </li>
+      <li>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+      </li>
+      <li>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+      </li>
+    </div>
+    <div class="mjn_search_box_bottom">
+    <label class="mjn__loading">
+      <span class="circle">
+        <i></i>
+        <i></i>
+        <i></i>
+      </span>
+    </label>
+    <a href="javascript:;" class="hide">
+      <span>See Our Best seller</span>
+      <i class="icon photofont photo-zhiyin"></i>
+    </a>
+    </div>
+  </div>
+</div>
+
+{{ 'echo.min.js' | asset_url | script_tag }}
+<script>
+
+	var mjn_all_string = [];
+	//left lists
+    var keywords = ["Colliers Prénom", "Montres Photo", "Lampe de lune photo", "PLAQUE CODE SPOTIFY"];
+	var mjn_search_left_arr = keywords;
+	var mjn_search_keywords = '';
+	
+	//create left
+	function createLeft(){
+		let str = '';
+		mjn_search_left_arr.forEach( (itme) => {
+			str += '<li>'+ itme +'</li>';
+		})
+		return str;
+	}
+	jQuery('.mjn_search_box_bottom a').click(function(){
+		window.location.href = "/pages/search?q="+mjn_search_keywords;
+	})
+	//init left
+	function initSearchLeft(){
+		jQuery('.mjn_search_box_content .one').html(createLeft());
+		jQuery('.mjn_search_box_content .one li:eq(0)').addClass('active');
+		recommendSearch({query:jQuery('.mjn_search_box_content .one li:eq(0)').text().toLowerCase(),source:'recommend',size:'5'});
+	}
+	//search
+	jQuery('.mjn_search_box_input .photo-sousuo1').click(function(){
+		changeSearch();
+	})
+	//left change
+	jQuery(document).on('click', '.mjn_search_box_content .one li', function() {
+		jQuery(this).addClass('active').siblings().removeClass('active');
+		recommendSearch({query:jQuery(this).text().toLowerCase(),source:'recommend',size:'5'});
+	});
+	jQuery(document).on('click', '.mjn_search_box_content .two a', function() {
+		jQuery.ajax({
+			type : "POST",
+			url : "https://soufeel.server.bytecon.com/callback",
+			data : {
+				"apikey":"84fbdc7ffe6e413695141649aa983b7f",
+				"index":"soufeel_fr_shopify",
+				"pid": jQuery(this).data('sku'),
+				"sid": jQuery(this).data('sid'),
+				"action": 0
+			},
+			cache: true,
+			dataType: 'json',
+			success : function(e){
+				console.log(e);
+			},
+			//请求失败，包含具体的错误信息
+			error : function(e){
+				console.log(e.status);
+				console.log(e.responseText);
+			}
+			// complete: function(){
+			// 	$('.grid').remove();
+			// }
+		});
+	})
+
+	//enter
+	jQuery('#mjnSearch').keypress(function(event){
+		if(event.key == 'Enter'){
+			changeSearch();
+		}
+	});
+	//search function
+	function changeSearch(){
+        let searchKey = jQuery('#mjnSearch').val();
+        var reg = new RegExp("<|>","g");//g,表示全部替换。
+		searchKey = searchKey.replace(reg,"");
+		jQuery('.mjn_search_box_content .one li').removeClass('active');
+		if(searchKey){
+			jQuery('.mjn_search_box_content .one').html('<li class="active">'+ searchKey +'</li>');
+			recommendSearch({query:searchKey,source:'search_box',size:'5'});
+		}else{
+			initSearchLeft();
+		}
+	}
+	// opone search
+	function openSearch(){
+		if (jQuery('.mjn_search_box').css('display') == 'none') {
+			jQuery('.mjn_search_box').css('display', 'block');
+			initSearchLeft();
+		} else {
+			jQuery('.mjn_search_box').css('display', 'none')
+		}
+		// if(jQuery(obj).hasClass('xsearch')){
+		//     jQuery('#header-search-left').addClass('slide_active');
+		// }    
+		jQuery('body').addClass('disable-scroll-y');    
+	}
+	//close search
+	function closeSearch(){
+		jQuery(".mjn_search_box").hide();
+		// jQuery('.mjn_search_box').removeClass('slide_active');    
+		jQuery('body').removeClass('disable-scroll-y');
+	}
+	function recommendSearch(lists){
+		mjn_search_keywords = lists.query;
+		let mjnOjb = mjn_all_string.find(v => v.name == lists.query);
+		if(mjnOjb != undefined){
+			jQuery('.mjn_search_box_content .two').html(mjnOjb['html']);
+			jQuery('.mjn_search_box_bottom a span').html(mjnOjb['result']);
+				setTimeout(() => {
+						Echo.init({
+							offset: 500,
+							throttle: 1
+						});	
+				}, 300);
+			return false;
+		}
+		jQuery('.mjn_search_box_content .two').html(jQuery('.skeletonBox').html());
+		jQuery('.mjn__loading').removeClass('hide');
+		jQuery('.mjn_search_box_bottom a').addClass('hide');
+		getSearchApi({query:lists.query, source:lists.source, size:lists.size},function(item){console.log(item);
+			if(item){
+				var str = '';
+				jQuery.each(item.items,function(i,n){
+					str += '<li>';
+					str += '<a href="/products/'+ n._source.URL +'?pos=17&eid=1" data-sku="'+ n._source.ID +'" data-sid="'+ item.sid +'">';
+					str += '<img data-echo="'+n._source.LargeImageUrl+'" src="{{ 'loading.gif' | asset_img_url: '300x' }}">';
+					str += '<div class="price">';
+					str += '<p class="special-price">'+n._source.salePriceCurrency[0]+'</p>';
+					str += '<p class="old-price">'+n._source.retailPriceCurrency[0]+'</p>';
+                    //str += '<p class="special-price">$'+n._source.salePrice[0]+'</p>';
+					//str += '<p class="old-price">$'+n._source.retailPrice[0]+'</p>';
+					str += '</div>';
+					str += '<h2 class="product-name">'+n._source.name_fr+'</h2>';
+					str += '</a>';
+					str += '</li>';
+					
+				})
+				mjn_all_string.push({'name':lists.query, 'html':str, 'result':'Voir"' + item.total + '"Résultats pour"' + lists.query + '"'});
+				// mjn_all_string[lists.query] = str;
+				jQuery('.mjn_search_box_bottom a span').html('Voir"' + item.total + '"Résultats pour"' + lists.query + '"');
+				jQuery('.mjn__loading').addClass('hide');
+				jQuery('.mjn_search_box_bottom a').removeClass('hide');
+				jQuery('.mjn_search_box_content .two').html(str);
+				setTimeout(() => {
+					Echo.init({
+						offset: 500,
+						throttle: 1
+					});	
+				}, 300);
+				
+			}
+		});
+	}
+	function getSearchApi(params,callback){
+		{% unless customer.id == blank %}
+      		let uid = '{{ customer.id }}';
+        {% else %}
+        	let uid = '0';
+        {% endunless %}
+		jQuery.ajax({
+			type : "POST",
+			url : "https://soufeel.server.bytecon.com/search",
+			data : {
+				"query": params.query,
+				"version": "v1",
+				"apikey": "84fbdc7ffe6e413695141649aa983b7f",
+				"index": "soufeel_fr_shopify",
+				"uid": uid,
+				"source": params.source,
+				"page": "1",
+				"size": params.size,
+				"sortby": "best"
+			},
+			cache: true,
+			dataType: 'json',
+			success : callback,
+			//请求失败，包含具体的错误信息
+			error : function(e){
+				console.log(e.status);
+				console.log(e.responseText);
+			}
+			// complete: function(){
+			// 	$('.grid').remove();
+			// }
+		});
+	}
+</script>
+{% schema %}
+  {
+    "name": "Section name",
+    "settings": []
+  }
+{% endschema %}

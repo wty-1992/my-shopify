@@ -1,0 +1,68 @@
+<style>
+  .image-wrapper-option{
+    display: flex;
+    flex-wrap: wrap;}
+  .image-wrapper-option .image-slide{    width: 100px;
+    border: 1px solid #e6e6e6;  
+    margin-right: 8px;
+    margin-bottom: 8px;
+    cursor: pointer; 
+  }
+  .image-wrapper-option .image-slide.image-option-active{
+    border: 1px solid #000;  }
+  @media(max-width:768px){
+  .image-field-wrapper{
+    padding: 10px;}
+    .image-wrapper-option .image-slide{   
+    margin-right:6px;
+    margin-bottom: 6px; width: 60px;}
+  }
+</style>
+<div class="image-field-wrapper js-required" id="specel-inline-{{forloop.index}}">
+  <span class="input-field-title">{{ option.name }}:</span>
+  <div class="input-checkbox-wrapper-box">
+    <div class="image-container">
+      <div class="image-wrapper image-wrapper-option">
+      </div>
+    </div>
+    <script>
+      var optionQuantity={{ product | json }};
+      var option = '';
+      var data = [];
+      var color = [];
+      var aoptions = [];
+      var clength = 0;
+      optionQuantity.options.forEach(function(o,i){
+        aoptions.push(o);
+        if(o == 'Color'){
+          option = 'option'+(i+1);
+        }
+      });
+
+      optionQuantity.variants.forEach(function(t,i){
+        var index = $.inArray(t[option], color);
+        if(index < 0){
+          data[t[option]] = t.featured_image.src;
+          color[clength] = t[option];
+          clength++;
+        }
+      })
+
+      $.each(color,function(index,value){
+        var imgh = '<div class="image-slide" data-value="'+value+'"><img class="lazyload" data-src="'+data[value]+'" width="100" /></div>';
+        $('.image-wrapper-option').append(imgh);
+      });
+
+      $(".image-wrapper-option").on("click", ".image-slide", function(){
+        change({{ option_index| plus: 1 }},$(this).attr('data-value'));
+        $(this).addClass("image-option-active").siblings().removeClass("image-option-active");
+      });
+
+      function change(index,value){
+        console.log(index,value)
+        $('#OptionSelector-'+index).val(value);
+        $('#OptionSelector-'+index).trigger('change');
+      }  
+    </script>
+  </div>
+</div>

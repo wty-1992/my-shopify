@@ -1,0 +1,67 @@
+<div class="message-title">{{ 'zen.general.add_customized_content' | t }}</div>
+<div class="message-info">{{ 'zen.general.add_customized_info' | t }}</div>
+<div class="message-board-container">
+  <textarea name="properties[message]" class="message-board-text" id="message-board"></textarea>
+  <div class="error-info" style="display: none;">{{ 'zen.curvecarving.error_emoji' | t }}</div>
+</div>
+
+<script>
+  Product.validators.push(
+    () => {
+      return validateFormData();
+    }
+  );
+  
+  function getLen(text, codeArr = []){ // 匹配不能存入数据库(字节数大于3)的符号
+    let index = -1;
+    let length= text.length;
+    let flag  = 0;
+    while (++index < length) {
+      let charCode = '0x'+text[index].codePointAt(0).toString(16);
+
+      if (charCode >= 0xD800 && charCode <= 0xDBFF) {
+        flag = 1;
+
+        break;
+      }else if(isEmojiCharacter(charCode) && codeArr.length > 0 && codeArr.indexOf(charCode)  < 0){
+        flag = 1;
+
+        break;
+      }
+    }
+    return flag;
+  }
+  
+  function isEmojiCharacter (hs) {
+        if (0x2100 <= hs && hs <= 0x27ff) {
+            return true;
+        } else if (0x2B05 <= hs && hs <= 0x2b07) {
+            return true;
+        } else if (0x2934 <= hs && hs <= 0x2935) {
+            return true;
+        } else if (0x3297 <= hs && hs <= 0x3299) {
+            return true;
+        } else if (hs == 0xa9 || hs == 0xae || hs == 0x303d || hs == 0x3030
+                || hs == 0x2b55 || hs == 0x2b1c || hs == 0x2b1b
+                || hs == 0x2b50) {
+            return true;
+        }
+  }
+    
+  function validateFormData(){
+    var _flag = true;
+    var textInfo = $.trim($("#message-board").val());
+    if( textInfo == '' ){
+      $("#message-board").css("border-color","red");
+      _flag = false;
+    }else if(getLen(textInfo) == 1){
+      $('.error-info').show();
+      _flag = false;
+    }else{
+      $('.error-info').hide();
+      $("#message-board").css("border-color","#d6d6d6");
+    }
+
+    return _flag;
+  }
+</script>

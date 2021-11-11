@@ -1,0 +1,99 @@
+<style>
+  .common-standar_btn .product-form__item {
+    display: none !important;
+  }
+  .ui-widget-header .ui-icon {
+  	background-image: url({{ 'ui-icons_444444_256x240.png' | asset_url }});
+  }
+  .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover {
+    border: 1px solid #e60044 !important;
+    background: #e60044 !important;
+  }
+  #ui-datepicker-div {
+  	z-index: 1001 !important;
+  }
+  #datepicker, #number-input {
+    border: 1px solid #e7e7e7;
+    height: 52px;
+    width: 100%;
+    margin-top: 10px;
+    padding-left: 15px;
+    border-radius: 5px;
+  }
+  .news-date-confirm-content {
+  	text-align: center;
+    margin-top: 1.5rem;
+  }
+  .news-date-confirm-content p:nth-of-type(1) {
+  	color: #000000;
+    font-size: 16px;
+  }
+  .news-date-confirm-content p {
+  	font-weight: 600;
+    text-align: center;
+  }
+  .red {
+  	color: red;
+  }
+  
+  .ui-datepicker-current {
+    opacity: 1 !important;
+
+  }
+  .ui-datepicker-close {
+    font-weight: normal !important;
+  }
+  .news-date-confirm-content span {
+  	display: inline-block;
+    width: 150px;
+  }
+  .remark-key {
+  	text-align: right;
+  }
+  
+  .news-date-confirm-content .red {
+  	text-align: left;
+  }
+  
+  .red {color: red;}
+  .fonttext {
+    width: 100%;
+    border: none;
+    height: 52px;
+    padding-left: 10px;
+    font-size: 1rem !important;
+    background: #fff;
+    box-shadow: none !important;
+    border-radius: 5px;
+  }
+  .product-txt-label{
+    text-transform: none;
+    color: #000;
+    font-size: 14px;
+  }
+  .text-container {
+  	padding: 0 5px;
+  }
+  .text-input-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #e7e7e7;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  .leftnum {
+  	min-width: 50px;
+  }
+  @media (max-width: 768px) { 
+    .tingle-modal-box__content p {
+    	font-size: 10px;
+    }
+    .news-date-confirm-content span {
+      display: inline-block;
+      width: 120px;
+    }
+    .tingle-modal--visible .tingle-modal-box__footer {
+    	bottom: 200px !important;
+    }
+  }
+</style>

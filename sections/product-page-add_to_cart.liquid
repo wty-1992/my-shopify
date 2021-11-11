@@ -1,0 +1,1198 @@
+<style> 
+.step-wrapper{
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.step-wrapper .step-count{
+  width:24px;
+  height: 24px;
+  line-height: 24px;
+  display: block;
+  font-size: 14px;
+  color: #000;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 12px;
+  border: 1px solid #bcbcbc;
+  position: relative;
+}
+.step-middle{
+  border-right: 1px dashed #dedede;
+  margin: 0 auto;
+  width: 0;
+  position: absolute;
+  left: 50%;
+  top: 100%;
+}
+.step-wrapper .step-module {
+  width: calc(100% - 40px);
+}
+.ringsize-font {
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.photocharms-warnfill, a.photocharms-warnfill:not([href]):not([tabindex]) {
+  color: #00f;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.step-wrapper .step-count .across{
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 22px;
+  display: block;
+  border-radius: 100%;
+  width: 0;
+  overflow: hidden;
+}
+.step-wrapper .step-count .across.open{
+  width:24px;  
+  transition: width .4s ease 0.4s;
+}
+.step-wrapper .step-count .across .photo-selected{
+  width: 100%;
+  height: 100%;
+  display: block;
+  font-size: 26px;
+  text-align: center;
+  transform: translateX(-2px);
+}
+.necklace-size-guide{
+  display: FLEX;
+  ALIGN-ITEMS: CENTER;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+.zen-customer-lr{
+  width:100%;
+}
+.zen-customer-lr .common-standar_btn{
+  display:flex
+  margin-top: 8px;
+}
+.product-page-add_to_cart-section{
+  margin-top:25px;
+}
+.product-page-add_to_cart-section .product-form__cart-submit {
+  padding-left: 0px;
+  padding-right: 0px;
+  -webkit-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  line-height: 2rem;
+  padding: 12px 0;
+}
+.product-page-add_to_cart-section .select-option { 
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+/*     width: 100%; */
+  align-items: center;
+/*     border: 1px solid #e7e7e7;  */
+} 
+.product-page-add_to_cart-section .select-option .selector-wrapper{
+  position: relative;
+  color: #333;
+}
+.product-page-add_to_cart-section .select-option .selector-wrapper label {
+/*   position: absolute; */
+  width: 5rem;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  height: 100%;
+  margin: 0;
+  white-space:nowrap;
+  font-weight: normal;
+  color: #000;
+  font-size: 1rem;
+  width: auto;
+  padding-left: 0; 
+  text-transform: initial;
+  margin-bottom: 12px;
+} 
+.product-page-add_to_cart-section .select-option .selector-wrapper select{
+  border: none;
+  padding-left: 1rem;
+  font-size: 1rem;
+  height: 4rem;
+  width: 100%;
+  color: #000;
+  font-family: 'Open Sans';  
+  background-color: #f8f8f8;
+}
+.product-page-add_to_cart-section .select-option .product-size{
+  text-align: center;
+  width: 100%;
+  padding: 16px 0;
+  text-decoration: underline;
+  color: #2a7bc6;
+  display: inline-block;
+  cursor: pointer;
+}
+.product-form__item {
+  flex:1;
+}
+.product-form__item--quantity label {
+  display:none; 
+}
+.common-standar_btn{
+  display: flex;
+}
+.common-standar_btn .merge-button{
+  letter-spacing: 0;
+}
+.product-page-add_to_cart-section .product-form__item--quantity{
+  min-height: 40px;
+  padding-top: 5px;
+  padding-bottom: 4px;
+  border: none;
+  border-right: 0;
+  flex:unset;
+  border-radius: 0px;
+  position: relative;
+  margin-right: 3px;
+  background: #f8f8f8;
+  height: 55px;
+  width: 26%;
+  padding: 0;
+}
+{% if product.type contains "ring" %}
+  #examples_hide{
+    max-height: 100vh;
+  }
+{% endif %}
+.product-page-add_to_cart-section .product-form__item--quantity .product-form__input {
+  display: block; 
+  border: none;
+  text-align: center;
+  padding: 0 0 0 3rem;
+
+} 
+.product-page-add_to_cart-section  .js-qty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}  
+.js-qty button {
+  width: 8rem;
+  min-width: 15%;
+  transition: background-color 0.03s ease-in;
+}
+.js-qty>* {
+  fill: #000;
+  background: #EFEFEF;
+  border: none;
+  color: #000;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.js-qty input {
+  width: 100%;
+}
+.product-page-add_to_cart-section .js-qty button{
+  width: 4rem;
+  border-right: none;
+  border-left: none;
+  background: transparent;
+  font-weight: 900;
+}
+.product-page-add_to_cart-section .js-qty button:hover,
+.product-page-add_to_cart-section .js-qty button:focus,.product-page-add_to_cart-section .js-qty input{
+  background-color: transparent; 
+}
+.product-page-add_to_cart-section .js-qty input{
+  width:60%;
+}
+.common-standar_btn .btn1,.common-standar_btn .btn{
+  border-radius: 0;
+}    
+.product-page-add_to_cart-section .product-form__item--submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 0px;
+}
+.product-page-add_to_cart-section .product-form__item--submit button span {
+  position: relative;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+.product-page-add_to_cart-section .product-form__item--submit button span:before {
+  font-family: "photofont";
+  content: "\e679";
+  font-weight: 600;
+  font-size: 1.3rem;
+  padding-right: 5px;
+}
+.qtyTitle{
+  font-size: 14px;
+  font-weight: 600;
+  color: #000000;
+  margin-bottom: 12px;
+}
+#examples_hide .photo-close{
+  font-size: 30px;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  line-height: 1;
+}
+.input-field-title{
+  font-size: 1rem;
+  display: block;
+  color: #000;
+  margin: 0 0 12px;
+}
+@media(max-width:640px){
+.product-page-add_to_cart-section .select-option .selector-wrapper select{ 
+  padding-left: 1rem;
+}
+.product-page-add_to_cart-section{ 
+  margin: 2rem 0 0;
+} 
+.product-form__item--submit button span:after {
+  left: -1.5rem;
+  font-size:1.4rem;
+}
+.product-form__item--submit button span {
+  font-size:1.4rem;
+}
+.step-wrapper .step-module {
+  width: calc(100% - 28px);
+}
+}
+.product-page-add_to_cart-section .select-option.validation-warning{ 
+  border: 1px solid red ;
+}
+.area-photo-upload{
+  margin-bottom: 1rem!important;
+  border: 1px solid #000;
+  border-radius: 4px;
+  padding: 0 1rem;
+  height: 4rem;
+}
+</style>
+{% assign current_variant = product.selected_or_first_available_variant %}
+ 
+{% assign formId = "ProductForm" | append: section.id %}
+{% for block in section.blocks %}
+{% if block.type == "examples" %} 
+{% if product.tags contains block.settings.contain %}
+{% if product.type == block.settings.typecontain or block.settings.typecontain == blank %}
+<div id="examples_hide" style="display:none;">
+  <button type="button" class="close-new close" data-action="close">
+    <i class="photofont icon photo-close"></i>
+  </button>  
+  <img data-src="{{ block.settings.upload_loading_image | img_url: 'master' }}" class="lazyload" />  
+</div>
+{% endif %}
+{% endif %}
+{% endif%}
+{% endfor %}
+<div itemscope itemtype="http://schema.org/Product">
+    {% form 'product', product, class:"product-form", id: formId %}
+     <input type="hidden" name="id" value="{{current_variant.id}}"/>
+     <div class="zen-customer-lr"> 
+        {% include 'zen-customers-left-step' %}
+        <div class="zen-customers__right">
+          <!-- 非标品 -->
+
+          <div class="asdqweqwewq">
+          {% assign productTags = product.tags | join:',' %}
+          {% unless product.has_only_default_variant %}          
+          	{% comment %} 复选框标题 by anna 2020.05.19 {% endcomment %}
+            {% assign checkout_title_array_str = section.settings.select_checkout_title %}
+            {% assign checkout_title_array = checkout_title_array_str | split: '|' %}
+            {% assign checkout_title = '' %}
+            {% assign checkout_title_tag = '' %}
+            {% for checkout_title_item in checkout_title_array %}
+              {% assign checkout_title_tag_first = checkout_title_item | split: ']' %}
+              {% assign checkout_title_tag = checkout_title_tag_first.first | remove: '[' %}
+              {% if product.tags contains checkout_title_tag %}
+                {% assign checkout_title = checkout_title_tag_first.last %}
+                {% break %}
+              {% endif %}
+            {% endfor %}
+          
+            {% comment %} 复选框内容 by anna 2020.05.19 {% endcomment %}
+            {% assign type_checkout_name_array_str = section.settings.select_checkout_name %}
+            {% assign type_checkout_name_array = type_checkout_name_array_str | split: '|' %}
+            {% assign type_checkout_name = '' %}
+            {% assign type_checkout_tag = '' %}
+            {% for type_checkout_name_item in type_checkout_name_array %}
+              {% assign type_checkout_tag_first = type_checkout_name_item | split: ']' %}
+              {% assign type_checkout_tag = type_checkout_tag_first.first | remove: '[' %}
+              {% if product.tags contains type_checkout_tag %}
+                {% assign type_checkout_name = type_checkout_tag_first.last %}
+                {% break %}
+              {% endif %}
+            {% endfor %}
+            
+            
+          {% if productTags contains "special-moon-variants" %}
+              {% include 'product-options-radio' %}
+          {% else %}
+              {% include 'product-options-dropdown'%}
+          {% endif %}
+          {% endunless %}
+          
+          {% if productTags contains "custom-unify-" %}
+    	      {% include 'zen-unify-plugin' %}	{% comment %}定制化zen插件 By.Coman 2021.05.19{% endcomment %}
+          {% else %}
+	          {% include 'zen-plugin' %}	{% comment %}定制化zen插件 By.Coman 2021.05.19{% endcomment %}
+          {% endif %}
+            
+          {% include 'sunzi-plugin' %}	{% comment %}定制化sunzi插件 By.Coman 2021.05.19{% endcomment %}
+          {% if product.tags contains "ring-indicator-diagram" %}
+            <p class="ringsize-font">{{ 'variant.title.The_average_ring_size_for_women_is_size' | t }} 7.00<br>{{ 'variant.title.If_you_are_unsure_of_the_size_read_our' | t }} <a class="photocharms-warnfill" onclick="Dialog.open('#examples_hide')">{{ 'variant.title.Ring_Size_Guide' | t }}</a></p>  
+          {% endif %}
+            
+          {% comment %}钱包卡功能 2021-03-08 by Anna{% endcomment %}
+          {% if product.tags contains "custom-photoframe" %}
+            {% include 'photo-frame' %}
+          {% endif %}
+            
+            
+          {% comment %}
+          {% comment %}增加vip勾选功能 2020.05.19 by anna{% endcomment %}
+          {% include 'vip-product' %}
+          {% comment %}增加连带销售产品勾选功能 2020-12-9 alice{% endcomment %}
+          {% include 'zen-related-product' %}          
+          {% comment %}显示多个包装盒产品{% endcomment %} 
+          {% for block in section.blocks %}          
+            {% if block.type =='multibox_product' %}
+              {% include 'multibox-product' %}
+            {% endif %}
+          {% endfor %}          
+          {% comment %}增加产品延保{% endcomment %}
+          {% include 'warranty-group' %}
+          {% endcomment %}
+
+            
+          {% if productTags contains "custom-unify-crop-code" or productTags contains "custom-select-date" or productTags contains "custom-date-carving" or productTags contains "custom-date-crop"  or productTags contains 'custom-select-number' or productTags contains 'custom-option-date-number' or  productTags contains "custom-default-date-number"  %}{% comment %}百年油画 2021-5-18 alice{% endcomment %}
+            <button class="btn news-date-btn product-form__cart-submit" type="button" {% unless current_variant.available %}disabled="disabled"{% endunless %}><span>{{ 'product.cart.add_to_cart' | t }}</span></button>
+          {% endif %}  
+          
+           <!-- 非标品3 -->
+          <div class="common-standar_btn {% if product.tags contains 'hide-product' %} hide {%endif%}">
+            {% if section.settings.show_quantity_selector %}
+            <div class="product-form__item product-form__item--quantity">
+                <div class="js-qty">
+                    <button type="button" class="js-qty__adjust--minus" onclick="minus()"><i class="photofont icon photo-move"></i></button>
+                    <input class="js-qty__input" type="text" id="Quantity" value="1" name="quantity" min="0" pattern="[0-99]*">
+                    <button type="button" class="js-qty__adjust--plus" onclick="plus()"><i class="photofont icon photo-add"></i></button>
+                </div>
+                <script>
+                  var limitPurchaseNum = 0;
+                  var purchaseNum = 0;
+                  var topNum = 99;
+                  var currentProductId = '{{product.id}}';
+                  
+                  var limitPurchaseString = '{{settings.limit_purchase_products}}';
+                  var limitPurchaseResult = [];
+                  
+                  let tempArray = limitPurchaseString.split(';');
+                  
+                  tempArray.forEach(function(item,i){
+                    if(item){
+                      let tempJson = {};
+                      let tempArray1 = item.split(',');
+                      tempJson['id'] = tempArray1[0];
+                      tempJson['num'] = tempArray1[1];
+                      limitPurchaseResult.push(tempJson);
+                    }
+                    
+                  });
+                    
+                  
+                  if(limitPurchaseResult.length > 0){
+
+                    limitPurchaseResult.forEach(function(pitem,pindex){
+                      if(currentProductId == pitem.id){
+                      	limitPurchaseNum = parseInt(pitem.num);
+                      }
+                    })
+                  }
+                   
+                  $(function(){
+                    console.log('limitPurchaseNum===========',limitPurchaseNum);
+                  	if(limitPurchaseNum > 0){
+                                                 
+                      {% for cartItem in cart.items %}
+                      	if(currentProductId == '{{cartItem.product_id}}'){
+                          purchaseNum += parseInt('{{cartItem.quantity}}');
+                        }
+                      {% endfor %}
+                      
+                      getLimitPurchaseData(JSON.stringify('{{ cartItem }}'));
+
+                      Listener.on(Listener.cart.refresh, function(event, cart) {
+                        purchaseNum = 0;
+                            
+                        $.each(cart.items, function(index, cartItem) {
+                            if(cartItem.product_id == currentProductId){
+                              purchaseNum += parseInt(cartItem.quantity);
+                            }
+                        })
+                        getLimitPurchaseData();
+                      })
+                      
+                      $('#Quantity').bind("input propertychange",function(event){
+                        if($.trim($(this).val()) != ''){
+                        	
+                          let qcNum = parseInt($(this).val());
+                        
+                          if( qcNum <= 0 || isNaN($(this).val())){
+                              $(this).val(1);
+                          }
+
+                          if(qcNum > parseInt(topNum)){
+                              $(this).val(parseInt(topNum));
+                          }
+                          
+                        }
+                        
+                      });
+                    } 
+                  })  
+                
+                  function getLimitPurchaseData(){
+                    
+                    var diffNum = limitPurchaseNum - purchaseNum;
+                    
+                    if(diffNum <= 0){
+                      $('.product-form__cart-submit').attr('disabled','disabled');
+                      
+                      if($('.merge-div').length > 0){
+                        $('.merge-div').hide();
+                        $('.product-form__item--submit').show();
+                      }
+                      
+                      if($('.limit-purchase-error').length < 1){
+                        let limit_purchase_text = "{{'zen.general.limit_purchase_text' | t}}";
+                         limit_purchase_text = limit_purchase_text.replace('#',limitPurchaseNum);
+                      	$('.zen-customers__right').append('<div class="limit-purchase-error" style="color:red;margin-top: 0.5rem;">'+limit_purchase_text+'</div>');
+                      }
+                    }else{
+                      topNum = diffNum;
+                      if($('.product-form__cart-submit').attr('disabled')){
+                          $(".product-form__cart-submit").attr("disabled",false);
+                      }
+                      
+                      if($('.merge-div').length > 0){
+                      	$('.merge-div').show();
+                        $('.product-form__item--submit').hide();
+                      }
+                      
+                      if($('.limit-purchase-error').length > 0){
+                      	$('.limit-purchase-error').remove();
+                      }
+                    }
+                  }
+
+                  function minus() {
+                    var Quantity = $('#Quantity');
+                    var qty = parseInt(Quantity.val());
+                    var minus = qty - 1;
+                    if(minus < 1) {
+                      minus = 1;
+                    }
+                    Quantity.val(minus);
+                  }
+                  function plus() {
+                    var Quantity = $('#Quantity');
+                    var qty = parseInt(Quantity.val());
+                    var plus = qty + 1;
+                    if(plus > topNum) {
+                      plus = topNum;
+                    }
+                    Quantity.val(plus);
+                  }
+                </script>
+            </div>
+            {% endif %}			
+            {% for option in product.options_with_values %}
+              {% if checkout_title contains option.name %}
+            	{% assign is_checkout_value = false %}
+                {% if option.selected_value == 'true' or option.selected_value == '1' %}
+                  {% assign is_checkout_value = true %}
+                {% endif %}
+            	<div class="select-type-checkout-box event-toggle-select-checkout">
+                  <label>{{option.name}}</label>
+                  <div class="select-type-checkout">
+                    <span class="select-type-checkout-icon">
+                      <input type="checkbox" id="check-{{option.name}}" {% if is_checkout_value %} checked="checked"{% endif %} data-index="{{ forloop.index }}" data-value="{{ is_checkout_value | escape }}">
+                    </span>
+                    <label for="check-{{option.name}}">{{ type_checkout_name }}</label>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+            
+            
+            
+            {% unless checkout_title == blank and type_checkout_name == blank %}
+            <style>
+              .select-type-checkout-box{
+              	margin-top: 15px;
+              }
+              .select-type-checkout-box .select-type-checkout{
+                display: flex;
+              }
+              .select-type-checkout-box .select-type-checkout-icon input{
+              	width: auto;
+    			margin-right: 8px;
+              }
+              .select-type-checkout-box .select-type-checkout label{
+              	font-weight: 100;
+              }
+              .common-standar_btn{
+                display: block !important;
+              }
+            </style>
+            <script>
+              // 产品属性类型-checkout事件
+              $('.event-toggle-select-checkout input').change(function () {
+                var index = $(this).attr('data-index');
+                var value = $(this).attr('data-value');
+                // 设置选择状态
+                var res = '';
+                var resval = 0;
+                if (value == 'true') {
+                  res = 'false';
+                  resval = 0;
+                } else {
+                  res = 'true';
+                  resval = 1;
+                }
+                var optionSelector = $('#OptionSelector-' + index).val();
+                if(optionSelector == 0 || optionSelector == 1){
+                  $('#OptionSelector-' + index).val(resval).change();
+                }else{
+                  $('#OptionSelector-' + index).val(res).change();
+                }
+                // 更改数据
+                $(this).attr('data-value', res);
+              });
+            </script>
+            {% endunless %}
+            {% if product.tags contains 'custom-multiple' %}
+            <div class="merge-div"></div>
+            {% assign cattribute = '{}' %}
+            {% if product.metafields["global"]["cattribute"] %}
+              {% assign cattribute = product.metafields["global"]["cattribute"] | replace: "'", "" %}
+            {% endif %}
+            <script>
+              var attr = JSON.parse('{{ cattribute }}');
+              var hasNoPreview_no = '<button type="button" id="merge" class="merge-button button btn" default-value="{{ 'product.cart.Preview_add_to_cart' | t}}" style="cursor: pointer; width: 100%;">{{ 'product.cart.Preview_add_to_cart' | t}}</button>';
+			  var hasNoPreview_yes = '<button type="button" id="merge" class="merge-button button btn" default-value="{{ 'product.cart.add_to_cart' | t}}" style="cursor: pointer; width: 100%;">{{ 'product.cart.add_to_cart' | t}}</button>';
+              if(attr.hasNoPreview == 1){
+                $('.merge-div').html(hasNoPreview_yes);
+              }else{
+                $('.merge-div').html(hasNoPreview_no);
+              }
+            </script>
+            {% endif %}
+            
+            {% if product.tags contains 'custom-unify-multi-custom-preview' or product.tags contains 'custom-unify-multi-temp-preview' %}{% comment %}定制化合成图片按钮 {% endcomment %}
+            <button type="button" id="merge" class="merge-button button" default-value="{{'products.product.preview_add_to_cart' | t}}" style="cursor: pointer; width: 100%;">{{'products.product.preview_add_to_cart' | t}}</button>
+            {% endif %}
+            
+            <div class="product-form__item product-form__item--submit{% if product.has_only_default_variant %} product-form__item--no-variants{% endif %} {% if product.tags contains 'custom-multiple' %} product-form__item--submit-custom-multiple {% endif %}"
+                 style="{% if product.tags contains 'custom-multiple' %}display:none;{% endif %}"
+                 >
+                {% if product.tags contains 'custom-couple-crop' %}{% comment %}假的加车按钮 {% endcomment %}
+              		<button type="button" id="custom-cart-btn" name="add" class="btn product-form__cart-submit">
+                      <span>{{ 'product.cart.add_to_cart' | t }}</span>
+              		</button>
+              	{% else %}
+              		{% if vipButton == true%}
+                      <button type="button" name="add" onclick="Product.boxAddFormToCart(this.form)" class="btn product-form__cart-submit">
+                          <span>{{ 'product.cart.add_to_cart' | t }}</span>
+                      </button>
+                    {% else %}
+                      <button type="button" name="add" onclick="Product.addFormToCart(this.form)" class="btn product-form__cart-submit">
+                          <span>{{ 'product.cart.add_to_cart' | t }}</span>
+                      </button>
+                    {% endif %}
+                {% endif %}
+                
+                {% if section.settings.enable_payment_button %}
+                {{ form | payment_button }} 
+                {% endif %}
+            </div>
+          </div>
+        </div> 
+      </div> 
+    </div>  
+  
+    {% comment %}所有产品传主图 alice 2021-8-26{% endcomment %}
+    <input id="product-featured-image" name="properties[featured_image]" type="hidden" value="{{product.images[0] | img_url: '1000x1000' | prepend: "https:"}}" />
+  
+    {% comment %}所有产品传语种 alice 2021-9-6{% endcomment %}
+    <input id="product-language" name="properties[language]" type="hidden" value="{{ shop.locale }}" />
+  
+    {% endform %}
+</div> 
+<script>
+$(function(){
+    $('#{{formId}}').find('select[data-option]').each(function() {
+        var element = $(this);
+        Product.validators.push(() => {
+          if(element.val() == '') {
+              element.parents('[data-select]').addClass('validation-warning');
+              return element.data('name') + ' required.'
+          }else{
+              element.parents('[data-select]').removeClass('validation-warning');
+          }
+          return true;
+        })
+    })
+})
+// select 更改variant id 为 select
+Listener.on([ Listener.product.update.before ], function(event, variant) { 
+  var form = $('#{{formId}}');
+  form.find(":input[name='id']").val(variant.id);
+  console.log(variant);
+  {% unless product.has_only_default_variant %}
+  variant.options.forEach((option, value) => {
+    var key = 'option' + ( value + 1 );
+    var options = form.find("select[data-option="+ key +"] option[value='"+ option +"']");
+    options.attr("selected", true);
+  });
+  
+  {% comment %}钱包卡功能 2021-03-08 by Anna{% endcomment %}
+  var frame = form.find("select[data-name='Frame']");
+  if(frame.length > 0){
+    if(frame.val() == 1){
+      $('#check_frame').attr('checked', true);
+    }else{
+      $('#check_frame').attr('checked', false);
+    }
+    //$('#photo_frame').val('');
+  }
+  
+  {% endunless %}
+  
+  {% comment %}所有产品传主图 alice 2021-8-26{% endcomment %}
+  if($('#product-featured-image').length > 0 && variant.featured_image){
+    $('#product-featured-image').val(variant.featured_image.src);
+  }
+
+});
+/*
+Listener.on([ Listener.product.add.before ], function(event, form) {
+  var elements = $(form).find("select[data-option]");
+  elements.each(function() {
+    var element = $(this);
+    if(element.val() == '') {
+      element.parents('[data-select]').addClass('validation-warning');
+      throw new Error(element.data('name') + ' required.');
+    }
+  }); 
+});*/
+
+
+</script>
+
+{% schema %}
+{
+	"name": "产品页 - 定制化区域 + 购物车按钮",
+    "class": "product-page-add_to_cart-section",
+    "settings": [{
+"type": "paragraph",
+"content":"product-page-add_to_cart"
+},
+      {
+        "type": "checkbox",
+        "id": "enable_payment_button",
+        "label": "显示快速购买按钮",
+        "info": "允许客户在产品页快速付款 (https://help.shopify.com/manual/using-themes/change-the-layout/dynamic-checkout)",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_quantity_selector",
+        "label": "显示数量按钮",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "upload_loading_image",
+        "label": "客户上传图片时的等待loading图",
+        "info": "sf 使用的尺寸是 260 * 175 的 gif"
+      },
+  	  {
+        "type": "header",
+        "content": "孙子定制化"
+      },
+      {
+        "type": "text",
+        "id": "sunzi_shop_language",
+        "label": "店铺语种",
+        "default": "en"
+      },
+      {
+        "type": "text",
+        "id": "sunzi_shop_symbol",
+        "label": "货币符号",
+        "default": "$"
+      },
+      {
+        "type": "text",
+        "id": "sunzi_shop_code",
+        "label": "孙子店铺code"
+      },
+  	  {
+        "type": "text",
+        "id": "sunzi_button_text",
+        "label": "定制按钮默认文案",
+        "default": "customize & preview"
+      },
+	  {
+        "type": "text",
+        "id": "sunzi_button_upload_text",
+        "label": "定制上传图片按钮文案",
+        "default": "Diseña Su Propio"
+      },
+      {
+        "type": "text",
+        "id": "sunzi_variant_number",
+        "label": "获取默认值的变体名称"
+      },
+	  {
+        "type": "text",
+        "id": "sunzi_variant_size",
+        "label": "获取默认值的变体尺码",
+		"default": "Size"
+      },
+	  {
+        "type": "text",
+        "id": "sunzi_variant_color",
+        "label": "获取默认值的变体颜色",
+		"default": "Color"
+      },
+      {
+          "type": "textarea",
+          "id": "sunzi_mug_select",
+          "label": "杯子定制化服务配置",
+          "info": "格式: [属性标题-多个用,分割]-(增值标题){+选项A+}{-选项B-}"
+        },
+		{
+          "type": "text",
+          "id": "sunzi_variant_mug_number",
+          "label": "杯子个数变体名称"
+        },
+        {
+          "type": "text",
+          "id": "sunzi_mug_path_watermark",
+          "label": "杯子操作水印链接"
+        },
+        {
+          "type": "text",
+          "id": "sunzi_mug_path_guide",
+          "label": "杯子引导视频链接",
+          "default": "https://sunzi7n.imaiyuan.com/mug/mug-guide-en.mp4"
+        },
+          {
+          "type": "textarea",
+          "id": "sunzi_mug_guide_texts",
+          "label": "杯子操作提示文案",
+          "info": "最多支持4条提示，中间用|分割"
+        },
+        {
+          "type": "text",
+          "id": "sunzi_mug_amplify",
+          "label": "杯子定制化无损放大变体名称"
+        },
+  	  {
+        "type": "text",
+        "id": "sunzi_class_form",
+        "label": "加车表单classname",
+        "default": "shopify-product-form"
+      },
+      {
+        "type": "text",
+        "id": "sunzi_class_select",
+        "label": "select标签classname",
+        "default": "inline-field-wrapper"
+      },
+      {
+        "type": "text",
+        "id": "sunzi_class_label",
+        "label": "label标签classname",
+        "default": "label strong"
+      },
+      {
+        "type": "text",
+        "id": "sunzi_type_option",
+        "label": "选项类型",
+        "default": "select"
+      },
+      {
+        "type": "header",
+        "content": "定制化-spotify"
+      },
+      {
+        "type": "text",
+        "id": "sunzi_param_spotify_default_custom_album",
+        "label": "spotify-默认唱片图片",
+        "default": "https://spic.qn.cdn.imaiyuan.com/spotify-code/custom-album.jpg?imageslim"
+      },
+      {
+        "type": "textarea",
+        "id": "sunzi_param_spotify_recommend_tracks",
+        "label": "spotify-推荐参数",
+        "default": "[{\"album\":\"https://i.scdn.co/image/ab67616d0000b273fec5ef9f3133aff71c525acc\",\"albumThumbnail\":\"https://i.scdn.co/image/ab67616d00004851fec5ef9f3133aff71c525acc\",\"name\":\"Therefore I Am\",\"artists\":\"Billie Eilish\",\"duration_ms\":174321,\"uri\":\"spotify:track:54bFM56PmE4YLRnqpW6Tha\"},{\"album\":\"https://i.scdn.co/image/ab67616d0000b2735ef878a782c987d38d82b605\",\"albumThumbnail\":\"https://i.scdn.co/image/ab67616d000048515ef878a782c987d38d82b605\",\"name\":\"positions\",\"artists\":\"Ariana Grande\",\"duration_ms\":172324,\"uri\":\"spotify:track:35mvY5S1H3J2QZyna3TFe0\"},{\"album\":\"https://i.scdn.co/image/ab67616d0000b2737b25c072237f29ee50025fdc\",\"albumThumbnail\":\"https://i.scdn.co/image/ab67616d000048517b25c072237f29ee50025fdc\",\"name\":\"Love Story\",\"artists\":\"Taylor Swift\",\"duration_ms\":235266,\"uri\":\"spotify:track:1vrd6UOGamcKNGnSHJQlSt\"},{\"album\":\"https://i.scdn.co/image/ab67616d0000b2734246e3158421f5abb75abc4f\",\"albumThumbnail\":\"https://i.scdn.co/image/ab67616d000048514246e3158421f5abb75abc4f\",\"name\":\"All I Want for Christmas Is You\",\"artists\":\"Mariah Carey\",\"duration_ms\":241106,\"uri\":\"spotify:track:0bYg9bo50gSsH3LtXe2SQn\"},{\"album\":\"https://i.scdn.co/image/ab67616d0000b2737144402ae83fa686eafa7230\",\"albumThumbnail\":\"https://i.scdn.co/image/ab67616d000048517144402ae83fa686eafa7230\",\"name\":\"More Than My Hometown\",\"artists\":\"Morgan Wallen\",\"duration_ms\":216573,\"uri\":\"spotify:track:0eBXyY4SatzpE7opnzgXvz\"}]"
+      },
+	  {
+        "type": "header",
+        "content": "定制化-宠物毯子"
+      },
+      {
+        "type": "text",
+        "id": "sunzi_pet_blanket_number",
+        "label": "狗毯子数量变体名称"
+      },
+      {
+        "type": "text",
+        "id": "sunzi_pet_blanket_linetext",
+        "label": "狗毯子刻字变体名称"
+      },
+  	  {
+        "type": "text",
+        "id": "sunzi_variant_photo_film",
+        "label": "变体名称-胶卷钥匙链",
+        "default": "How Many Pictures"
+      },
+      {
+        "type": "textarea",
+        "id": "select_checkout_title",
+        "label": "复选框标题([]为标签, 填写属性名称, 作为内容, 多个用 | 分隔)"
+      },
+	  {
+        "type": "textarea",
+        "id": "select_checkout_name",
+        "label": "选择框-复选框内容(产品变体名称, []为标签, 多个用 | 分隔)"
+      },
+      {
+        "type": "select",
+        "id": "variants_style",
+        "label": "Variants style",
+        "options": [
+          {
+            "value": "select",
+            "label": "Dropdowns"
+          },
+          {
+            "value": "radio",
+            "label": "Buttons"
+          }
+        ],
+        "default": "select"
+      }
+    ],
+  	"blocks": [
+      {
+        "type": "vip_product",
+        "name": "显示vip服务产品",
+        "settings": [
+            {
+                "type": "text",
+                "id": "title",
+                "label": "显示的名字",
+                "info": "支持HTML"
+            },{
+                "type": "text",
+                "id": "desc",
+                "label": "显示的描述",
+                "info": "支持HTML"
+            },{
+                "type": "text",
+                "id": "box_tag",
+                "label": "标签"
+            },
+            {
+                "type": "product",
+                "id": "product",
+                "label": "选择产品"
+            },
+            {
+                "type": "checkbox",
+                "id": "is_link",
+                "label": "是否可跳转查看vip产品",
+                "default": false
+            }
+        ]
+      },
+  	  {
+        "type": "related_product",
+        "name": "显示连带购买产品",
+        "settings": [
+            {
+                "type": "text",
+                "id": "title",
+                "label": "显示的名字",
+                "info": "支持HTML"
+            },{
+                "type": "text",
+                "id": "related_tag",
+                "label": "标签"
+            },
+            {
+                "type": "product",
+                "id": "product",
+                "label": "选择产品"
+            }
+        ]
+      },
+      {
+          "type": "multibox_product",
+          "name": "显示多个包装盒产品",
+          "settings": [
+            {
+              "type": "text",
+              "id": "title",
+              "label": "显示的名字",
+                "info": "支持HTML"
+            },
+            {
+              "type": "textarea",
+              "id": "contain",
+              "label": "显示规则",
+              "info": "{\"handle\": \"a,b,c...\", \"sku\": \"C021,C022...\"}"
+            },
+            {
+              "type": "text",
+              "id": "giftitle1",
+              "label": "标题"
+            },        
+            {
+              "type": "product",
+              "id": "product1",
+              "label": "选择Box产品1"
+            },
+            {
+              "type": "product",
+              "id": "product2",
+              "label": "选择Box产品2"
+            },
+            {
+              "type": "product",
+              "id": "product3",
+              "label": "选择Box产品3"
+            },
+            {
+              "type": "product",
+              "id": "product4",
+              "label": "选择Box产品4"
+            }
+          ]
+        },
+        {
+          "type": "warranty_group",
+          "name": "显示产品延保 ",
+          "settings": [
+  			{
+                "type": "text",
+                "id": "title",
+                "label": "显示名字"
+            },
+            {
+                "type": "text",
+                "id": "title1",
+                "label": "显示的内容",
+                "info": "支持HTML"
+            },
+  			{
+                "type": "text",
+                "id": "desc",
+                "label": "显示的描述",
+                "info": "支持HTML"
+            },
+  			{
+                "type": "text",
+                "id": "box_tag",
+                "label": "标签"
+            },
+            {
+                "type": "product",
+                "id": "product",
+                "label": "选择产品"
+            }
+          ]
+        },
+        {
+          "type": "examples",
+          "name": "examples对照图",
+          "settings": [  			
+  			{
+              "type": "text",
+              "id": "title",
+              "label": "显示名字"
+            },
+            {
+              "type": "text",
+              "id": "contain",
+              "label": "标签"
+            },{
+              "type": "text",
+              "id": "typecontain",
+              "label": "产品tpye类型"
+            },
+            {
+              "type": "image_picker",
+              "id": "upload_loading_image",
+              "label": "examples对照图"
+            }
+          ]
+        },
+        {
+          "type": "hundred_history_product",
+          "name": "百年历史分享产品",
+          "settings": [
+            {
+              "type": "text",
+              "id": "title",
+              "label": "显示的名字",
+              "info": "支持HTML"
+            },
+            {
+              "type": "product",
+              "id": "hundred_history_product_canvas",
+              "label": "百年-油画-分享产品"
+            },
+            {
+              "type": "product",
+              "id": "hundred_history_product_puzzle",
+              "label": "百年-拼图-分享产品"
+            },
+            {
+              "type": "product",
+              "id": "hundred_history_product_ornaments",
+              "label": "百年-摆件-分享产品"
+            },
+            {
+              "type": "product",
+              "id": "hundred_history_product_greeting_card",
+              "label": "百年-贺卡-分享产品"
+            },
+            {
+              "type": "product",
+              "id": "hundred_history_product_tapestry",
+              "label": "百年-毯子-分享产品"
+            },
+			{
+              "type": "product",
+              "id": "hundred_history_product_marriage_oil",
+              "label": "百年-结婚纪念日-油画-分享产品"
+            },
+            {
+              "type": "product",
+              "id": "hundred_history_product_marriage_puzzle",
+              "label": "百年-结婚纪念日-拼图-分享产品"
+            },
+            {
+              "type": "product",
+              "id": "hundred_history_product_backInTime_oil",
+              "label": "百年-时间回溯-油画-分享产品"
+            },
+            {
+              "type": "product",
+              "id": "hundred_history_product_backInTime_puzzle",
+              "label": "百年-时间回溯-拼图-分享产品"
+            },
+            {
+              "type": "product",
+              "id": "hundred_history_product_related",
+              "label": "百年历史-油画/拼图-关联产品"
+            },
+            {
+              "type": "product",
+              "id": "hundred_history_product_ornaments_related",
+              "label": "百年历史-摆件-关联产品"
+            }
+          ]
+        },
+        {
+          "type": "sunzi_multi_add_price",
+          "name": "孙子-多图-加价产品",
+          "settings": [
+            {
+              "type": "text",
+              "id": "title",
+              "label": "显示的名字",
+              "info": "支持HTML"
+            },
+            {
+              "type": "product",
+              "id": "product_add_price",
+              "label": "加价产品"
+            }
+          ]
+        },
+		{
+          "type": "clay_figurine_products",
+          "name": "泥人配置信息",
+          "settings": [
+            {
+              "type": "text",
+              "id": "title",
+              "label": "显示的名字",
+              "info": "支持HTML"
+            },
+			{
+              "type": "text",
+              "id": "line_text_add_price",
+              "label": "刻字加价",
+			  "default": "4.99"
+            },
+            {
+              "id": "products_decorates",
+              "type": "collection",
+              "label": "装饰品"
+            },
+			{
+              "id": "products_bases",
+              "type": "collection",
+              "label": "底座"
+            },
+			{
+              "id": "products_gift_boxs",
+              "type": "collection",
+              "label": "礼盒"
+            }
+          ]
+        },
+        {
+          "type": "boxer_preset_product",
+          "name": "预览内裤关联产品",
+          "settings": [
+            {
+              "type": "text",
+              "id": "title",
+              "label": "显示的名字",
+              "info": "支持HTML"
+            },
+            {
+              "type": "product",
+              "id": "product_add_avatar",
+              "label": "扣头加价产品"
+            }
+          ]
+        }
+	]
+}
+{% endschema %}

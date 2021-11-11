@@ -1,0 +1,14 @@
+{% layout none %}<?xml version="1.0"?>
+<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">
+<channel>
+{% paginate collections by 1000 %}
+{% for category in collections %}
+    <item>
+      <g:id>{{ category.id }}</g:id>
+      <g:name>{{ category.title | strip_html | replace: '&', '&amp;' }}</g:name>
+      <g:count>{{ category.products_count }}</g:count>
+    </item>
+{% endfor %}
+{% endpaginate %}
+</channel>
+</rss>

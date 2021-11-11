@@ -1,0 +1,250 @@
+<!-- this is stick nav -->
+<div id="StickNavWrapper"></div> 
+<div class="menu-nav small--hide page-width">
+  <ul class="drawer__nav">
+    {% for link in linklists[section.settings.main_linklist].links %}
+    {% assign child_list_handle = link.title | handleize %}
+    <li class="drawer__nav-item">
+      <a href="{{ link.url }}"
+      class="drawer__nav-link drawer__nav-link--top-level"
+      {% if link.active %} aria-current="page"{% endif %}
+      >
+        {{ link.title }}
+      </a>  
+      {% if link.links != blank %}
+        <div class="nav-sublist-dropdown">
+            <div class="nav-sbulist-items page-width" id="nav"> 
+                <ul>
+                    {% for childlink in link.links %} 
+                    <li data-image="{% if childlink.object.image %}{{childlink.object.image | img_url: '300x'}}{% endif %}">
+                        <a href="{{ childlink.url }}" {% if childlink.active %} aria-current="page"{% endif %}>
+                        {% include 'drawer-nav-subscript', text: childlink.title %}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <div class="right">
+                <div class="small_img"></div> 
+                    <picture class="picture"> 
+                    <img src="{{ 'nav-img-lery-183.jpg' | asset_url }}">
+                    </picture>
+                </div> 
+            </div>
+        </div>
+      {% endif %}
+    </li>
+    {% endfor %}
+
+    {% if shop.customer_accounts_enabled %}
+      {% if customer %}
+      <li class="drawer__nav-item">
+        <a href="/account/logout" class="drawer__nav-link drawer__nav-link--top-level">
+          {{ 'layout.customer.log_out' | t }}
+        </a>
+      </li>
+      {% endif %}
+    {% endif %}
+  </ul>
+</div>
+<style>
+.pclogo{ display:none;}
+@media(min-width:220px){
+#shopify-section-header{
+    height:5rem;
+}
+#shopify-section-menu{    position: relative;border-bottom: 1px solid #f1f1f1;}
+.site-header-sections .site-header{ 
+    position:fixed;
+ transition: all .2s ease-in-out 0s;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 1.2rem; 
+    width: 100%;
+    height: 5rem;
+    background: #fff;
+    z-index: 10;}
+.menu-nav .drawer__nav-link--top-level:hover, .menu-nav .drawer__nav-link--top-level:focus{
+
+    color: #D81E06;
+    background-color: transparent;
+    text-decoration: none;
+}
+.menu-nav .drawer__nav-item{
+    padding: 0 1rem 0;
+        height: 3.5rem;
+}
+.menu-nav .drawer__nav-link--top-level{
+    padding: 1.2rem 0;}
+.menu-nav .drawer__nav{
+    display: -webkit-flex; 
+    -webkit-justify-content: center;
+    -webkit-align-items: center;
+    -webkit-flex-wrap: wrap;
+    display: flex;
+    font-size:1rem;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap; 
+} 
+.menu-nav .nav-sublist-dropdown{  
+    display:none;
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    background: #fff;
+    width: 100%;
+    min-height: 350px;
+    /*top: 3.5rem;*/ 
+    border-top: 1px solid #f1f1f1;
+}
+.menu-nav ul li.drawer__nav-item:hover .nav-sublist-dropdown{
+  display:block;
+}
+.menu-nav .nav-sbulist-items ul{
+    margin: 2.5em 0;    
+    display: -webkit-flex;
+    display: flex;
+    width: 50%;
+    height: fit-content;
+    flex-wrap: wrap;}
+.menu-nav .nav-sbulist-items ul li {
+  width: 50%;
+  padding: 0.5em 0; 
+}
+.menu-nav .nav-sbulist-items ul li a:hover{
+    color: #e0e0e0;
+    transition: all 0.5s;
+}
+.menu-nav .nav-sublist-dropdown .right{
+     width: 50%;
+     position:relative;
+     padding-top: 2.5em;
+}
+.menu-nav .nav-sublist-dropdown .picture {
+    position: absolute;
+    top: 2.5em;
+    right: 0; 
+    text-align: right;
+}
+.menu-nav .nav-sublist-dropdown .picture img{    
+    width: 100%;
+    transition: all 0.6s; 
+}
+.menu-nav .nav-sublist-dropdown .nav-sbulist-items{
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.menu-nav #nav:hover .picture img {    
+    width:65%;
+}
+.site-header-sections .site-header .logo {text-align:center}
+.site-header-sections .site-header .logo img {
+    width: 62%;
+}
+.header-mb-nav i,.header-cart-sections i{    
+    font-size: 2.4rem;
+    color: #000;}  
+
+}
+
+.drawer__nav i.icon.heart{
+    font-size:14px;
+    color:red;
+    line-height:10px;
+}
+.drawer__nav span.subscript{
+    font-family: 'OpenSans';
+    background-color: #f33;
+    color: #fff;
+    font-style: italic;
+    font-size: 10px;
+    -webkit-transform: scale(.75);
+    border-radius: 40px;
+    text-align: center;
+    margin-top: -2px;
+    text-transform: capitalize;
+    display:inline-block;
+}
+.drawer__nav span.subscript:before{
+    content: "";
+    position: absolute;
+    left: -6px;
+    top: 3px;
+    width: 3px;
+    height: 3px;
+    border: 3px solid transparent;
+}
+.drawer__nav span.subscript-hot{
+    width:55px;
+}
+.drawer__nav span.subscript-new{
+    width:45px;
+    background-color: #48d46f;
+}
+.drawer__nav span.subscript-new:before{
+    border-right-color: #0cc485;
+}
+
+@media(min-width:768px){
+#shopify-section-header{
+    height:auto;
+}
+.site-header-sections .site-header .logo img {
+    width: 100%;
+}
+.site-header-sections .site-header{  
+    height: 3.5em; 
+    margin: 2.625em auto 1em; 
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 1.2rem;
+    position: relative;
+} 
+.header-mb-nav i, .header-cart-sections i{
+    font-size:1.8rem;
+}
+.site-header-sections  .commonlogo{    left: 50%;
+    position: absolute;
+    transform: translateX(-50%);
+    } 
+ 
+}
+@media(min-width:1024px){
+    .menu-nav .drawer__nav-item {
+        padding: 0 0.5rem 0; 
+    }
+}
+@media(min-width:1366px){
+    .menu-nav .drawer__nav-item {
+    padding: 0 1rem 0; 
+}
+}
+</style>
+
+<script>
+$("#nav li").hover(function(){
+  if($(this).data('image')){
+      $('.small_img').html("<img src='"+$(this).data('image')+"' width='196' height='196'>")
+    //console.log($(this).data('image'));
+  }
+},function(){
+  //console.log('close');
+})
+</script>
+
+{% schema %}
+{
+  "name": "PC导航设置",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "main_linklist",
+      "label": "选择menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}

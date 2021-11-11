@@ -1,0 +1,45 @@
+
+{% schema %}
+{
+  "name": "测试标题",
+  "tag": "section",
+  "class": "slideshow",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Slideshow"
+    }
+  ],
+  "blocks": [
+    {
+        "type": "block-type",
+        "name": "Block Name",
+        "settings": [
+          {
+            "id": "title",
+            "type": "text",
+            "label": "Name",
+			"default":"cesasds"
+          },
+		  {
+            "id": "title1",
+            "type": "text",
+            "label": "aaa",
+			"default":"cesasds"
+          },
+          {            
+            "type": "header",
+  			"content": "导航部分样式"
+          }
+        ]
+      }
+  ],
+  "presets": [
+    {
+      "name": "测试 标题",
+      "category": "测试"
+    }
+  ]
+}
+{% endschema %}

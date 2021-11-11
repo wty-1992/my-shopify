@@ -1,0 +1,253 @@
+{% comment %}
+** @name 动态表单-表带 **
+** @author laozien **
+** @integrate laozien wangtianyu **
+{% endcomment %}
+
+{% comment %} 引用公共插槽 {% endcomment %}
+{% include 'sunzi-slot-template-2' %}
+
+{% comment %} 调用参数 {% endcomment %}
+
+{% comment %} 变体 {% endcomment %}
+{% comment %} 尺码 {% endcomment %}
+{% assign variantSize = 0 %}
+{% comment %} 颜色 {% endcomment %}
+{% assign variantColor = 100 %}
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'dynamic-form-v1.0.0-beta.js' %}
+
+{% comment %} 定制化数据地址 {% endcomment %}
+
+{% comment %} 表带产品1  {% endcomment %}
+{% if product.tags contains 'custom-watch-strap1' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/dynamic-form1.json' %}
+{% comment %} 表带产品2  {% endcomment %}
+{% elsif product.tags contains 'custom-watch-strap2' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/dynamic-form2.json' %}
+{% comment %} 表带产品3  {% endcomment %}
+{% elsif product.tags contains 'custom-watch-strap3' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/dynamic-form3.json' %}
+{% comment %} 表带产品4  {% endcomment %}
+{% elsif product.tags contains 'custom-watch-strap4' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/dynamic-form4.json' %}
+{% comment %} 表带产品5  {% endcomment %}
+{% elsif product.tags contains 'custom-watch-strap5' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/dynamic-form5.json' %}
+    {% assign variantColor = 0 %}
+    {% assign variantSize = 1 %}
+{% comment %} 表带产品6  {% endcomment %}
+{% elsif product.tags contains 'custom-watch-strap6' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/dynamic-form6.json' %}
+    {% assign variantColor = 0 %}
+    {% assign variantSize = 1 %}
+{% comment %} 表带产品7  {% endcomment %}
+{% elsif product.tags contains 'custom-watch-strap7' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/dynamic-form7.json' %}
+    {% assign variantColor = 0 %}
+    {% assign variantSize = 1 %}
+{% endif %}
+
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+  select{
+    outline: none;
+  }
+  .cr-slider {
+    border-width:0
+  }
+
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 标记订单来源 {% endcomment %}
+  {% assign from = coreJs | split: '-v' %}
+  <input type="hidden" name="properties[_from]" value="sunzi-{{ from[0] }}" />
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="text" id="sunzi-input" name="properties[customInfo]" required="required"></input>
+  <input type="hidden" id="sunzi-cart" name="properties[_sunzi_cart]" />
+{% comment %} 定制按钮 {% endcomment %}
+<div class="sunzi-form-content">
+  <div id="sunzi-node">
+    <div class="sunzi-node-loading">
+      <span class="dots">
+        <i></i>
+        <i></i>
+        <i></i>
+      </span>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- sunzi core js -->
+<script crossorigin src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{coreJs}}" defer="defer"></script>
+
+{% comment %}  2.请求定制化数据& 渲染 {% endcomment %}
+<script defer="defer">
+  _sunzi_request('{{ requestURL }}', function(data){
+    //初始化数据
+    initData(data); 
+  	DynamicForm.render(
+      DynamicForm.default,
+      {
+        ...data,
+        shop: _sunzi_global_data.shop,
+        //选择颜色
+        onSelectColor(...data){
+          data.forEach(function(item, index) {
+        	if(item) _sunzi_variant_change({{variantColor}}, item.value); 
+          });
+    	},
+      	//选择尺寸
+        onSelectSize(...data){
+          data.forEach(function(item, index) {
+            if(item) _sunzi_variant_change({{variantSize}}, item.value); 
+          });
+        },
+        async onConfirm(output) {
+          // 组装加车参数
+          _sunzi_loading();
+          var sources = [];
+          var effects = [];
+          var texts = [];
+          var param = {};
+          var { upWatchband, downWatchband, fontSize, fontColor } = output;
+          {% if product.tags contains 'custom-watch-strap1' %}
+          param = {
+            '_sunzi_sources':[ ...upWatchband.croppieSource,...downWatchband.croppieSource],
+            '_sunzi_effect':[ ...upWatchband.croppieImage,...downWatchband.croppieImage]
+          };
+          {% elsif product.tags contains 'custom-watch-strap2' %}
+          param = {
+            '_sunzi_sources':downWatchband.croppieSource,
+            '_sunzi_effect':downWatchband.croppieImage,
+            '_sunzi_text': {
+              value: upWatchband.fontFamilyValue[0].value,
+              fontSize,
+              font: upWatchband.fontFamilyValue[0].fontFamily
+            }
+          };
+          {% elsif product.tags contains 'custom-watch-strap3' %}
+          param = {
+            '_sunzi_sources':[ ...upWatchband.croppieSource,...downWatchband.croppieSource],
+            '_sunzi_effect':[ ...upWatchband.croppieImage,...downWatchband.croppieImage]
+          };
+          {% elsif product.tags contains 'custom-watch-strap4' %}
+          param = {
+            '_sunzi_source':upWatchband.croppieSource[0],
+            '_sunzi_effect':upWatchband.croppieImage,
+            '_sunzi_texts':[
+              {
+                value: downWatchband .fontFamilyValue[0].value,
+                fontSize,
+                font: downWatchband .fontFamilyValue[0].fontFamily,
+                fontColor,
+                number:1
+              },
+              {
+                value: downWatchband .fontFamilyValue[1].value,
+                fontSize,
+                font: downWatchband .fontFamilyValue[1].fontFamily,
+                fontColor,
+                number:2
+              }
+            ]
+          };
+          {% elsif product.tags contains 'custom-watch-strap5' %}
+          param = {
+            '_sunzi_texts':[
+              {
+                value: upWatchband.fontFamilyValue[0].value,
+                fontSize,
+                font: upWatchband.fontFamilyValue[0].fontFamily,
+                fontColor,
+                number:1
+              },
+              {
+                value: downWatchband .fontFamilyValue[0].value,
+                fontSize,
+                font: downWatchband .fontFamilyValue[0].fontFamily,
+                fontColor,
+                number:2
+              }
+            ]
+          };
+          {% elsif product.tags contains 'custom-watch-strap6' %}
+          param = {
+            '_sunzi_sources':upWatchband.facutSource,
+            '_sunzi_elements':upWatchband.facutImage
+          };
+          {% elsif product.tags contains 'custom-watch-strap7' %}
+          param = {
+            '_sunzi_source':upWatchband.facutSource[0],
+            '_sunzi_elements':upWatchband.facutImage
+          };
+          {% endif %}
+		  param['_sunzi_effect'] = getCurProduct('featuredImage');
+          $('#sunzi-input').val(JSON.stringify(param));
+
+          // 加车队列
+          var _queue = [];
+
+          // 加车事件触发
+          await Promise.all(_queue);
+          // 由于主产品涉及vip/质保产品等额外加车事件的判断，因此沿用站点加车方法
+          $('.product-form__cart-submit').click();
+      	  $('#sunzi-loading').hide();
+        }
+    },
+      _matomoId,
+        document.getElementById("sunzi-node")
+    );
+  })
+
+  /** 其他自定义函数 start **/	
+  // 初始化数据
+  function initData(data) {
+    var productJSON = {{product | json}};
+    var sizeList = [];
+    productJSON.variants.forEach(variant => {
+      var sizeValue = variant.options[{{variantSize}}];
+      sizeList.find(sizeItem => sizeItem.value == sizeValue) || sizeList.push({
+        value: sizeValue,
+        price: variant.price / 100
+      });      
+    });
+    // 颜色变体
+    data.variant[0].name = getVariantLabel(productJSON, {{variantColor}});
+    // 尺码变体
+    data.variant[1].name = getVariantLabel(productJSON, {{variantSize}});
+    data.variant[1].children = sizeList.map((sizeItem, index) => {
+      return {
+        id: index + 1,
+        value: sizeItem.value,
+        price: sizeItem.price
+      }
+    });
+    
+    // 表单label
+    var shopLanguage = _sunzi_global_data.shop.language;
+    data.formData.forEach(formItem => {
+      switch(formItem.type) {
+        case "upBand":
+          formItem.name = data.translate[shopLanguage]["upBand"];
+          break;
+        case "downBand":
+          formItem.name = data.translate[shopLanguage]["downBand"];
+          break;
+        case "uploadPhoto":
+          formItem.name = data.translate[shopLanguage]["uploadPhoto"];
+          break;
+      }
+    });
+  }
+  
+  // 获取变体label
+  function getVariantLabel(product, index) {
+    return product.options[index];
+  }
+  /** 其他自定义函数 end **/
+</script>

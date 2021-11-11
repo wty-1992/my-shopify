@@ -1,0 +1,97 @@
+
+<script>  
+  	window.addEventListener('EVENT_CROP_SAVE_AFTER', function(event){
+      var index = event.detail.index;
+      var data = event.detail.data;
+      
+      $(".area-crop-upload-"+index).css('border-color', '#e7e7e7');
+    });
+    var _zenSku = "{{ current_variant.sku }}";
+    console.log(_zenSku);
+  
+    var _zenConfig = {
+        photoObj: [],
+        carvingObj: [],
+        crystalObj: [],
+        curveCarvingObj: [],
+        nameObj: [],
+      	uploadLoadingImage: 'https://ik.imagekit.io/soufeel/en/skin/frontend/smartwave/default/images/soufeel-30.gif',
+        wrapperBackgroudColor: '#000000',
+        crop: [
+        	{
+            uploadLabel: "{{ 'zen.general.uploadLabel' | t }}", //传图描述标签
+            btnUploadText: "{{ 'zen.photocarving.upload' | t }}", //上传按钮文案
+            require: true,
+            hasCropOrigin: true,
+            sku: _zenSku,
+            basePhotoImg: "https://pic.stylelab.com/img/photo/"+_zenSku+".png",
+            ainame: "",         //使用ai图名称, 可以不传或为空。例如,如果用透明背景，ainame: "transparent"
+            isAiLucid: 1,  //图片边级是否透明，1透明 0不透明
+            bgcolor: "rgb(255,255,255)",   //效果图背景色
+            style: 0, //设置上传样式，0:单行展示 1：矩形上传表单
+            type: 'binding1',
+            quality: 0.8
+          }
+        ],
+        cropPrompt: "",//传图层文案
+        noteText:"",
+		requirePrompt: "{{ 'zen.photocarving.error' | t }}",
+		uploadLabel: "{{ 'zen.photocarving.upload' | t }}", //传图描述标签
+        btnUploadText: "",  //上传按钮文字
+        photoCancelText: "{{ 'customer.recover_password.cancel' | t }}", //传图层Cancel文案
+        photoConfirmText: "{{ 'zen.general.confirm' | t }}", //上传按钮文案
+        uploadLoadingImage: "",
+        photo: [],
+        carving: [],
+        crystal: [],
+        curveCarving: []
+    };
+</script>
+<input type="hidden" id="photo_crop" name="properties[picture]" value="" style="display:none" required />
+<div id="zen-photocarving"></div>
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.3.6/zen-photo-carving-chunk-vendors.css?201911111013" rel="stylesheet" />
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.3.6/zen-photo-carving-app.css?201911111013" rel="stylesheet" />
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.3.6/zen-photo-carving-chunk-vendors.js?201911111013"></script>
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.3.6/zen-photo-carving-app.js?201911111013"></script>
+
+<script>
+  $('.zen-require').attr('name','customInfo');
+  var picurl = "https://pic.stylelab.com/";
+  window.submitFlag = true;
+  var custom_json = {};
+  
+  window.addEventListener('EVENT_CROP_SAVE_AFTER', function(event){
+    $('.area-crop-upload-0').css('border-color','#e7e7e7');
+	
+  });
+  
+  Product.validators.push(async () => {
+    //防止重复提交                      
+    if(!submitFlag){
+      return false;
+    }         
+
+    submitFlag = false;
+    
+    var customData = JSON.parse($(".zen-require").val());
+  	console.log(customData);
+    if(typeof customData.crop !== 'undefined'){
+      
+      if(!customData.crop[0].crop){
+        $('.area-crop-upload-0').css('border-color','red');
+        submitFlag = true;
+      	return false;
+      }
+      submitFlag = true;
+      $("#photo_crop").val(customData.crop[0].crop);
+    }else{
+      submitFlag = true;
+      $('.area-crop-upload-0').css('border-color','red');
+      return false;
+    }
+  
+    return true;
+  
+  })
+  
+</script>

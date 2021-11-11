@@ -1,0 +1,218 @@
+<style>
+.elements-item {
+  text-align:center;
+}
+.yotpo-custom-tag{
+  width:100%;
+  max-width:1200px;
+  margin:0 auto;
+}
+.ytp-chrome-top.ytp-show-cards-title{
+  display: none !important;
+}
+@media(max-width:768px){
+  .videoiframe{
+    height:180px;
+  }
+}
+</style>
+{%- for block in section.blocks -%}
+    {%- if block.settings.enabled -%}
+  {%- case block.type -%}
+    {%- when 'images' -%}
+        {% comment %} TAG允许输入多个 by Alice 2019-3-29 {% endcomment %}
+        {% assign tag_flag = 0 %}
+		{% assign productTags = product.tags | join:',' %}
+        {% if block.settings.judgmentText contains ',' %}
+          {% assign tag_list = block.settings.judgmentText | split: ',' %}
+          {% for tag_item in tag_list %}		
+            {% assign tag_item_rep = tag_item | strip  %}
+            {% if productTags contains tag_item_rep %}
+              {% assign tag_flag = 2 %}
+              {% break %}
+            {% endif %}
+          {% endfor %}
+        {% else %}
+          {% assign info_tag_val = block.settings.judgmentText | strip  %}
+          {% if productTags contains info_tag_val %}
+            {% assign tag_flag = 2 %}
+          {% endif%}
+        {% endif %}
+
+        {% if tag_flag > 1 %}
+		  <div class="elements-item elements-item-{{block.type}} {%- unless block.settings.screen == true -%} page-width{% endunless %}">
+            <img class="lazyload small--hide" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ block.settings.image_pc | img_url:'master' }}" alt="{{ block.settings.image_pc.alt | escape }}">
+            <img class="lazyload medium-up--hide" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ block.settings.image_mb | img_url:'750x' }}" alt="{{ block.settings.image_mb.alt | escape }}">
+		  </div>
+        {% endif %}
+	    {%- when 'html' -%}
+          {%- include 'func-verify_rules',detail: product -%}
+          {% assign productTags = product.tags | join:',' %}
+          {% if productTags contains block.settings.judgmentText %}   
+              <div class="elements-item elements-item-{{block.type}} {%- unless block.settings.screen == true -%} page-width{% endunless %}">
+                {% if block.settings.video_url == blank %}
+                    <iframe id="ifm" class="videoiframe" src="//www.youtube.com/embed/_9VUPq3SxOc?rel=0&showinfo=0&vq=720" width="100%" height="480" frameborder="0" allowfullscreen></iframe>
+                {% else %}
+                  {% if block.settings.video_url.type == "youtube" %}
+                      <iframe id="ifm" class="videoiframe" src="//www.youtube.com/embed/{{ block.settings.video_url.id }}?rel=0&showinfo=0&vq=720" width="100%" height="480" frameborder="0" allowfullscreen></iframe>
+                  {% endif %}
+                  {% if block.settings.video_url.type == "vimeo" %}
+                      <iframe id="ifm" class="videoiframe" src="//player.vimeo.com/video/{{ block.settings.video_url.id }}?byline=0&portrait=0&badge=0" width="100%" height="480" frameborder="0" allowfullscreen></iframe>
+                  {% endif %}
+                {% endif %}
+              </div>
+			{% endif %}
+         {%- endcase -%}	
+    {%- endif -%}
+{%- endfor -%}
+<div class="yotpo-custom-tag">
+  <div class="yotpo yotpo-main-widget" data-product-id="{{ product.selected_or_first_available_variant.sku }}"></div>
+</div>
+{%- for block in section.blocks -%}
+    {%- if block.settings.enabled -%}
+    {%- include 'func-verify_rules',detail: product -%}
+    {% assign productTags = product.tags | join:',' %}
+    {% if productTags contains block.settings.judgmentText %}   
+		<div class="elements-item elements-item-{{block.type}} {%- unless block.settings.screen == true -%} page-width{% endunless %}">
+            {%- case block.type -%}
+                {%- when 'bottomImages' -%}
+          		<a href="{{block.settings.link}}">
+                  <img class="lazyload small--hide" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ block.settings.image_pc | img_url:'master' }}" alt="{{ block.settings.image_pc.alt | escape }}">
+                  <img class="lazyload medium-up--hide" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ block.settings.image_mb | img_url:'master' }}" alt="{{ block.settings.image_mb.alt | escape }}">
+	            </a>
+            {%- endcase -%}
+        </div>
+	
+	{% endif %}
+    {%- endif -%}
+{%- endfor -%}
+{% schema %}
+{
+  "name": "产品页 - 详情元素",
+  "class": "product-page-elements-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content":"product-page-elements"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "html",
+      "name": "视频",
+      "settings": [
+		{
+          "type":"text",
+          "id":"title",
+          "label":"标题"
+        },
+        {
+          "type":"checkbox",
+          "id":"enabled",
+          "label":"开启",
+          "default":true
+        },
+        {
+          "type":"checkbox",
+          "id":"screen",
+          "label":"通栏",
+          "default":true
+        },
+        {
+          "type": "text",
+          "id": "judgmentText",
+          "label": "标签内容"
+        },
+        {
+          "type": "video_url",
+          "id": "video_url",
+          "label": "YouTube or Vimeo link",
+          "accept": ["youtube", "vimeo"],
+          "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+        }
+      ]
+    },
+    {
+      "type": "images",
+      "name": "图片",
+      "settings": [
+          {
+            "type":"text",
+            "id":"title",
+            "label":"标题"
+          },
+          {
+            "type":"checkbox",
+            "id":"enabled",
+            "label":"开启",
+            "default":true
+          },
+          {
+            "type":"checkbox",
+            "id":"screen",
+            "label":"通栏",
+            "default":true
+          },
+          {
+            "type": "image_picker",
+            "id": "image_pc",
+            "label": "PC图"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_mb",
+            "label": "MB图"
+          },
+          {
+            "type": "text",
+            "id": "judgmentText",
+            "label": "标签内容"
+          }
+      ]
+    },
+    {
+      "type": "bottomImages",
+      "name": "评论下方图片",
+      "settings": [
+        {
+          "type":"text",
+          "id":"title",
+          "label":"标题"
+        },
+        {
+          "type":"checkbox",
+          "id":"enabled",
+          "label":"开启",
+          "default":true
+        },
+        {
+          "type":"checkbox",
+          "id":"screen",
+          "label":"通栏",
+          "default":true
+        },
+        {
+          "type": "image_picker",
+          "id": "image_pc",
+          "label": "PC图"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mb",
+          "label": "MB图"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "图片链接"
+        },
+        {
+          "type": "text",
+          "id": "judgmentText",
+          "label": "标签内容"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

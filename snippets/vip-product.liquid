@@ -1,0 +1,133 @@
+{% comment %} 增加vip勾选功能 2020.05.19 by anna{% endcomment %}
+{% assign vipButton = false %}
+{% assign vipTitle = 'Do-Lt-Yourself Gift Kit' %}
+{% for block in section.blocks %}
+  {% if block.type =='vip_product' %}
+    {% if productTags contains block.settings.box_tag %}
+      {%- assign product_vip = all_products[block.settings.product] -%} 
+      {%- assign vipfirstVariant = product_vip.first_available_variant -%}
+      {% assign vipButton = true %}
+      {% assign vipTitle = block.settings.title%}
+	  {% assign vipDesc = block.settings.desc%}
+	  {% assign isLink = block.settings.is_link%}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+{% if vipButton == true %}
+<style>
+  .product-vip-gift-box-div{
+  	margin-top: 10px;
+  }
+  .product-vip-gift-box {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: left;
+    /*margin-bottom: 1rem;*/
+  }
+  .product-vip-gift-box .product-black-gift-box-input {
+    margin-right: 16px;
+  }
+  .product-vip-gift-box .mini-cart__product-image {
+    width: 100px;
+    display: block;
+    margin-right: 16px;
+  }
+  .product-vip-gift-box-label{
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    margin-bottom:0px;
+  }
+  .product-vip-gift-box-label img{
+  	width: 100px;
+    margin-right: 16px;
+  }
+  .product-vip-gift-box-desc{
+    line-height: 1;
+    font-size: 12px;
+    color: #848484;
+    display: inline-block;
+    font-weight: bold;
+    margin-top: 6px;
+  }
+</style>
+<div class="product-vip-gift-box-div">
+  <div class="product-vip-gift-box">
+    <div class="product-vip-gift-box-input">
+      <input type="checkbox" id="vipBox" value="{{vipfirstVariant.id}}" style="margin-right:10px;width:auto;">
+      <input type="text" id="VIPService" name="properties[VIPService]" value="" style="display:none" />
+    </div>
+    {% if isLink == true %}
+      <a href="{{ product_vip.url }}" class="mini-cart__product-image">
+        <img class="lazyloaded" src="{{ product_vip.featured_image | img_url: 'medium' }}" alt="">
+      </a>
+      <label for="vipBox" class="product-vip-gift-box-label">{{vipTitle}}</label>	
+    {% else %}
+      <label for="vipBox" class="product-vip-gift-box-label">
+        <img class="lazyloaded" src="{{ product_vip.featured_image | img_url: 'medium' }}" alt="">
+        <div>
+        <span>{{vipTitle}}</span>
+        <div class="product-vip-gift-box-desc">{{vipDesc}}</div>
+        </div>
+      </label>	
+    {% endif %}
+  </div>
+  
+</div>
+<script>
+  $('#vipBox').change(function(){
+    if($(this).is(':checked') || $('#giftBox').is(':checked') == true){
+      $('.copyshopify-payment-button__button').hide();
+      $('#VIPService').val('VIP Service');
+    }else{
+      $('.copyshopify-payment-button__button').show();
+      $('#VIPService').val("");
+    }
+  })
+  
+  function cateTempVip(){
+    var t = jQuery('[name="id"]').val();
+    document.querySelectorAll("[name^='properties[']").forEach(function(e,item){
+      var n = "radio" !== e.type || e.checked;
+      "properties[_tempVip]" != e.name && "" != e.value && n && (t += e.name + ":" + e.value + ",")
+    })
+    var e, n, r, i = 0;                
+    for (e = 0, r = t.length; e < r; e++){
+      n = t.charCodeAt(e),
+        i = (i << 5) - i + n,
+        i |= 0;  
+    }
+    return i;
+  }
+  
+  function cateTempVipHtml(){
+    if($('.temp-vip').length>0){
+      $('.temp-vip').remove();
+    }
+    var catetempvip = cateTempVip();
+    var html = "<div class='temp-vip'>";
+    html += "<input name='properties[_tempVip]' type='hidden' value="+ catetempvip +">";
+    html += "</div>";
+    $('.product-vip-gift-box-input').after(html);
+  }
+  
+  function boxAddToCart(){
+    var tempvip = cateTempVip();
+    var data = {id: $('#vipBox').val(), quantity: 1, "properties[_tempVip]":tempvip, mask:'body', refresh:true};
+    $.ajax({
+      type: 'POST',
+      async: false,  
+      url: '/cart/add.js',
+      data,
+      dataType: 'json',
+      context: this,
+      success: function(boxItem) {},
+      error: function(XMLHttpRequest, textStatus){
+        console.log('vip product to cart error');
+      }
+    });
+  }
+</script>
+{% endif %}

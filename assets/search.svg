@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="23px" height="23px" viewBox="0 0 23 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon/search</title>
+    <g id="控件" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="search-container" transform="translate(-49.000000, -21.000000)">
+            <g id="icon/search" transform="translate(42.000000, 14.000000)">
+                <g id="编组-2">
+                    <rect id="矩形" x="0" y="0" width="36" height="36"></rect>
+                    <circle id="椭圆形" cx="18" cy="18" r="18"></circle>
+                </g>
+                <circle id="椭圆形" stroke="#928FA5" stroke-width="2" cx="17" cy="17" r="9"></circle>
+                <path d="M26,22 C26.5522847,22 27,22.4477153 27,23 L27,29 C27,29.5522847 26.5522847,30 26,30 C25.4477153,30 25,29.5522847 25,29 L25,23 C25,22.4477153 25.4477153,22 26,22 Z" id="路径" fill="#928FA5" fill-rule="nonzero" transform="translate(26.000000, 26.000000) scale(-1, 1) rotate(45.000000) translate(-26.000000, -26.000000) "></path>
+            </g>
+        </g>
+    </g>
+</svg>

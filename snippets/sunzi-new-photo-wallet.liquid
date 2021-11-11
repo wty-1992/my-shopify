@@ -1,0 +1,151 @@
+{% comment %}
+** @name 照片剪影 **
+** @version 1.0.1 **
+** @author 黄创业 **
+** @integrate 黄创业 **
+{% endcomment %}
+
+{% comment %} 引入公共插槽v2.0 {% endcomment %}
+{% include 'sunzi-slot-template-2' %}
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'photo-wallet-v1.0.1.js' %}
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/new-photo-wallet.json' %}
+
+{% comment %} 变体 {% endcomment %}
+{% comment %} 刻字变体 {% endcomment %}
+{% assign variantCarving = 0 %}
+
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+  .insurance-info{
+  	display:none !important;
+  }
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 标记订单来源 {% endcomment %}
+  <input type="hidden" name="properties[_from]" value="sunzi-photo-wallet" />
+  
+  
+  {% comment %} 额外的表单参数 {% endcomment %}
+  
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="text" id="sunzi-input" name="properties[customInfo]" required="required"></input>
+  <input type="hidden" id="sunzi-cart" name="properties[_sunzi_cart]" />
+
+  {% comment %} 定制按钮 {% endcomment %}
+  <div class="sunzi-form-content">
+    <div id="sunzi-node">
+      <div class="sunzi-node-loading">
+        <span class="dots">
+          <i></i>
+          <i></i>
+          <i></i>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- sunzi core js -->
+<script crossorigin src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{ coreJs }}" defer="defer"></script>
+
+{% comment %} 渲染前执行 {% endcomment %}
+<script defer="async">
+</script>
+
+{% comment %} 2.请求定制化数据 & 渲染 {% endcomment %}
+<script defer="async">
+  _sunzi_request('{{ requestURL }}', function(data) {
+    //切换变体为未加价
+    _sunzi_variant_change({{variantCarving}}, 0);
+    var curproduct = getCurProduct();
+  	var photoWalletData = data.photoWalletData.find(item => item.skus.indexOf(curproduct.sku) > -1);
+    PhotoWallet.render(
+      PhotoWallet.default,
+      {
+        shop: _sunzi_global_data.shop,
+        photoWalletData,
+		price: curproduct.price / 100,
+        lineTextPrice: getAddPrice({{variantCarving}}),
+        async onConfirm(output) {
+    	  console.log(output);
+          // 唤醒loading
+          _sunzi_loading();
+
+          // 组装加车参数
+          var param = {
+            '_sunzi_source': output.userImage.source,
+            '_sunzi_effect': output.previewImage.front,
+            '_sunzi_compose': [{
+               'rule': 27,
+               'data': output
+             }],
+          };
+
+          // 加车队列
+          var _queue = [];
+    
+          // 如果存在刻字
+          if (output.lineText) {
+            param['_sunzi_text'] = {
+              value: output.lineText.data.text,
+              font: output.lineText.data.font.name,
+              fontSize: output.lineText.data.fontSize,
+            };
+            param['_sunzi_text_effect'] = output.previewImage.back;
+            
+            //使用切换变体实现
+            _sunzi_variant_change({{variantCarving}}, 1);
+          }
+          
+          $('#sunzi-input').val(JSON.stringify(param));
+          $('#sunzi-cart').val(JSON.stringify({
+            image: [ output.previewImage.front ]
+          }));
+          
+//           _queue.push(_sunzi_add_cart(undefined, 1, function() {}));
+         
+          // 加车事件触发
+          await Promise.all(_queue);
+      	  // 由于主产品涉及vip/质保产品等额外加车事件的判断，因此沿用站点加车方法  
+          Product.addFormToCart($('.product-form'), function() {
+            // 重置变体
+            _sunzi_variant_change({{variantCarving}}, 0);
+          })
+      	  // 隐藏loading
+      	  $('#sunzi-loading').hide();
+        }
+      },
+      _matomoId,
+      document.getElementById("sunzi-node")
+    );
+  });
+
+  /** 其他自定义函数 start **/
+  // 获取加价
+  function getAddPrice(variantIndex) {
+    var addPrice = 0;
+    var curProduct = getCurProduct();
+    var productJSON = {{product | json}};
+    var compareProduct = productJSON.variants.find(variant => {
+      return curProduct.options.every((option, index) => {
+        if(index == variantIndex) {
+          return variant.options[index] !== option;
+        } else {
+          return variant.options[index] == option; 
+        }
+      });
+    });
+
+    if(compareProduct) {
+      price = (curProduct.price - compareProduct.price) / 100;
+      addPrice = Math.abs(price.toFixed(2));
+    }
+    return addPrice;
+  }
+  /** 其他自定义函数 end **/
+</script>

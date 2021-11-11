@@ -1,0 +1,153 @@
+{% comment %}
+** @name 三阶魔方**
+** @author laozien **
+** @integrate laozien **
+{% endcomment %}
+
+{% comment %} 调用参数 {% endcomment %}
+
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'sunzi.multi.photo.js' %}
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign requestURL = '' %}
+
+{% comment %} 站点语种 {% endcomment %}
+{% assign sunzi_shop_language = section.settings.sunzi_shop_language %}
+{% comment %} 货币符号 {% endcomment %}
+{% assign sunzi_shop_symbol = section.settings.sunzi_shop_symbol %}
+
+{% comment %} 孙子定制化模板 {% endcomment %}
+{% include 'sunzi-solt-template' %}
+
+{% comment %} 谷歌分析id {% endcomment %}
+{% assign gtag = '' %}
+
+{% comment %} 定制按钮文案 {% endcomment %}
+{% assign sunzi_button_text = section.settings.sunzi_button_upload_text %}
+
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+  .view-size-quantity,
+  .common-standar_btn {
+  	display: none;
+  }
+  .sunzi-variant .sunzi-variant-item {
+    padding-bottom: 8px;
+  }
+  .sunzi-variant .sunzi-variant-item input[type=checkbox]{
+    width: 14px;
+    height: 14px;
+  }
+  .sunzi-variant .sunzi-variant-item label{
+    display: inline-block;
+    font-style: normal;
+    font-weight: 400;
+    padding-left: 8px;
+    font-size: 14px;
+    line-height: 14px;
+  }
+  .sunzi-variant .sunzi-variant-item small {
+    display: block;
+    font-style: italic;
+    color: #848484;
+  }
+  #sunzi-input-crop{
+  	display:none
+  }
+  
+  @media screen and (min-width: 768px) {
+    .sunzi-modal-content {
+       max-width: 500px;
+       height: 680px;
+    }
+  }
+
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 额外的表单参数 {% endcomment %}
+  <input type="hidden" id="sunzi-input-crop" name="properties[multi_crop]" required="required" >
+  <input type="hidden" id="sunzi-input-images" name="properties[multi_images]" required="required" >
+  {% comment %} 默认表单参数 {% endcomment %}
+<!--   <input type="text" id="sunzi-input" name="properties[customInfo]" required="required"></input>
+  <input type="text" id="sunzi-cart" name="properties[_sunzi_cart]"></input> -->
+  
+  {% comment %} 定制按钮 {% endcomment %}
+  <button type="button" id="sunzi-button" disabled class="dots-loading">
+    <span class="dots">
+      <i></i>
+      <i></i>
+      <i></i>
+    </span>
+    <div class="sunzi-button-text">{{ sunzi_button_text }}</div>
+  </button>
+</div>
+
+<!-- sunzi core js -->
+<script src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{ coreJs }}" defer="defer"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ gtag }}" async="async"></script>
+<script async="async">
+  _sunzi_gtag('{{ gtag }}');
+</script>
+
+{% comment %} 1.隐藏掉变体，加车按钮等等 {% endcomment %}
+<script defer="defer">
+  $('.product-form__controls-group').hide()
+ 
+</script>
+
+{% comment %} 2.请求定制化数据 {% endcomment %}
+<script defer="defer">
+  _sunzi_request("{{requestURL}}");
+</script>
+
+{% comment %} 3.开始定制 {% endcomment %}
+<script defer="defer">
+    var imageList = Array.from({ length: 6 }).map(function() { return { width: 500, height: 500 }  })
+  $('#sunzi-button').click( async function() {
+   
+        // 定制之前的参数构建
+        _sunzi_response.handleType = 'cropper';
+        _sunzi_response.sources = [],
+        _sunzi_response.imageList = imageList;
+        _sunzi_response.supportSort = true;
+        _sunzi_response.needCompose = true;
+        _sunzi_response.shop = {
+          language: '{{sunzi_shop_language}}',
+          currencySymbol: '{{sunzi_shop_symbol}}',
+        };
+    // 开始渲染
+        _sunzi_custom(
+          MultiPhoto.ThreeCube,
+          function(result, compose) {
+            _sunzi_loading();
+              var images = {};
+              result.forEach((item, index) => {
+                images[index] = { src: item.handle  };
+              });
+            $('#sunzi-input-images').val(JSON.stringify(images));
+            $('#sunzi-input-crop').val(compose);
+            //加车事件触发
+        	$('.product-form__cart-submit').click();
+            _sunzi_hide_loading();
+          },
+          function() {
+          	$("#sunzi-button-input").val("");
+      	  }
+        );
+      });
+  
+  /** 其他自定义函数 start **/
+     function fileToBase64 (img) {
+      return new Promise(function (resolve, reject) {
+        const reader = new FileReader()
+        reader.addEventListener('load', () => resolve(reader.result))
+        reader.readAsDataURL(img)
+      })
+    }
+
+  /** 其他自定义函数 end **/
+</script>

@@ -1,0 +1,878 @@
+
+<style>
+.happy-customers-say-box{
+  width:100%;
+  padding:0 0 30px;
+}
+.happy-customers-say-box .banner_title{
+  text-align: center;
+}
+.happy-customers-say-box .banner_title span{
+  font-size: 43px;
+  padding: 60px 0;
+  display: block;
+  color: #000;
+  font-family: OpenSans-Light;
+}
+.happy-customers-say-box .customers-say-view{
+  display: flex;
+  flex-flow: column wrap;
+  align-content: space-between;
+  height: 1960px;
+  border-radius: 3px;
+  width: 100%;
+  counter-reset: items;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+.happy-customers-say-box .big_title{    
+  font-size: 43px;
+  padding: 60px 0;
+  display: block;
+  color: #000;
+  text-align:center;
+}
+.happy-customers-say-box .customer-items{
+  width: 19%;
+  position: relative;
+  margin-bottom: 20px;
+  border-radius: 3px;
+  color: #000;
+  box-sizing: border-box;
+  word-break: break-all;
+  background: #f8f8f8;
+  cursor: pointer;
+}
+.happy-customers-say-box .customers-images img,.happy-customers-say-box .customers-start img{width:100%;}
+.happy-customers-say-box .customers-tittle{
+  display: flex;
+  padding: 12px 0 5px 0;
+  font-size: 18px;
+  align-items:center;
+}
+.happy-customers-say-box .customers-start{max-width:75px;}
+.happy-customers-say-box .customers-content{
+  margin-top: 0px;
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: 1;
+}
+.happy-customers-say-box .customers-international{
+  padding: 0 16px;
+}
+.happy-customers-say-box .customers-product{
+  display: flex;
+  border: 1px solid #e5e5e5;
+  background: #fff;
+  margin-top: 20px;
+  padding: 18px 10px;
+}
+ .happy-customers-say-box .customers-product a{
+  display: flex;
+  align-items: center;
+}
+.customers-modal-layout {
+  padding-left: 8px;
+  line-height: 1.2;
+}
+.happy-customers-say-box .customers-product span{
+  font-size: 0.8rem;
+  margin-left: 10px;
+}
+.customers-product img{
+  height:70px;
+}
+.happy-customers-say-box .circle-right {
+  width: 18px;
+  height: 18px;
+  border-radius: 18px;
+  background: #3085c7;
+  display: block;
+  position: relative;
+  margin-left: 10px;
+  margin-top: 0;
+}
+.happy-customers-say-box .circle-right:before, .happy-customers-say-box .circle-right::after {
+  content: "";
+  height: 8px;
+  width: 1px;
+  border-radius: 10px;
+  display: block;
+  background: white;
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+}
+.happy-customers-say-box .circle-right::before {
+  height: 4px;
+  transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  position: absolute;
+  top: 8px;
+  left: 6px;
+}
+.happy-customers-say-box .review-close-new,.happy-customers-say-box .desgin-bt{
+  display:none;
+}
+.cpinterest-review-modal .tingle-modal__close{
+  display:none;
+}
+.cpinterest-review-modal .tingle-modal-box .review-close-new{
+  position: absolute;
+  right: 10px;
+  top: 0px;
+  z-index: 1;
+}
+.cpinterest-review-modal .tingle-modal-box .review-close-new i{
+  font-size: 30px;
+  color: #000;
+}
+.cpinterest-review-modal .tingle-modal-box__content{
+  display: flex;
+}
+.cpinterest-review-modal .customers-images{
+  width: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.cpinterest-review-modal .content-right{
+  width:calc(100% - 500px);
+  color:#000;
+  position: relative;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+}
+.cpinterest-review-modal.tingle-modal--visible .tingle-modal-box{
+  max-width: 800px;
+  border-radius:0px;
+}
+.cpinterest-review-modal .customers-international{
+  padding: 15px 20px;
+}
+.cpinterest-review-modal .customers-tittle{
+  font-size:24px;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+}
+.cpinterest-review-modal .circle-right{
+  width: 18px;
+  height: 18px;
+  border-radius: 18px;
+  background: #3085c7;
+  display: block;
+  position: relative;
+  margin-left: 10px;
+  margin-top: 0;
+}
+.cpinterest-review-modal .circle-right:before,.cpinterest-review-modal .circle-right:after{
+  content: "";
+  height: 8px;
+  width: 1px;
+  border-radius: 10px;
+  display: block;
+  background: white;
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+}
+.cpinterest-review-modal .circle-right:before{
+  height: 4px;
+  transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  position: absolute;
+  top: 8px;
+  left: 6px;
+}
+.cpinterest-review-modal .customers-start{
+  margin: 10px 0 4px;
+}
+.cpinterest-review-modal .customers-start img{
+  width: 75px;
+}
+.cpinterest-review-modal .customers-product{
+  width: 100%;  
+  padding: 20px;
+  border-top: 1px solid #e5e5e5;
+}
+.cpinterest-review-modal .customers-content{
+  max-height: 350px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.cpinterest-review-modal .customers-content::-webkit-scrollbar {/*滚动条整体样式*/
+  width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
+  height: 1px;
+}
+.cpinterest-review-modal .customers-content::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+  border-radius: 10px;
+   -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+  background: #e4e4e4;
+}
+.cpinterest-review-modal .customers-content::-webkit-scrollbar-track {/*滚动条里面轨道*/
+  -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  background: #fafafa;
+}  
+.cpinterest-review-modal .customers-product a{
+  display: flex;
+  align-items: center;
+}
+.cpinterest-review-modal .customers-modal-layout{
+  display: flex;
+  padding: 0 10px;
+  flex-flow: wrap;
+}
+.cpinterest-review-modal .customers-modal-layout span{
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.1;
+  margin-bottom: 10px;
+  font-family: OpenSans;
+  letter-spacing: 0.5px;
+  width:100%;
+}
+.cpinterest-review-modal .customers-modal-layout .desgin-bt{
+  background: #e9034d;
+  border: none;
+  padding: 7px 16px;
+  color: #fff;
+  font-size: 12px;
+}
+.morebtn{
+  text-align: center;
+  margin: 20px 0;
+}
+.morebtn .viewmore{
+  padding: 10px 20px;
+  background: #000;
+  border-radius: 20px;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+}
+.customers-say-view .item.break{
+  flex-basis: 100%;
+  width: 0;
+  margin: 0;
+  content: "";
+  padding: 0;
+}
+.banner_bg_top .pc_banner{width:100%;}
+.banner_bg_top .mb_banner{width:100%;display:none;}
+@media(min-width:768px){
+.customers-say-view .customer-items:nth-of-type(5n+1) { order: 1; }
+.customers-say-view .customer-items:nth-of-type(5n+2) { order: 2; }
+.customers-say-view .customer-items:nth-of-type(5n+3) { order: 3; }
+.customers-say-view .customer-items:nth-of-type(5n+4) { order: 4; }
+.customers-say-view .customer-items:nth-of-type(5n)   { order: 5; }
+}
+@media screen and (max-width: 768px){
+  .happy-customers-say-box .customer-items{
+    width: 48.5%;
+    margin-bottom: 10px;
+  }
+  .banner_bg_top .pc_banner{display:none;}
+  .banner_bg_top .mb_banner{display:block;}
+  .customers-say-view .customer-items:nth-of-type(2n+1){
+    order: 1;
+    margin-right: 2px;
+  }
+  .customers-say-view .customer-items:nth-of-type(2n+2){
+    order: 2;
+    margin-left: 2px;
+  }
+  .happy-customers-say-box .customers-say-view{
+    width:100%;
+    max-width:100%;
+  }
+   .happy-customers-say-box .big_title{    
+    font-size: 21px;
+    padding: 30px 0
+  }
+  .happy-customers-say-box .banner_title{
+    padding-bottom: 10px;
+  }
+  .happy-customers-say-box .banner_title span{
+    padding: 30px 0;
+    font-size: 21px;
+  }
+  
+  .happy-customers-say-box .banner_title{
+    padding-bottom: 10px;
+  }
+  .happy-customers-say-box .customers-tittle{
+    font-size: 16px;
+  }
+  .happy-customers-say-box .customers-tittle{
+    padding: 8px 0 6px 0;
+  }
+  .happy-customers-say-box .customers-content{
+    margin-top: 2px;
+    font-size: 13px;
+  }
+  .happy-customers-say-box .customers-international{
+    padding: 0 10px;
+  }
+  .happy-customers-say-box .big_title{    
+    font-size: 21px;
+    padding: 30px 0
+  }
+  .happy-customers-say-box .customers-product{
+    padding: 10px;
+  }
+  .happy-customers-say-box .customers-product span{            
+    word-break: break-all;
+    display: block;
+    line-height: 1.1;
+    color:#000;
+  }
+  .content-right{
+    font-family: ProximaNova-Regular;
+  }
+  .cpinterest-review-modal .tingle-modal-box .review-close-new{
+    right: 0;
+    width: 100%;
+    text-align: right;
+    padding: 5px 10px;
+    background: #fff;
+  }
+  .cpinterest-review-modal .tingle-modal-box__content{
+    padding: 55px 0;
+    flex-flow: column;
+    align-items: center;
+  }
+  .cpinterest-review-modal .customers-images{
+    width:100%;
+  }
+  .cpinterest-review-modal .content-right{
+    width:100%;
+    overflow: visible;
+  }
+  .cpinterest-review-modal .customers-product{
+    border-top: none;
+  }
+  .cpinterest-review-modal .customers-product a{
+    border: 1px solid #e5e5e5;
+    padding: 18px 10px;
+  }
+  .cpinterest-review-modal .customers-content{
+    max-height: unset;
+    overflow: visible;
+    font-size: 14px;
+    line-height: 1.2;
+  }
+  .customers-product img{
+    height:55px;
+  }
+}
+
+</style>
+<div class="banner_bg_top">
+  {% if section.settings.pc_banner %}
+  	<img src="{{section.settings.pc_banner  | img_url: 'master' }}" class="pc_banner" />
+  {% endif %}
+  {% if section.settings.mb_banner %}
+  	<img src="{{section.settings.mb_banner  | img_url: 'master' }}" class="mb_banner" />
+  {% endif %}
+</div>
+<div class="happy-customers-say-box">
+  <div class="banner_title">
+    <span>{{section.settings.titile_a}}</span>
+  </div>
+    <ul class="customers-say-view">
+      {% comment %}
+    {% for block in section.blocks %}
+      <li class="customer-items">
+        <div class="review-close-new"><i class="photofont icon photo-close"></i></div>
+        <div class="customers-images">
+          {% if block.settings.section_image  %}
+          <img src="{{block.settings.section_image  | img_url: 'master' }}">
+          {% endif %}
+        </div>
+        <div class="content-right">        
+          <div class="customers-international">
+            <div class="customers-tittle">
+              {{block.settings.titile_content}}
+              <span class="circle-right"></span>
+            </div>
+            <div class="customers-start">
+              <img src="{{section.settings.start_images  | img_url: 'master' }}">
+            </div>
+            <div class="customers-content">
+               {{block.settings.section_content}}
+            </div>
+          </div>
+          <div class="customers-product">
+            <a href="{{block.settings.product_link}}">
+              <img src="{{block.settings.product_img  | img_url: '50x50'}}">
+              <div class="customers-modal-layout">
+                <span>{{block.settings.product_text}}</span>
+                <button type="button" class="desgin-bt">{{ 'general.social.design_now' |t }}</button>
+              </div>
+            </a>
+          </div>
+        </div>
+      </li>
+    {% endfor %}
+      <span class="item break noe"></span>
+      <span class="item break"></span>
+      <span class="item break"></span>
+      <span class="item break"></span>
+      {% endcomment %}      
+    </ul>
+  <div class="morebtn"><span class="viewmore">{{ 'general.social.Show_More_Reviews' |t }}</span></div>
+</div>
+  <script>
+    var customerJson =[];
+  </script>
+{% for block in section.blocks %}
+  <script>
+    customerJson[{{forloop.index}}] = {
+      img:`{{block.settings.section_image  | img_url: 'master' }}`, 
+      name:`{{block.settings.titile_content}}`,
+      content:`{{block.settings.section_content}}`,
+      productLink:`{{block.settings.product_link}}`,
+      productImg:`{{block.settings.product_img  | img_url: 'master'}}`,
+      productText:`{{block.settings.product_text}}`
+    };
+  </script>
+{% endfor %}
+<script>  
+$(function(){
+  var imgReady = (function () {
+    var list = [], intervalId = null,    
+    // 用来执行队列    
+    tick = function () {
+      var i = 0;
+        for(; i < list.length; i++) {
+          list[i].end ? list.splice(i--, 1) : list[i]();
+        };
+      !list.length && stop();
+    },
+    // 停止所有定时器队列    
+    stop = function () {
+      clearInterval(intervalId);
+      intervalId = null;
+    };
+    return function (url, ready, load, error) {
+      var onready, width, height, newWidth, newHeight,    
+      img = new Image(); 
+      img.src = url;    
+      // 如果图片被缓存，则直接返回缓存数据    
+      if (img.complete) {    
+        ready.call(img);    
+        load && load.call(img);    
+        return;    
+      };    
+      width = img.width;    
+      height = img.height;    
+      // 加载错误后的事件    
+      img.onerror = function () {    
+        error && error.call(img);    
+        onready.end = true;    
+        img = img.onload = img.onerror = null;    
+      };    
+      // 图片尺寸就绪    
+      onready = function () {    
+        newWidth = img.width;    
+        newHeight = img.height;    
+        if (newWidth !== width || newHeight !== height ||    
+          // 如果图片已经在其他地方加载可使用面积检测    
+          newWidth * newHeight > 1024    
+        ){    
+          ready.call(img);    
+          onready.end = true;    
+        };    
+      };    
+      onready();    
+      // 完全加载完毕的事件    
+      img.onload = function () {    
+        // onload在定时器时间差范围内可能比onready快    
+        // 这里进行检查并保证onready优先执行    
+        !onready.end && onready();    
+        load && load.call(img);    
+        // IE gif动画会循环执行onload，置空onload即可    
+        img = img.onload = img.onerror = null;    
+      };    
+      // 加入队列中定期执行    
+      if (!onready.end) {    
+        list.push(onready);    
+        // 无论何时只允许出现一个定时器，减少浏览器性能损耗    
+        if (intervalId === null) intervalId = setInterval(tick, 20);    
+      };    
+    };    
+  })();
+  var view=20;
+  var count =20;
+  var countnum =1;
+  var countIndex =0;
+  customerJson.map(function(item,index){
+    if(index<=view){
+      let customerHtml = `
+      <li class="customer-items record`+(countnum++)+`" style="display:none;">
+        <div class="review-close-new"><i class="photofont icon photo-close"></i></div>
+        <div class="customers-images">          
+		<img data-src="`+item.img+`">          
+        </div>
+        <div class="content-right">        
+          <div class="customers-international">
+            <div class="customers-tittle">
+              `+item.name+`
+              <span class="circle-right"></span>
+            </div>
+            <div class="customers-start">
+              <img src="{{section.settings.start_images  | img_url: 'master' }}">
+            </div>
+            <div class="customers-content">
+               `+item.content +`
+            </div>
+          </div>
+          <div class="customers-product">
+            <a href="`+item.productLink+`">
+              <img src="`+item.productImg+`">
+              <div class="customers-modal-layout">
+                <span>`+item.productText+`</span>
+                <button type="button" class="desgin-bt">{{ 'general.social.design_now' |t }}</button>
+              </div>
+            </a>
+          </div>
+        </div>
+      </li>`;
+    $(".customers-say-view").append(customerHtml);
+    }  
+  });  
+  
+  if($(window).width() > 768){
+    $(".customers-say-view").append(`<span class="customer-items item break one"></span><span class="customer-items item break"></span><span class="customer-items item break"></span><span class="customer-items item break"></span>`);
+    var one = 0;
+    var two = 0;
+    var three = 0;
+    var foure = 0;
+    var five = 0;
+    var theight = 0;
+    function loadHeight(obj,index){
+        //var newHeight = jQuery(obj).height();console.log(newHeight);
+        var newHeight = obj;
+        if(index%5 == 1){  
+            one += newHeight;
+            theight = (one > theight) ? one : theight;                   
+        }
+        if(index%5 == 2){
+            two += newHeight;
+            theight = (two > theight) ? two : theight;              
+        }
+        if(index%5 == 3){
+            three += newHeight;
+            theight = (three > theight) ? three : theight;
+        }
+        if(index%5 == 4){
+            foure += newHeight;
+            theight = (foure > theight) ? foure : theight;                    
+        }
+        if(index%5 == 0){
+            five += newHeight;
+            theight = (five > theight) ? five : theight;                   
+        }    	
+        jQuery('.customers-say-view').height(theight);
+    }
+    function appendHeight(obj,index){
+      //var newHeight = jQuery(obj).parents('.data-item').height();console.log(newHeight);
+      var newHeight = jQuery(obj).fadeIn(500).height();
+      if(index%5 == 1){
+        one += newHeight + 20;
+        theight = (one > theight) ? one : theight;
+      }
+      if(index%5 == 2){
+        two += newHeight + 20;
+        theight = (two > theight) ? two : theight;
+      }
+      if(index%5 == 3){
+        three += newHeight + 20;
+        theight = (three > theight) ? three : theight;
+      }
+      if(index%5 == 4){
+        foure += newHeight + 20;
+        theight = (foure > theight) ? foure : theight;
+      }
+      if(index%5 == 0){
+        five += newHeight + 20;
+        theight = (five > theight) ? five : theight;
+      }
+      jQuery('.customers-say-view').height(theight);
+    };
+    $('li.customer-items').each(function(index, item){
+      appendHeight(this,index+1);
+      var itemWidth = jQuery(this).width();
+      var itemImg = jQuery(this).find('.customers-images img');
+      var imgsrc = jQuery(this).find('.customers-images img').attr('data-src');
+      imgReady(imgsrc, function(){        
+        var imgHeight = Math.round((itemWidth/this.width)*this.height);    
+        loadHeight(imgHeight, index+1);
+        itemImg.attr('src',imgsrc);
+      });
+      
+    }); 
+    $(".viewmore").on("click",function(){
+      countIndex = (countnum-1);
+      customerJson.map(function(item,index){
+        if(index>countIndex && index<=(countIndex+count)){
+          let customerHtml = `
+            <li class="customer-items new record`+(countnum++)+`" style="display:none;">
+              <div class="review-close-new"><i class="photofont icon photo-close"></i></div>
+              <div class="customers-images">          
+              <img data-src="`+item.img+`">          
+              </div>
+              <div class="content-right">        
+                <div class="customers-international">
+                  <div class="customers-tittle">
+                    `+item.name+`
+                    <span class="circle-right"></span>
+                  </div>
+                  <div class="customers-start">
+                    <img src="{{section.settings.start_images  | img_url: 'master' }}">
+                  </div>
+                  <div class="customers-content">
+                     `+item.content +`
+                  </div>
+                </div>
+                <div class="customers-product">
+                  <a href="`+item.productLink+`">
+                    <img src="`+item.productImg+`">
+                    <div class="customers-modal-layout">
+                      <span>`+item.productText+`</span>
+                      <button type="button" class="desgin-bt">{{ 'general.social.design_now' |t }}</button>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </li>`;           
+          $(".item.break.one").before(customerHtml);
+        }
+      });
+      $('li.customer-items.new').each(function(index, item){
+        appendHeight(this,index+1);
+        var itemWidth = jQuery(this).width();
+        var itemImg = jQuery(this).find('.customers-images img');
+        var imgsrc = jQuery(this).find('.customers-images img').attr('data-src');
+        imgReady(imgsrc, function(){          
+          var imgHeight = Math.round((itemWidth/this.width)*this.height);          
+          loadHeight(imgHeight, index+1);
+          itemImg.attr('src',imgsrc);
+        })
+        $('li.customer-items.new').removeClass('new');
+      });
+      if($('li.customer-items').length == (customerJson.length - 1)){
+        $(this).hide();
+      }
+      ReviewModal();
+    });
+  }else{
+    $(".customers-say-view").append(`<span class="customer-items item break one">`);
+    var left = 0;
+    var right = 0
+    var theight = 0; 
+    function loadHeight(obj,index){
+      //var newHeight = jQuery(obj).height();console.log(newHeight);
+      var newHeight = obj;
+      if(index%2 == 1){
+        left += newHeight;
+      }else{
+        right += newHeight;
+      }
+      theight = (left > right) ? left : right;
+      jQuery('.customers-say-view').height(theight);
+    }
+    function appendHeight(obj,index){
+      //var newHeight = jQuery(obj).parents('.data-item').fadeIn(500).height();
+      var newHeight = jQuery(obj).fadeIn(500).height();
+      if(index%2 == 1){
+        left += newHeight + 10;
+      }else{
+        right += newHeight + 10;
+      }
+      theight = (left > right) ? left : right;
+      jQuery('.customers-say-view').height(theight);
+    }
+	
+    $('li.customer-items').each(function(index, item){
+      appendHeight(this,index+1);
+      var itemWidth = jQuery(this).width();
+      var itemImg = jQuery(this).find('.customers-images img');
+      var imgsrc = jQuery(this).find('.customers-images img').attr('data-src');
+      imgReady(imgsrc, function(){        
+        var imgHeight = Math.round((itemWidth/this.width)*this.height);    
+        loadHeight(imgHeight, index+1);
+        itemImg.attr('src',imgsrc);
+      });
+    });  
+    $(".viewmore").on("click",function(){
+      var recordScrollTop = $(window).scrollTop();      
+      countIndex = (countnum-1);
+      customerJson.map(function(item,index){
+        if(index>countIndex && index<=(countIndex+count)){
+          let customerHtml = `
+            <li class="customer-items new record`+(countnum++)+`" style="display:none;">
+              <div class="review-close-new"><i class="photofont icon photo-close"></i></div>
+              <div class="customers-images">          
+              <img data-src="`+item.img+`">          
+              </div>
+              <div class="content-right">        
+                <div class="customers-international">
+                  <div class="customers-tittle">
+                    `+item.name+`
+                    <span class="circle-right"></span>
+                  </div>
+                  <div class="customers-start">
+                    <img src="{{section.settings.start_images  | img_url: 'master' }}">
+                  </div>
+                  <div class="customers-content">
+                     `+item.content +`
+                  </div>
+                </div>
+                <div class="customers-product">
+                  <a href="`+item.productLink+`">
+                    <img src="`+item.productImg+`">
+                    <div class="customers-modal-layout">
+                      <span>`+item.productText+`</span>
+                      <button type="button" class="desgin-bt">{{ 'general.social.design_now' |t }}</button>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </li>`;
+          $(".item.break.one").before(customerHtml);
+           appendHeight('.customer-items.new',index+1);
+            var itemWidth = jQuery('.customer-items.new').width();
+            var itemImg = jQuery('.customer-items.new').find('.customers-images img');
+            var imgsrc = jQuery('.customer-items.new').find('.customers-images img').attr('data-src');            
+            imgReady(imgsrc, function(){
+              var imgHeight = Math.round((itemWidth/this.width)*this.height);          
+              loadHeight(imgHeight, index+1);
+              itemImg.attr('src',imgsrc);
+            })
+
+            $('li.customer-items.new').removeClass('new');
+        }
+      });
+	  $(window).scrollTop(recordScrollTop);
+      if($('li.customer-items').length == (customerJson.length - 1)){
+        $(this).hide();
+      }
+      ReviewModal();
+    });  
+  }
+  var pinterestReviewModal = new tingle.modal({
+    footer: false,
+    stickyFooter: false,
+    cssClass:['cpinterest-review-modal'],
+    onOpen: function() {
+      //console.log('modal open');
+      $(".review-close-new").on("click",function(){        
+        pinterestReviewModal.close();
+      });
+    },
+    onClose: function() {
+      //console.log('modal closed');
+    },
+    beforeClose: function() {
+      // here's goes some logic
+      // e.g. save content before closing the modal
+      return true; // close the modal
+      return false; // nothing happens
+    }
+  });
+  $(".customers-product a").on('click',function(){  
+    event.stopPropagation();
+  });
+  function ReviewModal(){
+    $(".customers-say-view .customer-items").each(function(){
+      $(this).on("click",function(){
+        event.stopPropagation();
+        pinterestReviewModal.setContent($(this).html());
+        pinterestReviewModal.open();
+      });
+    });
+  }
+  ReviewModal();
+});
+</script>
+
+{% schema %}
+  {
+    "name":"买家优质评论",
+    "class": "happy-customer-say",
+	"max_blocks": 2000,
+      "settings": [
+		{
+        "type": "paragraph",
+        "content": "happy-customer-say"
+        },
+        {
+          "type": "text",
+          "id": "titile_a",
+          "label": "标题"
+        },
+        {
+          "type": "image_picker",
+          "id": "pc_banner",
+          "label": "PC Banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "mb_banner",
+          "label": "MB Banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "start_images",
+          "label": "评论星星"
+        }
+      ], 
+      "blocks": [
+        {
+          "type": "text",
+          "name": "text",
+          "settings": [
+          {
+            "type": "image_picker",
+            "id": "section_image",
+            "label": "模块主图"
+          },
+          {
+            "type": "text",
+            "id": "titile_content",
+            "label": "买家姓名"
+          },
+          {
+            "type": "text",
+            "id": "section_content",
+            "label": "模块评论语"
+          },
+
+          {
+            "type": "text",
+            "id": "product_text",
+            "label": "产品标题"
+          },
+		  {
+            "type": "image_picker",
+            "id": "product_img",
+            "label": "产品主图"
+          },
+	  	  {
+            "type": "url",
+            "id": "product_link",
+            "label": "产品链接"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

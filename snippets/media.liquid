@@ -1,0 +1,23 @@
+{% case media.media_type %}
+	 {% when 'image' %}
+		{% assign  position = media.position | minus :1 %}
+            <div class="swiper-slide" data-image-id="{{ product.images[position].id|json }}" data-index="{{media.position}}">
+                <div class="swiper-zoom-container" data-swiper-zoom="2">
+                    <img class="lazyload" data-src="{{ product.images[position] | img_url: '650x' }}" />
+                </div>
+            </div>
+      {% when 'video' %}
+		 <div class="swiper-slide"
+            data-index="{{ forloop.index0 }}"
+            data-image-id="{{ media.id }}" style="width: 100%;height:550px">
+
+				{{ media | video_tag:controls: true ,width:'100%',height:'100%'}}
+          </div>
+      {% when 'external_video' %}
+
+		 <div class="swiper-slide"
+            data-index="{{ forloop.index0 }}"
+            data-image-id="{{ media.id }}" style="width: 100%;height:550px">
+				{{ media | external_video_tag:controls: true ,width:'100%',height:'100%'}}
+          </div>
+{% endcase %}

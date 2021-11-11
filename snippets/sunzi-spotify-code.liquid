@@ -1,0 +1,898 @@
+{% comment %}
+** @name SpotifyCode扫描 **
+** @author 金忠帅 **
+** @integrate 王天宇 **
+{% endcomment %}
+
+{% comment %} 引入公共插槽 {% endcomment %}
+{% include 'sunzi-solt-template' %}
+
+{% comment %} 调用参数 {% endcomment %}
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'sunzi.spotify.code.test.js' %}
+
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-nin1.json' %}
+
+{% comment %} 插件版本与规则 {% endcomment %}
+{% assign customType = "default" %}
+{% assign customRule = 19 %}
+
+{% comment %} 杯子集合 {% endcomment %}
+{% if product.tags contains 'custom-sunzi-spotify-code-ccpn' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-ccpn.json' %}
+
+{% comment %} 钱包卡片集合 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-card' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-card.json' %}
+
+{% comment %} airpods套集合 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-aps' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-aps.json' %}
+
+{% comment %} 毯子 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-bl22' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-bl22.json' %}
+
+{% comment %} 钥匙扣-吉他拨片 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-keychain-guitar-pick' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl112.json' %}
+
+{% comment %} 钥匙扣 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-keychain' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl115.json' %}
+
+{% comment %} 挂饰 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-ornament' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cbs121.json' %}
+
+{% comment %} 吉他拨片 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-guitar-pick' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cyq036.json' %}
+
+{% comment %} 墙饰/油画 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-guitar-wallart' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cyh16.json' %}
+
+{% comment %} 手机壳 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-sjk762x01' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-sjk762x01.json' %}
+
+{% elsif product.tags contains 'custom-sunzi-spotify-code-sjk762x02' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-sjk762x02.json' %}
+
+{% elsif product.tags contains 'custom-sunzi-spotify-code-sjk762x03' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-sjk762x03.json' %}
+
+{% elsif product.tags contains 'custom-sunzi-spotify-code-sjk762x04' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-sjk762x04.json' %}
+
+{% elsif product.tags contains 'custom-sunzi-spotify-code-sjk762x05' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-sjk762x05.json' %}
+
+{% elsif product.tags contains 'custom-sunzi-spotify-code-sjk762x06' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-sjk762x06.json' %}
+
+{% elsif product.tags contains 'custom-sunzi-spotify-code-sjk762x07' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-sjk762x07.json' %}
+
+{% elsif product.tags contains 'custom-sunzi-spotify-code-sjk762x08' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-sjk762x08.json' %}
+
+{% elsif product.tags contains 'custom-sunzi-spotify-code-sjk762x09' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-sjk762x09.json' %}
+
+{% elsif product.tags contains 'custom-sunzi-spotify-code-sjk762x10' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-sjk762x010.json' %}
+
+{% elsif product.tags contains 'custom-sunzi-spotify-code-sjk762x11' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-sjk762x011.json' %}
+
+{% elsif product.tags contains 'custom-sunzi-spotify-code-sjk762x12' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-sjk762x012.json' %}
+
+{% elsif product.tags contains 'custom-sunzi-spotify-code-sjk762x13' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-sjk762x013.json' %}
+
+{% comment %} 手链 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-bracelet' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-ygsl001.json' %}
+
+{% comment %} 项链 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-necklace' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-ygnl001.json' %}
+
+{% comment %} 车窗贴 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-cfsc11' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cfsc11.json' %}
+
+{% comment %} 磁带 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-tape' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl123.json' %}
+
+{% comment %} 拼图 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-puzzle' or product.tags contains 'custom-sunzi-spotify-code-cpt17' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cpt17.json' %}
+
+{% comment %} 纹身贴 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-tattoo' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cws018.json' %}
+	{% assign customType = "Group" %}
+	{% assign customRule = 19.2 %}
+
+{% comment %} T恤 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-cts432' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cts432.json' %}
+
+{% elsif product.tags contains 'custom-sunzi-spotify-code-cts433' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cts433.json' %}
+
+{% elsif product.tags contains 'custom-sunzi-spotify-code-cts434' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cts434.json' %}
+
+{% elsif product.tags contains 'custom-sunzi-spotify-code-cts435' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cts435.json' %}
+
+{% comment %} 贴纸 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-only-code' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-only-code.json' %}
+
+{% comment %} 图片（双面）挂饰 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-double-ornament' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cbs121x02.json' %}
+	{% assign customType = "TwoSided" %}
+	{% assign customRule = 19.1 %}
+
+{% comment %} 双面吉他拨片 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-double-guitar-pick' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cyq038.json' %}
+	{% assign customType = "TwoSided" %}
+	{% assign customRule = 19.1 %}
+
+{% comment %} 油画-cyh17 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-cyh17' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cyh17.json' %}
+
+{% comment %} 挂毯 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-tapestry' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cgt.json' %}
+
+{% comment %} 钥匙指环 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl13' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl13.json' %}
+
+{% comment %} 木框画--需配置刻字 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-cbs12' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cbs12.json' %}
+
+{% comment %} 手机壳pro {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-aps-pro' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-apk011.json' %}
+
+{% comment %} 刻字油画-cyh167 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-cyh167' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cyh167.json' %}
+
+{% comment %} 刻字油画-cyh168 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-cyh168' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cyh168.json' %}
+
+{% comment %} 刻字油画-cyh169 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-cyh169' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cyh169.json' %}
+
+{% comment %} 新亚克力板 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-cbs12w' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cbs12w.json' %}
+
+{% comment %} 打火机 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-lighter' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-dhj004AX05.json' %}
+
+{% comment %} 钱包 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-scqb' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-scqb.json' %}
+
+{% comment %} 枕头 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-cztp15' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cztp15.json' %}
+
+{% comment %} 条形项链 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-bar-necklace' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-knl285.json' %}
+
+{% comment %} 传图钥匙链 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-photo-keychain' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl129.json' %}
+
+{% comment %} 水晶钥匙扣 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-rystal-keychain' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl044X03.json' %}
+
+{% comment %} 男士手链 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-men-bracelet' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-tksl58x03.json' %}
+
+{% comment %} 脚链 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-bar-anklet' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-tkfl05.json' %}
+
+{% comment %} 传图项链 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-pnl005' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-pnl005.json' %}
+
+{% comment %} 不锈钢项链 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-pnl006' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-pnl006.json' %}
+
+{% comment %} 双面磁带 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-cbs152' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cbs152.json' %}
+	{% assign customType = "TwoSided" %}
+	{% assign customRule = 19.1 %}
+
+{% comment %}木质磁带 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl172' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl172.json' %}
+
+{% comment %} 钢笔 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-pen' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cwj002ax01.json' %}
+
+{% comment %} 手表 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-watch' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-wtc025cx09.json' %}
+
+{% comment %} 围裙 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-apron' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cwq100.json' %}
+
+{% comment %} 标签项链 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-tag-necklace' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-gyknl02x01z.json' %}
+	{% assign customType = "TwoSided" %}
+	{% assign customRule = 19.1 %}
+
+{% comment %} 照片钱包-soufeel {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-photo-wallet' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-wallet.json' %}
+	{% assign customType = "Wallet" %}
+	{% assign customRule = 19.5 %}
+
+{% comment %} 照片钱包-soufeel {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-photo-wallet-sp' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-wallet-sp.json' %}
+	{% assign customType = "Wallet" %}
+	{% assign customRule = 19.5 %}
+
+{% comment %} 心形项链 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-heart-necklace' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-gyknl06x05.json' %}
+	{% assign customType = "TwoSided" %}
+	{% assign customRule = 19.1 %}
+
+{% comment %} 木制简式钥匙扣 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl183' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl183.json' %}
+
+{% comment %} 影刻照片钥匙扣 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-tag-keychain' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-gykkl08x06.json' %}
+	{% assign customType = "TwoSided" %}
+	{% assign customRule = 19.1 %}
+
+{% comment %} 铜制手链/手镯 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-psz001' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-psz001.json' %}
+
+{% comment %} 心形钥匙扣 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl184' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl184.json' %}
+
+{% comment %} 心形照片钥匙扣 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl289' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl289.json' %}
+
+{% comment %} 吉他拨片项链 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-pnl009' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-pnl009.json' %}
+	{% assign customType = "TwoSided" %}
+	{% assign customRule = 19.1 %}
+
+{% comment %} nin1新类别 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-new-theme' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-nin1.json' %}
+
+{% comment %} 预览贴纸 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-cfs13' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cfs13.json' %}
+	{% assign customType = "Group" %}
+	{% assign customRule = 19.2 %}
+
+{% comment %} 纹身 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-tattoo' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cws018.json' %}
+	{% assign customType = "Group" %}
+	{% assign customRule = 19.2 %}
+
+{% comment %} 情侣钥匙扣 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-valentine-keychain' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl174.json' %}
+	{% assign customType = "Group" %}
+	{% assign customRule = 19.2 %}
+
+{% comment %} 木质情侣钥匙扣 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl182' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl182.json' %}
+	{% assign customType = "Group" %}
+	{% assign customRule = 19.2 %}
+
+{% comment %} 心形灯 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-xhd269' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-xhd269.json' %}
+
+{% comment %} 木制相框 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-cbs124' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cbs124.json' %}
+
+{% comment %} 彩色音轨钥匙扣 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl313' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl313.json' %}
+
+{% comment %} 心形图片钥匙扣skl312 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl312' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl312.json' %}
+
+{% comment %} 心形镂空钥匙扣 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl187' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl187.json' %}
+
+{% comment %} 金边相框 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-cbs246' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cbs246.json' %}
+
+{% comment %} 照片钥匙扣skl314 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl314' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl314.json' %}
+
+{% comment %} 钥匙扣-skl122 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl122' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl122.json' %}
+	{% assign customType = "Group" %}
+	{% assign customRule = 19.2 %}
+
+{% comment %} 照片钥匙扣-skl113 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl113' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl113.json' %}
+
+{% comment %} 磁带钥匙扣skl146 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl146' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl146.json' %}
+
+{% comment %} 不锈钢钥匙扣skl147 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl147' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl147.json' %}
+	{% assign customType = "TwoSided" %}
+	{% assign customRule = 19.1 %}
+
+{% comment %} 镂空钥匙链 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl120' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl120.json' %}
+	{% assign customType = "Group" %}
+	{% assign customRule = 19.2 %}
+
+{% comment %} 心形-不锈钢-钥匙扣-skl362 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl362' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl362.json' %}
+
+{% comment %} 背包/袋子 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-bag' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-bag.json' %}
+
+{% comment %} 袋子-BAG205 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-bag205' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-bag205.json' %}
+	{% assign customType = "Album" %}
+	{% assign customRule = 19.8 %}
+
+{% comment %} 耳坠-PED003 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-ped003' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-ped003.json' %}
+
+{% comment %} 钥匙扣-skl371 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl371' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl371.json' %}
+
+{% comment %} 钥匙扣-skl140 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl140' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl140.json' %}
+
+{% comment %} 手机支架 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-cbs21' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cbs21.json' %}
+	{% assign customRule = 19.9 %}
+
+{% comment %} 戒指 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-ring' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-ring.json' %}
+
+{% comment %} 彩色钥匙扣skl308 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl308' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl308.json' %}
+
+{% comment %} 开瓶器 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-cjj068' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cjj068.json' %}
+	{% assign customType = "TwoSided" %}
+	{% assign customRule = 19.1 %}
+
+{% comment %} 情侣心形钥匙扣-skl328 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl328' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl328.json' %}
+	{% assign customType = "Group" %}
+	{% assign customRule = 19.2 %}
+
+{% comment %} 钥匙扣-skl352 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl352' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl352.json' %}
+
+{% comment %} 磁带钥匙扣-skl351 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl351' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl351.json' %}
+
+{% comment %} 钥匙扣-skl026 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl026' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl026.json' %}
+
+{% comment %} 手机壳-sjk16 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-sjk16' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-sjk16.json' %}
+
+{% comment %} 小语种亚克力板-classic-0625 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-classic-0625' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-classic-0625.json' %}
+
+{% comment %} 耳机盒apk012 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-apk012' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-apk012.json' %}
+
+{% comment %} 手机壳-sjk16-母研 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-sjk16-muyan' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-sjk16-muyan.json' %}
+
+{% comment %} 木质灯-xhd308 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-xhd308' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-xhd308.json' %}
+
+{% comment %} 花式项链-KSL73 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-ksl73' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-ksl73.json' %}
+
+{% comment %} 手链-bracelet-0715 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-bracelet-0715' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-bracelet-0715.json' %}
+
+{% comment %} 钥匙链-像素-心形 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl425' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl425.json' %}
+
+{% comment %} 钥匙链-滑板 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl427' %}
+{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spotify-code-skl427.json' %}
+
+{% comment %} 夜灯钥匙扣 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl428' %}
+{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spotify-code-skl428.json' %}
+
+{% comment %} 透明亚克力-cbs454 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-cbs454' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cbs454.json' %}
+
+{% comment %} 杯垫CCD056 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-CCD056' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-ccd056.json' %}
+
+{% comment %} CYH579 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-cyh579' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spotify-code-cyh579.json' %}
+
+{% comment %} CBG048 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-cbg048' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spotify-code-cbg048.json' %}
+
+{% comment %} SKL460{% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl460' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spotify-code-skl460.json' %}
+
+{% comment %} YGNL004A{% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-ygnl004' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spotify-code-ygnl004.json' %}
+  
+{% comment %} CTS967{% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-cts967' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spotify-code-cts967.json' %}
+
+{% comment %} BL537{% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-bl537' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spotify-code-bl537.json' %}
+
+{% comment %} 双面刻字钥匙扣 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-skl115x03' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-skl115x03.json' %}
+
+{% comment %} CYQ088 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-cyq088' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spotify-code-cyq088.json' %}
+
+{% endif %}
+
+{% comment %} 谷歌分析id {% endcomment %}
+{% assign gtag = 'G-R132WKL1C2' %}
+
+{% comment %} 默认唱片图片 {% endcomment %}
+{% assign defaultCustomAlbum = section.settings.sunzi_param_spotify_default_custom_album %}
+{% comment %} 推荐唱片列表 {% endcomment %}
+{% assign recommendTracks = section.settings.sunzi_param_spotify_recommend_tracks %}
+
+
+
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+  .sunzi-variant-title {
+    color: #000;
+    font-size: 14px;
+    padding-bottom: 10px;
+    text-transform: capitalize;
+  }
+  .sunzi-variant-options {
+    display: flex;
+    flex-flow: row wrap;
+  }
+  .sunzi-variant-options .sunzi-variant-options-item {
+    padding: 0 25px;
+    margin: 0 15px 15px 0;
+    height: 40px;
+    border-radius: 6px;
+    border: 1px solid #909399;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .sunzi-variant-options .sunzi-variant-options-item .tick-circle {
+    display: none;
+  }
+  .sunzi-variant-options .sunzi-variant-options-item span {
+    font-size: 14px;
+  }
+  .sunzi-variant-options .active {
+    border-color: #ff533a;
+    color: #ff533a;
+    background-color: rgba(255, 83, 58, 0.1);
+    padding: 10px;
+  }
+  .sunzi-variant-options .active .tick-circle {
+    width: 20px;
+    height: 20px;
+    display: flex;
+  }
+  .sunzi-variant-options .active span{
+    padding-left: 10px;
+    font-weight: 700;
+  }  
+  @media screen and (min-width: 768px) {
+    .sunzi-modal-content {
+      width: 400px!important;
+      height: 640px!important;
+    }
+  }
+  @media (max-width: 768px) {
+    .sunzi-variants {
+      padding: 0 10px;
+    }
+  }
+
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="hidden" id="sunzi-input" name="properties[customInfo]" />
+  <input type="hidden" id="sunzi-cart" name="properties[_sunzi_cart]" />
+  <input type="hidden" id="_sunzi_add_text" name="properties[_sunzi_add_text]" />
+  <input type="hidden" id="sunzi-vip" name="properties[VIPService]" />
+  <input type='hidden' id="_tempVip"  name='properties[_tempVip]' />
+
+  {% comment %} 渲染变体 {% endcomment %}
+  {% unless product.options.size == 1 and product.variants[0].title == 'Default Title' %}
+  <div class="sunzi-variants">
+    {% for option in product.options_with_values %}
+    <div class="sunzi-variant-item" id="sunzi-variant-item-{{ forloop.index }}">
+        <div class="sunzi-variant-title">{{ option.name }}</div>
+        <div class="sunzi-variant-options">
+     		{% for value in option.values %}
+            <div class="sunzi-variant-options-item {% if option.selected_value == value %} active {% endif %}" data-value="{{ value | escape }}">
+              <svg class="tick-circle" viewBox="2 2 20 20" fill="#FF533A">
+              	<path d="M12,3.2 C16.8601058,3.2 20.8,7.1398942 20.8,12 C20.8,16.8601058 16.8601058,20.8 12,20.8 C7.1398942,20.8 3.2,16.8601058 3.2,12 C3.2,7.1398942 7.1398942,3.2 12,3.2 Z M17.3656854,8.63431458 C17.053266,8.32189514 16.546734,8.32189514 16.2343146,8.63431458 L16.2343146,8.63431458 L10.8,14.068 L7.76568542,11.0343146 L7.69031955,10.9677637 C7.37648659,10.7237438 6.92270174,10.7459274 6.63431458,11.0343146 C6.32189514,11.346734 6.32189514,11.853266 6.63431458,12.1656854 L6.63431458,12.1656854 L10.2343146,15.7656854 L10.3096804,15.8322363 C10.6235134,16.0762562 11.0772983,16.0540726 11.3656854,15.7656854 L11.3656854,15.7656854 L17.3656854,9.76568542 L17.4322363,9.69031955 C17.6762562,9.37648659 17.6540726,8.92270174 17.3656854,8.63431458 Z"></path>
+              </svg>
+              <span>{{ value }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endunless %}
+
+  {% comment %} 定制按钮 {% endcomment %}
+  <button type="button" id="sunzi-button" disabled class="dots-loading">
+    <span class="dots">
+      <i></i>
+      <i></i>
+      <i></i>
+    </span>
+    <div class="sunzi-button-text"></div>
+  </button>
+</div>
+
+{% comment %} loading 所需图片预加载 {% endcomment %}
+<link rel="preload" href="https://spic.qn.cdn.imaiyuan.com/spotify-code/custom-album.jpg?imageslim" as="image">
+<link rel="preload" href="https://spic.qn.cdn.imaiyuan.com/spotify-code/control-black.png" as="image">
+<link rel="preload" href="https://spic.qn.cdn.imaiyuan.com/spotify-code/control-white.png" as="image">
+<link rel="preload" href="https://spic.qn.cdn.imaiyuan.com/spotify-code/heart.png" as="image">
+<link rel="preload" href="https://spic.qn.cdn.imaiyuan.com/spotify-code/heart-white.png" as="image">
+
+<!-- sunzi core js -->
+<script src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{ coreJs }}" defer="defer"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ gtag }}" async="async"></script>
+<script async="async">
+  _sunzi_gtag('{{ gtag }}');
+</script>
+
+{% comment %} 1.隐藏掉变体，加车按钮等等 {% endcomment %}
+<script defer="defer">
+  // 隐藏变体
+  _sunzi_variant_hide();
+  {% comment %}sf模板-钱包frame变体隐藏{% endcomment %}
+  {% if product.tags contains 'custom-sunzi-spotify-code-photo-wallet' %}
+  	$('.sunzi-variants').hide();
+  {% endif %}
+</script>
+
+{% comment %} 2.请求定制化数据 {% endcomment %}
+<script defer="defer">
+  var response;
+  _sunzi_request('{{ requestURL }}', function(res) {
+	response = res;
+  });
+</script>
+
+{% comment %} 3.开始定制 {% endcomment %}
+<script defer="defer">
+  $('#sunzi-button').click(function() {
+    // sf模板-站点本身自带判断钱包卡
+    if(typeof validateFrame === "function" ? validateFrame() == 'Validate Error' : false) return;
+    var sku = _sunzi_get_product_info().sku;
+    // 毯子sku特别判断
+    if(sku.indexOf("BL221") > -1) {
+      var sizeValue = _sunzi_variant_value(1);
+      sku = sku.replace('BL221', sizeValue.toLowerCase() === 'white'? 'BL223' : "BL224");
+    }
+    // sku对应的layout信息
+    var layoutInfo = response.find(item => item.sku === sku);
+    _sunzi_response = layoutInfo.data;
+    _sunzi_response.shop = _sunzi_global_data.shop;
+    
+    _sunzi_response.price = _sunzi_global_data.priceShow(_sunzi_get_product_info("price"));
+    _sunzi_response.defaultCustomAlbum = "{{defaultCustomAlbum}}";
+    _sunzi_response.recommendTracks = {{recommendTracks}};
+    _sunzi_global_data.theme && (_sunzi_response.theme = _sunzi_global_data.theme);
+    
+    {% for tag_item in product.tags %}
+      {%comment%}设置vip{%endcomment%}
+      {% if tag_item contains "custom-sunzi-vip" %}
+      _sunzi_global_data.vip && _sunzi_global_data.vip.virtualId && (_sunzi_response.increment = {
+        vip: _sunzi_global_data.vip
+      });
+  	  {%comment%}设置刻字加价 {%endcomment%}
+  	  {% elsif tag_item contains "custom-sunzi-text-increase" %}
+      	if (_sunzi_response.layout.lineTextCoord) _sunzi_response.layout.lineTextCoord.increase = _sunzi_global_data.lineTextsIncrease;
+  	  {%comment%}设置默认曲目 {%endcomment%}
+  	  {% elsif tag_item contains "custom-songsuri-" %}
+  		{%- assign songuri = tag_item | strip | replace: "custom-songsuri-", "" -%}
+  		_sunzi_response.defaultTrackId = `{{songuri}}`;
+      {% endif %}
+    {% endfor %}
+        
+    {% comment %}设置关联产品{% endcomment %}
+    {% if section.settings.sunzi_param_related_product %}
+      var relatedJSON = "{{section.settings.sunzi_param_related_product}}";
+      if(relatedJSON) {
+      	var relatedProduct = JSON.parse(relatedJSON);
+        for(var key in relatedProduct) {
+          var item = relatedProduct[key];
+          if(item.skus.indexOf(sku) > -1) {
+            _sunzi_response.increment = {
+              relatedProduct: [{
+                id: item.id,
+                title: item.title,
+                price: item.price,
+                virtualId: item.virtualId,
+                thumbnail: item.thumbnail
+              }]
+            };
+          }
+        }
+      }
+    {% endif %}
+        
+    // 开始渲染
+    _sunzi_custom(
+      SpotifyCode['{{customType}}'],
+      async function(effect, data, vip) {
+        _sunzi_loading();
+        
+        // 加车完清除掉定制化信息
+        clearSunziForm();
+        
+        $('#sunzi-cart').val(JSON.stringify({
+          'image': [ effect ]
+        }));
+        
+        var output = {
+          '_sunzi_source': data.source,
+          '_sunzi_text': {
+            value: `${data.color.value}|${data.track.name}|${data.track.artists}|${data.track.uri}|${SpotifyCode.formatTime(data.track.duration_ms)}`
+          },
+          '_sunzi_effect': _sunzi_get_product_info("featuredImage"),
+          '_sunzi_compose': [{
+             'rule': {{ customRule }},
+             'data': data,
+              {% comment %}添加是否发信字段{% endcomment %}
+              {% if product.tags contains "custom-sunzi-send-mail" %}
+              is_send_mail: true
+              {% endif %}
+
+           }],
+        };
+        
+        var promiseArr = [];
+      
+        // 根据vip添加虚拟产品
+        if(vip) {
+          var tempvip = cateTempVip();
+          promiseArr.push(addToCart({
+            id: vip.virtualId,
+            quantity: 1,
+            "properties[_tempVip]": tempvip,
+            mask: 'body',
+            refresh: true,
+          }))
+          $('#_tempVip').val(tempvip);
+          $('#sunzi-vip').val('VIP Service');
+        } else {
+          $('#sunzi-vip').val('');
+        }
+        
+        // 刻字加价信息
+        if (data.layout.lineTextCoord && data.layout.lineTextCoord.value) {          
+          // 添加音轨刻字信息
+          output['_sunzi_spotify_text'] = [{
+            value: data.layout.lineTextCoord.value,
+            font: data.layout.lineTextCoord.font.name,
+          }];          
+        } 
+        // 19.2 group 多个刻字信息
+        else if(data.layout.children) {
+          data.layout.children.forEach(item => {
+            if(item.lineTextCoord){
+              var textData = {
+                value: item.lineTextCoord.value,
+                font: item.lineTextCoord.font.name,
+              }
+              output['_sunzi_spotify_text'] ? output['_sunzi_spotify_text'].push(textData) : (output['_sunzi_spotify_text'] = [textData]);
+            }
+          });
+        }
+        // 19.8 图片多个刻字信息
+        else if(data.layout.albumCoord && data.layout.albumCoord.lineTextCoord) {
+          data.layout.albumCoord.lineTextCoord.forEach(item => {
+            var textData = {
+              value: item.value,
+              font: item.font.name,
+            }
+            output['_sunzi_spotify_text'] ? output['_sunzi_spotify_text'].push(textData) : (output['_sunzi_spotify_text'] = [textData]);
+            {% if product.tags contains 'custom-sunzi-spotify-code-bag205' %}
+              delete output["_sunzi_source"];
+            {% endif %}
+          });
+        }
+
+        // 刻字加价产品加车
+        if(data.layout.lineTextCoord && data.layout.lineTextCoord.increase && data.layout.lineTextCoord.increase.virtualId && data.layout.lineTextCoord.value) {
+          var code = createRandomCode();
+          $('#_sunzi_add_text').val(code);
+          promiseArr.push(addToCart({
+            id: data.layout.lineTextCoord.increase.virtualId,
+            quantity: 1,
+            "properties[_sunzi_add_text]": code,
+            mask:'body',
+            refresh:true
+          }));
+        }
+
+    	  $('#sunzi-input').val(JSON.stringify(output));
+        await Promise.all(promiseArr);
+	      //	加车事件触发
+      	_sunzi_add_to_cart();
+        _sunzi_hide_loading();
+      }
+    );
+  });
+  
+  // 绑定变体切换事件
+  $('div[id^="sunzi-variant-item"]').each(function(index) {
+    $(this).find('.sunzi-variant-options-item').on('click', function() {
+      if($(this).hasClass('active')) return;
+      $(`#sunzi-variant-item-${index+1} .sunzi-variant-options-item`).removeClass('active');
+      $(this).addClass('active');
+      _sunzi_variant_change(index, $(this).data('value'));
+    });
+  });
+    
+  // 清除孙子定制化信息
+  function clearSunziForm() {
+    $('#sunzi-bind, #sunzi-vip, #_tempVip').val('');
+    // 如果有的站验证custominfo不能为空的
+    $('#sunzi-input').val("{}");
+  }
+  
+  // 加车
+  function addToCart(data) {
+    return new Promise((resolve, reject) => {
+      $.ajax({
+        type: "POST",
+        url: "/cart/add.js",
+        data,
+        async: false,
+        dataType: "json",
+        context: this,
+        success: (item) => resolve(item),
+        error: (request, status) => {
+          reject(request, status);
+        }
+      })
+    })
+  }
+  
+  function cateTempVip(){
+    var t = jQuery('[name="id"]').val();
+    document.querySelectorAll("[name^='properties[']").forEach(function(e,item){
+      var n = "radio" !== e.type || e.checked;
+      ("properties[_tempId]" != e.name && "properties[_tempVip]" != e.name) && "" != e.value && n && (t += e.name + ":" + e.value + ",")
+    })
+    var e, n, r, i = 0;                
+    for (e = 0, r = t.length; e < r; e++){
+      n = t.charCodeAt(e),
+        i = (i << 5) - i + n,
+        i |= 0;  
+    }
+    return i;
+  }
+  
+  // 生成随机码
+  function createRandomCode() {
+    var chars = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+    var res = "";
+    for(var i = 0; i < 16 ; i ++) {
+      var id = Math.ceil(Math.random()*35);
+      res += chars[id];
+    }
+    return res;
+  }
+  
+  /** 其他自定义函数 end **/
+</script>

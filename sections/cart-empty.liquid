@@ -1,0 +1,45 @@
+<style> 
+.cart-empty-section{
+    display:none
+} 
+.cart-empty-section .page-empty {
+    padding: 0;
+    margin-bottom: 0;
+    min-height: 40rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+ .cart--empty-message {
+  display: none;
+}
+.cart--cookie-message {
+    display: none;
+    padding-bottom: 25px;
+} 
+.cart--no-cookies .cart--cookie-message {
+  display: block;
+}
+</style>
+
+<div class="page-empty text-center">
+  <h1>{{ 'cart.empty.title' | t }}</h1>
+  
+  <p class="cart--empty-message">{{ 'cart.empty.message' | t }}</p>
+  <hr>
+  <p class="cart--continue-message">
+    <a href="/" class="btn">{{ 'cart.empty.continue_browsing' | t }}</a>
+  </p>
+  <p class="cart--cookie-message">{{ 'cart.empty.cookies_required' | t }}</p>
+</div>
+
+{% schema %}
+  {
+    "name": "购物车 - 空购物车",
+    "class":"cart-empty-section",
+    "settings": [
+     
+    ]
+  }
+{% endschema %}

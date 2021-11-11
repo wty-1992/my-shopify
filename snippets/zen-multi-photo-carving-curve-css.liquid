@@ -1,0 +1,460 @@
+ <link href="https://fonts.googleapis.com/css?family=Charm|Black+And+White+Picture|Indie+Flower|Kumar+One+Outline|Patrick+Hand|Merriweather" rel="stylesheet">
+<!-- {{ 'zen-fonts.scss.css' | asset_url | stylesheet_tag }} -->
+<style>
+  .btn-carving-cancel {
+    display: none !important;
+  }
+  .product-form__item--no-variants {
+  	max-width: 100% !important;
+  }
+  #app {width: 100%;}
+  #app .el-dialog{
+    background: #f7f8f9;
+  }
+  .serial.correct {
+    color: #000;
+    transform: translate(-29px,34px);
+  }
+  .area-carving, .area-photo-upload {
+  	background: #f8f8f8 !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    height: 56px;
+    margin-bottom: 10px;
+    border-radius: 0 !important;
+  }
+  .btn-carving-open, .btn-upload-open {
+  	cursor: pointer;
+    background: #000;
+    color: #fff;
+    border-radius: 25px;
+    padding: 2px 15px;
+    width: auto;
+    text-align: center;
+    text-transform: capitalize;
+    font-weight: 100;
+    border: none;
+    font-size: 14px;
+    line-height: 1.625;
+  }
+  .area-carving-preview-text, .area-photo-upload-text, .area-photo-upload-flex {
+  	color: #333;
+    font-size: 1rem !important;
+  }
+  .carving-container {
+  	margin-bottom: 1rem;
+  }
+  .el-dialog__footer {
+    padding: 1rem 2rem;
+    width: auto;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    background-color: #f5f5f5;
+    cursor: auto;
+    justify-content: center;
+  }
+  .btn-carving, .photo-confirm-btn, .photo-cancel-btn{
+  	padding: 1rem 2rem!important;
+    border: none!important;
+    color: #fff;
+    border-radius: 0px!important;
+    font-size: 16px!important;
+  }
+  .btn-carving.el-button--default,.photo-cancel-btn.el-button--default  {
+  	background-color: #000;
+  }
+  .btn-carving.el-button--primary,.photo-confirm-btn.el-button--primary  {
+  	background-color: #bfa175;
+  }
+  div .dialog-footer-carving {
+    justify-content: center;
+    flex-flow: column-reverse;
+    padding-top: 0;
+  }
+  .carving-info{
+    padding: 10px 0;
+  }
+  .action-info{
+    color: #777;
+    padding-bottom: 4px;
+  }
+  .note-info{
+    color: #e60044;
+  }
+  .handcraft-info{
+    color: #f4354a;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #d8d8d8;
+  }
+  .action-info,.note-info,.handcraft-info{
+    font-size:12px;
+  }
+  .operation-part .el-button+.el-button{
+    margin-left: 0;
+    margin-bottom: 10px;
+  }
+  #app .btn-carving.el-button--default, #app .photo-cancel-btn.el-button--default{
+    color:#fff;
+    background-color: #9d9d9d;
+  }
+  .size-label-part.el-col.el-col-24 {
+    padding: 10px 0 8px;
+    font-size: 13px;
+  }
+  .carving-prompt {
+  	color: red;
+    font-size: 16px;
+    text-align: center;
+  }
+  .carving-textarea-box {
+    border: 1px solid #ddd!important;
+    border-radius: 0px!important;
+    background: #fff;
+  }
+  .btn-carving.el-button--default.is-active, .btn-carving.el-button--default:active,.btn-carving.el-button--default:focus, .btn-carving.el-button--default:hover {
+    background: #000;
+  }
+  .carving-textarea textarea {
+  	overflow: hidden;
+    min-height: auto !important;
+  }
+  .el-dialog__body .slt-font-size{
+    width: 100%;
+    margin-top: 0px;
+  }
+  .el-dialog__body .slt-font-size .el-input__inner{
+    background: #f1f3f4;
+    border: none;
+    height:42px;
+  }
+  .slt-font-size input {
+  	border-radius: 0px !important;
+  }
+  .zen-photo-carving .el-button:focus, .zen-photo-carving .el-button:hover{
+    background-color: #ddd;
+    color: #000;
+  }
+  .zen-photo-carving .btn-carving.el-button--primary,.zen-photo-carving .photo-confirm-btn.el-button--primary{
+    background-color: #de0047;
+    color:#fff;
+  }
+  .zen-photo-carving .btn-carving.el-button--default,.zen-photo-carving .photo-cancel-btn.el-button--default{
+    background-color: #ddd;
+    color: #000;
+  }
+  .crop-prompt.photo-prompt{
+    margin: 12px 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #000;
+  }
+  .el-dialog--center{
+    width:100% !important;
+    max-width:800px;
+  }
+  .custom-carving-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  .carving-container .photo-design-body,.carving-container .operation-part{
+    width:48.5%;
+    overflow: hidden;
+  }
+  div .el-dialog__headerbtn{
+    top: 0;
+    right: 0;
+  }
+  .label-input-text,.textarea-text{
+    margin-top:0;
+    margin-bottom: 0;
+  }
+  textarea.el-textarea__inner::-webkit-input-placeholder{    
+    color: #484747 !important;
+    font-size:12px;    
+    line-height: 1.5;
+  }
+  .carving-textarea textarea{
+    padding: 5px 10px;
+  }
+  .font-radio-label{
+    padding: 10px 0 8px;
+    font-size:13px;
+  }
+  .curve-container .el-main textarea{
+    font-size: 12px;
+  }
+  #app .el-radio__label{
+    padding-left: 0;
+  }
+  #app .el-radio.is-bordered.is-checked{
+    border-color: #e60044;  
+  }
+  #app .el-radio__input.is-checked+.el-radio__label{
+    color: #e60044;
+  }
+  .el-select-dropdown.el-popper{
+    margin-top: 5px;
+  }
+  .el-scrollbar__view .el-select-dropdown__item{
+    height: 24px;
+    line-height: 24px;
+  }
+  #app .el-radio.is-bordered{
+    border: 1px solid #777;
+    color: #000;
+    padding: 8px 12px;
+    height: auto;
+    border-radius: 0;
+    vertical-align: middle;
+    margin-right: 10px;
+    margin-left: 0;
+  }
+  .el-dialog__headerbtn{
+    right: 0;
+    top: 0;
+  }
+  .el-dialog__headerbtn .el-dialog__close{
+    font-size: 36px;
+  }
+  .carving-prompt{
+    font-size: 12px;
+    margin-top: 20px;
+    line-height: 1.2;
+    text-align: left;
+  }
+  .photo-container .area-photo-upload{
+    margin-bottom: 0 !important;
+    border: none;
+    width:100%;
+  }
+  .photo-container .photo-box{
+    display: flex;
+    border: 1px solid #e7e7e7;
+    margin-bottom: 15px;
+    align-items: center;
+  }
+  .photocharms-warnfill{
+    text-decoration: underline !important;
+    font-size:12px; 
+    cursor: pointer;
+  }
+  .photo-container {
+    margin-bottom: 15px;
+  }
+  a.photocharms-warnfill:not([href]):not([tabindex]):focus, a.photocharms-warnfill:not([href]):not([tabindex]):hover{    
+    text-decoration: underline;
+  }
+  .btn-carving-cancel {display: none;}
+  .photo-container .photo-box{
+    height: 120px;
+    width: 120px;
+    border: 1px dashed #e60044;
+    margin-bottom: 0;
+    overflow: hidden;
+  }
+  .photo-container .photo-box .avatar-uploader-icon{
+    width: 120px;
+    height: 120px;
+    line-height: 110px;
+    color: #e60044;
+    background: #f7f8fa;
+  }
+  .el-upload.el-upload--text .upload-label{
+    width: 100%;
+    color: #e60044;
+    left: 0;
+  }
+  .curve-container div.curve-area-carving{
+    height: 54px;
+    align-items: center;
+    padding: 0 10px;
+    margin-bottom: 15px;
+  }
+  .photo-container div.area-photo-upload-rect-thumbnai{
+    width: 120px;
+  }
+  .curve-container .el-aside{
+    overflow: hidden;
+  }
+  .curve-container .el-main .custom-carving-container{
+    flex-flow: column; 
+  }
+  .curve-container .el-main textarea{
+    height: 5rem;
+    font-size: 13px;
+    resize:none;
+  }
+  .curve-container .el-main .textarea-text{
+    position: relative;
+  }
+  .font-radio-title{
+    font-size: 12px;
+    margin: 3px 0 6px;  
+  }
+  .curve-container .el-main .textarea-text .leftnum{
+    position: absolute;
+    bottom: 7px;
+    right: 5px;
+    font-size: 12px;
+  }
+  .carving-container .carving-textarea textarea{
+    height: 5rem;
+  }
+  .carving-container .btn-carving{
+    width:100%;
+  }
+  .leftnum{
+    text-align: right;
+    padding-right: 10px;
+  }
+  @media (min-width: 768px) {
+    .photo-text{
+      position: absolute;
+      left: 0;
+      top: -12px;
+      height: 120px;
+      background: #f7f8fa;
+    }
+
+    .photo-text i {height: 0px!important;font-size: 28px;}
+  }
+  @media (max-width: 768px) {
+    .el-dialog {
+      width: 100%;
+      margin-top: 0 !important;
+      margin-bottom: 0;
+      height: 100%;
+      overflow: auto;
+    }
+    .el-dialog__body>div:nth-child(1)>div>div {
+    /*     	height: 240px !important; */
+    }
+    .el-dialog__wrapper, .el-message-box__wrapper {
+      z-index: 10001 !important;
+    }
+    .el-dialog--center .el-dialog__footer {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+    .el-message-box {
+      width: 100%!important;
+      margin-top: 0;
+      margin-bottom: 0;
+      height: 100%;
+    }
+    main.el-main{
+      padding: 0;
+    }
+    .photo-container .photo-box{
+      width: 100%;
+      height:auto;
+      border: 1px solid #e7e7e7;
+      margin-bottom: 1rem;
+    }
+    .curve-container button.btn-carving-open{
+      padding: 3px 15px 2px;
+      font-size: 12px;
+    }
+    .photo-container .photo-box .btn-upload-open{
+      display:none;
+    }
+    .photo-container .photo-box .el-upload:after{
+      content: "\e6e0";
+      margin-right: 5px;
+      font-size: 18px;
+      color: #000;
+      font-family: "photofont";
+      font-style: normal;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .photo-container .photo-box .area-photo-upload{
+      width: 60%;
+      border: none;
+      height: 48px;
+      margin-bottom: 0 !important;
+    }
+    .curve-container .el-container{
+      flex-flow: column;
+    }
+    .curve-container .el-aside,main.el-main{
+      width: 100% !important;
+    }
+    .area-carving{
+      height: 48px;
+    }
+    .carving-container .btn-carving-open{
+      font-size: 12px;
+      padding: 3px 15px 2px;
+      width: auto;
+    }
+    .carving-container .el-dialog--center{
+      background: #f7f8f9;
+    }
+    .carving-container .el-dialog__header{
+      padding: 0px 20px 0px;
+    }
+    .photo-design-body .canvas-container{
+      margin: 0% auto 0 auto;
+      -webkit-transform: translateY(0%);
+      transform: translateY(0%);
+    }
+    .carving-container .custom-carving-container .el-textarea{
+      vertical-align: bottom;
+      margin-top: 0;
+    }
+    .carving-container .rad-font .el-radio.is-bordered{
+      padding: 6px 12px;
+      height: auto;
+    }
+    .carving-container .rad-font .el-radio.is-bordered .el-radio__label{
+      padding-left: 0;
+    }
+    .carving-container textarea.el-textarea__inner{
+      font-size: 12px;
+    }
+    .carving-container .el-radio__input.is-checked+.el-radio__label{
+      color: #e60044;
+    }
+    .carving-container .el-radio.is-bordered.is-checked{
+      border-color: #e60044;
+    }
+    .zen-photo-carving .el-dialog__headerbtn .el-dialog__close{
+      color: #333;
+      font-size: 20px;
+    }
+    .zen-photo-carving .el-dialog__headerbtn{
+      top: 10px;
+      right: 10px;
+    }    
+    .carving-container .photo-design-body, .carving-container .operation-part{
+      width: 100%;
+    }
+    .custom-carving-container{
+      flex-flow: wrap;
+    }
+    #app .el-radio.is-bordered{
+      padding: 6px 12px;
+      height: auto;
+    }
+    .photo-container .area-photo-upload{
+      width: 60%;
+    }
+    .photo-container .photo-box .photocharms-warnfill{
+      width: 40%;
+      text-align: center;
+      text-decoration: underline;
+    }
+    .photocharms-warnfill {
+      display: block;
+    }
+    .carving-textarea textarea::-webkit-input-placeholder{color:#999;}/* 使用webkit内核的浏览器 */
+    .carving-textarea textarea:-moz-placeholder{color:#999;}/* Firefox版本4-18 */
+    .carving-textarea textarea::-moz-placeholder{color:#999;}/* Firefox版本19+ */
+    .carving-textarea textarea:-ms-input-placeholder{color:#999;}/* IE浏览器 */
+  }
+</style>

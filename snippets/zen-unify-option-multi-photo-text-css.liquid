@@ -1,0 +1,84 @@
+{{ 'jquery-ui.min.css' | asset_url | stylesheet_tag }} 
+{{ 'jquery-ui.min.js' | asset_url | script_tag }}
+
+<style>
+.photo-box .area-photo-upload, .area-crop-upload{
+     align-items: center;
+    padding: 0 10px;
+    height: 3rem;
+    margin: 1rem 0;
+    border: 1px solid #000;
+    border-radius: 4px;
+    color: #000;
+    background: #fff!important;} 
+  .el-upload button{background: transparent;
+    border: none;
+    color: #fff;
+    text-align: center;
+    text-transform: capitalize;
+    display: inline-block;} 
+    .text-input-container {
+    position: relative;
+    overflow: hidden;
+    height: 3rem;
+    align-items: center;
+    padding: 0;
+    border: 1px solid #000;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    
+}
+  .text-input-container input{position: absolute;
+    border: none;
+    border-radius: 0; 
+    width: calc(100% - 16px); 
+    height: 100%;
+    padding: 0 8px;
+    color: #000;}
+  .text-input-container .leftnum{    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);}
+  .dialog-footer{
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0 0;}
+  .dialog-footer .el-button{    padding: 1rem 2rem;
+    font-size: 14px;
+    border-radius: 3px;
+  }
+  .el-button--primary,.el-button--primary.is-active, .el-button--primary:active{
+    background-color: #e74c3c!important;
+    border-color: #e74c3c!important;}
+  .el-dialog{min-width:543px}
+  .product-txt-label{   
+    margin-top: 1rem;
+    font-size: 1rem;
+    margin-bottom: .5rem}
+  .product-txt-label span{   
+    font-size: 1rem;} 
+  .el-dialog__headerbtn .el-dialog__close{font-size:28px}
+ 
+  .el-upload--text{cursor: pointer;
+    background: #000;
+    color: #fff;
+    border-radius: 25px;
+    padding: 3px .5rem;
+    width: auto;
+    text-align: center;
+    text-transform: capitalize;
+    display: inline-block;
+    font-size: .9rem;}
+  .text-container{margin-bottom:1rem}
+  .photo-crop-container{margin-bottom:1rem}
+  @media(max-width:768px){
+    .el-dialog  {min-width:100%}
+    .product-txt-label{    margin-top: 0;
+    font-size: .9rem;
+    margin-bottom: .5rem;}
+    .product-txt-label span {
+    font-size: 0.8rem;
+}
+.text-input-container, .area-crop-upload{height:2.5rem}
+  }
+</style>

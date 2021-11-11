@@ -1,0 +1,96 @@
+{%- include 'func-verify_rules', contain: section.settings.contain, detail: product -%}
+{% unless verify__rules_result == false %}
+<style>
+.product-page-countdown-section{
+    padding-top:25px ;color:{{ section.settings.color_time}};
+}
+.product-page-countdown-section  .countdown-section{
+    height: 100%;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+}
+.product-page-countdown-section span.ends{
+    color:{{ section.settings.color_text}};
+    font-size:1.2rem
+} 
+.product-page-countdown-section ul{
+  font-weight:600;
+DISPLAY: FLEX;
+align-items: flex-end;
+color:{{ section.settings.color_time}};
+} 
+.product-page-countdown-section span{
+margin:0 .1rem;
+  color:{{ section.settings.color_time}};
+width: 1.3rem;
+font-size: 1.2rem;
+display: inline-block;
+}
+  #countdowner{
+  border: 1px solid #ff5252;
+    padding: 3px 10px;
+    color: #ff5252;
+  }
+  #countdowner span{
+    color: #ff5252;
+  }
+  @media(max-width:640px){
+.product-page-countdown-section{
+    padding-top:0px
+}
+.product-page-countdown-section span{ 
+    margin:0 .1rem;  
+    width:1rem
+  } 
+  }
+</style>
+<div id="countdowner"></div>
+<script>
+//var timestamp = {{'now' | date: '%s' }} + 60 * 60 * 24;
+// 16:00 start
+var timestamp = ((new Date((new Date()).getFullYear(), (new Date()).getMonth(), (new Date()).getDate(), 16, 00, 00)).getTime() / 1000) + 24 * 3600;
+$('#countdowner').countdown({
+  end: timestamp,
+  format: '{{ 'product.countdown.ends' | t }}:<span>{hh}</span>h:<span>{ii}</span>m:<span>{ss}</span>s:<span>{m}</span>'
+});
+</script>
+{% endunless %}
+
+{% schema %}
+  {
+    "name": "产品页 - 倒计时",
+    "class": "product-page-countdown-section",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable",
+        "label": "开启"
+      },
+      {
+        "type":"color",
+        "id":"color_bg",
+        "label":"背景颜色",
+        "default":"#280f12"
+      },
+      {
+        "type":"color",
+        "id":"color_text",
+        "label":"文字颜色",
+        "default":"#fff"
+      },
+      {
+        "type":"color",
+        "id":"color_time",
+        "label":"时间颜色",
+        "default":  "#F70724"
+      },
+      {
+        "type": "textarea",
+        "id": "contain",
+        "label": "显示规则",
+        "info": "{\"handle\": \"a,b,c...\", \"sku\": \"C021,C022...\"}"
+      }
+    ]
+  }
+{% endschema %}

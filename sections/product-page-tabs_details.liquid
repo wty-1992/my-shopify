@@ -1,0 +1,73 @@
+<style>
+  .product-page-tabs_details-section {
+    padding: 10px;
+    padding-top:0;
+  }
+  .product-page-tabs_details-section .row{
+    margin-left:0;
+    margin-right:0;
+    margin: 17px 0;
+  }
+  .product-page-tabs_details-section .rownew {
+    padding: 12px 0px;
+    font-size:14px;
+    color:#000;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+  }
+  .product-page-tabs_details-section .rownew div:last-child{
+    text-align:right;
+  }
+  .product-page-tabs_details-section .rownew .col{
+    color:#000;
+  }
+  .product-page-tabs_details-section  .row .col:nth-child(2){
+    text-align: right;
+  }
+</style>
+{%- assign visableKey = section.settings.fields | join: ',' -%}
+{%- assign visable = product.metafields["global"]["cattribute"] | split: ';' -%}
+{%- comment -%}
+{% for item in visable %}
+  {%- assign itemkey = item | split: ':' -%}
+  {%- assign key = itemkey | first -%}
+  {%- assign value = itemkey | last -%}
+  <div class="rownew">
+      <div class="col">{{key | camelcase}}</div>
+      <div class="col">{{value}}</div>
+  </div>
+{%- endfor -%}
+{%- endcomment -%}
+<div class="asdasdasd" style="display:none">
+  {{product.metafields["global"]}}
+</div>
+{% for item in product.metafields["global"] %}
+{%- assign key = item | first -%}
+{%- assign value = item | last -%}
+{%- if visableKey contains key and value != "" -%}
+    <div class="row">
+        <div class="col">{{key | replace: "-", " "}}</div>
+        <div class="col">{{value}}</div>
+    </div>
+{%- endif -%}
+{%- endfor -%}
+{% schema %}
+{
+  "class": "product-page-tabs_details-section",
+  "name": "产品页 - 描述区域 - 属性",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content":"product-page-tabs_details"
+    },
+    {
+      "type": "text",
+      "id": "fields",
+      "label": "显示的属性",
+      "default": "color,material,technics",
+      "info": "多个用逗号分隔，必须小写。"
+    }
+  ]
+}
+{% endschema %}

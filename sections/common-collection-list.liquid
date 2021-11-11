@@ -1,0 +1,109 @@
+<style>
+.collection-navigation__collections_container{
+	margin-top:85px;
+}
+.page-width-t{
+	width: calc(100%);
+    margin: 0 auto;
+}
+.collection-navigation__collection.collection-item{text-align: center;}
+@media(max-width:768px){
+.page-width-t{
+	width:100%;
+    margin: 0 auto;
+}
+.collection-navigation__collections_container{
+	margin-top: 45px;
+}
+
+}
+</style>
+<div class="page-width-t">
+    {% if section.settings.title != blank %}
+    <div class="collection-navigation__title">
+		<span>{{ section.settings.title }}</span>
+    </div>
+    {% endif %}
+    {% if section.settings.pc_image != blank %}
+    <div class="collection-navigation__title">
+      <picture class="small--hide">
+        {%- assign image = section.settings.pc_image -%}
+        {% assign resize = image.width | append: 'x' | append: image.height %}
+        <img data-src="{{ image.src  | img_url:resize}}" class="lazyload" />
+      </picture> 
+      <picture class="medium-up--hide">
+        {%- assign image = section.settings.mb_image -%}
+        {% assign resize = image.width | append: 'x' | append: image.height %}
+        <img data-src="{{ image.src  | img_url:resize}}" class="lazyload" />
+      </picture> 
+    </div>
+    {% endif %}
+    <ul class="collection-navigation__collections_container">
+        {%- for block in section.blocks -%} 
+        <li class="collection-navigation__collection collection-item">
+            <a {% unless block.settings.url==blank %} href="{{block.settings.url}}" {% endunless %}>
+                <picture class="small--hide">
+                    <img data-src="{{ block.settings.image_pc  | img_url:'master' }}" class="lazyload" />
+                </picture> 
+                <picture class="medium-up--hide">
+                    <img data-src="{{ block.settings.image_mb | img_url:'master' }}" class="lazyload" />
+                </picture> 
+            </a>
+        </li>
+        {%- endfor -%}
+    </ul>
+</div>
+{% schema %}
+  {
+    "name": "通用 - 集合列表",
+	"class":"common-collection-list-section",
+	"settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "标题",
+        "default": "集合导航"
+      },
+      {
+        "type": "image_picker",
+        "id": "pc_image",
+        "label": "PC图片" 
+      },
+      {
+        "type": "image_picker",
+        "id": "mb_image",
+        "label": "MB图片" 
+      }
+	],
+    "blocks":[
+      {
+        "type": "collection",
+        "name": "集合",
+        "settings":[
+          {
+            "type": "image_picker",
+            "id": "image_pc",
+            "label": "选择图片-PC"
+          }, 
+          {
+            "type": "image_picker",
+            "id": "image_mb",
+            "label": "选择图片-MB"
+          },
+          {
+            "type":"url",
+            "id":"url",
+            "label":"链接地址"
+          }
+        ]
+      }
+    ],
+	"presets": [
+	  {
+		"name": "通用 - 集合列表",
+		"category": "通用"
+	  }
+	]
+
+  }
+{% endschema %}

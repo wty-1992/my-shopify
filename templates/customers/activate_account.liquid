@@ -1,0 +1,58 @@
+<style>
+.form-vertical input,
+.form-vertical select,
+.form-vertical textarea {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.form-vertical input[type=radio],
+.form-vertical input[type=checkbox] {
+  display: inline-block;
+  width: auto;
+  margin-right: 5px;
+}
+.form-vertical input[type=submit],
+.form-vertical .btn {
+  display: inline-block;
+}
+.text-link {
+  display: inline;
+  border: 0 none;
+  background: none;
+  padding: 0;
+  margin: 0;
+}
+.link-accent-color {
+	color: #333;
+	text-decoration: none;
+	transition: color 0.1s ease-in,background-color 0.1s ease-in
+}
+</style>
+<div class="page-width">
+  <div class="grid">
+
+    <div class="grid__item medium-up--one-half medium-up--push-one-quarter">
+      <div class="content-block text-center">
+        <h1>{{ 'customer.activate_account.title' | t }}</h1>
+        <p>{{ 'customer.activate_account.subtext' | t }}</p>
+
+        <div class="form-vertical">
+          {% form 'activate_customer_password' %}
+
+            {{ form.errors | default_errors }}
+
+            <label for="CustomerPassword" class="label--hidden">{{ 'customer.activate_account.password' | t }}</label>
+            <input type="password" value="" name="customer[password]" id="CustomerPassword" placeholder="{{ 'customer.activate_account.password' | t }}">
+
+            <label for="CustomerPasswordConfirmation" class="label--hidden">{{ 'customer.activate_account.password_confirm' | t }}</label>
+            <input type="password" value="" name="customer[password_confirmation]" id="CustomerPasswordConfirmation" placeholder="{{ 'customer.activate_account.password_confirm' | t }}">
+
+            <input type="submit" class="btn" value="{{ 'customer.activate_account.submit' | t }}">
+            <input type="submit" class="text-link link-accent-color" name="decline" value="{{ 'customer.activate_account.cancel' | t }}">
+          {% endform %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

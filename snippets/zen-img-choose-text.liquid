@@ -1,0 +1,342 @@
+{% assign defaultNum = '' %}
+{% for tag_item in product.tags %}
+  {% if tag_item contains "custom-patent-totebag-" %}
+    {% assign defaultNum = tag_item | strip | replace: "custom-patent-totebag-", "" %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+{% assign sku = product.selected_or_first_available_variant.sku %}
+{% unless product.tags contains 'custom-sku-nosplit' %}
+{% if product.selected_or_first_available_variant.sku contains "-" %}
+  {% assign skuArr = product.selected_or_first_available_variant.sku | split: "-"%}
+  {% assign sku = skuArr[0] %}
+{% endif %}
+{% endunless %}
+{% assign customOpt = '{"beginNum":"0","templateNum":"0","templateName":"' | append:  sku | append: '","type":"Choose the frog:","productImageUrl":"1"}' %}
+
+<!-- <input type="hidden" class="productValue"  value="B"> -->
+<div class="template-container" style="display:none;">
+  <div class="template-title"></div>
+  <div class="template-list">
+  </div>
+</div>
+
+<div id="t_name"></div>
+<div id="t_fonts"></div>
+<div id="t_fontColors"></div>
+<input type="hidden" id="customInfo" name="properties[customInfo]" value="">
+<input type="hidden" class="productImageUrl"  value="">
+<script>
+  var sku = '{{sku}}';
+  var product_data = {{product | json}};
+  var remarkNumber='';
+  var Alist =["Chalkboard","Blueprint","NavyBlue","Black"];// 白线
+  var colorObj = $('.single-option-selector[data-name="Choose The Color"]');
+
+  window.addEventListener('VARIANT_CHANGE', function(event){  
+
+//     if(colorObj.length > 0){
+//       var v = colorObj.val();
+//       var index1 = $.inArray(v, Alist);
+//       if(index1=="-1"){
+//         $('.productValue').val("B")
+//       }else{
+//         $('.productValue').val("W")
+//       }
+//     }
+      var cVariant = event.detail;
+      if(sku != cVariant.sku){
+        if(cVariant.featured_image){
+    //       var  productImageUrl = cVariant.featured_image.src;
+          var  productImageUrl = $('.product-images #product-gallery-module-product .swiper-slide-active img').attr('src');
+console.log('productImageUrl', productImageUrl);
+          $('.productImageUrl').val(productImageUrl);
+        }
+      }
+        
+
+  })
+   
+  var _zenSku = sku;
+  var imgBaseUrl = "https://pic.stylelab.com/js/img/";
+/*
+e
+{{product.metafields['global'] | json}}
+e
+*/ 
+  var jsonCustom = {};
+  {% if product.metafields["global"]["cattribute"] or product.metafields["globals"]["cattribute"] %}
+  	jsonCustom = '{{ product.metafields["global"]["cattribute"] }}' || '{{ product.metafields["globals"]["cattribute"] }}';
+    if(jsonCustom){
+      jsonCustom = JSON.parse(jsonCustom);
+    }
+  {% else %}  
+     jsonCustom = JSON.parse('{{ customOpt }}');
+  {% endif %}
+  
+  var tempNum = typeof jsonCustom.templateNum != 'undefined' ? parseInt(jsonCustom.templateNum) : 20; //{%comment%} 图片列表循环结束值.{%endcomment%}
+  var beginNum = typeof jsonCustom.beginNum != 'undefined' ? parseInt(jsonCustom.beginNum) : 101; // {%comment%}文件数量来确认此项.{%endcomment%}
+  var productImageUrlNum = typeof jsonCustom.productImageUrl != 'undefined' ? parseInt(jsonCustom.productImageUrl) : 0; {%comment%}1 变体图 0 主图{%endcomment%}
+  var tempName = typeof jsonCustom.templateName != 'undefined' ? jsonCustom.templateName : "pillow"; // {%comment%}文件夹中的图片名称来确认此项.  制作图片的时候也是随机取名. 表示前缀.{%endcomment%}
+  var coorsObj = typeof jsonCustom.coors != 'undefined' ? jsonCustom.coors : ''; // {%comment%}刻字列表信息{%endcomment%}
+  var tempType = typeof jsonCustom.type != 'undefined' ? jsonCustom.type : '{{ "variant.title.Choose_your_style" | t }}'; // {%comment%}图片列表标题.{%endcomment%}
+  var fontsObj = typeof jsonCustom.fonts != 'undefined' ? jsonCustom.fonts : '';
+  var fontsColorsObj = typeof jsonCustom.fontsColors != 'undefined' ? jsonCustom.fontsColors : '';
+  var fontsTitle = typeof jsonCustom.fontsTitle != 'undefined' ? jsonCustom.fontsTitle : '{{ "zen.general.font" | t }}';
+  var fontsColorsTitle = typeof jsonCustom.fontsColorsTitle != 'undefined' ? jsonCustom.fontsColorsTitle : '{{ "variant.title.Color" | t }}';
+  var textFormat = typeof jsonCustom.textFormat != 'undefined' ? jsonCustom.textFormat : '_sunzi_remark'; // {%comment%}_sunzi_remark  or  _sunzi_text  刻字传输各式{%endcomment%}
+  
+      
+  var skuSuffix =  typeof jsonCustom.skuSuffix != 'undefined' ? jsonCustom.skuSuffix : ''; // {%comment%}循环图片名称sku变体后缀 ABCDEFG...  -- 他需要隐藏颜色变体{%endcomment%}
+      if(Array.isArray(skuSuffix)){ // 
+        beginNum = 0;
+        tempNum = skuSuffix.length-1;
+      }
+  var chaotic = typeof jsonCustom.chaotic != 'undefined' ? jsonCustom.chaotic : ''; // {%comment%}循环图片名称 对应 传给erp 图片号码.{%endcomment%}
+  {% if defaultNum !=""%}
+  var defaultnum= '{{defaultNum}}'; 
+  {% else %}
+  var defaultnum= beginNum; 
+  {% endif %}
+  $('.template-title').html(tempType)
+  
+  if(productImageUrlNum==1){
+console.log('productImageUrlNum=1');
+    $('.productImageUrl').val('{{product.selected_or_first_available_variant.featured_image.src|img_url: '600x600'}}'); {%comment%}如果需要变体图{%endcomment%}
+  }
+  $(function(){
+
+    
+    
+   if(coorsObj){
+	var t_name_str = '';
+
+    coorsObj.forEach(function(v, i){
+      var limit = v.limit || 20;
+      var label = v.label || "{{ "variant.title.custom_text" | t }}";
+      var placeholderText = v.placeholder || "";
+      
+      t_name_str += '<div class="label-input-container">';
+      if(label){
+      	t_name_str += '<label class="product-txt-label" for="fonttext">'+label+':</label>';
+      }
+      
+      t_name_str += '<div class="text-input-container"><input type="text" class="fonttext" name="fonttext" maxlength="'+limit+'" value=""  oninput="changeText('+i+',this,'+limit+')" placeholder="'+placeholderText+'"/>';
+      t_name_str += '<div class="leftnum" id="leftnumbox'+i+'"><span id="leftnum'+i+'">'+limit+'</span> {{ "zen.general.left" | t }}</div></div></div>';
+    });
+	
+    $('#t_name').html(t_name_str);
+   }
+    
+    if( (tempNum-beginNum)>0 ){ // 图片列表
+      $('.template-container').show();
+        var skuSuffixStr = '';
+      	var tempHtml = '';
+      	var tempHtml_default = '';
+        
+        var i = 0;
+        for(var _i = beginNum;_i<=tempNum;_i++){
+          if(Array.isArray(skuSuffix)){skuSuffixStr = skuSuffix[i];}
+          var img_i = _i<10?'0'+_i:_i;
+          if(chaotic!=''){img_i = chaotic[_i]}
+          if(_i == defaultnum){
+            tempHtml_default = `<label class="template-label label-active bigphoto" data-skusuffix="${skuSuffixStr}" data-val="${img_i}" data-i="${i}">`;
+        	tempHtml_default += '<img src="'+imgBaseUrl+tempName+skuSuffixStr+'-'+img_i+'.png?'+Math.random()+'"/></label>';
+          }else{
+            tempHtml += `<label class="template-label bigphoto" data-skusuffix="${skuSuffixStr}" data-val="${img_i}" data-i="${i}">`;
+            tempHtml += '<img src="'+imgBaseUrl+tempName+skuSuffixStr+'-'+img_i+'.png?'+Math.random()+'"/></label>';
+          }
+          i++;
+        }
+
+        $('.template-list').html(tempHtml_default+tempHtml);
+        $(".template-label").on("click",function(){
+            remarkNumber=$(this).data('val')+'';
+            $(".template-label").removeClass("label-active");
+            $(this).addClass("label-active");
+        });
+        $(".label-active").click()
+    }
+    
+    if(fontsObj){ // 字体列表 
+      let f = `<div class="text-font"><p>${fontsTitle}:</p><ul id="textfont">`;
+      $.each(fontsObj, function (i, v){
+        let checked = i==0?' checked ':'';
+        let active = i==0?' active ':'';
+        
+        f += `<li class="font-click ${active}"><p style="font-family:${v};">abc</p><input class="font-radio" type="radio" name="font" value="${v}" ${checked}></li>`;
+        loadCustomFonts(v);
+      });
+      f += `</ul></div>`;
+      $('#t_fonts').html(f);
+     $(".font-click").click(function(){
+       $(this).addClass("active").siblings().removeClass("active");
+    	$(this).find(".font-radio").prop("checked", true);
+   	}) 
+    }
+    
+    if(fontsColorsObj){ // 字体颜色列表
+      let c = `<div class="text-color"><p>${fontsColorsTitle}:</p><ul id="textfontColor">`;
+      $.each(fontsColorsObj, function (i, v){
+        let checked = i==0?' checked ':'';
+        let active = i==0?' active ':'';
+        c += `<li class="radio-click ${active}"><p style="background-color:${v};"></p><input class="radios" type="radio" name="fontColor" value="${v}" ${checked}></li>`;
+      });
+      c += `</ul></div>`;
+      $('#t_fontColors').html(c);
+      $(".radio-click").click(function(){
+        $(this).addClass("active").siblings().removeClass("active");
+    	$(this).find(".radios").prop("checked", true);
+   	}) 
+    }
+            
+    var modal = new tingle.modal({
+      footer: true,
+      stickyFooter: false,
+      onOpen: function() {
+      },
+      onClose: function() {
+        console.log('modal closed');
+      },
+      beforeClose: function() {
+        return true; // close the modal
+      }
+    });
+    
+    modal.addFooterBtn('close', 'tingle-btn tingle-btn--danger', function() {
+      modal.close();
+    });
+    $(".bigphoto").on("click",function(){
+      
+      if(skuSuffix!=''){ // 隐藏变体
+        var dom = $('.color-box-radio input[type="radio"]');
+        
+        if(dom.length>0){
+          let i = $(this).data('i');
+          console.log(dom.eq(i).val());
+          let colorValue = dom.eq(i).val();
+          setShopifyVariant('{{ "variant.title.Color" | t }}',colorValue);
+        }
+      }
+          remarkNumber=$(this).data('val')+'';
+          $(".template-label").removeClass("label-active");
+          $(this).addClass("label-active");
+          console.log("$(this).data('skuSuffix')", $(this).data('skusuffix'));
+          let skuSuffixStr = $(this).data('skusuffix');
+      	  let cHtml = '<div class="news-date-confirm-content"><img src="'+imgBaseUrl+tempName+skuSuffixStr+'-'+remarkNumber+'.png?'+Math.random()+'"/>'; 
+          cHtml += '</div>';        
+          modal.setContent(cHtml);
+          modal.open();
+    });
+//     $(".template-label").click()
+      
+    
+    if(skuSuffix!=''){ // {%comment%}隐藏color变体{%endcomment%}
+    
+      if($("#color-box").length > 0){
+        $("#color-box").hide();
+        
+        $('.color-box-radio input[type="radio"]').each(function(index){
+          if($(this).attr("checked")){
+            
+            let img_dom = $('.template-label[data-i="'+index+'"]');
+            console.log(img_dom.html());
+            remarkNumber=img_dom.data('val')+'';
+
+            $(".template-label").removeClass("label-active");
+            img_dom.addClass("label-active");
+          }
+        });
+        
+      }
+
+    }
+  })
+
+  function setShopifyVariant(markup, val){
+    $(".selector-wrapper label").each(function( index ) {
+      if($.trim($(this).text()).indexOf(markup) > -1){
+        $(this).next('select').val(val).trigger('change');
+      }
+    });
+  }
+  
+  function changeText(i,obj,limitv){
+    var objLenOld = $(obj).val().length;
+    var objVal = $(obj).val().replace(/[\r\n]/g,"");
+    var objLen = objVal.length;
+
+    if(objLen < objLenOld){
+      $(obj).attr('maxlength',limitv + objLenOld - objLen);
+    }else{
+      $(obj).attr('maxlength',limitv);
+    }
+
+    if(objLen > limitv){
+      var lenDiff = objLen - limitv;
+      $(obj).val($(obj).val().substr(-1,lenDiff));
+      $('#leftnum'+i).text(0);
+    }else{
+      $('#leftnum'+i).text(parseInt(limitv) - objLen);
+    }
+    
+    if(objLen > 0){
+    	$(".text-input-container").eq(i).css("border-color","#e8eced");
+    }
+  }
+    
+  Product.validators.push(
+    () => {
+      return validateFormData();
+    }
+  );
+    
+ function validateFormData() {
+   
+    var submit_flag = true;
+    var zenCustomJson = {};
+   if(textFormat == '_sunzi_text'){
+     zenCustomJson['_sunzi_text'] = {"value":""};
+   }else{
+   	zenCustomJson['_sunzi_remark'] = {};
+   }
+    
+    if(coorsObj){
+      var textArr = [];
+      $('.fonttext').each(function(i,value){
+        if($.trim($(this).val()) == ''){
+          submit_flag = false;
+          $(".text-input-container").eq(i).css("border-color","red");
+        }else{
+        	textArr.push($(this).val());
+        }
+      });
+      
+    }
+   
+    if(submit_flag){
+      if(textFormat == '_sunzi_text'){
+      	zenCustomJson['_sunzi_text']['value'] = textArr.join(' | ');
+      }else{
+        zenCustomJson['_sunzi_remark']['number'] = remarkNumber;
+        if(coorsObj){zenCustomJson['_sunzi_remark']['kezi'] = textArr.join(' | ');}
+        if(fontsObj){zenCustomJson['_sunzi_remark']['ziti'] = $('#t_fonts .text-font input[name="font"]:checked').val();console.log('fontsObj---', zenCustomJson['_sunzi_remark']);}
+        if(fontsColorsObj){zenCustomJson['_sunzi_remark']['sezhi'] = $('#t_fontColors .text-color input[name="fontColor"]:checked').val(); console.log('fontsColorsObj---', zenCustomJson['_sunzi_remark']);}
+      }
+        
+      
+    }   
+     if(productImageUrlNum == '1'){
+       if($('.productImageUrl').val()==''){submit_flag=false;}
+       zenCustomJson['_sunzi_effect'] =  $('.productImageUrl').val(); // 变体图
+     }else{
+       zenCustomJson['_sunzi_effect'] = "https:"+'{{product.images[0]|img_url: '600x600'}}'; // 主图
+     }
+    $('#customInfo').val(JSON.stringify(zenCustomJson));   
+console.log('submit_flag', submit_flag)
+    return submit_flag;
+
+  }
+
+</script>

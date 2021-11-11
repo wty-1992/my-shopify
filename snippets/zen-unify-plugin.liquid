@@ -1,0 +1,89 @@
+<script>
+/* 
+ * Others: 加载字体 
+ * Date:   2021.06.16
+ * Author: Coman 420500235@qq.com
+ * Parame: ["AIV1","AIV2","AIV3"...](array) or "AIV1"(string)
+*/
+function loadCustomFonts(fontArr){ 
+    let css = ``;
+    fontArr = $.isArray(fontArr)?fontArr:[fontArr];
+    $.each(fontArr, function(i, v){css+=`@font-face{font-family:'${v}';src:url('https://pic.stylelab.com/fonts/${v}.woff?${new Date().getTime()}') format('woff');font-weight:normal;font-style:normal}`;});
+    $('#customFontStyle').length>0?$('#customFontStyle').append(css):$('<style>',{id:'customFontStyle'}).css({}).text(css).appendTo('body');
+}
+/* 
+ * Others: 格式化sku 
+ * Date:   2021.04.27
+ * Author: Coman 420500235@qq.com
+ * Parame: sku
+*/
+function formatSku(sku){
+    {% if product.tags contains "custom-sku-nosplit" %}
+  	if(sku.indexOf('-') > -1){
+      let skuArr = sku.split('-');
+      sku = skuArr[0];
+    }
+    {% endif %}
+    return sku;
+}
+</script>
+{% comment %}
+	{{product.tags}} 使用这个标签判断的是包含(全等). {{productTags}}使用这个标签判断的是包含(即可).
+{% endcomment %} 
+
+{% if product.tags contains "custom-unify-multi-custom-preview" %} 
+	{% comment %}多传图+多刻字（可预览）Anna 2021-8-6{% endcomment %}{% comment %}不可更改{% endcomment %}
+    {% include 'zen-unify-multi-custom-preview-css' %}
+	{% include 'zen-unify-multi-custom-preview' %}
+{% elsif product.tags contains "custom-unify-multi-temp-preview" %}
+	{% comment %}多模板毯子功能 Anna 2021-8-16{% endcomment %}{% comment %}不可更改{% endcomment %}
+    {% include 'zen-unify-multi-temp-preview-css'%}
+    {% include 'zen-unify-multi-temp-preview'%}
+{% elsif product.tags contains "custom-unify-multi-photo-carving" %}
+	{% comment %}可配置的(ai底图)传图+(拖动)刻字 - 可配置多sku属性信息.Coman 2021-8-12（Anna 2021-9-24 更新）{% endcomment %}{% comment %}不可更改{% endcomment %}
+    {% include 'zen-unify-multi-photo-carving-css'%}
+    {% include 'zen-unify-multi-photo-carving'%}
+{% elsif product.tags contains "custom-unify-multi-photo-text" %}
+	{% comment %} 2 可以配置的遮罩图传图、切图传图，文字输入框组合，并可以根据变体数值切换数量 alice 2021-8-18{% endcomment %}{% comment %}用的产品很多，如改动群里通知{% endcomment %}
+    {% include 'zen-unify-option-multi-photo-text-css'%}
+    {% include 'zen-unify-option-multi-photo-text'%}
+{% elsif product.tags contains "custom-unify-crop-carving" %}
+	{% comment %} 切图传图，可选是否刻字（袜子） alice 2021-8-24{% endcomment %}
+    {% include 'zen-unify-crop-carving-css'%}
+    {% include 'zen-unify-crop-carving'%}
+{% elsif product.tags contains "custom-unify-temp-text" %}
+	{% comment %} 多模板+刻字 Anna 2021-8-26{% endcomment %}
+    {% include 'zen-unify-temp-text-css'%}
+    {% include 'zen-unify-temp-text'%}
+{% elsif product.tags contains "custom-unify-couple-crop" %}
+	{% comment %}传图情侣内裤 2021-8-26 alice{% endcomment %}
+	{% include 'zen-unify-couple-set-css' %}
+  	{% include 'zen-unify-couple-set' %}
+{% elsif product.tags contains "custom-unify-calendar-crop" %} 
+	{% comment %}传图+日历钥匙扣 切图传图 {% endcomment %}
+	{% include 'zen-unify-calendar-crop-css' %}
+	{% include 'zen-unify-calendar-crop' %}
+{% elsif product.tags contains 'custom-unify-photo' %}
+	{% comment %}photo有ai图方式单图 :APK001AX01 -2021.09.17- Coman {% endcomment %}
+	{% include 'zen-unify-single-photo-css' %}
+	{% include 'zen-unify-single-photo' %}
+{% elsif productTags contains "custom-unify-mandatory-photo-carving" %}
+	{% comment %}photo有ai图方式单图+输入框刻字 : -2021.09.17- Coman {% endcomment %}
+	{% include 'zen-unify-mandatory-photo-text-css' %}
+	{% include 'zen-unify-mandatory-photo-text' %}
+{% elsif productTags contains 'custom-unify-multi-crop-new'%}
+	{% comment %}可控制切图数量/输入框数量-新字段 -2021.09.17- Coman {% endcomment %}
+	{% include 'zen-unify-multi-crop-new' %}
+{% elsif productTags contains "custom-unify-input" %}
+	{% comment %}可控制输入框刻字(or 小青蛙可选图片 )  -2021.09.17- Coman {% endcomment %}
+	{% include 'zen-unify-text-controlled-css' %}
+	{% include 'zen-unify-text-controlled' %}
+{% elsif productTags contains "custom-unify-crop-code" %}
+	{% comment %}切图传图+生成二维码图片  2021-9-18 alice {% endcomment %}
+	{% include 'zen-unify-crop-code-css' %}
+	{% include 'zen-unify-crop-code' %}
+{% elsif productTags contains 'custom-unify-multi-photocarving' %} 
+	{% comment %}photo有ai图方式+拖动刻字 :AX003 . 可配置数量(传图+刻字) 2021.09.23 Coman {% endcomment %}
+	{% include 'zen-unify-multi-photocarving-css' %}
+	{% include 'zen-unify-multi-photocarving' %}
+{% endif %}

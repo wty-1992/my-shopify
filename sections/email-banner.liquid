@@ -1,0 +1,635 @@
+{% comment %}
+活动页如需改版请在这个文件里添加css文件 例如：
+{% if handle == 'ade-demo' %}
+	{{'ade-demo.scss.css' | asset_url | stylesheet_tag }}
+{% endif%}
+{% endcomment %}
+<style>
+.pages-banner-pc{
+  display:block;
+  margin: 0 auto;
+}
+.pages-coupon-banner-pc{
+  display:block;
+  margin: 0 auto;
+}
+.pages-banner-mb{display:none;}
+.pages-coupon-banner-mb{display:none;}
+@media(max-width:768px){
+  .pages-banner-pc{display:none;}
+  .pages-banner-mb{display:block;}
+  .pages-coupon-banner-pc{display:none;}
+  .pages-coupon-banner-mb{display:block;}
+}
+#banner_text{
+  width:55%;
+  margin: 0 auto;
+  list-style: none;    
+  padding: 10px;
+  text-align: center;
+  font-size: 30px;
+  min-width:1080px;   
+}
+#banner_text li{ 
+  line-height: unset;
+  margin:10px;
+}
+#banner_text .banner_firKid{
+  font-size: 42px;
+  letter-spacing: 6px;
+  line-height: unset;
+}
+.banner_text .banner_firKid span{letter-spacing: -4px;}
+.banner_text .banner_fouKid span{padding: 5px 15px;border-radius: 20px;font-weight: 600;letter-spacing: 1px;}
+#banner_text .banner_font_size{font-size:16px;}
+.banner_discount .banner_secKid,.banner_discount .banner_fouKid span{letter-spacing: 5px;}
+/* 满减 */
+#banner_theme{
+  width:60%;
+  margin: 0 auto;    
+  padding: 10px;
+  text-align: center;
+  font-size: 30px;
+  min-width: 750px;
+}
+.banner_theme{font-size: 42px;}
+#banner_theme .banner_kid_theme{font-size: 16px;}
+#banner_theme .banner_kid_last{font-size: 22px;}
+#banner_theme .banner_ul_box{width:31%;display:inline-block;list-style: none;margin: 0;padding: 0;}
+#banner_theme .banner_ul_box li{margin:10px 0;}
+#banner_theme .banner_ul_box li:first-child{line-height: unset;}
+.cms-coupons{display:none;}
+.edm-jg{
+  top: 60px;
+  pointer-events: none;
+  display: none;
+  padding: 25px;
+  width: 100%;
+  text-align: center;
+  font-size: 16px;
+  color: #fff;
+  background: #000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  opacity: 0;
+  transition: all .7s .2s cubic-bezier(0.435, 0.080, 0.080, 1.000);
+}
+@media(max-width:640px){
+  .cms-coupons{
+    display:block;
+    background: #fff;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 5px 0 5px 0;
+    z-index: 8;
+    position: relative;
+    text-align: center;
+    box-shadow: 0 0 4px rgba(0,0,0,.1);
+    -webkit-box-shadow: 0 0 4px rgba(0,0,0,.1);
+    -moz-box-shadow: 0 0 4px rgba(0,0,0,.1);
+  }
+  .cms-coupons .emailbtn{
+    padding: 0;
+    border: none;
+    font-size: 18px;
+    color: #000;
+    text-transform: uppercase;
+    border-radius: 50px;
+    font-weight: 600;
+    background: transparent;
+  }
+  .cms-coupons .emailbtn span{
+    text-decoration: underline;
+  }
+
+  .edm-jg.active{
+    opacity: 1;
+    top: 0;
+    display: inline-block;
+  }
+  .cms-coupons p{
+    font-weight: 400;
+    margin: 0px 0 5px;
+    text-align: center;
+    color: #0e2c4e;
+    text-transform: uppercase;
+    font-size: 12px;
+  }
+  #banner_text{
+    min-width: 100%;
+  }
+  #banner_text{
+    font-size: 15px;
+    min-width: 100%;
+    padding-bottom: 20px;
+  } 
+  #banner_text .banner_firKid{
+    font-size:24px;
+    letter-spacing: 6px;
+    line-height: unset;
+  }
+  #banner_text .banner_font_size {
+    font-size: 10px;
+  }
+  #banner_text .banner_fouKid{display:none;}
+
+  /* 满减 */
+  #banner_theme{min-width: 100%;}
+  #banner_theme .banner_ul_box li:first-child {
+    line-height: unset;
+    font-size: 15px;
+  }
+  #banner_theme .banner_kid_last {
+    font-size: 10px;
+  }
+  .banner_theme {
+    font-size: 30px;
+  }   
+}
+@media(max-width:320px){   
+  .banner_theme {
+    font-size: 25px;
+  }
+  #banner_text li {
+    line-height: unset;
+    font-size: 10px;
+  }
+  #banner_theme .banner_ul_box li:first-child {
+    line-height: unset;
+    font-size: 12px;
+  }
+  #banner_text .banner_firKid {
+    font-size: 19px;
+    line-height: unset;
+  }
+  .banner_kid_theme {
+    font-size: 13px;
+  }
+  #banner_theme .banner_kid_theme {
+    font-size: 13px;
+  }
+  #banner_text li {
+    margin: 0px; 
+  }
+}  
+</style>
+
+{% for block in section.blocks %}
+{% if block.type == 'text1' %}
+{% if handle == block.settings.handle %}
+<style>
+  .banner_bg_clolr{
+    background:{{ block.settings.style }};
+    background:-webkit-{{ block.settings.style }};
+    color: {{ block.settings.style_color }};
+  }
+  {{ block.settings.style_html }}
+  @media(max-width:768px){
+
+  }
+</style>
+<div class="banner_bg_clolr">
+  <!-- 第一套 特价  -->
+  <ul class="banner_sale banner_text" id="banner_text">
+    <li class="banner_firKid"><span>{{ block.settings.text1 }}</span></li>
+    <li class="banner_secKid">{{ block.settings.text2 }}</li>
+    <li class="banner_thiKid">{{ block.settings.text3 }}</li>
+    <li class="banner_fouKid banner_font_size"><span>{{ block.settings.text4 }}</span></li>
+    <li class="banner_fifKid banner_font_size">{{ block.settings.text5 }}</li>
+  </ul>
+</div>
+<div id="myReport" class="edm-jg"></div>
+<div class="cms-coupons">
+    <!-- 1. Define some markup --> 
+    <button class="emailbtn">{{ section.settings.code_btn }} <span>{{ block.settings.code }}</span></button>
+    <p>{{ section.settings.code_text }}</p>       
+    <!-- 2. Include library -->
+    {{ 'clipboard.min.js'  | asset_url | script_tag }}
+    <!-- 3. Instantiate clipboard -->
+    <script>
+    var clipboard = new Clipboard('.emailbtn',{
+        text: function(){
+            return '{{ block.settings.code }}';
+        }
+    });
+    clipboard.on('success', function(e){
+        if (jQuery.cookie('myReport')){
+            jQuery("#myReport").html("{{ section.settings.code_hint }}");
+        }
+        var cookietime = new Date();
+        cookietime.setTime(cookietime.getTime() + (2 * 60 * 60 * 1000));
+        jQuery.cookie('myReport','1',{path:'/', expires:cookietime});
+        jQuery("#myReport").addClass("active");
+        setTimeout("jQuery('#myReport').removeClass('active');",3000);
+    });
+    clipboard.on('error', function(e){
+        console.log(e);
+    });
+    </script>
+</div>
+{% endif%}
+{% endif%}
+{% if block.type == 'text2' %}
+{% if handle == block.settings.handle %}
+<style>
+  .banner_bg_clolr{
+    background:{{ block.settings.style }};
+    background:-webkit-{{ block.settings.style }};
+    color: {{ block.settings.style_color }};
+  }
+  {{ block.settings.style_html }}
+  @media(max-width:768px){
+
+  }
+</style>
+<div class="banner_bg_clolr">
+  <!-- 第二套 折扣 -->
+  <ul class="banner_discount banner_text" id="banner_text">
+    <li class="banner_secKid">{{ block.settings.text1 }}</li>
+    <li class="banner_firKid">{{ block.settings.text2 }}</li>
+    <li class="banner_fouKid banner_font_size discount_fouKid"><span>{{ block.settings.text3 }}</span></li>
+    <li class="banner_fifKid banner_font_size">{{ block.settings.text4 }}</li>
+  </ul>  
+</div>
+<div id="myReport" class="edm-jg"></div>
+<div class="cms-coupons">
+    <!-- 1. Define some markup --> 
+    <button class="emailbtn">{{ section.settings.code_btn }} <span>{{ block.settings.code }}</span></button>
+    <p>{{ section.settings.code_text }}</p>       
+    <!-- 2. Include library -->
+    {{ 'clipboard.min.js'  | asset_url | script_tag }}
+    <!-- 3. Instantiate clipboard -->
+    <script>
+    var clipboard = new Clipboard('.emailbtn',{
+        text: function(){
+            return '{{ block.settings.code }}';
+        }
+    });
+    clipboard.on('success', function(e){
+        if (jQuery.cookie('myReport')){
+            jQuery("#myReport").html("{{ section.settings.code_hint }}");
+        }
+        var cookietime = new Date();
+        cookietime.setTime(cookietime.getTime() + (2 * 60 * 60 * 1000));
+        jQuery.cookie('myReport','1',{path:'/', expires:cookietime});
+        jQuery("#myReport").addClass("active");
+        setTimeout("jQuery('#myReport').removeClass('active');",3000);
+    });
+    clipboard.on('error', function(e){
+        console.log(e);
+    });
+    </script>
+</div>
+{% endif%}
+{% endif%}
+{% if block.type == 'text3' %}
+{% if handle == block.settings.handle %}
+<style>
+  .banner_bg_clolr{
+    background:{{ block.settings.style }};
+    background:-webkit-{{ block.settings.style }};
+    color: {{ block.settings.style_color }};
+  }
+  {{ block.settings.style_html }}
+  @media(max-width:768px){
+
+  }
+</style>
+<div class="banner_bg_clolr">
+  <!-- 第三套 满减 -->
+  <div class="banner_discount banner_text" id="banner_theme">
+    <p class="banner_theme banner_theme_color">{{ block.settings.text1 }}</p>
+    <div>
+        <ul class="banner_ul_box">
+            <li>{{ block.settings.text2 }}</li>
+            <li class="banner_kid_theme">{{ block.settings.text3 }}</li>
+            <li class="banner_theme_color banner_kid_last">{{ block.settings.text4 }}</li>
+        </ul>
+        <ul class="banner_ul_box">
+            <li>{{ block.settings.text5 }}</li>
+            <li class="banner_kid_theme">{{ block.settings.text6 }}</li>
+            <li class="banner_theme_color banner_kid_last">{{ block.settings.text7 }}</li>
+        </ul>
+        <ul class="banner_ul_box">
+            <li>{{ block.settings.text8 }}</li>
+            <li class="banner_kid_theme">{{ block.settings.text9 }}</li>
+            <li class="banner_theme_color banner_kid_last">{{ block.settings.text10 }}</li>
+        </ul>
+    </div>
+  </div>  
+</div>
+<div id="myReport" class="edm-jg"></div>
+<div class="cms-coupons">
+    <!-- 1. Define some markup --> 
+    <button class="emailbtn">{{ section.settings.code_btn }} <span>{{ block.settings.code }}</span></button>
+    <p>{{ section.settings.code_text }}</p>       
+    <!-- 2. Include library -->
+    {{ 'clipboard.min.js'  | asset_url | script_tag }}
+    <!-- 3. Instantiate clipboard -->
+    <script>
+    var clipboard = new Clipboard('.emailbtn',{
+        text: function(){
+            return '{{ block.settings.code }}';
+        }
+    });
+    clipboard.on('success', function(e){
+        if (jQuery.cookie('myReport')){
+            jQuery("#myReport").html("{{ section.settings.code_hint }}");
+        }
+        var cookietime = new Date();
+        cookietime.setTime(cookietime.getTime() + (2 * 60 * 60 * 1000));
+        jQuery.cookie('myReport','1',{path:'/', expires:cookietime});
+        jQuery("#myReport").addClass("active");
+        setTimeout("jQuery('#myReport').removeClass('active');",3000);
+    });
+    clipboard.on('error', function(e){
+        console.log(e);
+    });
+    </script>
+</div>
+{% endif%}
+{% endif%}
+
+{% if block.type == 'banner' %}
+  {% if handle == block.settings.handle %}
+    <div class="collection-banner-slide swiper-slide">
+        <img data-src="{{ block.settings.pc_image | img_url: 'master' }}" class="lazyload pages-banner-pc" />
+        <img data-src="{{ block.settings.mb_image | img_url: 'master' }}" class="lazyload pages-banner-mb" />
+    </div>
+  {% endif%}
+{% endif%}
+{% endfor %}
+    
+{% schema %}
+{
+  "name": "banner",  
+  "class":"activity-template-banner",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "email-banner"
+    },
+    {
+      "type": "text",
+      "id": "code_btn",
+      "label": "剪切板按钮",
+	  "default":"Use Code:"
+    },
+    {
+      "type": "text",
+      "id": "code_text",
+      "label": "剪切板文案",
+	  "default":"Click to copy coupon"
+    },
+    {
+      "type": "text",
+      "id": "code_hint",
+      "label": "剪切板成功文案",
+	  "default":"Your coupon is copied successfully, please enter the coupon code before Checkout"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text1",
+      "name": "第一套配置",
+      "settings": [
+    	{
+		  "type": "text",
+          "id": "title",
+          "label": "哪个活动"
+	    },
+		{
+		  "type": "text",
+          "id": "handle",
+          "label": "活动url"
+	    },
+		{
+		  "type": "text",
+          "id": "code",
+          "label": "优惠券代码",
+	  	  "default":"SHE15"
+	    },
+		{
+		  "type": "text",
+          "id": "style",
+          "label": "背景色"
+	    },
+		{
+		  "type": "text",
+          "id": "style_color",
+          "label": "文字颜色"
+	    },
+		{
+		  "type": "text",
+          "id": "text1",
+          "label": "文案1"
+	    },
+		{
+		  "type": "text",
+          "id": "text2",
+          "label": "文案2"
+	    },
+		{
+		  "type": "text",
+          "id": "text3",
+          "label": "文案3"
+	    },
+		{
+		  "type": "text",
+          "id": "text4",
+          "label": "文案4"
+	    },
+		{
+		  "type": "text",
+          "id": "text5",
+          "label": "文案5"
+	    },
+		{
+		  "type": "html",
+          "id": "style_html",
+          "label": "样式代码"
+	    }
+
+      ]
+    },
+	{
+      "type": "text2",
+      "name": "第二套配置",
+      "settings": [
+    	{
+		  "type": "text",
+          "id": "title",
+          "label": "哪个活动"
+	    },
+		{
+		  "type": "text",
+          "id": "handle",
+          "label": "活动url"
+	    },
+		{
+		  "type": "text",
+          "id": "code",
+          "label": "优惠券代码",
+	  	  "default":"SHE15"
+	    },
+		{
+		  "type": "text",
+          "id": "style",
+          "label": "背景色"
+	    },
+		{
+		  "type": "text",
+          "id": "style_color",
+          "label": "文字颜色"
+	    },
+		{
+		  "type": "text",
+          "id": "text1",
+          "label": "文案1"
+	    },
+		{
+		  "type": "text",
+          "id": "text2",
+          "label": "文案2"
+	    },
+		{
+		  "type": "text",
+          "id": "text3",
+          "label": "文案3"
+	    },
+		{
+		  "type": "text",
+          "id": "text4",
+          "label": "文案4"
+	    },
+		{
+		  "type": "html",
+          "id": "style_html",
+          "label": "样式代码"
+	    }
+
+      ]
+    },
+	{
+      "type": "text3",
+      "name": "第三套配置",
+      "settings": [
+    	{
+		  "type": "text",
+          "id": "title",
+          "label": "哪个活动"
+	    },
+		{
+		  "type": "text",
+          "id": "handle",
+          "label": "活动url"
+	    },
+		{
+		  "type": "text",
+          "id": "code",
+          "label": "优惠券代码",
+	  	  "default":"SHE15"
+	    },
+		{
+		  "type": "text",
+          "id": "style",
+          "label": "背景色"
+	    },
+		{
+		  "type": "text",
+          "id": "style_color",
+          "label": "文字颜色"
+	    },
+		{
+		  "type": "text",
+          "id": "text1",
+          "label": "文案1"
+	    },
+		{
+		  "type": "text",
+          "id": "text2",
+          "label": "文案2"
+	    },
+		{
+		  "type": "text",
+          "id": "text3",
+          "label": "文案3"
+	    },
+		{
+		  "type": "text",
+          "id": "text4",
+          "label": "文案4"
+	    },
+		{
+		  "type": "text",
+          "id": "text5",
+          "label": "文案5"
+	    },
+		{
+		  "type": "text",
+          "id": "text6",
+          "label": "文案6"
+	    },
+		{
+		  "type": "text",
+          "id": "text7",
+          "label": "文案7"
+	    },
+		{
+		  "type": "text",
+          "id": "text8",
+          "label": "文案8"
+	    },
+		{
+		  "type": "text",
+          "id": "text9",
+          "label": "文案9"
+	    },
+		{
+		  "type": "text",
+          "id": "text10",
+          "label": "文案10"
+	    },
+		{
+		  "type": "html",
+          "id": "style_html",
+          "label": "样式代码"
+	    }
+
+      ]
+    },
+	{
+      "type": "banner",
+      "name": "banner图片",
+      "settings": [
+    	{
+		  "type": "text",
+          "id": "title",
+          "label": "哪个页面"
+	    },
+		{
+		  "type": "text",
+          "id": "handle",
+          "label": "页面url"
+	    },
+        {
+          "type": "image_picker",
+          "id": "pc_image",
+          "label": "PC 图片"
+        },
+        {
+          "type": "image_picker",
+          "id": "mb_image",
+          "label": "MB 图片"
+        }
+
+      ]
+    } 
+  ]
+}
+{% endschema %}
+

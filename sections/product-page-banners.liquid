@@ -1,0 +1,73 @@
+{% comment %}
+	add banner for product by lixiang 20190325 start
+{% endcomment %}
+<style>
+.prodcut-container.lazyloaded{
+  padding: 8px 0 8px;
+}
+@media(max-width:768px){
+  .prodcut-container.lazyloaded{
+    padding: 8px 0 10px;  
+  }
+}
+</style>
+{% assign current_variant = product.selected_or_first_available_variant %}
+{% assign productTags = product.tags | join:',' %}
+
+{% for block in section.blocks %}
+  {% if block.type =='headline' %}
+    {% if productTags contains block.settings.info_tag %}
+      <div class="prodcut-container lazyloaded"  data-sizes="auto" data-parent-fit="cover"  style="background-position: top center;text-align: center;  ">
+        <img src="{{block.settings.pbanner | img_url:'master'}}" class="small--hide hf" />
+        <img src="{{block.settings.pbannermb | img_url:'master'}}" class="medium-up--hide" />
+      </div>
+      {% break %}
+    {% endif %}
+  {% endif %}	
+{%endfor%}
+
+
+{% comment %}
+	add banner for product by lixiang 20190325 end
+{% endcomment %}
+
+{% schema %}
+{
+  "name": "产品页 - Banner图",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content":"product-page-banners"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "headline",
+      "name": "Product Banner",
+       "settings": [
+        {
+          "type": "text",
+          "id": "desc",
+          "label": "为哪类产品增加Banner"
+        },
+        {
+          "type": "text",
+          "id": "info_tag",
+          "label": "TAG标签"
+        },
+        {
+          "type": "image_picker",
+          "id": "pbanner",
+          "label": "选择图片"
+        },
+        {
+          "type": "image_picker",
+          "id": "pbannermb",
+          "label": "选择图片"
+        }
+      ]
+
+      }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,148 @@
+<style>
+.col-main.container, .main.container{ width:100%; padding:0;}
+.top{
+  margin: 60px 0; 
+  display:flex;
+  width: 100%; 
+}
+.top li{ list-style:none; text-align:center} 
+.text{ float: left;
+    width: 100%;
+    border: 1px solid #dddddd}
+.text .zbt{height: 60px;
+    line-height: 60px;
+    text-align: center;
+    color: #fe2659;
+    font-size: 26px;margin: 0;
+    text-transform: uppercase;}
+.text li{       list-style: none;
+    width: 100%;
+    display: flex;
+    border-top: 1px solid #ddd;
+    position: relative;
+    justify-content: start;}
+.text li .left{    font-size: 90px;
+    color: #fe2659;
+    text-align: center;
+    border-right: 1px solid #ddd;
+    WIDTH: 20%;}
+.text li .right{  padding: 20px 0 20px 20px;
+    min-height: 140px;
+    WIDTH: 80%;
+    text-align: left;}
+.text li .right h2{     font-size: 16px;
+    color: #000;
+    font-weight: 600;
+    text-align: LEFT;
+    margin: 20px 0;}
+.text li .right p{ font-size:14px; color:#666666;margin-bottom: 0;
+    line-height: 1.5;}
+.in-but{float: left;
+    text-align: center;
+    width: 100%;
+    margin: 30px 0;}
+.in-but .buyt{    display: inline-block;
+    background: #e60044; margin-right:30px;}
+.in-but .buyt span{     display: inline-block;
+    padding: 15px 40px;
+    color: #fff;
+    background: #e60044;
+    border: 1px solid #fff;
+    margin: 2px;}
+.in-but .buy2{ display: inline-block;
+    background: #ccc; margin-left:30px;}
+.in-but .buy2 span{     display: inline-block;
+    padding: 15px 40px;
+    color: #fff;
+    background: #ccc;
+    border: 1px solid #fff;
+    margin: 2px;}
+.cms-page-view .main-container {
+    padding: 0;
+}  .pc-aboutusimg{display:block}
+  .mb-aboutusimg{display:none} 
+@media (max-width: 768px)
+{
+  .mb-aboutusimg{display:block}
+  .pc-aboutusimg{display:none} 
+}
+@media (max-width: 640px)
+{
+.in-but .buy2 { margin-left: 15px; } 
+.top img{ width:100%;} 
+.top {
+    margin: 25px 0;
+    float: left;
+    width: 100%;
+}
+.text .zbt {
+    font-size: 20px;
+}
+.text li .right p {
+    font-size: 13px;
+    line-height: 1.2;
+}
+.text li .right h2 {
+    margin-bottom: 10px;
+    line-height: 1.2;
+}
+.in-but .buyt {
+    display: inline-block;
+    background: #e60044;
+    margin-right: 0px;
+}
+.cms-influencer-program .text .zbt { font-size: 16px }
+}
+@media (max-width: 320px) {
+.cms-influencer-program .text .zbt { font-size: 14px }
+.in-but .buy2 { margin-left: 0px; }
+.in-but .buy2 span { padding: 15px 30px; }
+.in-but .buyt span { padding: 15px 30px;  }
+}
+</style>
+<img class="pc-aboutusimg"  src="{{ 'influencer-program.jpg' | file_url  }}">   
+<img class="mb-aboutusimg" src="{{ 'influencer-program-mb.jpg' | file_url  }}">
+<div class="box container">
+	<div class="top">
+		<li class="col-md-3 col-xs-4"><img src="{{ 'icon01.jpg' | file_url  }}"></li>
+		<li class="col-md-6 col-xs-4"><img src="{{ 'icon2.jpg' | file_url  }}"></li>
+		<li class="col-md-3 col-xs-4"><img src="{{ 'icon3.jpg' | file_url  }}"></li>
+	</div>
+    <div class="text">
+      <h2 class="zbt">{{'influencer.program.policy' | t }}</h2>
+      <li>
+        <div class="left col-xs-3">1</div>
+        <div class="right col-xs-9">
+          <h2>{{'influencer.program.qualifications' | t }}</h2>
+          <p>{{'influencer.program.qualifications_content_line1' | t }}</p>
+          <p>{{'influencer.program.qualifications_content_line2' | t }}</p>
+          <p>{{'influencer.program.qualifications_content_line3' | t }}</p>
+        </div>
+      </li>
+      <li>
+        <div class="left col-xs-3">2</div>
+        <div class="right col-xs-9">
+          <h2>{{'influencer.program.share' | t }}</h2>
+          <p>
+            {{'influencer.program.share_content' | t }}</p>
+        </div>
+      </li>
+      <li>
+        <div class="left col-xs-3">3</div>
+        <div class="right col-xs-9">
+          <h2>{{'influencer.program.email' | t }}</h2>
+        </div>
+      </li>
+      <li>
+        <div class="left col-xs-3">4</div>
+        <div class="right col-xs-9">
+          <h2>{{'influencer.program.reserves' | t }}</h2>
+          <p>{{'influencer.program.reserves_content' | t }}</p>
+        </div>
+      </li>
+    </div>
+	<div class="in-but">
+		<a class="buyt" href="/pages/influencer-program-form"><span>{{'influencer.program.agree' | t }}</span></a>
+		<a class="buy2" href="/"><span>{{'influencer.program.no' | t }}</span></a>
+	</div>
+</div>

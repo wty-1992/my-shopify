@@ -1,0 +1,144 @@
+{% comment %}
+** @name 地图摆件夜灯 **
+** @version 1.0.0 **
+** @author 刘勇威 **
+** @integrate 刘勇威 王天宇 **
+{% endcomment %}
+
+{% comment %} 引入公共插槽v2.0 {% endcomment %}
+{% include 'sunzi-slot-template-2' %}
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'map-display-v1.0.0.js' %}
+
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/map-display-light.json' %}
+{% comment %} style变体 {% endcomment %}
+{% assign variantStyle = 0 %}
+
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 额外的表单参数 {% endcomment %}
+  
+  {% comment %} 标记订单来源 {% endcomment %}
+  {% assign from = coreJs | split: '-v' %}
+  <input type="hidden" name="properties[_from]" value="sunzi-{{ from[0] }}" />
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="text" id="sunzi-input" name="properties[customInfo]" required="required"></input>
+  <input type="hidden" id="sunzi-cart" name="properties[_sunzi_cart]" />
+  {% comment %} 定制按钮 {% endcomment %}
+  <div class="sunzi-form-content">
+    <div id="sunzi-node">
+      <div class="sunzi-node-loading">
+        <span class="dots">
+          <i></i>
+          <i></i>
+          <i></i>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- sunzi core js -->
+<script crossorigin src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{ coreJs }}" defer="defer"></script>
+
+{% comment %} 渲染前执行 {% endcomment %}
+<script defer="async">
+
+</script>
+
+{% comment %} 2.请求定制化数据 & 渲染 {% endcomment %}
+<script defer="async">
+  _sunzi_request('{{ requestURL }}', function(data) {
+    // 初始化数据
+    initData(data);
+    MapDisplay.render(
+      MapDisplay.default,
+      {
+        ...data,
+        theme: { r: 255, g: 113, b: 82 },
+        shop: _sunzi_global_data.shop,
+        onVariantChange:(...data) => {
+          
+        },
+        async onConfirm(output) {
+          // 唤醒loading
+          _sunzi_loading();
+
+          // 切换样式变体
+          _sunzi_variant_change_order({{variantStyle}}, output.cropType);
+
+          // 组装加车参数
+          var param = {
+            '_sunzi_compose': [{
+               'rule': 33,
+               'data': output.data
+             }],
+            '_sunzi_source': output.source,
+            '_sunzi_effect': output.preview,
+            '_sunzi_remark': {
+              address: ''
+            }
+          };
+          var remarkData = param._sunzi_remark;
+          output.data.lineText.forEach(item => {
+            switch(item.id) {
+              case 't-1':
+                remarkData.address = item.text + remarkData.address;
+                break;
+              case 'b-1':
+                remarkData.address += ' ' + item.text ;
+                break;
+              case '2':
+                remarkData.wenan = item.text;
+                break;
+              case '3':
+                remarkData.date = item.text;
+                break;
+              case '4':
+                remarkData.state = item.text;
+                break;
+              case '5':
+                remarkData.jingweidu = item.text;
+                break;
+            }
+          });
+
+          $('#sunzi-input').val(JSON.stringify(param));
+          $('#sunzi-cart').val(JSON.stringify({
+            image: [ output.preview ]
+          }));
+
+          // 加车队列
+          var _queue = [];
+
+          // 加车事件触发
+          await Promise.all(_queue);
+          // 由于主产品涉及vip/质保产品等额外加车事件的判断，因此沿用站点加车方法
+          $('.product-form__cart-submit').click();
+          $('#sunzi-loading').hide();
+        }
+      },
+      _matomoId,
+      document.getElementById("sunzi-node")
+    );
+  });
+
+  /** 其他自定义函数 start **/
+  
+  // 初始化数据
+  function initData(data) {
+    var productJSON = {{product | json}};
+    data.sizeData.forEach((frame, index) => {
+      frame.price = productJSON.variants[0].price / 100;
+    });
+  }
+
+  /** 其他自定义函数 end **/
+</script>

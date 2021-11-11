@@ -1,0 +1,272 @@
+<!-- {"dataType":"1","templateName":"CWQ215","templateNum":25,"coors":[{"limit":9,"title":"Name:"},{"limit":15,"title":"Tel:"}]} -->
+{% assign cattrSKU = product.first_available_variant.sku %}
+{% if cattrSKU == "CWQ214-M" %}
+	{% assign cattribute = '{"dataType":"4","templateName":"CWQ214","templateNum":40,"coors":[{"limit":9,"title":"Name:"}]}' %}
+{% elsif cattrSKU == "CWQ216-M" %}
+	{% assign cattribute = '{"dataType":"4","templateName":"CWQ216","templateNum":20,"coors":[{"limit":9,"title":"Name:"}]}' %}
+{% elsif cattrSKU == "CWQ218-M" %}
+	{% assign cattribute = '{"dataType":"4","templateName":"CWQ218","templateNum":40,"coors":[{"limit":9,"title":"Name:"}]}' %}
+{% elsif cattrSKU == "CWQ220-M" %}
+	{% assign cattribute = '{"dataType":"4","templateName":"CWQ220","templateNum":40,"coors":[{"limit":9,"title":"Name:"}]}' %}
+{% elsif cattrSKU == "CWQ222-M" %}
+	{% assign cattribute = '{"dataType":"4","templateName":"CWQ222","templateNum":40,"coors":[{"limit":9,"title":"Name:"}]}' %}
+{% elsif cattrSKU == "CWQ224-M" %}
+	{% assign cattribute = '{"dataType":"4","tempName":"cat","templateName":"CWQ224","templateNum":13,"coors":[{"limit":9,"title":"Name:"}]}' %}
+{% elsif cattrSKU == "CWQ226-M" %}
+	{% assign cattribute = '{"dataType":"4","tempName":"cat","templateName":"CWQ226","templateNum":11,"coors":[{"limit":9,"title":"Name:"}]}' %}
+{% elsif cattrSKU == "CWQ228-M" %}
+	{% assign cattribute = '{"dataType":"4","tempName":"cat","templateName":"CWQ228","templateNum":12,"coors":[{"limit":9,"title":"Name:"}]}' %}
+{% elsif cattrSKU == "CWQ230-M" %}
+	{% assign cattribute = '{"dataType":"4","tempName":"cat","templateName":"CWQ230","templateNum":9,"coors":[{"limit":9,"title":"Name:"}]}' %}
+{% elsif cattrSKU == "CWQ232-M" %}
+	{% assign cattribute = '{"dataType":"4","tempName":"cat","templateName":"CWQ232","templateNum":32,"coors":[{"limit":9,"title":"Name:"}]}' %}
+{% elsif cattrSKU == "CWQ234-M" %}
+	{% assign cattribute = '{"dataType":"4","tempName":"cat","templateName":"CWQ234","templateNum":40,"coors":[{"limit":9,"title":"Name:"}]}' %}
+{% elsif cattrSKU == "CWZ1060-S" or cattrSKU == "CWZ1063-S" or cattrSKU == "CWZ1066-S" or cattrSKU == "CWZ1067-S" or cattrSKU == "CWZ1068-S" or cattrSKU == "CWZ1069-S" %}
+	{% assign cattribute = '{"dataType":"4","tempName":"cat","templateName":"socksdog","templateNum":20,"coors":[{"limit":12,"title":"Name:"}]}' %}
+{% elsif cattrSKU == "CWZ1061-S" %}
+	{% assign cattribute = '{"dataType":"4","tempName":"cat","templateName":"socksdog","templateNum":20,"coors":[{"limit":10,"title":"Name:"}]}' %}
+{% elsif cattrSKU == "CWZ1062-S" or cattrSKU == "CWZ1064-S" or cattrSKU == "CWZ1065-S" or cattrSKU == "CWZ1118-S" %}
+	{% assign cattribute = '{"dataType":"4","tempName":"cat","templateName":"socksdog","templateNum":20}' %}
+{% elsif cattrSKU == "CBS601" or cattrSKU == "CBS602" or cattrSKU == "CBS604" or cattrSKU == "CBS605" or cattrSKU == "CBS606" or cattrSKU == "CBS607" or cattrSKU == "CBS608" %}
+	{% assign cattribute = '{"dataType":"5","templateName":"fartdog","templateNum":25,"coors":[{"limit":9,"title":"Name:"},{"limit":15,"title":"Tel:"}]}' %}
+{% elsif cattrSKU == "CBS603" %}
+	{% assign cattribute = '{"dataType":"3","templateName":"fartdog","templateNum":25,"enLarge":1,","isPng":1,"coors":[{"limit":9,"title":"Name:"},{"limit":15,"title":"Tel:"}]}' %}
+{% comment %}{% elsif cattrSKU == "CWZ1118-S" %}
+	{% assign cattribute = '{"dataType":"4","tempName":"dog","templateName":"socksdog","templateNum":20}' %}
+{% elsif cattrSKU == "CWZ1117-S" %}
+	{% assign cattribute = '{"dataType":"4","tempName":"dog","templateName":"socksdog","templateNum":20,"coors":[{"limit":12,"title":"Name:"}]}' %}
+{% endcomment %}{% endif %}
+<div class="template-container">
+  <div class="template-title">{{ 'zen.multicustom.choose_template_left' | t }}<span>{{ 'zen.multicustom.choose_template_right' | t }}</span>:</div>
+  <div class="template-list">
+  </div>
+</div>
+
+<div id="t_name"></div>
+
+<span style="display:none;" id="test-lx" class="money" data-currency-aud="{{product.first_available_variant.price | money}}">{{product.first_available_variant.price | money}}</span>
+<input type="hidden" id="customInfo" name="properties[customInfo]" value="">
+
+<script>
+  var _zenSku = "{{ product.selected_or_first_available_variant.sku }}";
+  var remarkNumber = _zenSku+"-1";
+  var imgBaseUrl = "https://pic.stylelab.com/js/img/";
+  
+  {% comment %}属性数据读取{% endcomment %}
+  var jsonCustom = {};
+  {% if product.metafields["global"]["cattributeUnify"] %}
+  	jsonCustom = '{{ product.metafields["global"]["cattributeUnify"] }}';
+    if(jsonCustom){
+      jsonCustom = JSON.parse('{{ product.metafields["global"]["cattributeUnify"] }}');
+    }
+  {% else %}
+    var jsonCustom = '{{ cattribute }}';
+    if(jsonCustom){
+      jsonCustom = JSON.parse('{{ cattribute }}');
+    }         
+  {% endif %}
+       
+  {% comment %}选择模板提示文案更新{% endcomment %}
+  var tempTitle = document.querySelector('.template-title span');
+  if(jsonCustom.tempName){
+    tempTitle.innerHTML = jsonCustom.tempName;
+  }
+  
+  {% comment %}属性默认数据定义{% endcomment %}
+  var tempNum = typeof jsonCustom.templateNum != 'undefined' ? parseInt(jsonCustom.templateNum) : 20;
+  var tempName = typeof jsonCustom.templateName != 'undefined' ? jsonCustom.templateName : "dog";
+  var coorsObj = typeof jsonCustom.coors != 'undefined' ? jsonCustom.coors : '';
+  var dataType = typeof jsonCustom.dataType != 'undefined' ? jsonCustom.dataType : "";
+  var enLarge = typeof jsonCustom.enLarge != 'undefined' ? jsonCustom.enLarge : "";
+  var isPng = typeof jsonCustom.isPng != 'undefined' ? jsonCustom.isPng : "";
+  
+  $(function(){
+    {% comment %}刻字文本框添加{% endcomment %}
+    if(coorsObj){
+      var t_name_str = '';
+      coorsObj.forEach(function(v, i){
+        var limit = v.limit || 20;
+        var label = v.label || "";
+        var placeholderText = v.placeholder || "";
+        var title = v.title || "";
+        t_name_str += '<div class="label-input-container">';
+        t_name_str += '<h1>'+title+'</h1>'
+        if(label){
+          t_name_str += '<label class="product-txt-label" for="fonttext">'+label+':</label>';
+        }
+        t_name_str += '<div class="text-input-container"><input type="text" class="fonttext" name="fonttext" maxlength="'+limit+'" value="" oninput="changeText('+i+',this,'+limit+')" placeholder="'+placeholderText+'"/>';
+        t_name_str += '<div class="leftnum" id="leftnumbox'+i+'"><span id="leftnum'+i+'">'+limit+'</span> Left</div></div></div>';
+      });
+      $('#t_name').html(t_name_str);
+    }
+    
+    {% comment %}模板图片添加{% endcomment %}
+    var tempHtml = '';
+    var bigPhotoClass = (enLarge == 1)? 'bigphoto' : '';
+    for(var _i = 1;_i <= tempNum;_i++){
+      if(_i == 1){
+        tempHtml += '<label class="template-label label-active '+bigPhotoClass+'" data-val="'+_i+'">';
+      }else{
+        tempHtml += '<label class="template-label '+bigPhotoClass+'" data-val="'+_i+'">';
+      }
+      tempHtml += '<img src="'+imgBaseUrl+tempName+'-'+_i+'.png"/></label>';
+    }
+    $('.template-list').html(tempHtml);
+        
+    {% comment %}模板选中切换{% endcomment %}
+    $(".template-label").on("click",function(){
+    	remarkNumber = _zenSku+"-"+$(this).data('val');
+        $(".template-label").removeClass("label-active");
+      	$(this).addClass("label-active");
+    });
+    
+    {% comment %}点击大图{% endcomment %}
+    if(enLarge == 1){
+      $(".label-active").click()    
+      var modal = new tingle.modal({
+        footer: true,
+        stickyFooter: false,
+        onOpen: function() {
+        },
+        onClose: function() {
+          console.log('modal closed');
+        },
+        beforeClose: function() {
+          return true; // close the modal
+        }
+      });
+    
+      modal.addFooterBtn('{{ 'zen.general.close' | t }}', 'tingle-btn tingle-btn--danger', function() {
+        modal.close();
+      });
+        
+      $(".bigphoto").on("click",function(){
+        remarkNumber = $(this).data('val')+'';
+        $(".template-label").removeClass("label-active");
+        $(this).addClass("label-active");
+        if(isPng == 1){
+          let cHtml = '<div class="news-date-confirm-content"><img src="'+imgBaseUrl+tempName+'-'+remarkNumber+'-water.png?qqq"/></div>'; 
+        }else{
+          let cHtml = '<div class="news-date-confirm-content"><img src="'+imgBaseUrl+tempName+'-'+remarkNumber+'-water.jpg"/></div>'; 
+        }
+        modal.setContent(cHtml);
+        modal.open();
+      });
+    }
+    
+    {% comment %}加车点击{% endcomment %}
+    $(".product-form__cart-submit").click(function(e){
+      e.preventDefault();
+      if(zenValidateForm()){
+        $("form.product-form").submit();
+      }
+    });
+  })
+  
+  {% comment %}字符检测{% endcomment %}
+  function changeText(i,obj,limitv){
+    var objLenOld = $(obj).val().length;
+    var objVal = $(obj).val().replace(/[\r\n]/g,"");
+    var objLen = objVal.length;
+
+    if(objLen < objLenOld){
+      $(obj).attr('maxlength',limitv + objLenOld - objLen);
+    }else{
+      $(obj).attr('maxlength',limitv);
+    }
+
+    if(objLen > limitv){
+      var lenDiff = objLen - limitv;
+      $(obj).val($(obj).val().substr(-1,lenDiff));
+      $('#leftnum'+i).text(0);
+    }else{
+      $('#leftnum'+i).text(parseInt(limitv) - objLen);
+    }
+    
+    if(objLen > 0){
+      $(".text-input-container").eq(i).removeClass("check-error");
+    }
+  }
+  
+  Product.validators.push(async () => {
+    return zenValidateForm();
+  })
+  
+  {% comment %}数据加车验证及数据处理{% endcomment %}
+  function zenValidateForm(){
+    var submit_flag = true;
+    var zenCustomJson = {};
+    if(jsonCustom.dataType == '1' || jsonCustom.dataType == '2' || jsonCustom.dataType == '3' || jsonCustom.dataType == '4' || jsonCustom.dataType == '5') {
+      if(remarkNumber.indexOf('-') != -1){
+        remarkNumber = remarkNumber.substring(remarkNumber.lastIndexOf('-')+1)
+      }
+    }
+    console.log('remarkNumber--------------------2',remarkNumber)
+    zenCustomJson['_sunzi_remark'] = {};
+    if(jsonCustom.dataType != '3' && jsonCustom.dataType != '5') {
+      zenCustomJson['_sunzi_remark']['number'] = remarkNumber;
+    }
+    if(coorsObj){
+      var textArr = [];
+      $('.fonttext').each(function(i,value){
+        if($.trim($(this).val()) == ''){
+          submit_flag = false;
+          $(".text-input-container").eq(i).addClass("check-error");
+        }else{
+          textArr.push($(this).val());
+        }
+      });
+      
+      if(submit_flag){
+        var textVal = textArr[0];
+        var data = {}
+        if(textArr.length > 1){
+          textArr.forEach(function(item,j){
+            let no = j + 1;
+            if(jsonCustom.dataType == '1' || jsonCustom.dataType == '2' || jsonCustom.dataType == '3' || jsonCustom.dataType == '4' || jsonCustom.dataType == '5') {
+                data[j] = item
+            }else {
+	            textArr[j] = no + ':' +item;
+            }
+          });
+          textVal = textArr.join(" ");
+        }else {
+          data = textVal;
+        }
+        
+        if(jsonCustom.dataType != '1' && jsonCustom.dataType != '2' && jsonCustom.dataType != '3' && jsonCustom.dataType != '4' && jsonCustom.dataType != '5') {
+          zenCustomJson['_sunzi_text'] = {};
+          zenCustomJson['_sunzi_text']['value'] = textVal;
+        }
+        
+        if(jsonCustom.dataType == '1') {
+          zenCustomJson['_sunzi_remark']['name'] = data[0];
+          zenCustomJson['_sunzi_remark']['tel'] = data[1];
+        }else if(jsonCustom.dataType == '2') {
+          zenCustomJson['_sunzi_remark']['z'] = data[1];
+          zenCustomJson['_sunzi_remark']['b'] = data[0];
+        }else if(jsonCustom.dataType == '3') {
+          var array = [] 
+          var string = ''
+          Object.getOwnPropertyNames(data).forEach(function(key){
+            array.push(data[key]);
+          })
+          string = array.map((item,index) => index=='0' ? 'name'+ ':' + item : "tel" + ':' + item ).join().replace(/,/, " ")
+          zenCustomJson['_sunzi_remark']['z'] = string;
+          zenCustomJson['_sunzi_remark']['b'] = "number:"+remarkNumber;
+        }else if(jsonCustom.dataType == '4') {
+           zenCustomJson['_sunzi_remark']['name'] = data;
+        }else if(jsonCustom.dataType == '5') {
+          zenCustomJson['_sunzi_remark']['z'] = data[1];
+          zenCustomJson['_sunzi_remark']['b'] = "number:"+ remarkNumber + " " + "name:" + data[0];
+        }
+      }
+    }
+   
+    zenCustomJson['_sunzi_effect'] = "https:"+'{{product.images[0]|img_url: '600x600'}}';
+    $('#customInfo').val(JSON.stringify(zenCustomJson));
+   
+    return submit_flag;
+  }
+</script>

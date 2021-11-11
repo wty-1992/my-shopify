@@ -1,0 +1,325 @@
+{% comment %}
+** @name 页脚部分代码 **
+** @author 王天宇 **
+** @integrate 王天宇 **
+{% endcomment %}
+<style>
+  .site-footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: 120px;
+    width: 100%;
+    height: 530px;
+    color: #222;
+    background: #F6F6F9;
+  }
+  .site-footer .footer-container {
+	display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1273px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .footer-container .container-list {
+    display: flex;
+  	width: 73%;
+    border-right: 1px solid rgb(108 104 136 / 20%);
+  }
+  .container-list .list-item {
+  	width: 20.5%;
+    margin-right: 5.3%;
+    padding: 11px 0;
+  }
+  .list-item .item-title {
+    margin-bottom: 10px;
+    height: 32px;
+    line-height: 20px;
+  	font-size: 20px;
+  }
+  .item-title img {
+  	display: none;
+  }
+  .list-item .item-url {
+  	display: block;
+    height: 44px;
+    line-height: 44px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .site-footer .footer-cpoyright {
+    height: 70px;
+    line-height: 70px;
+    text-align: center;
+    border-top: 1px solid rgb(108 104 136 / 20%);
+  }
+  @media (max-width: 768px) {
+    .site-footer {
+      height: auto;
+      padding: 20px 20px 0 20px;
+    }
+    .site-footer .footer-container {
+      flex-direction: column;
+    }
+    .footer-container .container-list {
+      width: 100%;
+	  flex-direction: column;
+      border: none;
+    }
+    .container-list .list-item {
+      padding: 0;
+      width: 100%;
+    }
+    .list-item .item-title {
+      display: flex;
+      justify-content: space-between;
+      height: 48px;
+      line-height: 48px;
+      font-size: 16px;
+    }
+    .item-title img {
+      display: block;
+    }
+    .list-item .item-url {
+      display: none;
+      padding-left: 10px;
+      height: 48px;
+      line-height: 48px;
+    }
+  }
+</style>
+<footer class="site-footer alifont"> 
+  <div class="footer-container">
+    <div class="container-list">
+      <div class="list-item">
+        <div class="item-title alifont_bold">
+          <span>Sell with Stylelab</span>
+          <img src="{{ 'next-bottom.svg' | asset_url }}" />
+        </div>
+        <a class="item-url">Connect your store</a>
+        <a class="item-url">Sell on Shopify</a>
+        <a class="item-url">Customize Tools</a>
+        <a class="item-url">Service</a>
+      </div>
+      <div class="list-item">
+        <div class="item-title alifont_bold">
+          <span>Discover</span>
+          <img src="{{ 'next-bottom.svg' | asset_url }}" />
+        </div>
+        <a class="item-url">Products</a>
+        <a class="item-url">Shipping rates</a>
+        <a class="item-url">Pexels</a>
+      </div>
+      <div class="list-item">
+        <div class="item-title alifont_bold">
+          <span>Resources</span>
+          <img src="{{ 'next-bottom.svg' | asset_url }}" />
+        </div>
+        <a class="item-url">How it works</a>
+        <a class="item-url">Help Center</a>
+        <a class="item-url">Shipping</a>
+        <a class="item-url">Returns</a>
+      </div>
+      <div class="list-item">
+        <div class="item-title alifont_bold">
+          <span>Stylelab</span>
+          <img src="{{ 'next-bottom.svg' | asset_url }}" />
+        </div>
+        <a class="item-url">About</a>
+        <a class="item-url">Contacts</a>
+        <a class="item-url">Terms of Service</a>
+        <a class="item-url">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="container-logo">
+      <img src="{{ section.settings.footer_logo_img | img_url: '240x' }}" alt="">
+    </div>
+  </div>
+  <div class="footer-cpoyright">{{ section.settings.before_html }}</div>
+  
+</footer>
+<script>
+  $('.item-title').on('click', function {
+                      
+  });
+</script>
+{% comment %}购物车弹窗{% endcomment %}
+{% include 'cart-popup' %}
+
+
+{% schema %}
+{
+  "name": "脚部 - 基础设置",
+  "class": "footer-section",
+  "settings": [
+      {
+        "type": "html",  
+        "id": "before_html",
+        "label": "版权信息"
+      },
+	  {
+        "type": "image_picker",
+        "id": "footer_logo_img",
+        "label": "LOGO图片"
+      },
+	  {
+        "type": "image_picker",
+        "id": "footer-payment",
+        "label": "footer支付图片"
+      },
+		{
+        "type": "image_picker",
+        "id": "footer-klarna",
+        "label": "klarna图片"
+      },
+			{
+        "type": "image_picker",
+        "id": "footer-payments",
+        "label": "footer支付图片2"
+      },
+
+      {
+        "type": "html",  
+        "id": "after_html",
+        "label": "底部自定义销售条"
+      }, 
+      {
+        "type": "link_list",
+        "id": "menu_1",
+        "label": "Menu 1",
+        "default": "footer"
+      },
+	  {
+        "type": "text",
+        "id": "menu_1_text",
+ 		"label": "Terms & Policies",
+        "default": "Terms & Policies"
+      },     
+      {
+        "type": "link_list",
+        "id": "menu_2",
+        "label": "Menu 2",
+        "default": "footer"
+      },
+	  {
+        "type": "text",
+        "id": "menu_2_text",
+ 		"label": "COMPANY INFO",
+        "default": "COMPANY INFO"
+      }, 
+      {
+        "type": "link_list",
+        "id": "menu_3",
+        "label": "Menu 3",
+        "default": "footer"
+      },
+ 	  {
+        "type": "text",
+        "id": "menu_3_text",
+ 		"label": "Contact us",
+        "default": "Contact us"
+      },
+ 	  {
+        "type": "html",
+        "id": "footer_nav_bottom_html",
+ 		"label": "页脚导航信息"
+      },
+      {
+        "type": "header",
+        "content": "APP推广"
+      },
+	  {
+        "type": "checkbox",
+        "id": "app_enable",
+        "label": "手机端 APP漂浮广告图片开关",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "app_AD_logo",
+        "label": "手机端 APP漂浮广告图片"
+      },
+      {
+        "type": "image_picker",
+        "id": "app_logo",
+        "label": "APP PC 入口图片"
+      },
+	  {
+        "type": "url",
+        "id": "app_logo_url",
+        "label": "APP PC 入口 url"
+      },
+	  {
+        "type": "image_picker",
+        "id": "app_logo_mb",
+        "label": "APP MB 入口图片"
+      },
+	  {
+        "type": "url",
+        "id": "app_logo_url_mb",
+        "label": "APP MB 入口 url"
+      }
+	
+	], 
+	"blocks": [
+	{
+      "type": "footer_icon_pc",
+      "name": "PC页脚icon",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "footer_icon",
+          "label": "PC Icon"
+        } 
+        ,{
+          "type": "url",
+          "id": "footer_icon_url",
+          "label": "PC Icon Url"
+        }
+      ] 
+    },
+	{
+      "type": "footer_inpoint_pc",
+      "name": "PC页脚inpoint",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "footer_inpoint",
+          "label": "PC inpoint"
+        } 
+        ,{
+          "type": "text",
+          "id": "footer_icon_text",
+          "label": "PC inpoint text"
+        },{
+          "type": "url",
+          "id": "footer_inpointurl",
+          "label": "PC inpoint text"
+        }
+      ] 
+    },
+    {
+      "type": "footer_list",
+      "name": "底部列表",
+      "settings": [
+        {
+          "type": "text",
+          "id": "list_title",
+          "label": "标题"
+        },
+        {
+          "type": "textarea",
+          "id": "list_text",
+          "label": "列表"
+        },
+        {
+          "type": "textarea",
+          "id": "list_line",
+          "label": "跳转链接"
+        }
+      ]
+    }
+]
+}
+{% endschema %}

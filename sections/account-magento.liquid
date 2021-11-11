@@ -1,0 +1,219 @@
+<style>
+    #shopify-section-{{section.id}}{
+        display: none;
+    }
+</style>
+{{ 'crypto.js' | asset_url | script_tag }}
+{% form 'customer_login', id:'account-magento-login' %}
+    {% if form.errors %}
+    <script>
+    if (window.location.pathname == '/account/login'){
+        window.localStorage.setItem('account-magento-login-error', '{{ form.errors | default_errors }}')
+    }
+    </script>
+    {% endif %}
+    <input type="email" name="customer[email]">
+    <input type="password" name="customer[password]">
+    <input type="submit" value="{{ 'customer.login.sign_in' | t }}">
+{% endform %}
+
+{% form 'create_customer', id:'account-magento-register' %}
+    {% if form.errors %}
+    <script>
+    if (window.location.pathname == '/account/register'){
+        window.localStorage.setItem('account-magento-register-error', '{{ form.errors | default_errors }}')
+    }
+    </script>
+    {% endif %}
+    <input type="hidden" name="customer[tags]">
+    <input type="text" name="customer[first_name]">
+    <input type="text" name="customer[last_name]">
+    <input type="email" name="customer[email]">
+    <input type="password" name="customer[password]">
+    <input type="submit" value="{{ 'customer.register.submit' | t }}">
+{% endform %}
+<script>
+    if (window.localStorage.getItem('account-magento-from-register') && window.location.pathname == '/account/register'){
+        window.location.href = '/account';
+    }
+    if (window.location.pathname != '/challenge'){
+        window.localStorage.removeItem('account-magento-from-register');
+    }
+    //var appHost = 'https://app-p1.imaiyuan.com';
+    /*var appHost = 'https://app-v1.soufeel.com';
+    function AccountMagentoAuth(currentForm, type) {
+        console.log('Begin Auth');
+        Mask.show('.account-container');
+        currentForm.find('.errors').remove();
+        var loginForm = $('form#account-magento-login');
+        var registerForm = $('form#account-magento-register');
+        if (type == 'login'){
+            var postUrl = appHost + "/shopify/login";
+            var email = loginForm.find('[name="customer[email]"]').val();
+            var password = loginForm.find('[name="customer[password]"]').val();
+            var ciphertext = aes.encrypt(password);
+            var postData = {
+                "email": email,
+                "password": ciphertext,
+                "shopifyBaseUri": "https://mysoufeel.myshopify.com"
+            };
+        }else{
+            var postUrl = appHost + "/shopify/register";
+            var email = registerForm.find('[name="customer[email]"]').val();
+            var password = registerForm.find('[name="customer[password]"]').val();
+            var ciphertext = aes.encrypt(password);
+            var postData = {
+                "email": email,
+                "password": ciphertext,
+                "firstname": registerForm.find('[name="customer[first_name]"]').val(),
+                "lastname": registerForm.find('[name="customer[last_name]"]').val(),
+                "shopifyBaseUri": "https://mysoufeel.myshopify.com"
+            };
+        }
+        $.ajax({
+            type: "POST",
+            cache: false,
+            dataType: 'json',
+            url: postUrl,
+            data: postData,
+            success: function(res){
+                var result = res.response;
+                if (res.code == 0 && res.error == 0){
+                    console.log('isShopifyUser', result.isShopifyUser)
+                    console.log('isMagentoUser', result.isMagentoUser)
+                    if (type == 'login'){
+                        if (result.isShopifyUser === true){
+                            loginForm.submit();
+                        }else if (result.isMagentoUser === true){
+                            registerForm.find('[name="customer[email]"]').val(result.customerInfo.email);
+                            registerForm.find('[name="customer[password]"]').val(password);
+                            registerForm.find('[name="customer[first_name]"]').val(result.customerInfo.firstname);
+                            registerForm.find('[name="customer[last_name]"]').val(result.customerInfo.lastname);
+                            registerForm.find('[name="customer[tags]"]').val(result.customerInfo.gender == 1 ? 'Mr.' : 'Miss.');
+                            window.localStorage.setItem('account-magento-from-register', true);
+                            registerForm.submit();
+                        }
+                    }else if (type == 'register'){
+                        registerForm.submit();
+                    }
+                }else if (type == 'login'){
+                    console.log('Auth Login Error')
+                    loginForm.submit();
+                }else if (type == 'register'){
+                    console.log('Register Exists')
+                    currentForm.prepend('<div class="errors"><ul><li>'+res.response+'</li></ul></div>');
+                }
+                Mask.hide('.account-container');
+                
+            }
+        });
+    }*/
+  
+    function AccountMagentoAuth(currentForm, type) {
+        console.log('Begin Auth');
+        Mask.show('.account-container');
+        currentForm.find('.errors').remove();
+        var loginForm = $('form#account-magento-login');
+        var registerForm = $('form#account-magento-register');
+        if(type == 'login'){
+          var postUrl = "https://socks.soufeel.com/majax/ShopifyCustomer/login";
+          var email = loginForm.find('[name="customer[email]"]').val();
+          var password = loginForm.find('[name="customer[password]"]').val();
+          var ciphertext = aes.encrypt(password);
+          var postData = {
+            "email": email,
+            "password": ciphertext,
+            "shopifyBaseUri": "https://{{shop.domain}}"
+          };
+        }else{
+          var postUrl = "https://socks.soufeel.com/majax/ShopifyCustomer/register";
+          var email = registerForm.find('[name="customer[email]"]').val();
+          var password = registerForm.find('[name="customer[password]"]').val();
+          var ciphertext = aes.encrypt(password);
+          var postData = {
+            "email": email,
+            "password": ciphertext,
+            "tags":registerForm.find('[name="customer[tags]"]').val(),
+            "first_name": registerForm.find('[name="customer[first_name]"]').val(),
+            "last_name": registerForm.find('[name="customer[last_name]"]').val(),
+            "shopifyBaseUri": "https://{{shop.domain}}"
+          };
+          registerForm.submit();
+        }
+        $.ajax({
+            type: "POST",
+            cache: false,
+            dataType: 'json',
+            url: postUrl,
+            data: postData,
+            success: function(result){
+                if(type == 'login'){
+                    if(result.status == 'success'){
+                        console.log('isShopifyUser', result.isShopifyUser)
+                        console.log('isMagentoUser', result.isMagentoUser)
+                        if (result.isShopifyUser == true){
+                          loginForm.submit();
+                        }else if (result.isMagentoUser == true){
+                          registerForm.find('[name="customer[email]"]').val(result.customerInfo.email);
+                          registerForm.find('[name="customer[password]"]').val(password);
+                          registerForm.find('[name="customer[first_name]"]').val(result.customerInfo.firstname);
+                          registerForm.find('[name="customer[last_name]"]').val(result.customerInfo.lastname);
+                          registerForm.find('[name="customer[tags]"]').val(result.customerInfo.gender == 1 ? 'Mr.' : 'Miss.');
+                          window.localStorage.setItem('account-magento-from-register', true);
+                          registerForm.submit();
+                        }
+                    }else{
+                      currentForm.find('.errors').remove();
+                      currentForm.prepend('<div class="errors"><ul><li>Incorrect email or password.</li></ul></div>')
+                    }
+                }else{
+                    //registerForm.submit();
+                }
+                Mask.hide('.account-container'); 
+            }
+        });
+    }
+  
+    $(function(){
+        var formLoginContainer = 'form.customer_login';
+        var formRegisterContainer = 'form.customer_register';
+        var formSource = window.localStorage.getItem('account-magento-from');
+        if (window.localStorage.getItem('account-magento-register-error') && formSource){
+            $(formSource).find('.errors').remove();
+            $(formSource).prepend(window.localStorage.getItem('account-magento-register-error'));
+            window.localStorage.removeItem('account-magento-register-error');
+            window.localStorage.removeItem('account-magento-from');
+        }
+        if (window.localStorage.getItem('account-magento-login-error') && formSource){
+            $(formSource).find('.errors').remove();
+            $(formSource).prepend(window.localStorage.getItem('account-magento-login-error'));
+            window.localStorage.removeItem('account-magento-login-error');
+            window.localStorage.removeItem('account-magento-from');
+        }
+        $('body').on('submit', formLoginContainer, function(){
+            var formIndex = $(this).index(formLoginContainer);
+            var accountForm = $('form#account-magento-login');
+            var normalFrom = $(this);
+            var keys = ['email', 'password'];
+            $.each(keys, function(index, key){
+                accountForm.find('[name="customer['+key+']"]').val(normalFrom.find('[name="customer['+key+']"]').val());
+            });
+            window.localStorage.setItem('account-magento-from', `${formLoginContainer}:eq(${formIndex})`);
+            AccountMagentoAuth(normalFrom, 'login');
+            return false;
+        })
+        $('body').on('submit', formRegisterContainer, function(){
+            var formIndex = $(this).index(formRegisterContainer);
+            var accountForm = $('form#account-magento-register');
+            var normalFrom = $(this);
+            var keys = ['email', 'password', 'first_name', 'last_name', 'tags'];
+            $.each(keys, function(index, key){
+                accountForm.find('[name="customer['+key+']"]').val(normalFrom.find('[name="customer['+key+']"]').val());
+            });
+            window.localStorage.setItem('account-magento-from', `${formRegisterContainer}:eq(${formIndex})`);
+            AccountMagentoAuth(normalFrom, 'register');
+            return false;
+        })
+    })
+</script>
+

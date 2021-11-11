@@ -1,0 +1,184 @@
+<style>
+.account-orders .orders-table-columns i:before{
+  content: "\e768" !important;
+}
+.account-orders .orders-table-columns{
+  border-top: 1px solid #f4f4f4;
+}
+.account-orders .account_title{
+  background:#000000;
+  color:#FFFFFF;
+  margin:0;
+}
+.account-orders .payment-status-help{
+  text-decoration:underline !important;
+}
+.account-orders .order-link-container span{
+  display:flex;
+  flex-wrap:wrap;
+}
+.account-orders .order-link{
+  flex:1 1 100%;
+}
+.account-orders a{
+  text-decoration:underline;
+}
+.account-orders .orders-table-columns ul{
+  align-items:center;
+}
+.account-orders{
+  margin-bottom: 5rem;
+}
+@media(max-width:750px){
+  .account-orders .orders-table-header li{
+    font-weight:blod;
+    color:#000000;
+    font-size:1.3rem;
+    padding:0rem 1.0rem;
+  }
+  .account-orders .order-table{
+    width:100%;
+    display:flex;
+    flex-wrap:no-wrap;
+  }
+  .account-orders .orders-table-header{
+    display:none;
+  }
+  .account-orders .orders-table-columns ul{
+    background-color:transparent;
+    width:100%;
+    display:flex;
+    border:none;
+    flex-wrap:wrap;
+  }
+  .account-orders .orders-table-columns ul li{
+    line-height:3.0;
+    padding:0rem 1.0rem;
+  }
+  .account-orders .orders-table-header li,.account-orders .orders-table-columns,.account-orders .orders-table-columns ul li{
+    flex:1 1 33.33%;
+  }
+  .account-orders .content-block{
+    padding:0;
+    background:#fff;
+    margin-top: 0;
+  }
+}
+
+@media(min-width:750px){
+  .account-orders .content-block{
+    padding:0;
+    margin-top: 0;
+  }
+  .account-orders .orders-table-header li{
+    font-weight:blod;
+    color:#000000;
+    font-size:1rem;
+    padding:0.7rem 1.0rem;
+  }
+  .account-orders .order-table{
+    width:100%;
+    display:flex;
+    flex-wrap:no-wrap;
+  }
+  .account-orders .orders-table-header{
+    background-color:#f4f4f4;
+    border:1px solid #f4f4f4;
+    width:100%;
+    display:flex;
+  }
+  .account-orders .orders-table-columns ul{
+    background-color:transparent;
+    width:100%;
+    display:flex;
+    border:none;
+  }
+  .account-orders .orders-table-columns ul li{
+    line-height:3.0;
+    padding:1.5rem 1.0rem;
+  }
+  .account-orders .orders-table-header li,.account-orders .orders-table-columns,.account-orders .orders-table-columns ul li{
+    flex:1 1 100%;
+  }
+}  
+.page-title{
+  display: flex;
+  width: 100%;
+  background: #000;
+}
+.page-title a{
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-decoration: unset;
+  background: #333;
+}
+.page-title h3{
+  width: 100%;
+  font-size: 16px;
+  line-height: 40px;
+}
+main.main-content{
+  background: #f7f8f9;
+  padding: 3rem 0;
+}
+main .account-orders{
+  margin-bottom: 5rem;
+}
+ul.orders-table{
+  background: #fff;
+}
+</style>
+{% for order in customer.orders %}
+    {% if order.fulfillment_status != 'fulfilled' and "authorized,paid,partially_paid" contains order.financial_status %}
+        {% assign order_processing_count = order_processing_count | plus: 1 %}
+    {% endif %}
+{% endfor %}
+<div class="account-orders page-width">
+    <div class="content-block">
+      	<div class="page-title">
+      	<a href="/account"><i class="photofont icon photo-back"></i>back</a>
+        <h3 class="account_title">{{ 'customer.orders.title' | t }}</h3>
+      	</div>
+        {% if order_processing_count > 0 %}
+        <ul class="orders-table-header">
+            <li>{{ 'customer.orders.order_number' | t }}</li>
+            <li>{{ 'customer.orders.date' | t }}</li>
+            <li>{{ 'customer.orders.payment_status' | t }}</li>
+            <li>{{ 'customer.orders.fulfillment_status' | t }}</li>
+            <li>{{ 'customer.orders.total' | t }}</li>
+          	<li></li>
+        </ul>
+        <ul class="orders-table">
+            {% for order in customer.orders %}
+            {% unless "authorized,paid,partially_paid" contains order.financial_status and order.fulfillment_status != 'fulfilled' %}
+            {% continue %}
+            {% endunless %}
+            <li class="orders-table-columns">
+                <ul>
+                    <li data-label="{{ 'customer.orders.order_number' | t }}">{{ order.name }}</li>
+                    <li data-label="{{ 'customer.orders.date' | t }}">{{ order.created_at | date: '%m/%d/%Y' }}</li>
+                    <li data-label="{{ 'customer.orders.payment_status' | t }}">
+                        <div>
+                            <span>{{ order.financial_status_label }}</span>
+                            <i data-toggle="popover" data-placement="bottom" data-content="'Pending Payment' means that the payment of your order was NOT successful." class="photofont  icon photo-icontishiwenhaos"></i>
+                        </div>
+                    </li>
+                    <li data-label="{{ 'customer.orders.fulfillment_status' | t }}">{{ order.fulfillment_status_label }}</li>
+                    <li data-label="{{ 'customer.orders.total' | t }}">{{ order.total_price | money }}</li>
+                  	<li data-label="">{{ "View Order" | link_to: order.customer_url }}</li>
+                </ul>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>{{"customer.orders.none"|t}}</p>
+        {% endif %}
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () { $("[data-toggle='popover']").popover({trigger:"hover"}); });
+</script>

@@ -1,0 +1,436 @@
+{{ 'zen-custom.scss.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'jquery-ui.min.js' | asset_url }}"></script>
+<script src="{{ 'fabric.min.js' | asset_url }}"></script>
+<script src="{{ 'konva.min.js' | asset_url }}"></script>
+<script src="{{ 'fontfaceobserver.js' | asset_url }}"></script>
+<script src="{{ 'qiniu.min.js' | asset_url }}" ></script>
+<script src="{{ 'zen-base.js' | asset_url }}"></script>
+<script src="{{ 'zen-photo.js' | asset_url }}"></script>
+<script src="{{ 'zen-carving.js' | asset_url }}"></script>
+<script src="{{ 'zen-curvecarving.js' | asset_url }}"></script>
+<div id="simple-photo-body" style="display:none;">
+  <button type="button" class="close-new close custom-close" data-action="close">
+    <i class="photofont icon photo-close"></i>
+  </button>
+  <div id="tabs" class="soufeel-tabs-photo customer-photo">
+	<ul style="display:none;"> 
+      <li><a id="photo-upload"  data-index="0" href="#tabs-0">{{ 'zen.photocarving.upload_photo' | t }}</a></li>
+      <li><a id="photo-carving" data-index="1" href="#tabs-1">{{ 'zen.general.carving' | t }}</a></li>
+      <li><a id="photo-loading" data-index="2" href="#tabs-2">{{ 'zen.general.loading' | t }}</a></li>
+	  <li><a id="photo-demo"    data-index="3" href="#tabs-3">{{ 'zen.photocarving.demo' | t }}</a></li>
+	  <li><a id="photo-big"     data-index="4" href="#tabs-4">{{ 'zen.photocarving.bigimage' | t }}</a></li>
+    </ul>
+    <div id="tabs-0" class="upload-photo"><!--照片-->
+      <canvas id="photocanvas"></canvas>
+      <div class="docs-buttons">
+      
+       <button type="button"  class="btn  btn-adjuster" data-method="move-left"><i class="photofont icon photo-xiangzuo"></i></button>
+        <button type="button" class="btn  btn-adjuster" data-method="move-right"><i class="photofont icon photo-xiangyou"></i></button>
+        <button type="button" class="btn  btn-adjuster" data-method="move-up"><i class="photofont icon photo-xiangshang"></i></button>
+        <button type="button" class="btn  btn-adjuster" data-method="move-down"><i class="photofont icon photo-xiangxia"></i></button>
+        <button type="button" class="btn  btn-adjuster" data-method="zoom-big"><i class="photofont icon photo-jia"></i></button>
+        <button type="button" class="btn  btn-adjuster" data-method="zoom-small"><i class="photofont icon photo-jian"></i></button>
+        <button type="button" class="btn  btn-adjuster" data-method="rotate-left"><i class="photofont icon photo-zuoxuan"></i></button>
+        <button type="button" class="btn  btn-adjuster" data-method="rotate-right"><i class="photofont icon photo-youxuan"></i></button>
+      </div>
+      <div class="ps">{{ 'zen.photocarving.ps_please_well' | t }}</div>
+      <button type="button" class="btn-confirm"  id="confirm" >{{ 'zen.general.confirm' | t }}</button>
+      <div class="after-preview">
+       <span>{{ 'zen.photocarving.change_picture' | t }} </span>
+        <input type="file" id="changePhotoInput">
+      </div>
+    </div>
+    <div id="tabs-1" class="carving-photo"><!--刻字-->
+      <div class="carvingcanvas-left">
+         <canvas id="carvingcanvas"></canvas> 
+         </div>
+        <div class="carvingcanvas-right">
+        <div class="carvingcanvas-content">
+        {% capture lines %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "lines" %}{{ verify__rules_json_result }}{% endcapture %}
+        {% assign lines = lines | strip %}
+        {% for i in (1..lines) %}
+        <textarea id="textInput{{forloop.index0}}" class="textInput" data-index="{{forloop.index0}}" rows="3" cols="43" placeholder="{{ 'zen.general.please_note' | t }}" disabled></textarea>
+        {% endfor %}
+        <div class="custom-size">
+        <span class="sizefont">{{ 'zen.general.font_size' | t }}:</span>
+        <select id="sizeSlt"></select>
+        </div>
+        </div> 
+             {%- comment -%}need add font by jenny 2018-12-21{%- endcomment -%}
+        <div class="popups-font-family">
+        <span class="font-title">{{ 'zen.general.font' | t }} :</span>
+            <div class="font-list-flex"></div>
+        </div>
+        <button type="button" class="btn-confirm" id="btn-carving-comfirm">{{ 'zen.general.add_engravings' | t }} <span class="is-markup-border">+<span class="is-markup" data-money="{{ addprice }}">{{ addprice | money }}</span></span></button>
+        <button type="button" class="no-comfirm-text btn-confirm"  id="no-comfirm-text">{{ 'zen.general.without_engraving' | t }}</button>
+        <input type="hidden" id="isCarvingSubmit" value="0" >
+        <div id="container" style="display:none;"></div>
+          <p class="product-reminder">
+	        {{ 'zen.general.please_note' | t }}
+        </p>
+        </div>
+    </div>
+    <div id="tabs-2"><!--加载进度条-->
+      <div id="cloading"><img class="cloadingimg" src="{{section.settings.upload_loading_image | img_url: 'master'}}" /><div class="sprogress"><div class="sbar" style="width: 0%;">0%</div></div></div>
+    </div>
+	<div id="tabs-3"><!--demo-->
+	  <div class="demo-img">
+    {% if product.type == 'Watch' %}
+      <img width="90%" src="{{ 'photocharmswatch-alert.jpg' | asset_img_url: '750x' }}" />
+    {% else %}
+      <img width="90%" src="{{ 'photocharms-alert.jpg' | asset_img_url: '750x' }}" />
+    {% endif%}
+    
+    </div>
+	</div>
+	<div id="tabs-4"><!--big image-->
+	  <div class="big-img"><img src="" /></div>
+	</div>
+  </div>  
+</div>
+<div class="upload-images-photo">
+    <div class="upload-images">
+    <input type="file" id="photoFile" class="photo-input">
+    <span class="add-img">
+    <span>{{ 'zen.photocarving.upload_a_picture' | t }}</span>
+    <i class="photofont icon photo-upload"> </i> 
+    </span>
+    </div>   
+</div>
+<div class="upload-images-photo editzoom after" style="display:none;">
+	<div class="big">
+        <img id="preview-crop" width="50" height="40" src="">
+        <i class="icon photofont photo-view-fangda"></i>
+    </div>
+	<div class="after-preview">
+		<span>{{ 'zen.photocarving.change_picture' | t }} </span>
+        <input type="file" id="changePhotoInput">
+	</div>
+</div>
+<div class="lettering-box lettering-box-carving">
+	<div class="Previewlettering Previewletteringcarving">
+		<span class="Previewlettering-title">
+			{{ 'zen.general.add_engravings' | t }} 
+		</span>
+		<span id="previewengravedtext"></span>
+	</div>        
+	<div class="after-preview-text">
+      <span class="is-markup-border">+<span class="an-pri AddAnPri is-markup" id="AddAnPri" data-money="{{ addprice }}" style="display:none">{{ addprice | money }}</span></span>
+		<button type="button" id="addengraving">{{ 'zen.general.add' | t }}</button>
+	</div>
+</div>
+<input type="text" id="piccrop" name="properties[crop]"   value="" style="display:none" required/>
+<input type="text" id="picai" name="properties[ai]"     value="" style="display:none" required/>
+<input type="text" id="picorigin" name="properties[origin]" value="" style="display:none" required/>
+<input type="text" id="engraving-crop" name="properties[engravingCrop]" value="" style="display:none" /><!--效果图-->
+<input type="text" id="engraving-big"  name="properties[engravingBig]"  value="" style="display:none" /><!--大图-->
+<input type="text" id="engraving-text" name="properties[engravingText]" value="" style="display:none" />
+<input type="text" id="engraving-size" name="properties[engravingSize]" value="" style="display:none" />
+<input type="text" id="engraving-font" name="properties[engravingFont]" value="" style="display:none" />
+
+<script>
+  $( "#tabs" ).tabs();
+  var simpleModal = new tingle.modal({ 
+    closeMethods: ['escape']
+  });
+  simpleModal.setContent('<div id="simple-photo-modal" class="simple--modal"></div>');
+  $("#simple-photo-modal").html($('#simple-photo-body').contents());
+  //照片初始化
+  var uphoto = new uphoto({
+    "canvasid": "photocanvas",
+    "type": 1, //1:照片 2:刻字
+    "baseImg": "{{ productItem }}.png",
+    "sku": "{{ productItem }}",
+    "cWidth": 500,
+    "cHeight": 400,
+  });
+  $("#photoFile, #changePhotoInput").change(function(e){
+    $("#tabs").tabs("option", "active", $('#photo-upload').data('index'));
+    var file = e.target.files[0];
+    $(this).val("");
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function(evt) {
+      uphoto.compress(uphoto, evt.target.result);
+      uphoto.change(uphoto,evt.target.result);
+      simpleModal.open();
+    }
+  });
+  $(".btn-adjuster").click(function(){
+    uphoto.adjuster($(this).data('method'));
+  });
+  $("#confirm").click(function(){
+    if(uphoto.request.originImage){
+      var time=new Date().getTime();
+      var loaded=0;
+      uphoto.serverUpload(uphoto.request.originImage, function(){
+		$("#tabs").tabs("option", "active", $('#photo-loading').data('index'));
+	  }, function(e){
+        var nowDate = new Date().getTime();
+        if (nowDate - time >= 100) {
+          percentage = parseInt(e.loaded / e.total * 100);
+          velocity = (e.loaded - loaded) / 1024;
+          $(".sbar").css({'width':percentage+'%'}); 
+          $(".sbar").html(percentage+'%'); 
+          if (percentage >= 99) {
+            //console.log('Server is being updated, wait a minute...');
+          } else {
+            time = nowDate;
+            loaded = e.loaded;
+          }
+        } else {
+          return;
+        }
+      }, function(data){
+    		$("#preview-crop").attr("src", uphoto.picurl + data.crop);
+    		$(".big-img img").attr("src", uphoto.picurl + data.crop)
+    		$(".upload-images-photo").hide();
+    		$(".editzoom").show();
+    		$(".sbar").css({'width':'0%'});
+    		$(".sbar").html('0%'); 
+    		$("#piccrop").val(uphoto.picurl+data.crop);
+        $("#picai").val(uphoto.picurl+data.ai);
+        $("#picorigin").val(uphoto.picurl+data.origin);
+        if(jsonCustom.secondtype == 'CurveCarving'){
+          ucarving.baseImg = uphoto.picurl+data.crop;
+          // console.log(ucarving.baseImg);
+          ucarving.setObject();
+          ucarving.setTextSize();
+        }
+		    simpleModal.close();
+      });
+    }
+  });
+
+  //刻字初始化
+  var jsonCustom = JSON.parse('{{ product.metafields["global"]["cattribute"] }}');
+  if(jsonCustom.isMarkup){
+    $("#AddAnPri").text(' + ' + jsonCustom.isMarkup);
+    $(".addprice").text(' + ' + jsonCustom.isMarkup);
+  }
+  jsonCustom.coors.forEach(function(v, i){
+  	$("#textInput"+i).attr("maxlength", v.limit).attr("disabled", false);
+  })
+
+  if(jsonCustom.secondtype == 'CurveCarving'){
+    var ucarving = new curvecarving({
+      "picurl": ubase.util.picurl,
+      "canvasid" : "carvingcanvas",
+      "type" : 2,   //1:照片 2:刻字
+      "sku" : "{{productItem}}",
+      "baseImg" : ubase.util.picurl + "img/textdesign/{{productItem}}-IN.png?"+Math.random(),
+      "path" : jsonCustom.coors,
+      "cWidth"     : 500,
+      "cHeight"    : 400,
+    });
+  }else{
+    var ucarving = new ucarving({
+      "canvasid" : "carvingcanvas",
+      "type"  : 2,   //1:照片 2:刻字 3:照片+刻字
+      "sku"   : "{{ productItem }}",
+      "in"    : "{{ productItem }}-IN.png?"+Math.random(),
+      "out"   : "{{ productItem }}-OUT.png?"+Math.random(),
+      "custom": jsonCustom,
+      "coors" : jsonCustom.coors,
+      "cWidth"     : 500,
+      "cHeight"    : 400,
+    });
+  }
+//   ucarving.canvas.getObjects().forEach(v, i){
+//   	v.setShadow('');
+//   }
+//   ucarving.canvas.renderAll();
+  if(jsonCustom.isMarkup){   //如果有加价，comfirm按钮添加刻字加价价格
+    //$(".is-markup").text(' +'+jsonCustom.isMarkup);
+  }else{
+    $(".is-markup").text(' {{ 'zen.general.free' | t }}').show();
+  }
+  if(jsonCustom.size){
+    jsonCustom.size.forEach(function(v, i){
+      $("#sizeSlt").append("<option value='"+v+"'>"+v+"</option>");
+    });
+  }else{
+    $("#sizeSlt").append("<option value='"+jsonCustom.coors[0].size+"'>"+jsonCustom.coors[0].size+"</option>");
+    $(".custom-size").hide();
+  }
+  if(jsonCustom.font){
+    jsonCustom.font.forEach(function(v, i){
+      $(".font-list-flex").append('<div class="font-list"><div class="carvingfont selected" style="font-family:'+v+';">{{ 'zen.general.abc' | t }}</div><input  id="fontradio'+i+'" class="cfont in-radio" type="radio" value="'+v+'" name="fontradio"></div>');  
+    });
+    $(".cfont").click(function(){
+      var fontVal = $("input[name='fontradio']:checked").val();
+      $(".font-list").removeClass('active');
+      $(this).parent().addClass("active");
+      var _this = this;
+      jsonCustom.coors.forEach(function(v,i){
+        ucarving.changeFont(i, fontVal);
+      })
+    });
+    $("#fontradio0").attr('checked', true).trigger('click');
+  }else{
+    $(".popups-font-family").hide();
+  }
+  $(".cfont").click(function(){
+    $(".font-list").removeClass("active");
+	  $(this).parent().addClass("active");
+    var _this = this;
+    jsonCustom.coors.forEach(function(v,i){
+      ucarving.changeFont(i, $(_this).val());
+    });
+  });
+  $("#sizeSlt").change(function(){
+    //ucarving.changeSize($(this).val());
+	  var _this = this;
+    jsonCustom.coors.forEach(function(v,i){
+      ucarving.changeSize(i, $(_this).val());
+    })
+  });
+  $(".textInput").bind('input propertychange', function() {
+    ucarving.changeText($(this).val(), $(this).data("index"));
+  });
+  $(".lettering-box-carving").click(function(){
+	$("#tabs").tabs("option", "active", $('#photo-carving').data('index'));
+	 simpleModal.open();
+  });
+  $("#btn-carving-comfirm").click(function(){
+    var base64 = ucarving.canvas.toDataURL({format: 'png', quality: 0.8});
+    var blob = ucarving.convertBase64ToBlob(base64);
+	  var filename = ubase.util.getFilename(6);
+	  var carvingText = '';
+    var flag = true;
+    jsonCustom.coors.forEach(function(v, i){
+     if(!$("#textInput"+i).val()){
+         $("#textInput"+i).addClass('validation-warning'); 
+       flag = false;
+     }
+    });
+    if(!flag){
+     return flag;
+    }
+    $("#tabs").tabs("option", "active", $('#photo-loading').data('index'));
+  	$(".textInput").each(function(){
+  	  carvingText += '|' + $(this).val();
+  	});
+	  carvingText = carvingText.substring(1);
+  	var carvingSize = $("#sizeSlt").val();
+  	var carvingFont = $('input:radio[name="fontradio"]:checked').val();
+  	ucarving.cdnUpload(function(token){
+    var key = ubase.util.prefix + filename + '.png';
+    var observer = {
+      next(result){
+			  $(".sbar").css({'width':parseInt(result.total.percent)+'%'});
+		    $(".sbar").html(parseInt(result.total.percent)+'%'); 
+      },
+      error(err){
+        alert('{{ 'zen.general.upload_error' | t }}');
+      },
+      complete(res){
+		    //console.log(ubase.util.cdnurl + res.key);
+        var size = $("#sizeSlt").val() ? $("#sizeSlt").val() : jsonCustom.coors[0].size;
+			  $("#engraving-crop").val(ubase.util.cdnurl + res.key);
+		    $("#engraving-text").val(carvingText);
+		    $("#engraving-size").val(size);
+		    $("#engraving-font").val($("input[name='fontradio']:checked").val());
+  			$(".Previewlettering-title").html(carvingText);
+  			$("#addengraving").text('{{ 'zen.general.change' | t }}');
+        $("#AddAnPri").show();
+  			ubase.util.setShopifyVariant('Markup', 1);
+  			$(".sbar").css({'width':'0%'}).html('0%'); 
+  			simpleModal.close();
+        $('#isCarvingSubmit').val(1);
+      }
+    };
+    var observable = qiniu.upload(blob, key, token, ubase.util.putExtra, ubase.util.config);
+    observable.subscribe(observer);
+  });
+
+    if(jsonCustom.secondtype=='BigCarving'){
+      document.createElement("canvas").id = "tmpcanvas";
+      var tmpCanvas = new fabric.Canvas("tmpcanvas");
+      tmpCanvas.setWidth(ucarving.canvas.width);
+      tmpCanvas.setHeight(ucarving.canvas.height);
+      var multiplier = 800/ucarving.canvas.width;
+      tmpCanvas.loadFromJSON(JSON.stringify(ucarving.canvas), function(){
+        tmpCanvas.setBackgroundImage(null, tmpCanvas.renderAll.bind(tmpCanvas));
+        tmpCanvas.backgroundColor="white";
+        tmpCanvas.setOverlayImage(null, tmpCanvas.renderAll.bind(tmpCanvas)); 
+        var aobjects = tmpCanvas.getObjects();
+        aobjects.forEach(function(e) {
+          if(e.type == 'text'){
+//             e.set({fontWeight: bigFontWeight, fontSize: bigFontSize});
+            e.setShadow("");
+          }
+        })
+        tmpCanvas.renderAll();
+        originImage = tmpCanvas.toDataURL({
+          format: 'png',
+          multiplier: multiplier,
+          quality: 0.8
+        });
+        ucarving.cdnUpload(function(token){
+		  var bigBlob = ucarving.convertBase64ToBlob(originImage);
+          var key = ubase.util.prefix + filename + '-1.png';
+//           var key = filename + '-'+currentSku+'-1.png';
+          var observer2 = {
+          complete(res){
+			      $("#engraving-big").val(ubase.util.cdnurl + res.key);
+              console.log(ubase.util.cdnurl + res.key);
+            }
+          }
+          var observable2 = qiniu.upload(bigBlob, key, token, ubase.util.putExtra, ubase.util.config);
+          observable2.subscribe(observer2);
+        });
+      });
+    }
+  });
+  $("#no-comfirm-text").click(function(){
+    $("#engraving-big").val('');
+    $(".textInput").val('');
+    $(".textInput").trigger('propertychange');
+    $("#engraving-crop, #engraving-text, #engraving-size, #engraving-font").val('');
+    $(".Previewlettering-title").html('{{ 'zen.general.none' | t }}');
+    $("#addengraving").text('{{ 'zen.general.change' | t }}');
+    $('#isCarvingSubmit').val(1);
+    ubase.util.setShopifyVariant('Markup', 0);
+    $("#AddAnPri").hide();
+    simpleModal.close();
+  });
+  $(".big").click(function(){
+    $("#tabs").tabs("option", "active", $('#photo-big').data('index'));
+    simpleModal.open();
+  });
+  $("#show-demo").click(function(){
+    $("#tabs").tabs("option", "active", $('#photo-demo').data('index'));
+	  simpleModal.open();
+  });
+  Product.validators.push(
+    () => {
+      return validateFormData();
+    }
+  );
+  function validateFormData(){
+    if(!($("#piccrop").val() && $("#picai").val() && $("#picorigin").val()) ){
+      $(".upload-images").addClass("validation-warning");
+      return 'Validate PhotoCarving Error';
+    }else{
+      $(".upload-images").removeClass("validation-warning");
+    }
+    if($('#isCarvingSubmit').val() == 0){
+      $(".lettering-box-carving").addClass("validation-warning");
+      return 'Validate Error';
+    }else{
+      $(".lettering-box-carving").removeClass("validation-warning");
+    }
+    return true;
+  }
+  $(document).ready(function(){
+    $(document).trigger("hide-qty",1); 
+    $("#sizeSlt").get(0).selectedIndex=0;
+    $("#sizeSlt").trigger("change");
+  });
+</script>
+<style scoped>
+
+.canvas-container{   }
+#carvingcanvas,.upper-canvas{width: 100%!important; }
+</style>

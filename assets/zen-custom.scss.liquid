@@ -1,0 +1,1705 @@
+/*============================================================================
+  Custom Css
+==============================================================================*/
+ 
+ .previewpicture{
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  img {
+    margin-bottom:1rem;
+    
+  }
+}
+.is-markup-border{
+    border: 1px solid #fff;
+    font-size: .8rem;
+    padding: 0 0.8rem;
+    border-radius: .2rem;
+}
+/* .is-markup{
+    border: 1px solid #fff;
+    font-size: .8rem;
+    padding: 0 0.8rem;
+    border-radius: .2rem;
+} */
+.customer-photo .big-img{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+#cloading{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height:-webkit-fill-available;
+}
+.sprogress {
+  overflow: hidden;
+  height: 20px;
+  margin-bottom: 20px;
+  /*margin-top: 30px;
+  margin-left: 30px;*/
+  background-color: #f7f7f7;
+  background-image: -moz-linear-gradient(top, #f5f5f5, #f9f9f9);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#f9f9f9));
+  background-image: -webkit-linear-gradient(top, #f5f5f5, #f9f9f9);
+  background-image: -o-linear-gradient(top, #f5f5f5, #f9f9f9);
+  background-image: linear-gradient(to bottom, #f5f5f5, #f9f9f9);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff5f5f5', endColorstr='#fff9f9f9', GradientType=0);
+  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  width:308px
+    /*margin-right:12px;*/
+}
+.sprogress .sbar {
+  width: 0%;
+  height: 100%;
+  color: #ffffff;
+  float: left;
+  font-size: 12px;
+  text-align: center;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #0e90d2;
+  background-image: -moz-linear-gradient(top, #149bdf, #0480be);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#149bdf), to(#0480be));
+  background-image: -webkit-linear-gradient(top, #149bdf, #0480be);
+  background-image: -o-linear-gradient(top, #149bdf, #0480be);
+  background-image: linear-gradient(to bottom, #149bdf, #0480be);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff149bdf', endColorstr='#ff0480be', GradientType=0);
+  -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transition: width 0.6s ease;
+  -moz-transition: width 0.6s ease;
+  -o-transition: width 0.6s ease;
+  transition: width 0.6s ease;
+}
+
+
+
+/*===jenny add css=====*/
+.demo-img{
+    width:100%;
+    text-align: center;
+}
+.upload-images-photo{
+    margin-bottom:1rem;
+    width:100%; 
+    display: flex;
+    align-items: center;
+    &.crystal{ 
+    .upload-images{  
+        width: 100%;
+    }
+    }
+.upload-images {
+    display: flex;
+    cursor: pointer;
+    overflow: hidden;
+    width: 100%;
+    height: 4rem; 
+    position: relative;
+    border: none;
+    background: #f7f8f9; 
+    position: relative; 
+    input{
+    opacity: 0;
+    cursor: pointer;   
+    padding: 7% 1%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    color: #000;
+    }
+    .add-img{
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    text-transform: capitalize;
+    font-size: 1.2rem;
+    align-items: center;
+    height: 100%;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 1rem;
+        i{
+            font-size:2rem;
+        }
+    }
+    
+    .validation-advice{
+    flex: 0 1 100%;
+    position: absolute;
+    bottom: .2rem;
+    left: 1rem;
+    color: red;
+    font-size: .85rem;
+    }
+   }
+.showimage{
+    padding: 0 1rem;
+    text-decoration: underline;
+    border-top: 1px solid #e7e7e7;
+    border-bottom: 1px solid #e7e7e7;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    border-right: 1px solid #e7e7e7;
+    cursor: pointer;
+    color: #777; 
+    width: 40%;
+    justify-content: center;
+   }
+    &.after{  
+    justify-content:space-between;
+    display: flex;
+    cursor: pointer;
+    overflow: hidden;
+    width: 100%;
+    height: 4rem;
+    line-height: 4rem;
+    position: relative;
+    border: none;
+    background: #f7f8f9;
+
+    cursor: pointer;
+    .big{
+        display:flex; 
+        align-items: center;
+        .photo-view-fangda{
+            padding-left:.5rem
+        }
+    }
+    span{
+    background: #000;
+    padding: 0.5rem 1.4rem;
+    border-radius: 13px;
+    margin-right: 10px;
+    border: none;
+    color: #fff; 
+    justify-content: space-between;
+    }  
+    input{
+     border: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    opacity: 0;
+    padding: 0;
+    height: 100%;
+    width: 40%;
+    color: #000;
+    }
+
+ }
+}
+
+.soufeel-tabs-photo{
+     display: flex;
+    justify-content: center;
+    align-items: center;  
+    position: absolute;  
+    height: 100%; 
+    background: rgb(247, 248, 249); 
+.btn-primary:hover, .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle{
+    background: transparent;
+    border: none;
+    color: #c8c8c8;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0);
+    transition: color 0.1s ease-in,background-color 0.1s ease-in;
+} 
+.upload-photo{ 
+    padding: 2rem;
+    display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+}
+  .upload-photo .ps{
+    padding: 0rem 2rem;
+}
+ 
+ .docs-buttons   {display: flex;
+    justify-content: center;}
+ .docs-buttons .btn{   
+    background-color: transparent;
+    padding: 2rem;
+    box-shadow: none;
+    margin: 0;
+    color: #c8c8c8;
+    border-top: 1px solid #eff0f1;
+}
+}
+
+.customer-photo{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+.btn-confirm{
+    background: #bfa175;
+    width: 50%;
+    height: 4.5rem;
+    color: #fff;
+    font-size: 1.2rem;
+    overflow: visible;
+    border: 0;
+    padding: 0;
+    margin: 1rem 0 0 0;
+}
+    .after-preview{   
+    font-size: 1.2rem; position: relative;
+    border: 1px solid #000;
+    color: #000; 
+    border-radius: 4px;
+    width:50%;
+    background: #fff;
+    height: 4rem;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+    #changePhotoInput{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    }
+    }
+}
+.tingle-modal-box__content{
+    display: flex;  
+} 
+.lettering-box-carving{  
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    height: 4rem;
+    align-items: center;
+    background: #f7f8f9;
+    margin-bottom:1rem;
+    .Previewlettering{
+        padding-left:1rem; 
+        color: #000
+    }
+    button{
+    background: #000;
+    padding: 0.5rem 1.4rem;
+    border-radius: 13px;
+    margin-right: 10px;
+    border: none;
+    color: #fff;
+    }
+}
+  {% comment %} 
+  carving css start by jenny
+  {% endcomment %}
+.customer-photo{ 
+    .carving-photo{  
+    padding: 5rem 2rem 2rem 2rem;
+    height: 100%;
+    overflow-y: auto;   
+    display: flex;
+    justify-content: center;
+    width: 100%;    
+    .carvingcanvas-left{
+    width: 50%;
+    
+    text-align: center;   
+     display: flex;
+    align-items: center;
+    }
+    .carvingcanvas-right{
+     display: block; 
+     flex-direction: column; 
+     margin-left: 1rem; 
+     width: 50%; 
+    height: 100%;
+    overflow: auto;
+    .carvingcanvas-content{
+        display: flex;
+        margin: 0 0 2rem 0;
+        flex-direction: column;
+    textarea{
+        width: 100%;
+        background: #fff;
+        border: 1px solid #ccc;
+        height:50px; 
+        margin-bottom: 1rem; 
+    color: #000;
+    } 
+    }
+       .custom-size{ 
+        position: relative;
+        width:100%;
+        margin-bottom:2rem;
+        .sizefont{    
+            position: absolute;
+            top: 50%;
+            z-index: 1;
+            left: 1rem;
+            transform: translateY(-50%);
+        }
+        select{
+            width:100%; 
+            height: 100%;    
+            padding: 1rem 6rem;
+        }
+        }
+    .popups-font-family{
+    .font-title{
+     font-size: 1.4rem;
+    color: #000;
+    margin-bottom: .5rem;
+    display: block;
+
+    }
+    .font-list-flex{    
+    justify-content: flex-start;
+    flex-wrap: wrap; 
+    display: flex;
+        .font-list{
+            width: 29%;
+            border: 1px solid #777;
+            color: #333;
+            margin: .5rem 1rem 1rem 0;
+            position: relative;
+            background: 0 0;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            height: 3rem;
+            justify-content: center;
+            font-size: 1.4rem;
+            input{  
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 0% 50%;
+            height: 100%;
+			cursor: pointer;
+            }
+			
+        }
+        .font-list.active{ 
+            border: 1px solid #bfa175; 
+            color: #bfa175;
+        }
+    } 
+    }
+    } 
+   .btn-confirm{
+       width:100%;
+   }
+   .no-comfirm-text.no-comfirm-text{ 
+    background: transparent;
+    border: 1px solid #000;
+    color: #000;
+   }
+   p.product-reminder{ 
+    color: #bfa175; 
+    width: 100%;
+
+    margin-top: 1rem;
+   }
+    }
+  .carving-photo.curve-carving {
+      .carvingcanvas-right {
+          .carvingcanvas-content{   
+              margin: 0 0 1rem 0;
+             .curve-textarea{ 
+                margin-bottom: 1rem;
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                background: #fff;
+                border: 1px solid #ccc;
+                align-items: center;
+                .textInput{
+                    height: 40px;
+                    margin-bottom: 0;
+                    border: none;
+                    margin: 0;
+                    background:#fff;
+                    padding: 0 0 0 1rem;
+                    width: 80%;
+                    }
+                    p{  
+                        padding-right: 1rem;
+                    }
+              }
+           
+
+          }
+      }
+  }
+.isor-carving{
+    justify-content: center;
+    align-self: center;
+    background: #fff;
+    height: 100%;
+    width: 100%;
+    display:flex;
+    flex-direction:column;
+    padding: 2rem;
+    .carving-on-back{ 
+    display:flex;    
+      justify-content: space-between;  
+    .text-sample{ 
+    display:flex; 
+    .carving-back-img{
+            flex: 0 1 50%;
+    margin-right: 1rem;
+    }
+      .btn-confirm{
+      width:100%;}
+    }
+    h2{
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 1.25rem;
+    }
+    }
+}
+}
+{% comment %} namenecklace {% endcomment %}
+.namenecklace-photo{ 
+    margin-bottom: 1rem;
+    width: 100%; 
+    .view-name{    
+        display: flex;
+    justify-content: flex-start;
+    align-self: center;
+    height: auto;
+    align-items: center;    margin: 1rem 0;
+      span{ 
+    font-size: 1.4rem;
+    padding-right: 1rem;  
+    }
+    .showtext{
+        width:80%;
+        span{
+            font-size: initial;
+            padding-left: 10px;
+          &.showtext-in.white{color:#dee3e3}
+        }
+    }
+    }
+    .carvingcanvas-content{ 
+    display: flex;
+    justify-content: space-between;
+    align-self: center;
+    flex-wrap: wrap;
+    .curve-textarea{     
+    display: flex;
+    justify-content: space-between;
+    flex: 0 1 50%;
+    background: #fff;
+    border: 1px solid #ccc;
+    align-items: center;   
+    margin-bottom: -1px; 
+    input{ 
+    height: 4rem;
+    margin-bottom: 0;
+    border: none;
+    margin: 0;
+    background: #fff;
+    padding: 0 0 0 1rem;
+    width:68%;
+    color:#000
+    }
+    .leftnum{
+        padding-right:1rem;
+    }
+     &:nth-child(2n){
+       border-left:none; 
+    }
+    }
+    &.first{
+         .curve-textarea{ flex: 0 1 100%;
+         }
+    }
+   
+    }
+}
+ {%- comment -%}crystal{%- endcomment -%}
+.customer-photo {
+	&.customer-crystal {
+	.carving-photo {
+	justify-content:space-between;
+	.customer-crystal-right {
+	flex:0 1 50%;
+	.card { 
+    padding: 0;
+	background-clip:border-box;
+	border-radius:0;
+	border:0;
+	.card-header {
+	border-bottom:.2rem solid #fff;
+	cursor:pointer; 
+    padding: 0;
+}
+.btn-link {
+	display:flex;
+	justify-content:space-between;
+	align-items:center; 
+    padding: 0.75rem 2.5rem 0.75rem 1rem; 
+    position: relative; 
+	&:hover {
+	text-decoration:none;
+	color:#000; 
+}
+   &:after{
+    position: absolute;
+    top: 50%;
+    right: .5rem;
+    color: #000;
+    content: "\e64e";
+    font-weight: 700;
+    font-size: 1.5rem;
+    font-family: photofont;
+       transform: translateY(-50%) rotate(-90deg);
+    transform: -webkit-translateY(-50%) -webkit-rotate(-90deg);
+    }
+    &.collapsed:after{
+    transition: all .3s ease 0s;
+    transform:translateY(-50%) rotate(0deg);
+    transform: -webkit-translateY(-50%) -webkit-rotate(0deg);
+    }
+.flex-between {
+	display:flex;
+	align-items:center;
+	color:#000;
+	.showdiamondimg {
+	width:2.8rem;
+	height:2.8rem;
+	margin:0 1rem 0 0;
+	.photo-bi1 {
+	font-size:3rem;
+	color:#777
+}
+}}.free {
+	color:#69bb67
+}
+}}
+.crystal {
+	display:flex;
+	flex-wrap:wrap;
+	justify-content:flex-start;
+	align-items:center;
+	.crystal-list {
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	flex:0 1 19.5%;
+	padding:1rem 1rem;
+	position:relative;
+	margin:0;
+	transition:all .5s;
+	border:2px solid #fff;
+	&:hover {
+	border:2px solid #7f7f7f
+}
+.img {
+	width:3rem;
+	height:3rem;
+	pointer-events:none;
+	background-size:cover
+}
+input {
+	position:absolute;
+	height:100%;
+	width:100%;
+	top:0;
+	bottom:0;
+	left:0;
+	right:0;
+	opacity:0;
+	cursor:pointer;
+    color: #000;
+}
+.name {
+	margin-top:0.5rem;
+	color:#838383
+}
+}
+}
+.card-body { 
+    padding: 1.25rem 0;
+	.engravings {
+	display:flex;
+	align-items:center;
+	border-bottom:1px solid #eee;
+	height:4rem;
+	justify-content:space-between;
+	input,textarea {
+	background:#fff;
+	width:72%;
+	border:none; 
+    color: #000;
+}
+textarea.multiLines{    max-height: 3rem;
+    align-items: center;
+    line-height: 12px;
+    padding: 1rem 0 0 0;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    height: 67px;
+    resize: none;
+    overflow: hidden;
+    }
+}
+.font-list {
+	width:16%
+}
+.font-title {
+	font-size:1.5rem;
+	margin-top:1rem
+}
+}
+}
+}
+}
+}
+
+
+{%- comment -%}no-nocanvas{%- endcomment -%}
+.customer-photo {
+    .panel-heading{ 
+        border-top: 1px solid #d8d8d8;
+    }
+.carving-photo{ 
+&.no-nocanvas{
+    .carvingcanvas-right.no-nocanvas-outtype{ 
+    padding: 0 2rem;
+    margin-left: 0; 
+    flex: 0 1 100%;
+      h3{
+            margin-bottom:2rem;
+        }
+    .curve-textarea{
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 0 0 0 1rem;
+    height: 5rem;
+    color: #777;
+    border-radius: 3px;  
+        display: flex;
+    margin-bottom: 1rem;
+        justify-content: space-between;
+    .textInput{
+
+    color: #000;
+    height: 100%;
+    margin: 0;
+    width: 80%;
+    background: none; 
+    resize: none;
+    border: none; 
+    line-height: 1.3rem;
+    }
+    .numleft{
+    padding: 0 1rem 1rem 0;
+    display: flex;
+    align-items: flex-end;
+    color: #000;
+    }
+    }
+    .popups-font-family .font-list-flex .font-list {
+    width: 12%;
+    }
+    .a-btn-encarving{ 
+    display: flex;  
+    margin: 1rem 0;
+    }
+    .btn-confirm{
+        margin-left:1rem
+    }
+    .btn-confirm.no-comfirm-text{
+    margin-right:1rem; 
+    margin-left: 0;
+     }
+
+    } 
+     .carvingcanvas-right{
+        .custom-optional-carving{
+            .carvingNumoption{
+            width: 100%;
+            height: 3rem;
+            border: 1px solid #ccc;
+            border-radius: .3rem;
+            overflow: hidden;
+            position: relative;
+            margin: 2rem 0 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #bfa175;
+            .addoptionprice{
+                z-index:1;  
+                width: 40%;
+            }
+            .numselect{
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            border: none;
+            background-color: #fff;
+            }
+            }
+            .carving-select{
+            display:flex; 
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            .custom-text{
+                &.custom-textarea-w100{
+                    flex:0 1 100%;
+                }
+            display: flex;
+            justify-content: space-between;    
+            height: 4rem;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+                flex: 0 1 46%;
+            margin-right: 1rem;
+            input{ 
+            background: none;
+            border: none;
+            max-width: 70%;
+            padding: 0;
+            height: 100%;
+            font-size: 1.2rem;
+            font-style: initial;
+            text-transform: capitalize;
+            }
+            }
+            }
+        }
+    }
+}
+}
+} 
+ 
+@media(max-width:1024px){
+ 
+.customer-photo .carving-photo .carvingcanvas-right .carvingcanvas-content,.customer-photo .carving-photo .carvingcanvas-right{
+    display:block;
+}
+    .customer-photo .carving-photo .carvingcanvas-right .popups-font-family .font-list-flex .font-list{
+
+    width: 21%;
+    }
+}
+
+@media(max-width:768px){
+.customer-photo .carving-photo .carvingcanvas-right .carvingcanvas-content{display:block}
+.tingle-modal-box .tingle-modal-box__content{max-height:initial}
+.customer-photo .carving-photo{flex-direction:column}
+.customer-photo .carving-photo .carvingcanvas-left,.customer-photo .carving-photo .carvingcanvas-right{margin-left:0;width:100%;height:50%} 
+} 
+@media(max-width:640px){ 
+.tingle-modal--visible .tingle-modal-box{
+    height:100%;
+}
+.upload-images-photo { 
+    border: 1px solid #e7e7e7;  
+  
+}
+.soufeel-tabs-photo {
+.docs-buttons {
+    margin-top: 0.2rem;
+    margin-bottom: 2rem;
+    padding: 0 2rem .2rem;
+    width: 100%;
+    border-radius: 2rem;
+    background: #cecece;
+    overflow:auto;
+}
+.upload-photo .ps {
+    padding: 0rem 0;
+}
+&.customer-photo {
+    .btn-confirm{
+    width: 100%;
+    }  
+    .after-preview{
+    width: 100%;
+    }
+}
+   .docs-buttons .btn{
+    display: flex;
+    margin: 0;    
+    padding: 2px;
+    width: 100%;
+    border-top: 0;   
+    background-color: transparent; 
+    box-shadow: none;
+    justify-content: center;
+    align-items: center;
+}
+ .docs-buttons .btn i{
+    color: #fff; 
+    text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+}
+
+  .docs-buttons .btn img {
+  	width: 30px;
+    height: 30px;
+  }
+}
+.customer-photo{
+    .btn-confirm {
+        overflow: visible;
+        margin: 1rem 0 0 0;
+        padding: 0;
+        width: 90%;
+        height: 4rem;
+        border: 0;
+        border-radius: 4px;
+        background: #bfa175;
+        color: #fff;
+        font-weight: 600;
+        font-size: 1.4rem;
+    }
+    .after-preview{   
+        font-size: 1.4rem; 
+    margin: 1rem 0 0 0; 
+    width: 90%; 
+    height: 4rem;
+   
+ 
+    }
+}
+
+.customer-photo{
+    padding:0px;
+    &.customer-crystal{
+    .carving-photo {
+        justify-content: center;
+        .customer-crystal-right {
+             .crystal {
+                 .crystal-list{
+                    flex: 0 1 16%;
+                    padding: .5rem .5rem;
+                    .img {
+                    width: 2rem;
+                    height: 2rem;
+                    }
+                 }
+             }
+        }
+    }
+    }
+    .carving-photo{   
+         padding: 0;
+        flex-direction: column; 
+        .carvingcanvas-left {
+        display: flex;
+        width:100%;
+        align-items: center;
+        height:44%;
+    overflow: hidden;
+        .canvas-container{
+                margin: 16% auto 0 auto;
+        }
+        }
+        .carvingcanvas-right{    
+            display: block;
+            margin: 1.2rem 1rem;
+                width: 94%; 
+                height: 60%;
+            .popups-font-family { 
+            .font-list-flex .font-list {  
+                margin: 1rem 1rem 1rem 0;
+                width: 16%; 
+                border-radius: .4rem;
+            } 
+            }
+            .carvingcanvas-content {
+            textarea{ 
+                margin-bottom: 1rem;
+                    height: 50px;
+                }
+            }
+            }
+            p.product-reminder{ 
+            position: inherit;
+            bottom: 0rem;
+            width: 98%;
+            }
+            .no-comfirm-text.no-comfirm-text {
+            border: none;
+            background: #ddd;
+            color: #000; 
+           font-weight: 400;}
+            &.no-nocanvas{
+            .carvingcanvas-right.no-nocanvas-outtype{  
+            margin-left: 1rem;
+            padding: 0 1rem;
+            flex: 0 1 100%; 
+            .btn-confirm  {
+            margin-left: .5rem;}
+            .btn-confirm.no-comfirm-text {
+            margin-right: .5rem;}
+            .popups-font-family .font-list-flex .font-list {
+            width: 16%;
+            }
+            }
+             .carving-select .custom-text{
+                     height: 3rem;
+             }
+            }
+            
+            &.no-nocanvas{ 
+                .carvingcanvas-right {
+                    .custom-optional-carving {
+                        .carvingNumoption{    
+                            margin: 1.5rem 0 1rem;
+                            height: 3rem;
+                            border: 1px solid #717171;
+                            box-shadow: 0 0 1px rgba(0,0,0,.4);
+                        }
+                        .carving-select{ 
+                        margin-bottom: .75rem;
+                        .custom-text{
+                        border: 1px solid #717171;
+                        flex: 0 1 100%;
+                        margin-bottom: -1px;  margin-right: 0;
+                        padding: 0 1rem;    height: 3rem;
+                        &.custom-textarea-w100{ 
+                        box-shadow: 0 0 1px rgba(0,0,0,.4);   
+                        }
+                        }
+                        }
+                }
+                } 
+                }
+           
+            }
+}
+}
+.validation-warning{ 
+    border: 1px solid red!important;
+}
+ 
+.silver {
+    color:    #808080; /*if no support for background-clip*/
+    background: -webkit-linear-gradient(transparent, transparent),
+      -webkit-linear-gradient(top, rgba(192,192,192,1) 0%, rgba(192,192,192,1) 26%, rgba(211,211,211,1) 35%, rgba(169,169,169,1) 45%, rgba(128,128,128,1) 61%, rgba(192,192,192,1) 100%);
+    background: -o-linear-gradient(transparent, transparent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /*font-size:50px;*/
+}
+.gold {
+    color:    #D5AD6D; 
+    background: -webkit-linear-gradient(transparent, transparent),-webkit-linear-gradient(top, #f9db58 0%, #f9db58 25%, #f9db58 35%, #f7d855 45%, #e8c44d 61%,#e1bb49 75%, #d9b145 100%);
+    background: -o-linear-gradient(transparent, transparent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /*font-size:50px;*/
+}
+.rosegold {
+    color:    #be7d86; 
+    background: -webkit-linear-gradient(transparent, transparent),
+      -webkit-linear-gradient(top, #cd9aa1 0%, #cd9aa1 26%, #F0DED2 35%, #C8977B 45%, #C8977B 61%, #9c6139 100%);
+    background: -o-linear-gradient(transparent, transparent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /*font-size:50px;*/
+}
+.close-new {
+    z-index: 1000;
+}
+.pac-container{z-index: 2147483647;}
+/*============================================================================
+  Custom Font
+==============================================================================*/
+@font-face {
+  font-family: 'AppleChancery';
+  src: url('{{'AppleChancery.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'TimesNewRoman';
+  src: url('{{'TimesNewRoman.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AlluraRegular';
+  src: url('{{'AlluraRegular.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'holyunion';
+  src: url('{{'holyunion.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'NexaScript-Free';
+  src: url('{{'NexaScript-Free.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: 'VineMonogramsSolid';
+  src: url('{{'VineMonogramsSolid.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Architects-Daughter';
+  src: url('{{'Architects-Daughter.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'DancingScript-Regular';
+  src: url('{{'DancingScript-Regular.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'IndieFlower';
+  src: url('{{'IndieFlower.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Pacifico';
+  src: url('{{'Pacifico.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Helvetica-Narrow';
+  src: url('{{'Helvetica-Narrow.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'TrajanPro3-Regular';
+  src: url('{{'TrajanPro3-Regular.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SouthernAire_PersonalUseOnly';
+  src: url('{{'SouthernAire_PersonalUseOnly.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Arial';
+  src: url('{{'Arial.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GreatVibes';
+  src: url('{{'GreatVibes-Regular.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'BrushScriptStd';
+  src: url('{{'BrushScriptStd.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'CircleMonogramsThreeWhite';
+  src: url('{{'CircleMonogramsThreeWhite.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'VineMonogramsSolid';
+  src: url('{{'VineMonogramsSolid.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Cochin';
+  src: url('{{'Cochin.woff' | asset_url}}') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'BlessedDay';
+  src: url('{{'BlessedDay.woff' | asset_url}}') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'BeautifulES';
+  src: url('{{'BeautifulES.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'CircleMonogramsTwoWhite';
+  src: url('{{'CircleMonogramsTwoWhite.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'CommercialScriptBT';
+  src: url('{{'CommercialScriptBT-Regular.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'ShitHappens-Cursive';
+  src: url('{{'ShitHappens-Cursive.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Italianno-Regular';
+  src: url('{{'Italianno-Regular.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'CommercialScriptBT-Regular';
+  src: url('{{'CommercialScriptBT-Regular.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'BrannbollFet';
+  src: url('{{'BrannbollFet.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Soufeel-Font';
+  src: url('{{'Soufeel-Font.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'soufeel-flower';
+  src: url('{{'soufeel-flower.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Caligraf-W';
+  src: url('{{'Caligraf-W.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Gabriola';
+  src: url('{{'Gabriola.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'FreebooterScript';
+  src: url('{{'FreebooterScript.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'cochinRegular';
+  src: url('{{'cochinRegular.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Tagettes';
+  src: url('{{'Tagettes.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AlexBrush';
+  src: url('{{'AlexBrush.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'ASPIRE';
+  src: url('{{'ASPIRE.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AmazeNormal';
+  src: url('{{'AmazeNormal.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AFRiyadh';
+  src: url('{{'AFRiyadh.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Garamond';
+  src: url('{{'Garamond.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Swis721BlkBTBlack';
+  src: url('{{'Swis721BlkBTBlack.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Volupia';
+  src: url('{{'Volupia.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'BrannbollSmal';
+  src: url('{{'BrannbollSmal.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'CuteLove';
+  src: url('{{'CuteLove.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SafirScript';
+  src: url('{{'SafirScript.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AutumnChant';
+  src: url('{{'AutumnChant.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'grandhotel';
+  src: url('{{'grandhotel.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'monogram';
+  src: url('{{'monogram.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'YuanQiman';
+  src: url('{{'YuanQiman.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'VineMonogramsSolideFive';
+  src: url('{{'VineMonogramsSolideFive.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'VictorianLETPlain';
+  src: url('{{'VictorianLETPlain.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV1';
+  src: url('{{'AIV1.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'NoteworthyBold';
+  src: url('{{'NoteworthyBold.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV2';
+  src: url('{{'AIV2.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV4';
+  src: url('{{'AIV4.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+} 
+@font-face {
+  font-family: 'AIV5';
+  src: url('{{'AIV5.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV19';
+  src: url('{{'AIV19.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'VS';
+  src: url('{{'VS.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SourceCodeproBlack';
+  src: url('{{'SourceCodeproBlack.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV7';
+  src: url('{{'AIV7.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV9';
+  src: url('{{'AIV9.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV10';
+  src: url('{{'AIV10.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV11';
+  src: url('{{'AIV11.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV12';
+  src: url('{{'AIV12.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV13';
+  src: url('{{'AIV13.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV14';
+  src: url('{{'AIV14.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV15';
+  src: url('{{'AIV15.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV16';
+  src: url('{{'AIV16.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'ScriptMTBold';
+  src: url('{{'ScriptMTBold.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Carrington';
+  src: url('{{'Carrington.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'CenturyGothic';
+  src: url('{{'CenturyGothic.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'EdoSZ';
+  src: url('{{'EdoSZ.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Georgia-Bold';
+  src: url('{{'Georgia-Bold.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SouthernAirePersonalUseOnly';
+  src: url('{{'SouthernAirePersonalUseOnly.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV27';
+  src: url('{{'AIV27.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV28';
+  src: url('{{'AIV28.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV30';
+  src: url('{{'AIV30.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'ALWAYSINMYHEART';
+  src: url('{{'ALWAYSINMYHEART.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'LCALLIG';
+  src: url('{{'LCALLIG.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'AIV33';
+  src: url('{{'AIV33.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Carrington';
+  src: url('{{'Carrington.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV26';
+  src: url('{{'AIV26.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV32';
+  src: url('{{'AIV32.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV24';
+  src: url('{{'AIV24.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV34';
+  src: url('{{'AIV34.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV37';
+  src: url('{{'AIV37.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV32';
+  src: url('{{'AIV32.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV33';
+  src: url('{{'AIV33.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GrandamSample';
+  src: url('{{'GrandamSample.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'NoteworthyBold ';
+  src: url('{{'NoteworthyBold .woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV40';
+  src: url('{{'AIV40.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV42';
+  src: url('{{'AIV42.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV41';
+  src: url('{{'AIV41.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'zhaolian66';
+  src: url('{{'zhaolian66.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AOTFMARUFOPROHEAVY';
+  src: url('{{'AOTFMARUFOPROHEAVY.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV53';
+  src: url('{{'AIV53.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AMAZE';
+  src: url('{{'AMAZE.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'comic';
+  src: url('{{'comic.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'ScriptMTStdBold';
+  src: url('{{'ScriptMTStdBold.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV57';
+  src: url('{{'AIV57.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV58';
+  src: url('{{'AIV58.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV59';
+  src: url('{{'AIV59.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV61';
+  src: url('{{'AIV61.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'CO';
+  src: url('{{'CO.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GS';
+  src: url('{{'GS.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV64';
+  src: url('{{'AIV64.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV66';
+  src: url('{{'AIV66.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV67';
+  src: url('{{'AIV67.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV69';
+  src: url('{{'AIV69.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'BEAUTIFUL ES';
+  src: url('{{'BEAUTIFUL ES.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV71';
+  src: url('{{'AIV71.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AIV70';
+  src: url('{{'AIV70.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}

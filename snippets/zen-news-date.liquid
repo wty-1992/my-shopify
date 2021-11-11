@@ -1,0 +1,355 @@
+
+{%if productTags contains 'custom-newspaper-christmas' %}
+<div class="news-date-title">{{'zen.general.select_year' | t}}:</div>
+{% else %}
+<div class="news-date-title">{{'zen.general.prompt_text' | t}}:</div>
+{% endif %}
+
+<div class="datepickerinput">
+  <input type="text" id="datepicker" name="properties[fonttext]" readonly="readonly">
+  <span class="icon photofont photo-unfold"></span>
+</div>
+
+{% if productTags contains 'custom-other-newspaper-require' %}
+	{% include 'zen-other-newspaper-require' %}
+{% endif %}
+
+
+{%comment%}//maxDate:0 表示只能选择日期到今天 ，maxDate这行去掉表示不限制能选择以后的时间 maxDate:'+3m' 是可以选择之后三个月的时间{%endcomment%}
+<script>
+  $(function() {
+    {% if productTags contains 'custom-newspaper-us' %}
+      {%if productTags contains 'custom-newspaper-christmas' %}{% comment %}只选择年份{% endcomment %}
+        $('#datepicker').datepicker({  
+          changeYear: true, 			// 年下拉菜单
+          showButtonPanel: true, 		// 显示按钮面板
+          currentText: "{{'zen.general.current_year' | t}}", 		// 当前日期按钮提示文字
+          dateFormat: "yymmdd",		// 日期格式
+          yearRange: "1851:c",		//年份选择范围
+          onClose: function(dateText, inst) {// 关闭事件
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();//获取用户选择的年份值
+            $(this).datepicker('setDate', new Date(year, 11, 25));//月、日设置为12月25日，这里的月份数字要减一
+          }
+        });
+      {% else %}
+        $( "#datepicker" ).datepicker({
+          maxDate: 0,
+          dateFormat: "yymmdd",
+          changeYear: true,
+          changeMonth: true,
+          yearRange: "1851:c",
+          minDate: new Date('1851-09-18'),
+          showMonthAfterYear:true//true：选择年份显示在选择月份前面
+        });
+      {% endif %}
+    {%elsif productTags contains 'custom-newspaper-gb' %}
+      $( "#datepicker" ).datepicker({
+          maxDate: 0,
+          dateFormat: "yymmdd",
+          changeYear: true,
+          changeMonth: true,
+          yearRange: "1785:c",
+          minDate: new Date('1785-01-01'),
+		showMonthAfterYear:true//true：选择年份显示在选择月份前面
+        });
+    {%elsif productTags contains 'custom-newspaper-ca' %}
+      $( "#datepicker" ).datepicker({
+          maxDate: 0,
+          dateFormat: "yymmdd",
+          changeYear: true,
+          changeMonth: true,
+          yearRange: "1851:c",
+          minDate: new Date('1851-09-18'),
+		showMonthAfterYear:true//true：选择年份显示在选择月份前面
+        });
+    {%elsif productTags contains 'custom-newspaper-au' %}
+      $( "#datepicker" ).datepicker({
+          maxDate: 0,
+          dateFormat: "yymmdd",
+          changeYear: true,
+          changeMonth: true,
+          yearRange: "1831:c",
+          minDate: new Date('1831-01-01'),
+		showMonthAfterYear:true//true：选择年份显示在选择月份前面
+        });
+    {%elsif productTags contains 'custom-newspaper-de' %}
+      $( "#datepicker" ).datepicker({
+          maxDate: 0,
+          dateFormat: "yymmdd",
+          changeYear: true,
+          changeMonth: true,
+          yearRange: "1851:c",
+          minDate: new Date('1851-09-18'),
+		showMonthAfterYear:true//true：选择年份显示在选择月份前面
+        });
+    {%elsif productTags contains 'custom-newspaper-fr' %}
+      $( "#datepicker" ).datepicker({
+          maxDate: 0,
+          dateFormat: "yymmdd",
+          changeYear: true,
+          changeMonth: true,
+          yearRange: "1851:c",
+          minDate: new Date('1851-09-18'),
+		showMonthAfterYear:true//true：选择年份显示在选择月份前面
+        });
+    {%else%}
+      $( "#datepicker" ).datepicker({
+          maxDate: 0,
+          dateFormat: "yymmdd",
+          changeYear: true,
+          changeMonth: true,
+          yearRange: "1851:c",
+          minDate: new Date('1851-09-18')
+        });
+    {%endif%}
+    
+    var modal = new tingle.modal({
+      footer: true,
+      stickyFooter: false,
+      onOpen: function() {
+      },
+      onClose: function() {
+        //console.log('modal closed');
+      },
+      beforeClose: function() {
+        return true; // close the modal
+      }
+    });
+    modal.addFooterBtn("{{'zen.general.reselect' | t}}", 'tingle-btn tingle-btn--danger', function() {
+      modal.close();
+    });
+    modal.addFooterBtn("{{'zen.general.confirm' | t}}", 'tingle-btn tingle-btn--primary c_photo', function() {
+	  myCustomAddToCart($('.shopify-product-form'),'custom-validate');
+      modal.close();
+    });
+    
+    $('.news-date-btn').click(function(){
+      if($.trim($('#datepicker').val()) == ''){
+        $('#datepicker').css('border-color','#ff0000');
+      }else{
+        $('#datepicker').css('border-color','#e7e7e7');
+        modal.setContent('<div class="news-date-confirm-content"><p>{{ "zen.general.news_date_notice" | t }}</p><p class="red">'+$( "#datepicker" ).val()+'</p></div>');
+        modal.open();
+      }
+    });
+  });
+  
+  Product.validators.push(async () => {
+    if($.trim($('#datepicker').val()) == ''){
+      $('#datepicker').css('border-color','#ff0000');
+      return false;
+    }else{
+      $('#datepicker').css('border-color','#f8f8f8');
+    }
+
+    //加车时添加判读，防止传图与价格不符 2020-5-18 alice
+    if($('#piccrop').length > 0){
+      if($('#piccrop').val()){
+        setShopifyVariant('Markup',1);
+      }else{
+        setShopifyVariant('Markup',0);
+      }
+    }
+    
+    return true;
+  });
+</script>
+
+{% if productTags contains "custom-news-date-photo" %}{% comment %}报纸拼图传图 2020-5-14 alice{% endcomment %}
+<style>
+  .photo-select-carving {
+  	width: 100%;
+    margin: 20px 0;
+    font-size: 1rem !important;
+    color: #000;
+  }
+  .photo-select-carving .area-crop-upload {
+    background: #fff !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px 0 15px;
+    height: 52px;
+    margin-bottom: 10px;
+    border: 1px solid #c7cecf;
+    border-radius: 5px;
+  }
+  .photo-select-carving .btn-upload-open {
+    cursor: pointer;
+    background: #000;
+    color: #fff;
+    border-radius: 25px;
+    padding: 2px 15px;
+/*     width: 100px; */
+    text-align: center;
+    text-transform: capitalize;
+    font-weight: bold;
+    border: none;
+    font-size: 16px;
+    line-height: 1.625;
+  }
+  .area-crop-upload-text {
+  	font-size: 14px !important;
+    color: #000;
+    font-weight: 400;
+  }
+  .el-button--primary {
+  	background-color: #58bbf3!important;
+    border-color: #58bbf3!important;
+  }
+  
+  .photo-select-carving .el-dialog__wrapper .el-button {
+  	border-radius: 0px!important;
+  }
+/*   .photo-select-carving .el-progress-bar__inner {
+  	background-color: #ff0136 !important;
+  } */
+  
+  .select-carving-dialog .el-button {
+  	width: 250px;
+  }
+
+  .select-carving-dialog .el-button--danger {
+  	background-color: #58bbf3 !important;
+    border-color: #58bbf3 !important;
+  }
+  .preview-thumbnail {
+  	margin-right: 10px;
+  }
+  .crop-prompt {
+  	margin: 10px 0;
+  }
+  .photo-design-body {
+  	margin-bottom: 10px;
+  }
+  .crop-progerss {
+  	margin-bottom: 1rem;
+  }
+  .photo-select-carving {
+  	position: relative;
+  }
+  .remove-btn {
+  	position: absolute;
+    top: 11px;
+    right: 175px;
+    cursor: pointer;
+    background: #000;
+    color: #fff;
+    border-radius: 25px;
+    padding: 2px 15px;
+    text-align: center;
+    text-transform: capitalize;
+    font-weight: bold;
+    border: none;
+    font-size: 16px;
+    line-height: 1.625;
+    display: none;
+  }
+  @media (max-width: 768px) { 
+    .el-message-box {
+      width: 100% !important;
+      height: 100%;
+    }
+    .remove-btn {
+      font-size: 12px !important;
+      top: 15px !important;
+      right: 130px !important;
+      padding: 2px 12px !important;
+    }
+    
+    .photo-select-carving .btn-upload-open {
+      font-size: 12px !important;
+      padding: 2px 12px !important;
+    }
+  }
+</style>
+
+<script>
+  window.addEventListener('EVENT_CROP_SAVE_AFTER', function(event){
+    var data = JSON.parse(event.detail.data);
+    $('#piccrop').val(data.crop[0].crop);
+    $('.preview-thumbnail').show();
+    setShopifyVariant('Markup',1);
+    $('.remove-btn').show();
+  });
+  
+  var baseurl = 'https://pic.stylelab.com/';
+  var _zenSku = "{{ product.selected_or_first_available_variant.sku }}";
+  
+  console.log(_zenSku);
+  var _zenConfig = {
+    photoObj: [],
+    carvingObj: [],
+    crystalObj: [],
+    curveCarvingObj: [],
+    nameObj: [],
+    carvingBigObj: [],
+    cropPrompt: "{{'zen.general.prompt_text1' | t}}",   //刻字弹层提示文字, 可选, 默认无
+    uploadClear:true,
+    isCloseOnClickModal: false,
+    crop: [
+      {
+        uploadLabel: "{{'zen.photocarving.upload_your_photo' | t}}",  //传图描述标签
+        btnUploadText: "{{'zen.general.prompt_money' | t}}",  //上传按钮文案
+        require: false,//是否必传图片
+        hasCropOrigin: true,
+        sku: _zenSku,
+        style: 0, //设置上传样式，0:单行展示 1：矩形上传表单
+        type: ''
+      }
+    ],
+    photo: [],
+    carving: [],
+    crystal:[],
+    crystalText:[],
+    curveCarving:[]
+  };
+</script>
+<div class="photo-select-carving">
+  <div id="zen-photocarving"></div>
+  <button class="remove-btn" type="button">{{'zen.general.remove_picture' | t}}</button>
+  <input type="text" id="piccrop" name="properties[picture]"   value="" style="display:none" />
+
+</div>
+
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.2.1/zen-photo-carving-chunk-vendors.css?202004171143" rel="stylesheet" />
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.2.1/zen-photo-carving-app.css?202004171143" rel="stylesheet" />
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.2.1/zen-photo-carving-chunk-vendors.js?202004171143"></script>
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.2.1/zen-photo-carving-app.js?202004171143"></script>
+
+<script>
+  $(function(){  //检测表单
+    $('.zen-require').attr('name','customVal');
+    
+    $('.remove-btn').click(function(){
+      setShopifyVariant('Markup',0);
+      $('#piccrop').val('');
+      $('.preview-thumbnail').hide();
+      $(this).hide();
+    });
+    
+    $(".inline-field-wrapper span").each(function( index ) {
+      console.log($.trim($(this).text().replace(':','')));
+      if($.trim($(this).text().replace(':',''))== 'Markup'){
+        $(this).hide();
+        $(this).next('label').hide();
+        $(this).next('label').next('label').hide();
+      }
+    });
+  })
+  
+  function setShopifyVariant(markup, val){
+    $(".inline-field-wrapper span").each(function( index ) {
+      if($.trim($(this).text().replace(':',''))== markup){
+        var optionName = $(this).next('label').find('input').attr('name');
+        $("input[name='"+optionName+"'][value='"+val+"']").prop('checked',true).trigger('change');
+      }
+    });
+  }
+</script>
+{% endif %}
+
+{% comment %}纽约时报图片预览 2020-11-16 alice{% endcomment %}
+{% if productTags contains 'custom-news-preview' %}
+	{% include 'zen-news-preview' %}
+{% endif %}

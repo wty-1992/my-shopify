@@ -1,0 +1,99 @@
+{% comment %}
+活动页如需改版请在这个文件里添加css文件 例如：
+{% if handle == 'ade-demo' %}
+	{{'ade-demo.scss.css' | asset_url | stylesheet_tag }}
+{% endif%}
+{% endcomment %}
+<style>
+  .pages-banner-pc{
+    display:block;
+    margin: 0 auto;
+  }
+  .pages-coupon-banner-pc{
+    display:block;
+    margin: 0 auto;
+  }
+  .pages-banner-mb{display:none;}
+  .pages-coupon-banner-mb{display:none;}
+  @media(max-width:768px){
+    .pages-banner-pc{display:none;}
+    .pages-banner-mb{display:block;}
+    .pages-coupon-banner-pc{display:none;}
+    .pages-coupon-banner-mb{display:block;}
+  }
+</style>
+{% if section.settings.topimg_enable %}
+<div class="pages-banner">
+	<img data-src="{{ section.settings.pc_coupon_image | img_url: 'master' }}" class="lazyload pages-coupon-banner-pc" />
+    <img data-src="{{ section.settings.mb_coupon_image | img_url: 'master' }}" class="lazyload pages-coupon-banner-mb" />
+</div>
+{% endif %}
+{% for block in section.blocks %}
+{% if handle == block.settings.handle %}
+  <div class="pages-banner">
+    
+    <img data-src="{{ block.settings.pc_image | img_url: 'master' }}" class="lazyload pages-banner-pc" />
+    <img data-src="{{ block.settings.mb_image | img_url: 'master' }}" class="lazyload pages-banner-mb" />
+</div>
+{% endif%}
+{% endfor %}
+    
+{% schema %}
+{
+  "name": "banner",  
+  "class":"activity-template-banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "private",
+      "label": "程序参考字段默认勿动",
+      "default": "newactive2019-banner"
+    },
+    {
+      "type": "checkbox",
+      "id": "topimg_enable",
+      "label": "活动页顶部横幅"
+    },
+    {
+      "type": "image_picker",
+      "id": "pc_coupon_image",
+      "label": "顶部PC图片"
+    },
+    {
+      "type": "image_picker",
+      "id": "mb_coupon_image",
+      "label": "顶部MB图片"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "活动页banner",
+      "settings": [
+    	{
+		  "type": "text",
+          "id": "title",
+          "label": "哪个活动"
+	    },
+		{
+		  "type": "text",
+          "id": "handle",
+          "label": "活动url"
+	    },
+        {
+          "type": "image_picker",
+          "id": "pc_image",
+          "label": "PC图片"
+        },
+        {
+          "type": "image_picker",
+          "id": "mb_image",
+          "label": "MB图片"
+        }
+
+      ]
+    }    
+  ]
+}
+{% endschema %}
+

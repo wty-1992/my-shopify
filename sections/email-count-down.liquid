@@ -1,0 +1,101 @@
+{% for block in section.blocks %}
+  {% if handle == block.settings.handle %}
+    <script>
+      var countDownDate = new Date('{{block.settings.get_time}}').getTime();
+        
+      {% if block.settings.countdown == 'countdown24' %}
+      	var circulation =24;
+      {% elsif block.settings.countdown == 'countdown48' %}
+      	var circulation =48;
+      {% elsif block.settings.countdown == 'countdown72' %}
+      	var circulation =72;
+      {% endif %}
+        var countdown_id = setInterval(() => {
+        var now = new Date().getTime();
+        var distance = Math.abs(countDownDate - now);
+        var days = Math.floor(distance / (1000 * 60 * 60 * circulation));
+        var hours = Math.floor( parseFloat(distance % (1000 * 60 * 60 * circulation) / (1000 * 60 * 60)) );
+        var minutes = Math.floor( parseFloat((distance % (1000 * 60 * 60)) / (1000 * 60)) );
+        var seconds = Math.floor( parseFloat((distance % (1000 * 60)) / 1000) );
+        // time
+        var c_day_first = Math.floor(days / 10);
+        var c_day_last = days%10;
+
+        var c_hour_first = Math.floor(hours / 10);
+        var c_hour_last = hours%10;
+
+        var c_minute_first = Math.floor(minutes / 10);
+        var c_minute_last = minutes%10;
+
+        var c_seconde_first = Math.floor(seconds / 10);
+        var c_seconde_last = seconds%10;
+
+        document.getElementById('countdown-day-first').innerHTML = c_day_first;
+        document.getElementById('countdown-day-last').innerHTML = c_day_last;
+        document.getElementById('countdown-hour-first').innerHTML = c_hour_first;
+        document.getElementById('countdown-hour-last').innerHTML = c_hour_last;
+        document.getElementById('countdown-minute-first').innerHTML = c_minute_first;
+        document.getElementById('countdown-minute-last').innerHTML = c_minute_last;
+        document.getElementById('countdown-second-first').innerHTML = c_seconde_first;
+        document.getElementById('countdown-second-last').innerHTML = c_seconde_last;
+      }, 1000);
+    </script>
+  {% endif%}
+{% endfor %}
+    
+{% schema %}
+{
+  "name": "倒计时",  
+  "class":"email-count-down",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "email-count-down"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "countdown",
+      "name": "倒计时",
+      "settings": [
+    	{
+		  "type": "text",
+          "id": "title",
+          "label": "哪个活动"
+	    },
+		{
+		  "type": "text",
+          "id": "handle",
+          "label": "活动url"
+	    },
+		{
+		  "type": "text",
+          "id": "get_time",
+          "label": "时间"
+	    },
+        {
+          "type": "select",
+          "id": "countdown",
+          "label": "倒计时",
+          "options": [
+            {
+              "value": "countdown24",
+              "label": "24小时倒计时"
+            },
+            {
+              "value": "countdown48",
+              "label": "48小时倒计时"
+            },
+            {
+              "value": "countdown72",
+              "label": "72小时倒计时"
+            }
+          ],
+          "default": "countdown24"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

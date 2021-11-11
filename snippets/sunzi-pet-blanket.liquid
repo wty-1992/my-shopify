@@ -1,0 +1,235 @@
+{% comment %}
+** @name 宠物毯子 **
+** @author 张宇 **
+** @integrate 王天宇 **
+{% endcomment %}
+
+{% comment %} 调用参数 {% endcomment %}
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'sunzi.pet-blanket.js' %}
+
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/pet-blanket-soufeel.json' %}
+
+{% comment %} 毯子宠物数量变体名 {% endcomment %}
+{% assign sunzi_pet_blanket_number = 1 %}
+{% comment %} 毯子刻字变体名 {% endcomment %}
+{% assign sunzi_pet_blanket_linetext = 2 %}
+{% comment %}毯子背景类别{% endcomment %}
+{% assign petBlanketType = "background" %}
+{% if productTags contains "custom-artbackground" %}
+	{% assign petBlanketType = "background" %}
+{% elsif productTags contains "custom-art-color" %}
+	{% assign petBlanketType = "color" %}
+{% endif %}
+
+{% comment %} 站点语种 {% endcomment %}
+{% assign sunzi_shop_language = section.settings.sunzi_shop_language %}
+{% comment %} 货币符号 {% endcomment %}
+{% assign sunzi_shop_symbol = section.settings.sunzi_shop_symbol %}
+
+{% comment %} 谷歌分析id {% endcomment %}
+{% assign gtag = 'G-R132WKL1C2' %}
+
+{% comment %} 定制按钮文案 {% endcomment %}
+{% assign buttonText = section.settings.sunzi_button_upload_text %}
+
+
+{% comment %} 定制初始化 {% endcomment %}
+{% include 'sunzi-solt-template' %}
+
+
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+  .product-quantity,
+  .product-form .common-standar_btn,
+  .inline-field-wrapper {
+  	display: none !important;
+  }
+   .sunzi-header {
+	border-bottom-left-radius: 20px;
+	border-bottom-right-radius: 20px;
+  }
+  .sunzi-header .sunzi-header-close {
+    padding: 13px;
+  }
+  .sunzi-header .sunzi-header-close > div {
+    background: #dd4224;
+    border-radius: 100%;
+    padding: 5px;
+  }
+  .sunzi-header .sunzi-header-close > div svg {
+    display: block;
+    width: 25px !important;
+    height: 25px !important;
+    fill: #fff;
+  }
+  .sunzi-header .sunzi-header-price {
+      color: #dd4223;
+  }
+  .sunzi-header .sunzi-header-submit {
+    border-radius: 30px;
+    font-size: 12px;
+    background: #dd4224;
+  }
+  .sunzi-header .sunzi-header-submit span {
+    padding: 0px 5px;
+  }
+  @media screen and (min-width: 768px) {
+    .sunzi-modal-content {
+      width: 400px!important;
+      height: 640px!important;
+    }
+  }
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="hidden" id="sunzi-choose-color" required="required" />
+  <input type="hidden" id="sunzi-textStr" name="properties[text_str]" required="required" />
+  <input type="hidden" id="sunzi-picture" name="properties[picture]" required="required" />
+  <input type="hidden" id="sunzi-customInfo" name="properties[custom_info]" required="required" />
+  <input type="hidden" id="sunzi-customInfoTitle" name="properties[custom_info_title]" required="required" />
+  <input type="hidden" id="sunzi-cart" name="properties[_sunzi_cart]" />
+
+  {% comment %} 定制按钮 {% endcomment %}
+  <button type="button" id="sunzi-button" disabled class="dots-loading">
+    <span class="dots">
+      <i></i>
+      <i></i>
+      <i></i>
+    </span>
+    <div class="sunzi-button-text">{{ buttonText }}</div>
+  </button>
+</div>
+
+<!-- sunzi core js -->
+<script src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{coreJs}}" defer="defer"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ gtag }}" async="async"></script>
+<script async="async">
+  _sunzi_gtag('{{ gtag }}');
+</script>
+
+{% comment %} 1.隐藏掉变体，加车按钮等等 {% endcomment %}
+<script defer="defer">
+  var petBlanketType = '{{ petBlanketType }}';
+  var petNumberVariant = '{{ sunzi_pet_blanket_number }}';
+  var lineTextVariant = '{{ sunzi_pet_blanket_linetext }}';
+
+  _sunzi_variant_hide(petNumberVariant);
+  _sunzi_variant_hide(lineTextVariant);
+</script>
+
+{% comment %} 2.请求定制化数据 {% endcomment %}
+<script defer="defer">
+  var response;
+  _sunzi_request('{{ requestURL }}', function(data) {
+  	response = data;               
+  });
+</script>
+
+{% comment %} 3.开始定制 {% endcomment %}
+<script defer="defer">
+  console.log({{product | json}});
+  // 初始化数据
+  var petNumber = getVariantData(petNumberVariant);
+  var lineText = getVariantData(lineTextVariant);
+  $('#sunzi-button').click(async function() {
+    var bottomImage = response[petBlanketType];
+    var _lang = '{{sunzi_shop_language}}';
+    bottomImage.title = response.translate[_lang].colorTitle; 
+    lineText.textTitle = response.translate[_lang].textTitle;
+    _sunzi_response.shop = {
+      language: _lang,
+      currencySymbol: '{{sunzi_shop_symbol}}',
+    };
+    _sunzi_response.bottomImage = bottomImage;
+    _sunzi_response.petNumber = petNumber;
+    _sunzi_response.lineText = lineText;
+    _sunzi_response.variantChange = function(variantInfo) {
+      var domPetNumber = _sunzi_find_variant(petNumberVariant);
+      var domLineText = _sunzi_find_variant(lineTextVariant);
+      _sunzi_variant_change(petNumberVariant, domPetNumber.find('option').eq(Number(variantInfo.petNumber)).val());
+      _sunzi_variant_change(lineTextVariant, domLineText.find('option').eq(Number(variantInfo.lineText)).val());
+
+      $('.sunzi-header-price').html($(".product-single__price--special").first().html());
+    };
+
+    // 开始渲染
+    _sunzi_custom(
+      PetBlanket.default,
+      function(result) {
+        _sunzi_loading();
+        var picture = {};
+        var bottomImageIndex = result.bottomImage;
+        var bottomImageNumber = result.bottomImage + 1;
+        var customInfoTitle = '';
+        result.file.forEach(function(item, index) {
+          picture[index] = item;
+        })
+        var customInfo = {
+          properties: {
+            'Choose Your Color': petBlanketType === 'color' ? bottomImage.data[bottomImageIndex].name : bottomImageNumber.toString(),
+            'picture': JSON.stringify(picture)
+          }
+        };
+
+        if(result.lineText == 1) {
+          customInfoTitle += (result.lineTextValue + ' / ');
+          customInfo.properties.text_str = result.lineTextValue;
+          $('#sunzi-textStr').val(result.lineTextValue);
+        }
+        $('#sunzi-customInfo').val(JSON.stringify(customInfo));
+        $('#sunzi-picture').val(JSON.stringify(picture));
+
+        if(petBlanketType === 'color') {
+          $('#sunzi-choose-color').attr('name', 'properties[Choose Your Color]');
+          $('#sunzi-choose-color').val(bottomImage.data[bottomImageIndex].name);
+        } else {
+          $('#sunzi-choose-color').attr('name', 'properties[Choose Christmas Background Color]');
+          $('#sunzi-choose-color').val(bottomImageNumber);
+        }
+        // 1是选中了刻字
+        customInfoTitle += (bottomImageNumber + ' / ' + JSON.stringify(picture));
+        $('#sunzi-customInfoTitle').val(customInfoTitle);
+        $('#sunzi-cart').val(JSON.stringify({
+          'image': [ _sunzi_get_product_info('featuredImage') ]
+        }));
+        //	加车事件触发
+        $('.product-form__cart-submit').click();
+        _sunzi_hide_loading();
+      }
+    );
+  });
+  
+  /** 其他自定义函数 start **/
+  // 获取变体数据
+  function getVariantData(variant) {
+    var options = [];
+    var $dom = _sunzi_find_variant(variant);
+    if(!$dom) return {}
+    var title = $dom.find('label').html().trim();
+    var $radios = $dom.find('option');
+    $radios.each(function(index, item){
+    	options.push($(item).val());
+    })
+    return {
+      title: title,
+      data: options
+    }
+  }
+  // 验证select标签是否选中，如果未选中，默认选择第一个value
+  function verdictSelect(variant) {
+  	var variantDom = _sunzi_find_variant(variant).find("select");
+    if(!variantDom) return;
+    if(!variantDom.val()) {
+      variantDom.val(variantDom.find('option').eq(1).val());
+      variantDom.change();
+    }
+  }
+  
+  /** 其他自定义函数 end **/
+</script>

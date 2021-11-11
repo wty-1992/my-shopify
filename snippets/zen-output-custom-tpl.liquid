@@ -1,0 +1,46 @@
+{% assign productItem = product.metafields["global"]["item"] %}
+{% case ptype %}
+{% when 'Photo' %}
+<!-- a -->
+{% include 'zen-photo' %}
+{% when 'MultiPhoto' %}
+<!-- ba -->
+{% include 'zen-multiphoto' %}
+{% when 'Carving' %}
+<!-- ac -->
+{% include 'zen-carving' %}
+{% when 'PhotoCarving' %}
+<!-- a a-->
+{% include 'zen-photocarving' %}
+{% when 'CurveCarving' %}
+<!-- as -->
+{% include 'zen-curvecarving' %}
+{% when 'MapCarving' %}
+<!-- ad -->
+{% include 'zen-mapcarving' %}
+{% when 'NoCanvas' %}
+<!-- afq -->
+{% include 'zen-nocanvas' %}
+{% when 'StandardCustom' %}
+<!-- a w-->
+{% include 'zen-standardcustom' %}
+{% when 'Alphabet' %}
+<!-- a e-->
+{% include 'zen-namenecklace' %}
+{% when 'Crystal' %}
+<!-- ar -->
+{% include 'zen-crystal' %}
+{% when 'CrystalName' %}
+<!-- a g-->
+{% include 'zen-crystal' %}
+{% when 'CrystalCarving' %}
+<!-- au -->
+{% include 'zen-crystal' %}
+{% when 'CrystalCurve' %}
+{% include 'zen-crystal' %}
+{% when 'Crystal-debug' %}
+{% include 'zen-crystal-debug' %}{% comment %}换钻颜色调试测试地址{% endcomment %}
+{% when 'CrystalCurveNumber' %}
+{% include 'zen-number-crystal' %}
+{% else %}
+{% endcase %}

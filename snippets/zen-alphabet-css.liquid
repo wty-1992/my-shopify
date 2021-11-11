@@ -1,0 +1,133 @@
+<script src="{{ 'zen-base.js' | asset_url }}"></script>
+{{ 'zen-fonts.scss.css'       | asset_url | stylesheet_tag }}
+<style>
+  .name-container .showtext[style*="AIV64;"]{ 
+    font-size: 110px;
+    height: 62px;
+    line-height: 8px;
+  }
+  .showtext-in{ padding: 0px 10px 0px 10px; }
+  .showtext-in.silver {
+    color: #808080;
+/*     background: -webkit-linear-gradient(transparent, transparent),-webkit-linear-gradient(top, #e0e1e1 0%, #e3e2e8 26%, #ddd 35%, #d7d7d7 45%, #e1e2e1 61%, #a4a4a4 100%);
+    background: -o-linear-gradient(transparent, transparent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; */
+  }
+  .showtext-in.rosegold {
+/*     color: #be7d86; */
+    
+       color: #c8977b
+    /* background: -webkit-linear-gradient(transparent, transparent),-webkit-linear-gradient(top, #cea997 0%, #e8d5cb 26%, #e5d1c6 35%, #e8d6cf 45%, #cfaa99 61%, #b77d5f 100%);
+    background: -o-linear-gradient(transparent, transparent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; */
+  }
+  .showtext-in.gold {
+    color: #eac855;
+/*     background: -webkit-linear-gradient(transparent, transparent),-webkit-linear-gradient(transparent, transparent),-webkit-linear-gradient(top, #ede097 0%, #eee39e 26%, #e7d685 35%, #d3b33a 45%, #eadb8e 61%, #e3ce74 100%);
+    background: -o-linear-gradient(transparent, transparent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;*/
+  }
+  .showtext-in.black {
+    color: #000000;
+  }
+  
+  .name-container .view-name{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .name-container .view-name>span{
+    color: #000;
+  }
+  .name-container .showtext{
+    padding-left: 8px;
+    text-align: left;
+    height: 48px;
+    line-height: 45px;
+    width: 100%;
+    font-size: 32px;
+    overflow-y: hidden;
+    overflow-x: auto;
+  }span.nameErrorWord {
+      color: red;
+      font-size: 12px;
+    }
+  .namecanvas-content .name-textarea{
+    position: relative;
+  }
+  .namecanvas-content .name-textarea .alpha_text{
+    height: 50px;
+    border: 1px solid #d6d6d6;
+    padding-left: 20px;
+    background:#fff;
+  }
+  .namecanvas-content .name-textarea .leftnum{
+    position: absolute;
+    right: 20px;
+    top: 30%;
+    font-size: 12px;
+  }
+  .namecanvas-content .name-textarea .leftnum span{
+    font-size: 16px;
+    color: #000;
+  }
+  .namecanvas-content{
+    margin-bottom: 15px;
+  }
+  .namecanvas-content{
+    display: flex;
+    flex-flow: wrap;
+  }
+  .namecanvas-content.first .pr{
+    width: 100%;
+  }
+  .namecanvas-content .pr{
+    width: 50%;
+    margin-left: -1px;
+    margin-top: -1px;
+  }
+  .name-container .showtext::-webkit-scrollbar {/*滚动条整体样式*/
+    width: 1px;     /*高宽分别对应横竖滚动条的尺寸*/
+    height: 5px;
+  }
+  .name-container .showtext::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    background: #ececec;
+  }
+  .name-container .showtext::-webkit-scrollbar-track {/*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    border-radius: 10px;
+    background: #fdfdfd;
+  }  
+  @media(max-width:768px){
+    .zen-customer-lr{
+      padding: 0 10px;
+    }
+    .name-container .showtext{
+      font-size: 24px;
+      height: 37px;
+      line-height: 35px;
+    }
+    .name-container .view-name{
+      margin-bottom: 5px;
+    }
+    .namecanvas-content .name-textarea .alpha_text{
+      height: 45px;
+      padding-left: 15px;
+    }
+    .namecanvas-content .name-textarea .leftnum{
+      transform: scale(.9);
+      right: 15px;
+      top: 32%;
+    }
+    .namecanvas-content .pr{
+      width:100%;
+      margin-top: 0;
+      margin-bottom: 5px;
+    }
+  }
+</style>

@@ -1,0 +1,246 @@
+{% comment %}
+** @name 无限魔方**
+** @author 江春霖 **
+** @integrate 江春霖 **
+{% endcomment %}
+
+{% comment %} 调用参数 {% endcomment %}
+
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'sunzi.infinite.cube.js' %}
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign requestURL = '' %}
+
+{% comment %} 产品状态变体名称 {% endcomment %}
+{% assign variantProductStatus = 0 %}
+{% comment %} 贴纸变体名称 {% endcomment %}
+{% assign variantStickers = 1 %}
+{% comment %} 分享减价/无需赠送变体 {% endcomment %}
+{% assign statusShareText = 'Complete with Photos Sticked' %}
+
+{% comment %} 站点语种 {% endcomment %}
+{% assign sunzi_shop_language = section.settings.sunzi_shop_language %}
+{% comment %} 货币符号 {% endcomment %}
+{% assign sunzi_shop_symbol = section.settings.sunzi_shop_symbol %}
+
+{% comment %} 孙子定制化模板 {% endcomment %}
+{% include 'sunzi-solt-template' %}
+
+{% comment %} 谷歌分析id {% endcomment %}
+{% assign gtag = 'UA-174675922-8' %}
+{% comment %} 定制按钮文案 {% endcomment %}
+{% assign buttonText = section.settings.sunzi_button_upload_text %}
+
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+  .view-size-quantity,
+  .common-standar_btn {
+  	display: none;
+  }
+  .sunzi-form #sunzi-button {
+    position: relative;
+    background-color: #e60044;
+    border: 0;
+    border-radius: unset;
+    -webkit-appearance: none;
+    font-size: 14px;
+    font-family: inherit;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  @media screen and (min-width: 768px) {
+    .sunzi-modal-content {
+       width: 400px;
+       height: 660px;
+    }
+    .cr-slider-wrap {
+      bottom: auto !important;
+    }
+    .cr-slider-wrap input {
+      border: 0;
+    }
+  }
+  @media only screen and (max-width: 749px) {
+    p {
+    	font-size: 1em;
+    }
+  }
+</style>
+{% comment %} loading 所需图片预加载 {% endcomment %}
+<link rel="preload" href="https://sunzi7n.imaiyuan.com/infinite-cube/coin.png" as="image">
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 额外的表单参数 {% endcomment %}
+  
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="text" id="sunzi-input" name="properties[customInfo]" required="required"></input>
+  {% comment %} 定制按钮 {% endcomment %}
+  <button type="button" id="sunzi-button" disabled class="dots-loading">
+    <span class="dots">
+      <i></i>
+      <i></i>
+      <i></i>
+    </span>
+    <div class="sunzi-button-text">{{ buttonText }}</div>
+  </button>
+</div>
+
+<!-- sunzi core js -->
+<script src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{ coreJs }}" defer="defer"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ gtag }}" async="async"></script>
+<script async="async">
+  var sunzi_event_category = 'infiniteCube';
+  _sunzi_gtag('{{ gtag }}');
+</script>
+
+{% comment %} 1.隐藏掉变体，加车按钮等等 {% endcomment %}
+<script async="async">
+  const _sunzi_infinite_cube_loaded = () => {
+    if (_dom_content_loaded && _sunzi_request_resolve) {
+      _sunzi_ga('event', 'event_custom_loaded', {
+        'event_category': sunzi_event_category,
+      });
+    }
+  };
+  window.addEventListener('DOMContentLoaded', _sunzi_infinite_cube_loaded);
+</script>
+{% comment %} 2.请求定制化数据 {% endcomment %}
+<script defer="defer">
+  _sunzi_request();
+</script>
+
+{% comment %} 3.开始定制 {% endcomment %}
+<script defer="defer">
+  $(function() {
+    updateProductStatus('{{variantProductStatus}}', '{{variantStickers}}');
+  });
+  
+  var productStatusDom = _sunzi_find_variant('{{variantProductStatus}}');                                           
+
+  // 添加produtcStatus变体 select监听
+  productStatusDom && productStatusDom.on("change","select", function () {
+    updateProductStatus('{{variantProductStatus}}', '{{variantStickers}}');
+  });
+  _sunzi_response.hasShare = false;
+  $('#sunzi-button').click(function() {
+    _sunzi_response.shop = {
+      language: '{{sunzi_shop_language}}',
+      currencySymbol: '{{sunzi_shop_symbol}}',
+    };
+    // 开始渲染
+    _sunzi_custom(
+      InfiniteCube.default,
+      async function(data, share) {
+        _sunzi_loading();
+        $('#sunzi-input').val(JSON.stringify({
+          '_sunzi_sources': data,
+          '_sunzi_compose': [{
+            'rule': 1,
+            'images': data,
+            'type': 'effect'
+          }],
+        }));
+        if(share) {
+          var idMap = {
+            38032764895384: 38033101979800,
+            38032764993688: 38033102012568,
+            38032765026456: 38033102045336,
+            38032765059224: 38033102078104
+          }
+          var param = serializeObject($('.product-form'));
+          param.id = idMap[param.id];
+          await addToCart(param, true)
+        } else {
+          //加车事件触发
+          $('.product-form__cart-submit').click();
+        }
+        _sunzi_hide_loading();
+      }
+    );
+  });
+  
+  /** 其他自定义函数 start **/
+  
+  /** 加车 */
+  function addToCart(data, showModal) {
+    return new Promise((resolve, reject) => {
+      $.ajax({
+        type: "POST",
+        url: "/cart/add.js",
+        data,
+        async: false,
+        dataType: "json",
+        context: this,
+        success: (item) => {
+          if(showModal) {
+            var modal = new tingle.modal({
+              footer: false,
+              stickyFooter: false,
+              //closeMethods: ['button'], 
+              //closeLabel: "Close11",
+              cssClass: ['addtocart-pop'],
+              onOpen: function() {
+                console.log('modal open');
+              },
+              onClose: function() {
+                console.log('modal closed');
+              },
+              beforeOpen: function() {
+              },
+              beforeClose: function() {
+                // e.g. save content before closing the modal
+                return true; // close the modal
+              }
+            });
+
+            if($(".product-vip-gift-box-div").length > 0 && $('#vipBox').is(':checked') == true){
+              boxAddToCart();
+            }
+            Listener.trigger(Listener.cart.add.after, [ item ]);
+            Dialog.open('#shopify-section-cart-success');
+          }
+          resolve(item);
+        },
+        error: (request, status) => {
+          reject(request, status);
+        }
+      })
+    })
+  }
+  /** form数据序列化js对象 */
+  function serializeObject($form){
+    var o = {};  
+    var a = $form.serializeArray();  
+    $.each(a, function() {  
+      if (o[this.name]) {  
+        if (!o[this.name].push) {  
+          o[this.name] = [o[this.name]];  
+        }  
+        o[this.name].push(this.value || '');  
+      } else {  
+        o[this.name] = this.value || '';  
+      }  
+    });  
+    return o;  
+  };
+  
+  // 根据productStatus更新状态
+  function updateProductStatus(status, stickers) {
+    var currentProductStatus = _sunzi_variant_value(status);
+    if(currentProductStatus == '{{statusShareText}}') {
+      _sunzi_variant_hide(stickers);
+      _sunzi_variant_change(stickers, _sunzi_find_variant(stickers).find('option').eq(0).val());
+//       _sunzi_response.shareImage = 'https://sunzi7n.imaiyuan.com/infinite-cube/coin.png';
+//       _sunzi_response.shareLink = window.location.href;
+//       _sunzi_response.sharePrice = 1;
+//       _sunzi_response.hasShare = true;
+    } else {
+      _sunzi_variant_show(stickers);
+//       _sunzi_response.hasShare = false;
+    }
+  }
+  
+  /** 其他自定义函数 end **/
+</script>

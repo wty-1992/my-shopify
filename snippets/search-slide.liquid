@@ -1,0 +1,221 @@
+{% comment %}
+** @name 搜索栏与下拉框 **
+** @author 王天宇 **
+** @integrate 王天宇 **
+{% endcomment %}
+<style>
+  .search-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 120px;
+    background: #F6F6F9;
+    font-size: 16px;
+    color: #222222;
+    z-index: 11;
+  }
+  .search-container .container-input {
+    display: flex;
+    width: 71.5%;
+    height: 60px;
+    padding: 0 42px;
+    background: #fff;
+    box-shadow: 0 1px 1px rgb(106 102 136 / 8%), 0 4px 16px rgb(183 183 192 / 30%);
+    
+  }
+  .container-input img {
+    margin-right: 10px;
+    width: 30px;
+  }
+  .container-input input {
+    background: #fff;
+    border: none;
+  }
+  .search-container .container-slide {
+  	position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+    padding: 0 3%;
+    top: 100px;
+    width: 71.5%;
+    background: #fff;
+    box-shadow: 0 1px 1px rgb(106 102 136 / 8%), 0 4px 16px rgb(183 183 192 / 30%);
+  }
+  .container-slide .slide-text {
+    height: 90px;
+    line-height: 90px;
+    font-size: 24px;
+    color: #928FA5;
+  }
+  .container-slide .slide-list {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    flex: 1;
+  }
+  .slide-list .slide-separate {
+  	position: absolute;
+    left: 50%;
+    height: 100%;
+    border: 1px solid #eee;
+  }
+  .slide-list .list-item {
+    display: flex;
+    align-content: space-between;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+    width: 40%;
+    height: 122px;
+  }
+  .list-item .item-img {
+    margin-right: 16px;
+    height: 100%;
+  }
+  .list-item .item-content {
+   	width: 65%;
+  }
+  .item-content .content-title {
+    margin-bottom: 5px;
+    line-height: 1.5;
+    display: -webkit-box;
+    overflow: hidden;  
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  .content-title span {
+    color: red;
+  }
+  .item-content .content-price {
+    font-weight: 600;
+  }
+  .container-slide .slide-more {
+    display: flex;
+    justify-content: center;
+    padding: 36px 0 28px;
+  }
+  .slide-more a {
+  	width: 366px;
+    height: 56px;
+    line-height: 56px;
+    font-size: 18px;
+    text-align: center;
+    border: 1px solid #eee;
+    border-radius: 4px;
+  }
+</style>
+<div class="search-container">
+  <div class="container-input">
+    <img src="{{ 'search.svg' | asset_url }}" alt="">
+    <input
+      type="text"
+      placeholder="Search for products, brands, categories, and print providers"
+      id="searchInput"
+      value=""
+    />
+  </div>
+  <div class="container-slide">
+  	<div class="slide-text">Im looking for…</div>
+    <div class="slide-list"></div>
+    <div class="slide-more">
+      <a class="more-button" href="">See matching products（<span>3</span>）→</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // 隐藏下拉框
+  $('.container-slide').hide();
+  
+  
+  var timer = null;
+  // 监听输入框输入事件
+  $('#searchInput').on('input', function() {
+    $(this).val().length ? $('.container-slide').show() : $('.container-slide').hide();
+//        sunzi_debounce(renderDomProducts, 1000);
+  //   	var result = await searchResult($(this).val())
+    if(timer !== null){
+      clearTimeout(timer);
+    }
+    timer = setTimeout(renderDomProducts, 1000);
+  });
+  
+  // 渲染搜索产品
+  async function renderDomProducts() {
+    var searchValue = $('#searchInput').val();
+    if(!searchValue) return;
+    var htmlString = '';
+    var result = await searchResult($('#searchInput').val());
+    var productsData = result.resources.results.products;
+  	for(let i=0;i<productsData.length;i++) {
+      if(i == 4) break;
+      htmlString += `
+      <div class="list-item">
+      	<img class="item-img" src="${productsData[i].featured_image.url}" />
+      	<div class="item-content">
+          <div class="content-title">${productsData[i].title}</div>
+          <div class="content-price">${productsData[i].price}</div>
+        </div>
+      </div>
+      `;
+    }
+    htmlString += `<div class="slide-separate"></div>`;
+    $('.slide-list').html(htmlString);
+    $('.more-button span').html(productsData.length);
+  }
+  
+  // 查询接口
+  function searchResult() {
+    var searchStr = `q=${$('#searchInput').val()}&resources[type]=product&resources[options][unavailable_products]=hide&resources[options][prefix]=last&section_id={{section.id}}`;
+  	return new Promise((resolve, reject) => {
+      $.ajax({
+        type: "GET",
+        url: "/search/suggest",
+        data: searchStr,
+        async: false,
+        dataType: "json",
+        context: this,
+        success: (item) => resolve(item),
+        error: (request, status) => {
+          reject(request, status);
+        }
+      })
+    })
+  }
+  
+  // 防抖
+  function sunzi_debounce(fn,wait){
+      var timer = null;
+      return function(){
+          if(timer !== null){
+              clearTimeout(timer);
+          }
+          timer = setTimeout(fn,wait);
+      }
+  }
+  
+  // 便利查询对象，生成查询字符串  抽象失败
+  
+//   function mapSearch(data, currentStr) {
+//     var result = ""
+//     for(let key in data) {
+//       var curStr = currentStr || "";
+//       var firstStr = curStr.split('[') && curStr.split('[')[0];
+//       curStr || (curStr += key);
+//       if(Object.prototype.toString.call(data[key]) === '[object Object]') {
+//         firstStr !== key && (curStr += `[${key}]`);
+//         result += mapSearch(data[key], curStr);
+//       } else {
+//         var firstStr = curStr.split('[') && curStr.split('[')[0];
+//         firstStr !== key && (curStr += `[${key}]`);
+//         result += `${curStr}=${data[key]}&`;
+//       }
+//     }
+//     return result;
+//   }
+  
+
+  
+</script>

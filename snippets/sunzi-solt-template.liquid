@@ -1,0 +1,469 @@
+{% comment %}
+** !!!!!! 全局文件，修改前请先联系金忠帅 !!!!!!
+** sunzi全局dom和方法插槽
+** @version 1.0.2 **
+** @author 金忠帅 **
+{% endcomment %}
+
+{% comment %} 全局样式引入 {% endcomment %}
+<link rel="stylesheet" type="text/css" href="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/sunzi-style.css" />
+{% comment %} 模态框 {% endcomment %}
+<div id="sunzi-modal" class="sunzi-modal">
+  <div class="sunzi-modal-mask"></div>
+  <div class="sunzi-modal-content">
+    <div id="sunzi-node"></div>
+  </div>
+</div>
+
+{% comment %} loading {% endcomment %}
+<div class="sunzi-loading">
+  <div class="sunzi-loading-content dots-loading">
+    <span class="dots">
+      <i></i>
+      <i></i>
+      <i></i>
+    </span>
+  </div>
+</div>
+
+{% comment %} javascript {% endcomment %}
+<script src="https://spic.qn.cdn.imaiyuan.com/sunzi/js/react.production.min.js" defer="defer"></script>
+<script src="https://spic.qn.cdn.imaiyuan.com/sunzi/js/react-dom.production.min.js" defer="defer"></script>
+<script src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/three.r121.js" defer="defer"></script>
+
+{% comment %}
+  全局方法说明文档
+{% endcomment %}
+
+{% comment %}全局变量定制{% endcomment %}
+{% include 'sunzi-config-customize' %}
+
+{% comment %} 全局方法定义 {% endcomment %}
+<script defer="defer">
+  /** sunzi 全局数据变量 **/
+  var _sunzi_response = {};
+  /** sunzi 全局定制前偏移 **/
+  var _sunzi_offset = 0;
+  /** 全局 dom加载完成 **/
+  var _dom_content_loaded = false;
+  /** sunzi 全局请求完成 **/
+  var _sunzi_request_resolve = false;
+  /** sunzi 全局定制化ga **/
+  var _sunzi_ga = () => {};
+
+  // 设置全局变量语种
+  _sunzi_global_data.shop = _sunzi_global_data["shop-v1"];
+
+  // 监听DOMContentLoaded
+  window.addEventListener('DOMContentLoaded', function() {
+    _dom_content_loaded = true;
+    _sunzi_loaded();
+  });
+
+  /** sunzi 资源请求完成 **/
+  function _sunzi_loaded() {
+    if (_dom_content_loaded && _sunzi_request_resolve) {
+      $('#sunzi-button').removeAttr("disabled");
+      $('#sunzi-button').removeClass("dots-loading");
+        // 设置加车按钮文案
+  	  $(".sunzi-button-text").html(_sunzi_global_data.buttonText.default);
+    }
+  }
+
+  /** sunzi 全局请求数据 **/
+  function _sunzi_request(URL, callback) {
+    
+    if (URL) {
+      $.get(URL, function(data) {
+        _sunzi_request_resolve = true;
+        _sunzi_response = data;
+        _sunzi_response.shop = _sunzi_global_data["shop-v1"];
+        _sunzi_global_data.theme && (_sunzi_response.theme = _sunzi_global_data.theme);
+        _sunzi_loaded();
+        callback && callback(data);
+      });
+    } else {
+      _sunzi_request_resolve = true;
+      _sunzi_loaded();
+      callback && callback();
+    }
+  }
+
+  /** sunzi 谷歌分析初始化 **/
+  function _sunzi_gtag(id, category) {
+    window.dataLayer = window.dataLayer || [];
+    _sunzi_ga = function (){dataLayer.push(arguments);}
+    _sunzi_ga('js', new Date());
+    _sunzi_ga('config', id);
+    // 分享着陆页抓取
+    var currentURL = window.location.href;
+    if (currentURL.indexOf('/share+') > -1) {
+   	  var source = currentURL.split(/\/share\+|\?/);
+      gtag('event', 'share_land_' + source[1], {
+        'event_category': category
+      });
+    }
+  }
+
+  /** sunzi 全局开始定制 **/
+  function _sunzi_custom(component, onConfirmCallback, onCloseCallback) {
+    _sunzi_lock();
+    _sunzi_ga('event', 'event_tap_custom');
+    _sunzi_response.gtag = _sunzi_ga;
+    // 设置默认值
+    onConfirmCallback = onConfirmCallback || function(){};
+    onCloseCallback = onCloseCallback || function(){};
+    // 唤醒定制框
+    $('#sunzi-modal').show(0, function() {
+      ReactDOM.render(
+        React.createElement(component, {
+          price: '{{ product.price }}',
+          title: `{{ product.title | replace: "`", "\`" }}`,
+          ..._sunzi_response,
+          onClose: modalClose,
+          onConfirm: function(...data) {
+            modalClose();
+            onConfirmCallback(...data);
+          }
+        }, null),
+        document.getElementById('sunzi-node')
+      );
+    });
+
+    // 模态框关闭
+    function modalClose() {
+      $('#sunzi-modal').hide();
+      _sunzi_unlock();
+      onCloseCallback();
+    }
+  }
+
+  /** sunzi 屏幕锁定 **/
+  function _sunzi_lock() {
+    const root = $('html, body');
+    _sunzi_offset = root.scrollTop();
+    root.addClass('lock');
+    const system = _getSystem();
+    if (system.name === 'IOS' && system.version === 15)
+      root.addClass('compatible-IOS15');
+    root.scrollTop(0);
+  }
+
+  /** sunzi 屏幕解锁 **/
+  function _sunzi_unlock() {
+    const root = $('html, body');
+    root.removeClass('lock');
+    root.removeClass('compatible-IOS15');
+    root.scrollTop(_sunzi_offset);
+  }
+
+  /** sunzi 寻找变体元素 **/
+  function _sunzi_find_variant(variant, formClass = _sunzi_global_data.domLabel.form, selectClass = _sunzi_global_data.domLabel.select) {
+    if(isNaN(variant)) {
+      return _sunzi_find_variant_name(variant, formClass, selectClass);
+    } else {
+      return _sunzi_find_variant_index(variant, formClass, selectClass);
+    }
+  }
+        
+  /** sunzi 寻找变体元素-根据变体名称 **/
+  function _sunzi_find_variant_name(name, formClass = _sunzi_global_data.domLabel.form, selectClass = _sunzi_global_data.domLabel.select) {
+    var selects = $(formClass).find(selectClass);
+    for (var i = 0; i < selects.length; i++) {
+      // 去掉2边的空格
+      var variantName = $(selects[i]).find(_sunzi_global_data.domLabel.label).html().replace(/(^\s*)|(\s*$)/g, "");
+      if (variantName.indexOf(name) > -1)
+        return $(selects[i]);
+    }
+  }
+
+  /** sunzi 寻找变体元素-根据变体索引值 **/
+  function _sunzi_find_variant_index(index, formClass = _sunzi_global_data.domLabel.form, selectClass = _sunzi_global_data.domLabel.select) {
+    var selects = $(formClass).find(selectClass);
+    return selects && selects.eq(index);
+  }
+    
+  /** sunzi 改变变体值 **/
+  function _sunzi_variant_change(variant, value) {
+    if(isNaN(variant)) {
+      _sunzi_variant_change_name(variant, value);
+    } else {
+      _sunzi_variant_change_index(variant, value);
+    }
+  }
+
+  /** sunzi 改变变体值-根据变体名称 **/
+  function _sunzi_variant_change_name(name, value) {
+    var selectedVariant = _sunzi_find_variant_name(name);
+    if(_sunzi_global_data.domLabel.type == 'select') {
+      selectedVariant && selectedVariant.find("select").val(value);
+      selectedVariant && selectedVariant.find("select").change();
+    } else {
+      selectedVariant.length > 0 && selectedVariant.find("input[value='" + value + "']").get(0).click();
+    }
+  }
+
+  /** sunzi 改变变体值-根据变体索引值 **/
+  function _sunzi_variant_change_index (index = 0, value) {
+    var selectedVariant = _sunzi_find_variant_index(index);
+    if(_sunzi_global_data.domLabel.type == 'select') {
+      selectedVariant && selectedVariant.find("select").val(value);
+      selectedVariant && selectedVariant.find("select").change();
+    } else {
+      selectedVariant.length > 0 && selectedVariant.find("input[value='" + value + "']").get(0).click();
+    }
+  }
+
+  /** sunzi 改变变体-根据option索引值 **/
+  function _sunzi_variant_change_order(index, value, type = _sunzi_global_data.domLabel.type) {
+    var selectedVariant = _sunzi_find_variant(index);
+    if(selectedVariant.length == 0) return;
+    if(type == 'select') {
+      var selectDom = selectedVariant.find("select");
+      var curValue = selectDom.find("option").eq(value).val();
+      selectDom.val(curValue).change();
+    } else if(type == 'radio'){
+      var curValue = selectedVariant.find("input").eq(value).val();
+      var selectDom = selectedVariant.find("input[value='" + curValue + "']");
+      selectDom.get(0).click();
+    }
+  }
+
+  /** sunzi 根据索引值获取变体值 **/
+  function _sunzi_variant_value (index = 0, type = 0) {
+    var selectType = _sunzi_global_data.domLabel.type === "radio" ? "input:checked" : "select";
+    var dom = _sunzi_find_variant(index).find(selectType);
+    // 如果传入1，返回选中索引值
+    if(type == 1) {
+      return dom.prop('selectedIndex');
+    }
+    // 默认返回选中值
+    else {
+      return dom.val();
+    }
+  }
+
+  /** sunzi 隐藏变体
+ 	* 如果index为undefined 隐藏所有变体
+    * 个别站点变体dom并非一种，可以在sunzi-config-customize中设置hideDom
+  **/
+  function _sunzi_variant_hide(index) {
+    // 如果没有参数，隐藏所有变体dom
+    if(index == undefined) {
+      var hideDomStr = _sunzi_global_data.domLabel.select;
+      Array.isArray(_sunzi_global_data.hideDom) && _sunzi_global_data.hideDom.forEach(item => hideDomStr += `, ${item}`);
+      $(hideDomStr).each((index, item) => {
+      	$(item).hide();
+        $(item).removeClass('show');
+      });
+    } else {
+      var variantDom = _sunzi_find_variant(index);
+      if(variantDom) {
+        variantDom.hide();
+        variantDom.removeClass('show');
+      }    
+    }
+  }
+  
+  /** sunzi 显示变体 **/
+  function _sunzi_variant_show(index) {
+    // 如果没有参数，显示所有变体dom
+    if(index == undefined) {
+      var hideDomStr = _sunzi_global_data.domLabel.select;
+      Array.isArray(_sunzi_global_data.hideDom) && _sunzi_global_data.hideDom.forEach(item => hideDomStr += `, ${item}`);
+      $(hideDomStr).each((index, item) => {
+      	$(item).show();
+        $(item).addClass('show');
+      });
+    } else {
+      var variantDom = _sunzi_find_variant(index);
+      if(variantDom) {
+        variantDom.show();
+        variantDom.addClass('show');
+      }
+    }
+  }
+
+  /** sunzi 显示loading **/
+  function _sunzi_loading() {
+    $('.sunzi-loading').show();
+  }
+
+  /** sunzi 隐藏loading **/
+  function _sunzi_hide_loading() {
+    $('.sunzi-loading').hide();
+  }
+    
+  /** sunzi 禁用select第一个装饰用option,有些站点需要 **/
+  function _sunzi_disable_option_first(variantName) {
+    if(variantName) {
+      option_hide(_sunzi_find_variant(variantName).find('option').eq(0));
+    } else {
+      $('.{{section.settings.sunzi_class_select}}').find('select').each(function(index, item) {
+        option_hide($(this).find('option').eq(0));
+      })
+    }
+    function option_hide(optionDom) {
+      if(!optionDom.val()) {
+        var _select = optionDom.parent();
+        _select.val(_select.find('option').eq(1).val());
+      	_select.change();
+        optionDom.hide();
+      }
+    }
+  }
+
+  /** sunzi 加车 **/
+  function _sunzi_add_to_cart(data, callback) {
+    // 如果在sunzi-config-customize设置了加车函数，执行，其他情况使用默认加车方法
+    if(!data && _sunzi_global_data.addToCart) {
+      _sunzi_global_data.addToCart(data, callback);
+    } else {
+      return new Promise((resolve, reject) => {
+        $.ajax({
+          type: "POST",
+          url: "/cart/add.js",
+          data,
+          async: false,
+          dataType: "json",
+          context: this,
+          success: (item) => resolve(item),
+          error: (request, status) => {
+            reject(request, status);
+          }
+        })
+      })
+    }
+  }
+   
+  /** sunzi 获取当前产品sku **/
+  function _sunzi_get_sku(callback) {
+    return _sunzi_get_product_info().sku;
+  }
+  
+  /** sunzi 获取当前产品信息 **/
+  function _sunzi_get_product_info(type) {
+    // 产品数据
+    var product = {{ product | json }};
+    // 当前产品id
+    var variantId = $('[name="id"]').val() || "{{ product.variants.first.id }}";
+    var curProduct = product.variants.find(item => item.id == variantId);
+    var result = ''
+    switch(type) {
+      case 'featuredImage':
+        var _image = curProduct.featured_image ? curProduct.featured_image.src : 'https:' + product.featured_image;
+	  	result = _image.replace(/\?[a-zA-Z0-9=]+/, '');
+        break;
+      case 'price':
+        result = Number((curProduct.price / 100).toFixed(2));
+        break;
+      case 'originPrice':
+        var originPrice = curProduct.compare_at_price;
+        result = originPrice ? Number((originPrice / 100).toFixed(2)) : 100;
+        break;
+      default:
+      	result = curProduct;
+    }
+    return result;
+  }
+
+
+  // 获取变体加价
+  function _sunzi_get_markup_price(variantIndex) {
+    var addPrice = 0;
+    var curProduct = _sunzi_get_product_info();
+    var productJSON = {{product | json}};
+    var compareProduct = productJSON.variants.find(variant => {
+      return curProduct.options.every((option, index) => {
+        if(index == variantIndex) {
+          return variant.options[index] !== option;
+        } else {
+          return variant.options[index] == option; 
+        }
+      });
+    });
+
+    if(compareProduct) {
+      price = (curProduct.price - compareProduct.price) / 100;
+      addPrice = Math.abs(price.toFixed(2));
+    }
+    return addPrice;
+  }
+    
+  // 获取地址栏参数
+  function getQueryVariable(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i=0;i<vars.length;i++) {
+      var pair = vars[i].split("=");
+      if(pair[0] == variable){return pair[1];}
+    }
+    return(false);
+  }
+  
+  /** 创建uuid **/
+  function _create_uuid() {
+    var s = [];
+    var hexDigits = '0123456789abcdef';
+    for (var i = 0; i < 36; i++)
+      s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+
+    s[14] = '4';
+    s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);
+    s[8] = s[13] = s[18] = s[23] = '-';
+
+    return s.join('');
+  }
+
+  /** 获取系统信息 **/
+  function _getSystem() {
+    var _ua = window.navigator.userAgent;
+    const isAndroidPhone = /(?:Android)/.test(_ua);
+    const isFireFox = /(?:Firefox)/.test(_ua);
+    const isTablet =
+      /(?:iPad|PlayBook)/.test(_ua) ||
+      (isAndroidPhone && !/(?:Mobile)/.test(_ua)) ||
+      (isFireFox && /(?:Tablet)/.test(_ua));
+    const isIOSTablet = /(?:iPad|PlayBook)/.test(_ua);
+    const isAndroidTablet =
+      (isAndroidPhone && !/(?:Mobile)/.test(_ua)) ||
+      (isFireFox && /(?:Tablet)/.test(_ua));
+    const isIPhone = /(?:iPhone)/.test(_ua) && !isTablet;
+    const isIOS = isIPhone || isIOSTablet;
+    const isAndroid = isAndroidPhone || isAndroidTablet;
+    return {
+      name: isAndroid ? 'Android' : isIOS ? 'IOS' : false,
+      version: isAndroid ? _getAndroidVersion() : isIOS ? _getIosVersion() : false,
+    };
+  }
+  
+  /** 获取android版本 **/
+  function _getAndroidVersion() {
+    var _agent = window.navigator.userAgent.toLowerCase();
+    
+    let version = false;
+    if (_agent.indexOf('android') > 0) {
+      const reg = /android [\d._]+/gi;
+      const v_info = _agent.match(reg);
+      version = `${v_info}`.replace(/[^0-9|_.]/gi, '').replace(/_/gi, '.'); // 得到版本号4.2.2
+      version = parseInt(version.split('.')[0]); // 得到版本号第一位
+    }
+    return version;
+  }
+  
+  /** 获取ios版本 **/
+  function _getIosVersion(){
+    var _agent = window.navigator.userAgent.toLowerCase();
+    
+    let version = false;
+    if (_agent.indexOf('like mac os x') > 0) {
+      const reg = /os [\d._]+/gi;
+      const v_info = _agent.match(reg);
+      version = `${v_info}`.replace(/[^0-9|_.]/gi, '').replace(/_/gi, '.'); // 得到版本号9.3.2或者9.0
+      version = parseInt(version.split('.')[0]); // 得到版本号第一位
+    }
+    return version;
+  };
+  
+    
+</script>

@@ -1,0 +1,288 @@
+<link href="https://fonts.googleapis.com/css?family=Charm|Black+And+White+Picture|Indie+Flower|Kumar+One+Outline|Patrick+Hand|Merriweather" rel="stylesheet">
+{{ 'zen-fonts.scss.css'       | asset_url | stylesheet_tag }}
+<style>
+.engrave-options-container{
+  	margin-bottom: 1rem;
+}
+.engrave-options-container ul{
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+}
+.en-option-li{
+  width: 14.5%;
+  border: 1px solid #d6d6d6;
+  margin: 1%;
+  display: flex;
+  cursor: pointer;
+}
+.engrave-option-active {
+  border-color: #e60044 !important;
+}
+#engrave-option-title{
+  color: #000;
+  font-size: 1rem;
+  padding-left: 0;
+  margin-bottom: 10px;
+}
+.el-input__suffix {
+  right: 15px!important;
+}
+.el-input--suffix .el-input__inner {
+  padding-left: 20px;
+}
+.el-dialog--center{
+  width:100% !important;
+  max-width:800px;
+}
+.photo-design-body{
+  width:50%;  
+}
+.operation-part{
+  width:50%;    
+}
+.el-dialog__body{
+  max-height: 536px;
+  overflow: hidden;
+}
+.el-dialog__body>div{
+  overflow: auto;
+  max-height: 440px;
+}
+.operation-part .carving-textarea-box{
+  position: relative;
+  border: 1px solid #ccc;
+  border-radius: 0;
+      position: relative;
+}
+  .operation-part .carving-textarea textarea{
+    font-size: 12px;
+    padding:0px 10px;
+    min-height: 40px!important;
+    padding-right: 55px;
+  }
+.carving-textarea textarea::-webkit-input-placeholder{
+  color:#777;
+}
+.size-box .size-label-part{
+  font-size: 12px;
+  margin: 8px 0 4px;
+}
+.rad-font .font-radio-label{
+  font-size: 12px;
+  margin: 3px 0 4px;
+}
+.el-input .el-input__inner{
+  height: 45px;
+  font-size:12px;
+  border-color: #ccc;
+}
+.operation-part .rad-font .el-radio.is-bordered{
+  padding: 0;
+  height: auto;
+  border-radius: 0;
+  border-color: #777;
+  margin-right: 10px;
+  vertical-align: middle;
+  color: #333;
+}
+.operation-part .rad-font .el-radio.is-bordered.is-checked{  
+  border-color: #e60044;
+}  
+.operation-part .rad-font .el-radio.is-bordered.is-checked .el-radio__label{
+  color: #e60044;
+}
+.rad-font .el-radio.is-bordered .el-radio__label{
+  padding: 2px 30px;
+  line-height: 25px;
+  display: inline-block;
+}
+.el-radio.is-bordered+label.el-radio.is-bordered{
+  margin-left:0px;
+}
+.operation-part .el-select .el-input .el-select__caret{
+  color: #777;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: -1px;
+}
+.el-dialog__body .carving-textarea-box .leftnum{
+  top: unset;
+      bottom: -7px;
+    right: 3px;
+}
+.carving-textarea-box .leftnum{
+  position: absolute;
+  top: 28%;
+  font-size: 12px;
+  transform: translateY(-50%);
+  right: 2%;
+  color: #777;
+}
+.custom-carving-container{
+  display: flex;
+}
+.photo-design-body{
+  width:50%;
+}
+.photo-select-carving .area-photo-upload, .photo-select-carving .area-carving {
+  background: #f8f8f8 !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  height: 56px;
+  margin-bottom: 18px;
+  border: none;
+  border-radius: 0 !important;
+}
+.photo-select-carving .btn-upload-open, .btn-carving-open {
+  cursor: pointer;
+  background: #000;
+  color: #fff;
+  border-radius: 25px;
+  padding: 4px 28px;
+  width: auto;
+  text-align: center;
+  text-transform: capitalize;
+  font-weight: 100;
+  border: none;
+  font-size: 14px;
+  line-height: 1.625;
+}
+.photo-select-carving .area-photo-upload-text, .area-carving-preview-text {
+  font-size: 1rem !important;
+  color: #6d6d6d;
+}
+.photo-select-carving .label-input-text {
+  display: none;
+}
+.photo-select-carving .demonstration {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.photo-select-carving .carving-color-list {
+  display: flex;
+  margin-top: 10px;
+}
+.photo-select-carving .font-label {
+  margin-left: 10%;
+}
+.operation-part .btn-carving.el-button--primary, .photo-confirm-btn {
+  background-color: #e60044 !important;
+  border-color: #e60044 !important;
+  width: 100%;
+  margin-left: 0;
+}
+.btn-carving.el-button--primary .carving-add-price{
+  border: 1px solid #fff;
+  border-radius: 4px;
+  margin-left: 4px;
+  padding: 0px 4px;
+}
+.photo-select-carving .el-dialog__wrapper .el-button {
+  border-radius: 0px!important;
+  margin-right:10px;
+}
+/*   .photo-select-carving .el-progress-bar__inner {
+  background-color: #bfa175 !important;
+} */
+.select-carving-dialog .el-button {
+  width: 250px;
+}
+.select-carving-dialog .el-button--danger {
+  background-color: #bfa175 !important;
+  border-color: #bfa175 !important;
+}
+.preview-thumbnail {
+  margin-right: 10px;
+}
+.carving-exaple-img-item {
+  width: 7rem;
+  margin: 5px;
+}
+.carving-info{
+  font-size: 12px;
+  margin-top: 20px;
+}
+.carving-notice .action-info{
+  color: #777;
+}
+.carving-notice .note-info{
+  color: #e60044;
+}
+.carving-info .handcraft-info{
+  color: #f4354a;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+}
+.carving-exaple-text {
+  margin-top: 10px;
+}
+.select-open-carving {
+  background-color: #bfa175 !important;
+  border-color: #bfa175 !important;
+}
+.select-cancel-carving {
+  background-color: #aaa !important;
+  border-color: #aaa !important;
+}
+.photo-design-tool-bar, .carving-prompt {
+  margin-top: 10px;
+}
+.crop-prompt {
+  margin: 10px 0;
+}
+.photo-design-body {
+  margin-bottom: 10px;
+}
+.dialog-footer-carving {
+  padding-top: 0 !important;
+}
+.slt-font-size {
+  width: 100% !important;
+}
+  .carving-textarea .el-input__inner {
+	border:none;
+  }
+@media (max-width: 768px) { 
+.photo-select-carving .area-photo-upload, .photo-select-carving .area-carving{
+  height:48px;
+}
+.photo-select-carving .btn-upload-open, .btn-carving-open{
+  padding: 2px 18px;
+  font-size: 12px;
+}
+.el-message-box {
+  width: 100%;
+  height: 100%;
+}
+.el-textarea__inner{
+  width: 82%;
+}
+.custom-carving-container{
+  flex-flow: column;
+}
+.el-dialog--center div.el-dialog__body{
+  padding: 0;
+  max-height: 100vh;
+}
+.el-dialog__body>div{
+  max-height: 95vh;
+  padding: 0 20px 30px;
+}
+.photo-design-body{
+  width: 100%;
+}
+.operation-part{
+  width:100%;
+}
+.el-message-box{
+  max-width:100%;
+}
+}
+</style>

@@ -1,0 +1,152 @@
+{% for block in section.blocks %}
+<script>
+{% if template contains 'page' %}
+{% assign tagLabel = "tagLabel" | append: forloop.index %}
+{% assign tagSku1 = "tagSku1" | append: forloop.index %}
+  var {{tagLabel}}=`{{ block.settings.title }}`;
+  var {{tagSku1}} =`{{ block.settings.sold_sort }}`.split(",");
+  Array.from(new Set({{tagSku1}}));//数组去重
+  $(function(){
+    $(".hide_sku_tag").each(function(){
+      var thisHtml = $(this);
+      {{tagSku1}}.map(function(item,index){
+        if(item == thisHtml.text()){
+          
+          let structure = {{tagLabel}};
+          $(thisHtml).siblings(".collection-label").append(`<span class="tag_span" style="display:none;">`+structure+`</span>`);
+        }
+      });
+    });
+  });
+{% endif %}
+  
+{% if template contains 'product' %}
+{% assign tagLabel = "tagLabel" | append: forloop.index %}
+{% assign tagSku1 = "tagSku1" | append: forloop.index %}
+  var {{tagLabel}}=`{{ block.settings.title }}`;
+  var {{tagSku1}} =`{{ block.settings.sold_sort }}`.split(","); 
+  Array.from(new Set({{tagSku1}}));//数组去重
+  $(function(){
+    $(".hide_sku_tag").each(function(){
+      var thisHtml = $(this);
+      {{tagSku1}}.map(function(item,index){                
+        if(item == thisHtml.html()){
+          let structure = {{tagLabel}};
+          $(thisHtml).parent().append(`<span class="product-label-item">`+structure.replace(/-/,' | ')+`</span>`);
+        }
+      });
+    });
+  });
+{% endif %}
+
+{% if template contains 'collection' %}
+{% assign tagLabel = "tagLabel" | append: forloop.index %}
+{% assign tagSku1 = "tagSku1" | append: forloop.index %}
+  var {{tagLabel}}=`{{ block.settings.title }}`;
+  var {{tagSku1}} =`{{ block.settings.sold_sort }}`.split(",");
+  Array.from(new Set({{tagSku1}}));//数组去重
+  $(function(){
+    $(".hide_sku_tag").each(function(){
+      var thisHtml = $(this);
+      {{tagSku1}}.map(function(item,index){
+        if(item == thisHtml.html()){
+          let structure = {{tagLabel}};
+          $(thisHtml).siblings(".product-card__tag").append(`<span>`+structure+`</span>`);
+        }
+      });
+    });
+  });
+{% endif %}  
+</script>
+{% endfor %}
+<script>
+$(function(){ 
+{% if template contains 'page' %}
+  var pageLabels =`{{ section.settings.page_label_sort }}`.split("/");  
+  $(".collection-label").each(function(){
+    if($(this).children().length > 0){
+      let dataArr =[];
+      $(this).children().map(function(i,item){
+        let items = $(this).html(); 
+        pageLabels.map(function(item,index){
+          if(items == item){
+            dataArr.push(item);
+          }
+        });
+      });
+      dataArr.sort((a,b)=>{return pageLabels.indexOf(a) - pageLabels.indexOf(b);});
+      if(dataArr[0] != undefined){
+      	$(this).append(`<span>`+ dataArr[0].split("-")[0] +`</span>`);
+      }else{
+        $(this).html(``);
+      }
+    }
+  });
+{% endif %}
+
+{% if template contains 'collection' %}
+  var collectionLabels =`{{ section.settings.collection_label_sort }}`.split("/");    
+  
+  $(".product-card__tag").each(function(){
+    if($(this).children().length > 0){
+      let dataArr =[];
+      $(this).children().map(function(i,item){
+        let items = $(this).html();         
+        collectionLabels.map(function(item,index){          
+          if(items == item){
+            dataArr.push(item);
+          }
+        });
+      });
+      dataArr.sort((a,b)=>{return collectionLabels.indexOf(a) - collectionLabels.indexOf(b);});    
+      if(dataArr[0] != undefined){
+      	$(this).html(`<span>`+ dataArr[0].split("-")[0] +`</span>`);
+      }else{
+        $(this).html(``);
+      }
+    }
+  });
+{% endif %}
+})
+</script>
+{% schema %}
+{
+  "name": "标签排序",
+  "class":"common-tag-label",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "common-tag-label"
+    },
+	{
+      "type": "textarea",
+      "id": "page_label_sort",
+      "label": "活动页标签排序"
+    },
+	{
+      "type": "textarea",
+      "id": "collection_label_sort",
+      "label": "分类页标签排序"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "label",
+      "name": "通用 - 标签排序",
+      "settings": [
+    	{
+		  "type": "text",
+          "id": "title",
+          "label": "标签"
+	    },
+        {
+          "type": "textarea",
+          "id": "sold_sort",
+		  "label":"SKU"
+        }
+      ]
+    }    
+  ]
+}
+{% endschema %}
+

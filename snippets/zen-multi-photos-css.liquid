@@ -1,0 +1,158 @@
+
+<script src="{{ 'qiniu.min.js' | asset_url }}" ></script>
+<script src="{{ 'fabric.min.js' | asset_url }}" ></script>
+<script src="{{ 'zen-base.js' | asset_url }}"></script>
+
+<style>
+  .photo-select-carving .area-photo-upload {
+    background: #f8f8f8 !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    height: 56px;
+    margin-bottom: 10px;
+    border: 1px solid #e7e7e7;
+    border-radius: 0 !important;
+  }
+  .photo-select-carving .btn-upload-open {
+    cursor: pointer;
+    background: #000;
+    color: #fff;
+    border-radius: 25px;
+    padding: 2px 15px;
+    width: 100px;
+    text-align: center;
+    text-transform: capitalize;
+    font-weight: bold;
+    border: none;
+    font-size: 16px;
+    line-height: 1.625;
+  }
+  .photo-select-carving .area-photo-upload-text {
+  	font-size: 1rem !important;
+    color: #000;
+  }
+  .photo-select-carving .label-input-text {
+  	display: none;
+  }
+  .photo-select-carving .demonstration {
+  	display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+  }
+  .photo-select-carving .carving-color-list {
+  	display: flex;
+    margin-top: 10px;
+  }
+  .photo-select-carving .font-label {
+    margin-left: 10%;
+  }
+  .photo-select-carving .el-dialog__wrapper .el-button--primary {
+  	background-color: #e2003c !important;
+    border-color: #e2003c !important;
+  }
+  
+  .photo-select-carving .el-dialog__wrapper .el-button {
+  	border-radius: 0px!important;
+  }
+/*   .photo-select-carving .el-progress-bar__inner {
+  	background-color: #bfa175 !important;
+  } */
+  
+  .select-carving-dialog .el-button {
+  	width: 250px;
+  }
+
+  .select-carving-dialog .el-button--danger {
+  	background-color: #bfa175 !important;
+    border-color: #bfa175 !important;
+  }
+  .preview-thumbnail {
+  	margin-right: 10px;
+  }
+  .carving-exaple-img-item {
+  	width: 7rem;
+    margin: 5px;
+  }
+  .carving-exaple-text {
+  	margin-top: 10px;
+  }
+  .select-open-carving {
+  	background-color: #bfa175 !important;
+    border-color: #bfa175 !important;
+  }
+  .select-cancel-carving {
+  	background-color: #aaa !important;
+    border-color: #aaa !important;
+  }
+  .photo-design-tool-bar, .carving-prompt {
+  	margin-top: 10px;
+  }
+  .crop-prompt {
+  	margin: 10px 0;
+  }
+  .photo-design-body {
+  	margin-bottom: 10px;
+  }
+  .dialog-footer-carving {
+  	padding-top: 0 !important;
+  }
+  #app .el-dialog__headerbtn{
+    top: 0;
+    right: 0;
+  }
+  #app .el-dialog__headerbtn .el-dialog__close{
+    font-size:38px;
+  }
+  @media (min-width: 768px) { 
+    #app>div{
+      display: flex;
+      flex-flow: wrap;
+    }
+    #app .el-upload .avatar-uploader-icon{
+      border: 1px dashed #e60044;
+      width:115px;
+      height:115px;
+      color:#e60044;
+      line-height: 98px;
+    }
+    #app .upload-label{
+      top: 56%;
+      left: 0;
+      width: 100%;
+      color: #e60044;
+    }
+    .area-photo-upload-rect {
+      margin: 0 10px 12px 0;
+    }
+    #app .area-photo-upload-rect .area-photo-upload-rect-thumbnai{
+      width: 115px;
+      height: 115px;
+      border: 1px dashed #e60044;
+      display: flex;
+      align-items: center;
+    }
+    #app .area-photo-upload-rect-thumbnai{
+      width: 115px;
+    }
+  }
+  @media (max-width: 768px) { 
+    .photo-select-carving .area-photo-upload{
+      height:46px;
+    }
+    .photo-select-carving .btn-upload-open{
+      font-size: 13px;
+      font-weight: 500;
+      width: auto;
+    }
+    .el-message-box {
+      width: 100% !important;
+      height: 100%;
+    }
+    #app .el-dialog__headerbtn .el-dialog__close{
+      font-size:28px;
+    }
+  }
+</style>

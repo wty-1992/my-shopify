@@ -1,0 +1,401 @@
+<style>
+.common-collection-navigation-section picture{
+  display:block;
+}
+.common-collection-navigation-section .collection-navigation__picture{
+	height:0px;
+} 
+.common-collection-navigation-section .collection-navigation__title{
+	text-align:center;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	padding:{{section.settings.titlePadding}}rem;
+} 
+.common-collection-navigation-section .collection-navigation__title span{
+	font-size:3rem;
+	font-weight:normal; 
+}  
+.common-collection-navigation-section .collection-item-image{
+	width:100%;
+} 
+.common-collection-navigation-section .collection-item{
+	padding: {{section.settings.columnDistance}}rem {{section.settings.rowDistance}}rem;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+}
+ 
+.common-collection-navigation-section .collection-navigation__title span{
+	padding:0px 30px;
+}
+.common-collection-navigation-section li.collection-item a{
+    position: relative;
+}
+.common-collection-navigation-section li.collection-item .h-b-txt{    
+    padding: 24px 0;
+    background: rgba(0,0,0,0.65);
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+}
+.common-collection-navigation-section li.collection-item .h-classify-id{
+        font-size: 2.4rem; 
+    display: block;
+    margin-bottom: 1.2rem;
+    text-transform: uppercase;
+    color:#fff;
+}
+.common-collection-navigation-section li.collection-item .home-top-btn{
+        color: #000;
+    text-transform: uppercase;
+    background: #fff;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: inline-block;
+    padding: .6rem 2rem;
+}
+.common-collection-navigation-section{
+    background-color:{{section.settings.backgroundColorDef}}; 
+	padding:{{section.settings.paddingVertical}}rem {{section.settings.paddingHorizontal}}rem;
+	{% if section.settings.backgroundimg %}
+		background:url('{{section.settings.backgroundimg | img_url: 'master' }}') top center; 
+        border-top: 1px solid red; 
+        display: flex;
+        background-repeat: repeat-y;
+        background-color:{{section.settings.backgroundColorDef}}; 
+        position: relative;
+	{% endif %} 
+}
+.common-collection-navigation-section:before {
+    border-top: 4px solid transparent;
+    border-image: 5 repeating-linear-gradient(-45deg, #e20238 0,#e20238 5px, transparent 0,transparent 3px,#e20238 0,#e20238 0px,transparent 0,transparent 8px );
+    max-width: 100%;
+    position: absolute;
+    left: 0;
+    top: -5px;
+    content: '';
+    width: 100%;
+}
+
+.collection-navigation__collections_container{
+	display:flex;
+	flex-wrap:wrap;
+}
+
+@media(min-width: 750px){
+	.collection-navigation__collection-tiny{
+		flex:0 1 25%;
+	}
+
+	.collection-navigation__collection-small{
+		flex:0 1 33.33%;
+	}
+
+	.collection-navigation__collection-medium{
+		flex:0 1 50%;
+	}
+
+	.collection-navigation__collection-large{
+		flex:0 1 66.66%;
+	}
+
+	.collection-navigation__collection-huge{
+		flex:0 1 75%;
+	}
+
+	.collection-navigation__collection-full{
+		flex:0 1 100%;
+	} 
+    li.collection-navigation__collection-full.collection-item .h-b-txt{
+        background: transparent;
+        bottom: 50%;
+        transform: translate(0%, 50%);
+        width: 50%;
+    } 
+}
+@media(max-width:750px){
+    
+.common-collection-navigation-section:last-child li.collection-item .h-b-txt { 
+    top: 50%; 
+    text-align: left;
+    padding-left: 2rem;
+    transform: translateY(-50%);
+    bottom: initial;
+}
+.common-collection-navigation-section:last-child p{
+    font-size: 1.2rem;
+}  
+.common-collection-navigation-section:last-child li:first-child p,
+.common-collection-navigation-section:last-child li:last-child p{ 
+    text-transform: uppercase;  
+    color: #333;
+    font-size: 1.5rem;
+    font-weight: 600;
+}.common-collection-navigation-section:last-child .h-b-txt{
+
+    color: #000;
+}.common-collection-navigation-section:last-child li.collection-item .h-classify-id{ 
+    color: #000!important;
+    font-weight: normal;
+}.common-collection-navigation-section:last-child li.collection-item .h-classify-id:before{
+    display:none
+}
+.common-collection-navigation-section{
+        padding: 1.2rem 0rem;
+}
+.collection-navigation__title{ 
+padding: 2rem 1rem;
+}
+.collection-navigation__collection-large,.collection-navigation__collection-huge,.collection-navigation__collection-full,.collection-navigation__collection-medium,.collection-navigation__collection-tiny,.collection-navigation__collection-small{
+    flex:0 1 100%;
+}  
+.collection-item{ 
+padding: 0.4rem 0;
+}
+.collection-navigation__title span{
+    padding: 0px 1rem;       
+    font-size: 2rem;
+}.common-collection-swiper .title span{
+    font-size:2rem
+}
+.common-collection-navigation-section li.collection-item .h-classify-id {
+font-size: 1.5rem; 
+display: block;
+margin-bottom: 10px;
+text-transform: capitalize;
+font-weight: 600;
+position:relative
+}  
+.common-collection-navigation-section li.collection-item .h-classify-id:before {
+    position: absolute;
+    height: .2rem;
+    width: 1.4rem;
+    content: '';
+    background: #ddd;
+    top: -.8rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.common-collection-navigation-section li.collection-item .h-b-txt {
+    padding: 1rem 0;
+    background: transparent;
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+}.common-collection-navigation-section li.collection-item .home-top-btn{
+    display:none;
+}
+}
+</style>
+
+<div class="page-width">
+    {% if section.settings.title != blank %}
+
+    <div class="collection-navigation__title">
+        {% if section.settings.before_html != blank %}
+        {{section.settings.before_html}}
+        {% endif %}
+		{% comment %}
+        {% if section.settings.earImage != blank %}
+        <img src="{{ section.settings.earImage | img_url }}" />
+        <span>{{ section.settings.title }}</span>
+        <img src="{{ section.settings.earImage | img_url }}" />
+        {% else %}
+        <span>{{ section.settings.title }}</span>
+		{% endif %}
+		{% endcomment %}
+    </div>
+    {% endif %}
+    <ul class="collection-navigation__collections_container">
+        {%- for block in section.blocks -%} 
+        <li class="collection-navigation__collection-{{ block.settings.width }} collection-item">
+            <a {% unless block.settings.url==blank %} href="{{block.settings.url}}" {% endunless %}>
+                <picture class="small--hide">
+					{%- assign image = block.settings.image_pc -%}
+                    {% assign resize = image.width | append: 'x' | append: image.height %}
+                    <img data-src="{{ image.src  | img_url:resize}}" class="lazyload" />
+                </picture> 
+                <picture class="medium-up--hide">
+					{%- assign image = block.settings.image_mb -%}
+                    {% assign resize = image.width | append: 'x' | append: image.height %}
+                    <img data-src="{{ image.src  | img_url:resize}}" class="lazyload" />
+                </picture> 
+                <div class="h-b-txt">
+                 <span class="h-classify-id" style="color:{{block.settings.collectionfont_color}}">{{block.settings.collection_title}}</span>
+                 <p class="mbdescription medium-up--hide">{{block.settings.collection_titledescription}}</p>
+                 <div class="home-top-btn">shop now</div>
+                </div>
+            </a>
+        </li>
+        {%- endfor -%}
+    </ul>
+    {% unless section.settings.after_html == blank %}
+    <div class="collection-navigation__after">{{section.settings.after_html}}</div>
+    {% endunless %}
+</div>
+
+
+{% schema %}
+{
+	"name": "通用 - 集合的图片列表",
+	"class":"common-collection-navigation-section",
+	"settings": [{
+			"type": "text",
+			"id": "title",
+			"label": {
+				"en":"标题"
+			},
+			"default": "集合导航"
+		},
+		{
+			"type": "html",
+			"id": "before_html",
+			"label": "主标题"
+		},
+        {
+			"type": "image_picker",
+			"id": "backgroundimg",
+			"label": "背景图片" 
+		},
+        {
+			"type": "color",
+			"id": "backgroundColorDef",
+			"label": "背景色" 
+		},
+		{
+			"type":"range",
+			"id":"rowDistance",
+			"label":"行间距",
+			"min":0,
+			"max":5,
+			"unit":"rem",
+			"step":0.1,
+			"default":1
+		},
+		{
+			"type":"range",
+			"id":"columnDistance",
+			"label":"列间距",
+			"min":0,
+			"max":5,
+			"unit":"rem",
+			"step":0.1,
+			"default":1
+		},
+		{
+			"type":"range",
+			"id":"paddingHorizontal",
+			"label":"左右间隔",
+			"min":0,
+			"max":10,
+			"unit":"rem",
+			"step":0.2,
+			"default":0
+		},
+		{
+			"type":"range",
+			"id":"paddingVertical",
+			"label":"上下间隔",
+			"min":0,
+			"max":10,
+			"unit":"rem",
+			"step":0.2,
+			"default":0
+		},
+		{
+			"type":"range",
+			"id":"titlePadding",
+			"label":"标题上下间隔",
+			"min":0,
+			"max":10,
+			"unit":"rem",
+			"step":0.2,
+			"default":0
+        },
+        {
+          "type": "html",
+          "id": "after_html",
+          "label": "块之后的额外的HTML"
+        }
+	],
+    "max_blocks": 8,
+    "blocks":[
+        {
+          "type": "collection",
+          "name": "集合",
+          "settings":[
+            {
+                "type": "image_picker",
+                "id": "image_pc",
+                "label": "选择图片-PC"
+            }, 
+            {
+                "type": "image_picker",
+                "id": "image_mb",
+                "label": "选择图片-MB"
+            }, 
+            {
+                "type": "color",
+                "id": "collectionfont_color",
+                "label": "集合名称标题颜色"
+            },
+			{
+				"type":"text",
+				"id":"collection_title",
+				"label":"集合名称"
+			},
+            {
+				"type":"text",
+				"id":"collection_titledescription",
+				"label":"集合名称下面的描述mb端"
+			},
+			{
+				"type":"url",
+				"id":"url",
+				"label":"链接地址"
+			},
+            {
+                "type":"select",
+                "id":"width",
+                "label":"集合宽度",
+                "options":[
+					{
+                        "label":"四分之一",
+                        "value":"tiny"
+                    },
+                    {
+                        "label":"三分之一",
+                        "value":"small"
+                    },
+                    {
+                        "label":"二分之一",
+                        "value":"medium"
+                    },
+                    {
+                        "label":"三分之二",
+                        "value":"large"
+                    },
+					{
+                        "label":"四分之三",
+                        "value":"huge"
+                    },
+                    {
+                        "label":"一列",
+                        "value":"full"
+                    }
+                ],
+                "default":"medium"
+            }
+          ]
+        }
+    ],
+	"presets": [{
+		"name": "通用 - 集合的图片列表",
+		"category": "通用"
+	}]
+}
+{% endschema %}

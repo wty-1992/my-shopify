@@ -1,0 +1,256 @@
+<script src="{{ 'zen-base.js' | asset_url }}"></script>
+{{ 'zen-fonts.scss.css'       | asset_url | stylesheet_tag }}
+<style>
+#app .btn-curve-cancel {
+    display: none;
+}
+#app .el-dialog--center{
+  max-width: 800px;
+  width: 100% !important;
+}
+#app .area-carving {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  height: 4rem;
+  align-items: center;
+  border: 1px solid #000;
+  border-radius: 4px;
+  background: transparent;
+  margin-bottom: 1rem;
+}
+#app .btn-carving-open {
+  background: #000;
+  padding: 8px 28px;
+  line-height: 1;
+  border-radius: 20px;
+  margin-right: 10px;
+  border: none;
+  color: #fff;
+}
+#app .area-carving-preview-text {
+  padding-left: 1rem;
+  color: #000;
+  font-size: 1rem;
+}
+#app .custom-carving-container .textarea-text {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #000;
+  align-items: center;
+  padding: 0.3rem 1rem 0.3rem 0;
+  position: relative;
+}
+#app .custom-carving-container .textarea-text input {
+  height: 40px;
+  margin-bottom: 0;
+  border: none;
+  margin: 0;
+  background: #fff;
+  padding: 0 0 0 1rem;
+  width: 80%;
+}
+#app .btn-curve-confirm, #app .btn-curve-cancel {
+  height: 3.5rem;
+  font-size: 14px;
+  border-radius: 0 !important;
+}
+#app .btn-curve-confirm {
+  background: #e60044 !important;
+  border-color: #e60044 !important;
+}
+#app .btn-curve-cancel {
+  border-color: #9d9d9d !important;
+  background: #9d9d9d !important;
+  color: #fff!important;
+}
+#app .product-reminder {
+  color: #e60044;
+  width: 100%;
+  margin-top: 1rem;
+  font-size: 12px;
+  line-height: 1.2;
+}
+#app .el-aside {
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  overflow: hidden;
+  min-width: 400px;
+}
+#app .el-dialog__headerbtn {
+  font-size: 30px !important;
+}
+#app .rad-font .el-radio.is-bordered {
+  border-radius: 0 !important;
+  border-color: #777 !important;
+  color: #333;
+  margin: .5rem 1rem 1rem 0;
+  position: relative;
+  background: 0 0;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  height: auto;
+  justify-content: center;
+  font-size: 1.4rem;
+  padding: 8px 12px 5px 12px;
+  line-height: 1;
+  width: auto;
+  display: flex;
+}
+#app .rad-font .el-radio.is-bordered .el-radio__label {
+  padding-left: 0 !important;
+  font-size: 14px ;
+}
+#app .rad-font .el-col, #app .rad-font .el-radio-group {
+  display: flex;
+}
+#app .rad-font .el-radio.is-checked {
+  border-color: #e60044!important;
+}
+#app .rad-font .el-radio.is-checked .el-radio__label {
+  color: #e60044!important;
+}
+.font-radio-title {
+  font-size: 14px;
+}
+#app .el-main {
+/*   	height: 515px; */
+  padding: 0 20px;
+}
+#app .el-main .label-input-text{
+  margin-bottom: 0;
+}
+#app .curve-area-carving{
+  height: 50px;
+  align-items: center;
+  margin-bottom: 15px;
+  border: 1px solid #f7f8fa;
+}
+#app .el-dialog__headerbtn{
+  top: 0px;
+  right: 5px;
+}
+#app .el-dialog__headerbtn:focus .el-dialog__close,#app .el-dialog__headerbtn:hover .el-dialog__close{
+  color: #909399;
+}
+#app .name-carving-container .view-name{
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  color: #000;
+}
+#app .name-carving-container .view-name .showtext{
+  padding-left: 6px;
+  text-align: left;
+  height: 40px;
+  line-height: 40px;
+  font-size: 36px;
+}
+#app .namecanvas-content .name-textarea{
+  position: relative;
+  margin-bottom: 20px;
+}
+#app .namecanvas-content .leftnum{
+  position: absolute;
+  right: 15px;
+  top: 30%;
+  font-size: 12px;
+}
+#app .namecanvas-content .leftnum span{
+  font-size: 14px;
+}
+#app .namecanvas-content .name-textarea input{
+  height: 50px;
+  padding-left: 15px;
+}
+.textarea-text .leftnum{
+  position: absolute;
+  right: 8px;
+  top: 13px;
+}
+@media(max-width:768px){
+  .el-aside {
+    width: 100% !important;
+  }
+  .el-container {
+    display: block !important;
+  }
+  .step-wrapper{
+    padding: 0 10px;
+  }
+  #app .el-aside {   
+    min-width: 100%;
+  }
+  #app .curve-area-carving{
+    height: 48px;      
+    margin-bottom: 10px;
+  }
+  #app .btn-carving-open{
+    padding: 6px 16px;
+  }
+  #app .name-carving-container .view-name .showtext{
+    height: 32px;
+    line-height: 32px;
+    font-size: 26px;
+  }
+  #app .namecanvas-content .name-textarea input{
+    height: 48px;
+  }
+  #app .namecanvas-content .name-textarea{
+    margin-bottom: 15px;
+  }
+  #app .el-dialog__header{
+    padding:0 20px;
+  }
+  #app .el-dialog--center .el-dialog__body{
+    padding:0 0 30px;
+  }
+  #app .canvas-container{
+    margin-top:0;
+  }
+  #app .el-dialog--center{
+    background: #f7f8f9;
+  }
+  #app .custom-carving-container .textarea-text{
+    padding: 0rem 1rem 0rem 0;
+  }
+  #app .upload-loading-container{
+    padding-top: 30vh;
+  }
+}
+  
+/*   .el-dialog__wrapper .textarea-text input{ 
+  	pointer-events: none;
+    opacity: .5;
+  } */
+  
+  .showtext-in{ padding: 0px 20px 0px 10px; }
+  .showtext-in.silver {
+    color: #808080;
+/*     background: -webkit-linear-gradient(transparent, transparent),-webkit-linear-gradient(top, #e0e1e1 0%, #e3e2e8 26%, #ddd 35%, #d7d7d7 45%, #e1e2e1 61%, #a4a4a4 100%);
+    background: -o-linear-gradient(transparent, transparent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; */
+  }
+  .showtext-in.rosegold {
+    color: #c8977b;
+    /*be7d86*/
+/*     background: -webkit-linear-gradient(transparent, transparent),-webkit-linear-gradient(top, #cea997 0%, #e8d5cb 26%, #e5d1c6 35%, #e8d6cf 45%, #cfaa99 61%, #b77d5f 100%);
+    background: -o-linear-gradient(transparent, transparent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; */
+  }
+  .showtext-in.gold {
+    color: #eac855;
+   /*D5AD6D*/
+/*     background: -webkit-linear-gradient(transparent, transparent),-webkit-linear-gradient(transparent, transparent),-webkit-linear-gradient(top, #ede097 0%, #eee39e 26%, #e7d685 35%, #d3b33a 45%, #eadb8e 61%, #e3ce74 100%);
+    background: -o-linear-gradient(transparent, transparent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; */
+  }
+</style>

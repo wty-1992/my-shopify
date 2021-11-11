@@ -1,0 +1,315 @@
+
+
+{% assign customJson = '' %}
+{% if product.metafields["global"]["cattribute"] %}
+{% assign customJson = product.metafields["global"]["cattribute"] | replace: "'", "" %}
+{% endif %}
+
+<script>
+  //刻字加价
+  window.addEventListener('EVENT_ENGRAVING_CANCEL_AFTER', function(event){
+    console.log('data：', event.detail);
+    jQuery(".area-carving-preview-text img").hide();
+    $(".single-option-selector-markup").val(0).trigger('change');
+    //修改变体值
+  });
+
+  window.addEventListener('EVENT_ENGRAVING_SAVE_AFTER', function(event){
+    console.log('data：', event.detail);
+    var enData =  event.detail.data;
+    if(typeof enData.engraving != 'undefined'){
+      jQuery(".area-carving-preview-text img").show();
+      
+    }
+	//修改变体值
+    $(".single-option-selector-markup").val(1).trigger('change');
+  });
+
+  window.addEventListener('EVENT_CALENDAR_SAVE_AFTER', function(event){
+    var index = event.detail.index;
+    var data = event.detail.data;
+
+    if(jQuery('.calendar-button-box').length > 0){
+      jQuery('.calendar-button-box').css('border-color', '#f7f7f7'); 
+    }
+    
+  });
+
+  window.addEventListener('EVENT_PHOTO_SAVE_AFTER', function(event){
+    var index = event.detail.index;
+    var data = event.detail.data;
+    if(jQuery('.area-photo-upload-'+index).length > 0 && data.photo[index].crop.indexOf('undefined') < 0  && data.photo[index].origin.indexOf('undefined') < 0  && data.photo[index].ai.indexOf('undefined') < 0){
+      jQuery('.area-photo-upload-'+index).css('border-color', '#f7f7f7');
+    }
+  });
+  window.addEventListener('EVENT_PHOTO_DIALOG', function(event){
+    jQuery('html').css({height: "100%", overflow: "hidden"});
+    jQuery('body').css({height: "100%", overflow: "hidden"});
+  });
+  window.addEventListener('EVENT_PHOTO_DIALOG_CLOSE', function(event){
+    jQuery('html').css({height: "", overflow: ""});
+    jQuery('body').css({height: "", overflow: ""});
+  });
+  var cattribute_json = '{{customJson}}';
+  var _zenSku = "{{ product.selected_or_first_available_variant.sku }}";
+  var jsonCustom= {};
+  if(cattribute_json){
+    jsonCustom = JSON.parse(cattribute_json);
+  }
+  var photoJson = jsonCustom.photo ? jsonCustom.photo : {};
+  var carvingJson = jsonCustom.carving ? jsonCustom.carving : {};
+  console.log(jsonCustom);
+  var _defautItem = { 
+    label: '', bgimg: 'front-view.png', btnUploadText: 'Upload', hasCarving: false, isCRequire: false, noSelect: false, isRequire: false, 
+    crop: "", cropOrigin: "", engravingCrop: "", engravingText: [], engravingSize: "", engravingFont: "", hasCropOrigin: false,
+    hasEngravingSize: true, hasEngravingFont: true
+  };
+  var _zenEngravingSizeOptions = [
+    {
+      value: "20",
+      label: "20"
+    }
+  ];
+
+  if(typeof carvingJson.size != 'undefined' && carvingJson.size.length > 0){
+    _zenEngravingSizeOptions = [];
+    var sizeArr = {};
+    carvingJson.size.forEach(function(v, i){
+      sizeArr['label'] = v;
+      sizeArr['value'] = v;
+
+      _zenEngravingSizeOptions[i] = JSON.parse(JSON.stringify(sizeArr));
+    });
+  }
+
+  var _zenEngravingFontOptions = [
+    {
+      value: "Charm",
+      label: "Charm"
+    }
+  ];
+
+  if(typeof carvingJson.font != 'undefined' && carvingJson.font.length > 0){
+    _zenEngravingFontOptions = [];
+    var fontArr = {};
+    carvingJson.font.forEach(function(vv, ii){
+      fontArr['label'] = vv;
+      fontArr['value'] = vv;
+
+      _zenEngravingFontOptions[ii] = JSON.parse(JSON.stringify(fontArr));
+    });
+  }
+
+  var _zenConfig = {
+    photoObj: [],
+    carvingObj: [],
+    sku: _zenSku,
+    require:true,
+    hasArrow: true,
+    lang: 'en',
+    dateLabelText: "{{ 'zen.general.choose_your_anniversary' | t}}",//选择日期标题文案
+    uploadLabel: "{{ 'zen.photo.upload_photo' | t }}",
+    btnUploadText:  "{{ 'zen.photo.upload' | t }}",
+    loadingFullScreen: true,
+    uploadLoadingImage: 'https://ik.imagekit.io/soufeel/en/skin/frontend/smartwave/default/images/soufeel-30.gif',
+    wrapperBackgroudColor: '#fff',
+    bgOpacity: 0.5,
+    dateBgColor: 'rgba(0,0,0,0)',//选择日期输入框背景色
+    cropConfirmText: "{{ 'zen.general.confirm' | t }}",
+    cropCancelText: "{{ 'zen.general.cancel' | t }}",
+    photoCancelText: "{{ 'zen.general.cancel' | t }}",    //传图层Cancel文案
+    photoConfirmText: "{{ 'zen.general.confirm' | t }}",  //上传按钮文案
+    canvasPreviewText: ' ',
+    cropPrompt: "",   //刻字弹层提示文字, 可选, 默认无
+    previewLabel: "", //预览文字前置文案, 可选, Your Design
+    previewText: "{{ 'zen.general.choose_your_anniversary' | t}}",
+    enableCanvas: false,  //是否显示刻字画布
+    enableAddon: false,  //显示附加信息
+    enableImg: false,
+    btnText: "{{ 'zen.general.design' | t }}",
+    changeBtnText: "{{ 'zen.general.change' | t }}",
+    calendarCanvasId: 'calendar-canvas',
+    baseImg: "",
+    markImg: "https://pic.stylelab.com/js/img/heart.png",
+    monthNames: ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ],
+    week_header:['S','M','T','W','T','F','S'],
+    calendarCanvasWidth: 500,
+    calendarCanvasHeight: 500,
+    baseWidth: jsonCustom.baseWidth ? jsonCustom.baseWidth : 400,
+    unit_len: jsonCustom.unit_len ? jsonCustom.unit_len : 45,
+    fontFamily: jsonCustom.font ? jsonCustom.font : "TimesNewRoman",
+    monthFontsize: jsonCustom.monthFontsize ? jsonCustom.monthFontsize : 25,
+    weekFontsize: jsonCustom.weekFontsize ? jsonCustom.weekFontsize : 18,
+    yearFontsize: jsonCustom.yearFontsize ? jsonCustom.yearFontsize : 25,
+    dayFontsize: jsonCustom.dayFontsize ? jsonCustom.dayFontsize : 18,
+    yearMargin: jsonCustom.yearMargin ? jsonCustom.yearMargin : 120,
+    tmp_week_x: jsonCustom.tmp_week_x ? jsonCustom.tmp_week_x : 90,
+    title_top: jsonCustom.title_top ? jsonCustom.title_top : 90,
+    title_left: jsonCustom.title_left ? jsonCustom.title_left : 150,
+    weekMargin: jsonCustom.weekMargin ? jsonCustom.weekMargin : 20,
+    weekFontWeight: jsonCustom.weekFontWeight ? jsonCustom.weekFontWeight : "normal",
+    yearFontWeight: jsonCustom.yearFontWeight ? jsonCustom.yearFontWeight : "normal",
+    fontWeight: jsonCustom.fontWeight ? jsonCustom.fontWeight : "normal",
+    items: [
+    {
+    label: '',
+    data: [
+    Object.assign({}, _defautItem, {label: "", isRequire:false, hasCarving: false, isCRequire: false})
+    ],
+  }
+  ],
+    photo: [{
+      require: true,
+      sku: _zenSku,
+      basePhotoImg: "https://pic.stylelab.com/img/photo/"+_zenSku+".png",
+      ainame: "",         //使用ai图名称, 可以不传或为空。例如,如果用透明背景，ainame: "transparent"
+      isAiLucid: photoJson.isAiLucid ? photoJson.isAiLucid : 1,  //图片边级是否透明，1透明 0不透明
+      bgcolor:  photoJson.bgcolor ? photoJson.bgcolor : "rgb(255,255,255)",   //效果图背景色
+      style: photoJson.style ? photoJson.style : 0, //设置上传样式，0:单行展示 1：矩形上传表单
+      type: 'multiphotos'
+    }],
+      carving: [{
+        emptyErrorField: "{{ 'zen.general.required_field' | t }}",
+        emojiErrorField: "{{ 'zen.photocarving.emojiErrorField' | t }}",
+        errorWordShow:true,
+        isSelector: jsonCustom.carving.isSelector === true ? true : false,//字体选项是否是下拉框，设置为false是radio
+        fontFamilyLabel: "{{ 'zen.general.font' | t }}:",
+        fontSizeLabel: "{{ 'zen.general.font_size' | t }}:",
+        changeBtnText: "{{ 'zen.general.change' | t }}",
+        fontSpanNum: 12,
+        textPlaceHolder:"{{ 'zen.general.type_words' | t }}",
+        cropPrompt:"{{ 'zen.general.please_note' | t }}",
+        carvingCancelText: "{{ 'zen.photocarving.carvingCancelText' | t }}",
+        carvingConfirmText: "{{ 'zen.general.add_engravings' | t }}",
+        markup: jsonCustom.carving.markup ? jsonCustom.carving.markup : "{{ 'zen.general.markup' | t }}",
+        require: false,
+        inputTextLabel:'  ',
+        previewText: "{{ 'zen.general.add_engravings' | t }}", //左侧预览文字
+        btnText: "{{ 'zen.general.add' | t }}", //按钮文案
+        type: "",
+        sku: _zenSku,
+        in:  _zenSku+"-IN.png",
+        out: _zenSku+"-OUT.png",
+        isBig: false,    //是否生成大图
+        bigParam: { width: 1200, height: 840, fontWeight: 'bold', fontSize: 60},  //刻字大图参数
+        engravingSizeOptions: _zenEngravingSizeOptions,
+        engravingFontOptions: _zenEngravingFontOptions,
+        coors: jsonCustom.carving.coors
+      }
+    ]
+  };
+
+</script>
+
+<div id="zen-custom-calendar"></div>
+
+<link href="https://pic.stylelab.com/js/zen-crop-calendar0.1.5/zen-crop-calendar-chunk-vendors.css?202001051623" rel="stylesheet" />
+<link href="https://pic.stylelab.com/js/zen-crop-calendar0.1.5/zen-crop-calendar-app.css?202001051623" rel="stylesheet" />
+<script src="https://pic.stylelab.com/js/zen-crop-calendar0.1.5/zen-crop-calendar-chunk-vendors.js?202001051623"></script>
+<script src="https://pic.stylelab.com/js/zen-crop-calendar0.1.5/zen-crop-calendar-app.js?202001051623"></script>
+
+<script type="text/javascript">
+
+  Product.validators.push(async () => {
+    var _flag = true;
+    var _info = $(".zen-require").val() ? JSON.parse($(".zen-require").val()) : {};
+  	
+    if(JSON.stringify(_info) != "{}"){
+      var validateArr = ['photo', 'engraving', 'calendar'];
+      validateArr.forEach((v)=>{
+        if(typeof _info[v] !== 'undefined'){
+          _info[v].forEach((_v, _i)=>{
+            if(typeof _v == "object") {
+              if(v == 'photo'){
+                if(_v.require && !_v.crop) {
+                  _flag = false;
+                  document.getElementsByClassName("area-photo-upload-"+_i)[0].setAttribute('style', 'border: 1px solid red;');
+                }else{
+                  if(!_v.require && !_v.crop){
+                    delete _info.photo;
+                    $(".zen-require").val(JSON.stringify(_info));
+                  }
+                  document.getElementsByClassName("area-photo-upload-"+_i)[0].setAttribute('style', 'border: 1px solid #f7f7f7;');
+                }
+              }
+              if(v == 'engraving'){
+                console.log(_v, _v.require , _v.engravingCrop)
+                if((_v.require && !_v.engravingCrop) || (typeof _v.require =='undefined' && !_v.engravingCrop)) {//添加  || (typeof _v.require =='undefined' && !_v.engravingCrop) 2020-01-03 alice 配合弧形刻字没有require
+                  console.log('fffff', _i);
+                  _flag = false;
+                  document.getElementsByClassName("area-carving-"+_i)[0].setAttribute('style', 'border: 1px solid red;');
+                }else{
+                  document.getElementsByClassName("area-carving-"+_i)[0].setAttribute('style', 'border: 1px solid #f7f7f7;');
+                }
+              }
+              //添加日历必填验证 2019-8-29 by Alice
+              if(v == 'calendar'){
+                if(_v.require && !_v.crop) {
+                  _flag = false;
+                  document.getElementsByClassName("calendar-button-box")[0].setAttribute('style', 'border: 1px solid red;');
+                }else{
+                  //将日历图链接拼到刻字图后面
+                  if(typeof _info['engraving'][0] !== 'undefined' && _info['engraving'][0].engravingCrop){
+                    _info['engraving'][0].engravingCrop = _info['engraving'][0].engravingCrop + ';' + _v.crop;
+                  }else{
+                    var en_arr = {};
+                    en_arr['engravingCrop'] = _v.crop;
+
+                    _info.engraving[0] = JSON.parse(JSON.stringify(en_arr));
+                  }
+                  delete _info.calendar;
+
+                  $(".zen-require").val(JSON.stringify(_info));
+                  document.getElementsByClassName("calendar-button-box")[0].setAttribute('style', 'border: 1px solid #f7f7f7;');
+                }
+              }
+            }
+          });
+
+        }
+
+      })
+    }else{
+      _info = false;
+    }
+
+  return _flag;
+
+//     var customInfo = JSON.parse(jQuery('.zen-require').val());
+//     var submit_flag = true;
+
+//     if(typeof customInfo.calendar != 'undefined'){
+//       var _v = customInfo.calendar[0];
+//       if(_v.require && !_v.crop) {
+//         submit_flag = false;
+//         jQuery('.calendar-button-box').css('border-color','red');
+//       }else{
+//         //将日历图链接拼到刻字图后面
+//         if(typeof customInfo['engraving'][0] != 'undefined' && customInfo['engraving'][0].engravingCrop){
+//           customInfo['engraving'][0].engravingCrop = customInfo['engraving'][0].engravingCrop + ';' + _v.crop;
+//         }else{
+//           var en_arr = {};
+//           en_arr['engravingCrop'] = _v.crop;
+
+//           customInfo.engraving[0] = JSON.parse(JSON.stringify(en_arr));
+//         }
+//         delete customInfo.calendar;
+
+//         jQuery(".zen-require").val(JSON.stringify(customInfo));
+//         jQuery('.calendar-button-box').css('border-color','#f7f7f7');
+//       }
+//     }
+
+//     if(!customInfo.photo[0].crop || customInfo.photo[0].crop.indexOf('undefined') > -1  || customInfo.photo[0].ai.indexOf('undefined') > -1 || customInfo.photo[0].origin.indexOf('undefined') > -1 ){
+//       jQuery('.area-photo-upload').css('border-color','red');
+//       submit_flag = false;
+//     }else{
+//       jQuery('.area-photo-upload').css('border-color','#f7f7f7');
+//     }
+
+//     return submit_flag;
+  })
+
+</script>

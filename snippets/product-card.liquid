@@ -1,0 +1,118 @@
+<!-- /snippets/product-card.liquid -->
+
+{% comment %}
+  The product card snippet is passed a liquid object, used in this file
+  as "product". The object is either "product" or "item", the latter if
+  it is from search results.
+{% endcomment %}
+{% assign productTags = product.tags | join:',' %}
+{% assign imageSize = image_size | default: '400x' %}
+{% assign firstVariant = product.first_available_variant %}
+{% assign pos1 = position | default: 0 %}
+{% assign pos2 = pos1 | plus: 1 %}
+{% assign image1 = product.images[pos1]%}
+{% assign image2 = product.images[pos2] | default: image1 %}
+
+  <div class="product-card__image-container">
+    <a href="{{ product.url | within: collection }}" class="product-card">
+      <div class="product-card__image-wrapper">
+        <div class="product-card__image">
+          <picture>
+            <img class="lazyload hoverImage" data-src="{{ image2 | img_url: imageSize }}"/>
+            <img class="lazyload defaultImage"
+              src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+              data-src="{{ image1 | img_url: imageSize }}"
+              alt="{{ image1.alt | escape }}">              
+          </picture>  
+        </div>
+      </div>
+    </a>
+    {%if firstVariant.compare_at_price > firstVariant.price%}
+    <div class="collection-off"><span>-{{ firstVariant.compare_at_price | minus: firstVariant.price | times: 100.0 | divided_by: firstVariant.compare_at_price | money_without_currency | times: 100 | replace: '.0', ''}}%</span></div>
+    {% endif %}
+  </div>
+
+  <div class="product-card__info">
+      <div class="product-card__name">{{ product.title }}</div>
+      {% if product.available %}
+      <div class="product-card__price">
+        <span class="product-card__sale-price" data-money="{{ firstVariant.price }}"></span>
+        {%if firstVariant.compare_at_price > firstVariant.price%}
+        <span class="product-card__regular-price" data-money="{{ firstVariant.compare_at_price }}"></span>
+        {% endif %}
+      </div>
+      {% else %} 
+      <div class="product-card__availability">
+        {{ 'search.product.sold_out' | t }}
+      </div>
+      {% endif %}             
+      <div class="ratings-fa-star">
+        <div class="yotpo bottomLine" data-product-id="{{ product.selected_or_first_available_variant.sku }}"></div>
+      </div>
+      
+      <div class="product-card__tag">            
+        {% for tag in item.tags %}
+          {% if tag contains 'tag-product-' %}
+            {% assign tag_all = tag | remove: 'tag-product-' %}
+            <span class="span-label-item">
+              {{ tag_all }}
+            </span> 
+          {% endif %}
+        {% endfor %}
+      </div>
+      {%- if product.metafields["global"]["cattribute"] or product.variants.size > 1 or productTags contains "custom" or productTags contains "Custom" -%}
+        {% assign cartText = 'page.active_collection.cart_text_design_your_own' | t %}
+      {% else %}  
+        {% assign cartText =  'page.active_collection.cart_text_add_to_cart' | t  %}
+      {% endif %}
+      <button type="button" class="medium-up--btn btn" onclick='{% if product.metafields.global.cattribute or product.variants.size > 1 or productTags contains "custom" or productTags contains "Custom" %}location.href="{{ product.url | within: collection }}"{% else %}Cart.add({id:"{{firstVariant.id}}"}).then(item => { Dialog.open("#shopify-section-cart-success")}){% endif %}'>{{cartText}}</button>
+    {% comment %}
+      {% assign options = product.options_with_values %}
+      {% if options.size > 0 %}
+      <div class="product-card__options_title">
+        {% for option in options %}
+        {% if option.name == "Engraving" %}
+        {% continue %}
+        {% endif %}
+        <div class="options_{{option.name}}">
+          {% if option.name == 'Color' %}
+            {% for value in option.values %}
+            <div class="option_value_{{option.name}}" style="background-color:{{value}}"></div>
+            {% endfor %}
+          {% endif %}
+          
+          {% if option.name == 'Size' %}
+            <div class="option_value_{{option.name}}">{{ option.values | join: '  |  ' }}</div>
+          {% endif %}
+          
+          {% if option.name == 'Band' %}
+            {% for value in option.values %}
+              <div class="option_value_{{value | replace: ' ', '-'}}"></div>
+            {% endfor %}
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% if product.variants.size > 0 %}
+      <div class="product-card__variants">
+        {%- for variant in product.variants -%}
+        {%- capture combineValue -%}{{-variant.option1 | replace: " ", "" }}{{-variant.option2-}}{%- endcapture -%}
+        {%- if combineValue == '036 MM' and forloop.index != 1 -%}
+          <img height="30" width="30" src="{{  variant.image.src | img_url: '60x' }}" />
+        {%- endif -%}
+        {%- endfor -%}
+      </div>
+      {% endif %}
+    {% endcomment %}
+    <div class="product-cart__bottom">
+      {% if productTags contains "custom-review" %}
+      <div class="wc_product_review_badge" data-handle="{{ product.handle }}"></div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="product-card__overlay">
+    {% assign view_string_length = 'product.card.product_view' | t | size %}
+    <span class="btn product-card__overlay-btn {% if view_string_length > 8 %} btn--narrow{% endif %}">{{ 'product.card.product_view' | t }}</span>
+  </div>
+

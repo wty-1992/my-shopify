@@ -1,0 +1,61 @@
+
+{% for block in section.blocks %}
+{% if handle == block.settings.handle %}
+<script>.
+var labels ='{{ block.settings.label_sort }}'.split(",");
+  $(".collection-label").each(function(){
+    if($(this).children().length > 0){
+      let dataArr =[];
+      $(this).children().map(function(i,item){
+        let items = $(this).html(); 
+        labels.map(function(item,index){
+          if(items == item){
+            dataArr.push(item);
+          }
+        });
+      });
+      dataArr.sort((a,b)=>{return labels.indexOf(a) - labels.indexOf(b);});    
+      $(this).html(`<span>`+ dataArr[0] +`</span>`);
+    }
+  });
+</script>
+{% endif%}
+{% endfor %}
+    
+{% schema %}
+{
+  "name": "标签排序",
+  "class":"newactive2019-label-sort",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "newactive2019-label-sort"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "label",
+      "name": "活动页 标签排序",
+      "settings": [
+    	{
+		  "type": "text",
+          "id": "title",
+          "label": "哪个活动"
+	    },
+		{
+		  "type": "text",
+          "id": "handle",
+          "label": "活动url"
+	    },
+        {
+          "type": "textarea",
+          "id": "label_sort",
+		  "label":"标签",
+          "info":"tag-1,tag-2,(多个标签时标签与标签之间用逗号分隔)"          
+        }
+      ]
+    }    
+  ]
+}
+{% endschema %}
+

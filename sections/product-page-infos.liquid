@@ -1,0 +1,97 @@
+{% assign current_variant = product.selected_or_first_available_variant %}
+<style>
+.product-page-infos-section {
+  border-bottom: 1px solid #eee;
+}
+
+.product-page-infos-section .product-infos__line {
+  padding-bottom:19px;
+  align-items: baseline;
+  color: #777;
+  font-size:12px;
+}
+.product-page-infos-section .product-infos__name h1 {
+  margin: 0px;
+  padding: 0px;
+  font-size: 18px;
+  font-weight: 100;
+  color: #000;
+  margin-bottom: 6px;
+  line-height: 1.35;
+}
+.product-page-infos-section .product-infos__price {
+  padding-top: 25px;
+  border-top: 1px solid #eee;
+}
+.product-page-infos-section .yotpo .pull-left{
+  text-align:right;
+  float: unset;
+  justify-content: flex-end;
+}
+/*  判断sku为SPXH690A 隐藏 shipping和guide   2020/04/24 by zerlmin */
+  
+{% if current_variant.sku == 'SPXH690A' %}
+.product-page-add_to_cart-section .select-option .product-size{display:none!important;}
+.description-tabs .description_tabs_hidden{display:none!important;}
+{% endif %}
+@media(max-width:768px){
+  .product-page-infos-section .product-infos__line{
+    justify-content: space-between;
+  }
+  .product-page-infos-section{ 
+    padding: 0 20px;
+    border-bottom: none;
+  }
+  .product-page-infos-section .product-infos__name h1{
+    margin:1.9rem 0 2.5rem;
+    font-size: 14px;
+    line-height: 1;
+  }
+  .product-page-infos-section .product-infos__line .col-sm-6{
+    width:auto;
+    padding:0px;
+  }
+  .product-page-infos-section .product-infos__line{
+    display:none;
+  }
+}
+</style>
+{% assign productTags = product.tags | join:',' %}
+{% assign current_variant = product.selected_or_first_available_variant %}
+{% assign variantSkuId = "VariantSku" | append: section.id %}
+<div class="product-infos__name">
+    <h1 itemprop="name">{{product.title}}</h1>
+</div>
+<div class="row product-infos__line">
+    <div class="col-sm-6">
+        {{ 'product.infos.sku' | t }} : <span id="{{variantSkuId}}" class="variant-sku">{{settings.sku_prefix}}{{ current_variant.sku }}</span>
+    </div>
+    <div class="col-sm-6 text-right">
+      <a href="#my-review-main" class="common-review-wrapper-style">
+        <div class="my-review-goods-list" data-product-id="{{ product.selected_or_first_available_variant.sku }}"></div>
+      </a>
+    {% if productTags contains "custom-review" %}
+      <div class="yotpo bottomLine" data-product-id="{{ product.selected_or_first_available_variant.sku }}"></div>
+    {% endif %}
+    </div>
+</div>
+
+<script>
+// select 更改SKU
+Listener.on([ Listener.product.update.before ], function(event, variant) { 
+  $('#{{variantSkuId}}').html(variant.sku);
+});
+</script>
+
+{% schema %}
+{
+  "class": "product-page-infos-section",
+  "name": "产品页 - 标题区域",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content":"product-page-infos"
+    }
+  ]
+}
+{% endschema %}

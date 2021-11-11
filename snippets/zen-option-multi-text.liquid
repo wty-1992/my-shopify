@@ -1,0 +1,167 @@
+{% if product.metafields["global"]["cattribute"] %}
+	{% assign customInfo = product.metafields["global"]["cattribute"] %}
+{% else %}
+	{% assign customInfo = '{"type":"MultiText","optionName":"option1","optionCoors":[{"dataLabel":"1st Name","limit":"10"},{"dataLabel":"2nd Name","limit":"10"},{"dataLabel":"3rd Name","limit":"10"},{"dataLabel":"4th Name","limit":"10"},{"dataLabel":"5th Name","limit":"10"},{"dataLabel":"6th Name","limit":"10"}]}' %}
+
+{% endif %}
+<div>
+  <div id="t_name"></div>
+  <div id="coors-cantainer"></div>
+  <input type="hidden" id="engravingText" name="properties[engravingText]" />
+  <input type="hidden" id="piccrop" name="properties[crop]" />
+</div>
+
+<script>
+  var times = 1;
+  var productImage = "{{product.images[0] |img_url: '600x600' | prepend: 'https:'}}";
+  
+  var jsonCustom = '{{ customInfo }}'?JSON.parse('{{ customInfo }}'):{};
+  
+  var optionList = {};
+  var optionNo = 0;
+  {% for option in product.selected_or_first_available_variant.options %}
+  optionNo++;
+  optionList['option'+optionNo] = '{{option}}';
+  {% endfor %}
+  
+  var optionNum = 1;
+  var optionName = '';
+  var textNum = 0;
+  
+  //拼接名字的方法
+  Product.validators.push(async () => {
+    var zenFlag = true;
+    var nameNum = $('.fonttext').length;
+
+    for(var i=0;i<nameNum;i++){
+      console.log($('#font-text'+i).val());
+      if( $.trim($('#font-text'+i).val()) == '' ){
+        $('#fonttext'+i).css('border-color', 'red');
+        zenFlag = false;
+      }else{
+        $('#fonttext'+i).css('border-color', '#d6d6d6');
+      }
+    }
+
+    var custom_info = [];
+
+    $("[name='fonttext']").each(function(i, v){
+      var label = $.trim($(this).attr('data-label'));
+      var textVal = label +':'+ $(this).val();
+      custom_info.push(textVal);
+    });
+
+    $('#engravingText').val(custom_info.join(' | '));
+  
+    $("#piccrop").val(productImage);
+
+    return zenFlag;
+  });
+  
+  function changeText(i,obj,limitv){
+    var objLenOld = $(obj).val().length;
+    var objVal = $(obj).val().replace(/[\r\n]/g,"");
+    var objLen = objVal.length;
+
+    if(objLen < objLenOld){
+      $(obj).attr('maxlength',limitv + objLenOld - objLen);
+    }else{
+      $(obj).attr('maxlength',limitv);
+    }
+
+    if(objLen > limitv){
+      var lenDiff = objLen - limitv;
+      $(obj).val($(obj).val().substr(-1,lenDiff));
+      $('#leftnum'+i).text(0);
+    }else{
+      $('#leftnum'+i).text(parseInt(limitv) - objLen);
+    }
+  }
+  
+  $(document).ready(function(){
+    
+    if(typeof jsonCustom.times != 'undefined'){//按照变体值的times倍添加文字框
+      times = jsonCustom.times;
+    }
+    
+    if(typeof jsonCustom.coors != 'undefined'){
+      var coors_str = '';
+      jsonCustom.coors.forEach(function(v, i){
+      	var limit = v.limit || 10;
+        var labelNo = i+1;
+        
+        var label = v.label || "{{ 'page.contact.name' | t }} " + labelNo;
+        var dataLabel = v.dataLabel || label;
+        var placeholder = v.placeholder || "{{ 'zen.namenecklace.enter_name_or_text_here' | t }}";
+        coors_str += '<div class="fonttext-container" id="fonttext'+i+'">';
+        coors_str += '<label>'+label+'<span class="require-tag"> *</span></label>';
+        coors_str += '<input type="text" class="fonttext" name="fonttext" data-label="'+dataLabel+'" id="font-text'+i+'" maxlangth="'+v.limit+'" value="" oninput="changeText('+i+',this,'+v.limit+')" placeholder="'+placeholder+'" required/>';
+        coors_str += '<div class="leftnum" id="leftnumbox'+i+'"><span id="leftnum'+i+'">'+v.limit+'</span> {{ 'zen.general.left' | t }}</div></div>';
+      	textNum++;
+      })
+      
+      $('#coors-cantainer').append(coors_str);
+    }
+	
+    if(typeof jsonCustom.optionName != 'undefined'){
+    	var optionFlag = '';
+        
+        optionName = jsonCustom.optionName;
+        optionNum = parseInt(optionList[optionName]);
+        console.log('optionNum======'+optionNum);
+        getOptionText(optionNum*times,'optionCoors');
+    }
+    
+    
+    
+  });
+  
+  function getOptionText(num,coors = 'coors') {
+      num = parseInt(num);
+	  console.log('num===='+num);
+      var current_num = parseInt($('.option-fonttext').length);
+      if(num > current_num){
+        var html = '';
+        for (var i=current_num;i<num;i++){
+          var m = i + textNum;
+          var placeholder = jsonCustom[coors][i].placeholder || "{{ 'zen.namenecklace.enter_name_or_text_here' | t }}";
+          var labelNo = m+1;
+          var label = jsonCustom[coors][i].label || "{{ 'page.contact.name' | t }} " + labelNo;
+          var dataLabel = jsonCustom[coors][i].dataLabel || label;
+          
+          html += '<div class="fonttext-container" id="fonttext'+m+'">';
+          html += '<label>'+label+'<span class="require-tag"> *</span></label>';
+          html += '<input type="text" class="fonttext option-fonttext" data-label="'+dataLabel+'" id="font-text'+m+'" name="fonttext" maxlangth="'+jsonCustom[coors][i].limit+'" value="" oninput="changeText('+m+',this,'+jsonCustom[coors][i].limit+')" placeholder="'+placeholder+'" required/>';
+          html += '<div class="leftnum" id="leftnumbox'+m+'"><span id="leftnum'+m+'">'+jsonCustom[coors][i].limit+'</span> {{ 'zen.general.left' | t }}</div></div>';
+
+        }
+
+        $('#t_name').append(html);
+      }else{
+        var current_num_new = current_num + textNum - 1;
+        var num_new = num + textNum - 1;
+        
+        for (var j=current_num_new;j>num_new;j--){
+          
+          $('#fonttext'+j).remove();
+        }
+      }
+
+    }
+  
+  
+    Listener.on([ Listener.product.update.before ], function(event, variant) {
+      
+      if(optionName && optionNum != parseInt(variant[optionName])){
+        optionNum = parseInt(variant[optionName]);
+        
+      	getOptionText(optionNum*times,'optionCoors');
+      }
+      
+      if(variant.featured_image){
+        productImage = variant.featured_image.src;
+      }
+      
+    })
+  
+</script>

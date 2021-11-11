@@ -1,0 +1,172 @@
+{% comment %}
+** @name SpotifyCode吉他拨片 **
+** @author 劳紫恩 **
+** @integrate 劳紫恩 王天宇 **
+{% endcomment %}
+
+{% comment %} 引用公共插槽 {% endcomment %}
+{% include 'sunzi-solt-template' %}
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'sunzi.spotify.guitar.pick.test.js' %}
+
+{% comment %} 变体名称 {% endcomment %}
+{% assign variantStyle = 0 %}
+
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/guitar-pick.json' %}
+{% comment %} 谷歌分析id {% endcomment %}
+{% assign gtag = 'G-R132WKL1C2' %}
+
+{% comment %} 定制按钮文案 {% endcomment %}
+{% assign buttonText = section.settings.sunzi_button_upload_text %}
+
+{% comment %} 默认唱片图片 {% endcomment %}
+{% assign defaultCustomAlbum = section.settings.sunzi_param_spotify_default_custom_album %}
+{% comment %} 推荐唱片列表 {% endcomment %}
+{% assign recommendTracks = section.settings.sunzi_param_spotify_recommend_tracks %}
+
+{% comment %} 站点语种 {% endcomment %}
+{% assign sunzi_shop_language = section.settings.sunzi_shop_language %}
+{% comment %} 货币符号 {% endcomment %}
+{% assign sunzi_shop_symbol = section.settings.sunzi_shop_symbol %}
+
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+  .zen-customer-lr .common-standar_btn {
+  	display: none !important;
+  }
+  @media screen and (min-width: 768px) {
+    .sunzi-modal-content {
+      width: 400px!important;
+      height: 640px!important;
+    }
+  }
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="hidden" id="sunzi-input" name="properties[customInfo]" />
+  <input type="hidden" id="sunzi-cart" name="properties[_sunzi_cart]" />
+  <input type='hidden' id="_tempVip"  name='properties[_tempVip]' />
+
+  {% comment %} 定制按钮 {% endcomment %}
+  <button type="button" id="sunzi-button" disabled class="dots-loading">
+    <span class="dots">
+      <i></i>
+      <i></i>
+      <i></i>
+    </span>
+    <div class="sunzi-button-text">{{ buttonText }}</div>
+  </button>
+</div>
+
+{% comment %} loading 所需图片预加载 {% endcomment %}
+<link rel="preload" href="https://spic.qn.cdn.imaiyuan.com/spotify-code/custom-album.jpg?imageslim" as="image">
+<link rel="preload" href="https://spic.qn.cdn.imaiyuan.com/spotify-code/control-black.png" as="image">
+<link rel="preload" href="https://spic.qn.cdn.imaiyuan.com/spotify-code/control-white.png" as="image">
+<link rel="preload" href="https://spic.qn.cdn.imaiyuan.com/spotify-code/heart.png" as="image">
+<link rel="preload" href="https://spic.qn.cdn.imaiyuan.com/spotify-code/heart-white.png" as="image">
+<!-- sunzi core js -->
+<script src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{ coreJs }}" defer="defer"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ gtag }}" async="async"></script>
+<script async="async">
+  _sunzi_gtag('{{ gtag }}');
+</script>
+
+{% comment %} 1.隐藏掉变体，加车按钮等等 {% endcomment %}
+<script defer="defer">
+</script>
+
+{% comment %} 2.请求定制化数据 {% endcomment %}
+<script defer="defer">
+  var response;
+  _sunzi_request('{{ requestURL }}', function(res) {
+	response = res;
+  });
+</script>
+
+{% comment %} 3.开始定制 {% endcomment %}
+<script defer="defer">
+  $('#sunzi-button').click(function() {
+    var typeList = ['Guitar Pick Box', 'Pcs Guitar Pick', 'Guitar Pick Box with 3 Pcs Guitar Pick'];
+    var styleSelectedIndex = _sunzi_find_variant({{variantStyle}}).find("select").prop('selectedIndex');
+    // 初始化数据
+    _sunzi_response.shop = {
+      language: '{{sunzi_shop_language}}',
+      currencySymbol: '{{sunzi_shop_symbol}}',
+    };
+    _sunzi_response.price = _sunzi_get_product_info("price");
+    _sunzi_response.defaultCustomAlbum = "{{defaultCustomAlbum}}";
+    _sunzi_response.recommendTracks = {{recommendTracks}};
+    _sunzi_response.theme = {
+      r: 255,
+      g: 1,
+      b: 54
+    };
+    _sunzi_response.customType = typeList[styleSelectedIndex];
+  
+    // 开始渲染
+    _sunzi_custom(
+      SpotifyCode.SpotifyGuitarPick,
+      function(effect,guitaPickValue,data) {
+        _sunzi_loading();
+        var param ={}
+        //盒子
+        if(guitaPickValue.length === 0 && data){
+          param = {
+            '_sunzi_compose':[{
+               'rule': 19.8,
+               'data': data
+             }],
+            '_sunzi_text':{
+                value: `${data.color.value}|${data.track.name}|${data.track.artists}|${data.track.uri}|${SpotifyCode.formatTime(data.track.duration_ms)}`,
+            },
+            '_sunzi_source':data.source,
+            '_sunzi_effect':effect[0],
+          
+          }
+        }
+        //拨片+盒子
+        else if(guitaPickValue.length !== 0 && data){
+          param={
+            '_sunzi_compose':[{
+               'rule': 19.8,
+               'data': data
+             }],
+            '_sunzi_texts':guitaPickValue,
+            '_sunzi_source':data.source,
+            '_sunzi_effect':effect[0],
+            '_sunzi_text_effect':effect[1]
+          }
+          param['_sunzi_spotify_text'] = [
+            {
+              value: `${data.color.value}|${data.track.name}|${data.track.artists}|${data.track.uri}|${SpotifyCode.formatTime(data.track.duration_ms)}`,
+              font: data.layout.nameCoord.font.name
+            }
+          ]
+        }
+        // 拨片
+        else if(guitaPickValue.length!==0 && !data){
+          param={
+            '_sunzi_effect':effect[0],
+            '_sunzi_text_effect':effect[0],
+            '_sunzi_texts':guitaPickValue
+          }
+        };
+         $('#sunzi-input').val(JSON.stringify(param));
+		//	加车事件触发
+      	$('.product-form__cart-submit').click();
+        _sunzi_hide_loading();
+      }
+    );
+     
+  });
+   
+
+ /** 其他自定义函数 start **/
+   
+  /** 其他自定义函数 end **/
+</script>

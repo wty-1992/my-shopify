@@ -1,0 +1,426 @@
+{% if section.settings.enable %}
+<style>
+.cart-gift-card-section{ 
+  background: #fff; 
+  margin: 0 auto 12px;
+}
+.cart-gift-card-section .cart-offon{  
+  padding: 2.2rem 2rem; 
+  display: flex;
+  align-items: end;
+}
+.cart-gift-card-section .cart-offon label{    
+  margin: 0 1rem 0 0; 
+}
+.cart-gift-card-section .cart-offon .lcs_wrap {
+  position: relative;
+  display: inline-block;
+  direction: ltr; 
+  vertical-align: middle;
+}
+.cart-gift-card-section .cart-offon .lcs_wrap .lcs_check{
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+  height: 100%;
+  cursor: pointer;
+}
+.cart-gift-card-section .cart-offon .lcs_wrap .lcs_switch{
+  display: inline-block;
+  position: relative;
+  width: 36px;
+  height: 20px;
+  border-radius: 20px;
+  background: #ddd;
+  overflow: hidden;
+  cursor: pointer;
+  -webkit-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
+} 
+.cart-gift-card-section .cart-offon .lcs_wrap .lcs_switch .lcs_cursor{
+  display: inline-block;
+  position: absolute;
+  top: 2px;
+  width: 1pc;
+  height: 1pc;
+  border-radius: 100%;
+  background: #fff;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,.2), 0 3px 4px 0 rgba(0,0,0,.1);
+  z-index: 10;
+  -webkit-transition: all .2s linear;
+  transition: all .2s linear;
+}
+.cart-gift-card-section.active .cart-offon .lcs_wrap .lcs_switch.lcs_off {
+  background: #6ad78c;
+  box-shadow: 0 0 2px #6ad78c inset;
+}
+.cart-gift-card-section .cart-offon .lcs_wrap .lcs_switch.lcs_off {
+  background: #b2b2b2;
+  box-shadow: 0 0 2px #a4a4a4 inset;
+}
+.lcs_switch.lcs_off .lcs_cursor {
+  left: 3px;
+}.cart-gift-card-section.active .lcs_switch.lcs_off .lcs_cursor {
+  left: 18px;
+}
+.cart-gift-card-section .cart-gift{
+  display:none;
+}
+.cart-gift-card-section.active .cart-gift{
+  display: flex; 
+  border-top: 1px solid #efefef;
+  padding: 2rem 0;
+  flex-flow: wrap;
+}
+#cart-giftimg{
+  margin:1rem 0;
+}
+.cart-gift-card-section .cart-gift .cart-giftimg{
+  cursor: pointer;
+  border: 1px solid #efefef;
+  position: relative;
+  padding: 3% 10%;
+  text-align: center;
+  width: 100%;
+}
+.cart-gift-card-section .cart-gift .cart-giftimg i{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 10% 9% 3% 4%;
+  font-size: 20px;
+}
+
+.cart-gift-card-section .cart-gift  .giftMessage{
+  color:#000;
+}
+.cart-gift-card-section .cart-gift  .giftMessage span{
+  color: #7f7f7f;
+  padding-left: 1%;
+}
+.cart-gift-card-section .gifttextarea textarea{
+  border: 1px solid #efefef;
+  min-height: 14.5rem;
+  margin-top: 0;
+  width: 92%; 
+  overflow-y: hidden;
+  line-height: 1.6rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  background: #fff;
+}
+.cart-gift-card-section .giftprice {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-flow: column; 
+  font-size: 1.2rem;
+  color: #000;
+} 
+.cart-gift-card-section .giftprice p{
+  margin-top: 3rem;
+}
+.cart-gift-card-section .giftprice button {
+  background: #bfa175;
+  color: #fff;
+  border: none;
+  height: 4.16rem;
+  min-width: 17rem;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+.cart-gift-card-section .giftprice button i {
+  FONT-SIZE: 1.8rem;
+  margin-right: 1rem; 
+}
+
+.cart-gift-card-section .validation-warning{ 
+  border: 1px solid red !important;
+}
+  
+.cart-gift-card-section .gifttextarea #cardmessageText{height: 150px;min-height: 1.5rem}
+.cart-gift-card-section .gifttextarea #cardmessageSign{height: 70px;min-height: 1.5rem;margin-top: 10px;}
+
+@media(max-width:768px){
+  .cart-gift-card-section .cart-gift .col-md-6{
+    flex: 0 0 40%;
+    max-width: 40%;
+  }
+  .cart-gift-card-section{ 
+    background: #fff; 
+    padding: 0;
+    margin: 0 1rem 1rem;
+  }
+}
+@media(max-width:640px){
+  .cart-gift-card-section .cart-gift .giftMessage span {
+    color: #7f7f7f;
+    padding-left: 0%;
+  }
+  .cart-gift-card-section .cart-offon{ 
+    justify-content: space-between;
+  }
+  .cart-gift-card-section .cart-gift{ 
+    flex-wrap: wrap;
+  }
+  .cart-gift-card-section .cart-gift .pad-giftimg{ 
+    flex: 0 1 100%;
+  }
+  .cart-gift-card-section .gifttextarea {text-align: center;}
+  .cart-gift-card-section .gifttextarea #cardmessageText{height: 50px;min-height: 1.5rem;margin-top: 10px;}
+  .cart-gift-card-section .gifttextarea #cardmessageSign{height: 50px;min-height: 1.5rem;margin-top: 10px;}
+  .cart-gift-card-section .cart-gift .col-md-6 {
+    flex: 0 0 100%;
+    max-width: 100%;
+    padding: 0;
+  }
+  .cart-gift-card-section .gifttextarea textarea{
+    min-height: 9rem;
+    margin-top: 0rem; 
+    font-weight: normal;
+  }
+  .cart-gift-card-section .giftprice{
+    margin: 1rem 0;
+    flex-flow: initial;
+    justify-content: space-between;  
+    font-size: 1.4rem;
+  }
+  .cart-gift-card-section .giftprice p{
+    margin: 0;
+  }
+  .cart-gift-card-section .giftprice button{
+    height: 3rem;
+    min-width: 14.3rem; 
+    font-size: 1.2rem;
+  }
+}
+</style>
+<div class="cart-offon">
+  <label>{{section.settings.title}}</label>
+  <div class="lcs_wrap" onclick="openCard()">
+    <input id="cart-offon-card" type="checkbox" name="check-1" value="4" class="lcs_check" autocomplete="off">
+    <div class="lcs_switch  lcs_checkbox_switch lcs_off">
+      <div class="lcs_cursor"></div>
+    </div>
+  </div>
+</div>
+<div class="cart-gift">
+  {% include 'blessing-card' %}
+    {% if section.settings.gift_card_enable %}
+      <style>
+        .cart-page-templates div.product-card-button {background: transparent;}
+        .cart-gift-card-section.active div.cart-gift {padding-top: 0;}
+        span.product-card-title{color: #000;}
+        span.product-card-desc{font-weight: 100;font-style: unset;}
+        .cart-page-gift_card_box {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 40px 10px 20px 10px;
+          border-top: 1px solid #efefef;
+        }
+        .cart-page-gift_card_box img{
+          width: 35px;
+        }
+        .cart-page-gift_card_box div{
+          display: flex;
+          align-items: center;
+        }
+        .cart-page-gift_card_box span{
+          padding-left: 15px;
+          font-size: 14px;
+          font-weight: 600;
+          color: #000;
+        }
+        .cart-page-gift_card_box a{
+          background: #e60044;
+          color: #fff;
+          font-size: 12px;
+          font-weight: 900;
+          padding: 11px 15px;
+          line-height: 1;
+        }
+        .cart-page-gift_card_box a:hover{
+		  color: #fff;
+        }
+        @media(max-width:768px){
+          .cart-page-gift_card_box span{
+            padding-left: 10px;
+            font-size:12px;
+          }
+          .cart-page-gift_card_box a{
+            white-space: nowrap;
+          }
+        }
+      </style>
+      <div class="cart-page-gift_card_box">
+        <div>
+        {% if section.settings.gift_card_icon %}
+          <img width="100%" class="cart-page-gift_card_icon" src="{{section.settings.gift_card_icon | img_url: 'master'}}"/>
+        {% endif %}
+        <span>{{section.settings.gift_card_text}}</span>
+        </div>
+        <a href="{% if section.settings.gift_card_link == blank %}javascript:;{%else%}{{section.settings.gift_card_link}}{%endif%}">{{section.settings.gift_card_btn}}</a>
+      </div>
+    {% endif %}
+</div>
+<script>
+openCard();
+function openCard(){
+  $("#shopify-section-cart-gift-card").toggleClass("active");
+}
+</script>
+
+{% endif %}
+{% schema %}
+  {
+    "name": "购物车 - 礼物卡推荐",
+    "class": "cart-gift-card-section page-width",
+    "settings": [
+      {
+	    "type": "checkbox",
+        "id": "enable",
+        "label": "开启",
+        "default": true
+      },
+      {
+         "type": "text",
+          "id": "title",
+          "label": "标题",
+          "default": "Need a gift message card?"
+      },
+      {
+        "type": "text",
+        "id": "fliter",
+        "label": "过滤产品类型"
+      },
+      {
+        "type": "text",
+        "id": "card_title",
+        "label": "卡片设计指引文案",
+        "info": "支持HTML"
+      },
+      {
+        "type": "text",
+        "id": "desc",
+        "label": "卡片设计的描述",
+        "info": "支持HTML"
+      },
+      {
+        "type": "select",
+        "id": "card_type",
+        "label": "选择启用卡片",
+        "options": [
+          {
+            "value": "product_write",
+            "label": "手写卡产品"
+          },
+          {
+            "value": "product_print",
+            "label": "打印卡产品"
+          }
+        ],
+        "default": "product_write"
+      },
+      {
+        "type": "product",
+        "id": "product_write",
+        "label": "选择手写卡产品"
+      },
+      {
+        "type": "product",
+        "id": "product_print",
+        "label": "选择打印卡产品"
+      },
+      {
+        "type": "checkbox",
+        "id": "is_fontfamily",
+        "label": "是否开启字体选择",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "is_template",
+        "label": "是否开启模板选择",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "is_link",
+        "label": "是否跳转查看卡片产品",
+        "default": false
+      },
+  	  {
+        "type": "header",
+        "content": "卡片弹层文案"
+      },
+      {
+        "type": "text",
+        "id": "card_style",
+        "label": "卡片样式标题",
+        "default": "Choose Card Style:"
+      },
+      {
+        "type": "text",
+        "id": "card_message",
+        "label": "卡片内容标题",
+        "default": "Add Your Message:"
+      },
+      {
+        "type": "text",
+        "id": "card_message_text",
+        "label": "卡片内容提示",
+        "default": "Text here...(up to 350 characters)"
+      },
+      {
+        "type": "text",
+        "id": "card_signature",
+        "label": "卡片签名标题",
+        "default": "Your Signature:"
+      },
+      {
+        "type": "text",
+        "id": "card_signature_text",
+        "label": "卡片签名提示",
+        "default": "love you,John"
+      },
+      {
+        "type": "header",
+        "content": "礼品卡部分"
+      },
+	  {
+        "type": "checkbox",
+        "id": "gift_card_enable",
+        "label": "开启礼品卡",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "gift_card_icon",
+        "label": "礼品卡功能图标"
+      },
+      {
+        "type": "text",
+        "id": "gift_card_text",
+        "label": "礼品卡描述"
+      },
+      {
+        "type": "text",
+        "id": "gift_card_btn",
+        "label": "礼品卡按钮文案"
+      },
+      {
+        "type": "url",
+        "id": "gift_card_link",
+        "label": "礼品卡跳转链接"
+      }
+    ]
+  }
+{% endschema %}

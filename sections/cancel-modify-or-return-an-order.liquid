@@ -1,0 +1,91 @@
+<style type="text/css">
+  #shopify-section-header-menu-pc .menu-nav {
+  	border-bottom:0;
+  }
+#msg{ opacity:0;height: 12px;transition: all 0.3s;}
+.main-container{background: #fff;}
+.trackorder-box{width: 100%; text-align: center;margin-top: 10px;padding-bottom: 200px;}
+.trackorder-chart {display: inline-block;}
+.t-input{position: relative;margin-bottom: 25px;}
+.t-input label{position:absolute;}
+.t-input label i {font-size: 24px;line-height: 45px;padding-left: 16px;}
+.t-input input {width: 500px;height: 48px; border:1px solid #e0e0e0;padding-left: 60px; background:#fff;}
+.trackorder-searchOrder{margin-top: 28px;border-radius: 0;border:none;background: #e70243;width: 500px;height: 50px;font-size: 18px;font-weight: 100;color: #fff;text-transform: uppercase;}
+.trackorder-tables{width: 100%;margin-top: 70px; display: none;}
+.t-table{width: 100%;border-bottom: 1px solid #e4e4e4;}
+.t-table .t-tr{width: 100%;border-left: 1px solid #e4e4e4;border-right: 1px solid #e4e4e4;display: flex;justify-content: center;}
+.t-table .t-th{display: inline-block;width: 25%;background: #f8f8f8; color: #000;border-top: 1px solid #e4e4e4;height:40px; line-height: 40px;font-size: 14px;}
+.t-table .t-td{width: 25%;height: 112px;line-height: 112px;color: #969696;border-bottom: 1px solid #e4e4e4;font-size: 14px;}
+.t-tr .t-btn{margin: 35px 10px 50px;background: transparent;border:1px solid #000;width: 255px;color: #000;font-size: 16px;height: 50px;}
+.msg-alert{color: #e70243;text-align: left;font-weight: 900; display: none;}
+.trackorder-chart{position: relative;}
+#ordermsg.msg-alert{position: absolute;top: 46px;z-index: 1;}
+@media(max-width: 1366px){
+.trackorder-box{margin-top: 0px;
+    background: #eeeeee;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-top: 15px;}    
+.t-input{margin-bottom: 15px;}
+.t-input input{height: 45px;}
+.trackorder-searchOrder{margin-top: 12px;height: 50px;}
+.trackorder-tables{margin-top: 40px;}
+.t-table .t-td{height: 60px;line-height: 60px;}
+.t-tr .t-btn{margin: 20px 10px 10px;height: 40px;}
+}
+@media(max-width: 640px){
+.main-container{background: #eeeeee;}    
+.trackorder-chart{width: 100%;padding: 10px 10px 20px;background: #fff;}
+.t-input{margin-bottom: 20px;}
+.t-input input{width: 100%;height: 30px;padding-left: 45px;}
+.trackorder-searchOrder{width: 100%;}
+.t-input label i{font-size: 16px;line-height: 30px;}
+.trackorder-searchOrder{margin-top: 22px;height: 30px;font-size: 14px;}
+.trackorder-tables{margin-top: 10px;}
+.mb-flex{display: flex;}
+.t-table .t-tr{border-left:none;border-right:none;}
+.t-table .t-tr.t-tr-mb{flex-direction: column;}
+.t-table .t-tr.t-tr-mb:first-child{width: 60%;}
+.t-table .t-tr.t-tr-mb .t-th{border-top: 1px solid #fff;height: 50px;width: 100%;line-height: 50px;font-size: 12px;overflow-y: hidden;letter-spacing: -0.5px;}
+.t-table .t-tr.t-tr-mb .t-td{background:#fff;height: 50px;width: 100%;line-height: 50px;font-size: 12px;overflow-y: hidden;}
+.t-table .t-tr.t-tr-mb .t-td:last-child{border-bottom: none;}
+.t-table>.t-tr{flex-flow: wrap;justify-content: left;margin-top: 10px;}
+.t-tr .t-btn{margin:2px 2px;width: 45%;height: 30px;}
+
+}
+</style>
+
+<div class="trackorder-box">
+    <div class="trackorder-chart">
+        <div class="trackorder-order t-input"><label class="t-icon" for="order_bn"><i class="icon photofont photo-iconfontdingdan"></i></label><input type="text" name="" id="order_bn" placeholder="Order No."></div>
+        <div id="ordermsg" class="msg-alert"></div>    
+        <div class="trackorder-email t-input"><label class="t-icon" for="email"><i class="icon photofont photo-email1"></i></label><input type="text" name="" id="email" placeholder="Email"></div>
+        <div id="msg" class="msg-alert"></div>
+        <button type="button" value="Find my order" id="SearchOrder" class="trackorder-searchOrder">{{ 'page.cancel_return.Find_my_order' | t }}</button>
+    </div>
+    <div class="trackorder-tables">
+        <div class="t-table">
+            <div class="mb-flex">
+                <div class="t-tr t-tr-mb">
+                    <div class="t-th"><span>{{ 'page.cancel_return.Order_Number' | t }}</span></div>
+                    <div class="t-th"><span>{{ 'page.cancel_return.receipt_name' | t }}</span></div>
+                    <div class="t-th"><span>{{ 'page.cancel_return.order_amount' | t }}</span></div>
+                    <div class="t-th"><span>{{ 'page.cancel_return.shipping_country' | t }}</span></div>
+                </div>
+                <div class="t-tr t-tr-mb">
+                    <div class="t-td" id="number"></div>
+                    <div class="t-td" id="name"></div>
+                    <div class="t-td" id="amount"></div>
+                    <div class="t-td" id="country"></div>
+                </div>
+            </div>
+            <div class="t-tr" id="but" data-order="" data-email="">
+                <button class="t-btn" id="tack_cancel" data-text="cancel" style="display: none;">{{ 'page.cancel_return.Cancel' | t }}</button>
+                <button class="t-btn" id="tack_modify" data-text="modify" style="display: none;">{{ 'page.cancel_return.Modify' | t }}</button>
+                <button class="t-btn" id="tack_return" data-text="return" style="display: none;">{{ 'page.cancel_return.Return_Refund' | t }}</button>
+            </div>
+        </div>
+    </div>
+</div>

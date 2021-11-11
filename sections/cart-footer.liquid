@@ -1,0 +1,143 @@
+{% if section.settings.enable %}
+<style>
+.cart-footer-section .cart-why-choose {
+	background:#fff;
+	padding:2rem 0rem;
+	margin-bottom:1rem;
+	display:flex;
+	flex-direction:column;
+}
+.cart-footer-section .cart-why-choose h4 {
+	border-bottom:1px solid #f1f1f1;
+	padding-bottom:1.4rem;
+	text-transform:capitalize;
+	font-weight:100;
+}
+.cart-footer-section .cart-why-choose ul {
+	display:flex;
+	justify-content:space-between;
+}
+.cart-footer-section .cart-why-choose ul li {
+	width:33%;
+	display:flex;
+	align-items:center;
+	flex-direction:column;
+	border-right:1px solid #e7e7e7;
+}
+.cart-footer-section .cart-why-choose ul li:last-child {
+	border-right:none;
+}
+.cart-footer-section .cart-why-choose ul li img {
+	width:auto;
+	margin:1rem;
+}
+.cart-footer-section .cart-why-choose ul li .afooter-icon {
+	display:flex;
+	justify-content:center;
+	align-items:center;
+}
+.cart-footer-section .cart-why-choose ul li .afooter-icon.last {
+	width:60%;
+	padding:0 1rem;
+	text-align:center;
+}
+.cart-footer-section .cart-why-choose ul li .afooter-icon img,.cart-footer-section .cart-why-choose ul li:first-child .afooter-icon img {
+	width:20px;
+    margin:0;
+}
+.cart-footer-section .cart-why-choose ul li:first-child .cart-afooter-exterior {
+	text-align: center;
+}
+.cart-footer-section .cart-why-choose ul li .cart-afooter-exterior {
+	position:relative;
+	z-index:1;
+	width:125px;
+	height:6rem;
+	display:inline-block;
+	overflow:hidden;
+}
+#trustwaveSealImage~#trustwaveSealImage{
+  position: absolute;
+  top: 0px;
+  width: auto;
+  left: 0;
+}
+@media(max-width:640px) {
+.cart-footer-section .cart-why-choose ul {  
+  flex-wrap: unset;
+  flex-flow: row;
+}
+.cart-footer-section .cart-why-choose ul li {
+  flex:0 1 50%;
+  padding: 0 5px;
+}
+.cart-footer-section .cart-why-choose ul li:last-child {
+  flex:0 1 100%
+}
+.cart-footer-section .cart-why-choose ul li .afooter-icon.last {
+  padding:0;
+}
+.cart-footer-section .cart-why-choose ul li img{
+  max-width:90px;
+  padding: 0 10px;
+}
+.cart-footer-section .cart-why-choose ul li .afooter-icon.last{
+  width: 100%;
+}
+}
+</style>
+
+<div class="cart-why-choose">
+  <h4>{{ 'cart.footer.why_choose_us' | t }}</h4>
+  <ul class="container">
+    <li>
+      <div class="cart-afooter-exterior">
+        <img src="{{'cart-soufeel-jewelry.png' | asset_url }}" />
+      </div>
+      <div class="afooter-icon">
+        <span>{{ 'cart.footer.powered_by_yotpo' | t }}</span>
+      </div>
+    </li>
+    <li>
+      <script src="//medals.bizrate.com/medals/js/276454_medal.js" type="text/javascript"></script>
+      <div class="cart-afooter-exterior">
+        <a style="filter:alpha(opacity=0);opacity: 0;" href="//www.bizrate.com/?rf=sur" title="Bizrate" target="_blank"></a>
+        <a class="br-button" href="//www.bizrate.com/ratings_guide/merchant_detail__mid--276454.html?rf=sur" title="{{ 'cart.footer.see_soufeel_jewelry_reviews' | t }}"
+          target="_blank" style="position: absolute; height: 73px; width: 125px; ">
+          <img src="{{'footer-03.png' | asset_url }}" />
+        </a>
+      </div>
+      <div class="afooter-icon">
+        <img src="{{'cart-download.png' | asset_url }}" />
+        <span>{{ 'cart.footer.outstanding' | t }}</span>
+      </div>
+    </li>
+    <li>
+      <div class="cart-afooter-exterior">
+        <script type="text/javascript" src="https://sealserver.trustwave.com/seal.js?code=c508f999f0294706b6fa74d38561e0ce"
+          po_cmp_ignore=""></script>
+        <img id="trustwaveSealImage" src=" {{'cart-seal_image.jpg' | asset_url }}" border="0" style="cursor:pointer;"
+          onclick="javascript:window.open('https://sealserver.trustwave.com/cert.php?customerId=c508f999f0294706b6fa74d38561e0ce&amp;size=105x54&amp;style=', 'c_TW', 'location=no, toolbar=no, resizable=yes, scrollbars=yes, directories=no, status=no, width=615, height=720'); return false;"
+          oncontextmenu="javascript:alert('{{ 'cart.footer.copying_prohibited_by_law' | t }}'); return false;"
+          alt="{{ 'cart.footer.trusted_commerce_program' | t }}" title="{{ 'cart.footer.trusted_commerce_program' | t }}">        
+      </div>
+      <div class="afooter-icon last">{{ 'cart.footer.your_bank_and_identify' | t }}</div>
+    </li>
+  </ul>
+</div>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "购物车 - 脚部",
+    "class":"cart-footer-section",
+    "settings": [
+       {
+	      "type": "checkbox",
+        "id": "enable",
+        "label": "开启",
+        "default": false
+      }
+    ]
+  }
+{% endschema %}

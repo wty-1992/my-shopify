@@ -1,0 +1,535 @@
+<style> 
+
+.cart-subtotal-section{
+  padding:0;
+  margin-bottom:2rem;
+  background: #fff;
+}
+.shopify-cleanslate li._3TUeZPsTWjDxakSmeDcA4D{
+  -webkit-flex-basis: 100% !important;
+  -ms-flex-preferred-size: 100% !important;
+  flex-basis: 100% !important;
+}
+.cart-subtotal-section .tishi-content{  
+  background: #fff;
+  height: 2rem;
+  text-align: right;
+  padding: 1rem 1rem 0;
+  color: #777;
+  font-size: 12px;
+  line-height: 1;
+}
+.cart-subtotal-section .tishi-content span{
+  font-size: 14px;
+  color: #e70145;
+  font-weight: 600;
+}
+.cart-subtotal-section .cart_total__render{ 
+  background: #fff;
+  padding: 2rem 1rem 0;
+  line-height: 2rem;
+} 
+.cart-subtotal-section .cart_total__render .cart_total__table{
+  display: flex;
+  justify-content: space-between;
+}
+.cart-subtotal-section  .cart_total__render .cart_total__table table  {
+  width:80%;
+}
+.cart-subtotal-section .cart_total__render .cart_total__table .cart-continue a {
+  border-bottom: 1px solid #000;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 12px;
+  font-family: 'OpenSans-Semibold';
+}
+.cart-subtotal-section .cart_total__render table tr{
+  display: flex;
+  justify-content: flex-end;
+} 
+.cart-subtotal-section .cart_total__render table tr td { 
+  flex: 0 1 15%;
+  font-size: 12px;
+  padding: .2rem;
+  text-align: right;
+  font-weight: 600;
+  color: #000;
+}
+.cart-subtotal-section .cart_total__render .grand_total {
+  font-weight: bold;
+  color: #bfa175;
+}
+.cart-subtotal-section .grand_total td:last-child{ 
+  font-size: 2.4rem;
+} 
+.cart-subtotal-section  .subtotal_pay{
+  padding:1rem 1rem 3rem;
+  display: flex;
+  justify-content: flex-end;
+  background: #fff; 
+  align-items: center;
+}
+.cart-subtotal-section .subtotal_pay span{
+  margin:0 1.2rem;
+}
+.cart-subtotal-section .subtotal_pay .btn.cart__checkout-button{  
+  width: auto;
+  padding: 8px 20px 7px;
+  background: #ffab0b;
+  position: relative;
+  text-transform: capitalize;
+  letter-spacing: 0;
+}
+  .accept-box{
+        display: flex;
+    justify-content: flex-end;
+  }
+  .klarna-img{
+    max-width: 100%;
+    width: 40px;
+    height: 24px;
+    border: 1px solid #ccc;
+    margin-right: 6px;
+    margin-left: -11px;
+  }
+.cart-subtotal-section .subtotal_pay .btn.cart__checkout-button .tital{
+  font-size: 14px;
+}
+.cart-subtotal-section .subtotal_pay .btn.cart__checkout-button i{ 
+  padding-right:5px;
+}
+.cart-subtotal-section .cart-accept{  
+  background: #fff;
+  padding: 0rem 1rem 2rem;
+  line-height: 2rem;
+  text-align: right;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  flex-flow: column;
+}
+.cart-subtotal-section .cart-accept img{
+  margin-bottom: 12px;
+}
+.cart-afterpay_onetouch{
+  text-align: right;
+  padding-right: 14px;
+  margin-bottom: 20px;
+}
+.cart-afterpay_onetouch h3{
+  text-align: right;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  color: #379dd6;
+  font-size: 15px;
+  margin-bottom: 5px;
+  text-transform: none;
+}
+    .link-box{
+position: absolute;
+    white-space: nowrap;
+    top: -48px;
+    background: #fff;
+    padding: 7px 12px;
+    left: -51px;
+    border-radius: 7px;
+    box-shadow: 0px -6px 11px #888;
+    display:none;
+  }
+  .link-box:before{
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-width: 12px 12px 0;
+    border-style: solid;
+    border-color: #fff transparent transparent;
+    margin: 28px auto;
+    left: 50%;
+    text-align: center;
+    transform: translate(-50%, 0px);
+	
+  }
+    .k-link{
+    padding-bottom: 2px;
+    border-bottom: 1px solid;
+  }
+  .klarna-link{
+      position: relative;
+  }
+.cart-afterpay_onetouch p{
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+tr.one td span{
+  font-size: 14px;
+}
+tr.three td span{
+  font-size: 14px;
+}
+tr.grand_total td span{
+  font-size: 18px;
+  color: #ff3266;  
+}
+.cart-paypal{
+  width: 217px;
+}
+.pc-show{display:block;}
+.mb-show{display:none;}
+@media(max-width:1024px){ 
+.cart-subtotal-section .subtotal_pay .btn.cart__checkout-button {
+    width: 36%;
+}  
+}
+
+@media(max-width:640px){
+  .klarna-img{height:21px;}
+  .link-box{display:none !important}
+.cart-subtotal-section{
+  padding:0 1rem
+}
+{%- comment -%}cart total Discount {%- endcomment -%}
+.cart-subtotal-section .cart_total__render .cart_total__table{
+  justify-content: flex-start;
+  flex-direction: column;
+}
+.cart-subtotal-section .cart_total__render{
+  padding: 1.3rem 1rem 0;
+}
+.cart_total__render .cart_total__table .cart-continue{
+  flex: 0 1 100%;
+  text-align: left;
+}
+.cart-subtotal-section .cart_total__render .cart_total__table table{
+  width: 100%;
+}
+.cart-subtotal-section .cart_total__render table tr td {
+  flex: 0 1 26%;
+}
+.cart-subtotal-section .subtotal_pay{
+  padding: .5rem 1rem 3rem;     
+  flex-direction: column-reverse;
+  width: 100%;
+}
+.cart-subtotal-section .subtotal_pay .cart-paypal,
+.cart-subtotal-section .subtotal_pay span,
+.cart-subtotal-section .subtotal_pay .btn.cart__checkout-button{
+  flex: 0 1 100%;
+  width:100%;    
+  z-index: 0;
+}
+.cart-subtotal-section .subtotal_pay span{
+  margin:1.2rem; 
+  text-align: center;
+}
+.cart-subtotal-section .cart-accept{
+  text-align:center;
+}
+.cart-subtotal-section .cart-accept span{ 
+  display:none;
+}
+.pc-show{display:none;}
+.mb-show{display:block;}
+  
+}
+</style>
+
+<div id="CartSubtotal"></div>
+{% if section.settings.product_show_countdown == true %}
+{% include 'cart-countdown'%}
+{% endif %}
+<template id="CartSubtotalTemplate">
+  {% raw %}
+    <div class="cart_total__render">
+      <div class="cart_total__table"> 
+        <div class="cart-continue">
+        <a class="charms-links" href="/">&lt;&nbsp;{% endraw %}{{'cart.subtotal.continue_shopping' | t }}{% raw %}</a>
+      </div>
+      <table>
+        <tr class="one">
+          <td>{% endraw %}{{'cart.subtotal.subtotal' | t }}{% raw %}</td>
+          <td><span data-money="{{subtotal}}"></span></td>
+        </tr>
+        {% endraw %}{% if section.settings.is_discount_carttotal == true %}{% raw %}
+        <tr class="two">
+          <td>{% endraw %}{{'cart.subtotal.discount' | t }}{% raw %}</td>
+          <td>-<span data-money="{{totalDiscount}}"></span></td>
+        </tr>
+        {% endraw %}{% endif %}{% raw %}
+        <tr class="three">
+          <td>{% endraw %}{{'cart.subtotal.Tax' | t }}{% raw %}</td>
+          <td><span data-money="0"></span></td>
+        </tr>
+        {% endraw %}{% if section.settings.is_detail_carttotal == true %}{% raw %}
+        <tr class="four">
+          <td>{% endraw %}{{section.settings.shippingtext}}{% raw %}</td>
+          <td><span data-money="{{shippingTotal}}"></span></td>
+        </tr>
+        {% endraw %}{% endif %}
+        {% if section.settings.is_show_shipping == true %}{% raw %}
+        <tr class="five">
+          <td>{% endraw %}{{'customer.order.shipping' | t }}{% raw %}</td>
+          <td><span id="shipping-value" data-money="{{shippingValue}}" style="{{sValueStyle}}"></span><span id="shipping-text" style="{{sTextStyle}}">{{shippingText}}</span></td>
+        </tr>
+        {% endraw %}{% endif %}
+        {% raw %}
+        <tr class="grand_total">
+          <td>{% endraw %}{{'cart.subtotal.grand_total' | t }}{% raw %}</td>
+          <td><span data-money="{{grandTotal}}"></span></td>
+        </tr>
+      </table>
+      </div>
+    </div>
+  {% endraw %}
+  {% unless section.settings.content == blank %}
+    <div class="tishi-content">{{section.settings.content}}</div>
+  {% endunless %}
+</template>
+{% if section.settings.afterpay_checkbox %}
+<div class="cart-afterpay_onetouch mb-show">
+  <h3>{{section.settings.afterpay_title}}</h3>
+  <p>{{section.settings.afterpay_text}}</p>
+  <p>{{section.settings.afterpay_text2}}</p>
+</div>
+{% endif %}
+<form action="/cart" method="post" novalidate class="cart" onsubmit="Mask.show()">
+  <input type="hidden" id="CartUtm" name="attributes[utm]" value="">
+  <script>
+  if($.cookie('utm')) {
+    $('#CartUtm').val($.cookie('utm'));
+  }
+  </script>
+  <div id="checkout_button" class="subtotal_pay">
+    <div class="cart-paypal">{{ content_for_additional_checkout_buttons }}</div>
+    <span>-{{'cart.subtotal.or' | t }}-</span>
+    <button type="submit" name="checkout" class="btn cart__checkout-button">
+      <span class="tital"><i class="photofont icon photo-suo suo-icon"></i> {{'cart.subtotal.checkout' | t }}</span>
+    </button>
+  </div>
+</form>
+{% if section.settings.afterpay_checkbox %}
+<div class="cart-afterpay_onetouch pc-show">
+  <h3>{{section.settings.afterpay_title}}</h3>
+  <p>{{section.settings.afterpay_text}}</p>
+  <p>{{section.settings.afterpay_text2}}</p>
+</div>
+{% endif %}
+<div class="accept-box">
+  <div class="cart-accept">
+    {% for block in section.blocks %}    
+      <img class="img2 lazy" src="{{ block.settings.pc_image | img_url: 'master' }}">
+    {% endfor %}
+  </div>
+  <div class="klarna-link">
+  <a href="/pages/klarna"> 
+    <img class="klarna-img" src="{{section.settings.footer-klarna | img_url: 'master' }}" alt="" width="46" height="31" border="0" style="max-width: 100%;">
+    </a>
+  <div class="link-box">
+    <a class="k-link" href="/pages/klarna"><span>?</span>About Klarna</a>
+  </div>
+  </div>
+</div> 
+
+<script>
+Listener.on([ Listener.cart.refresh ], function(event, cart) { console.log(cart.total_price);console.log(cart.total_discount);
+  var compileTemplate = Handlebars.compile($('#CartSubtotalTemplate').html());
+  if({{ section.settings.is_detail_carttotal }} == true){
+    //var shippingTotal = (cart.total_price - cart.total_discount) > parseInt({{ settings.free_shipping_threshold }}) ? 0 : parseInt({{ section.settings.shippingamount }});
+    var shippingTotal = cart.total_price > parseInt({{ settings.free_shipping_threshold }}) ? 0 : parseInt({{ section.settings.shippingamount }});
+  	//var grandTotal = cart.total_price - cart.total_discount + shippingTotal;
+    var grandTotal = cart.total_price + shippingTotal;
+  }else{
+    var shippingTotal = 0;
+    //var grandTotal = cart.total_price - cart.total_discount;
+    var grandTotal = cart.total_price;
+  }
+                                                              
+  {% if section.settings.is_show_shipping == true %}
+    var shippingValue = 0;
+    var shippingText = '';
+    var sValueStyle = 'display:none';
+    var sTextStyle = 'display:none';                                                          
+    
+    var shippingArray = "{{section.settings.shipping_price}}".split('|');
+    var shippinValueArray = "{{section.settings.shipping_value}}".split('|');
+    var shippinTextArray = "{{section.settings.shipping_text}}".split('|');
+    
+    var shippingNum = shippingArray.length;
+    
+    shippingArray.forEach(function(sp,index){
+      let spNumber = sp*100;
+      let index1 = index + 1;
+      
+      if(index1 == shippingNum){
+        if(cart.total_price >= spNumber){
+          shippingValue = shippinValueArray[index]*100;
+          shippingText = shippinTextArray[index];
+        }
+      }else{
+      	let shippingNumberPlus = shippingArray[index1]*100;
+        if(cart.total_price >= spNumber && cart.total_price < shippingNumberPlus){
+          shippingValue = shippinValueArray[index]*100;
+          shippingText = shippinTextArray[index];
+        }
+      }
+    });
+    
+    if( shippingValue > 0){
+      grandTotal = grandTotal + shippingValue;
+      sValueStyle = 'display:block';
+      sTextStyle = 'display:none';
+    }else{
+      sValueStyle = 'display:none';
+      sTextStyle = 'display:block';
+    }
+  {% endif %}
+                                                              
+  var data = {
+    totalDiscount: cart.total_discount > 0 ? cart.total_discount : 0 ,
+    subtotal: cart.total_price,
+    //grandTotal: cart.total_price - cart.total_discount,
+    shippingTotal: shippingTotal ,
+    grandTotal: grandTotal,
+    {% if section.settings.is_show_shipping == true %}
+    shippingValue: shippingValue,
+    shippingText: shippingText,
+    sValueStyle: sValueStyle,
+    sTextStyle: sTextStyle,
+    {% endif %}
+    //overage: cart.total_price - cart.total_discount - parseInt({{ settings.free_shipping_threshold }})
+    overage: cart.total_price - parseInt({{ settings.free_shipping_threshold }})
+  };
+  $('#CartSubtotal').empty().append(compileTemplate(data));
+                                                              
+  $(".klarna-link").mouseover(function(){
+       $(".link-box").stop().fadeIn();
+  }).mouseout(function(){
+    $(".link-box").stop().fadeOut();
+  })                                                            
+});
+</script>
+
+{% schema %}
+  {
+    "name": "购物车 - 小计设置",
+    "class": "cart-subtotal-section page-width",
+    "settings": [
+      {
+	      "type": "html",
+        "id": "content",
+        "label": "内容"
+      },
+      {
+        "type": "checkbox",
+        "id": "product_show_countdown",
+        "label": "是否显示倒计时",
+        "default": false
+      },
+      {
+      "type": "image_picker",
+      "id": "footer-klarna",
+      "label": "klarna 图片"
+      },
+
+      {
+        "type": "text",
+        "id":  "endtime",
+        "label": "倒计时时间（秒）"
+      },
+      {
+        "type": "url",
+        "id": "continue_url",
+        "label": "继续购物链接URL"
+      },
+	  {
+        "type": "checkbox",
+        "id": "is_discount_carttotal",
+        "label": "是否显示购物车满减金额",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "is_detail_carttotal",
+        "label": "是否显示购物车运费",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "shippingamount",
+        "label": "运费金额",
+        "default": "5.99"
+      },
+      {
+        "type": "text",
+        "id": "shippingtext",
+        "label": "运费描述",
+        "default": "Shiping fee"
+      },
+      {
+        "type": "checkbox",
+        "id": "afterpay_checkbox",
+        "label": "Afterpay 开关",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "afterpay_title",
+        "label": "Afterpay 文案1",
+        "default": "Check out with Afterpay and pay over time."
+      },
+      {
+        "type": "text",
+        "id": "afterpay_text",
+        "label": "Afterpay 文案2",
+        "default": "Simply pay 4 interest-free payments of $4.99."
+      },
+      {
+        "type": "text",
+        "id": "afterpay_text2",
+        "label": "Afterpay 文案3",
+        "default": "Use your payment card, instant approval decision.<a href=\"#afterpay-what-is-modal\" class=\"afterpay-what-is-modal-trigger\" >Learn more<\/span>"
+      },
+	  {
+        "type": "checkbox",
+        "id": "is_show_shipping",
+        "label": "是否展示运费",
+        "default": true
+      },
+	  {      
+        "type": "text",
+        "id": "shipping_price",
+        "label": "不同运费规则对应的商品总价（用|分隔）",
+		"default":"0|49|99"
+      },
+      {      
+        "type": "text",
+        "id": "shipping_value",
+        "label": "不同运费规则对应的运费价格（纯数字）（用|分隔）",
+		"default":"5.99|0|0"
+      },
+      {      
+        "type": "text",
+        "id": "shipping_text",
+        "label": "不同运费规则对应的运费价格（文案）（用|分隔）",
+		"default":"$5.99|Free Shipping|Express Shipping Free"
+      }
+
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "钱海图片",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "pc_image",
+            "label": "Image"
+          }
+        ]
+      }    
+    ]
+  }
+{% endschema %}

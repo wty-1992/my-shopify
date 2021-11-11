@@ -1,0 +1,971 @@
+
+{% assign sku = product.selected_or_first_available_variant.sku %}
+{% if product.selected_or_first_available_variant.sku contains "-" %}
+  {% assign skuArr = product.selected_or_first_available_variant.sku | split: "-"%}
+  {% assign sku = skuArr[0] %}
+{% endif %}
+
+{% assign customJson = '{}' %}
+{% if product.metafields["global"]["cattribute"] %}
+  {% assign customJson = product.metafields["global"]["cattribute"] | replace: "'", "" %}
+{% endif %}
+
+{% capture crystalType %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "type" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign crystalType = crystalType | strip %}
+
+<script>
+  var crystalArray = [];  
+  var variantCustomJson = '';
+  var _zenSku = "{{ sku }}";
+  var jsonCustom = JSON.parse('{{ customJson }}');
+  var productVariant = jsonCustom.productVariant || {};
+
+/*
+{% comment %}
+插件中存在的组合类型: 
+Crystal：只换钻 
+CrystalCarving：换钻+可拖动刻字 
+CrystalName：换钻+名字 
+CrystalCurve：换钻+弧形刻字 
+CrystalCurveName：换钻+名字+弧形刻字 
+NameCarving：名字+可拖动刻字 
+CurveName：弧形刻字+名字
+{% endcomment %}
+*/
+  if(typeof jsonCustom.diamond != 'undefined'){
+//     jsonCustom.Crystal.forEach(function(v,i){
+      {% comment %} 图片路径是和NN站一致 {% endcomment %}
+      var _diamondpicurl = "https://pic.stylelab.com/img/textdesign/diamond/";
+	  var productItem = _zenSku;
+      var showSize = false;
+      var _zenEngravingSizeOptions = [{
+          value: "20",
+          label: "20"
+      }];
+
+      var _zenEngravingFontOptions = [{
+          value: "TimesNewRoman",
+          label: "TimesNewRoman"
+      }, {
+          value: "AlluraRegular",
+          label: "AlluraRegular"
+      }, {
+          value: "AppleChancery",
+          label: "AppleChancery"
+      }, {
+          value: "holyunion",
+          label: "Holyunion"
+      }, {
+          value: "NexaScript-Free",
+          label: "NexaScript"
+      }];
+      if(jsonCustom.fontSize){
+          _zenEngravingSizeOptions = [];
+          var fontSizeArr = {};
+          jsonCustom.fontSize.forEach(function(v, i){
+              fontSizeArr['label'] = v;
+              fontSizeArr['value'] = v;
+              _zenEngravingSizeOptions[i] = JSON.parse(JSON.stringify(fontSizeArr));
+          });
+
+          showSize = true;
+      }
+
+      var addPrice = "";
+      if(parseInt(jsonCustom.ismarkup) > 0){
+          addPrice = (jsonCustom.ismarkup / 100.0).toFixed(2);
+          addPrice = '$'+addPrice;
+      }
+      diamondList = jsonCustom.diamond;
+console.log('productItem', productItem);
+      var _diamondImg = [];
+      diamondList.forEach(function(v, i){
+          _diamondImg[i] = _diamondpicurl+productItem+'-'+(i+1)+'.png?'+Math.random();
+      });
+console.log('_diamondImg', _diamondImg);
+      var _diamondImgBaseUrl = _diamondpicurl;
+    
+      var picUrl = typeof jsonCustom.picUrl != 'undefined' ? jsonCustom.picUrl : _diamondImgBaseUrl;
+	  console.log('picUrl', picUrl);
+    
+      var baseImg = _diamondpicurl+productItem+'-IN.png?'+Math.random();
+console.log('baseImg', baseImg);
+
+      var overlayImg = '';
+      if(jsonCustom.type=="CrystalCarving"){
+          overlayImg = _diamondpicurl+productItem+'-OUT.png?'+Math.random();
+      }
+      
+	  {% comment %} 如果配置信息中有font则使用font作为字体选项 {% endcomment %}
+      if( typeof jsonCustom.font !== 'undefined' && jsonCustom.font ){
+          var json_font = jsonCustom.font;
+          _zenEngravingFontOptions = [];
+          for(var j = 0; j < json_font.length; j++) {
+              var font_arr = [];
+              font_arr['value'] = json_font[j];
+              font_arr['label'] = json_font[j];
+              _zenEngravingFontOptions.push(font_arr);
+          }
+      }
+      
+      {% comment %} 如果配置信息中有isSinglelineInput {% endcomment %}
+      var isSinglelineInput = true;
+
+      if( typeof jsonCustom.issinglelineinput !== 'undefined' ){
+          isSinglelineInput = parseInt(jsonCustom.issinglelineinput) > 0 ? true:false;
+      }
+  
+  	  var color = jsonCustom.class;
+      if($('select[data-name*="{{ 'variant.title.Choose_material' | t }}"]').length>0){
+        jsonCustom.class = getColor($('select[data-name*="{{ 'variant.title.Choose_material' | t }}"]').val());
+        color = jsonCustom.class;
+      }
+console.log('jsonCustom.class--->>>', jsonCustom.class);
+      crystalArray.push(
+        {
+          require: true,
+          cWidth: 500,
+          cHeight: 400,
+          baseWidth: 500,//设置canvas的宽度
+          dialogWidth: '1050px',//dialog窗口的宽度
+          showSize: showSize,
+          picUrl: picUrl,
+          crystalHeaderShow: true,//如果为真则展示两级钻石列表标题
+          leftText: "{{ 'zen.general.left' | t }}",
+          preview: "{{ 'zen.general.preview' | t }}",
+          btnText: "{{ 'zen.general.layout' | t }}", //按钮文案
+          changeText: "{{ 'zen.general.change' | t }}",
+          crystalTitle: "{{ 'zen.general.stone' | t }}", //钻石列表标题
+          crystalHeader: "{{ 'zen.general.select_stone' | t }}", //钻石列表二级标题
+          textInputName: "{{ 'zen.general.engraving' | t }}",
+          textTile: "{{ 'zen.nocanvas.add_engravings_upper' | t }}",
+          previewText: "{{ 'zen.nocanvas.design_your_own' | t }}",  //左侧预览文字
+          textWords: "{{ 'zen.general.type_words' | t }}",
+          confirmText: "{{ 'zen.curvecarving.confirm_your_design' | t }}",
+          enterName: "{{ 'zen.crystal.enter_name' | t }}",
+          requiredField: "{{ 'zen.crystal.requiredField' | t }}",
+          emojiErrorField: "{{ 'zen.curvecarving.emojiErrorField' | t }}",
+          atLeastText: "{{ 'zen.general.atLeastText' | t }}",
+          freeText:"{{ 'zen.general.freeText' | t }}",
+          charactersText: "{{ 'cart.gift_card.characters' | t }}",
+          diamond: diamondList,//配置的钻石sku、color数组
+          engravingFontOptions: _zenEngravingFontOptions,//字体选项
+          engravingSizeOptions: _zenEngravingSizeOptions,
+          isSinglelineInput: isSinglelineInput,//刻字文字是否是单行输入
+          month: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+          baseImg: baseImg,//底图
+          overlayImg: overlayImg,//拖动刻字外框图
+          isMarkup: parseInt(jsonCustom.ismarkup) > 0 ? parseInt(jsonCustom.ismarkup) : 0,//加价价格
+          markupId: "",
+          addPrice: addPrice,//加价格式化价格
+          type: jsonCustom.type,//换钻类型
+          diamondImg: _diamondImg,//钻石底图
+          productItem: productItem,//产品sku
+          tag: "",//设置为空即可
+          secondType: jsonCustom.secondType,
+          code: jsonCustom.code,//换钻+字母的字体码
+          fontFamily: jsonCustom.fontfamily,//换钻+字母的字体
+          lines: parseInt(jsonCustom.lines),//换钻+字母，字母输入框个数
+          errorWordShow: true,//是否显示错误信息文字提示
+          errorBorderShow: false,//是否显示错误信息红框提示
+          firstUpperCase: false,//换钻+字母是否首字母大写
+          textType: 1,
+          text: jsonCustom.text,////换钻+字母的文字显示个数与字体大小
+          style: "",
+          class: color,
+          ischange: jsonCustom.ischange,
+          supportLanguage: jsonCustom.supportlanguage,//之前是supportLanguage不对 2019-12-12
+          isoption: 0,
+          tertiusType: jsonCustom.tertiusType,
+          uploadLoadingImage: 'https://ik.imagekit.io/soufeel/en/skin/frontend/smartwave/default/images/soufeel-30.gif',
+          wrapperBackgroudColor: '#000000',
+          bgOpacity: 0.5,
+          loadingFullScreen: true,//是否是soufeel的loading样式
+          coors: jsonCustom.coors ? jsonCustom.coors : []
+
+        }
+      ); 
+//     });
+  }
+  console.log(crystalArray);
+   if(jsonCustom.type=="CrystalNumber"){
+        var _zenConfig = {
+            photoObj: [],
+            carvingObj: [],
+            crystalObj: [],
+            curveCarvingObj: [],
+            nameObj: [],
+            crystal:[],
+            photo: [],
+            carving: [],
+            crystalText:[{
+                //公共
+                freeText: "{{ 'zen.general.freeText' | t }}",
+                leftText: "{{ 'zen.general.left' | t }}",
+                requiredField:'{{ 'customer.register.required' | t }}',
+                errorWordShow: true,
+                errorBorderShow: false,
+                productItem: productItem,//产品sku
+                //换钻
+                isCrystal: true,
+                diamond: jsonCustom.diamond,
+                crystalTitle: "{{ 'zen.general.stone' | t}}",
+                picUrl: picUrl,           
+                month: [
+                  "{{ 'zen.crystal.jan' | t}}",
+                  "{{ 'zen.crystal.feb' | t}}",
+                  "{{ 'zen.crystal.mar' | t}}",
+                  "{{ 'zen.crystal.apr' | t}}",
+                  "{{ 'zen.crystal.may' | t}}",
+                  "{{ 'zen.crystal.jun' | t}}",
+                  "{{ 'zen.crystal.jul' | t}}",
+                  "{{ 'zen.crystal.aug' | t}}",
+                  "{{ 'zen.crystal.sept' | t}}",
+                  "{{ 'zen.crystal.oct' | t}}",
+                  "{{ 'zen.crystal.nov' | t}}",
+                  "{{ 'zen.crystal.dec' | t}}",
+                ],
+                //拖动刻字+弧形刻字（就是输入文字，没有预览效果）
+                isCarving: true,
+                fontText: "{{ 'zen.general.font' | t }}",
+                textTile: "{{ 'zen.curvecarving.textTile' | t }}",
+                textInputName: "{{ 'zen.general.engraving' | t }}",
+                emojiErrorField: "{{ 'zen.curvecarving.emojiErrorField' | t }}",
+                isSinglelineInput: isSinglelineInput,//刻字文字是否是单行输入
+                showSize: false,
+                showFont: true,
+                engravingSizeOptions: _zenEngravingSizeOptions,
+                engravingFontOptions: _zenEngravingFontOptions,
+                textWords: "{{ 'zen.general.type_words' | t }}",
+                coors:jsonCustom.coors?jsonCustom.coors:[]
+            }]
+        };
+     
+   }else if(jsonCustom.type=="CalendarCrystal"){
+        console.log(diamondList);
+        console.log(_diamondImg);
+        var _defautItem = { 
+          label: '', bgimg: 'front-view.png', btnUploadText: 'Upload', hasCarving: false, isCRequire: false, noSelect: false, isRequire: false, 
+          crop: "", cropOrigin: "", engravingCrop: "", engravingText: [], engravingSize: "", engravingFont: "", hasCropOrigin: false,
+          hasEngravingSize: true, hasEngravingFont: true
+        };
+        var _zenConfig = {
+        photoObj: [],
+        carvingObj: [],
+        crystalObj: [],
+        require:true,
+        hasArrow: true,
+        lang: 'en',
+        dateLabelText: "{{ 'zen.crystal.dateLabelText' | t }}",
+        loadingFullScreen: true,
+        uploadLoadingImage: 'https://ik.imagekit.io/soufeel/en/skin/frontend/smartwave/default/images/soufeel-30.gif',
+        wrapperBackgroudColor: '#000000',
+        bgOpacity: 0.5,
+        sku: productItem,
+        dateBgColor: 'rgba(0,0,0,0)',
+        previewLabel: "", //预览文字前置文案, 可选, Your Design
+        previewText: "{{ 'zen.crystal.dateLabelText' | t }}",
+        cropConfirmText: "{{ 'zen.general.confirm' | t }}",
+        cropCancelText: "{{ 'customer.recover_password.cancel' | t }}",
+        enableImg: false,
+        btnText: "{{ 'zen.general.layout' | t }}",
+        changeBtnText: "{{ 'zen.general.change' | t }}",
+        calendarCanvasId: 'calendar-canvas',
+        baseImg: "",
+        markImg: "https://pic.stylelab.com/js/img/heart.png?123",
+        monthNames: ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        ],
+        week_header:['S','M','T','W','T','F','S'],
+        calendarCanvasWidth: 500,
+        calendarCanvasHeight: 500,
+        baseWidth: jsonCustom.baseWidth ? jsonCustom.baseWidth : 400,
+        unit_len: jsonCustom.unit_len ? jsonCustom.unit_len : 45,
+        fontFamily: jsonCustom.font ? jsonCustom.font : "TimesNewRoman",
+        monthFontsize: jsonCustom.monthFontsize ? jsonCustom.monthFontsize : 25,
+        weekFontsize: jsonCustom.weekFontsize ? jsonCustom.weekFontsize : 18,
+        yearFontsize: jsonCustom.yearFontsize ? jsonCustom.yearFontsize : 25,
+        dayFontsize: jsonCustom.dayFontsize ? jsonCustom.dayFontsize : 18,
+        yearMargin: jsonCustom.yearMargin ? jsonCustom.yearMargin : 120,
+        tmp_week_x: jsonCustom.tmp_week_x ? jsonCustom.tmp_week_x : 90,
+        title_top: jsonCustom.title_top ? jsonCustom.title_top : 90,
+        title_left: jsonCustom.title_left ? jsonCustom.title_left : 150,
+        weekMargin: jsonCustom.weekMargin ? jsonCustom.weekMargin : 20,
+        weekFontWeight: jsonCustom.weekFontWeight ? jsonCustom.weekFontWeight : "normal",
+        yearFontWeight: jsonCustom.yearFontWeight ? jsonCustom.yearFontWeight : "normal",
+        fontWeight: jsonCustom.fontWeight ? jsonCustom.fontWeight : "normal",
+        items: [
+          {
+            label: '',
+            data: [
+              Object.assign({}, _defautItem, {label: "", isRequire:false, hasCarving: false, isCRequire: false})
+            ],
+          }
+        ],
+        photo: [],
+        carving: [],
+        crystal:[
+        {
+            require: true,
+            cWidth: 500,
+            cHeight: 400,
+            baseWidth: 500,
+            isZoom: true,
+            dialogWidth: '1016px',
+            picUrl: picUrl,
+            previewText: "{{ 'zen.nocanvas.design_your_own' | t }}", //左侧预览文字
+            btnText: "{{ 'zen.general.layout' | t }}", //按钮文案
+            confirmText: "{{ 'zen.curvecarving.confirm_your_design' | t }}",
+            cancelText: "{{ 'customer.recover_password.cancel' | t }}",
+            changeText: "{{ 'zen.general.change' | t }}",
+            diamond:diamondList,
+            month: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+            crystalTitle: "{{ 'zen.general.stone' | t }}", //钻石列表标题
+            crystalHeader: "{{ 'zen.general.select_stone' | t }}", //钻石列表二级标题
+            crystalHeaderShow: true,//如果为真则展示两级钻石列表标题
+            freeText: "{{ 'zen.general.freeText' | t }}",
+            errorBorderShow: true,
+            leftText: "{{ 'zen.general.left' | t }}",
+            baseImg: _diamondpicurl+productItem+'.png?'+Math.random(),
+            type: "Crystal",
+            diamondImg: _diamondImg,
+            productItem: productItem,
+            isoption:0,
+        }
+        ]
+      };
+    }else{
+     
+   	var _zenConfig = {
+      photoObj: [],
+      carvingObj: [],
+      crystalObj: [],
+      curveCarvingObj: [],
+      nameObj: [],
+      photo: [],
+      carving: [],
+      crystal: crystalArray
+    };
+     
+   }
+  
+  
+  $(document).ready(function(){
+    $('.zen-require').attr('name','customInfo');
+    var dom = '';
+    if($('select[data-name="*{{ 'variant.title.Choose_material' | t }}"]').length > 0){
+         dom = $('select[data-name*="{{'variant.title.Choose_material' | t}}"]').eq(0);
+    }
+console.log('ready--dom', dom);
+    if(dom){
+      changeColor(dom);
+      if(jsonCustom.type == 'CrystalName'){
+        changeCNameNumber(dom, {"sku":_zenSku});
+      }else if(jsonCustom.type == 'CrystalCarving'){
+      	changeCrystalCarvingNumber(dom, {"sku":_zenSku});
+      }else{
+        changeNumber(dom, {"sku":_zenSku});
+      }
+    }
+    
+    //链接中包含变体id，刚加载页面字母颜色可能不正确
+    if(jsonCustom.type == 'CrystalName'){
+      var domNew = '';
+      $('.single-option-selector').each(function(){
+        if($(this).data('name').toLowerCase().indexOf('material') > -1){
+          domNew = $(this);
+        }
+      });
+      
+      changeColor(domNew,productItem);
+    }
+    
+    if(jsonCustom.type=="CrystalNumber"){
+      var numberHtml = '<select class="crystal-num-select">';
+      var crystalNum = parseInt(jsonCustom.lines);
+      for(var i = 1;i <=crystalNum;i++){
+      	numberHtml += '<option value="'+i+'">'+i+'</option>';
+      }
+      numberHtml += '</select>';
+      
+      $('.crystal-number-select').prepend(numberHtml);
+      $('.crystal-number-box').show();
+      
+      //如果不同数量的钻石加个不同，则还需要修改数量对应的变体
+      var variantNameDom = '';
+      
+      if(typeof jsonCustom.variantName !='undefined'){
+        $(".selector-wrapper").each(function(i,item){
+          
+          if($(this).find('label').data('name').toLowerCase() == jsonCustom.variantName.toLowerCase()){
+          	variantNameDom = $(this);
+            $(this).hide();
+          }
+        });
+      }
+      $('.crystal-num-select').change(function(){
+        
+        changeNumber(parseInt($(this).val()));
+        console.log(variantNameDom);
+        if(variantNameDom){
+        	$(variantNameDom).find('select').val(parseInt($(this).val())).trigger('change');
+        }
+      });
+    }
+  });
+  
+  Listener.on([ Listener.product.update.after ], function(event, variant, dom) { 
+    
+console.log("$(dom).data('name')", $(dom).data('name'));
+    if($(dom).length > 0 && ( $(dom).data('name').toLowerCase().indexOf('{{ 'variant.title.Number_of_Names' | t }}'.toLowerCase()) > -1 || $(dom).data('name').toLowerCase().indexOf('{{ 'variant.title.Material' | t }}'.toLowerCase()) > -1 ) ){ 
+      changeColor(dom, variant.sku); // 材质切换
+
+      if(jsonCustom.type == 'CrystalName'){
+          changeCNameNumber(dom, variant);
+      }else if(jsonCustom.type == 'CrystalCarving'){
+      	changeCrystalCarvingNumber(dom, variant);
+      }else{
+          changeNumber(dom, variant);
+      }
+    }
+    
+    
+  });
+  
+  function changeColor(dom, sku){
+//   	if($(dom).length > 0 && $(dom).data('name').toLowerCase().indexOf('material') > -1){
+    console.log('$(dom).val():color:', $(dom).val());
+      var color = getColor($(dom).val());
+console.log('changeColor:color', color);
+      if(!!color){
+        crystalArray[0].class = color;
+        _zenConfig.crystal[0].class = color;
+console.log('crystalArray[0].class', crystalArray);
+//         if( $('.showtext-in').length < 1 && jsonCustom.type=="CrystalName" && sku != undefined ){
+        if( jsonCustom.type=="CrystalName" && sku != undefined ){
+        	changeNameClass(color,sku)
+        }else{
+           $('.showtext-in').removeClass('gold rosegold silver').addClass(color);
+        
+          if(sku != undefined){
+            _zenConfig.crystalUrl = 'https://pic.stylelab.com/img/textdesign/diamond/';
+            changeCrystalSku(sku);
+          }
+        }
+        
+      }
+      
+//     }
+  }
+  
+  function changeNameClass(color,sku){
+  	let crystalDataList = window._zenConfig.crystal[0];
+
+    window._zenConfig.crystal.splice(0, 1);
+
+    crystalDataList.productItem = sku;
+console.log('changeNameClass:color', color);
+    crystalDataList.class = color;
+    crystalDataList.baseImg = _diamondpicurl + sku + '-IN.png';
+
+    setTimeout(function(){
+      window._zenConfig.crystal.push(crystalDataList);
+    },100);
+  }
+  function changeNumber(dom, variant){ // 数量切换
+//     if($(dom).length > 0 && ($(dom).data('name').toLowerCase().indexOf('número de nombres') > -1 || $(dom).data('name').toLowerCase().indexOf('material') > -1) ){ 
+//       var n = $(dom).val();
+      var sku = variant.sku;
+      variantCustomJson = '';
+      $.each(productVariant, function (i, v){
+        if(v.sku == sku){
+console.log('sku', sku);
+          variantCustomJson = v.attr;
+console.log('variantCustomJson', variantCustomJson);
+        }
+      });
+      
+      if(!!variantCustomJson){
+        _diamondImg = [];
+        diamondList = jsonCustom.diamond;
+        diamondList.forEach(function(v, i){
+            _diamondImg[i] = _diamondpicurl+sku+'-'+(i+1)+'.png?'+Math.random();
+        });
+        baseImg = _diamondpicurl+sku+'-IN.png?'+Math.random();
+        if(variantCustomJson.type=="CrystalCarving"){
+            overlayImg = _diamondpicurl+sku+'-OUT.png?'+Math.random();
+        }
+        if( typeof variantCustomJson.font !== 'undefined' && variantCustomJson.font ){
+            var json_font = variantCustomJson.font;
+            _zenEngravingFontOptions = [];
+            for(var j = 0; j < json_font.length; j++) {
+                var font_arr = [];
+                font_arr['value'] = json_font[j];
+                font_arr['label'] = json_font[j];
+                _zenEngravingFontOptions.push(font_arr);
+            }
+        }
+        if(variantCustomJson.fontSize){
+            _zenEngravingSizeOptions = [];
+            fontSizeArr = {};
+            variantCustomJson.fontSize.forEach(function(v, i){
+                fontSizeArr['label'] = v;
+                fontSizeArr['value'] = v;
+                _zenEngravingSizeOptions[i] = JSON.parse(JSON.stringify(fontSizeArr));
+            });
+            showSize = true;
+        }
+        if( typeof variantCustomJson.issinglelineinput !== 'undefined' ){
+          isSinglelineInput = parseInt(variantCustomJson.issinglelineinput) > 0 ? true:false;
+      	}
+        crystalArray[0].diamondImg = _diamondImg;
+        crystalArray[0].diamond = diamondList;
+        crystalArray[0].baseImg = baseImg;
+        crystalArray[0].overlayImg = overlayImg;
+        crystalArray[0].engravingFontOptions = _zenEngravingFontOptions;
+        crystalArray[0].engravingSizeOptions = _zenEngravingSizeOptions;
+        crystalArray[0].isSinglelineInput = isSinglelineInput;
+        crystalArray[0].text = variantCustomJson.text;
+        crystalArray[0].type = variantCustomJson.type;
+        crystalArray[0].productItem = sku;
+        crystalArray[0].secondType = variantCustomJson.secondType;
+        crystalArray[0].code = variantCustomJson.code;
+        crystalArray[0].fontFamily = variantCustomJson.fontfamily;
+        crystalArray[0].lines = parseInt(variantCustomJson.lines);
+        crystalArray[0].class = variantCustomJson.class;
+        crystalArray[0].ischange = variantCustomJson.ischange;
+        crystalArray[0].supportLanguage = variantCustomJson.supportlanguage;
+        crystalArray[0].tertiusType = variantCustomJson.tertiusType;
+        crystalArray[0].coors = variantCustomJson.coors ? variantCustomJson.coors : [];
+        _zenConfig.crystal.splice(0, 1);        
+        _zenConfig.crystal.push(crystalArray);
+        
+      }
+      
+//     }
+  }
+  
+  function changeCNameNumber(dom, variant){ // crystalName数量切换 add by alice 2021-1-26
+//     if($(dom).length > 0 && ( $(dom).data('name').toLowerCase().indexOf('número de nombres') > -1 || $(dom).data('name').toLowerCase().indexOf('material') > -1 ) ){ 
+//       var n = $(dom).val();
+      var sku = variant.sku;
+      variantCustomJson = '';
+      $.each(productVariant, function (i, v){
+        if(v.sku == sku){
+console.log('sku', sku);
+          variantCustomJson = v.attr;
+        }
+      });      
+      let backImg = _diamondpicurl+sku+'-IN.png';
+      console.log(backImg);
+      changeCrystalBg(backImg);      
+      if(variantCustomJson != ''){
+        
+        let crystalDataList = window._zenConfig.crystal[0];
+        let diamondDataList = [];
+        let _nameList = [];
+        let boxOptionNum = parseInt(variantCustomJson.lines); //parseInt(n);
+
+        window._zenConfig.crystal.splice(0, 1);
+
+        for(var j = 0;j<boxOptionNum;j++){
+          diamondDataList.push(crystalDataList.diamond[0]);
+          _nameList.push(crystalDataList.text[0]);
+        }
+
+        let _diamondDataImgList = [];
+        diamondDataList.forEach(function(vv, ii){
+          _diamondDataImgList[ii] = _diamondpicurl+sku+'-'+(ii+1)+'.png?'+Math.random();
+        });
+        crystalDataList.productItem = sku;
+        crystalDataList.lines = boxOptionNum;
+console.log('crystalDataList.class', crystalDataList.class);
+        crystalDataList.class = variantCustomJson.class;
+        crystalDataList.text = _nameList;
+        crystalDataList.diamond = diamondDataList;
+        crystalDataList.diamondImg = _diamondDataImgList;
+        setTimeout(function(){
+          window._zenConfig.crystal.push(crystalDataList);
+        },100);
+      }      
+//     }
+  }  
+  
+  function changeCrystalCarvingNumber(dom, variant){ // crystalCarving数量切换 add by alice 2021-9-10
+
+      var sku = variant.sku;
+      variantCustomJson = '';
+      $.each(productVariant, function (i, v){
+        if(v.sku == sku){
+		console.log('sku', sku);
+          variantCustomJson = v.attr;
+        }
+      });      
+      let baseImg = _diamondpicurl+sku+'-IN.png';
+      let overlayImg = _diamondpicurl+sku+'-OUT.png';
+           
+      if(variantCustomJson != '' && typeof window._zenConfig.crystal[0] != 'undefined'){
+        
+        let crystalDataList = window._zenConfig.crystal[0];
+        
+        let diamondDataList = [];
+        let boxOptionNum = parseInt(variantCustomJson.lines); //parseInt(n);
+        
+        for(var j = 0;j<boxOptionNum;j++){
+          diamondDataList.push(crystalDataList.diamond[0]);
+        }
+
+        let _diamondDataImgList = [];
+        diamondDataList.forEach(function(vv, ii){
+          _diamondDataImgList[ii] = _diamondpicurl+sku+'-'+(ii+1)+'.png?'+Math.random();
+        });
+        
+        if( typeof variantCustomJson.font !== 'undefined' && variantCustomJson.font ){
+            var json_font = variantCustomJson.font;
+            _zenEngravingFontOptions = [];
+            for(var j = 0; j < json_font.length; j++) {
+                var font_arr = [];
+                font_arr['value'] = json_font[j];
+                font_arr['label'] = json_font[j];
+                _zenEngravingFontOptions.push(font_arr);
+            }
+        }
+        
+        if(variantCustomJson.fontSize){
+            _zenEngravingSizeOptions = [];
+            fontSizeArr = {};
+            variantCustomJson.fontSize.forEach(function(v, i){
+                fontSizeArr['label'] = v;
+                fontSizeArr['value'] = v;
+                _zenEngravingSizeOptions[i] = JSON.parse(JSON.stringify(fontSizeArr));
+            });
+            showSize = true;
+        }
+        
+        crystalDataList.productItem = sku;
+        crystalDataList.baseImg = baseImg;
+        crystalDataList.overlayImg = overlayImg;
+        crystalDataList.diamond = diamondDataList;
+        crystalDataList.diamondImg = _diamondDataImgList;
+        crystalDataList.engravingFontOptions = _zenEngravingFontOptions;
+        crystalDataList.engravingSizeOptions = _zenEngravingSizeOptions;
+        crystalDataList.coors = variantCustomJson.coors;
+        
+        window._zenConfig.crystal.splice(0, 1);
+        
+        setTimeout(function(){
+          window._zenConfig.crystal.push(crystalDataList);
+        },100);
+      }      
+  }  
+  
+  function getColor(val){
+    var o = [
+      {"v":"{{ 'variant.material.Rose_Gold_Plated_Silver' | t}}","k":"rosegold"},
+      {"v":"{{ 'variant.material.14k_Gold_Plated_Silver' | t}}","k":"gold"},
+      {"v":"{{ 'variant.material.Anti_Oxidation_Silver' | t}}","k":"silver"},
+      {"v":"{{ 'variant.material.Rose_Gold_Plated_Stainless_Steel' | t}}","k":"rosegold"},
+      {"v":"{{ 'variant.material.14k_Gold_Plated_Stainless_Steel' | t}}","k":"gold"},
+      {"v":"{{ 'variant.material.Anti_oxidation_Stainless_Steel' | t}}","k":"silver"},
+      {"v":"{{ 'variant.material.Rose_Gold_Plated_Copper' | t}}","k":"rosegold"},
+      {"v":"{{ 'variant.material.14k_Gold_Plated_Copper' | t}}","k":"gold"},
+      {"v":"{{ 'variant.material.Platinum_Plated_Copper' | t}}","k":"silver"},
+      {"v":"{{ 'variant.material.Platinum_Plated_Copper' | t}}","k":"silver"},
+      {"v":"{{ 'variant.material.14k_Gold_Plated_Colored_Silver' | t}}","k":"gold"},
+      {"v":"{{ 'variant.material.Rose_Gold_Plated_Colored_Silver' | t}}","k":"rosegold"},
+      {"v":"{{ 'variant.material.Platinum_Plated_Colored_Silver' | t}}","k":"silver"},
+      {"v":"{{ 'variant.material.Anti_Oxidation_Silver' | t}}","k":"silver"},
+      {"v":"{{ 'variant.material.18k_Gold_Plated_Stainless_Steel' | t}}","k":"gold"}
+      
+    ];
+    var key = '';
+    $.each(o, function(i, v){
+      if(v.v == val){key = v.k;}
+    })
+    return key;
+  }
+  
+  Product.validators.push(async () => {
+    var _flag = true;
+                          
+    if(jsonCustom.type=="CrystalNumber"){
+    	if(!checkCarvingText()){
+          $(this).attr('disabled',false);
+          return false;
+        }
+    
+    	await uploadDiamondImage();
+    	
+    	var numberJson = JSON.parse(jQuery('[name="customInfo"]').val());
+    	$('#piccrop').val(numberJson.diamond[0].diamondImage);
+    	$('#engravingText').val(numberJson.diamond[0].engravingText);
+    	$('#engraving-font').val(numberJson.diamond[0].engravingFont);
+    	$('#diamond-custom').val(numberJson.diamond[0].diamondCustom);
+    }else{
+      if(!checkLegal()){_flag = false;}
+    }
+    return _flag;
+  })
+  function checkLegal(){
+    return checkCrystal();
+  }
+  function checkCrystal(){
+    var customInfo = JSON.parse(jQuery('[name="customInfo"]').val());
+    var isOn = 1;
+    if(customInfo.diamond[0].diamondImage == ''){isOn = 0;console.log('diamondImage');}
+    if(customInfo.diamond[0].diamondCustom == ''){isOn = 0;console.log('diamondCustom');}
+    if(jsonCustom.type == 'CrystalCurve'){// 弧形
+      for(var i=0;i<jsonCustom.textLines;i++){
+        if(customInfo.diamond[0].engravingText.split('|')[i] == ''){isOn = 0;console.log('engravingText');}
+        if( jsonCustom.coors[i].textNum < jQuery.trim(customInfo.diamond[0].engravingText.split('|')[i]).length ){isOn = 0;console.log('textNum');}
+      }
+    }
+    if(jsonCustom.type == 'CrystalCarving'){// 拖动
+      for(var i=0;i<jsonCustom.textLines;i++){
+        if(customInfo.diamond[0].engravingText.split('|')[i] == ''){isOn = 0;console.log('engravingText');}
+        if( jsonCustom.coors[i].textNum < jQuery.trim(customInfo.diamond[0].engravingText.split('|')[i]).length ){isOn = 0;console.log('textNum');}
+      }
+    }
+    
+    if(jsonCustom.type == 'CrystalName'){// 名字
+      if(jQuery.trim(customInfo.diamond[0].fontCode)==''){isOn = 0;console.log('fontCode');}
+      for(var i=1;i<=customInfo.lines;i++){
+        if(jQuery.trim(customInfo.diamond[0].alphaText.split('|')[i]) == ''){isOn = 0;console.log('ctext');}
+        if( jsonCustom.text[i].limit.split('-')[0] < jQuery.trim(customInfo.diamond[0].alphaText.split('|')[i]).length || jsonCustom.text[i].limit.split('-')[1] < jQuery.trim(customInfo.diamond[0].alphaText.split('|')[i]).length ){isOn = 0;console.log('limit');}
+      }
+      
+    }
+    //add by alice 2020-2-27 日历+换钻项链
+    if(jsonCustom.type == 'CalendarCrystal'){
+      if(isOn == 0){jQuery('.panel-crystal-null-info').show();}else{jQuery('.panel-crystal-null-info').hide();}
+      if(jQuery.trim(customInfo.calendar[0].crop)==''){
+        isOn = 0;
+        console.log('calendar crop');
+        jQuery('.panel-calendar-null-info').show();
+      }else{
+        jQuery('.panel-calendar-null-info').hide();
+      }
+      if(isOn == 0){
+        return false;
+      }else{
+        $('#calendarCrop').val(customInfo.calendar[0].crop);
+        $('#engravingText').val(customInfo.calendar[0].date);
+      }
+    }
+	console.log(customInfo);
+    if(isOn == 0){
+      jQuery('.panel-crystalnull-span').show();
+      return false;
+    }else{
+      jQuery('.panel-crystalnull-span').hide();
+      
+      if(typeof customInfo.diamond[0].diamondImage != 'undefined' && customInfo.diamond[0].diamondImage){
+      	$('#piccrop').val(customInfo.diamond[0].diamondImage);
+      }
+      
+      if(typeof customInfo.diamond[0].fontCode != 'undefined' && customInfo.diamond[0].fontCode){
+      	$('#engraving-text').val(customInfo.diamond[0].fontCode);
+      }
+      
+      if(typeof customInfo.diamond[0].nameCrop != 'undefined' && customInfo.diamond[0].nameCrop){
+      	$('#name-crop').val(customInfo.diamond[0].nameCrop);
+      }
+      
+      if(typeof customInfo.diamond[0].alphaText != 'undefined' && customInfo.diamond[0].alphaText){
+      	$('#alpha-text').val(customInfo.diamond[0].alphaText);
+      }
+      
+      if(typeof customInfo.diamond[0].diamondCustom != 'undefined' && customInfo.diamond[0].diamondCustom){
+      	$('#diamond-custom').val(customInfo.diamond[0].diamondCustom);
+      }
+      
+      if(typeof customInfo.diamond[0].diamondCustom != 'undefined' && customInfo.diamond[0].diamondCustom){
+      	$('#diamond-custom').val(customInfo.diamond[0].diamondCustom);
+      }
+      
+      if(typeof customInfo.diamond[0].engravingText != 'undefined' && customInfo.diamond[0].engravingText){
+        $('#engravingText').attr("name","properties[engravingText]");
+      	$('#engravingText').val(customInfo.diamond[0].engravingText);
+      }else{
+      	$('#engravingText').attr("name","engravingText");
+      }
+      
+      if(typeof customInfo.diamond[0].engravingFont != 'undefined' && customInfo.diamond[0].engravingFont){
+        $('#engraving-font').attr("name","properties[engravingFont]");
+      	$('#engraving-font').val(customInfo.diamond[0].engravingFont);
+      }else{
+      	$('#engraving-font').attr("name","engravingFont");
+      }
+      
+      if(typeof customInfo.diamond[0].engravingSize != 'undefined' && customInfo.diamond[0].engravingSize){
+        $('#engraving-size').attr("name","properties[engravingSize]");
+      	$('#engraving-size').val(customInfo.diamond[0].engravingSize);
+      }else{
+      	$('#engraving-size').attr("name","engravingSize");
+      }
+      
+      return true;
+    }
+
+  }
+  $(function(){
+    var custom__fonts = _zenEngravingFontOptions.map((v)=>v.value);
+    loadCustomFonts(custom__fonts);
+    
+    //换钻+名字，引入名字的字体文件 2021-7-19 alice
+    if(typeof jsonCustom.fontfamily != 'undefined' && jsonCustom.fontfamily){
+    	loadCustomFonts(jsonCustom.fontfamily);
+    }
+  })
+</script>
+
+<input type="text" id="engraving-text" name="properties[fontCode]" value="" style="display:none" />
+<input type="text" id="name-crop" name="properties[nameCrop]" value="" style="display:none" />
+<input type="text" id="alpha-text" name="properties[alphaText]" value="" style="display:none" />
+
+<input type="text" id="piccrop" name="properties[diamondImage]"   value="" style="display: none;"/>
+<input type="text" id="engravingText" name="properties[engravingText]" value=""  style="display: none;" />
+<input type="text" id="engraving-font" name="properties[engravingFont]" value="" style="display: none;"/>
+<input type="text" id="engraving-size" name="properties[engravingSize]" value="" style="display: none;"/>
+<input type="text" id="diamond-custom" name="properties[diamondCustom]" value="" style="display: none;" style="display: none;" style="display: none;"  />
+
+{% if crystalType == 'CalendarCrystal' %}
+	<style>
+        .calendar-button-box {
+          background-color: #f8f8f8 !important;
+        }
+       .calendar-preview-text span {color: #000000;}
+      	#app .calendar-button-box .btn-carving-open {
+            border: none;
+            background: #000;
+            color: #fff;
+            border-radius: 20px;
+            font-size: 12px;
+            padding: 3px 12px;
+        }
+        #app {
+            background-color: #fff !important;
+            padding: 0px !important;
+        }
+        .crystal-container {
+            margin-top: 1rem;
+        }
+        .crystal-preview-box{
+            padding: 10px 10px 10px 15px;
+        }
+        .area-carving-preview-text{
+            line-height: 34px;
+        }
+        .calendar-preview-text {
+            line-height: 54px;
+            padding-left: 28px;
+        }
+        .calendar-cancel-btn{
+            border-color: #000!important;
+            color: #000!important;
+            border-radius: 0px!important;
+            margin-right: 10px!important;
+        }
+        .calendar-confirm-btn {
+            background-color: #e9034d!important;
+            border-color: #e9034d!important;
+            border-radius: 0px!important;
+        }
+        .preview-calendar {
+            text-align: center;
+        }
+        .calendar-crystal {
+            position: relative;
+        }
+        .panel-crystal-null-info, .panel-calendar-null-info{
+            display: block;
+            color: rgb(235, 52, 10);
+            left: 0;
+            position: absolute;
+        }
+        .panel-crystal-null-info{
+            top: 118px;
+        }
+        .panel-calendar-null-info{
+            top: 52px;
+        }
+        .calendar-preview-text img {
+            width: 34px !important;
+            position: absolute;
+            z-index: 2;
+            left: 10px;
+            top: 10px;
+        }
+        .open-btn-box {
+            width: 100%;
+            position: absolute;
+            text-align: right;
+            height: 100%;
+        }
+        .open-btn-box button {
+            margin: 15px 20px 0 0 !important;
+        }
+        .calendar-button-box {
+            position: relative;
+            height: 54px;
+        }
+        .label-text-preview {
+            display: none;
+        }
+        .area-carving {
+            height: 54px;
+        }
+        .crystal-preview-box {
+            margin-bottom: 0px !important;
+        }
+        .calendar-dialog .el-dialog__body {
+            padding-top: 0px !important;
+        }
+        .el-date-editor {
+            z-index: 2;
+        }
+        .el-date-editor .el-input__inner {
+            background-color: rgba(0,0,0,0);
+            cursor: pointer;
+        }
+        @media (max-width: 799px){
+            .calendar-crystal  .el-dialog--center .el-dialog__body {
+                height: auto !important;
+            }
+        }
+    </style>
+	<div class="calendar-crystal">
+        <div id="zen-custom-calendar"></div>
+        <div class="panel-crystal-null-info" style='display:none;'>{{'variant.title.This_is_a_required_field' | t}}.</div>
+        <div class="panel-calendar-null-info" style='display:none;'>{{'variant.title.This_is_a_required_field' | t}}.</div>
+    </div>
+
+	<input type="text" id="calendarCrop" name="properties[crop]"   value="" style="display: none;"/>
+    
+    <link href="https://pic.stylelab.com/js/zen-crop-calendar0.1.3/zen-crop-calendar-app.css?<?php echo $crystal_random;?>" rel="stylesheet" />
+    <link href="https://pic.stylelab.com/js/zen-crop-calendar0.1.3/zen-crop-calendar-chunk-vendors.css?<?php echo $crystal_random;?>" rel="stylesheet" />
+    <script src="https://pic.stylelab.com/js/zen-crop-calendar0.1.3/zen-crop-calendar-app.js?<?php echo $crystal_random;?>"></script>
+    <script src="https://pic.stylelab.com/js/zen-crop-calendar0.1.3/zen-crop-calendar-chunk-vendors.js?<?php echo $crystal_random;?>"></script>
+    
+{% else %}
+<div class="crystal-number-box" style="display:none;">
+  <p class="crystal-title">{{ 'variant.title.Choose_Number_of_Birthstones' | t }}:</p>
+  <div class="crystal-number-select">
+    
+  	<i class="photofont photo-moreunfold"></i>
+  </div>
+</div>
+
+<div id="zen-photocarving"></div>
+
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.5.0/zen-photo-carving-chunk-vendors.css?202106221409" rel="stylesheet" />
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.5.0/zen-photo-carving-app.css?202106221409" rel="stylesheet" />
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.5.0/zen-photo-carving-chunk-vendors.js?202106221409"></script>
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.5.0/zen-photo-carving-app.js?202106221409"></script>
+
+{% endif %}
+
+
+
+
+

@@ -1,0 +1,465 @@
+{{ 'zen-custom.scss.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'jquery-ui.min.js' | asset_url }}"></script>
+<script src="{{ 'fabric.min.js' | asset_url }}"></script>
+<script src="{{ 'fontfaceobserver.js' | asset_url }}"></script>
+<script src="{{ 'konva.min.js' | asset_url }}"></script>
+<script src="{{ 'qiniu.min.js' | asset_url }}" ></script>
+<script src="{{ 'zen-base.js' | asset_url }}"></script>
+<script src="{{ 'zen-crystal.js?aaa' | asset_url }}"></script>
+<script src="{{ 'zen-namenecklace.js' | asset_url }}"></script>
+
+
+{% capture diamondLines %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "diamondlines" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign diamondLines = diamondLines | strip %}
+{% capture textLines %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "textlines" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign textLines = textLines | strip %}
+{% capture isSinglelineInput %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "issinglelineinput" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign isSinglelineInput = isSinglelineInput | strip %}
+{% capture lines %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "lines" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign lines = lines | strip %}
+{% capture secondType %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "secondtype" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign secondType = secondType | strip %}
+{% capture type %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "type" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign type = type | strip %}
+{% capture code %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "code" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign code = code | strip %}
+{% if code == 'false' %}
+  {% assign code = '' %}
+{% endif %}
+{% capture fontfamily %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "fontfamily" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign fontfamily = fontfamily | strip %}
+
+{% capture ismarkup %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "ismarkup" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign ismarkup = ismarkup | strip %}
+
+<style>
+  .number-crystal-container {
+  	width: 100%;
+  }
+   .diamond-box .card {
+    padding: 0;
+    background-clip: border-box;
+    border-radius: 0;
+    border: 0;
+  }
+   .diamond-box .card .btn-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 2.5rem 0.75rem 1rem;
+    position: relative;
+    text-decoration: none !important;
+  }
+  .diamond-box .card .btn-link .flex-between {
+    display: flex;
+    align-items: center;
+    color: #000;
+  }
+  .diamond-box .card .btn-link img{
+  	width: 2.8rem;
+    height: 2.8rem;
+    margin: 0 1rem 0 0;
+  }
+   .diamond-box .card .btn-link .free {
+    color: #69bb67;
+  }
+  .diamond-box .card .card-header {
+    border-bottom: .2rem solid #fff;
+    cursor: pointer;
+    padding: 0;
+  }
+  .diamond-box .crystal {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .diamond-box .crystal .crystal-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 0 1 16.25%;
+    padding: 1rem 1rem;
+    position: relative;
+    margin: 0;
+    transition: all .5s;
+    border: 2px solid #fff;
+  }
+  .diamond-box .crystal .crystal-list:hover {
+    border: 2px solid #7f7f7f;
+  }
+ .diamond-box .crystal .crystal-list .img {
+    width: 3rem;
+    height: 3rem;
+    pointer-events: none;
+    background-size: cover;
+  }
+  .diamond-box .crystal .crystal-list input {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    cursor: pointer;
+    color: #000;
+  }
+  .diamond-box .crystal .crystal-list .name {
+    margin-top: 0.5rem;
+    color: #838383;
+  }
+  .diamond-box .engravings {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    height: 4rem;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  .diamond-box .engravings input {
+    background: #fff;
+    width: 72%;
+    border: none;
+    color: #000;
+  }
+  .number-crystal-container .font-title {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+  }
+ .number-crystal-container .font-list-flex {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    display: flex;
+  }
+  .number-crystal-container .font-list-flex .font-list.active {
+    border: 1px solid #e60044 !important;
+    color: #e60044 !important;
+  }
+  .number-crystal-container .popups-font-family .font-list-flex .font-list {
+    width: 16%;
+    border: 1px solid #777;
+    color: #333;
+    margin: .5rem 1rem 1rem 0;
+    position: relative;
+    background: 0 0;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    height: 3rem;
+    justify-content: center;
+    font-size: 1.4rem;
+  }
+  .number-crystal-container .popups-font-family .font-list-flex .font-list input {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0% 50%;
+    height: 100%;
+    cursor: pointer;
+  }
+  .number-crystal-option {
+  	margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    border: 1px solid #e7e7e7
+    
+  }
+  .number-crystal-item {
+  	position: relative;
+    display: flex;
+    flex: 1;
+  }
+  .number-crystal-item label {
+    color: #000;
+    font-size: 1rem;
+    width: auto;
+    padding-left: 1rem;
+    text-transform: initial;
+    font-weight: normal;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    margin: 0;
+  }
+  .number-crystal-item select {
+  	border: none;
+    padding-left: 11rem;
+    font-size: 1.2rem;
+    height: 4rem;
+    background-color: #f8f8f8;
+    color: #333;
+  }
+  @media (max-width: 640px){
+    .number-crystal-item select {
+        padding-left: 7rem;
+    }
+  }
+  .add-price {
+  	color: red;
+  }
+</style>
+<div class="carvingcanvas-left" style="display: none;"><canvas id="crystalcanvas"></canvas></div> 
+<div class="number-crystal-container">
+  <div class="number-crystal-container">
+  <div class="number-crystal-option">
+  	<div class="number-crystal-item">
+      <label for="OptionSelectorNmber">{{'variant.title.Number' | t}}</label>
+      <select class="number-crystal-selector" id="OptionSelectorNmber" data-name="Name Number" >
+        {% for i in (1..diamondLines) %}
+        <option value="{{i}}">{{ i }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+  <div class="diamond-box">
+  </div>
+</div>
+<div id="container" style="display:none;"></div>
+<input type="text" id="piccrop" name="properties[diamondImage]"   value="" style="display: none;" required/>
+<input type="text" id="engraving-text" name="properties[engravingText]" value=""  style="display: none;" />
+<input type="text" id="engraving-font" name="properties[engravingFont]" value="TimesNewRoman" style="display: none;"/>
+<input type="text" id="diamond-custom" name="properties[diamondCustom]" value="" style="display: none;" style="display: none;" style="display: none;"  />
+<!-- <input type="text" id="code-engraving-text" name="properties[fontCode]" value="{{code}}"  style="display: none;" style="display: none;" />
+<input type="text" id="alpha-text" name="properties[alphaText]" value=""  style="display: none;" /> -->
+
+<script>
+{% assign skuArr = product.selected_or_first_available_variant.sku | split: "-"%}
+{% assign sku = skuArr[0] %}
+  
+var ismarkup = '{{ismarkup}}';
+  
+var sku = '{{sku}}';
+var productItem = '{{ productItem }}'.indexOf("{")==-1?'{{ productItem }}':{{ productItem }};
+if(typeof productItem == 'object'){
+  var productItemJson = productItem;
+  productItem = productItemJson[sku];
+}
+
+var jsonCustom = JSON.parse('{{ product.metafields["global"]["cattribute"] }}');
+var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+
+var ubase_ = new ubase();
+  
+  jsonCustom.diamond.forEach(function(v, i){
+    ubase.util.diamond[i] = ubase.util.picurl + 'img/textdesign/diamond/'+v[0].sku+'.png?'+Math.random();
+  });
+  
+  var canvas = new fabric.Canvas("crystalcanvas");
+  
+  canvas.selection = false;
+  canvas.renderAll();
+  
+  function setDiamond(s,j){
+    fabric.Image.fromURL(ubase.util.diamond[s], function (oImg) {
+      oImg.lockMovementX = true;
+      oImg.lockMovementY = true;
+      oImg.selectable    = false;
+      oImg.scaleX = 1;
+      oImg.scaleY = 1;
+      oImg.left = s*73;
+      oImg.top = 0;
+	  
+      canvas.add(oImg);
+      s++;
+      if(s < j){
+        setDiamond(s,j);
+      }
+    }.bind(this),{
+        crossOrigin: 'anonymous'
+    })
+    canvas.setWidth(j*73);
+  }
+  
+//   function setBackground(){ 
+//     canvas.setBackgroundImage(bgImg, canvas.renderAll.bind(canvas), {
+//       scaleX: ubase.scale,
+//       scaleY: ubase.scale,
+//       crossOrigin: 'anonymous'
+//     });
+//   }
+  
+  //根据选择的数量增加或减少换钻列表+刻字输入框 2019-7-10
+function getDiamondList(num) {  
+  num = parseInt(num); 
+  var current_num = parseInt($('.diamond-container').length);
+  //如果用户选择的换钻数量大于页面中的州选择框，则增加选择框
+  var diamond = [];
+  if(num > current_num){
+    var html = '';
+    //构造换钻和刻字的html
+    for (var i=current_num+1;i<=num;i++){
+      var m = i-1;
+      html += '<div class="diamond-text-list'+i+'"><div class="card diamond-container"><div class="card-header" id="headingOne"><div class=" btn-link" data-toggle="collapse" data-target="#collapse'+m+'" aria-expanded="true" aria-controls="collapseOne">';
+      html += '<div class="flex-between "><img class="showdiamondimg diamondimg'+m+'" src=""><span>{{ "zen.crystal.select" | t }} '+i+' </span></div>';      
+      if(ismarkup && i != 1){
+      	var addPrice = Currency.formatMoney(ismarkup);
+      	html+= '<div class="add-price">+<span data-money="'+ismarkup+'">'+addPrice+'</span></div>';
+      }else{
+      	html += '<div class="free">{{ "zen.general.free" | t }}</div>';
+      }    
+      html +='</div></div>';
+      html+='<div id="collapse'+m+'" class="collapse" aria-labelledby="headingOne" data-parent="#accordion"><div class="card-body"><div class="crystal-all'+m+'" ></div></div></div></div>';
+      html += '<div class="engravings">{{'page.contact.name' | t}}'+i+'<input id="textInput'+m+'" class="textInput" data-index="'+m+'" rows="3" cols="43" placeholder="{{ "zen.general.type_words" | t }}" /><span class="num textNum'+m+'">0</span> {{ "zen.general.left" | t }}</div></div>';
+    }
+    $('.diamond-box').append(html);
+    appendCrystalHtml(current_num, num);    	
+  }else{
+    //如果用户选择的换钻数量小于页面中的选择框，则减少选择框
+    for (var j=current_num;j>num;j--){
+      $('.diamond-text-list'+j).remove();
+      ubase.util.diamond[j-1] = ubase.util.picurl + 'img/textdesign/diamond/'+jsonCustom.diamond[j-1][0].sku+'.png?'+Math.random();;
+    }
+  }  
+  canvas.clear();
+  setDiamond(0,num);
+
+  //重新绑定输入框的input事件
+  $(".textInput").on('input propertychange', function() {
+    var i = $(this).data("index");
+
+    $(".textNum"+i).text(jsonCustom.coors[i].textNum-$(this).val().length);
+  });
+  $(".colorful").on('click',function(event){
+    var index = parseInt($(this).data("index"));
+    var key = $(this).data("color");
+    ubase.util.diamond[index] = $(this).data("img");
+    var v_num = parseInt($('[data-name="Markup"]').val());    
+    canvas.clear();
+  	setDiamond(0,v_num);
+    $(".diamondimg"+index).attr("src",$(this).data("img"));
+  });
+}  
+//2019-7-10 by Alice 给后添加的钻石和输入框追加html
+function appendCrystalHtml(cnum, num){
+  for (var j=cnum+1;j<=num;j++){
+    var str = '';
+    var n = j-1;
+    jsonCustom.diamond[n].forEach(function (val, key){
+      str += '<div class="crystal-list">';
+      str += '<div class="img" style="background-image:url(https://pic.stylelab.com/img/textdesign/diamond/'+val.sku+'.png?'+Math.random()+');"></div>';
+      str += '<input data-index="'+n+'" '+(key==0?'checked':'')+' data-color="'+val.color+'" value="'+val.sku+'" class="colorful color-'+n+'" name="color'+n+'" type="radio" data-img="https://pic.stylelab.com/img/textdesign/diamond/'+val.sku+'.png?'+Math.random()+'">';
+      str += '<div class="name">'+month[key]+'</div>';
+      str += '</div>';
+    });
+    $('.crystal-all'+n).html('<div class="crystal">'+str+'</div>');
+    $(".diamondimg"+n).attr("src",$('.color-'+n).eq(0).data("img"));
+    
+    //新增的文本输入框添加字数限制 2019-7-10
+    $("#textInput"+n).attr("maxlength", jsonCustom.coors[n].textNum).attr("disabled", false);
+    $(".textNum"+n).text(jsonCustom.coors[n].textNum);
+  }
+  
+}
+  
+Product.validators.push(
+  async () => {
+  	var textNum = parseInt($('.textInput').length);
+
+    var flag = true;
+    for(var k=0;k<textNum;k++){
+
+      if(!$("#textInput"+k).val()){
+        $("#textInput"+k).addClass('validation-warning'); 
+        flag = false;
+      }else{
+        $("#textInput"+k).removeClass('validation-warning'); 
+      }
+    }
+    if(!flag){
+      $('#collapsetext').hasClass('show')?'':$('.tab-carving').click();
+      return flag;
+    }
+
+    var carvingText = '', diamondColor = '';
+    $(".textInput").each(function(){
+      carvingText += '|' + $(this).val();
+    });
+    carvingText = carvingText.substring(1);
+
+    
+    for(var x=0;x<textNum;x++){
+      diamondColor += '|' + $("input[name='color"+x+"']:checked").val();
+    }
+    diamondColor = diamondColor.substring(1);
+    
+  	if(diamondColor){
+        $("#diamond-custom").val(diamondColor);
+    }else{
+    	return false;
+    }
+    if(carvingText){
+      $("#engraving-text").val(carvingText);
+    }else{
+    	return false;
+    }
+    
+    var base64 = canvas.toDataURL({format: 'png', quality: 0.8});
+    var blob = ubase_.convertBase64ToBlob(base64);
+    var filename = ubase.util.getFilename(6);
+    await ubase_.cdnAsyncUpload((token, resolve) => {
+      var key = filename + '-'+productItem+'.png';
+      var observer = {
+        next(result){
+          console.log('ok');
+        },
+        error(err){
+          alert("{{'zen.general.upload_error' | t}}");
+        },
+        complete(res){
+          $("#piccrop").val(ubase.util.cdnurl + res.key);
+          if(diamondColor){
+            $("#diamond-custom").val(diamondColor);
+          }
+          if(carvingText){
+            $("#engraving-text").val(carvingText);
+          }
+          $("#addengraving").text('{{ 'zen.general.change' | t }}');
+                                  
+          resolve();
+          return true;
+        }
+      };
+      var observable = qiniu.upload(blob, key, token, ubase.util.putExtra, ubase.util.config);
+      observable.subscribe(observer);
+    });
+    return true;
+  }
+);
+
+//2019-7-17 by Alice OptionSelectorNmber change绑定方法
+$('#OptionSelectorNmber').change(function(){
+  var crystal_num = parseInt($(this).val());
+  var markupId = $('[data-name="Markup"]').attr("id");
+  $('#'+markupId).val(crystal_num);
+  $('#'+markupId).trigger("change");
+  getDiamondList(crystal_num);
+});
+
+$(document).ready(function(){
+  
+  var c_num = parseInt($('[data-name="Markup"]').val());
+  $('#OptionSelectorNmber').val(c_num);
+  $('#OptionSelectorNmber').trigger("change");
+  
+  $(document).trigger("hide-qty",1);
+  jsonCustom.diamond.forEach(function(v, i){
+    $(".diamondimg"+i).attr("src",$('.color-'+i).eq(0).data("img"));
+  });
+  Listener.on([ Listener.product.update.before ], function(event, variant) {
+    var crystal_num = parseInt($('[data-name="Markup"]').val());
+   
+    if(crystal_num != $('#OptionSelectorNmber').val()){
+    	$('#OptionSelectorNmber').val(crystal_num);
+    	$('#OptionSelectorNmber').trigger("change");
+    }
+  });
+});
+  
+</script>

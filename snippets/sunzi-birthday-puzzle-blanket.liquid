@@ -1,0 +1,168 @@
+{% comment %}
+** @name 生日拼图毯子 **
+** @version 1.0.0 **
+** @author 黄创业 **
+** @integrate 黄创业 王天宇 **
+{% endcomment %}
+
+{% comment %} 引入公共插槽v2.0 {% endcomment %}
+{% include 'sunzi-slot-template-2' %}
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'birthday-puzzle-blanket-v1.0.0.js' %}
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/birthday-puzzle-blanket.json' %}
+
+{% comment %}变体索引值设置{% endcomment %}
+{% comment %}变体-尺码{% endcomment %}
+{% assign variantSize = 0 %}
+{% comment %}变体-颜色{% endcomment %}
+{% assign variantColor = 1 %}
+
+
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 标记订单来源 {% endcomment %}
+  {% assign from = coreJs | split: '-v' %}
+  <input type="hidden" name="properties[_from]" value="sunzi-{{ from[0] }}" />
+  {% comment %} 额外的表单参数 {% endcomment %}
+  
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="text" id="sunzi-input" name="properties[customInfo]" required="required"></input>
+  <input type="hidden" id="sunzi-cart" name="properties[_sunzi_cart]" />
+
+  {% comment %} 定制按钮 {% endcomment %}
+  <div class="sunzi-form-content">
+    <div id="sunzi-node">
+      <div class="sunzi-node-loading">
+        <span class="dots">
+          <i></i>
+          <i></i>
+          <i></i>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- sunzi core js -->
+<script crossorigin src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{ coreJs }}" defer="defer"></script>
+
+{% comment %} 渲染前执行 {% endcomment %}
+<script defer="async">
+
+</script>
+
+{% comment %} 2.请求定制化数据 & 渲染 {% endcomment %}
+<script defer="async">
+  _sunzi_request('{{ requestURL }}', function(data) {
+    // 初始化数据
+    initData(data);
+    // 定制化参数
+    var _sunzi_props = data;
+    _sunzi_props.shop = _sunzi_global_data.shop;
+
+    BirthdayPuzzleBlanket.render(
+      BirthdayPuzzleBlanket.default,
+      {
+        ..._sunzi_props,
+        onVariantChange(...data) {
+          data.forEach((item, index) => {
+        	// 尺码变体切换
+            if(index == 0) {
+        	  _sunzi_variant_change({{variantSize}}, item.name);
+      		}
+      		// 颜色变体切换
+            else {
+      		  _sunzi_variant_change({{variantColor}}, item.name);
+            }
+        	
+          });
+        },
+        async onConfirm(output) {
+          // 唤醒loading
+          _sunzi_loading();
+          
+          // 组装加车参数
+          var param = {
+            '_sunzi_sources': output.images,
+            '_sunzi_effect': output.preview,
+            '_sunzi_texts': [
+              {
+                value: output.digit.value,
+                number: 1
+              },
+              {
+                value: output.size.lineText.value,
+                number: 2
+              }
+            ],
+            '_sunzi_variant': {
+              color: _sunzi_variant_value({{variantColor}})
+            },
+            '_sunzi_compose': [{
+              'rule': 38,
+              'data': output,
+             }],
+          };
+
+          $('#sunzi-input').val(JSON.stringify(param));
+          $('#sunzi-cart').val(JSON.stringify({
+            image: [ output.preview ]
+          }));
+
+          // 加车队列
+          var _queue = [];
+          
+          // 加车事件触发
+          await Promise.all(_queue);
+          // 由于主产品涉及vip/质保产品等额外加车事件的判断，因此沿用站点加车方法
+          $('.product-form__cart-submit').click();
+          $('#sunzi-loading').hide();
+        }
+      },
+      _matomoId,
+      document.getElementById("sunzi-node")
+    );
+  });
+
+  /** 其他自定义函数 start **/
+  // 初始化数据
+  function initData(data) {
+    var productJSON = {{product | json}};
+    var productTags = {{product.tags | json}};
+    var sizeList = [];
+    var colorList = [];
+    productJSON.variants.forEach(variant => {
+      var sizeValue = variant.options[{{variantSize}}];
+      var colorValue = variant.options[{{variantColor}}];
+      !sizeList.some(sizeItem => sizeItem.value == sizeValue) && sizeList.push({value: sizeValue, price: Number(variant.price / 100)});
+      !colorList.some(colorItem => colorItem == colorValue) && colorList.push(colorValue);
+    });
+    data.sizeData.forEach((sizeItem, index) => {
+      sizeItem.name = sizeItem.description = sizeList[index].value;
+      sizeItem.price = sizeList[index].price;
+    });
+    data.colorData.forEach((colorItem, index) => {
+      colorItem.name = colorItem.description = colorList[index];
+    });
+    
+    // 默认参数
+    data.defaultNumber = '20';
+    data.defaultText = 'Happy Birthday';
+    
+    productTags.forEach(tagItem => {
+      var regNumber = 'custom-sunzi-default-number-';
+      var regText = 'custom-sunzi-default-text-';
+      tagItem.indexOf(regNumber) > -1 && (data.defaultNumber = tagItem.replace(regNumber, ""));
+      tagItem.indexOf(regText) > -1 && (data.defaultText = tagItem.replace(regText, ""));
+    });
+  }
+ 
+  /** 其他自定义函数 end **/
+</script>

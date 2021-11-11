@@ -1,0 +1,221 @@
+<style>
+  .swiper_text{
+    text-align: center;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding:60px 100px;
+    background: #f8f8f8;
+    transform: translateY(-5px);
+  }
+  .swiper_text .hot_tittle:after{
+    content: "";
+    width: 130px;
+    border: 1px solid;
+    display: block;
+    margin: 0 auto;
+    margin-top: 25px;
+  }
+  .home-festival-collection .swiper-slide{    list-style: none;}
+  .home-festival-collection .product-card__name{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 20px 0 10px 0;
+  }
+  .home-festival-collection .product-card__info{
+    padding: 0 20px;
+  }
+  .home-festival-collection .product-card__price{
+    text-align: left;
+  }
+  .home-festival-collection .product-card__price .product-card__sale-price{
+    color: #000;
+    font-size: 17px;
+  }
+  .home-festival-collection .product-card__price .product-card__regular-price{
+    text-decoration: line-through;
+  }
+  .home-festival-collection .hot_text{
+    margin: 30px 0 66px 0;
+    padding: 0 10rem;
+    color: #000;
+    line-height: 24px;
+  }
+  .home-festival-collection .swiper-container-horizontal>.swiper-pagination-bullets, .home-festival-collection .swiper-pagination-custom, .home-festival-collection .swiper-pagination-fraction{
+    bottom: 30px;
+  }
+  .home-festival-collection .swiper-container-hot{    overflow: hidden;}
+  .home-festival-collection .home-daohangqi{
+    position: relative;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    width: 55%;
+    margin: 0 auto;
+    margin-top: 50px;
+  }
+  .home-festival-collection .swiper-pagination-clickable .swiper-pagination-bullet {
+    cursor: pointer;
+    margin-right: 15px;
+  }
+
+  .home-festival-collection .swiper-pagination-bullet{
+  }
+  .home-festival-collection .swiper-pagination-bullet-active{
+    opacity: 1;
+    background: #fff;
+    border: 1px solid #999;
+    transform: scale(1.8);
+  }
+  .festival-button-next {
+    position: absolute;
+    left: 0;
+    transform: rotate(-90deg);
+    top: -15px;
+    z-index: 9
+  }
+  .festival-button-prev {
+    position: absolute;
+    right: 0;
+    transform: rotate(90deg);
+    top: -15px;
+    z-index: 9
+  }
+  .pc_img{display:block;}
+  .mb_img{display:none;}
+  .festival-button-next .icon,.festival-button-prev .icon{
+    font-size: 36px;
+  }
+  @media(max-width:768px){
+    .mb_img{display:block;}
+    .pc_img{display:none;}
+    .swiper_text {
+      transform: translateY(-42px);
+      padding: 30px 20px;
+      width: 90%;
+      margin: 5%;
+    }
+    .home-festival-collection .product-card__name{
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      white-space: inherit;
+      text-align: left;
+    }
+    .home-festival-collection .hot_text {
+      margin: 10px 0 40px 0;
+      padding: 0;
+    }
+    .home-festival-collection .home-daohangqi {
+      position: relative;
+      height: 19px;
+    }
+    .home-festival-collection .product-card__info{
+      padding: 0 5px;
+    }
+    .home-festival-collection .product-card__name {
+      margin: 10px 0 5px 0;
+	}
+  }
+</style>
+
+<div class="home-free-shopping-box">
+  <div class="free-time-shopping">
+    <img src="{{section.settings.iconimage  | img_url: '1920x' }}  " class="pc_img">
+    <img src="{{section.settings.mbiconimage  | img_url: '1920x' }}  " class="mb_img">
+  </div>
+  <div class="swiper_text">
+    <div class="hot_tittle">{{section.settings.hot_tittle}}</div>
+    <div class="hot_text">{{section.settings.hot_text}}</div>
+    <div class="hot_swiper">
+      <div class="swiper-container-hot">
+        <div class="swiper-wrapper">
+          {% assign current_collection = collections[section.settings.collection] %}
+           {% for item in current_collection.products limit: section.settings.limit %}         
+            <li class="item swiper-slide">{% include 'home-product-list', product:item %}</li>
+          {% endfor %}
+        </div>
+        <!-- Add Pagination -->
+        <span class="home-daohangqi">
+          <div class="swiper-pagination"></div>
+          <div class="festival-button-next"><span class="icon photofont photo-less"></span></div>
+          <div class="festival-button-prev"><span class="icon photofont photo-less"></span></div>
+        </span>
+      </div>
+    </div>
+     
+  </div>
+  
+</div>
+ <script>
+    var swiper = new Swiper('.swiper-container-hot', {
+      slidesPerView: 4,
+      spaceBetween: 10,
+      slidesPerGroup : 4,
+      navigation: {
+        nextEl: '.festival-button-prev',
+        prevEl: '.festival-button-next',
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      breakpoints: {
+        776: {  
+          slidesPerView: 2,
+          slidesPerGroup : 2,
+          slidesPerColumn: 2,
+        },
+      }
+    });
+  </script>
+{% schema %}
+{
+  "name": "首页 热销产品",
+  "class": "home-festival-collection",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content":"home-festival-collection"
+    },
+    {
+      "type": "image_picker",
+      "id": "iconimage",
+      "label": "背景图"
+    },
+	{
+      "type": "image_picker",
+      "id": "mbiconimage",
+      "label": "MB背景图"
+    },
+	{
+      "type": "text",
+      "id": "hot_tittle",
+      "label": "热销产品标题"
+    },
+	{
+      "type": "text",
+      "id": "hot_text",
+      "label": "热销产品介绍"
+    },
+	{
+      "type": "collection",
+      "id": "collection",
+      "label": "产品集合"
+    },
+{
+          "type": "range",
+          "id": "limit",
+          "label": "产品limit总数量",
+          "min": 1,
+          "max": 80,
+          "step": 1,
+          "default": 4
+        }
+  ]
+}
+{% endschema %}

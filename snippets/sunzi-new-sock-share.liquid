@@ -1,0 +1,1066 @@
+{% comment %}
+**@name 分享袜子 **
+**@author 张宇 **
+**@integrate 王天宇 **
+{% endcomment %}
+
+{% comment %}初始化孙子插件{% endcomment %}
+  {% include 'sunzi-solt-template' %}
+
+{% comment %} 调用参数 {% endcomment %}
+
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'sunzi.newsock.test.js' %}
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/new-sock-soufeel-en-sp.json' %}
+
+{% comment %} 尺码变体数据 {% endcomment %}
+{% assign variantSize = 0 %}
+{% comment %} 颜色变体数据 {% endcomment %}
+{% assign variantColor = 1 %}
+
+{% comment %} 站点语种 {% endcomment %}
+{% assign sunzi_shop_language = section.settings.sunzi_shop_language %}
+{% comment %} 货币符号 {% endcomment %}
+{% assign sunzi_shop_symbol = section.settings.sunzi_shop_symbol %}
+
+{% comment %} 谷歌分析id {% endcomment %}
+{% assign gtag = 'UA-174675922-8' %}
+{% comment %} 定制按钮文案 {% endcomment %}
+{% assign buttonText = section.settings.sunzi_button_upload_text %}
+
+{% comment %} 样式补充&修正 {% endcomment %}
+<style>
+  /* cyrillic-ext */
+  @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Mu72xKKTU1Kvnz.woff2) format('woff2');
+    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+  }
+  /* cyrillic */
+  @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Mu5mxKKTU1Kvnz.woff2) format('woff2');
+    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+  }
+  /* greek-ext */
+  @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Mu7mxKKTU1Kvnz.woff2) format('woff2');
+    unicode-range: U+1F00-1FFF;
+  }
+  /* greek */
+  @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Mu4WxKKTU1Kvnz.woff2) format('woff2');
+    unicode-range: U+0370-03FF;
+  }
+  /* vietnamese */
+  @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Mu7WxKKTU1Kvnz.woff2) format('woff2');
+    unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;
+  }
+  /* latin-ext */
+  @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Mu7GxKKTU1Kvnz.woff2) format('woff2');
+    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  /* latin */
+  @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  /* cyrillic-ext */
+  @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: local('Roboto Bold'), local('Roboto-Bold'), url(https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmWUlfCRc4AMP6lbBP.woff2) format('woff2');
+    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+  }
+  /* cyrillic */
+  @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: local('Roboto Bold'), local('Roboto-Bold'), url(https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmWUlfABc4AMP6lbBP.woff2) format('woff2');
+    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+  }
+  /* greek-ext */
+  @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: local('Roboto Bold'), local('Roboto-Bold'), url(https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmWUlfCBc4AMP6lbBP.woff2) format('woff2');
+    unicode-range: U+1F00-1FFF;
+  }
+  /* greek */
+  @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: local('Roboto Bold'), local('Roboto-Bold'), url(https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmWUlfBxc4AMP6lbBP.woff2) format('woff2');
+    unicode-range: U+0370-03FF;
+  }
+  /* vietnamese */
+  @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: local('Roboto Bold'), local('Roboto-Bold'), url(https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmWUlfCxc4AMP6lbBP.woff2) format('woff2');
+    unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;
+  }
+  /* latin-ext */
+  @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: local('Roboto Bold'), local('Roboto-Bold'), url(https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmWUlfChc4AMP6lbBP.woff2) format('woff2');
+    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  /* latin */
+  @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: local('Roboto Bold'), local('Roboto-Bold'), url(https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmWUlfBBc4AMP6lQ.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  /* cyrillic-ext */
+  @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 900;
+    font-display: swap;
+    src: local('Roboto Black'), local('Roboto-Black'), url(https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmYUtfCRc4AMP6lbBP.woff2) format('woff2');
+    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+  }
+  /* cyrillic */
+  @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 900;
+    font-display: swap;
+    src: local('Roboto Black'), local('Roboto-Black'), url(https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmYUtfABc4AMP6lbBP.woff2) format('woff2');
+    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+  }
+  /* greek-ext */
+  @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 900;
+    font-display: swap;
+    src: local('Roboto Black'), local('Roboto-Black'), url(https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmYUtfCBc4AMP6lbBP.woff2) format('woff2');
+    unicode-range: U+1F00-1FFF;
+  }
+  /* greek */
+  @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 900;
+    font-display: swap;
+    src: local('Roboto Black'), local('Roboto-Black'), url(https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmYUtfBxc4AMP6lbBP.woff2) format('woff2');
+    unicode-range: U+0370-03FF;
+  }
+  /* vietnamese */
+  @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 900;
+    font-display: swap;
+    src: local('Roboto Black'), local('Roboto-Black'), url(https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmYUtfCxc4AMP6lbBP.woff2) format('woff2');
+    unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;
+  }
+  /* latin-ext */
+  @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 900;
+    font-display: swap;
+    src: local('Roboto Black'), local('Roboto-Black'), url(https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmYUtfChc4AMP6lbBP.woff2) format('woff2');
+    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  /* latin */
+  @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 900;
+    font-display: swap;
+    src: local('Roboto Black'), local('Roboto-Black'), url(https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmYUtfBBc4AMP6lQ.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  .product-form {
+  	width: 100%;
+  }
+  @-webkit-keyframes sk-bouncedelay {
+    0%, 80%, 100% { -webkit-transform: scale(0) }
+    40% { -webkit-transform: scale(1.0) }
+  }
+
+  @keyframes sk-bouncedelay {
+    0%, 80%, 100% {
+      -webkit-transform: scale(0);
+      transform: scale(0);
+    } 40% {
+      -webkit-transform: scale(1.0);
+      transform: scale(1.0);
+    }
+  }
+  html.ov-lock, html.ov-lock body {
+  	width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  .button {
+    width: 100%;
+    height: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    position: relative;
+    font-size: 16px;
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+  	font-weight: 700;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(220, 36, 21, 0.2);
+  }
+  .view-size-quantity,
+  .inline-field-wrapper,
+  .common-standar_btn,
+  .select-option {
+  	display: none;
+  }
+  .sunzi-form #sunzi-button {
+    position: relative;
+    background-color: #e60044;
+    border: 0;
+    border-radius: unset;
+    -webkit-appearance: none;
+    font-size: 14px;
+    font-family: inherit;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .mm-continue-custom-button {
+    display: none;
+    color: #717171;
+    border: 1px solid #A1A1A1;
+    margin-bottom: 20px !important;
+    background: none;
+  }
+  #sunzi-button #sunzi-button-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+  }
+  .dots__loading {
+    font-size: 0;
+  }
+  .dots__loading .dots {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+  }
+  .dots__loading .dots i {
+    width: 8px;
+    height: 8px;
+    margin: 0 2px;
+    background-color: #fff;
+    border-radius: 100%;
+    display: inline-block;
+    -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+    animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  }
+  .dots__loading .dots i:first-child {
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+  }
+  .dots__loading .dots i:nth-child(2) {
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+  }
+  .dots__loading i {
+    font-weight: normal;
+  }
+  .sunzi-product-wrap {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  .sunzi-modal-wrap {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 9999999999;
+    overflow: auto;
+    outline: 0;
+    display: none;
+  }
+  .sunzi-modal-wrap .sunzi-modal {
+    width: 100%;
+    max-width: 480px;
+    height: 660px;
+    background: #fff;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%);
+    margin-left: -240px;
+    opacity: 0;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+  }
+  .sunzi-modal label {
+  	margin-bottom: 0;
+  }
+  .sunzi-modal-wrap .sunzi-modal .canvas-container {
+    margin: 0 !important;
+    transform: none !important;
+    border: 1px solid rgba(0, 0, 0, .15);
+  }
+  .sunzi-modal-wrap .sunzi-modal.animate {
+    opacity: 1;
+  }
+  #sunzi-input {
+    display: none;
+  }
+  .select-wrapper.select-wrapper-disabled {
+    border-color: #d9d9d9;
+    color: rgba(0,0,0,0.25);
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+  }
+  .select-wrapper.select-wrapper-error {
+    border-color: #ed484e;
+    color: #ed484e;
+  }
+  .add-to-cart {
+    margin-top: 0 !important;
+  }
+  .product-quantity {
+    margin-top: -12px !important;
+  }
+  #sunzi-sock {
+    height: 100%;
+  }
+  .product-flex-step {
+    margin-top: 0!important;
+  }
+  .options {
+    display: none;
+    margin-top: 20px;
+    max-width: 100%;
+  }
+  .options .option-title {
+    font-family: 'Roboto', sans-serif;
+  	font-weight: 400;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .options .options-color {
+    display: flex;
+    overflow-x: auto;
+    padding: 15px 0 15px 10px;
+    margin: 0 -10px;
+    flex-wrap: wrap;
+  }
+  .options .options-color .option-color-layout {
+    padding-right: 10px;
+    padding-bottom: 10px;
+  }
+  .options .options-color .option-color-layout .option-color {
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .options .options-color .option-color-layout .option-selected {
+    border-color: #fff;
+    box-shadow:
+      0px 0px 0px 1px #ff533a,
+      0px 6px 10px 0px rgba(255, 83, 58, 0.15),
+      0px 3px 5px -1px rgba(255, 83, 58, 0.1),
+      0px 1px 18px 0px rgba(255, 83, 58, 0.12);
+  }
+  .options .options-color .option-color-layout .option-color .selected-icon {
+    height: 20px;
+    width: 20px;
+    background-color: #fff;
+    border-radius: 50%;
+    display: none;
+  }
+  .options .options-color .option-color-layout .option-selected .selected-icon {
+    display: unset;
+  }
+  .options .options-color .option-color-layout .option-color .selected-icon .tick-circle {
+    width: 100%;
+    height: 100%;
+  }
+  .options .option .options-size {
+    display: flex;
+    flex-flow: row wrap;
+    padding-top: 15px;
+  }
+  .options .option .options-size .option-size {
+    padding: 0 25px;
+    margin: 0 15px 15px 0;
+    height: 40px;
+    border-radius: 6px;
+    border: 1px solid #909399;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .options .option .options-size .option-size .tick-circle {
+    display: none;
+  }
+  .options .option .options-size .option-selected {
+    border-color: #ff533a;
+    color: #ff533a;
+    background-color: rgba(255, 83, 58, 0.1);
+    padding: 10px;
+  }
+  .options .option .options-size .option-selected .tick-circle {
+    width: 20px;
+    height: 20px;
+    display: flex;
+  }
+  .options .option .options-size .option-selected span {
+    padding-left: 10px;
+    font-weight: 700;
+  }
+  .product-description,
+  .selector-step,
+  .product-quantity {
+  	display: none!important;
+  }
+  @media (max-width: 768px) {
+    .sunzi-modal-wrap .sunzi-modal {
+      top: 0;
+      left: 0;
+      transform: translateX(0);
+      max-width: 100%;
+      height: 100%;
+      border-radius: 0;
+      margin-left: 0;
+      overflow: hidden;
+    }
+    #sunzi-button {
+      position: relative;
+    }
+    .option-size {
+   	  width: 100%;
+      margin-right: 0 !important;
+    }
+    .option-size span {
+      font-size: 14px;
+    }
+    .sunzi-modal-wrap {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 9999999999;
+      overflow: auto;
+      outline: 0;
+      display: none;
+    }
+    .sunzi-modal-wrap .sunzi-modal .canvas-container {
+      border: none;
+    }
+    .product-wrap>.product-flex-step {
+      padding: 0 10px;
+    }
+  }
+  @media screen and (min-width: 768px) {
+    .sunzi-modal-content {
+      max-width: 480px;
+      height: 660px;
+    }
+  }
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 额外的表单参数 {% endcomment %}
+  <input id="_tempVip" type="hidden" name="properties[_tempVip]" />
+  <input id="_sunzi_add_avatar" type="hidden" name="properties[_sunzi_add_avatar]" />
+  <input id="_sunzi_add_text" type="hidden" name="properties[_sunzi_add_text]" />
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="text" id="sunzi-input" name="properties[customInfo]" required="required"></input>
+  <input type="text" id="sunzi-cart" name="properties[_sunzi_cart]"></input>
+
+  {% comment %} loading 所需图片预加载 {% endcomment %}
+  <link rel="preload" href="https://sunzi7n.myuxc.com/assets/img_0.png" as="image">
+  <link rel="preload" href="https://sunzi7n.myuxc.com/assets/img_1.png" as="image">
+  <link rel="preload" href="https://sunzi7n.myuxc.com/assets/img_2.png" as="image">
+  <link rel="preload" href="https://sunzi7n.myuxc.com/assets/img_3.png" as="image">
+  <link rel="preload" href="https://sunzi7n.myuxc.com/assets/img_4.jpg" as="image">
+
+  <link rel="preload" href="https://sunzi7n.imaiyuan.com/asset/package/081901box.mp4" as="video">
+  <link rel="preload" href="https://sunzi7n.imaiyuan.com/asset/package/081902box.mp4" as="video">
+  <link rel="preload" href="https://sunzi7n.imaiyuan.com/asset/package/081903box.mp4" as="video">
+  <link rel="preload" href="https://sunzi7n.imaiyuan.com/asset/package/081904box.mp4" as="video">
+
+  {% comment %} 颜色尺寸选择 {% endcomment %}
+  <div class="options">
+    <div class="option">
+      <div class="option-title title-color">:</div>
+      <div class="options-color"></div>
+    </div>
+    <div class="option">
+      <div class="option-title title-size">:</div>
+      <div class="options-size"></div>
+    </div>
+  </div>
+  {% comment %} 定制按钮 {% endcomment %}
+  <button type="button" id="sunzi-button" disabled class="dots-loading">
+    <span class="dots">
+      <i></i>
+      <i></i>
+      <i></i>
+    </span>
+    <div class="sunzi-button-text">{{ buttonText }}</div>
+  </button>
+</div>
+
+<!-- sunzi core js -->
+<script src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{ coreJs }}" defer="defer"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ gtag }}" async="async"></script>
+<script async="async">
+  _sunzi_gtag('{{ gtag }}', 'newsock_share');
+</script>
+
+{% comment %} 1.隐藏掉变体，加车按钮等等 {% endcomment %}
+<script defer="defer">
+  _sunzi_variant_hide("{{variantSize}}");
+  _sunzi_variant_hide("{{variantColor}}");
+</script>
+
+{% comment %}
+  2.请求定制化数据
+  3.开始定制
+{% endcomment %}
+<script defer="defer">
+  _sunzi_request('{{ requestURL }}', function() {
+    var shareURL = '{{ shop.url }}{{ product.url }}';
+    var sizeSelected;
+    var colorSelected;
+	
+  	initCustom();
+    bindEvent();
+    $('.options').show();
+
+
+    $('#sunzi-button').on('click', function(event) {
+
+      gtag('event', 'event_tap_custom');
+      _sunzi_response.shop = {
+        language: '{{sunzi_shop_language}}',
+        currencySymbol: '{{sunzi_shop_symbol}}'
+      };
+      // 定制之前的参数构建
+      // 产品数据
+      var productData = {{ product | json }};
+      // 当前产品id
+      var variantId = getQueryVariable("variant") || "{{ product.variants.first.id }}";
+      
+      productData.variants.find(item => {
+        if(item.id == variantId) {
+          _sunzi_response.price = transToPrice(item.price);
+      	  _sunzi_response.originPrice = transToPrice(item.compare_at_price);
+        }
+      });
+	      
+      //  刻字加价
+      _sunzi_response.lineTextsIncrease = {
+        "price": 1.99,
+        "virtualId": "39688466301077"
+      };
+      //  抠图加价
+      _sunzi_response.avatarIncrease = {
+        "price": 2.99,
+          "virtualId": "39688478097557"
+      };
+                          
+      _sunzi_response.selectedData = {
+        size: sizeSelected,
+        color: colorSelected
+      };
+      
+      _sunzi_response.shareLink = shareURL;
+      _sunzi_response.shareText = "Hey y’all, check out the socks I just designed. Try it yourself!";
+      _sunzi_response.sharePrice = 1.50;
+      _sunzi_response.shareCoupon = "https://sunzi7n.imaiyuan.com/new-sock/share-coupon-01.svg";
+
+
+      // 开始渲染
+      _sunzi_custom(
+        NewSock.default,
+        async function(images, data, product, share) {
+          _sunzi_loading();
+          var facuts = images.map(item => item.avatar)
+          var outout = {
+            '_sunzi_sock_aimade': false,
+            '_sunzi_sock_facut': facuts,
+            '_sunzi_compose': [
+              {
+                'rule': 8,
+                'images': facuts,
+                'type': 'photo_design',
+                'data': data
+              }, {
+                'rule': 1,
+                'images': images.map(item => item.origin),
+                'type': 'source'
+              }
+            ]
+          }
+
+
+          // 如果存在刻字的话
+          if (data.connects.lineTexts && data.connects.lineTexts[0]) {
+            var lineText = data.connects.lineTexts[0];
+            outout['_sunzi_text'] = {
+              value: lineText.value,
+            }
+          }
+
+          $('#sunzi-input').val(JSON.stringify(outout));
+
+          _sunzi_variant_change('{{variantSize}}', data.size.value);
+          _sunzi_variant_change('{{variantColor}}', data.bottomImage.value);
+
+          var promiseArr = [];
+          var tempvip = cateTempVip();
+          // 根据vip添加虚拟产品
+          if(product) {
+            promiseArr.push(addToCart({
+              id: product.virtualId,
+              quantity: 1,
+              "properties[_tempVip]": tempvip,
+              mask: 'body',
+              refresh: true,
+            }));
+            $('#_tempVip').val(tempvip);
+          }
+          // 根据facuts的数量 添加扣头虚拟产品
+          if(facuts.length > 1) {
+            var code = createRandomCode();
+            $('#_sunzi_add_avatar').val(code);
+            promiseArr.push(addToCart({
+              id: _sunzi_response.avatarIncrease.virtualId,
+              quantity: facuts.length - 1,
+              "properties[_sunzi_add_avatar]": code,
+              mask:'body',
+              refresh:true
+            }));
+          }
+          // 根据是否刻字添加刻字虚拟产品
+          if(data.connects.lineTexts) {
+            var code = createRandomCode();
+            $('#_sunzi_add_text').val(code);
+            promiseArr.push(addToCart({
+              id: _sunzi_response.lineTextsIncrease.virtualId,
+              quantity: 1,
+              "properties[_sunzi_add_text]": code,
+              mask:'body',
+              refresh:true
+            }));
+          }
+          await Promise.all(promiseArr);
+
+          if(share) {
+            var idMap = {
+              "39464204566677":39632167796885,
+              "39464204599445":39632167829653,
+              "39464204632213":39632167862421,
+              "39464204664981":39632167895189,
+              "39464204697749":39632167927957,
+              "39464204730517":39632167960725,
+              "39464204763285":39632167993493,
+              "39464204796053":39632168026261,
+              "39464204828821":39632168059029,
+              "39464204861589":39632168091797,
+              "39464204894357":39632168124565,
+              "39464204927125":39632168157333,
+              "39464204959893":39632168190101,
+              "39464204992661":39632168222869,
+              "39464205025429":39632168255637,
+              "39464205058197":39632168288405,
+              "39464205090965":39632168321173,
+              "39464205123733":39632168353941,
+              "39464205156501":39632168386709,
+              "39464205189269":39632168419477,
+              "39464205222037":39632168452245,
+              "39464205254805":39632168485013,
+              "39464205287573":39632168517781,
+              "39464205320341":39632168550549,
+              "39649108459669":39662114504853,
+              "39649108492437":39662114537621,
+              "39649108525205":39662114570389,
+              "39649108557973":39662114603157,
+              "39649108590741":39662114635925,
+              "39649108623509":39662114668693,
+              "39649108656277":39662114701461,
+              "39649108689045":39662114734229,
+              "39649108721813":39662114766997,
+              "39649108754581":39662114799765,
+              "39649108787349":39662114832533,
+              "39649108820117":39662114865301,
+              "39649108852885":39662114898069,
+              "39649108885653":39662114930837,
+              "39649108918421":39662114963605,
+              "39649108951189":39662114996373,
+              "39649108983957":39662115029141,
+              "39649109016725":39662115061909,
+              "39649109049493":39662115094677,
+              "39649109082261":39662115127445,
+              "39649109115029":39662115160213,
+              "39649109147797":39662115192981,
+              "39649109180565":39662115225749,
+              "39649109213333":39662115258517,
+              "39556499701909":39662287749269,
+              "39556499734677":39662287782037,
+              "39556499767445":39662287814805,
+              "39556499800213":39662287847573,
+              "39556499832981":39662287880341,
+              "39556499865749":39662287913109,
+              "39556499898517":39662287945877,
+              "39556499931285":39662287978645,
+              "39556499964053":39662288011413,
+              "39556499996821":39662288044181,
+              "39556500029589":39662288076949,
+              "39556500062357":39662288109717,
+              "39556500095125":39662288142485,
+              "39556500127893":39662288175253,
+              "39556500160661":39662288208021,
+              "39556500193429":39662288240789,
+              "39556500226197":39662288273557,
+              "39556500258965":39662288306325,
+              "39556500291733":39662288339093,
+              "39556500324501":39662288371861,
+              "39556500357269":39662288404629,
+              "39556500390037":39662288437397,
+              "39556500422805":39662288470165,
+              "39556500455573":39662288502933,
+              "39556500750485":39662287749269,
+              "39556500783253":39662287782037,
+              "39556500816021":39662287814805,
+              "39556500848789":39662287847573,
+              "39556500881557":39662287880341,
+              "39556500914325":39662287913109,
+              "39556500947093":39662287945877,
+              "39556500979861":39662287978645,
+              "39556501012629":39662288011413,
+              "39556501045397":39662288044181,
+              "39556501078165":39662288076949,
+              "39556501110933":39662288109717,
+              "39556501143701":39662288142485,
+              "39556501176469":39662288175253,
+              "39556501209237":39662288208021,
+              "39556501242005":39662288240789,
+              "39556501274773":39662288273557,
+              "39556501307541":39662288306325,
+              "39556501340309":39662288339093,
+              "39556501373077":39662288371861,
+              "39556501405845":39662288404629,
+              "39556501438613":39662288437397,
+              "39556501471381":39662288470165,
+              "39556501504149":39662288502933
+            }
+            
+            var param = serializeObject($('.product-form'));
+            param.id = idMap[param.id];
+            await addToCart(param, true)
+          } else {
+            //加车事件触发
+        	$('.product-form__cart-submit').click();
+          }
+          $('#sunzi-button-input').attr("type", "file");
+          _sunzi_hide_loading();
+        }
+      );
+
+    });
+
+    /** 其他自定义函数 start **/
+    function createRandomCode() {
+      var chars = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+      var res = "";
+      for(var i = 0; i < 16 ; i ++) {
+        var id = Math.ceil(Math.random()*35);
+        res += chars[id];
+      }
+      return res;
+    }
+
+    /** 加车 */
+    function addToCart(data, showModal) {
+      return new Promise((resolve, reject) => {
+        $.ajax({
+          type: "POST",
+          url: "/cart/add.js",
+          data,
+          async: false,
+          dataType: "json",
+          context: this,
+          success: (item) => {
+            if(showModal) {
+              var modal = new tingle.modal({
+                footer: false,
+                stickyFooter: false,
+                //closeMethods: ['button'], 
+                //closeLabel: "Close11",
+                cssClass: ['addtocart-pop'],
+                onOpen: function() {
+                  console.log('modal open');
+                },
+                onClose: function() {
+                  console.log('modal closed');
+                },
+                beforeOpen: function() {
+                },
+                beforeClose: function() {
+                  // e.g. save content before closing the modal
+                  return true; // close the modal
+                }
+              });
+
+              if($(".product-vip-gift-box-div").length > 0 && $('#vipBox').is(':checked') == true){
+                boxAddToCart();
+              }
+              Listener.trigger(Listener.cart.add.after, [ item ]);
+              Dialog.open('#shopify-section-cart-success');
+            }
+            resolve(item);
+          },
+          error: (request, status) => {
+            reject(request, status);
+          }
+        })
+      })
+    }
+
+
+    function cateTempVip(){
+      var t = jQuery('[name="id"]').val();
+      document.querySelectorAll("[name^='properties[']").forEach(function(e,item){
+        var n = "radio" !== e.type || e.checked;
+        //"properties[_tempVip]" != e.name && "" != e.value && n && (t += e.name + ":" + e.value + ",")
+        ("properties[_tempId]" != e.name && "properties[_tempVip]" != e.name) && "" != e.value && n && (t += e.name + ":" + e.value + ",")
+      })
+      var e, n, r, i = 0;                
+      for (e = 0, r = t.length; e < r; e++){
+        n = t.charCodeAt(e),
+          i = (i << 5) - i + n,
+          i |= 0;  
+      }
+      return i;
+    }
+
+    /** 改变选中颜色的样式 */
+    function changeColorSelected() {
+      $('.options-color .option-color-layout').each(function() {
+        if ($(this).data('id') === colorSelected) {
+          $(this).children('.option-color').addClass('option-selected');
+          _sunzi_variant_change('{{variantColor}}', $(this).data('color'));
+        } else {
+          $(this).children('.option-color').removeClass('option-selected');
+        }
+      });
+    }
+
+    /** 改变选中尺寸的样式 */
+    function changeSizeSelected() {
+      $('.options-size .option-size').each(function() {
+        if ($(this).data('id') === sizeSelected) {
+          $(this).addClass('option-selected');
+          var tempColorId = $('.option .option-selected').parent().data('id');
+          addOptionColor();
+          colorSelected = tempColorId;
+          changeColorSelected();
+          _sunzi_variant_change('{{variantSize}}', $(this).data('size'));
+        } else {
+          $(this).removeClass('option-selected');
+        }
+      });
+    }
+
+    /** 尺寸 html 模板 */
+    function templateOptionSize(id, size, value) {
+      return `
+      <div class="option-size" data-id="${id}" data-size="${value}">
+      <svg class="tick-circle" viewBox="2 2 20 20" fill="#FF533A">
+      <path d="M12,3.2 C16.8601058,3.2 20.8,7.1398942 20.8,12 C20.8,16.8601058 16.8601058,20.8 12,20.8 C7.1398942,20.8 3.2,16.8601058 3.2,12 C3.2,7.1398942 7.1398942,3.2 12,3.2 Z M17.3656854,8.63431458 C17.053266,8.32189514 16.546734,8.32189514 16.2343146,8.63431458 L16.2343146,8.63431458 L10.8,14.068 L7.76568542,11.0343146 L7.69031955,10.9677637 C7.37648659,10.7237438 6.92270174,10.7459274 6.63431458,11.0343146 C6.32189514,11.346734 6.32189514,11.853266 6.63431458,12.1656854 L6.63431458,12.1656854 L10.2343146,15.7656854 L10.3096804,15.8322363 C10.6235134,16.0762562 11.0772983,16.0540726 11.3656854,15.7656854 L11.3656854,15.7656854 L17.3656854,9.76568542 L17.4322363,9.69031955 C17.6762562,9.37648659 17.6540726,8.92270174 17.3656854,8.63431458 Z"></path>
+        </svg>
+      <span>${size}</span>
+        </div>
+      `;
+    }
+
+    /** 颜色 html 模板 */
+    function templateOptionColor(id, url, value) {
+      return `
+      <div class="option-color-layout" data-id="${id}" data-color="${value}">
+      <div class="option-color" style="background-image: url(${url})">
+      <div class="selected-icon">
+      <svg class="tick-circle" viewBox="2 2 20 20" fill="#FF533A">
+      <path d="M12,3.2 C16.8601058,3.2 20.8,7.1398942 20.8,12 C20.8,16.8601058 16.8601058,20.8 12,20.8 C7.1398942,20.8 3.2,16.8601058 3.2,12 C3.2,7.1398942 7.1398942,3.2 12,3.2 Z M17.3656854,8.63431458 C17.053266,8.32189514 16.546734,8.32189514 16.2343146,8.63431458 L16.2343146,8.63431458 L10.8,14.068 L7.76568542,11.0343146 L7.69031955,10.9677637 C7.37648659,10.7237438 6.92270174,10.7459274 6.63431458,11.0343146 C6.32189514,11.346734 6.32189514,11.853266 6.63431458,12.1656854 L6.63431458,12.1656854 L10.2343146,15.7656854 L10.3096804,15.8322363 C10.6235134,16.0762562 11.0772983,16.0540726 11.3656854,15.7656854 L11.3656854,15.7656854 L17.3656854,9.76568542 L17.4322363,9.69031955 C17.6762562,9.37648659 17.6540726,8.92270174 17.3656854,8.63431458 Z"></path>
+        </svg>
+        </div>
+        </div>
+        </div>
+      `;
+    }
+  
+  	/** 定制初始化 */
+  	function initCustom() {
+      // 添加title文案
+      var sizeDom =  _sunzi_find_variant('{{variantSize}}');
+      var colorDom = _sunzi_find_variant('{{variantColor}}');
+      $('.title-size').html(sizeDom.find('.select-field-title').html().trim());
+      $('.title-color').html(colorDom.find('.select-field-title').html().trim());
+      addOptionSize();
+      addOptionColor();
+    }
+
+    /** 添加尺寸 dom */
+    function addOptionSize() {
+      
+      var sizes = _sunzi_response.sockData.map(function(item, index) {
+        // 默认选中第一个
+        if (index === 0) {
+          sizeSelected = item.id;
+        }
+        return {
+          id: item.id,
+          name: item.size,
+          value: item.value
+        }
+      });
+      sizes.forEach(function(item) {
+        var html = templateOptionSize(item.id, item.name, item.value);
+        $('.options-size').append(html);
+      });
+      // 将选中的 size 加上选中的样式
+      changeSizeSelected();
+    }
+
+    /** 添加颜色 dom */
+    function addOptionColor() {
+      var colors = _sunzi_response.sockData.filter(function(item) {
+        return item.id === sizeSelected;
+      })[0].bottomImages;
+      // 默认选中第一个颜色
+      colorSelected = colors[0].id;
+      $('.options-color').empty();
+      colors.forEach(function(item) {
+        var html = templateOptionColor(item.id, item.image, item.value);
+        $('.options-color').append(html);
+      });
+      // 将选中的 color 加上选中的样式
+      changeColorSelected();
+    }
+
+    /** 事件绑定 */
+    function bindEvent() {
+      // 点击尺寸事件
+      $('.options .option .options-size').click(function(event) {
+        const option = event.target.closest('.option-size');
+        if (option) {
+          sizeSelected = parseInt(option.dataset.id);
+          changeSizeSelected();
+          //           addOptionColor();
+        }
+      });
+      // 点击颜色事件
+      $('.options .option .options-color').click(function(event) {
+        const option = event.target.closest('.option-color-layout');
+        if (option) {
+          colorSelected = parseInt(option.dataset.id);
+          changeColorSelected();
+        }
+      });
+    }
+
+    /** 获取价格number类型值 */
+    function getPriceNumber(value) {
+      var _filter = value.trim().match(/\d+.?\d*$/)[0];
+      return parseFloat(_filter);
+    }
+
+    // form数据序列化js对象
+    function serializeObject($form){
+      var o = {};  
+      var a = $form.serializeArray();  
+      $.each(a, function() {  
+        if (o[this.name]) {  
+          if (!o[this.name].push) {  
+            o[this.name] = [o[this.name]];  
+          }  
+          o[this.name].push(this.value || '');  
+        } else {  
+          o[this.name] = this.value || '';  
+        }  
+      });  
+      return o;  
+    };
+
+  	function transToPrice(number) {
+      var res = number / 100;
+      return Number(res.toFixed(2));
+    }
+    /** 其他自定义函数 end **/
+  });
+</script>

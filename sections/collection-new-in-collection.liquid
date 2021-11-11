@@ -1,0 +1,726 @@
+<style>
+.activity-template-collection {
+  padding-top: 15px;
+}
+.shopify-section.activity-template-collection {
+  display: flex;
+  max-width: 1200px;
+  margin: auto;
+  justify-content: center;
+  position: relative;
+}  
+.m-top-nav.open, .m-top-nav {
+  width: 23%;
+  position: relative;
+}
+.m-top-nav .view-count-down {
+  overflow: hidden;
+  padding:15px 0;
+  width: 100%;  
+  background: #f5f5f5;  
+  max-height: 70vh;
+}
+.m-top-nav .view-count-down .active-top {
+  display: flex;
+  margin: 0 auto;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 100%; 
+}
+.direction-shade{
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+}
+.view-count-down.stick-sub {
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  width: calc(1220px / 4.5);
+  padding-top: 10px;
+}
+.direction-shade .swiper-wrapper{
+  display: flex;
+  height: 100%;
+  overflow: auto;
+  overflow-x: hidden;
+  flex-flow: column;
+  max-height: 70vh;
+}
+.direction-shade .swiper-wrapper .swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  padding: 0;
+  width: 100%;
+  border-radius: 50px 0 0 50px;
+  margin-left:10px;
+  padding-left: 10%;
+  height: 45px;
+  margin-bottom:15px;
+}
+.direction-shade .swiper-wrapper .swiper-slide a{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+.active-right-list {
+  width: 77%;
+}  
+span.nav-icon {
+  width: 30px;
+  height: 30px;
+  overflow: hidden;
+  display: inline-block;
+  background-size: cover;
+}  
+span.nav-icon:after{
+  content:"";
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  background-size: cover;
+}
+.direction-shade .swiper-wrapper .swiper-slide span{
+  vertical-align: middle;
+}
+
+.block-collection{
+  position: relative;
+}
+.tittle_more {
+  margin-top: 15px;
+  text-align: center;
+  margin-bottom: 60px;
+}
+.no-js .product-card__image.js{
+  display:block;
+}
+.tittle_more a{    
+  border-radius: 35px;
+  text-transform: uppercase;
+  font-size: 14px;
+  padding: 10px 40px;
+  display: inline-block;
+}  
+.section-position {
+  position: absolute;
+  top: -60px;
+}
+.block-collection .title {
+  text-align: center;
+  letter-spacing: 0;
+  padding: 3rem 0 0 0;
+  font-family: OpenSans;
+  font-size: 30px;
+  margin-bottom: 15px;
+  line-height: 1;
+}  
+/**/
+ul.block-collection-items{
+  display: flex;
+  flex-flow: wrap;
+}
+.product-card__overlay {
+  display: none;
+}
+ul.block-collection-items li.item{
+  width: 24%;
+  margin-left: 1%;
+  margin-bottom: 10px;
+  position: relative;
+}
+.block-collection .block-collection-items .product-card__image-wrapper {
+  position: relative;
+}
+.discount_box {
+  position: absolute;
+  top: 0;
+  left: unset;
+  background: #dc044e;
+  background-image: linear-gradient(to right,#f8424d,#dc044e);
+  color: #fff;
+  border-radius: 0 0 0 6px;
+  padding: 5px 12px;
+  font-size: 13px;
+  line-height: 1;
+  z-index: 1;
+  right: 0;
+}
+.discount_box .discount_box_mb {
+  display: none;
+}
+.product-card__image {
+  position: relative;
+}
+.product-card__image .defaultImage {
+  opacity: 1;
+}
+.product-card__image .hoverImage {
+  transition: all .3s;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+.product-card__info {
+  position: relative;
+  padding-bottom: .5rem;
+  width: 100%;
+  text-align: center;
+  margin-top: 5px;
+  height: 86px;
+}
+.active-right-list .product-card__price {
+  padding: 4px 0 8px;
+  text-align: left;
+  display: flex;
+  flex-direction: initial;
+  line-height: 1.2;
+}
+.active-right-list .product-card__sale-price {
+  margin-right: .2rem;
+  font-size: 12px;
+  font-weight: bold;
+  color: #e81150;
+}
+.active-right-list .product-card__regular-price {
+  color: #888;
+  font-size: 12px;
+  text-decoration: line-through;
+  margin: 0 0 0 4px;
+  font-weight: 100;
+}
+.active-right-list .item .product-card__name {
+  height: 20px;
+  padding: 0 0px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  margin: 0;
+  line-height: 1.2;
+}
+.product-card__tag {
+  padding: 0;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  /* height: 22px; */
+  align-items: end;
+  margin: 2px 0 6px;
+}
+.product-card__tag span {
+  color: #E9034D;
+  border: 1px solid #E9034D;
+  font-size: 12px;
+  line-height: 1.2;
+  padding: 2px 10px 1px;
+  border-radius: 5px;
+}
+.active-right-list .item .product-card__info .btn {
+  position: absolute;
+  bottom: 0px;
+  opacity: 0;
+  transition: all .2s;
+  padding: 10px 0;
+  border-radius: 0px;
+  grid-column: 1 / 4;
+  z-index: 9;
+  letter-spacing: 0;
+  left: 0;
+}
+.active-right-list .item:hover .product-card__info .btn {
+  opacity: 1;
+}
+.direction-shade .swiper-wrapper .swiper-slide.active{
+  background: #ffffff;
+  box-shadow: 0 0 8px rgb(0 0 0 / 10%);
+}  
+.direction-shade .swiper-wrapper .swiper-slide.active span.nav-icon:after{
+  width: 60px;
+  position: relative;
+  left: -30px;
+  border-right: 30px solid transparent;
+  -webkit-filter: drop-shadow(30px 0);
+  filter: drop-shadow(30px 0 red);
+}
+@media(min-width:768px){
+  .direction-shade .swiper-wrapper .swiper-slide.active, .direction-shade .swiper-wrapper .swiper-slide:hover {
+    background: #ffffff;
+    box-shadow: 0 0 8px rgb(0 0 0 / 10%);
+  }  
+  .direction-shade .swiper-wrapper .swiper-slide.active span.nav-icon:after, .direction-shade .swiper-wrapper .swiper-slide:hover span.nav-icon:after {
+    width: 60px;
+    position: relative;
+    left: -30px;
+    border-right: 30px solid transparent;
+    -webkit-filter: drop-shadow(30px 0);
+    filter: drop-shadow(30px 0 red);
+  } 
+}
+@media(max-width:768px){
+  .m-top-nav .view-count-down{
+    max-height: unset;
+    height: calc(100vh - 60px);
+  }
+  .view-count-down.stick-sub{
+    width:25%;
+  }
+  .direction-shade .swiper-wrapper{
+    max-height: 100%;
+  }
+  .m-top-nav.open, .m-top-nav{
+    width: 25%;
+  }
+  .direction-shade .swiper-wrapper .swiper-slide{
+    border-radius: 0;
+    margin-left: 0;
+    padding-left: 0;
+    height: 50px;
+  }
+  .active-right-list{
+    width: 75%;
+  }
+  .direction-shade .swiper-wrapper .swiper-slide a{
+    flex-flow: column;    
+    padding: 0 10px;
+    text-align: center;
+    justify-content: center;
+    line-height: 1;
+  }
+  span.nav-icon{
+    width: 25px;
+    height: 25px;
+  }
+  span.nav-icon:after{
+    width: 25px;
+    height: 25px;
+  }
+  .direction-shade .swiper-wrapper .swiper-slide.active span.nav-icon:after, .direction-shade .swiper-wrapper .swiper-slide:hover span.nav-icon:after{
+    width: 50px;
+    left: -25px;
+    border-right: 25px solid transparent;
+    -webkit-filter: drop-shadow(25px 0);
+    filter: drop-shadow(25px 0 red);
+  }
+  ul.block-collection-items li.item{
+    width: 49%;
+  }
+  .block-collection .title{
+    font-size: 22px;
+  }
+  .block-collection .title{
+    margin-bottom: 20px;
+  }
+  .active-right-list .item .product-card__info .btn{
+    display:none;
+  }
+  .product-card__info{
+    height: auto;
+  }
+  .discount_box{
+    font-size: 12px;
+    transform: scale(.8) translate(-4px, -4px);
+  }
+  .product-card__tag{
+    margin-bottom:0;
+  }
+  .tittle_more{
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+}
+</style>
+ 
+<div class="m-top-nav">
+  <div class="view-count-down">
+    <div class="active-top"> 
+    <div class="direction-shade">
+      <div class="swiper-wrapper">
+        {% for block in section.blocks %}
+        {% assign handleLists = block.settings.handle | join:',' %}
+        {% if handleLists contains handle and block.settings.nav != blank %}
+        <div class="swiper-slide m-top-nav-slide top-nav-slide-one" >          
+          <a href="#section-{{forloop.index}}">
+            {% assign IconBg = "icon_bg" | append: forloop.index %}
+            <style>.{{IconBg}}:after{background: url("{{ block.settings.iconnav | img_url: 'master' }}") no-repeat center;}</style>
+            <span class="nav-icon {{IconBg}}"></span>
+            <span> {{block.settings.nav}}</span>
+          </a>
+        </div>
+        {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+	</div>
+  </div>
+</div>
+ 
+<div class="active-right-list">
+{% for block in section.blocks %}
+{% assign handleLists = block.settings.handle | join:',' %}
+{% if handleLists contains handle and block.settings.nav != blank %}
+{% assign per_row = block.settings.products_in_rows %}
+{% assign product_rows = block.settings.number_of_rows %}
+{% assign collection = block.settings.collection %}
+{% assign product_limit = product_rows | times: per_row %}
+  {% assign style = "block-collection-" | append: section.id | append: forloop.index %}
+   <div class="{{style}} block-collection {{block.settings.style}}" data-section-id="{{ section.id }}">   
+     <div class="section-position" id="section-{{forloop.index}}"></div>
+     {% if block.settings.banner_enable %}
+       {% assign pc_img_url = block.settings.pc_image | img_url: '1x1' | replace: '_1x1.', '_500' %}
+       {% assign pc_resize = block.settings.pc_banner.width | append: "x" | append: block.settings.pc_banner.height %}           
+         <div class="huichang">
+            <div class="tittle_img">
+            <img src="{{block.settings.pc_banner | img_url: 'master' }}" class="lazyload banner-pc" />
+            <img src="{{block.settings.mb_banner | img_url: 'master' }}" class="lazyload banner-mb" />
+            </div>    
+         </div>
+     {% else %}
+       <div class="title title_{{forloop.index}}">
+         <div class="title-line"></div>
+         <span>{{block.settings.nav}}</span>
+       </div> 
+     {% endif %}   
+       
+     {% unless block.settings.sub_title == blank  %}
+     	<div class="sub_title">{{block.settings.sub_title}}</div>
+     {% endunless %}         
+
+     {% assign current_collection = collections[block.settings.collection] %}
+     {% if current_collection.products.size > 0%} 
+     <ul class="block-collection-items page-width">
+       {% for item in current_collection.products limit: block.settings.limit %}
+       {% assign firstVariant = item.first_available_variant %}
+       <li class="item">{% include 'product-list-item', product:item  %}</li>
+       {% endfor %}
+     </ul>
+     {% endif %}
+     {% if block.settings.more_enable %}
+      <div class="grid--no-gutterscollection activeLoading{{forloop.index}}"></div>
+      <div class="tittle_more" >
+        <a href="/collections/{{block.settings.collection}}" class="viewmore{{forloop.index}}">
+          <span>{{ block.settings.more_banner }}</span>
+        </a>
+      </div>         
+     <script>//加载更多
+       $(function(){
+         //加载更多  
+         var LoadMoreCollection{{forloop.index}} = new LoadMore.toLoad(".{{style}} .block-collection-items",{
+           view:12,//一开始显示几个
+           count: 8,//每次加载的数量
+           btnHTML:".viewmore{{forloop.index}}",//触发加载的元素
+           moreText:"{%if block.settings.more_banner != blank %} {{ block.settings.more_banner }}{% else %}{{ "general.social.page_show_more_reviews" | t }} {%endif%}", //按钮文案
+           moreEndText:"{{'page.contact.send' | t}}" //全部显示之后按钮的文案
+         })
+
+       });
+     </script>
+     {% endif %}
+   </div>
+   <style>
+     .{{style}}.block-collection{
+       background: {{block.settings.color_bg}};
+       {% if block.settings.bgbanner_enable %}
+         background:url("{{block.settings.bgpc_banner | img_url: 'master' }}") repeat-y top center/cover;
+       {% endif %}
+     }
+     .{{style}}.block-collection .grid-view-item__title{
+       color: {{block.settings.namecolor_text}};
+       overflow: hidden;
+       text-overflow: ellipsis;
+       display: -webkit-box;
+       -webkit-line-clamp: 2;
+       -webkit-box-orient: vertical;
+      letter-spacing: 0;
+    padding: 0;
+    font-weight: normal;
+     }
+     .{{style}}.block-collection .title {
+       color: {{block.settings.color_titleright}};
+       padding-top:{{block.settings.paddingtop_title}}
+     }
+     .{{style}}.block-collection .price__sale{
+       color:{{block.settings.color_price}};
+       font-weight: 700;
+     }
+     .{{style}}.block-collection .price__regular{
+       color:{{block.settings.color_price_regular}};
+       padding: 3px 0;
+     }
+     .{{style}} .tittle_more a{
+       border:1px solid {{block.settings.more_color}};
+     }
+     .{{style}} .tittle_more a:hover{
+       text-decoration: none;
+     }
+     .{{style}} .tittle_more a span{
+       color:{{block.settings.more_color}};       
+     }
+     @media(max-width:768px){ 
+       .{{style}} .tittle_more a{
+         font-size: 1rem;
+         padding: .5rem 2rem;
+       } 
+       .{{style}}.block-collection .grid-view-item__title{
+         font-size: 13px;
+         height:31px;
+         font-weight: 400;
+       }
+     }
+
+   </style>
+{% endif %}
+{%endfor%}
+</div>
+
+<script>
+  
+jQuery(function(){
+  if($(".top-nav-slide-one").length>0){
+      $(".activity-template-collection-nav").hide();
+    $('.direction-shade .m-top-nav-slide:eq(0)').addClass('active')
+    $(window).scroll(function(event){
+      let originTop = $(window).width()>768?$(window).scrollTop()+$('.menu-nav.small--hide').height():$(window).scrollTop()+$('header.site-header.medium-up--hide').height();
+      $('.section-position').each(function(){        
+        if (jQuery(this).offset().top - originTop <= 1 && jQuery(this).offset().top - originTop + jQuery(this).parent().height() > 0){
+          var oid = "#" + jQuery(this).attr("id");
+          jQuery("a[href='"+oid+"']").parent().addClass("active");
+          jQuery("a[href='"+oid+"']").parent().siblings().removeClass("active");
+        }  	
+      })
+      productImageFixed();
+    })
+    if(jQuery('.m-top-nav-slide').length > 1){
+      jQuery('.m-top-nav').addClass("open");
+    }
+    if(jQuery('.m-top-nav-slide').length < 1){
+      $('.direction-shade').hide();
+    };
+    function productImageFixed(){
+       var scrollTop = jQuery(window).scrollTop();
+       var container = $('.activity-template-collection');//容器元素
+       var fixedEl = $('.view-count-down');//定位元素
+       var head = $(window).width()>768?$('.menu-nav.small--hide'):$('header.site-header.medium-up--hide');
+       var fixedTop = head.height();
+       if(( (container.offset().top - fixedTop) - scrollTop) < 0){
+          if((container.offset().top + container.height() - fixedEl.height() - fixedTop ) < scrollTop ){
+              fixedEl.css({"position":"absolute","top":"unset","bottom":"0"});
+              fixedEl.removeClass("stick-sub");
+          }else{  
+              fixedEl.css({"position":"fixed","top":fixedTop,"bottom":"unset"});        
+              fixedEl.addClass("stick-sub");
+          };
+       }else{
+          fixedEl.css({"position":"unset"});
+          fixedEl.removeClass("stick-sub");
+       };
+    }; 
+  }
+});  
+
+</script>
+{% schema %}
+{
+	"name": "Block 分会场集合块",
+	"max_blocks": 200,
+	"class": "activity-template-collection",
+	"settings": [
+        {
+          "type": "paragraph",
+          "content": "collection-new-in-collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "pc_bg",
+          "label":"会场背景"
+        },
+        {
+          "type": "image_picker",
+          "id": "mb_bg",
+          "label":"会场背景"
+        }, 
+		{
+          "type": "image_picker",
+          "id": "loading",
+          "label":"会场加载动画"
+        },
+        {
+          "type": "image_picker",
+          "id": "pro_icon",
+          "label":"标题图标"
+        },
+        {
+          "type": "color",
+          "id": "nav_bg_color",
+          "label": "PC 导航背景色"
+        },
+        {
+          "type": "color",
+          "id": "nav_mb_bg_color",
+          "label": "MB 导航背景色",
+		  "default":"#f5f5f5"
+        },
+        {
+          "type": "color",
+          "id": "nav_text_pccolor",
+          "label": "PC 导航文字颜色",
+		  "default":"#333333"
+        },
+        {
+          "type": "color",
+          "id": "nav_text_mbnamecolor",
+          "label": "MB 导航文字颜色",
+		  "default":"#000000"
+        },
+        {
+          "type": "color",
+          "id": "nav_text_hover",
+          "label": "导航文字划过背景颜色",
+		  "default":"#ffffff"
+        }
+	],
+	"blocks": [{
+		"type": "additional_info",
+		"name": "collection",
+		"settings": [
+            {
+              "type": "text",
+              "id": "title",
+              "label": "哪个活动"
+            },
+			{
+              "type": "text",
+              "id": "handle",
+              "label": "活动url"
+            }, 
+			{
+				"type": "image_picker",
+				"id": "iconnav",
+				"label":"导航标题icon"
+			},
+			{
+              "type": "text",
+              "id": "nav",
+              "label": "导航",
+        	  "info": "不填不显示"
+            },
+			{
+				"type": "text",
+				"id": "sub_title",
+				"label": "会场副标题"
+			},    
+            {
+               "type":"color",
+               "id":"color_bg",
+               "label":"背景颜色",
+               "default":"#ffffff"
+            },
+			{
+               "type":"color",
+               "id":"color_titleright",
+               "label":"标题颜色",
+               "default":"#000"
+            },
+			{
+               "type":"color",
+               "id":"color_titlesub",
+               "label":"副标题颜色",
+               "default":"#fff"
+            },
+            {
+               "type":"color",
+               "id":"namecolor_text",
+               "label":"产品名字颜色",
+               "default":"#343434"
+            },
+			{
+               "type":"color",
+               "id":"color_price",
+               "label":"特价颜色",
+               "default":"#333333"
+            },
+			{
+               "type":"color",
+               "id":"color_saleprice",
+               "label":"Sale颜色",
+               "default":"#323232"
+            },
+			{
+               "type":"color",
+               "id":"color_price_regular",
+               "label":"原价颜色",
+               "default":"#d1d1d1"
+            },
+			{
+				"type": "checkbox",
+				"id": "bgbanner_enable",
+				"label": "开启会场背景"
+			},
+			{
+				"type": "image_picker",
+				"id": "bgpc_banner",
+				"label":"会场背景"
+			},
+            {
+				"type": "checkbox",
+				"id": "banner_enable",
+				"label": "开启横幅"
+			},
+			{
+				"type": "image_picker",
+				"id": "pc_banner",
+				"label":"PC会场标题图片"
+			},
+            {
+				"type": "image_picker",
+				"id": "mb_banner",
+				"label":"MB会场标题图片"
+			},
+            {
+				"type": "checkbox",
+				"id": "more_enable",
+				"label": "开启加载更多"
+			},
+			{
+				"type": "color",
+				"id": "more_color",
+				"label":"more颜色",
+				"default":"#000"
+			},
+			{
+				"type": "text",
+				"id": "more_banner",
+				"label":"more", 
+				"default":"view more"
+			},
+			{
+				"type": "text",
+				"id": "paddingtop_title",
+				"label": "标题间距",
+				"default":"20px"
+			},
+			{
+				"type": "collection",
+				"id": "collection",
+				"label": "选择集合"
+			},
+			{
+				"type": "range",
+				"id": "limit",
+				"label": "产品limit总数量",
+				"min": 1,
+				"max": 40,
+				"step": 1,
+				"default": 4
+			}
+
+		]
+	}
+  ]
+}
+{% endschema %}

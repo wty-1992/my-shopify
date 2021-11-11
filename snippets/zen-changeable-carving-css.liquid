@@ -1,0 +1,275 @@
+<style>
+  /*   印章 */
+  .template-product .right-content {
+    margin-bottom: 0;
+    padding: 0;
+    border: 1px solid rgba(0,0,0,0);
+    background-color: transparent;
+  }
+  .upload-loading-container .crop-progerss {
+    width: 300px;
+    display: inline-block;
+  }
+  .photo-select-carving {
+  	width: 100%;
+    margin: 20px 0;
+  }
+  .photo-select-carving .area-carving {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    line-height: 56px;
+    padding: 0 10px;
+    margin-bottom: 10px !important;
+    border: 1px solid #f7f8fa;
+  }
+  .photo-select-carving .btn-carving-open{
+       cursor: pointer;
+    background: #000;
+    color: #fff;
+    border-radius: 25px;
+    padding: 2px 15px;
+    width: 100px;
+    text-align: center;
+    text-transform: capitalize;
+    border: none;
+    height: 30px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .photo-select-carving {
+  	font-size: 1rem !important;
+    color: #000;
+  }
+  
+  /* 拖动刻字弹窗样式start */
+  .carvingErrorWord,.curveErrorWord {
+      display: block;
+      padding: 0px;
+      color: rgb(235, 52, 10);
+      font-size: 12px;
+  }
+  .curveErrorWord {
+      position: absolute;
+  }
+  .carving-container .custom-carving-container {
+      display:flex;
+  }
+  .carving-container .custom-carving-container .photo-design-body {
+    width:52%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .carving-container .custom-carving-container .operation-part {
+    width:48%;
+    padding: 20px;
+  }
+
+   .operation-part .label-input-text {
+      margin: -5px 0 0 0;
+  }
+  .carving-textarea textarea, .textarea-text  textarea {
+      height: 60px;
+      line-height: 20px;
+      padding-top: 6px;
+      margin-left: 2px;
+      width:99%;
+      resize: none;
+      min-height: 30px;
+  }
+  .carving-info {
+      text-align: left;
+      margin-top: 15px;
+      width: 100%;
+      font-size: 12px;
+      color: #777;
+  }
+  .carving-info .carving-notice {
+      font-size: 12px;
+      color: #777;
+  }
+  .carving-info .note-info {
+      color: #e60044;
+      margin: 10px 0;
+  }
+  .handcraft-info {
+      color: #f4354a;
+      border-top: 1px solid #d8d8d8;
+      padding-top: 15px;
+  }
+  .textarea-text.carving-textarea-box {
+      position: relative;
+    border-radius: 0 !important;
+  }
+  .textarea-text .leftnum {
+      position: absolute;
+      right: 5px;
+      bottom: 5px;
+  }
+  .size-box.el-row {
+      display: flex;
+      background: #f1f3f4;
+      margin-top: 10px;
+  }
+  .size-box.el-row .size-label-part {
+      line-height: 40px;
+      font-size: 12px;
+      color: #777;
+      padding-left:8px;
+      width:46%;
+  }
+  .font-radio-label, .font-radio-title {
+      margin: 10px 0;
+      font-size: 12px;
+      color: #777;
+  }
+  .font-radio-title {
+      margin-top: 22px !important;
+  }
+   .el-radio.is-bordered.is-checked {
+      border-color: #e60044 !important;
+  }
+  .el-radio.is-bordered {
+      border: 1px solid #dcdfe6 !important;
+  }
+
+  .is-checked .el-radio__label  {
+      color: #e60044 !important;
+
+  }
+   .el-select .el-input__inner {
+      border-color: #f1f3f4 !important;
+      background: #f1f3f4;
+  }
+   .el-radio.is-bordered {
+      border-radius: 0 !important;
+  }
+  .textarea-text {
+      position: relative;
+  }
+  .rad-font {
+      margin-bottom: 10px;
+  }
+  .require-prompt-text, .require-curve-text, .require-carving-text {
+      color: #e60044;
+  }
+  .carving-textarea textarea, .textarea-text textarea {
+      height:60px;
+  }
+  .el-dialog--center {
+      width:60% !important;
+  }
+  .el-main {
+      padding:20px;
+  }
+
+  .text-area .text-section .custom-text {
+      height: 55px;
+      width: 100%;
+      background: #f7f8f9;
+      border: none;
+      margin: 20px 0 10px;
+      padding-left: 16px;
+      font-size: 13px;
+      vertical-align: middle;
+      color: #484747;
+      font-family: inherit;
+  }
+  
+  .photo-confirm-btn, .btn-curve-confirm, .btn-carving-confirm {
+      background-color: #e60044 !important;
+      border-color: #e60044 !important;
+      border-radius: 0px!important;
+  }
+  .btn-carving-confirm {
+      width: 100% !important;
+      margin-left: 0px !important;
+  }
+  .btn-carving-cancel {
+/*     display: none !important; */
+  	margin: 0 10px 0 0 !important;
+	border-radius: 0px !important;
+  }
+  .loading-img-box {
+  	width: 260px !important;
+    height: 175px !important;
+    left: calc(50% - 130px) !important;
+    top:  calc(50% - 88px) !important;
+  }
+  .loadingDialog .el-dialog {
+  	width: 597px !important;
+    height: 303px !important;
+  }
+  /* 拖动刻字弹窗样式end */
+  .variant-image-box {margin-top: 10px;text-align: center;}
+  .el-color-dropdown__main-wrapper,.el-color-dropdown__value + button, .el-color-dropdown__value {
+    display: none;
+  }
+  .el-color-dropdown__btns {
+  	text-align: left !important;
+  }
+  .el-color-dropdown__btns .el-button+.el-button {
+  	margin-left: 0px;
+  }
+  .carving-color-list {
+  	display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .el-dialog{
+  	min-width: 910px;
+  }
+  .canvas-container, .el-message-box, .el-message-box__content {
+  	background: #eeeeee;
+  }
+  .el-dialog__body .slt-font-size .el-input__inner {
+    background: #f1f3f4;
+    border: none;
+    height: 42px;
+  }
+  @media (max-width: 768px) { 
+    .el-message-box {
+      width: 100% !important;
+      height: 100%;
+    }
+    .el-dialog {
+      width: 100% !important;
+    }
+    .carving-container .custom-carving-container {
+      display: block !important;
+    }
+    .carving-container .custom-carving-container .photo-design-body, .carving-container .custom-carving-container .operation-part {
+    	width: 100% !important;
+    }
+    .loadingDialog .el-dialog {
+      width: 100% !important;
+      height: 100% !important;
+    }
+    .el-dialog{
+      min-width: 100%;
+    }
+  }
+  @media (max-width: 540px){
+	.canvas-container {
+    	margin-top: 10% !important;
+	}
+  }
+  .size-box.el-row {
+  	display: block;
+  }
+  .size-box.el-row {
+  	background: none;
+  }
+  .el-input--suffix .el-input__inner {
+  	background: none;
+  }
+  .el-input__inner {
+    outline: none !important;
+    border: none !important;
+  }
+</style>

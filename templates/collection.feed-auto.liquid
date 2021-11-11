@@ -1,0 +1,124 @@
+{% layout none %}
+{% assign currentUrl = content_for_header | split:'"pageurl":"' | last | split:'"' | first | split:'.myshopify.com' | last | replace:'\/','/' | replace:'%20',' ' | replace:'\u0026','&' %}
+{% if currentUrl contains '?type=' %}
+  {% assign type_str = currentUrl | split: '?type=' | last %}
+  {% if type_str == 'reviews' %}
+	{% assign sku_all = "'" %}
+	{% paginate collection.products by 1000 %}
+      {% for product in collection.products %} 
+        {% assign current_variant = product.selected_or_first_available_variant %}
+		{% assign current_sku = "'" | append: current_variant.sku | append: "'" %}
+		{% unless sku_all contains current_sku %}
+		  {% assign sku_all = sku_all | append: current_variant.sku | append: "'" | append: ",'" %}
+          <product>
+            <name>{{ product.title | strip_html | replace: '&', '&amp;' }}</name>
+            <description>{{ product.description | strip_html | strip_newlines | replace: '&', '&amp;' }}</description>
+            <sku>{{ current_variant.sku }}</sku>
+            <buyurl>https://soufeel.com{{ product.url }}</buyurl>
+            <imageurl>http:{% if product.image.src %}{{ product.image.src | product_img_url: 'grande' }}{% else %}{{ product.featured_image.src | product_img_url: 'grande' }}{% endif %}</imageurl>
+          </product>
+		{% endunless %}
+      {% endfor %}
+    {% endpaginate %}
+  {% elsif type_str == 'recommend' %}
+	{% paginate collection.products by 1000 %}
+    {% for product in collection.products %} 
+      {% assign GoogleProductCategory = product.metafields.google.google_product_type %}
+      {% assign Gender = product.metafields.google.gender %}
+      {% assign AgeGroup = product.metafields.google.age_group %}
+      {% assign   current_variant = product.selected_or_first_available_variant %}
+      {% capture productTitle %}{{ product.title }}{% endcapture %}
+      {% comment %}{% unless productTitle contains Color %}{% capture productTitle %}{{ productTitle }} {{ Color }}{% endcapture %}{% endunless %}{% endcomment %}
+      {% if useSEOtitle and product.metafields.global.title_tag.size > 0 %}{% assign productTitle = product.metafields.global.title_tag %}{% endif %}
+      {% assign productDescription = product.description %}
+      {% if useSEOdescription and product.metafields.global.description_tag.size > 0 %}{% assign productDescription = product.metafields.global.description_tag %}{% endif %}
+      {% assign Color=product.metafields.google.custom_label_1 %} 
+      {% assign product_type = product.metafields.google.custom_label_2 %}
+        <item>
+        <g:id>{{ product.id }}-{{ current_variant.sku }}</g:id>
+        <g:sku>{{ current_variant.sku }}</g:sku>
+        <g:product_id>{{ product.id }}</g:product_id>
+        <g:title>{{ productTitle | strip_html | replace: '&', '&amp;' }}</g:title>
+        <g:condition>new</g:condition>
+        <g:identifier_exists>no</g:identifier_exists>
+        <g:description>{{ productDescription | strip_html | strip_newlines | replace: '&', '&amp;' }}</g:description>
+        <g:link>https://soufeel.com{{ product.url }}</g:link>
+        <g:mobile_link>https://soufeel.com{{ product.url }}</g:mobile_link>
+        {% if product.metafields["global"]["feed_imgsrc"] %}
+          <g:image_link>http:{{ product.metafields["global"]["feed_imgsrc"] }}</g:image_link>
+          <g:image_thumbnail>http:{{ product.metafields["global"]["feed_imgsrc"] }}</g:image_thumbnail>
+        {% else %}
+          <g:image_link>http:{% if product.image.src %}{{ product.image.src | product_img_url: 'grande' }}{% else %}{{ product.featured_image.src | product_img_url: 'grande' }}{% endif %}</g:image_link>
+          <g:image_thumbnail>http:{% if product.image.src %}{{ product.image.src | product_img_url: 'grande' }}{% else %}{{ product.featured_image.src | product_img_url: 'grande' }}{% endif %}</g:image_thumbnail>
+        {% endif %}
+        <g:condition>new</g:condition>
+        <g:availability>in stock</g:availability>
+        <g:sale_price>{{ current_variant.compare_at_price | money_without_currency }} {{ shop.currency }}</g:sale_price>
+        <g:price>{{ current_variant.price | money_without_currency }} {{ shop.currency }}</g:price>
+        <g:brand>Soufeel</g:brand>
+        <g:google_product_category>{{GoogleProductCategory | strip_html | replace: '&', '&amp;' }}</g:google_product_category>
+        <g:product_type>{{product_type | strip_html | replace: '&', '&amp;' }}</g:product_type>
+        <g:gender>{{ Gender }}</g:gender>
+        {% unless Color == "" %}<g:color>{{ Color | strip_html | strip_newlines | replace: '&', '&amp;' }}</g:color>{% endunless %}  
+        <g:age_group>adult</g:age_group>
+        <g:new>1</g:new>
+        <g:onSale>1</g:onSale>
+        {% if product.tags contains 'CART_GIVEAWAY' %}
+          <g:packing>1</g:packing>
+        {% else %}
+          <g:packing>0</g:packing>
+        {% endif %}
+        <g:custom_label_0>{{ product.metafields.google.custom_label_0 }}</g:custom_label_0>
+        <g:shipping>
+            <g:country>us</g:country>
+        </g:shipping>
+        </item>
+  {% endfor %}
+  {% endpaginate %}
+  {% endif %}
+{% else %}
+  {% assign useSEOtitle = true %}
+  {% assign useSEOdescription = true %}
+  {% paginate collection.products by 1000 %}
+    {% for product in collection.products %} 
+      {% assign GoogleProductCategory = product.metafields.google.google_product_type %}
+      {% assign Gender = product.metafields.google.gender %}
+      {% assign AgeGroup = product.metafields.google.age_group %}
+      {% assign   current_variant = product.selected_or_first_available_variant %}
+      {% capture productTitle %}{{ product.title }}{% endcapture %}
+      {% comment %}{% unless productTitle contains Color %}{% capture productTitle %}{{ productTitle }} {{ Color }}{% endcapture %}{% endunless %}{% endcomment %}
+      {% if useSEOtitle and product.metafields.global.title_tag.size > 0 %}{% assign productTitle = product.metafields.global.title_tag %}{% endif %}
+      {% assign productDescription = product.description %}
+      {% if useSEOdescription and product.metafields.global.description_tag.size > 0 %}{% assign productDescription = product.metafields.global.description_tag %}{% endif %}
+      {% assign Color=product.metafields.google.custom_label_1 %} 
+      {% assign product_type = product.metafields.google.custom_label_2 %}
+        <item>
+        <g:id>default_{{ current_variant.sku }}</g:id>
+        <g:title>{{ productTitle | strip_html | replace: '&', '&amp;' }}</g:title>
+        <g:condition>new</g:condition>
+        <g:identifier_exists>no</g:identifier_exists>
+        <g:description>{{ productDescription | strip_html | strip_newlines | replace: '&', '&amp;' }}</g:description>
+        <g:link>https://soufeel.com{{ product.url }}</g:link>
+        <g:mobile_link>https://soufeel.com{{ product.url }}</g:mobile_link>
+        {% if product.metafields["global"]["feed_imgsrc"] %}
+          <g:image_link>http:{{ product.metafields["global"]["feed_imgsrc"] }}</g:image_link>
+        {% else %}
+          <g:image_link>http:{% if product.image.src %}{{ product.image.src | product_img_url: 'grande' }}{% else %}{{ product.featured_image.src | product_img_url: 'grande' }}{% endif %}</g:image_link>
+        {% endif %}
+        <g:condition>new</g:condition>
+        <g:availability>in stock</g:availability>
+        <g:price>{{ current_variant.price | money_without_currency }} {{ shop.currency }}</g:price>
+        <g:brand>Soufeel</g:brand>
+        <g:google_product_category>{{GoogleProductCategory | strip_html | replace: '&', '&amp;' }}</g:google_product_category>
+        <g:product_type>{{product_type | strip_html | replace: '&', '&amp;' }}</g:product_type>
+        <g:gender>{{ Gender }}</g:gender>
+        {% unless Color == "" %}<g:color>{{ Color | strip_html | strip_newlines | replace: '&', '&amp;' }}</g:color>{% endunless %}  
+        <g:age_group>adult</g:age_group>
+        <g:custom_label_0>{{ product.metafields.google.custom_label_0 }}</g:custom_label_0>
+        <g:shipping>
+            <g:country>us</g:country>
+        </g:shipping>
+        </item>
+  {% endfor %}
+  {% endpaginate %}
+{% endif %}

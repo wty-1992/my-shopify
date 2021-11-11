@@ -1,0 +1,186 @@
+{% comment %}
+活动页如需改版请在这个文件里添加css文件 例如：
+{% if handle == 'ade-demo' %}
+	{{'ade-demo.scss.css' | asset_url | stylesheet_tag }}
+{% endif%}
+{% endcomment %}
+<style>
+  main.main-content{
+    background: #eff1f1;
+    padding-bottom: 30px;
+  }
+  .pages-banner-pc{
+    display:block;
+    margin: 0 auto;
+  }
+  .pages-coupon-banner-pc{
+    display:block;
+    margin: 0 auto;
+  }
+  .pages-banner-mb{display:none;}
+  .pages-coupon-banner-mb{display:none;}
+  .pages-banner{position: relative;color: #000;}
+  .pages-banner img{width:100%;}
+  .pages-position{
+    text-transform: uppercase;
+    font-family: OpenSans-Light;
+    position: absolute;
+    margin-top: 148px;
+    margin-left: 100px;
+    font-size: 32px;
+    left: 0;
+    top: 0;
+  }
+  .pages-banner.content {
+    text-align: left;
+    padding: 65px 5% 0px;
+    font-size: 24px;
+  }
+  .new-pages-main {
+    max-width: 1198px;
+    width: 100%;
+    margin: 0 auto;
+    background: #fff;
+  }
+  .pages-title {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: baseline;
+    font-size: 18px;
+    font-weight: 400;
+  }
+  .round-list {
+    background: #18afa5;
+    border-radius: 50%;
+    height: 18px;
+    width: 18px;
+    margin-right: 10px;
+    transform: translateY(2px);
+  }
+  .title-list {
+    color: #18afa5;
+    margin-right: 5px;
+  }
+  .bottom_text{    
+    font-size: 18px;
+    font-weight: 400;
+    text-align: center;
+    padding: 30px 0;
+  }
+  @media(max-width:768px){
+    .pages-banner-pc{display:none;}
+    .pages-banner-mb{display:block;}
+    .pages-coupon-banner-pc{display:none;}
+    .pages-coupon-banner-mb{display:block;}
+    .pages-position{
+      margin-top: 73px;
+      margin-left: 20%;
+      font-size: 22px;
+      width: 60%;
+      line-height: 28px;
+      text-align: center;
+    }
+    .round-list{
+      display: none;
+    }
+    .pages-title{
+      flex-flow: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .title-text {
+      font-size: 16px;
+      font-weight: 100;
+      text-align: center;
+    }
+    .pages-banner.content{
+      padding: 50px 5% 0px;
+    }
+  }
+</style>
+<div class="new-pages-main">
+  <div class="pages-banner">
+    {% if section.settings.pc_top_image %}
+      <img data-src="{{ section.settings.pc_top_image | img_url: 'master' }}" class="lazyload pages-coupon-banner-pc" />
+    {% endif %}
+    {% if section.settings.mb_top_image %}
+      <img data-src="{{ section.settings.mb_top_image | img_url: 'master' }}" class="lazyload pages-coupon-banner-mb" />
+    {% endif %}
+    <div class="pages-position">{{section.settings.top_text}}</div>
+  </div>
+
+  {% for block in section.blocks %}
+    <div class="pages-banner content">
+      <div class="pages-title">
+        <span class="round-list"></span><span class="title-list">{{ section.settings.step }}{{forloop.index}}:</span>
+        <span class="title-text">{{block.settings.title}}</span>
+      </div>
+      <img data-src="{{ block.settings.pc_image | img_url: 'master' }}" class="lazyload pages-banner-pc" />
+      <img data-src="{{ block.settings.mb_image | img_url: 'master' }}" class="lazyload pages-banner-mb" />
+  </div>
+  {% endfor %}
+  <div class="bottom_text">{{ section.settings.bottom_text }}</div>
+</div>
+{% schema %}
+{
+  "name": "内容",  
+  "class":"how-to-put-clasp-on-bracelet",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "how-to-put-clasp-on-bracelet"
+    },
+    {
+      "type": "image_picker",
+      "id": "pc_top_image",
+      "label": "顶部PC图片"
+    },
+    {
+      "type": "image_picker",
+      "id": "mb_top_image",
+      "label": "顶部MB图片"
+    },
+    {
+      "type": "text",
+      "id": "top_text",
+      "label": "顶部文案"
+    },
+	{
+      "type": "text",
+      "id": "bottom_text",
+      "label": "底部文案"
+    },
+	{
+      "type": "text",
+      "id": "step",
+      "label": "步骤文案"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "block",
+      "name": "模块",
+      "settings": [
+		{
+		  "type": "text",
+          "id": "title",
+          "label": "标题"
+	    },
+        {
+          "type": "image_picker",
+          "id": "pc_image",
+          "label": "PC图片"
+        },
+        {
+          "type": "image_picker",
+          "id": "mb_image",
+          "label": "MB图片"
+        }
+		
+
+      ]
+    }    
+  ]
+}
+{% endschema %}
+

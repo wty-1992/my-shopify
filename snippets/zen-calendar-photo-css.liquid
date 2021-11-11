@@ -1,0 +1,250 @@
+<style>
+  @font-face {
+    font-family: 'Maax Rounded Medium';
+    src: url('{{ "MAAX_ROUNDED_MEDIUM.ttf" | asset_url }}') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+.carvingErrorWord {
+    display: block;
+    padding: 0px;
+    color: rgb(235, 52, 10);
+    font-size: 12px;
+}
+.preview-calendar {
+    text-align: center;
+}
+  .el-progress-bar__inner{background:#E60144 !important}
+.photo-confirm-btn, .carving-confirm-btn, .calendar-confirm-btn {
+    background-color: #d95e9a!important;
+    border-color: #d95e9a!important;
+    border-radius: 0px!important;
+}
+.photo-cancel-btn, .carving-cancel-btn, .calendar-cancel-btn {
+    border-color: #000!important;
+    color: #000!important;
+    border-radius: 0px!important;
+    margin-right: 10px!important;
+}
+.area-photo-upload .el-upload__input {display: none !important;}
+.btn-carving.el-button--primary, .photo-confirm-btn {
+    background-color: #e60044 !important;
+    border-color: #e60044 !important;
+}
+
+.calendar-button-box,.area-photo-upload,.area-carving{
+    margin-bottom: 10px !important;
+    margin-bottom: 10px !important;
+    background-color: #f7f7f7 !important;
+    color: #000;
+    border-radius: 2px;
+    height: 52px;
+    padding: 10px 10px 10px 15px;
+    margin: 0px 0 20px;
+    border: 1px solid #f7f7f7;
+    align-items: center;
+  }
+
+  .btn-carving-open, .btn-upload-open{
+  	cursor: pointer;
+    text-align: center;
+    text-transform: capitalize;
+    background: #000;
+    padding: 0 16px;
+    border-radius: 13px;
+    margin-right: 10px;
+    border: none;
+    color: #fff;
+    font-size: 12px;
+    height: 26px;
+    min-width: 75px;
+  }
+
+  .calendar-preview-text, .open-btn-box {
+  	display: flex;
+    align-items: center;
+  }
+
+  .calendar-selector-box .arrow-icon {
+    z-index: 1;
+  }
+  .calendar-selector-box .el-date-editor{
+    z-index: 2;
+    cursor: pointer;
+  }
+
+  .calendar-preview-text, .area-photo-upload-text, .area-carving-preview-text {
+  	font-size: 12px !important;
+  }
+
+  .calendar-button-box .calendar-preview-text img {
+    width: 40px !important;
+  }
+
+  .photo-design-tool-bar {
+    margin-top: 10px;
+  }
+
+  .carving-prompt {
+    font-size: 12px;
+    color: #777 !important;
+    margin-top: 10px;
+ }
+
+ .el-dialog {
+  	border-radius: 0 !important;
+    width: 60% !important;
+    max-width: 600px;
+  }
+
+  .el-dialog__headerbtn .el-dialog__close {
+      color: #909399;
+      font-size: 45px;
+  }
+
+  .dialog-footer-carving {
+  	display: block !important;
+    padding: 0 !important;
+  }
+
+  .el-dialog__headerbtn:focus .el-dialog__close, .el-dialog__headerbtn:hover .el-dialog__close {
+    color: #d95e9a !important;
+ }
+
+
+  .el-input__inner, .el-textarea__inner,.el-radio.is-bordered {
+    border-radius: 0 !important;
+  	border-color: #ddd !important;
+  }
+  .el-input__inner {
+  	background-color: rgba(0,0,0,0) !important;
+  }
+
+  .custom-carving-container .textarea-text .el-col-12 {
+    width: 100%;
+    display: flex;
+    background: #f1f3f4;
+    align-items: center;
+    padding-left: 10px;
+  }
+  .font-label {
+    width: 25% !important;
+  }
+  .slt-font-size {
+    margin: 0px !important;
+  }
+  .slt-font-size input {
+    border: none;
+  }
+  .photo-confirm-btn, .calendar-confirm-btn,.carving-confirm-btn, .carving-cancel-btn,.photo-cancel-btn, .calendar-cancel-btn {
+    min-width: 165px;
+  }
+  .el-dialog__wrapper {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  @media (max-width: 768px){
+  	.el-dialog--center {
+        width: 100% !important;
+        height: 100% !important;
+        margin-top: 0 !important;
+    }
+    .el-message-box {
+    	width: auto !important;
+    }
+    .el-picker-panel,.el-select-dropdown {
+    	z-index: 10003 !important;
+    }
+
+    .buzhou > .product-in-stock {
+        z-index: unset !important;
+    }
+
+    .photo-confirm-btn, .calendar-confirm-btn,.carving-confirm-btn, .carving-cancel-btn,.photo-cancel-btn, .calendar-cancel-btn {
+      min-width: 45%;
+    }
+    
+  }
+
+  .avatar-uploader .el-upload {
+  	border: none !important;
+    border-radius: 0 !important;
+    width: auto !important;
+    height: auto !important;
+  }
+
+  .el-radio.is-bordered.is-checked, .el-radio__input.is-checked+.el-radio__label {
+  	border-color: #d95e9a !important;
+  }
+  .el-radio__input.is-checked+.el-radio__label {
+  	color: #d95e9a !important;
+  }
+
+  .crop-calendar-container, .carving-container {
+    width: 500px;
+    margin: 0 auto;
+  }
+  .calendar-selector-box .el-date-editor, .calendar-selector-box {width: 100% !important;}
+  .crop-avatar-uploader input {display: none !important;}
+  .crop-btn-upload-open{
+    cursor: pointer;
+    text-align: center;
+    text-transform: capitalize;
+    background: #000;
+    padding: 0 16px;
+    border-radius: 13px;
+    border: none;
+    color: #fff;
+    font-size: 12px;
+    height: 26px;
+    min-width: 75px;
+  }
+  .el-button--primary {
+    background-color: #d95e9a!important;
+    border-color: #d95e9a!important;
+    border-radius: 0px!important;
+  }
+  .el-button--default {
+    border-color: #000!important;
+    color: #000!important;
+    border-radius: 0px!important;
+    margin-right: 10px!important;
+  }
+  .crop-dialog .el-dialog__body {padding-top: 40px!important;}
+  .crop-dialog .el-dialog__footer {padding-bottom: 72px!important;}
+  .crop-dialog .design-tool-bar {margin-top: 10px;}
+  .crop-select-box {padding-left: 0px!important;}
+  .area-crop-upload-text {padding-left: 10px;}
+  .cropError input {border-color: red !important;}
+  .calendar-dialog .el-dialog__body {padding-bottom: 10px!important;}
+  .calendar-dialog .el-dialog {margin-top: 8vh!important;}
+  .photo-dialog .el-dialog {margin-top: 22vh!important;}
+  .photo-select-container {width: 50%;}
+  .photo-dialog .el-dialog__footer {padding-bottom: 70px;}
+  .calendar-selector-box input {height: 52px;line-height: 52px;}
+  .calendar-dialog .area-photo-upload {margin-bottom: 0px !important;}
+  .date-label-text {width: 500px;margin: 1rem auto .5rem auto!important;}
+  @media (max-width: 768px){
+    .calendar-dialog .el-dialog__header {padding-top: 0px!important;}
+    
+    .crop-calendar-container, .carving-container, .photo-select-container {
+      width: 100%;
+      display:block!important;
+    }
+    .calendar-select-container, .crop-select-container, .calendar-selector-box {
+      width: 100%!important;
+    }
+    .crop-dialog .el-dialog__body > div:nth-child(1) {
+      height: calc(100% - 175px);
+    }
+    .crop-dialog .el-dialog__body {
+      height: calc(100% - 125px);
+    }
+    .crop-dialog .el-dialog__body > div:nth-child(1) > div:nth-child(1), .crop-dialog .el-dialog__body > div:nth-child(1) > div:nth-child(1) > div:nth-child(1), .crop-dialog .custom-cropper{
+      height: 100%;
+    }
+    
+    .calendar-dialog .el-dialog {margin-top: 0px !important;}
+  	.photo-dialog .el-dialog {margin-top: 0px !important;}
+  }
+</style>

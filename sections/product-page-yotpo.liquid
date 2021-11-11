@@ -1,0 +1,60 @@
+<style>
+.product-page-yotpo-section h2.yotpo-title{
+  font-size: 20px;
+  letter-spacing: 3px;
+  width: 100%;
+  margin-top: 40px;
+  padding-bottom: 0;
+  font-weight: 400;
+  text-transform: uppercase;
+  color:#000;
+}
+.yotpo-syndication-reference{
+  display:none;
+}
+</style>
+
+{%- assign sku = variant.sku | default: product.variants | map: 'sku' | first -%}
+
+<div class="container">
+    <h2 class="yotpo-title text-center" id="Tscroll">{{section.settings.show_title}}</h2>
+    <div class="yotpo yotpo-main-widget" 
+        data-product-id="{{sku}}"
+        data-price="{{ variant.price | money_without_currency }}"
+        data-currency="{{ shop.currency }}" 
+        data-name="{{ product.title | escape }}" 
+        data-url="{{ shop.url }}{{ product.url }}" 
+        data-image-url="{{ product.featured_image | product_img_url: "large" |replace: '?', '%3F' | replace: '&','%26'}}" 
+        data-description="{{ product.description | escape }}"> 
+    </div>
+</div>
+
+
+<script>
+  $(function() {
+    $('#yotpo-reviews-goto').click(function() {
+      var yotpoWidget = $('#shopify-section-{{section.id}}');
+      if ($(window).width() > 750){
+        var topset = yotpoWidget.offset().top - 135;
+      }else{
+        var topset = yotpoWidget.offset().top - 100;
+      }
+      $('body,html').animate({scrollTop:topset}, 500); 
+    })
+  })
+</script>
+
+{% schema %}
+{
+  "name": "产品页 - Yotpop评论",
+  "class": "product-page-yotpo-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "show_title",
+      "label": "显示标题",
+      "default": "Customer Reviews"
+    }
+  ]
+}
+{% endschema %}

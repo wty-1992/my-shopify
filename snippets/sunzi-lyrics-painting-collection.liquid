@@ -1,0 +1,193 @@
+{% comment %}
+** @name 歌词油画集合 **
+** @author 罗鸿燊 **
+** @integrate 罗鸿燊 王天宇  **
+{% endcomment %}
+
+{% comment %} 引入公共插槽v2.0 {% endcomment %}
+{% include 'sunzi-slot-template-2' %}
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'lyrics-painting-v1.0.0.js' %}
+{% comment %} 尺码变体 {% endcomment %}
+{% assign variantSize = 100 %}
+{% comment %} 颜色变体 {% endcomment %}
+{% assign variantColor = 100 %}
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/lyrics-painting.json' %}
+{% comment %} react组件类别 {% endcomment %}
+{% assign reactType = 'default' %}
+{% comment %}歌词油画红色版{% endcomment %}
+{% if product.tags contains 'custom-sunzi-type-lyrics-painting-red' %}
+  {% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/lyrics-painting.json' %}
+  {% assign reactType = 'default' %}
+{% comment %}歌词油画青色版{% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-type-lyrics-painting-cyan' %}
+  {% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/lyrics-painting-cyan.json' %}
+  {% assign reactType = 'default' %}
+{% comment %}歌词油画双黑胶版{% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-type-lyrics-painting-double' %}
+  {% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/lyrics-painting-double.json' %}
+  {% assign reactType = 'default' %}
+{% comment %}歌词油画竖版金色{% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-type-lyrics-painting-golden' %}
+  {% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/lyrics-painting-goldern.json' %}
+  {% assign reactType = 'VerticalGoldern' %}
+  {% assign variantSize = 1 %}
+  {% assign variantColor = 0 %}
+{% endif %}
+
+
+{% comment %}变体元素{% endcomment %}
+{% comment %}是否带框变体{% endcomment %}
+{% assign variantFrame = 0 %}
+
+
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 额外的表单参数 {% endcomment %}
+
+  {% comment %} 标记订单来源 {% endcomment %}
+  {% assign from = coreJs | split: '-v' %}
+  <input type="hidden" name="properties[_from]" value="sunzi-{{ from[0] }}" />
+  
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="text" id="sunzi-input" name="properties[customInfo]" required="required"></input>
+  <input type="hidden" id="sunzi-cart" name="properties[_sunzi_cart]" />
+
+  {% comment %} 定制按钮 {% endcomment %}
+  <div class="sunzi-form-content">
+    <div id="sunzi-node">
+      <div class="sunzi-node-loading">
+        <span class="dots">
+          <i></i>
+          <i></i>
+          <i></i>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- sunzi core js -->
+<script crossorigin src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{ coreJs }}" defer="defer"></script>
+
+{% comment %} 渲染前执行 {% endcomment %}
+<script defer="async">
+
+</script>
+
+{% comment %} 2.请求定制化数据 & 渲染 {% endcomment %}
+<script defer="async">
+  _sunzi_request('{{requestURL}}', function(data) {
+    // 定制化参数
+    var _sunzi_props = data;
+    initData(_sunzi_props);
+    _sunzi_props.shop = _sunzi_global_data.shop;
+    LyricsPainting.render(
+      LyricsPainting['{{reactType}}'],
+      {
+        ..._sunzi_props,
+       onVariantChange(...data) {
+          data.forEach((variant, index) => {
+            switch(index) {
+              case 0:
+                _sunzi_variant_change({{variantSize}}, variant.name);
+                break;
+              case 1:
+                _sunzi_variant_change({{variantColor}}, variant.name);
+                break;
+            }
+          });
+        },
+        async onConfirm(data) {
+          // 唤醒loading
+          _sunzi_loading();
+          // 组装加车参数
+          var param = {
+            '_sunzi_compose': [{
+              'rule': 35,
+              'data': data.output
+            }],
+            '_sunzi_effect': data.sunzi_effect,
+          };
+      	  {% if product.tags contains 'custom-sunzi-type-lyrics-painting-red' %}
+      		param['_sunzi_remark'] = data.sunzi_remark;
+      		param['_sunzi_sources'] = data._sunzi_sources;
+      	  {% elsif product.tags contains 'custom-sunzi-type-lyrics-painting-cyan' %}
+      		param['_sunzi_remark'] = data.sunzi_remark;
+      		param['_sunzi_sources'] = data._sunzi_sources;
+      	  {% elsif product.tags contains 'custom-sunzi-type-lyrics-painting-double' %}
+      	 	param['_sunzi_remark'] = data.sunzi_remark;
+          {% elsif product.tags contains 'custom-sunzi-type-lyrics-painting-golden' %}
+      		var nameArr = data.sunzi_remark.name.replace(/\d\s:\s/g, '|split|').split('|split|');
+			param['_sunzi_texts'] = [
+      		  {
+                'number': 1,
+                'value': data.sunzi_remark.songName 
+              },
+      		  {
+                'number': 2,
+                'value': nameArr[1]
+              },
+      		  {
+                'number': 3,
+                'value': nameArr[2]
+              },
+      		]
+            param['_sunzi_remark'] = {
+      		  'lyrics': data.sunzi_remark.lyrics
+            };
+          {% endif %}
+          
+          $('#sunzi-input').val(JSON.stringify(param));
+          $('#sunzi-cart').val(JSON.stringify({
+            image: [ data.sunzi_effect ]
+          }));
+          
+          // 加车队列
+          var _queue = [];
+
+          // 加车事件触发
+          await Promise.all(_queue);
+      	  // 由于主产品涉及vip/质保产品等额外加车事件的判断，因此沿用站点加车方法
+          $('.product-form__cart-submit').click();
+      	  $('#sunzi-loading').hide();
+        }
+      },
+      _matomoId,
+      document.getElementById("sunzi-node")
+     );
+  });
+
+  /** 其他自定义函数 start **/
+  function initData(data) {
+    var productJSON = {{ product | json }};
+    var sizeList = [];
+    // 没有size变体
+    if("{{ variantSize }}" == 100) {
+      data.sizeData = data.sizeData.slice(0, 1);
+      data.sizeData[0].price = getCurProduct("price");
+    }
+    // 存在size变体
+  	else {
+      productJSON.variants.forEach(variant => {
+        var sizeValue = variant.options["{{variantSize}}"];
+        if(!sizeList.find(sizeItem => sizeItem.value == sizeValue)) {
+          sizeList.push({value: sizeValue, price: variant.price / 100});
+          return true;
+        };
+      });
+      data.sizeData.forEach((item, index) => {
+        item.price = sizeList[index].price;
+      });
+    }
+  }
+
+  /** 其他自定义函数 end **/
+</script>

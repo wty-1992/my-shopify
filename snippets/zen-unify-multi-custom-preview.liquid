@@ -1,0 +1,891 @@
+<script src="{{ 'fontfaceobserver.js' | asset_url }}"></script>
+<script src="{{ 'qiniu.min.js' | asset_url }}" ></script>
+<script src="{{ 'fabric.min.js' | asset_url }}" ></script>
+<script src="{{ 'zen-base.js' | asset_url }}"></script>
+{% assign cattrSKU = product.first_available_variant.sku %}
+
+{% assign customOpt = '' %}
+
+{% if cattrSKU == 'CBS491' %}
+	{% assign customOpt = '{"secondType":"changeVariant","optionName":"option1","saveTextEffect":false,"photo":{"CBS491":{"remoteBackImg":"http://pic.stylelab.com/img/photo/CBS491.png","canvasWidth":500,"canvasHeight":400,"scale":1,"data":[{"isAiLucid":1,"width":143,"height":158,"left":86,"top":34,"sort":0},{"isAiLucid":1,"width":186,"height":158,"left":236,"top":34,"sort":1},{"isAiLucid":1,"width":159,"height":158,"left":78,"top":208,"sort":2},{"isAiLucid":1,"width":135,"height":158,"left":277,"top":208,"sort":3}]},"CBS492":{"remoteBackImg":"http://pic.stylelab.com/img/photo/CBS492.png","canvasWidth":500,"canvasHeight":400,"scale":1,"data":[{"isAiLucid":1,"width":143,"height":158,"left":86,"top":34,"sort":0},{"isAiLucid":1,"width":186,"height":158,"left":236,"top":34,"sort":1},{"isAiLucid":1,"width":159,"height":158,"left":78,"top":208,"sort":2},{"isAiLucid":1,"width":135,"height":158,"left":277,"top":208,"sort":3}]},"CBS493":{"remoteBackImg":"http://pic.stylelab.com/img/photo/CBS493.png","canvasWidth":500,"canvasHeight":400,"scale":1,"data":[{"isAiLucid":1,"width":142,"height":146,"left":77,"top":40,"sort":0},{"isAiLucid":1,"width":165,"height":140,"left":258,"top":41,"sort":1},{"isAiLucid":1,"width":155,"height":135,"left":77,"top":225,"sort":2},{"isAiLucid":1,"width":122,"height":144,"left":280,"top":216,"sort":3}]},"CBS494":{"remoteBackImg":"http://pic.stylelab.com/img/photo/CBS494.png","canvasWidth":500,"canvasHeight":400,"scale":1,"data":[{"isAiLucid":1,"width":142,"height":146,"left":77,"top":40,"sort":0},{"isAiLucid":1,"width":165,"height":140,"left":258,"top":41,"sort":1},{"isAiLucid":1,"width":155,"height":135,"left":77,"top":225,"sort":2},{"isAiLucid":1,"width":122,"height":144,"left":280,"top":216,"sort":3}]}}}' %}
+{% elsif cattrSKU == 'CBS495' %}
+	{% assign customOpt = '{"secondType":"changeVariant","optionName":"option1","saveTextEffect":false,"photo":{"CBS495":{"remoteBackImg":"http://pic.stylelab.com/img/photo/CBS495.png","canvasWidth":500,"canvasHeight":400,"scale":1,"data":[{"isAiLucid":1,"width":79,"height":112,"left":28,"top":108,"sort":0},{"isAiLucid":1,"width":88,"height":112,"left":112,"top":108,"sort":1},{"isAiLucid":1,"width":79,"height":112,"left":213,"top":108,"sort":2},{"isAiLucid":1,"width":79,"height":112,"left":305,"top":108,"sort":3},{"isAiLucid":1,"width":89,"height":112,"left":385,"top":108,"sort":4}],"text":[{"limit":"30","placeholder":"Enter name here","left":18,"top":337,"width":465,"type":2,"font":"Kasandra Script","size":22,"color":"#000000","fontWeight":"bold"}]},"CBS496":{"remoteBackImg":"http://pic.stylelab.com/img/photo/CBS496.png","canvasWidth":500,"canvasHeight":400,"scale":1,"data":[{"isAiLucid":1,"width":79,"height":112,"left":28,"top":108,"sort":0},{"isAiLucid":1,"width":88,"height":112,"left":112,"top":108,"sort":1},{"isAiLucid":1,"width":79,"height":112,"left":213,"top":108,"sort":2},{"isAiLucid":1,"width":79,"height":112,"left":305,"top":108,"sort":3},{"isAiLucid":1,"width":89,"height":112,"left":385,"top":108,"sort":4}],"text":[{"limit":"30","placeholder":"Enter name here","left":18,"top":337,"width":465,"type":2,"font":"Kasandra Script","size":22,"color":"#000000","fontWeight":"bold"}]},"CBS497":{"remoteBackImg":"http://pic.stylelab.com/img/photo/CBS497.png","canvasWidth":500,"canvasHeight":400,"scale":1,"data":[{"isAiLucid":1,"width":79,"height":112,"left":28,"top":108,"sort":0},{"isAiLucid":1,"width":88,"height":112,"left":112,"top":108,"sort":1},{"isAiLucid":1,"width":79,"height":112,"left":213,"top":108,"sort":2},{"isAiLucid":1,"width":79,"height":112,"left":305,"top":108,"sort":3},{"isAiLucid":1,"width":89,"height":112,"left":385,"top":108,"sort":4}],"text":[{"limit":"30","placeholder":"Enter name here","left":18,"top":337,"width":465,"type":2,"font":"Kasandra Script","size":22,"color":"#000000","fontWeight":"bold"}]},"CBS501":{"remoteBackImg":"http://pic.stylelab.com/img/photo/CBS501.png","canvasWidth":500,"canvasHeight":400,"scale":1,"data":[{"isAiLucid":1,"width":96,"height":134,"left":25,"top":56,"sort":0},{"isAiLucid":1,"width":110,"height":134,"left":133,"top":56,"sort":1},{"isAiLucid":1,"width":96,"height":134,"left":256,"top":56,"sort":2},{"isAiLucid":1,"width":110,"height":134,"left":365,"top":56,"sort":3}],"text":[{"limit":"7","placeholder":"Enter name here","left":212,"top":314,"width":63,"type":2,"font":"Kasandra Script","size":21,"color":"#000000"},{"limit":"15","placeholder":"Enter name here","left":294,"top":314,"width":97,"type":1,"font":"Kasandra Script","size":21,"color":"#000000"}]},"CBS502":{"remoteBackImg":"http://pic.stylelab.com/img/photo/CBS502.png","canvasWidth":500,"canvasHeight":400,"scale":1,"data":[{"isAiLucid":1,"width":96,"height":134,"left":25,"top":56,"sort":0},{"isAiLucid":1,"width":110,"height":134,"left":133,"top":56,"sort":1},{"isAiLucid":1,"width":96,"height":134,"left":256,"top":56,"sort":2},{"isAiLucid":1,"width":110,"height":134,"left":365,"top":56,"sort":3}],"text":[{"limit":"7","placeholder":"Enter name here","left":212,"top":314,"width":63,"type":2,"font":"Kasandra Script","size":21,"color":"#000000"},{"limit":"15","placeholder":"Enter name here","left":294,"top":314,"width":97,"type":1,"font":"Kasandra Script","size":21,"color":"#000000"}]},"CBS503":{"remoteBackImg":"http://pic.stylelab.com/img/photo/CBS503.png","canvasWidth":500,"canvasHeight":400,"scale":1,"data":[{"isAiLucid":1,"width":96,"height":134,"left":25,"top":56,"sort":0},{"isAiLucid":1,"width":110,"height":134,"left":133,"top":56,"sort":1},{"isAiLucid":1,"width":96,"height":134,"left":256,"top":56,"sort":2},{"isAiLucid":1,"width":110,"height":134,"left":365,"top":56,"sort":3}],"text":[{"limit":"7","placeholder":"Enter name here","left":212,"top":314,"width":63,"type":2,"font":"Kasandra Script","size":21,"color":"#000000"},{"limit":"15","placeholder":"Enter name here","left":294,"top":314,"width":97,"type":1,"font":"Kasandra Script","size":21,"color":"#000000"}]}}}' %}
+{% elsif cattrSKU == 'CBS498' %}
+	{% assign customOpt = '{"canvasWidth":500,"canvasHeight":400,"saveTextEffect":false,"scale":1,"photo":[{"isAiLucid":1,"width":123,"height":110,"left":57,"top":112,"sort":0},{"isAiLucid":1,"width":124,"height":109,"left":195,"top":112,"sort":1},{"isAiLucid":1,"width":106,"height":109,"left":340,"top":112,"sort":2}],"text":[{"limit":"30","placeholder":"Enter text here","left":20,"top":280,"width":465,"type":2,"font":"Handycheera","size":39,"color":"#fff600"}]}' %}
+{% elsif cattrSKU == 'CBS504' %}
+	{% assign customOpt = '{"canvasWidth":500,"canvasHeight":400,"saveTextEffect":false,"scale":1,"photo":[{"isAiLucid":1,"width":113,"height":125,"left":25,"top":138,"sort":0},{"isAiLucid":1,"width":98,"height":120,"left":147,"top":140,"sort":1},{"isAiLucid":1,"width":113,"height":125,"left":255,"top":137,"sort":2},{"isAiLucid":1,"width":98,"height":120,"left":378,"top":140,"sort":3}],"text":[{"limit":"15","placeholder":"Enter name here","left":21,"top":290,"width":215,"type":3,"font":"Edwardian Script ITC","size":32,"color":"#000000"},{"limit":"15","placeholder":"Enter name here","left":265,"top":290,"width":215,"type":1,"font":"Edwardian Script ITC","size":32,"color":"#000000"}]}' %}
+{% comment %}{% elsif cattrSKU == 'CPT010-1' %}
+	{% assign customOpt = '{"secondType":"changeVariant","optionName":"option1","saveTextEffect":false,"crop":{"CPT010-1":{"remoteBackImg":"http://pic.stylelab.com/img/photo/CPT010-1.png","canvasWidth":1772,"canvasHeight":1181,"scale":1,"data":[{"isAiLucid":1,"width":863,"height":540,"left":16,"top":14,"sort":0},{"isAiLucid":1,"width":863,"height":540,"left":893,"top":14,"sort":1},{"isAiLucid":1,"width":571,"height":604,"left":16,"top":564,"sort":2},{"isAiLucid":1,"width":571,"height":604,"left":600,"top":564,"sort":3},{"isAiLucid":1,"width":571,"height":604,"left":1185,"top":564,"sort":4}]},"CPT010-2":{"remoteBackImg":"http://pic.stylelab.com/img/photo/CPT010-2.png","canvasWidth":1772,"canvasHeight":1181,"scale":1,"data":[{"isAiLucid":1,"width":863,"height":540,"left":16,"top":14,"sort":0},{"isAiLucid":1,"width":863,"height":540,"left":893,"top":14,"sort":1},{"isAiLucid":1,"width":571,"height":604,"left":16,"top":564,"sort":2},{"isAiLucid":1,"width":571,"height":604,"left":600,"top":564,"sort":3},{"isAiLucid":1,"width":571,"height":604,"left":1185,"top":564,"sort":4}]},"CPT010-3":{"remoteBackImg":"http://pic.stylelab.com/img/photo/CPT010-3.png","canvasWidth":4488,"canvasHeight":3071,"scale":1,"data":[{"isAiLucid":1,"width":2187,"height":1369,"left":39,"top":36,"sort":0},{"isAiLucid":1,"width":2187,"height":1369,"left":2263,"top":36,"sort":1},{"isAiLucid":1,"width":1446,"height":1602,"left":39,"top":1433,"sort":2},{"isAiLucid":1,"width":1447,"height":1602,"left":1521,"top":1433,"sort":3},{"isAiLucid":1,"width":1446,"height":1602,"left":3004,"top":1433,"sort":4}]},"CPT010-4":{"remoteBackImg":"http://pic.stylelab.com/img/photo/CPT010-4.png","canvasWidth":3071,"canvasHeight":2244,"scale":0.5,"data":[{"isAiLucid":1,"width":2998,"height":2004,"left":51,"top":49,"sort":0},{"isAiLucid":1,"width":2997,"height":2004,"left":3099,"top":49,"sort":1},{"isAiLucid":1,"width":1982,"height":2346,"left":51,"top":2095,"sort":2},{"isAiLucid":1,"width":1982,"height":2346,"left":2083,"top":2095,"sort":3},{"isAiLucid":1,"width":1982,"height":2346,"left":4114,"top":2095,"sort":4}]},"CPT010-5":{"remoteBackImg":"http://pic.stylelab.com/img/photo/CPT010-5.png","canvasWidth":4429,"canvasHeight":2953,"scale":0.5,"data":[{"isAiLucid":1,"width":4311,"height":2604,"left":82,"top":77,"sort":0},{"isAiLucid":1,"width":4311,"height":2604,"left":4466,"top":77,"sort":1},{"isAiLucid":1,"width":2850,"height":3084,"left":82,"top":2742,"sort":2},{"isAiLucid":1,"width":2850,"height":3084,"left":3005,"top":2742,"sort":3},{"isAiLucid":1,"width":2850,"height":3084,"left":5927,"top":2742,"sort":4}]},"CPT010-6":{"remoteBackImg":"http://pic.stylelab.com/img/photo/CPT010-6.png","canvasWidth":3000,"canvasHeight":1965,"scale":1,"data":[{"isAiLucid":1,"width":1456,"height":864,"left":32,"top":30,"sort":0},{"isAiLucid":1,"width":1455,"height":864,"left":1513,"top":30,"sort":1},{"isAiLucid":1,"width":1455,"height":864,"left":1513,"top":30,"sort":2},{"isAiLucid":1,"width":963,"height":1021,"left":1019,"top":914,"sort":3},{"isAiLucid":1,"width":963,"height":1021,"left":2005,"top":914,"sort":4}]}}}' %}
+{% elsif cattrSKU == 'CPT011-1' %}
+	{% assign customOpt = '{"secondType":"changeVariant","optionName":"option1","saveTextEffect":false,"isOverlay":1,"crop":{"CPT011-1":{"remoteBackImg":"http://pic.stylelab.com/img/photo/CPT011-1.png","canvasWidth":886,"canvasHeight":590.5,"scale":0.5,"data":[{"isAiLucid":1,"width":1772,"height":1181,"left":0,"top":0,"sort":0},{"isAiLucid":1,"angle":3.22,"width":377,"height":264,"left":1298,"top":46,"sort":1},{"isAiLucid":1,"angle":3.22,"width":377,"height":264,"left":1317,"top":589,"sort":2},{"isAiLucid":1,"angle":-4.61,"width":377,"height":264,"left":1279,"top":333,"sort":3},{"isAiLucid":1,"angle":-4.18,"width":377,"height":264,"left":1298,"top":878,"sort":4}]},"CPT011-2":{"remoteBackImg":"http://pic.stylelab.com/img/photo/CPT011-2.png","canvasWidth":886,"canvasHeight":590.5,"scale":0.5,"data":[{"isAiLucid":1,"width":1772,"height":1181,"left":0,"top":0,"sort":0},{"isAiLucid":1,"angle":3.22,"width":377,"height":264,"left":1298,"top":46,"sort":1},{"isAiLucid":1,"angle":3.22,"width":377,"height":264,"left":1317,"top":589,"sort":2},{"isAiLucid":1,"angle":-4.61,"width":377,"height":264,"left":1279,"top":333,"sort":3},{"isAiLucid":1,"angle":-4.18,"width":377,"height":264,"left":1298,"top":878,"sort":4}]},"CPT011-3":{"remoteBackImg":"http://pic.stylelab.com/img/photo/CPT011-3.png","canvasWidth":2244,"canvasHeight":1535.5,"scale":0.5,"data":[{"isAiLucid":1,"width":4488,"height":3071,"left":0,"top":0,"sort":0},{"isAiLucid":1,"angle":3.22,"width":954,"height":667,"left":3304,"top":148,"sort":1},{"isAiLucid":1,"angle":3.22,"width":954,"height":667,"left":3340,"top":1531,"sort":2},{"isAiLucid":1,"angle":-4.68,"width":954,"height":667,"left":3250,"top":880,"sort":3},{"isAiLucid":1,"angle":-4.13,"width":954,"height":667,"left":3300,"top":2268,"sort":4}]},"CPT011-4":{"remoteBackImg":"http://pic.stylelab.com/img/photo/CPT011-4.png","canvasWidth":3071,"canvasHeight":2244,"scale":0.5,"data":[{"isAiLucid":1,"width":6142,"height":4488,"left":0,"top":0,"sort":0},{"isAiLucid":1,"angle":3.22,"width":1417,"height":991,"left":4475,"top":179,"sort":1},{"isAiLucid":1,"angle":3.22,"width":1417,"height":991,"left":4535,"top":2238,"sort":2},{"isAiLucid":1,"angle":-4.64,"width":1417,"height":991,"left":4399,"top":1278,"sort":3},{"isAiLucid":1,"angle":-4.16,"width":1417,"height":991,"left":4472,"top":3336,"sort":4}]},"CPT011-5":{"remoteBackImg":"http://pic.stylelab.com/img/photo/CPT011-5.png","canvasWidth":4429,"canvasHeight":2953,"scale":0.5,"data":[{"isAiLucid":1,"width":8858,"height":5906,"left":0,"top":0,"sort":0},{"isAiLucid":1,"angle":3.3,"width":1882,"height":1316,"left":6540,"top":183,"sort":1},{"isAiLucid":1,"angle":3.3,"width":1882,"height":1316,"left":6612,"top":2921,"sort":2},{"isAiLucid":1,"angle":-4.6,"width":1882,"height":1316,"left":6435,"top":1631,"sort":3},{"isAiLucid":1,"angle":-4.13,"width":1882,"height":1316,"left":6533,"top":4372,"sort":4}]},"CPT011-6":{"remoteBackImg":"http://pic.stylelab.com/img/photo/CPT011-6.png","canvasWidth":3000,"canvasHeight":1965,"scale":1,"data":[{"isAiLucid":1,"width":3000,"height":1965,"left":0,"top":0,"sort":0},{"isAiLucid":1,"angle":3.26,"width":637,"height":445,"left":2243,"top":60,"sort":1},{"isAiLucid":1,"angle":3.23,"width":639,"height":447,"left":2261,"top":991,"sort":2},{"isAiLucid":1,"angle":-4.53,"width":640,"height":448,"left":2210,"top":543,"sort":3},{"isAiLucid":1,"angle":-4.09,"width":640,"height":447,"left":2243,"top":1475,"sort":4}]}}}' %}
+{% elsif cattrSKU contains 'CPT004X20' %}
+	{% assign customOpt = '{"canvasWidth":500,"canvasHeight":400,"saveTextEffect":false,"isOverlay":1,"scale": 1,"remoteBackImg": "https://pic.stylelab.com/img/photo/soufeelbg/CPT004X20.png","crop":[{"isAiLucid": 1,"width":167,"height":111,"left":86,"top":48,"angle":0,"sort": 0}, {"isAiLucid": 1,"width":186,"height":126,"left":76,"top":169,"angle":0,"sort": 1}, {"isAiLucid": 1,"width":143,"height":248,"left":269,"top":48,"angle":0,"sort": 2}]}' %}
+{% elsif cattrSKU contains 'XBT013X04' %}
+	{% assign customOpt = '{"canvasWidth":500,"canvasHeight":400,"saveTextEffect":false,"scale": 1,"remoteBackImg": "https://pic.stylelab.com/img/photo/XBT013X04.png","crop":[{"isAiLucid": 1,"width":100,"height":63,"left":100,"top":32,"sort": 0}, {"isAiLucid": 1,"width":134,"height":72,"left":66,"top":99,"sort": 1}, {"isAiLucid": 1,"width":101,"height":61,"left":85,"top":174,"sort": 2}, {"isAiLucid": 1,"width":94,"height":45,"left":203,"top":50,"sort": 3}, {"isAiLucid": 1,"width":100,"height":63,"left":300,"top":32,"sort": 4}, {"isAiLucid": 1,"width":134,"height":72,"left":300,"top":99,"sort": 5}, {"isAiLucid": 1,"width":101,"height":61,"left":318,"top":174,"sort": 6}, {"isAiLucid": 1,"width":219,"height":74,"left":141,"top":239,"sort": 7}, {"isAiLucid": 1,"width":84,"height":52,"left":208,"top":316,"sort": 8}]}' %}
+{% elsif cattrSKU contains 'CTS819M' %}
+	{% assign customOpt = '{"secondType":"changeVariant","cutSku":1,"saveTextEffect":false,"photo":{"CTS819MA": {"remoteBackImg": "http://pic.stylelab.com/img/textdesign/CTS819MA-OUT.png","canvasWidth": 500,"canvasHeight": 400,"scale": 1,"data": [{"isAiLucid":1,"width":82,"height":136,"left":21,"top":140,"sort": 0}, {"isAiLucid":1,"width":89,"height":136,"left":111,"top":140,"sort": 1}, {"isAiLucid":1,"width":82,"height":136,"left":209,"top":140,"sort": 2}, {"isAiLucid":1,"width":82,"height":136,"left":306,"top":140,"sort": 3}, {"isAiLucid":1,"width":84,"height":136,"left":395,"top":140,"sort": 4}],"text":[{"limit":"30","placeholder":"Type words here...","left":21,"top":279,"width":452,"type":3,"font":"BlackJack","size":31,"color":"#000000"}]},"CTS819MB": {"remoteBackImg": "http://pic.stylelab.com/img/textdesign/CTS819MA-OUT.png","canvasWidth": 500,"canvasHeight": 400,"scale": 1,"data": [{"isAiLucid":1,"width":82,"height":136,"left":21,"top":140,"sort": 0}, {"isAiLucid":1,"width":89,"height":136,"left":111,"top":140,"sort": 1}, {"isAiLucid":1,"width":82,"height":136,"left":209,"top":140,"sort": 2}, {"isAiLucid":1,"width":82,"height":136,"left":306,"top":140,"sort": 3}, {"isAiLucid":1,"width":84,"height":136,"left":395,"top":140,"sort": 4}],"text":[{"limit":"30","placeholder":"Type words here...","left":21,"top":279,"width":452,"type":3,"font":"BlackJack","size":31,"color":"#000000"}]},"CTS819MC": {"remoteBackImg": "http://pic.stylelab.com/img/textdesign/CTS819MA-OUT.png","canvasWidth": 500,"canvasHeight": 400,"scale": 1,"data": [{"isAiLucid":1,"width":82,"height":136,"left":21,"top":140,"sort": 0}, {"isAiLucid":1,"width":89,"height":136,"left":111,"top":140,"sort": 1}, {"isAiLucid":1,"width":82,"height":136,"left":209,"top":140,"sort": 2}, {"isAiLucid":1,"width":82,"height":136,"left":306,"top":140,"sort": 3}, {"isAiLucid":1,"width":84,"height":136,"left":395,"top":140,"sort": 4}],"text":[{"limit":"30","placeholder":"Type words here...","left":21,"top":279,"width":452,"type":3,"font":"BlackJack","size":31,"color":"#000000"}]}}}' %}
+{% elsif cattrSKU contains 'CTS819K' %}
+	{% assign customOpt = '{"secondType":"changeVariant","cutSku":1,"saveTextEffect":false,"photo":{"CTS819KA": {"remoteBackImg": "http://pic.stylelab.com/img/textdesign/CTS819KA-OUT.png","canvasWidth": 500,"canvasHeight": 400,"scale": 1,"data": [{"isAiLucid":1,"width":82,"height":136,"left":21,"top":140,"sort": 0}, {"isAiLucid":1,"width":89,"height":136,"left":111,"top":140,"sort": 1}, {"isAiLucid":1,"width":82,"height":136,"left":209,"top":140,"sort": 2}, {"isAiLucid":1,"width":82,"height":136,"left":306,"top":140,"sort": 3}, {"isAiLucid":1,"width":84,"height":136,"left":395,"top":140,"sort": 4}],"text":[{"limit":"30","placeholder":"Type words here...","left":21,"top":279,"width":452,"type":3,"font":"BlackJack","size":31,"color":"#000000"}]},"CTS819KB": {"remoteBackImg": "http://pic.stylelab.com/img/textdesign/CTS819KB-OUT.png","canvasWidth": 500,"canvasHeight": 400,"scale": 1,"data": [{"isAiLucid":1,"width":82,"height":136,"left":21,"top":140,"sort": 0}, {"isAiLucid":1,"width":89,"height":136,"left":111,"top":140,"sort": 1}, {"isAiLucid":1,"width":82,"height":136,"left":209,"top":140,"sort": 2}, {"isAiLucid":1,"width":82,"height":136,"left":306,"top":140,"sort": 3}, {"isAiLucid":1,"width":84,"height":136,"left":395,"top":140,"sort": 4}],"text":[{"limit":"30","placeholder":"Type words here...","left":21,"top":279,"width":452,"type":3,"font":"BlackJack","size":31,"color":"#ffffff"}]},"CTS819KC": {"remoteBackImg": "http://pic.stylelab.com/img/textdesign/CTS819KC-OUT.png","canvasWidth": 500,"canvasHeight": 400,"scale": 1,"data": [{"isAiLucid":1,"width":82,"height":136,"left":21,"top":140,"sort": 0}, {"isAiLucid":1,"width":89,"height":136,"left":111,"top":140,"sort": 1}, {"isAiLucid":1,"width":82,"height":136,"left":209,"top":140,"sort": 2}, {"isAiLucid":1,"width":82,"height":136,"left":306,"top":140,"sort": 3}, {"isAiLucid":1,"width":84,"height":136,"left":395,"top":140,"sort": 4}],"text":[{"limit":"30","placeholder":"Type words here...","left":21,"top":279,"width":452,"type":3,"font":"BlackJack","size":31,"color":"#000000"}]}}}' %}
+{% elsif cattrSKU contains 'BL016' %}
+	{% assign customOpt = '{"secondType":"changeVariant","cutSku":1,"saveTextEffect":false,"optionName":"option2","remoteName":"option2","crop":{"BL016": {"remoteBackImg": "https://pic.stylelab.com/img/blanket/750x900_BL016.png","canvasWidth": 750,"canvasHeight": 900.2,"scale": 1,"data": [{"isAiLucid": 1,"width":219.9, "height": 285.4, "left": 57.6, "top": 160.1,"sort": 0}, {"isAiLucid": 1,"width":405.1, "height": 285.4, "left": 287.4, "top": 160.1,"sort": 1}, {"isAiLucid": 1,"width":198.3, "height": 287.3, "left": 57.6, "top": 454.7,"sort": 2}, {"isAiLucid": 1,"width":198.3, "height": 287.3, "left": 264.9, "top": 454.7,"sort": 3}, {"isAiLucid": 1,"width":219.4, "height": 287.3, "left": 473.1, "top": 454.7,"sort": 4}],"text":[{"limit":"30","placeholder":"Type words here...","isUpper":1,"left": 58, "top": 118,"type":1,"size":23},{"limit":"30","placeholder":"Type words here...","isUpper":1,"left":693, "top": 754,"type":3,"size":23}]}}}' %}
+{% endcomment %}
+{% else %}
+
+{% if product.metafields["global"]["cattributeUnify"] %}
+	{% assign customOpt = product.metafields["global"]["cattributeUnify"] %}
+{% elsif product.metafields["global"]["cattribute"] %}
+	{% assign customOpt = product.metafields["global"]["cattribute"] %}
+{% endif %}
+
+{% endif %}
+<script>
+  window.addEventListener('EVENT_CROP_SAVE_AFTER', function(event){
+	var index = event.detail.index;
+    var data = event.detail.data;
+    if(data){
+    	$('.crop-btn-upload-open').eq(index).text('{{'zen.general.change' | t}}')
+    }
+  });
+      
+  var jsonCustom = {};
+  var customOpt = '{{ customOpt }}';
+  if(customOpt){
+  	jsonCustom = JSON.parse('{{ customOpt }}');
+  }
+                            
+  //console.log(JSON.stringify(jsonCustom));
+    
+  var secondType = typeof jsonCustom.secondType != 'undefined' ? jsonCustom.secondType : '';
+    
+  var baseurl = 'https://pic.stylelab.com/';
+  var optionName = typeof jsonCustom.optionName != 'undefined' ? jsonCustom.optionName :"";
+  var remoteName = typeof jsonCustom.remoteName != 'undefined' ? jsonCustom.remoteName :"";
+    
+  var _zenSku = "{{ product.first_available_variant.sku }}";
+  var currentVar = {{ product.first_available_variant | json }};
+  
+  if(secondType == "changeVariant"){
+  	_zenSku = "{{ product.selected_or_first_available_variant.sku }}";
+    currentVar = {{ product.selected_or_first_available_variant | json }};
+  }
+    
+  //currentVar = JSON.parse(currentVar);
+  var optionVal = optionName != '' ? currentVar[optionName] : '';
+  var remoteVal = remoteName != '' ? currentVar[remoteName] : '';
+    
+  console.log(remoteVal);
+    
+  //sku截取
+  if(typeof jsonCustom.cutSku != 'undefined' && jsonCustom.cutSku == 1){
+    if(_zenSku.indexOf('-') > -1){
+      let skuArr = _zenSku.split('-');
+      _zenSku = skuArr[0];
+    }
+  }
+  
+  var dataScale = 1;
+  //如果secondType == "changeVariant" 随变体改变走不同配置
+  if(secondType == "changeVariant"){
+    if(typeof jsonCustom.photo != 'undefined'){
+    	dataScale = jsonCustom.photo[_zenSku].scale;
+    }else{
+    	dataScale = jsonCustom.crop[_zenSku].scale;
+    }
+  }else if(typeof jsonCustom.scale != 'undefined'){
+    dataScale = jsonCustom.scale;
+  }
+
+  var cropArray = [];
+  var jsonCrop = '';
+  //配置crop是切图传图
+  if(typeof jsonCustom.crop != 'undefined'){
+    jsonCrop = jsonCustom.crop;
+    if(secondType == "changeVariant"){
+    	jsonCrop = jsonCustom.crop[_zenSku].data;
+    }
+  	jsonCrop.forEach(function(v, i){
+      var cropNum = i+1;
+      cropArray.push(
+       {
+          uploadLabel: "{{'zen.general.photo' | t}} "+cropNum,  //传图描述标签
+          btnUploadText: "{{'zen.photo.upload' | t}}",  //上传按钮文案
+          require: true,//是否必传图片
+          hasCropOrigin: true,
+          sku: _zenSku,
+          style: 0, //设置上传样式，0:单行展示 1：矩形上传表单
+          type: '',
+          aspectRatio: v.width / v.height//切图比例
+        }
+      );
+    })
+  }
+  console.log(cropArray);
+    console.log('========================');
+  
+  var photoArray = [];
+  var jsonPhoto = '';
+  //配置photo是遮罩图传图
+  if(typeof jsonCustom.photo != 'undefined'){
+    jsonPhoto = jsonCustom.photo;
+    if(secondType == "changeVariant"){
+    	jsonPhoto = jsonCustom.photo[_zenSku].data;
+    }
+    console.log(jsonPhoto);
+  	jsonPhoto.forEach(function(v, i){
+      var photoNum = i+1;
+      photoArray.push(
+       {
+         "require": true,
+         "type": "multipic",
+         "sku": _zenSku+"_"+photoNum,
+         "basePhotoImg": "https://pic.stylelab.com/img/photo/"+_zenSku+"_"+photoNum+".png?33zKaQ",
+         "ainame": "",
+         "bgcolor": "rgb(255,255,255)",
+         "style": 0,
+         "isAiLucid": v.isAiLucid
+        }
+      );
+    })
+  }
+  
+  console.log(photoArray);
+
+  var _zenConfig = {
+      photoObj: [],
+      carvingObj: [],
+      crystalObj: [],
+      curveCarvingObj: [],
+      nameObj: [],
+      carvingBigObj: [],
+      cropPrompt: "{{'zen.photo.ps_please_well' | t}}",   //刻字弹层提示文字, 可选, 默认无
+      requirePrompt: "{{'zen.general.required_field' | t}}",  //传图必填提示文案
+      uploadLabel: "{{'zen.general.uploadLabel' | t}}",  //传图描述标签
+      btnUploadText: "{{'zen.photo.upload' | t}}",  //上传按钮文字
+      photoCancelText: "{{'zen.general.cancel' | t}}",  //传图层Cancel文案
+      photoConfirmText: "{{'zen.general.confirm' | t}}", //上传按钮文案
+      photoUrl: "https://pic.stylelab.com/img/photo/",
+      isCloseOnClickModal: false,
+      isModalAppendToBody:true,//true：dialog的遮罩层插入至 body 元素上 flase：dialog的遮罩层插入至dialog后面
+      leftText: "{{'zen.general.left' | t}}",
+      hasNo:true,
+      uploadLabel:"Photo ",
+      coverPhoto:true,
+      crop: cropArray,
+      photo: photoArray,
+      carving:[],
+      crystal:[],
+      crystalText:[],
+      curveCarving:[]
+  };
+
+</script>
+
+<div class="display-photo-upload">
+  <span>{{'zen.general.uploadLabel' | t}}</span>
+ <div class="page-temp-img close"><span class="icon photofont photo-xiangxia"></span></div>
+</div>
+
+<div class="photo-carving-container">
+  <div id="zen-photocarving"></div>
+</div>
+
+<div class="text-container">
+  <div id="t_name"></div>
+</div>
+
+<input type="text" id="customInfo" name="properties[customInfo]" value="" style="display:none"/>
+
+<!-- 引用vue插件实现切图传图或者遮罩图传图功能 -->
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.4.5/zen-photo-carving-chunk-vendors.css?201912091454" rel="stylesheet" />
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.4.5/zen-photo-carving-app.css?201912091454" rel="stylesheet" />
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.4.5/zen-photo-carving-chunk-vendors.js?201912091454"></script>
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.4.5/zen-photo-carving-app.js?201912091454"></script>
+
+<script>
+  var ubase_ = new ubase();
+  
+  var isHasText = false;
+  //数据格式是否需要包含刻字效果图 true/false
+  var saveTextEffect = typeof jsonCustom.saveTextEffect !='undefined' ? jsonCustom.saveTextEffect : true;
+  
+  var zenCustomJson = {};
+  //多图和单图走不同的数据格式
+  if((typeof jsonCustom.crop != 'undefined' && jsonCrop.length > 1) || (typeof jsonCustom.photo != 'undefined' && jsonPhoto.length > 1)){
+  	zenCustomJson['_sunzi_sources'] = [];
+    zenCustomJson['_sunzi_ais'] = [];
+  }else{
+  	zenCustomJson['_sunzi_source'] = '';
+    zenCustomJson['_sunzi_ai'] = '';
+  }
+  
+  zenCustomJson['_sunzi_effect'] = '';
+   
+  var coorsObj = [];
+  
+  if(secondType == "changeVariant"){
+    if(typeof jsonCustom.photo != 'undefined'){
+      coorsObj = typeof jsonCustom.photo[_zenSku].text != 'undefined' ? jsonCustom.photo[_zenSku].text : [];
+    }else{
+      coorsObj = typeof jsonCustom.crop[_zenSku].text != 'undefined' ? jsonCustom.crop[_zenSku].text : [];
+    }
+  }else if(typeof jsonCustom.text != 'undefined'){
+    coorsObj = jsonCustom.text;
+  }
+  
+  console.log('coorsObj', coorsObj);
+  
+  var canvasWidth = jsonCustom.canvasWidth ? jsonCustom.canvasWidth : 500;
+  var canvasHeight = jsonCustom.canvasHeight ? jsonCustom.canvasHeight : 400;
+  
+  if(secondType == "changeVariant"){
+    if(typeof jsonCustom.photo != 'undefined'){
+      canvasWidth = jsonCustom.photo[_zenSku].canvasWidth ? jsonCustom.photo[_zenSku].canvasWidth : 500;
+      canvasHeight = jsonCustom.photo[_zenSku].canvasHeight ? jsonCustom.photo[_zenSku].canvasHeight : 400;
+    }else{
+      canvasWidth = jsonCustom.crop[_zenSku].canvasWidth ? jsonCustom.crop[_zenSku].canvasWidth : 500;
+      canvasHeight = jsonCustom.crop[_zenSku].canvasHeight ? jsonCustom.crop[_zenSku].canvasHeight : 400;
+    }
+    
+  }
+
+  var tmpCanvas1, imgBase64;
+  var tmpCanvas2;
+  
+  var customModal3 = new tingle.modal({
+    footer: true,
+    stickyFooter: false
+  });
+  customModal3.addFooterBtn('{{ 'zen.general.change' | t }}', 'tingle-btn button sp-change-picture', function() {  //关闭弹层
+    customModal3.close();
+  });
+  
+  customModal3.addFooterBtn('{{ 'products.product.add_to_cart' | t }}', 'tingle-btn sp-add-to-cart el-button--primary', function() {  //确认photo
+	
+  }); 
+  
+  var ifQty = true;
+  var modalHtml = '';
+  modalHtml += '<div>'
+  +'<div class="tingle-img-preview">'
+    +'<img id="imagemerge" />'
+    +'</div>'
+  +'<div id="notice_text">'
+    +"<span>{{ 'zen.multicustom.modal_note' | t }}</span><br>"
+    +'</div>';
+  
+  if(ifQty){
+  	modalHtml += '<div class="tingle-quantiy">'
+    +'<label class="product-quantity-label" for="quantity">Quantity</label> '
+    +'<input class="input-field product-quantity-input" type="text" name="tingle_quantity" value="1">'
+    +'</div>'
+  }
+  modalHtml += '</div>'
+  customModal3.setContent(modalHtml);
+  
+  if(!tmpCanvas1){
+    tmpCanvas1 = new fabric.Canvas();
+    tmpCanvas1.setWidth(canvasWidth);
+    tmpCanvas1.setHeight(canvasHeight);   
+  }
+  
+  let imgSku = _zenSku;
+  if(typeof jsonCustom.cutSku != 'undefined' && jsonCustom.cutSku == 1){
+    if(_zenSku.indexOf('-') > -1){
+      let skuArr = _zenSku.split('-');
+      imgSku = skuArr[0];
+    }
+  }
+  
+  if(secondType == "changeVariant"){
+    if(typeof jsonCustom.photo != 'undefined'){
+      var remoteBackImg = typeof jsonCustom.photo[_zenSku].remoteBackImg != 'undefined' ? jsonCustom.photo[_zenSku].remoteBackImg : baseurl +'img/photo/'+imgSku+'.png';
+    }else{
+      var remoteBackImg = typeof jsonCustom.crop[_zenSku].remoteBackImg != 'undefined' ? jsonCustom.crop[_zenSku].remoteBackImg : baseurl +'img/photo/'+imgSku+'.png';
+    }
+  }else{
+  	var remoteBackImg = jsonCustom.remoteBackImg ? jsonCustom.remoteBackImg : baseurl +'img/photo/'+imgSku+'.png';
+  }
+  
+  //通过变体颜色更换底图
+  if(remoteVal){
+    remoteVal = getColor(remoteVal);
+    remoteBackImg = remoteBackImg.replace(imgSku, remoteVal);
+  }
+  
+  console.log('remoteBackImg----------------',remoteBackImg);
+  //如果设置了isOverlay则将底图作为遮罩图放在画布上
+  if(jsonCustom.isOverlay){
+  	tmpCanvas1.setOverlayImage(remoteBackImg+'?'+Math.random(), tmpCanvas1.renderAll.bind(tmpCanvas1), { 
+      angle: 0,
+      left: 0,
+      top: 0,
+      originX: 'left',
+      originY: 'top',
+      scaleX: dataScale,
+      scaleY: dataScale,
+      crossOrigin: 'anonymous'
+    });
+  }else{
+    //否则则将底图作为画布的背景图
+  	tmpCanvas1.setBackgroundImage(remoteBackImg+'?'+Math.random(), tmpCanvas1.renderAll.bind(tmpCanvas1), {
+      angle: 0,
+      left: 0,
+      top: 0,
+      originX: 'left',
+      originY: 'top',
+      scaleX: dataScale,
+      scaleY: dataScale,
+      crossOrigin: 'anonymous'
+    });
+  }
+  
+  $(function(){
+    //修改插件中自带的properties文字输入框的name，防止提交
+    $('.zen-require').attr('name','customVal');
+    
+    $(".display-photo-upload").click(function(){
+      $(".photo-carving-container").slideToggle("slow");
+      $(".page-temp-img").toggleClass('close');
+    });
+    
+    if(coorsObj.length > 0){
+      setTextHtml();
+    }
+    
+    $("#merge").click(function(){
+      mergeImage(0);//合并多个图片和文字为一张效果图
+    });
+    
+    //加车
+    $(".sp-add-to-cart").click(function(){
+      var quantity = jQuery('input[name="tingle_quantity"]').val() ? jQuery('input[name="tingle_quantity"]').val() : 1;  
+      console.log('parseInt(quantity)',parseInt(quantity));
+      $('input[name="quantity"]').val(parseInt(quantity)).trigger('change');
+      $(".sp-add-to-cart").attr("disabled","disabled");
+      uploadtoqiniu(clickAddFormToCart);
+    }); 
+    
+  })
+  
+  //颜色转换
+  function getColor(optVal){
+    $color = ['Black','Purple','Pink','Teal','Light Blue','Red','Orange','Lime Green','Blue','Grey'];
+    var language = {{ localization.language | json }};
+    if(language.shop_locale.locale == 'fr'){
+      $color = ['Noir','Violet','Rose','Turquoise','Bleu Clai','Rouge','Orange','Vert citron','Bleu','Gris'];
+    }
+    if(language.shop_locale.locale == 'de'){
+      $color = ['Schwarz','Lila','Rosa','Blaugrün','Hellblau','Rot','Orange','Limette Grün','Blau','Blau'];
+    }
+    if(language.shop_locale.locale == 'jp'){
+      $color = ['ブラック','パープル','ピンク','ティール','ライトブルー','レッド','オレンジ','ライムグリーン','ブルー','グレー'];
+    }
+    var pos = $.inArray(optVal, $color);
+    $colorArr = ['Black','Purple','Pink','Teal','Light_Blue','Red','Orange','Lime_Green','Blue','Gray'];
+    return colorVal = $colorArr[pos];
+  }
+  
+  Product.validators.push(async () => {
+    return true;
+  })
+  
+  function clickAddFormToCart(){
+	$("#customInfo").val(JSON.stringify(zenCustomJson));
+    $('.product-form__cart-submit').click();//点击真正的加车按钮
+    customModal3.close();
+    $(".sp-add-to-cart").removeAttr("disabled");
+  }
+  
+  function mergeImage(i){
+  	var zenFlag = true;
+      
+    if(coorsObj.length > 0){
+      isHasText = true;
+    }  
+      
+    if(isHasText){
+      coorsObj.forEach(function(v, i){
+        let textVal = $.trim($('.fonttext').eq(i).val());
+        if( textVal == '' ){
+          $('.text-input-container').eq(i).addClass("check-error");
+          zenFlag = false;
+        }else{
+          $('.text-input-container').eq(i).removeClass("check-error");
+        }
+      });
+    }
+      
+    var zenInfo = $(".zen-require").val();
+
+    if(zenInfo){
+      var zenInfo = JSON.parse(zenInfo);
+      var imgdata = [];
+
+      if(typeof zenCustomJson['_sunzi_sources'] != 'undefined'){
+        zenCustomJson['_sunzi_sources'] = [];
+        zenCustomJson['_sunzi_ais'] = [];
+      }
+
+      if(typeof zenInfo.crop != 'undefined'){
+        var target = jsonCrop;
+        target.forEach(function(item1,ii) {
+          let vv = zenInfo.crop[ii];
+          if(!vv.crop) {
+            $('.area-crop-upload-'+ii).addClass("check-error");
+            zenFlag = false;
+          }else{
+            //把切好的图片放到imgdata，融合效果图的时候会用到这个数组中的图片
+            imgdata.push(vv.crop);
+
+            $('.area-crop-upload-'+ii).removeClass("check-error");
+            //构造数据格式
+            if(typeof zenCustomJson['_sunzi_sources'] != 'undefined'){
+              zenCustomJson['_sunzi_sources'][ii] = vv.cropOrigin;
+              zenCustomJson['_sunzi_ais'][ii] = vv.crop;
+            }else{
+              zenCustomJson['_sunzi_source'] = vv.cropOrigin;
+              zenCustomJson['_sunzi_ai'] = vv.crop;
+            }  
+          }
+        });
+      }
+
+      if(typeof zenInfo.photo != 'undefined'){
+        var target = [];
+        var imgdata = [];
+
+        if(typeof zenCustomJson['_sunzi_sources'] != 'undefined'){
+          zenCustomJson['_sunzi_sources'] = [];
+          zenCustomJson['_sunzi_ais'] = [];
+        }
+
+        jsonPhoto.forEach(function(vv,ii) {
+          if(!zenInfo.photo[ii].crop) {
+            $('.area-photo-upload-'+ii).addClass("check-error");
+            zenFlag = false;
+          }else{
+            if(typeof jsonPhoto[ii]!= 'undefined' && typeof jsonPhoto[ii].sort!= 'undefined'){
+              console.log(jsonPhoto[ii]);
+              let sortN = parseInt(jsonPhoto[ii].sort);
+              imgdata[sortN] = zenInfo.photo[ii].ai;
+
+            }else{
+              //把ai图放到imgdata中，融合效果图的时候会用到这个数组中的图片
+              imgdata.push(zenInfo.photo[ii].ai);
+            }
+
+            $('.area-photo-upload-'+ii).removeClass("check-error");
+
+            if(typeof zenCustomJson['_sunzi_sources'] != 'undefined'){
+              zenCustomJson['_sunzi_sources'][ii] = zenInfo.photo[ii].origin;
+              zenCustomJson['_sunzi_ais'][ii] = zenInfo.photo[ii].ai;
+            }else{
+              zenCustomJson['_sunzi_source'] = zenInfo.photo[ii].origin;
+              zenCustomJson['_sunzi_ai'] = zenInfo.photo[ii].ai;
+            }
+          }
+        });
+
+        //如果jsonCustom的photo配置了sort，则需要将图片重新排序
+        jsonPhoto.forEach(function(item,index){
+          if(typeof jsonPhoto[index]!= 'undefined' && typeof jsonPhoto[index].sort!= 'undefined'){
+            let sortN = parseInt(jsonPhoto[index].sort);
+            target[sortN] = jsonPhoto[index];
+          }else{
+            target[index] = jsonPhoto[index];
+          }
+        });
+
+        console.log(imgdata);
+        console.log(target);
+
+      }
+      console.log('zenFlag===',zenFlag);
+      if(!zenFlag){
+        if($('.photo-carving-container').is(':hidden')){
+          $(".photo-carving-container").slideToggle("slow");
+          $(".photo-unfold").toggleClass("rotate-icon");
+        }
+        return false;
+      }
+
+      $(".merge-button").attr("disabled","disabled");
+
+      fabric.Image.fromURL(imgdata[i], function(img) {
+        var scale = target[i].width/img.width*dataScale;    
+        var imgAngle = target[i].angle ? target[i].angle : 0;
+        img.set({left: target[i].left*dataScale, top: target[i].top*dataScale, scaleX: scale, scaleY:scale, angle:imgAngle});    
+
+        tmpCanvas1.add(img);
+        tmpCanvas1.renderAll();
+
+        if(++i < imgdata.length){      
+          mergeImage(i);
+        }else{
+          imgBase64 = tmpCanvas1.toDataURL({
+            format: 'png',
+            multiplier: 1
+          });
+
+          tmpCanvas2 = new fabric.Canvas();
+          tmpCanvas2.setWidth(canvasWidth);
+          tmpCanvas2.setHeight(canvasHeight);
+          tmpCanvas2.setOverlayImage(remoteBackImg+'?'+Math.random(), tmpCanvas1.renderAll.bind(tmpCanvas1), { 
+            angle: 0,
+            left: 0,
+            top: 0,
+            originX: 'left',
+            originY: 'top',
+            crossOrigin: 'anonymous'
+          });
+          tmpCanvas2.setBackgroundImage(imgBase64,function() {
+            if(isHasText){
+              var custom_info_title = [];
+              coorsObj.forEach(function(v,i){  
+                if($('.fonttext').length > 0){ 
+                  var textLabel = 'Text';
+                  if(typeof coorsObj[i].textLabel != 'undefined'){
+                    textLabel = coorsObj[i].textLabel;
+                  }
+                  var curText = v.isUpper ? $('.fonttext').eq(i).val().toUpperCase() :  $('.fonttext').eq(i).val();
+                  custom_info_title.push(curText);
+                  var vfamily = v.font ? v.font : 'TimesNewRoman';
+                  var textColor = v.color ? v.color : "#FFF";
+                  var angle = v.angle ? v.angle : 0;
+                  var fontWeight = v.fontWeight ? v.fontWeight : 'normal';
+                  if(v.type==1){   //直接设置坐标 
+                    tmpCanvas2.add(new fabric.Text(curText, { 
+                      fontFamily: vfamily,
+                      fontSize: v.size * dataScale,                 
+                      fill: textColor,// "#FFF",
+                      left: v.left * dataScale,
+                      top: v.top * dataScale,
+                      angle: angle,
+                      fontWeight:fontWeight
+                    }));
+                  }else if(v.type==2){
+                    var texts = new fabric.Text(curText, { 
+                      fontFamily: vfamily,
+                      fontSize: v.size,
+                      angle: angle,
+                      fontWeight:fontWeight
+                    })
+                    if(v.width){
+                      var coox = v.left+(v.width-texts.width)/2;            
+                      texts.set({left:coox * dataScale, top:v.top * dataScale, fill: textColor,fontSize:v.size * dataScale});// "#FFF"
+                    }else{
+                      texts.set({left:v.left * dataScale, top:v.top * dataScale, fill: textColor,fontSize:v.size * dataScale,originX:'center',originY:'center'});// "#FFF"
+                    }
+                    tmpCanvas2.add(texts);  
+                  }else if(v.type==3){
+                    var texts = new fabric.Text(curText, { 
+                      fontFamily: vfamily,
+                      fontSize: v.size,
+                      angle: angle,
+                      fontWeight:fontWeight
+                    })
+                    var coox = v.width ? v.left+(v.width-texts.width) : v.left-texts.width;            
+                    texts.set({left:coox * dataScale, top:v.top * dataScale, fill: textColor,fontSize:v.size * dataScale});// "#FFF"
+                    tmpCanvas2.add(texts);  
+                  }
+                }
+              })
+
+              if(custom_info_title.length > 1){
+                zenCustomJson['_sunzi_texts'] = [];
+                custom_info_title.forEach(function(item,index){
+                  zenCustomJson['_sunzi_texts'][index] = {};
+                  zenCustomJson['_sunzi_texts'][index]['value'] = item;
+                  if(coorsObj[index].dataLabel){
+                    zenCustomJson['_sunzi_texts'][index]['number'] = coorsObj[index].dataLabel;
+                  }else{
+                    var no = index+1;
+                    let nn = no + '';
+                    zenCustomJson['_sunzi_texts'][index]['number'] = nn;
+                  }
+                });
+              }else{
+                zenCustomJson['_sunzi_text'] = {};
+                zenCustomJson['_sunzi_text']['value'] = custom_info_title[0];
+              }
+            }
+
+            //tmpCanvas2.renderAll();
+
+            imgBase64 = tmpCanvas2.toDataURL({
+              format: 'png',
+              multiplier: 1
+            });
+
+            $("#imagemerge").attr("src", imgBase64);
+
+            $(".merge-button").removeAttr("disabled");
+
+            customModal3.open();
+          });
+        }
+      }, {crossOrigin: "Anonymous"}); 
+    }else{
+      return false;
+    }   
+  }
+  
+  function uploadtoqiniu(callback){
+    var crop_picture = '', text_picture = '';  
+//     imgBase64 = tmpCanvas2.toDataURL({
+//       format: 'png',
+//       multiplier: 0.5
+//     });          
+    console.log(imgBase64);
+    var blob = ubase_.convertBase64ToBlob(imgBase64);                           
+    $.ajax({
+      type: "POST",
+      url: "https://pic.stylelab.com/assist/uptoken",
+      dataType: 'json',
+      beforeSend: function() {
+      },
+      success: function(data){
+        var observer = {                         
+          next(result){
+          },
+          error(err){
+            console.log(err.message);
+          },
+          complete(res1){
+            zenCustomJson['_sunzi_effect'] = "https://spic.qn.cdn.imaiyuan.com/" + res1.key;
+            if(isHasText && saveTextEffect){
+              zenCustomJson['_sunzi_text_effect'] = '';
+              zenCustomJson['_sunzi_text_effect'] = "https://spic.qn.cdn.imaiyuan.com/" + res1.key;
+            }
+            callback();
+          }
+        };
+        var putExtra = {
+          fname: "",                          
+          params: {},                         
+          mimeType: null                      
+        };
+        var config = {
+          region:qiniu.region.na0,
+          concurrentRequestLimit:3
+        };
+        var filename = new Date().Format("yyyyMMddhhmmss") + ubase_.randomString(6);
+        var key = 'getcustomphonecase_' + filename + '.png';
+        var observable = qiniu.upload(blob, key, data.token, putExtra, config);
+        observable.subscribe(observer);
+      }
+    });                  
+  }
+  
+  function changeText(i,obj,limitv){
+    var objLenOld = $(obj).val().length;
+    var objVal = $(obj).val().replace(/[\r\n]/g,"");
+    var objLen = objVal.length;
+
+    if(objLen < objLenOld){
+      $(obj).attr('maxlength',limitv + objLenOld - objLen);
+    }else{
+      $(obj).attr('maxlength',limitv);
+    }
+
+    if(objLen > limitv){
+      var lenDiff = objLen - limitv;
+      $(obj).val($(obj).val().substr(-1,lenDiff));
+      $('#leftnum'+i).text(0);
+    }else{
+      $('#leftnum'+i).text(parseInt(limitv) - objLen);
+    }
+    
+    if(typeof coorsObj[i].isUppercase != 'undefined' && coorsObj[i].isUppercase){
+      var oldVal = $(obj).val();
+      $(obj).val(oldVal.toUpperCase());
+    }
+  }
+  
+  function setTextHtml(){
+  	var t_name_str = '';
+    coorsObj.forEach(function(v, i){
+      var limit = v.limit || 20;
+      var label = v.label || "";
+      var placeholderText = v.placeholder || "";
+
+      t_name_str += '<div class="label-input-container">';
+      if(label){
+        t_name_str += '<label class="product-txt-label" for="fonttext">'+label+':</label>';
+      }
+      
+      if(v.isTextarea){
+      	t_name_str += '<div class="text-input-container"><textarea disabled="disabled" type="text" id="text-input'+i+'" class="fonttext" name="fonttext" maxlength="'+limit+'" value=""  oninput="changeText('+i+',this,'+limit+')" placeholder="'+placeholderText+'"></textarea>';
+      }else{
+      	t_name_str += '<div class="text-input-container"><input disabled="disabled" type="text" id="text-input'+i+'" class="fonttext" name="fonttext" maxlength="'+limit+'" value=""  oninput="changeText('+i+',this,'+limit+')" placeholder="'+placeholderText+'"/>';
+      }
+
+      t_name_str += '<div class="leftnum" id="leftnumbox'+i+'"><span id="leftnum'+i+'">'+limit+' </span>Left</div></div></div>';
+    });
+
+    $('#t_name').html(t_name_str);
+    
+    jQuery("#merge").html('Wait...');
+    jQuery("#merge").attr('disabled','disabled');
+      
+    coorsObj.forEach(function(v,i){   
+      var myfont = new FontFaceObserver(v.font?v.font:'');
+      myfont.load().then(function() {
+        (i+1) == coorsObj.length?jQuery("#merge").removeAttr('disabled').html(jQuery("#merge").attr('default-value')):'';  
+        jQuery("#text-input"+i).attr("disabled",false);  
+      }).catch(function(e) {
+        (i+1) == coorsObj.length?jQuery("#merge").removeAttr('disabled').html(jQuery("#merge").attr('default-value')):'';  
+        jQuery("#text-input"+i).attr("disabled",false);  
+        console.log(e)
+      });
+    });
+  }
+  
+  /*function photoCarvingValidate(){
+  	return true;
+  }*/
+  
+  function setRemoteImg(imgUrl){
+    if(jsonCustom.isOverlay){
+      	tmpCanvas1.setOverlayImage(imgUrl+'?'+Math.random(), tmpCanvas1.renderAll.bind(tmpCanvas1), { 
+          angle: 0,
+          left: 0,
+          top: 0,
+          originX: 'left',
+          originY: 'top',
+          scaleX: dataScale,
+          scaleY: dataScale,
+          crossOrigin: 'anonymous'
+        });
+      }else{
+      	tmpCanvas1.setBackgroundImage(imgUrl+'?'+Math.random(), tmpCanvas1.renderAll.bind(tmpCanvas1), {
+          angle: 0,
+          left: 0,
+          top: 0,
+          originX: 'left',
+          originY: 'top',
+          scaleX: dataScale,
+          scaleY: dataScale,
+          crossOrigin: 'anonymous'
+        });
+      }  
+  }
+  
+  Listener.on([ Listener.product.update.after ], function(event, variant, dom) {  
+  	
+    if(secondType == "changeVariant"){
+      if(( optionName && optionVal != variant[optionName] ) || ( !optionName )){
+        
+        if(optionName && optionVal != variant[optionName]){
+          optionVal = variant[optionName];
+        }
+        if(remoteName && remoteVal != variant[remoteName]){
+          remoteVal = variant[remoteName];
+        }
+        
+        _zenSku = variant.sku;
+
+        if(typeof jsonCustom.cutSku != 'undefined' && jsonCustom.cutSku == 1){
+          if(_zenSku.indexOf('-') > -1){
+            let skuArr = _zenSku.split('-');
+            _zenSku = skuArr[0];
+          }
+        }
+        
+        if(jsonCrop){
+          console.log('jsonCrop.length===================',jsonCrop.length);
+          window._zenConfig.crop.splice(0, jsonCrop.length);
+          jsonCrop = jsonCustom.crop[_zenSku].data;
+          console.log('jsonCrop===================',jsonCrop);
+          console.log(window._zenConfig.crop);
+          jsonCrop.forEach(function(v, i){
+            let cropNum = i+1;
+            setTimeout(function(){
+              window._zenConfig.crop.push({
+                uploadLabel: "{{'zen.general.photo' | t}} "+cropNum,  //传图描述标签
+                btnUploadText: "{{'zen.photo.upload' | t}}",  //上传按钮文案
+                require: true,//是否必传图片
+                hasCropOrigin: true,
+                sku: _zenSku,
+                style: 0, //设置上传样式，0:单行展示 1：矩形上传表单
+                type: '',
+                aspectRatio: v.width / v.height
+              });
+            },100);
+
+          })
+
+          coorsObj = typeof jsonCustom.crop[_zenSku].text != 'undefined' ? jsonCustom.crop[_zenSku].text : [];
+          if(coorsObj.length > 0){
+          	setTextHtml();
+          }
+
+          tmpCanvas1 = new fabric.Canvas();
+          canvasWidth = jsonCustom.crop[_zenSku].canvasWidth;
+          canvasHeight = jsonCustom.crop[_zenSku].canvasHeight;
+
+          tmpCanvas1.setWidth(canvasWidth);
+          tmpCanvas1.setHeight(canvasHeight);  
+
+          dataScale = jsonCustom.crop[_zenSku].scale;
+          
+          remoteBackImg = typeof jsonCustom.crop[_zenSku].remoteBackImg != 'undefined' ? jsonCustom.crop[_zenSku].remoteBackImg : baseurl +'img/photo/'+_zenSku+'.png';
+          
+          if(remoteVal){
+            remoteVal = getColor(remoteVal);
+            remoteBackImg = remoteBackImg.replace(_zenSku, remoteVal);
+          }
+          
+          setRemoteImg(remoteBackImg); 
+
+        }
+        
+        if(jsonPhoto){
+          window._zenConfig.photo.splice(0, jsonPhoto.length);
+          jsonPhoto = jsonCustom.photo[_zenSku].data;
+          
+          jsonPhoto.forEach(function(v, i){
+            let photoNum = i+1;
+            setTimeout(function(){
+               window._zenConfig.photo.push(
+               {
+                 "require": true,
+                 "type": "multipic",
+                 "sku": _zenSku+"_"+photoNum,
+                 "basePhotoImg": "https://pic.stylelab.com/img/photo/"+_zenSku+"_"+photoNum+".png?33zKaQ",
+                 "ainame": "",
+                 "bgcolor": "rgb(255,255,255)",
+                 "style": 0,
+                 "isAiLucid": v.isAiLucid
+                }
+              );
+            },100);
+          })
+          
+          coorsObj = typeof jsonCustom.photo[_zenSku].text != 'undefined' ? jsonCustom.photo[_zenSku].text : [];
+          if(coorsObj.length > 0){
+          	setTextHtml();
+          }	
+
+          tmpCanvas1 = new fabric.Canvas();
+          canvasWidth = jsonCustom.photo[_zenSku].canvasWidth;
+          canvasHeight = jsonCustom.photo[_zenSku].canvasHeight;
+
+          tmpCanvas1.setWidth(canvasWidth);
+          tmpCanvas1.setHeight(canvasHeight);  
+
+          dataScale = jsonCustom.photo[_zenSku].scale;
+          
+          remoteBackImg = typeof jsonCustom.photo[_zenSku].remoteBackImg != 'undefined' ? jsonCustom.photo[_zenSku].remoteBackImg : baseurl +'img/photo/'+_zenSku+'.png';
+         
+          if(remoteVal){
+            remoteVal = getColor(remoteVal);
+            remoteBackImg = remoteBackImg.replace(_zenSku, remoteVal);
+          }
+          
+          setRemoteImg(remoteBackImg); 
+        }
+      }
+    }
+  })  
+</script>

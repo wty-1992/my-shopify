@@ -1,0 +1,277 @@
+{% if product.tags contains 'custom-spotifysong-1' %}
+	{% assign customOpt = '{"coors":[{"type":"select","options":["White","Black"],"label":"Text Color on Plaque"},{"type":"text","label":"The Favorite Song","limit":"50"},{"type":"text","label":"The Artist","limit":"50"}],"photoOption":{"label":"Photo on Plaque","options":["Album Photo","Upload by Myself"]},"crop":{"label":"Upload Photo"}}' %}
+    {% assign hasPhoto = 'Upload by Myself' %}
+{% endif %}
+
+{% if product.tags contains 'custom-spotifysong-2' %}
+	{% assign customOpt = '{"coors":[{"type":"text","label":"The Favorite Song","limit":"30"}]}' %}
+{% endif %}
+{% assign productImage = product.featured_image | img_url: '400x400' | prepend: "https:" %}
+<script>
+  var hasPhotoText = '{{hasPhoto}}';
+  var jsonCustom = '{{ customOpt }}'?JSON.parse('{{ customOpt }}'):{};
+  console.log(jsonCustom);
+  
+  
+  var baseurl = 'https://pic.stylelab.com/';
+  var _zenSku = "{{ product.selected_or_first_available_variant.sku }}";
+  
+  var photoList = [];
+  var cropList = [];
+  
+  if(typeof jsonCustom.photo != 'undefined'){
+    window.addEventListener('EVENT_PHOTO_SAVE_AFTER', function(event){
+      var index = event.detail.index;
+      var data = event.detail.data;
+      $('.area-photo-upload').css('border-color', '#000000');
+      $('.preview-thumbnail').show();
+    });
+  	photoList = [
+      {
+        require: true,
+        sku: _zenSku,
+        basePhotoImg: baseurl + "img/photo/"+_zenSku+".png?123",
+        ainame: "",
+        bgcolor: "rgb(255,255,255)",
+        style: 0,
+        type: "multipic"
+      }
+    ];
+  }
+  
+  if(typeof jsonCustom.crop != 'undefined'){
+    
+    window.addEventListener('EVENT_CROP_SAVE_AFTER', function(event){
+      var data = JSON.parse(event.detail.data);
+      $('.area-crop-upload').css('border-color', '#000000');
+      $('.preview-thumbnail').show();
+
+    });
+    var ratio = 0;
+    if(typeof jsonCustom.cropSize != 'undefined'){
+    	ratio = jsonCustom.cropSize.width / jsonCustom.cropSize.height;
+    }
+  	cropList = [
+      {
+        uploadLabel: typeof jsonCustom.label != 'undefined' ? jsonCustom.label : "{{ 'zen.general.uploadLabel' | t }}", //传图描述标签
+        btnUploadText: "{{ 'zen.photocarving.upload' | t }}", //上传按钮文案
+        require: true,//是否必传图片
+        hasCropOrigin: true,
+        sku: _zenSku,
+        style: 0, //设置上传样式，0:单行展示 1：矩形上传表单
+        type: '',
+        aspectRatio: ratio
+      }
+    ];
+  }
+  
+  var _zenConfig = {
+    photoObj: [],
+    carvingObj: [],
+    crystalObj: [],
+    curveCarvingObj: [],
+    nameObj: [],
+    carvingBigObj: [],
+    cropPrompt: "{{ 'zen.general.cropPrompt' | t }}",
+    photoUrl: "https://pic.stylelab.com/img/photo/",
+    isCloseOnClickModal: false,
+    crop: cropList,
+    photo: photoList,
+    carving: [],
+    crystal:[],
+    crystalText:[],
+    curveCarving:[]
+  };
+</script>
+
+<div class="multi-text-crop">
+  <div id="t_name"></div>
+  
+  <div class="photo-select-carving">
+    <div id="zen-photocarving"></div>
+  </div>
+  
+</div>
+
+<textarea type="text" id="fonttext" name="properties[fonttext]" value="" style="display:none"></textarea>
+{% if customOpt contains 'photo' or customOpt contains 'crop' %}
+<input type="text" id="piccrop" name="properties[picture]" value="{{productImage}}" style="display:none"/>
+<input type="text" id="picorigin" name="properties[origin]" value="{{productImage}}" style="display:none"/>
+{% endif %}
+
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.2.1/zen-photo-carving-chunk-vendors.css?202004171143" rel="stylesheet" />
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.2.1/zen-photo-carving-app.css?202004171143" rel="stylesheet" />
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.2.1/zen-photo-carving-chunk-vendors.js?202004171143"></script>
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.2.1/zen-photo-carving-app.js?202004171143"></script>
+
+<script>
+  
+  var coorsObj = jsonCustom.coors?jsonCustom.coors:[];
+  
+  var t_name_str = '';
+  coorsObj.forEach(function(v, i){
+    var limit = v.limit || 20;
+    var label = v.label || "Your Name";
+    
+    if(v.type == 'select'){
+      t_name_str += '<div class="fonttext-container" id="fonttext'+i+'">';
+      t_name_str += '<label>'+label+'<span class="require-tag"> *:</span></label>';
+      t_name_str += '<select class="font-selector custom-info-text">';
+      v.options.forEach(function(vv,ii){
+      	t_name_str += '<option value="'+vv+'">'+vv+'</option>';
+      });
+      t_name_str += '</select></div>';
+    }else{
+      
+      t_name_str += '<div class="fonttext-container" id="fonttext'+i+'">';
+      t_name_str += '<label>'+label+'<span class="require-tag"> *:</span></label>';
+      t_name_str += '<input type="text" class="fonttext custom-info-text" name="fonttext" data-label="'+label+'" id="font-text'+i+'" maxlangth="'+v.limit+'" value="" oninput="changeText('+i+',this,'+v.limit+')" placeholder="Type text here..." required/>';
+      t_name_str += '<div class="leftnum" id="leftnumbox'+i+'"><span id="leftnum'+i+'">'+v.limit+'</span> {{  'zen.general.left' | t }}</div></div>';
+    }
+    
+        
+  });
+  
+  $('#t_name').html(t_name_str);
+  
+  if(typeof jsonCustom.photoOption != 'undefined'){
+    var option_str = '';
+    option_str += '<div class="photoselector-container">';
+    option_str += '<label>'+jsonCustom.photoOption.label+'<span class="require-tag"> *:</span></label>';
+    option_str += '<select class="photo-selector">';
+    jsonCustom.photoOption.options.forEach(function(op,index){
+      option_str += '<option value="'+op+'">'+op+'</option>';
+    });
+    option_str += '</select></div>';
+    
+    $('#t_name').append(option_str);
+  }
+ 
+  $(function() {
+    $('.zen-require').attr('name','customVal');
+    
+    if($('.photo-selector').length > 0){
+      if($('.photo-selector').val() == hasPhotoText){
+        $('#app').show();
+      }else{
+      	$('#app').hide();
+      }
+      
+      $('.photo-selector').change(function(){
+      	if($(this).val() == hasPhotoText){
+          $('#app').show();
+        }else{
+          $('#app').hide();
+        }
+      });
+    }
+    
+  });
+  
+  function changeText(i,obj,limitv){
+    var objLenOld = $(obj).val().length;
+    var objVal = $(obj).val().replace(/[\r\n]/g,"");
+    var objLen = objVal.length;
+	
+    if(objLen < objLenOld){
+    	$(obj).attr('maxlength',limitv + objLenOld - objLen);
+    }else{
+    	$(obj).attr('maxlength',limitv);
+    }
+    
+    if(objLen > limitv){
+    	var lenDiff = objLen - limitv;
+        $(obj).val($(obj).val().substr(-1,lenDiff));
+        $('#leftnum'+i).text(0);
+    }else{
+    	$('#leftnum'+i).text(parseInt(limitv) - objLen);
+    }
+//     if(objLen > 0){
+//     	$('#leftnumbox'+i).show();
+//     }else{
+//       $('#leftnumbox'+i).hide();
+//     }
+  }
+  
+  Product.validators.push(async () => {
+
+    var zenFlag = true;
+    coorsObj.forEach(function(v, i){
+      if(v.type == "text"){
+      	if( $.trim($('#font-text'+i).val()) == ''){
+          $('#fonttext'+i).css('border-color', 'red');
+          zenFlag = false;
+        }else{
+          $('#fonttext'+i).css('border-color', '#000000');
+        }
+      }
+      
+    });
+
+    var custom_info_title = [];
+    var custom_json = {};
+	var font_str = '';
+    if(typeof (custom_json['properties']) == "undefined"){
+      custom_json = {};
+    }
+
+    if(zenFlag){
+      $(".custom-info-text").each(function(i, v){
+        var ailabel = coorsObj[i].label+':';
+
+        custom_json[ailabel] = $(this).val();
+        custom_info_title.push($(this).val());
+        
+        if(i > 0){
+          font_str += '\n'+ailabel + $(this).val();
+        }else{
+          font_str += ailabel + $(this).val();
+        }
+        
+      });
+      
+      if($('.photo-selector').length > 0){
+      	custom_json[jsonCustom.photoOption.label] = $('.photo-selector').val();
+        custom_info_title.push($('.photo-selector').val());
+        
+        font_str += '\n'+jsonCustom.photoOption.label+ ':' + $('.photo-selector').val();
+      }
+
+    }
+    
+    if(typeof jsonCustom.photo != 'undefined' || typeof jsonCustom.crop != 'undefined'){
+      var customInfo = JSON.parse($('.zen-require').val());
+      
+      var cropUrl = typeof jsonCustom.photo != 'undefined'?customInfo.photo[0].ai : customInfo.crop[0].crop;
+      var originUrl = typeof jsonCustom.photo != 'undefined'?customInfo.photo[0].origin : customInfo.crop[0].cropOrigin;
+      if(!cropUrl && ( ($('.photo-selector').length > 0 && $('.photo-selector').val() == hasPhotoText) || $('.photo-selector').length < 1)){
+        if($('.area-photo-upload').length > 0){
+          $('.area-photo-upload').css('border-color', 'red');
+        }
+
+        if($('.area-crop-upload').length > 0){
+          $('.area-crop-upload').css('border-color', 'red');
+        }
+        zenFlag = false;
+      }else{
+        if( ($('.photo-selector').length > 0 && $('.photo-selector').val() == hasPhotoText && cropUrl) || ($('.photo-selector').length < 1 && cropUrl) ){
+        	$('#piccrop').val(cropUrl);
+            $('#picorigin').val(originUrl);
+        }else{
+        	$('#piccrop').val('{{productImage}}');
+            $('#picorigin').val('{{productImage}}');
+        }
+      }
+    }
+
+    custom_json = JSON.stringify(custom_json);
+    custom_json = custom_json.replace("{","").replace("}","");
+    $("#fonttext").val(font_str);
+    
+    console.log('zenFlag===',zenFlag);
+
+    return zenFlag;
+
+  })
+  
+</script>

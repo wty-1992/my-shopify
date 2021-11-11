@@ -1,0 +1,11 @@
+<script src="{{ 'zen-base.js' | asset_url }}"></script>
+{% capture secondType %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "secondtype" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign secondType = secondType | strip %}
+{% if secondType=='Carving'%}
+<input type="text" id="engraving-text" name="properties[engraving-text]"   value="{%- include 'func-json_decode_output' with 'customopt.defaultText' -%}" style="display:none" required/>
+{% endif %}
+<script>
+$(function() {
+  $(document).trigger("hide-qty",0);
+});
+</script>

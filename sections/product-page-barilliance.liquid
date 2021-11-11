@@ -1,0 +1,28 @@
+<div class="container">
+    <div id="FThirdPartyRecommend"></div>
+    <div id="TThirdPartyRecommend"></div>
+</div>
+<script type="text/javascript" src="{{ section.settings.url }}" async></script>
+
+{% schema %}
+{
+  "name": "产品页 - 关联商品(Barilliance)",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content":"product-page-barilliance"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "YOU MIGHT ALSO LIKE",
+      "default": "YOU MIGHT ALSO LIKE"
+    },
+    {
+      "type": "url",
+      "id": "url",
+      "label": "插件的url地址"
+    }
+  ]
+}
+{% endschema %}

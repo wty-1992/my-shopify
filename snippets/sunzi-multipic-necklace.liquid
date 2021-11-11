@@ -1,0 +1,256 @@
+{% comment %}
+** @name 名字项链 **
+** @author 王天宇 **
+** @integrate 王天宇 **
+{% endcomment %}
+
+{% comment %} 调用参数 {% endcomment %}
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'sunzi.blanket-template.test.9ca64.js' %}
+
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign requestURL = 'https://sunzi.stylelab.com/multiple?sku=GYKNL09X04&storeCode=soufeel-en-es' %}
+
+{% comment %} 店铺CODE {% endcomment %}
+{% assign sunzi_shop_code = section.settings.sunzi_shop_code %}
+{% comment %} 颜色变体名称 {% endcomment %}
+{% assign sunzi_variant_color = 0 %}
+{% comment %} 数量变体名称 {% endcomment %}
+{% assign sunzi_variant_number = 1 %}
+
+{% comment %} 谷歌分析id {% endcomment %}
+{% assign gtag = 'G-R132WKL1C2' %}
+{% comment %} 定制按钮文案 {% endcomment %}
+{% assign buttonText = section.settings.sunzi_button_upload_text %}
+
+{% comment %} 站点语种 {% endcomment %}
+{% assign sunzi_shop_language = section.settings.sunzi_shop_language %}
+{% comment %} 货币符号 {% endcomment %}
+{% assign sunzi_shop_symbol = section.settings.sunzi_shop_symbol %}
+
+{% comment %} 定制初始化 {% endcomment %}
+{% include 'sunzi-solt-template' %}
+
+
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+  .view-size-quantity,
+  .common-standar_btn {
+  	display: none;
+  }
+  #sunzi-button-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+  #ProductFormproduct-page-add_to_cart .select-option,
+  #ProductFormproduct-page-add_to_cart .inline-field-wrapper {
+  	font-family: 'Open Sans';
+    font-size: 12px;
+    font-weight: 500;
+  }
+  @media screen and (min-width: 768px) {
+    .sunzi-modal-content {
+      width: 400px!important;
+      height: 640px!important;
+    }
+  }
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="hidden" id="sunzi-input-sku" name="properties[custom_sku]" required="required" />
+  <input type="hidden" id="sunzi-input-info" name="properties[customInfo]" />
+  <input type="hidden" id="sunzi-cart" name="properties[_sunzi_cart]" />
+
+  {% comment %} 定制按钮 {% endcomment %}
+  <button type="button" id="sunzi-button" disabled class="dots-loading">
+    <span class="dots">
+      <i></i>
+      <i></i>
+      <i></i>
+    </span>
+    <input id="sunzi-button-input" disabled  type="file" multiple  accept="image/*" />
+    <div class="sunzi-button-text">{{ buttonText }}</div>
+  </button>
+</div>
+
+<!-- sunzi core js -->
+<script src="https://spic.qn.cdn.imaiyuan.com/core/{{coreJs}}" defer="defer"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ gtag }}" async="async"></script>
+<script async="async">
+  _sunzi_gtag('{{ gtag }}');
+</script>
+
+{% comment %} 1.隐藏掉变体，加车按钮等等 {% endcomment %}
+<script defer="defer">
+</script>
+
+{% comment %} 2.请求定制化数据 {% endcomment %}
+<script defer="defer">
+  var response;
+  var sku = '{{ product.selected_or_first_available_variant.sku }}'.split("-")[0];
+  _sunzi_request('https://sunzi.stylelab.com/multiple?sku='+ sku +'&storeCode={{ sunzi_shop_code }}', function(res) {
+	response = res;
+    $('#sunzi-button-input').removeAttr("disabled");
+  });
+</script>
+
+{% comment %} 3.开始定制 {% endcomment %}
+<script defer="defer">
+  $('#sunzi-button-input').change( async function() {
+    var _defaultValue = colorTranslate(_sunzi_variant_value('{{sunzi_variant_color}}')) + '-MultiNecklace';	//	获取默认颜色
+    var _defaultTemplateIndex = _sunzi_variant_value('{{sunzi_variant_number}}');
+    var _defaultTemplate = (_defaultTemplateIndex > 0) ? response.templates[_defaultTemplateIndex - 1].id: 0;	//	获取默认模板        
+    var files = $("#sunzi-button-input").get(0).files;
+    var promiseArray = Array.from(files).map((item) => fileToBase64(item));
+    var base64Array = await Promise.all(promiseArray);
+    $('#sunzi-button-input').attr("type", "text");
+
+    
+    //设置字体颜色
+    _sunzi_response.templates[0].block.texts[0].rule.fontColors[0] = _defaultValue.indexOf("Silver") > -1 ? '#000' : '#fff';
+    _sunzi_response.handleCropImage = false;
+    _sunzi_response.sources = base64Array,
+    _sunzi_response.bottomImageTitle = 'Color';
+    _sunzi_response.defaultBottomImageName = _defaultValue;
+    _sunzi_response.defaultTemplateId = _defaultTemplate;
+    _sunzi_response.shop = {
+      language: '{{sunzi_shop_language}}',
+      currencySymbol: '{{sunzi_shop_symbol}}',
+    };
+    _sunzi_response.price = $(".product-single__price--special").first().html();
+    // 开始渲染
+    _sunzi_custom(
+      BlanketTemplate.default,
+      function(output, data) {
+        _sunzi_loading();
+        if (data.bottomImage) {
+          var _color = data.bottomImage.name.split('-')[0];
+          _sunzi_variant_change('{{ sunzi_variant_color }}', colorTranslate(_color, true));	// 根据color更改变体
+          _sunzi_variant_change('{{ sunzi_variant_number }}', data.template.sku);	// 根据number更改变体
+        }
+        
+        // 组合新的sku
+        let customSku = $('.variant-sku').html();
+        $('#sunzi-input-sku').val(customSku);
+        // 定制化数据
+        
+        var customInfoData = {};
+        // 多图
+        if(output.images.length > 1) {
+          var fonts = output.texts.map((item, index) => {
+            return {
+              "value": item.value,
+              "fontSize": item.fontSize,
+              "font": item.font.name,
+			  "effectImage": output.compose
+            }
+          });
+          customInfoData = {
+            '_sunzi_sources': output.images,
+            '_sunzi_ais': output.images,
+            '_sunzi_effects': [output.compose],
+            "_sunzi_texts": fonts
+          }
+        }
+        // 单图
+        else {
+          customInfoData = {
+            '_sunzi_source': output.images[0],
+            '_sunzi_ai': output.images[0],
+            '_sunzi_effect': output.compose,
+            "_sunzi_text":{
+              "value": output.texts[0].value,
+              "fontSize": output.texts[0].fontSize,
+              "font": output.texts[0].font.name,
+              "effectImage": output.compose
+            }
+          }
+        }
+        $('#sunzi-input-info').val(JSON.stringify(customInfoData));
+        $('#sunzi-button-input').attr("type", "file");
+        $('#sunzi-cart').val(JSON.stringify({
+          'image': [ output.compose ]
+        }));
+        //加车事件触发
+        $('.product-form__cart-submit').click();
+        _sunzi_hide_loading();
+      },
+      function() {
+        $('#sunzi-button-input').attr("type", "file");
+      }
+    );
+  });
+  
+  function fileToBase64 (img) {
+    return new Promise(function (resolve, reject) {
+      const reader = new FileReader()
+      reader.addEventListener('load', () => resolve(reader.result))
+      reader.readAsDataURL(img)
+    })
+  }
+  
+    
+// 颜色语种转换（true） => en->es  (false) => es->en
+  function colorTranslate(color, status) {
+    var shopLanguage = "{{sunzi_shop_language}}";
+    var translateLanguage = "";
+    var colorRelation = {
+      "en": {
+        "Silver": "Silver",
+        "Black": "Black",
+        "Blue": "Blue",
+        "Green": "Green",
+        "Grey": "Grey"
+      },
+      "es": {
+        "Silver": "Plata",
+        "Black": "Negro",
+        "Blue": "Azul",
+        "Green": "Verde",
+        "Grey": "Gris"
+      },
+      "de": {
+        "Silver": "Silber",
+        "Black": "Schwarz",
+        "Blue": "Blau",
+        "Green": "Grün",
+        "Grey": "Grau"
+      },
+      "it": {
+        "Silver": "Argento",
+        "Black": "Nero",
+        "Blue": "Blu",
+        "Green": "verde",
+        "Grey": "Grigio"
+      },
+      "fr": {
+        "Silver": "Argent",
+        "Black": "Noir",
+        "Blue": "Bleu",
+        "Green": "Vert",
+        "Grey": "Gris"
+      },
+      "br": {
+        "Silver": "Prata",
+        "Black": "Preto",
+        "Blue": "Azul",
+        "Green": "Verde",
+        "Grey": "Cinza"
+      }
+    };
+    translateLanguage = ["en", "uk", "au"].indexOf(shopLanguage) > -1 ? "en": shopLanguage;
+    var curRelation = colorRelation[translateLanguage];
+    return status ? curRelation[color] : Object.keys(curRelation).find((item) => curRelation[item] === color);
+  }
+  
+  /** 其他自定义函数 end **/
+</script>

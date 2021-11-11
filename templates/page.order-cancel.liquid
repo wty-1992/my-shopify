@@ -1,0 +1,932 @@
+<style>
+.cancel-container {
+  font-family: 'OpenSans';
+}  
+.new-message-form {
+  width: 100%;
+  max-width: 450px;
+  margin: 20px auto 60px;
+  transform: translateX(-4vw);
+}
+.input-box {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 32px;
+}
+.input-box input {
+  font-size: 13px;
+  height: 34px;
+  font-weight: 600;
+  font-family: 'OpenSans';
+  background: #fff;
+  border-color: #b2aeae;
+}
+.new-message-form h2 {
+  font-weight: 100;
+  color: #000;
+  font-size: 25px;	
+  line-height: 1;
+  margin: 40px 0 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateX(60px);
+}
+.new-message-form .left {
+  width: 300px;
+  padding-left: 10px;
+}
+.cd-label {
+  font-weight: 100;
+  color: #000;
+  text-transform: capitalize;
+  margin: 0;
+  line-height: 1;
+}
+.tingle-modal-box__content {
+  font-family: 'OpenSans';
+}
+.receive-data .input-box {
+  margin-bottom: 0;
+}
+.order-policy .input-box {
+  margin-top: 4px;
+  margin-bottom: 55px;
+}
+span.order-status {
+  font-size: 14px;
+  color: #000;
+  font-weight: 600;
+  font-family: 'OpenSans';
+}
+.photo-tipswarn {
+  color: #818181;
+  transform: translate(0px,-1px);
+  font-size: 14px;
+}
+.btn-group {
+  display: flex;
+  align-items: center;
+}
+.btn-group .left {
+  display: flex;
+}
+.btn-group .left .photo-iup{
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: #787878;
+}
+#dropdownReason {
+  border-color: #b2aeae;
+  background: #fff;
+  font-size: 13px;
+  height: 34px;
+  padding-right: 20px;
+}
+#dropdownReason option{
+  color: #777;
+}
+#dropdownReason optgroup{
+  color: #000;
+}
+.order-policy .left{
+  font-size: 12px;
+  color: #000;
+  padding-top: 8px;
+}
+.order-policy .left a{
+  color: blue;
+  text-decoration: underline;
+}
+.submit-button button {
+  letter-spacing: 0;
+  text-transform: capitalize;
+  font-size: 12px;
+  width: auto;
+  padding: 10px 14px;
+  background: #e60044;
+}
+.submit-row button.submit-close {
+  background: #e60345;
+  color: #fff;
+  border-color: #e60345;
+}
+.submit-button {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 25px;
+}
+.submit-button div{
+  width: 300px;
+  text-align: center;
+}
+.custom-order-cancel .tingle-modal__close{
+  display:none;
+}
+.custom-order-cancel .tingle-modal-box {
+  text-align: center;
+  width: 100%;
+  padding: 35px 20px 30px;
+  border-radius: 5px;
+  color: #000;
+  max-width: 500px;
+}
+.submit-row {
+  margin-top: 40px;
+  text-align: center;
+}
+.submit-row button {
+  background: #fff;
+  border: 1px solid;
+  padding: 9px 20px;
+  color: #000;
+  border-radius: 4px;
+  min-width: 30%;
+}
+button.submit-cancel{
+  margin-left: 10px;
+}
+span.toggle-tooltip {
+  position: absolute;
+  font-weight: 100;
+  font-size: 12px;
+  width: 200px;
+  text-align: center;
+  background: rgba(0,0,0,.8);
+  color: #ffff;
+  line-height: 1.2;
+  padding: 10px 10px;
+  border-radius: 6px;
+  left: -170px;
+  bottom: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.3s;
+  transform: translateY(-25px);
+}
+.photo-tipswarn:hover .toggle-tooltip{
+  opacity: 1;
+  pointer-events: auto;
+}
+span.toggle-tooltip:after {
+  content: "";
+  margin-left: -5px;
+  border-width: 5px 5px 0;
+  border-top-color: rgba(0,0,0,.8);
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  bottom: -5px;
+  display: block;
+  right: 20px;
+}
+/*关闭弹窗*/
+.custom-order-hlnts .tingle-modal__close {
+  display: none;
+}
+.photofont-close {
+  position: absolute;
+  right: 8px;
+  top: 4px;
+}  
+.photofont-close span{
+  font-size: 36px;
+  height: auto;
+  width: auto;
+  line-height: 1;
+}
+
+.modal-transition .tingle-modal-box:after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  transition: background .5s;
+  background: rgba(0,0,0,.6);
+}
+.modal-transition{  
+  background: transparent;  
+}
+.modal-transition .tingle-modal-box{
+  position: fixed;  
+  transform: scale(0);
+  transition: transform .5s;
+}
+.col1-question+.input-box {
+  margin-top: 0;
+}
+.col1-question{
+  text-align: right;
+  padding: 14px 0 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  line-height: 1;  
+  color: #e50044;
+}
+.col1-question p{
+  text-decoration: underline;
+  margin:0 2px 0 0;
+  line-height: 1; 
+}
+  
+/*提示弹层*/
+  
+.photofont-top {
+  padding: 35px 0 20px;
+  color: #000;
+  text-align: center;
+  font-size: 20px;
+}
+.photofont-content {
+  display: flex;
+  flex-flow: wrap;
+  justify-content: space-between;
+}
+.photofont-step{
+  padding: 5px 10px;
+  color: #000;
+  position: relative;
+  box-shadow: 3px 3px 6px rgb(0 0 0 / 50%);
+}
+.photofont-step1{
+  width: 30%;
+  order:1;
+  margin-bottom: 25px;
+  background: #facd91;
+}
+.photofont-step2{
+  width: calc(70% - 25px);
+  order:2;
+  margin-bottom: 25px;
+  background: #f59a23;
+}
+.photofont-step3{
+  order:4;
+  width: calc(70% - 25px);
+  background: #d6551d;
+}
+.photofont-step4{
+  order:3;
+  width: 30%;
+  background: #cc8566;
+}
+.photofont-step span{
+  font-size: 14px;
+}
+.photofont-step p{
+  font-size: 12px;
+  line-height: 1.4;
+}
+.photofont-step:before,.photofont-step:after{
+  content: "";
+  display: block;
+  position: absolute;  
+}
+.photofont-step1:before {  
+  right: -45px;
+  top: 50%;
+  border: 20px solid transparent;
+  border-left: 10px solid #acacac;
+  transform: translateY(-50%);
+}
+.photofont-step1:after {
+  right: -16px;
+  top: 50%;
+  background: #acacac;
+  width: 10px;
+  height: 24px;
+  transform: translateY(-50%);
+} 
+.photofont-step2:before {
+  left: 50%;
+  bottom: -43px;
+  border: 20px solid transparent;
+  border-top: 10px solid #9f9f9f;
+  transform: translateX(-50%);
+}
+.photofont-step2:after {
+  left: 50%;
+  bottom: -14px;
+  background: #9f9f9f;
+  width: 24px;
+  height: 10px;
+  transform: translateX(-50%);
+}
+.photofont-step3:before {
+  left: -45px;
+  top: 50%;
+  border: 20px solid transparent;
+  border-right: 10px solid #3e3e3e;
+  transform: translateY(-50%);
+}
+.photofont-step3:after {
+  left: -16px;
+  top: 50%;
+  background: #3e3e3e;
+  width: 10px;
+  height: 24px;
+  transform: translateY(-50%);
+} 
+.photofont-bottom {
+  margin: 10px 0;
+  color: #000;
+}
+.photofont-bottom div{
+  font-weight: 600;
+  padding: 10px 0;
+}
+.photofont-bottom p {
+  line-height: 1.2;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+  
+/*页下提示*/
+.hint-footer{
+  width:100%;
+  max-width:650px;
+  margin:0 auto;
+}
+.hint-footer h4 {
+  margin: 0 0 20px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 100;
+  line-height: 1;
+  color: #000;
+}
+.hint-footer h4 span:nth-child(1) {
+  font-weight: 600;
+}
+.hint-footer-content p {
+  display: inline;
+  color: blue;
+}
+.hint-footer-content {
+  font-size: 13px;
+  color: #000;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+.hint-shipping-time {
+  display: flex;
+  background: #facd91;
+  color: #000;
+  position: relative;
+}
+.hint-shipping-time span:nth-child(2) {
+  background: #f59a23;
+}
+.hint-shipping-time span {
+  width: 50%;
+  text-align: center;
+  padding: 5px 0;
+}
+.hint-shipping-time:after {
+  content: "";
+  display: block;
+  position: absolute;
+  right: -45px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 25px solid transparent;
+  border-left: 20px solid #f59a23;
+}
+.hint-place-order {
+  margin: 35px 0 50px;
+  display: flex;
+  width: 100%;
+  padding-top: 20px;
+  border-top: 1px solid #000;
+  justify-content: space-between;
+  color: #000;
+  position: relative;
+}
+.hint-place-order span{
+  position: relative;
+  line-height: 1.2;
+}
+.hint-place-order span:after{
+  content: "";
+  display: block;
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  background: #f59a23;
+  border-radius: 100%;
+  border: 1px solid #333;
+  top: -25px;
+}
+.hint-place-order span:nth-child(1)::after{left: 0;}
+.hint-place-order span:nth-child(2)::after{left: 50%;transform: translateX(-50%);}
+.hint-place-order span:nth-child(3)::after{right: -5px;}
+.policy_confirm{
+  width: 13px;
+  height: 13px;
+  line-height: 1;
+  border:1px solid #000;
+  display: inline-block;
+  position: relative;
+}
+input#newsletter_policy {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: auto;
+  opacity: 0;
+  z-index: 1;
+}
+.policy_confirm span.icon.photofont.photo-check {
+  font-size: 12px;
+  font-weight: 900;
+  transform: translate(0px, -1px);
+  opacity: 0;
+}  
+.policy_confirm input:checked~span.icon.photofont.photo-check{
+  opacity: 1;
+}
+.cake{
+  animation:move 1s 0s;
+  -webkit-animation:move 1s 0s;
+  transform-origin:bottom;
+  -webkit-transform-origin:bottom;
+  border-color:red;
+}
+.submit-before {
+  color: #000;
+  font-family: 'OpenSans';
+}
+span.msg-title {
+  padding-bottom: 20px;
+  display: block;
+  text-align: center;
+  font-size: 20px;
+  line-height: 1;
+}
+.msg-main {
+  padding: 0 20px;  
+  text-align: left;
+}
+.msg-main li>span:nth-child(1){
+  font-weight: 600;
+  padding-right: 10px;
+}
+.msg-main li>span:nth-child(2) {
+  color: #e0001b;
+}
+.msg-main>span {
+  padding-top: 10px;
+  display: inline-block;
+  color: #000;
+  font-weight: 600;
+}
+@keyframes move
+{
+	0%, 45%{
+	  -webkit-transform:rotate(0deg);
+	  transform:rotate(0deg);
+	}
+	50% {  
+	  -webkit-transform:rotate(15deg);
+	  transform:rotate(15deg);
+	}
+	60% {  
+	  -webkit-transform:rotate(-15deg);
+	  transform:rotate(-15deg);
+	}
+	70% {  
+	  -webkit-transform:rotate(15deg);
+	  transform:rotate(15deg);
+	}
+	80% {  
+	  -webkit-transform:rotate(-15deg);
+	  transform:rotate(-15deg);
+	}
+	90% {  
+	  -webkit-transform:rotate(15deg);
+	  transform:rotate(15deg);
+	}
+	100% {  
+	  -webkit-transform:rotate(-15deg);
+	  transform:rotate(-15deg);
+	}
+}  
+  
+@media(max-width:768px){
+  .new-message-form{
+    transform: translateX(0);
+  }
+  .input-box{
+    flex-flow: wrap;
+    justify-content: left;
+    padding: 0 20px;
+    margin-top: 20px;
+  }
+  .new-message-form .left{
+    width:100%;
+    padding-left: 0;
+    margin-top: 5px;
+  }
+  .new-message-form .receive-data .status-box .left {
+    width: auto;
+    margin: 0;
+    padding-left: 10px;
+  }
+  .submit-button div {
+    width: 100%;
+  }
+  .order-policy .input-box {
+    margin-bottom: 25px;
+  }
+  .btn-group {   
+    width: 100%;
+    flex-flow: wrap;
+  }
+  .btn-group .left .photo-iup{
+    transform: translateY(0%);
+  }
+  .custom-order-cancel .tingle-modal-box{
+    max-width: 100%;
+    border-radius: 0;
+  }
+  
+  /**/
+  .hint-footer{
+    padding: 0 25px;
+  }
+  .hint-place-order span{
+    padding: 0 2px;
+    text-align: center;
+  }
+  .new-message-form h2{
+    transform: translateX(0px);
+  }
+  .col1-question{
+    padding: 14px 20px 5px;
+  }
+  .photofont-step1{
+    width: 40%;
+  }
+  .photofont-step2{
+    width: calc(60% - 25px);
+  }
+  .photofont-step3{
+    width: calc(60% - 25px);
+  }
+  .photofont-step4{
+    width: 40%;
+  }
+}
+</style>
+
+<!-- <span class="icon photofont photo-tipswarn" style="color: red;"><span class="toggle-tooltip">In case we need to contact you about your order</span></span> -->
+<div class="cancel-container">
+  <div class="new-message-form">
+    
+    <h2>{{'customer.order_cancel.cancel_title' | t }}</h2>
+    <div class="col1-question" onclick="hlnts()"><p>{{'customer.order_cancel.cancelHlnts' | t }}</p><span class="icon photofont photo-question"></span></div>
+    <div class="input-box">
+      <label class="cd-label" for="cancelEmail">{{'customer.order_cancel.EmailLabel' | t }}</label>
+      <div class="left">
+        <input type="email" id="cancelEmail" name="email" value="" maxlength="255" class="input-message cancel-email">
+      </div>
+    </div>
+    
+    <div class="input-box">
+      <label class="cd-label" for="cancelOrder">{{'customer.order_cancel.OrderLabel' | t }}</label>
+      <div class="left">
+        <input type="text" id="cancelOrder" name="order_cancel" value="" maxlength="255" class="input-message cancel-order">
+      </div>
+    </div>
+    <div class="msg"></div>
+    <div class="input-box status-box" style="display:none">
+      <label class="cd-label">{{'customer.order_cancel.statusLabel' | t }}</label>
+      <div class="left">
+        <span class="order-status"></span>
+      </div>
+    </div>
+    <div class="receive-data" style="display:none">      
+      <div class="input-box">        
+        <div class="btn-group">
+          <label class="cd-label">{{'customer.order_cancel.ReasonLabel' | t }}</label>
+          <div class="left">
+            <select id="dropdownReason">
+              <option value="">{{'customer.order_cancel.selectDefault' | t }}</option>
+              <optgroup class="CancelOrder" style="display:none" label="{{'customer.order_cancel.CancelOrder' | t}}"></optgroup>
+              <optgroup class="ReturnOrder" style="display:none" label="{{'customer.order_cancel.ReturnOrder' | t}}"></optgroup>
+              <optgroup class="blankOrder"></optgroup>
+            </select>
+            <span class="icon photofont photo-iup"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="order-policy" style="display:none">
+      <div class="input-box">
+        <label class="cd-label"></label>
+        <div class="left">
+          <span class="policy_confirm">
+            <input type="checkbox" id="newsletter_policy" class="newsletter_policy_confirm">
+            <span class="icon photofont photo-check"></span>
+          </span>
+          <span>{{'customer.order_cancel.policy_text_html' | t }}</span>
+          <a href="javascript:;" onclick="returnPolicy()">{{'customer.order_cancel.policy_contact' | t }}</a>
+        </div>
+      </div>
+    </div>
+    <div class="submit-button">
+      <div>
+        <button class="btn btn-order-track" id="SubmitTrack">{{'customer.order_cancel.SubmitTrack' | t }}</button>
+        <button class="btn btn-order-cancel" id="SubmitCancel" style="display:none">{{'customer.order_cancel.SubmitCancel' | t }}</button>
+      </div>
+    </div>           
+  </div>  
+   
+  <div class="hint-footer">
+    <h4>
+      <span>{{'customer.order_cancel.Please_Note' | t }}:</span> 
+      <span>{{'customer.order_cancel.Please_Note_title' | t }}</span>
+    </h4>    
+    <div class="hint-footer-content">{{ 'customer.order_cancel.Please_Note_html' | t }}</div>
+    <div class="hint-footer-layout">
+      <div class="hint-shipping-time">
+        <span>{{'customer.order_cancel.Processing_Time' | t }}</span>
+        <span>{{'customer.order_cancel.Shipping_Time' | t }}</span>
+      </div>
+      <div class="hint-place-order">
+        <span>{{'customer.order_cancel.Place_Order' | t }}</span>
+        <span>{{'customer.order_cancel.Leave_Our_Warehouse' | t }}</span>
+        <span>{{'customer.order_cancel.Receive_Your_Order' | t }}</span>      
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="col1-layout" style="display:none;">
+  <div class="photofont-close top"><span class="icon photofont photo-close"></span></div>
+  <div class="main container">
+    <div class="photofont-top">{{'customer.order_cancel.cancel_Guide' | t }}</div>
+    <div class="photofont-content">
+      <div class="photofont-step photofont-step1">
+        <span>{{'customer.order_cancel.STEP' | t }} 1</span>
+        <p>{{'customer.order_cancel.cancelSTEP1' | t }}</p>
+      </div>
+      <div class="photofont-step photofont-step2">
+        <span>{{'customer.order_cancel.STEP' | t }} 2</span>
+        <p>{{'customer.order_cancel.cancelSTEP2' | t }}</p>
+      </div>
+      <div class="photofont-step photofont-step3">
+        <span>{{'customer.order_cancel.STEP' | t }} 3</span>
+        <p>{{'customer.order_cancel.cancelSTEP3' | t }}</p>
+      </div>
+      <div class="photofont-step photofont-step4">
+        <span>{{'customer.order_cancel.STEP' | t }} 4</span>
+        <p>{{'customer.order_cancel.cancelSTEP4' | t }}</p>
+      </div>
+    </div>
+    <div class="photofont-bottom">
+      <div class="">{{'customer.order_cancel.Please_Note' | t }}:</div>
+      <p>{{'customer.order_cancel.cancelSTEP5' | t }}</p>
+      <p>{{'customer.order_cancel.cancelSTEP6' | t }}</p>
+      <p>{{'customer.order_cancel.cancelSTEP7' | t }}</p>
+      <p>{{'customer.order_cancel.cancelSTEP8' | t }}</p>
+      <p>{{'customer.order_cancel.cancelSTEP9' | t }}</p>
+      <p>{{'customer.order_cancel.cancelSTEP10' | t }}</p>
+    </div>
+  </div>
+</div>
+<div class="days-return-policy" style="display:none">
+  {{pages['90-day-returns'].content}}
+</div>
+
+<div id="submit_cancel" style="display:none;">
+  <div class="submit-before">
+    <span class="msg-title">{{'customer.order_cancel.shade_request' | t }}:</span>
+    <div class="msg-main">
+      <ul>
+        <li><span>{{'customer.order_cancel.msg_Status' | t }}:</span><span class="msg_Status"> Processing - "In Production"</span></li>
+        <li><span>{{'customer.order_cancel.msg_Status_Original_Order_Amount' | t }}:</span><span class="msg_Status_Original_Order_Amount"> USD $30</span></li>
+        <li><span>{{'customer.order_cancel.msg_Status_Restocking_Fee' | t }}:</span><span class="msg_Status_Restocking_Fee">USD $10</span></li>
+        <li><span>{{'customer.order_cancel.msg_Status_Total_Refund' | t }}:</span><span class="msg_Status_Total_Refund"> USD $20</span></li>
+      </ul>
+      <span>{{'customer.order_cancel.msg_Status_Affirm' | t }}</span>
+    </div>
+    <div class="submit-row">
+      <button type="button" class="submit-close" data-action="close">{{'customer.order_cancel.no' | t }}</button>
+      <button type="button" class="submit-cancel">{{'customer.order_cancel.yes' | t }}</button>
+    </div>
+  </div>  
+</div> 
+
+<div id="submit_cancel_ready" style="display:none;">
+  <span class="msg-title">{{'customer.order_cancel.shade_request' | t }}:</span>
+  <div class="msg-main">
+    <ul>
+      <li><span>{{'customer.order_cancel.msg_Status' | t }}:</span><span class="msg_Status"> Processing - "In Production"</span></li>
+    </ul>
+    <span>{{'customer.order_cancel.packed_hint' | t }}</span>
+  </div>
+  <div class="submit-row">
+    <button type="button" class="submit-close" data-action="close">{{'customer.order_cancel.no' | t }}</button>
+    <button type="button" class="submit-cancel"><a href="https://help.soufeel.com/hc/en-us/requests/new">{{'customer.order_cancel.Contact_Support' | t }}</a></button>
+  </div>
+</div>
+<div id="submit_return" style="display:none;">
+    <div>{{'customer.order_cancel.msg_Status_Affirm' | t }}</div>
+    <div class="submit-row">      
+      <button type="button" class="submit-close" data-action="close">{{'customer.order_cancel.no' | t }}</button>
+      <button type="button" class="submit-cancel">{{'customer.order_cancel.yes' | t }}</button>
+    </div>
+</div>
+
+<script>  
+  var returnCancel = new tingle.modal({
+    footer: false,
+    cssClass: ['custom-order-return']
+  });
+  var submitCancel = new tingle.modal({
+    footer: false,
+    cssClass: ['custom-order-cancel']
+  });
+  var hlntsCancel = new tingle.modal({
+    footer: false,
+    cssClass: ['custom-order-hlnts']
+  });
+
+  var cancelEmail=$('#cancelEmail');
+  var cancelOrder=$('#cancelOrder');
+  var dropdownReason=$('#dropdownReason');
+  var str = '';
+  var reMail = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
+  $("#SubmitTrack").click(function(e){
+    if(reMail.test(cancelEmail.val())==false || cancelOrder.val()==""){//验证邮箱和订单
+      reMail.test(cancelEmail.val())==false?cancelEmail.css("border-color","red"):cancelEmail.css("border-color","#b2aeae");
+      cancelOrder.val()==""?cancelOrder.css("border-color","red"):cancelOrder.css("border-color","#b2aeae");
+    }else{
+      cancelEmail.css("border-color","#b2aeae");//恢复状态
+      cancelOrder.css("border-color","#b2aeae");//恢复状态      
+      str = '';
+      str=JSON.stringify({"Email":cancelEmail.val(),"Order":cancelOrder.val()});      
+      //ajax拉取      
+        $.ajax({ 
+          type:"POST", 
+          url:"https://serp.maiyuan.online/merpupdate/ShopSearchInfo/getShopifySearchInfo", 
+          data:str, 
+          success:function(data){
+            var data_status=eval('(' + data + ')').status;
+            var orderData = eval('(' + data + ')').data;
+            
+            console.log(eval('(' + data + ')'));
+            if(data_status == "success"){
+              $(".order-policy").show();//显示90天退换货
+              $(".status-box").show();  //显示订单状态
+              $(".receive-data").show();//显示退换理由
+              $(".order-status").html(`<span class="tipswarn">`+orderData.order_status+`</span>`);
+              $("#SubmitTrack").hide(); //隐藏查询订单按钮
+              $("#SubmitCancel").show();//显示提交表单按钮
+              	
+              if(orderData.refund_state==1 && orderData.update_state==1){
+                $("#dropdownReason .ReturnOrder").show();
+                $("#dropdownReason .blankOrder").show();
+              	$.each(orderData.refundreason,function(item){
+                  $("#dropdownReason .ReturnOrder").before(`<option value="`+item+`" data-orderattr="refundreason">`+orderData.refundreason[item]+`</option>`);
+                });
+                
+                $.each(orderData.returnreason,function(item){
+                  $("#dropdownReason .blankOrder").before(`<option value="`+item+`" data-orderattr="returnreason">`+orderData.returnreason[item]+`</option>`);
+                }); 
+              }else if(orderData.refund_state==1 && orderData.update_state==0){
+              	$.each(orderData.returnreason,function(item){
+                  $("#dropdownReason .blankOrder").before(`<option value="`+item+`" data-orderattr="returnreason">`+orderData.returnreason[item]+`</option>`);
+                }); 
+              }else if(orderData.refund_state==0 && orderData.update_state==1){
+              	$.each(orderData.refundreason,function(item){
+                  $("#dropdownReason .ReturnOrder").before(`<option value="`+item+`" data-orderattr="refundreason">`+orderData.refundreason[item]+`</option>`);
+                });
+                $("#SubmitCancel").text('{{"customer.order_cancel.SubmitReturn" |t}}')//修改按钮为退货文案 
+              }
+              
+              
+              $("#SubmitCancel").click(function(){//点击展示流程弹层                                
+                if($.trim(dropdownReason.val())==""){//判断退换理由是否为空
+                  dropdownReason.css("border-color","red");
+                }else if(!$("#newsletter_policy").is(":checked")){//判断是否阅读90天退换政策
+                  $(".policy_confirm").addClass("cake");
+                }else{//展开提交弹层
+                  console.log( $("#dropdownReason option:selected").data("orderattr"))
+                  $(".policy_confirm").removeClass("cake");//恢复状态
+                  dropdownReason.css("border-color","#b2aeae");//恢复状态
+                  
+                  if($("#dropdownReason option:selected").data("orderattr") == "refundreason"){//退款
+                    str=JSON.stringify({"Email":cancelEmail.val(),"Order":cancelOrder.val(),"Reason":dropdownReason.val(),"refundreason":1});
+                    if(orderData.update_state == 1){//判断订单状态
+                      
+                      submitCancel.setContent($("#submit_cancel").html());
+                      var depreciationAmount=orderData.depreciation>0?Currency.formatMoney(orderData.depreciation*100):0;
+                      $(".msg_Status_Original_Order_Amount").html(`<span>`+Currency.formatMoney(1000)+`</span>`);
+                      $(".msg_Status_Restocking_Fee").html(`<span>`+depreciationAmount+`</span>`);
+                      $(".msg_Status_Total_Refund").html(`<span>`+Currency.formatMoney(1000 - (orderData.depreciation*100))+`</span>`);
+                      $(".submit-cancel").click(function(){//提交表单                        
+                        console.log("提交----",str);
+                        submitAjax(str,'https://help.soufeel.com/hc/en-us/requests/new?ticket_form_id=1900000910964');
+                      });
+                    }else if(orderData.update_state == 0){
+                      submitCancel.setContent($("#submit_cancel_ready").html());
+                    }
+					
+                    $(".msg_Status").html(orderData.order_status);
+                    submitCancel.open();
+                    
+                    $(".submit-close").click(function(){//关闭弹层
+                      submitCancel.close();
+                    });                    
+                                        
+                  }else if($("#dropdownReason option:selected").data("orderattr") == "returnreason"){//退货
+                    str=JSON.stringify({"Email":cancelEmail.val(),"Order":cancelOrder.val(),"Reason":dropdownReason.val(),"returnreason":1});
+                    submitCancel.setContent($("#submit_return").html());
+                    submitCancel.open();
+                    $(".submit-close").click(function(){//关闭弹层
+                      submitCancel.close();
+                    });
+                    $(".submit-cancel").click(function(){//提交表单
+                      
+                      console.log("提交----",str);
+                      submitAjax(str,'https://help.soufeel.com/hc/en-us/requests/new?ticket_form_id=360000431311');
+                    });
+                  }
+                }
+              });    
+            }else{              
+              submitCancel.setContent(eval('(' + data + ')').msg);
+              submitCancel.open();
+            }
+          },
+          error : function(e){
+              console.log(e.status);
+              console.log(e.responseText);
+          }
+        }); 
+    }
+  });
+
+  /*
+  //提示弹层
+  */
+  hlntsCancel.setContent($(".col1-layout").html());
+  function hlnts(){
+    hlntsCancel.open();
+    $(".photofont-close.top").click(function(){
+      $(".custom-order-hlnts").addClass("modal-transition");
+      var hlntsLeft = $(".col1-question .photo-question").offset().left - ($(".modal-transition .tingle-modal-box").width()/2.05);
+      var hlntsTop = $(".col1-question .photo-question").offset().top - ($(".modal-transition .tingle-modal-box").height()/2.05);
+      $(".modal-transition .tingle-modal-box").css({"left":hlntsLeft+"px","top":hlntsTop+"px"});
+      setTimeout(function(){
+        hlntsCancel.close();
+        $(".modal-transition .tingle-modal-box").css({"left":0,"top":0});
+        $(".custom-order-hlnts").removeClass("modal-transition");
+      },600);
+    });
+  };
+  hlnts();
+  //提示弹层结束
+  //
+  function returnPolicy(){
+    returnCancel.setContent($(".days-return-policy").html());
+    returnCancel.open();
+  } 
+  function submitAjax(str,url){
+    $.ajax({ 
+      type:"POST", 
+      url:"https://serp.maiyuan.online/merpupdate/ShopSearchInfo/getShopifySearchInfo", 
+      data:str, 
+      success:function(data){
+         //submitCancel.setContent("asdasdasdasd")
+//         var tempwindow=window.open('_blank');
+//         tempwindow.location=url;//"https://help.soufeel.com/hc/en-us/requests/new";
+        var orderData = eval('(' + data + ')').data;
+        if(orderData.refund_state==1 || orderData.update_state==1){
+          window.location = url;          
+        }        
+      },
+      error : function(e){
+          console.log(e.status);
+          console.log(e.responseText);
+      }
+    });
+  }
+
+</script>

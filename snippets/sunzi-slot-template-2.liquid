@@ -1,0 +1,377 @@
+{% comment %}
+** !!!!!! 全局文件，修改前请先联系金忠帅 !!!!!!
+** sunzi全局dom和方法插槽
+** @version 2.0.0 **
+** @author 金忠帅 **
+{% endcomment %}
+
+{% comment %} 全局引入字体 {% endcomment %}
+<link rel="stylesheet" type="text/css" href="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/font-roboto.css" />
+
+{% comment %}全局变量定制{% endcomment %}
+{% include 'sunzi-config-customize' %}
+
+{% comment %} 全局方法定义 {% endcomment %}
+<script defer="defer">
+  /** 设置全局变量语种 **/
+  _sunzi_global_data.shop = _sunzi_global_data["shop-v2"];
+  
+  /** sunzi form表单对象 **/
+  var _form = $(_sunzi_global_data.domLabel.form);
+  
+  /** 全局唤醒加车弹层方法 **/
+  var _add_cart_success = function(product){
+  };
+  /** 全局 dom加载完成 **/
+  var _dom_content_loaded = false;
+  /** sunzi 全局请求完成 **/
+  var _request_resolve = false;
+  /** sunzi 渲染回调函数 **/
+  var _render_callback = function(){};
+  /** 全站统计Id shopify配置在section, myshop通过api获取 **/
+  var _matomoId = _sunzi_global_data.shop.matomoSiteid;
+
+  // 监听DOMContentLoaded
+  window.addEventListener('DOMContentLoaded', function() {
+    _dom_content_loaded = true;
+    _sunzi_loaded();
+  });
+
+  /** sunzi 资源请求完成 **/
+  function _sunzi_loaded() {
+    if (_dom_content_loaded && _request_resolve)
+      _render_callback();
+  }
+
+  /** sunzi 全局请求数据 **/
+  function _sunzi_request(URL, callback) {
+    if (URL) {
+      $.get(URL, function(data) {
+        _request_resolve = true;
+        _render_callback = function() {
+          callback(data);
+        };
+        _sunzi_loaded();
+      });
+    } else {
+      _request_resolve = true;
+      _render_callback = function() {
+        callback(data);
+      };
+      _sunzi_loaded();
+    }
+  }
+
+  /** sunzi 寻找所有变体元素 **/
+  function _sunzi_find_variants(formClass = _sunzi_global_data.domLabel.form, selectClass = _sunzi_global_data.domLabel.select) {
+    var formClassText = formClass || formClassLabel;
+    return $(formClassText).find(selectClass);
+  }
+
+  /** sunzi 改变变体 **/
+  function _sunzi_variant_change(index, value, type = _sunzi_global_data.domLabel.type) {
+    var variants = _sunzi_find_variants();
+    var selectedVariant = variants.eq(index);
+    if(type == 'select') {
+      selectedVariant && selectedVariant.find("select").val(value);
+      selectedVariant && selectedVariant.find("select").change();
+    } else if(type == 'radio'){
+      selectedVariant.length > 0 && selectedVariant.find("input[value='" + value + "']").get(0).click();
+    }
+  }
+  
+  /** sunzi 改变变体-根据option索引值 **/
+  function _sunzi_variant_change_order(index, value, type = _sunzi_global_data.domLabel.type) {
+    var variants = _sunzi_find_variants();
+    var selectedVariant = variants.eq(index);
+    if(selectedVariant.length == 0) return;
+    if(type == 'select') {
+      var selectDom = selectedVariant.find("select");
+      var curValue = selectDom.find("option").eq(value).val();
+      selectDom.val(curValue).change();
+    } else if(type == 'radio'){
+      var curValue = selectedVariant.find("input").eq(value).val();
+      var selectDom = selectedVariant.find("input[value='" + curValue + "']");
+      selectDom.length > 0 && selectDom.get(0).click();
+    }
+  }
+
+  /** sunzi 获取变体值 **/
+  function _sunzi_variant_value(index, type = _sunzi_global_data.domLabel.type) {
+	var selectType = _sunzi_global_data.domLabel.type === "radio" ? "input:checked" : "select";
+    var variants = _sunzi_find_variants();
+    var selectedVariant = variants.eq(index);
+    return selectedVariant.find(selectType).val();
+  }
+  
+  // 获取变体加价
+  function _sunzi_get_markup_price(variantIndex) {
+    var addPrice = 0;
+    var curProduct = getCurProduct();
+    var productJSON = {{product | json}};
+    var compareProduct = productJSON.variants.find(variant => {
+      return curProduct.options.every((option, index) => {
+        if(index == variantIndex) {
+          return variant.options[index] !== option;
+        } else {
+          return variant.options[index] == option; 
+        }
+      });
+    });
+
+    if(compareProduct) {
+      price = (curProduct.price - compareProduct.price) / 100;
+      addPrice = Math.abs(price.toFixed(2));
+    }
+    return addPrice;
+  }
+  
+  /** sunzi 隐藏变体
+ 	* 如果index为undefined 隐藏所有变体
+    * 个别站点变体dom并非一种，可以在sunzi-config-customize中设置hideDom
+  **/
+  function _sunzi_variant_hide(index) {
+    // 如果没有参数，隐藏所有变体dom
+    if(index == undefined) {
+      var hideDomStr = _sunzi_global_data.domLabel.select;
+      Array.isArray(_sunzi_global_data.hideDom) && _sunzi_global_data.hideDom.forEach(item => hideDomStr += `, ${item}`);
+      $(hideDomStr).each((index, item) => {
+      	$(item).hide();
+        $(item).removeClass('show');
+      });
+    } else {
+      var variantDom = _sunzi_find_variant(index);
+      if(variantDom) {
+        variantDom.hide();
+        variantDom.removeClass('show');
+      }    
+    }
+  }
+
+  /* sunzi 通用加车方法 **/
+  async function _sunzi_add_cart(params, quantity, callback) {
+    if(!params && _sunzi_global_data.addToCart) {
+      _sunzi_global_data.addToCart(params, callback);
+      $('#sunzi-loading').hide();
+    } else {
+      var data = params || _form.serialize();
+      // 修改产品数量
+      data.quantity = quantity || 1;
+      return new Promise(function(resolve, reject) {
+        $.ajax({
+          type: "POST",
+          url: "/cart/add.js",
+          data: data,
+          async: false,
+          dataType: "json",
+          success: (item) => {
+            resolve(item);
+          },
+          error: (error) => {
+            reject(error);
+          }
+        })
+      })
+    }
+  }
+  
+  /** sunzi 获取当前变体数据 **/
+  function getCurProduct(type) {
+    // 产品数据
+    var product = {{ product | json }};
+    // 当前产品id
+    var variantId = $('[name="id"]').val() || "{{ product.variants.first.id }}";
+    var curProduct = product.variants.find(item => item.id == variantId);
+    var result = ''
+    switch(type) {
+      case 'featuredImage':
+        var _image = curProduct.featured_image ? curProduct.featured_image.src : 'https:' + product.featured_image;
+      result = _image.replace(/\?[a-zA-Z0-9=]+/, '');
+        break;
+      case 'price':
+        result = Number((curProduct.price / 100).toFixed(2));
+        break;
+      case 'originPrice':
+        var originPrice = curProduct.compare_at_price;
+        result = originPrice ? Number((originPrice / 100).toFixed(2)) : 100;
+        break;
+      default:
+        result = curProduct;
+    }
+    return result;
+  }
+
+  /** 创建uuid **/
+  function _create_uuid() {
+    var s = [];
+    var hexDigits = '0123456789abcdef';
+    for (var i = 0; i < 36; i++)
+      s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+
+    s[14] = '4';
+    s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);
+    s[8] = s[13] = s[18] = s[23] = '-';
+
+    return s.join('');
+  }
+  
+  // 获取地址栏参数
+  function getQueryVariable(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i=0;i<vars.length;i++) {
+      var pair = vars[i].split("=");
+      if(pair[0] == variable){return pair[1];}
+    }
+    return(false);
+  }
+  /** sunzi 唤醒loading **/
+  function _sunzi_loading() {
+    $('#sunzi-loading').show();
+  }
+  
+  // 兼容个别产品方法名
+  var getAddPrice = _sunzi_get_markup_price;
+
+  /** 其他自定义函数 start **/
+  _sunzi_variant_hide();
+
+  /** 其他自定义函数 end **/
+</script>
+
+<div id="sunzi-loading">
+  <div>
+    <svg viewBox="25 25 50 50">
+      <circle cx="50" cy="50" r="20" fill="none" stroke="#e60044"></circle>
+    </svg>
+  </div>
+</div>
+
+<style>
+/* 表单样式 */
+.sunzi-form {
+  width: 100%;
+  padding: 16px 0;
+}
+.sunzi-form #sunzi-input,
+.sunzi-form #sunzi-cart {
+  display: none;
+}
+.sunzi-form .sunzi-form-content {
+  width: 100%;
+}
+.sunzi-form .sunzi-form-content #sunzi-node {
+  width: 100%;
+}
+.sunzi-form .sunzi-form-content #sunzi-node .sunzi-node-loading {
+  font-size: 0;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #cfcfcf;
+  border-radius: 6px;
+}
+.sunzi-form .sunzi-form-content #sunzi-node .sunzi-node-loading .dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sunzi-form .sunzi-form-content #sunzi-node .sunzi-node-loading .dots i {
+  display: block;
+  height: 10px;
+  margin: 0 1px;
+  width: 10px;
+  margin: 0 5px;
+  font-weight: normal;
+  border-radius: 100%;
+  animation: stretch 0.5s ease-out 0.1s infinite alternate;
+  -webkit-animation: stretch 0.5s ease-out 0.1s infinite alternate;
+}
+.sunzi-form .sunzi-form-content #sunzi-node .sunzi-node-loading .dots i:first-child {
+  animation-delay: 0s;
+  -webkit-animation-delay: 0s;
+  margin: 0;
+}
+.sunzi-form .sunzi-form-content #sunzi-node .sunzi-node-loading .dots i:last-child {
+  animation-delay: 0.2s;
+  -webkit-animation-delay: 0.2s;
+  margin: 0;
+}
+@keyframes stretch {
+  0% {
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
+    background-color: #ddd;
+  }
+  50% {
+    background-color: #fff;
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    background-color: #eee;
+  }
+}
+#sunzi-loading {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1999999999;
+  background: rgba(0, 0, 0, 0.5);
+  animation: loading-mask 0.2s cubic-bezier(0.33, 1, 0.68, 1);
+  display: none;
+}
+#sunzi-loading div {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 54px;
+  height: 54px;
+  transform: translate(-50%, -50%);
+}
+#sunzi-loading div svg {
+  width: 100%;
+  height: 100%;
+  animation: loading-rotate 2s linear infinite;
+}
+#sunzi-loading div svg circle {
+  animation: loading-dash 1.5s ease-in-out infinite;
+  stroke-dasharray: 90, 150;
+  stroke-dashoffset: 0;
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke: #fff;
+}
+
+@keyframes loading-mask {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes loading-rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes loading-dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -40px;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -120px;
+  }
+}
+</style>

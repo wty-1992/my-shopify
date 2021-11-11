@@ -1,0 +1,154 @@
+
+{% if section.settings.enable %}
+{{section.settings.css}}
+<div id="product-guide" class="product-guide">
+  <div class="bold_title">
+    {% include 'func-verify_rules', contain: section.settings.contain, detail: product %}
+    {% unless verify__rules_result == false %}
+    	<h3>{{section.settings.bold_title}}</h3>
+    {% endunless %}
+  </div>
+  <ul>
+  	{% for block in section.blocks %}
+  	{% include 'func-verify_rules', contain: block.settings.contain, detail: product %}
+	{% unless verify__rules_result == false %}
+    <li>      
+      <img src="{{ block.settings.imgstep | img_url:'master' }}" class="small--hide">
+      <img src="{{ block.settings.imgstepmb | img_url:'master' }}" class="medium-up--hide">
+      {{ block.settings.txt }}
+    </li>
+    {% endunless %}
+	{% endfor %}
+  </ul>
+</div>
+
+<style>
+  .product-guide{width: 1200px;margin: 0 auto;}
+  .bold_title{text-align: center;position:relative;}  
+  .bold_title:after{left: 14%;}
+  .bold_title:before{right: 14%;}
+  .product-guide ul{text-align:center;}
+  .product-guide ul li{display:inline-block;color: #000;font-weight: bold;}
+  .product-guide .step-yellow{color:#000;font-weight: bold;font-size:20px;}
+  .product-guide .small_title{width:340px;color: #000;font-weight:bold;font-size: 18px;}
+  
+   @media (max-width: 720px){
+     .product-guide{width: 100%;}
+    .product-guide ul li {
+      font-weight: bold;
+      padding: 0;
+      display: block;
+    }
+    .product-guide ul {
+      display: flex;
+	}
+    .product-guide .step-yellow {
+	font-weight: 400;
+    margin-top: 15px;
+    font-size: 14px;
+    }
+    .product-guide .small_title {
+	font-weight: normal;
+    padding: 0 8px;
+    color: #000;
+    margin-top: 0px;
+    line-height: 15px;
+    font-size:12px;
+    width:auto;
+    margin-bottom:0;
+    }
+    .product-guide ul li img {
+    max-width:120px;
+    }
+    .bold_title h3 {
+   	font-size:18px;
+    }
+  .product-guide ul{text-align:center;display: flex; margin-top:0; margin-bottom:0;}
+  .product-guide ul li{display:inline-block; width:33%; margin:0;}
+.product-guide .bold_title h3{margin: 3.3rem;font-size: 1.8rem;}
+.product-guide ul{flex-flow: wrap;}
+.product-guide ul li{width: 100%;padding: 0 10px;}
+.product-guide ul li img.medium-up--hide{max-width: 100%;}
+.product-guide ul li h2{margin: 1.5rem 0 1rem;font-size: 1.5rem;font-weight: 900;}
+.product-guide ul li h4{font-size: 1.25rem;}
+.product-guide ul li p{font-size: 1.1rem;}
+    
+  }
+</style>
+
+
+{% endif %}
+{% schema %}
+  {
+    "name": {
+      "en": "产品步骤指引"
+    },
+    "class": "index-section",
+    "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable",
+      "label": "Enable"
+    },
+    {
+      "type": "text",
+      "id": "private",
+      "label": "程序参考字段默认勿动",
+      "default": "guide"
+    },
+    {
+      "type": "html",
+      "id": "css",
+      "label": "CSS 样式代码"
+    },
+    {
+      "type": "text",
+      "id": "bold_title",
+      "label": "大标题",
+      "default": "bold title"
+    },
+    {
+      "type": "textarea",
+      "id": "contain",
+      "label": "显示规则",
+      "info": "{\"handle\": \"a,b,c...\", \"sku\": \"C021,C022...\"}"
+    }
+    ],
+	"blocks": [
+		{
+          "type": "text",
+		  "name": "添加集合",
+		  "settings": [
+			{
+              "type": "image_picker",
+              "id": "imgstep",
+          	  "label": "图片-pc"
+            },
+		    {
+              "type": "image_picker",
+              "id": "imgstepmb",
+              "label": "图片-mb"
+            },
+		    {
+              "type": "html",
+              "id": "txt",
+              "label": "添加文案"
+            },
+			{
+              "type": "textarea",
+              "id": "contain",
+              "label": "显示规则",
+              "info": "{\"handle\": \"a,b,c...\", \"sku\": \"C021,C022...\"}"
+            }
+		  ]
+        }  
+		
+	],
+ "presets": [
+    {
+      "name": "通用 - guide",
+      "category": "通用"
+    }
+  ]
+}
+{% endschema %}

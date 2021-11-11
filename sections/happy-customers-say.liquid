@@ -1,0 +1,211 @@
+{% if section.settings.customers_say_enable %}
+<style>
+  .happy-customers-say-box{
+  width:100%;
+  }
+  .happy-customers-say-box .customers-say-view{
+    -moz-column-count:5; 
+    -webkit-column-count:5; 
+    column-count:5;
+    -moz-column-gap: 2em;
+    -webkit-column-gap: 2em;
+    column-gap: 2em;
+    width: 100%;
+    max-width:1240px;
+    margin:0 auto;
+  }
+  .happy-customers-say-box .big_title{    
+    font-size: 43px;
+    padding: 60px 0;
+    display: block;
+    color: #000;
+    text-align:center;
+  }
+  .happy-customers-say-box .customer-items{
+    position: relative;
+    margin-bottom: 20px;
+    border-radius: 3px;
+    color: #000;
+    box-sizing: border-box;
+    word-break: break-word;
+    background: #f8f8f8;
+    -webkit-column-break-inside: avoid;
+    break-inside: avoid;
+  }
+  .happy-customers-say-box .customers-images img,.happy-customers-say-box .customers-start img{width:100%;}
+  .happy-customers-say-box .customers-tittle{
+      display: flex;
+    padding: 15px 0 7px 0;
+        font-size: 18px;
+  }
+  .happy-customers-say-box .customers-start{max-width:75px;}
+  .happy-customers-say-box .customers-content{
+      margin-top: 8px;
+    font-size: 14px;
+        letter-spacing: 1px;
+  }
+  .happy-customers-say-box .customers-international{
+      padding: 0 20px;
+  }
+  .happy-customers-say-box .customers-product{
+      display: flex;
+    border: 1px solid #e5e5e5;
+    background: #fff;
+    margin-top: 20px;
+    padding: 18px 10px;
+  }
+  .happy-customers-say-box .customers-product>span{
+      font-size: 0.8rem;
+        margin-left: 10px;
+  }
+  .happy-customers-say-box .circle-right {
+    width: 18px;
+    height: 18px;
+    border-radius: 18px;
+    background: #3085c7;
+    display: block;
+    position: relative;
+    margin-left: 10px;
+    margin-top: 0;
+}
+  .happy-customers-say-box .circle-right:before, .happy-customers-say-box .circle-right::after {
+    content: "";
+    height: 8px;
+    width: 1px;
+    border-radius: 10px;
+    display: block;
+    background: white;
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+}
+  .happy-customers-say-box .circle-right::before {
+    height: 4px;
+    transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    position: absolute;
+    top: 8px;
+    left: 6px;
+}
+  .customers-say-view .customer-items:nth-of-type(5n+1) { order: 1; }
+.customers-say-view .customer-items:nth-of-type(5n+2) { order: 2; }
+.customers-say-view .customer-items:nth-of-type(5n+3) { order: 3; }
+.customers-say-view .customer-items:nth-of-type(5n+4) { order: 4; }
+.customers-say-view .customer-items:nth-of-type(5n)   { order: 5; }
+@media screen and (max-width: 768px){  
+ .happy-customers-say-box .customers-say-view{
+    -moz-column-count:2; 
+    -webkit-column-count:2; 
+    column-count:2;
+    -moz-column-gap: 2em;
+    -webkit-column-gap: 2em;
+    column-gap: 2em;
+    width: 100%;
+    max-width:1240px;
+    margin:0 auto;
+  }
+   .happy-customers-say-box .big_title{    
+    font-size: 21px;
+    padding: 30px 0
+  }
+}
+
+</style>
+
+<div class="happy-customers-say-box">
+  <span class="big_title">
+    {{section.settings.titile}}		
+  </span>
+    <ul class="customers-say-view">
+    {% for block in section.blocks %}
+      <li class="customer-items">
+      <div class="customers-images">
+        <img src="{{block.settings.section_image  | img_url: '1920x' }}  ">
+      </div>
+      <div class="customers-international">
+        <div class="customers-tittle">
+          {{block.settings.titile_content}}
+          <span class="circle-right"></span>
+        </div>
+        <div class="customers-start">
+          <img src="{{block.settings.start_images  | img_url: '1920x' }}  ">
+        </div>
+        <div class="customers-content">
+           {{block.settings.section_content}}
+        </div>
+      </div>
+      <div class="customers-product">
+      	{%- assign product = all_products[block.settings.product] -%}
+        <img src="{{product.featured_image  | img_url: '50x50'}}">
+        <span>
+        	{{product.title}}
+        </span>
+      </div>
+      </li>
+    {% endfor %}
+    </ul> 
+</div> 
+{% endif %}
+{% schema %}
+  {
+    "name":"买家优质评论",
+    "class": "happy-customers-say",
+      "settings": [
+		{
+          "type": "paragraph",
+          "content": "happy-customers-say"
+        },
+        {
+          "type": "checkbox",
+          "id": "customers_say_enable",
+          "label": "评论开关"
+        },
+        {
+          "type": "text",
+          "id": "titile",
+          "label": "标题"
+        }
+      ], 
+      "blocks": [
+        {
+          "type": "text",
+          "name": "text",
+          "settings": [
+          {
+            "type": "image_picker",
+            "id": "section_image",
+            "label": "模块主图"
+          },
+          {
+            "type": "text",
+            "id": "titile_content",
+            "label": "买家姓名"
+          },
+       {
+            "type": "image_picker",
+            "id": "start_images",
+            "label": "评论星星"
+          },
+          {
+            "type": "text",
+            "id": "section_content",
+            "label": "模块评论语"
+          },
+			{
+            "type": "product",
+            "id": "product",
+            "label": "产品"
+          }
+        ]
+        }
+      ],
+    "presets": [
+      {
+        "name":"买家优质评论"
+        
+      }
+    ]
+  }
+{% endschema %}

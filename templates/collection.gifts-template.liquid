@@ -1,0 +1,40 @@
+{% comment %}
+ade-test-banner 活动页banner
+ade-test-countdown 活动页倒计时
+ade-test-collection 活动页会场(本站产品模板是product-card，换站之后请先确认站点的产品模板)
+活动页如需改版请在 活动页banner文件里添加css文件{{'xxx.scss.css' | asset_url | stylesheet_tag }}
+{% endcomment %}
+<style> 
+article.product-list-item{
+  width: 100%;
+  padding: 0;
+  margin-bottom: 0;
+}
+.item .discount-off{
+  right: -10px;
+  left: inherit;
+  top: -10px;
+  transform: scale(0.8);
+}
+h1.product-list-item-title{
+  height: 38px;
+  overflow: hidden;
+}
+.page-width {
+  padding-left: 10px;
+  padding-right: 10px;
+   
+}
+@media(max-width:768px){  
+  .block-collection-items li.item{width: 50%;}
+  .shopify-section {margin-top:0}
+  .page-width {
+    padding-left: 10px;
+    padding-right: 10px; 
+  }
+}
+</style>
+{% section 'gifts-template-banner' %}
+{% section 'gifts-template-collection' %}
+
+

@@ -1,0 +1,27 @@
+<style>
+.productShipping.container{
+  padding: 0 10px;
+}
+.description-tabs dd .productShipping.container p{
+  padding: 0;
+  color: #000;
+}  
+</style>
+{{section.settings.shpping_html}}
+{% schema %}
+{
+    "class": "product-page-tabs_shipping-section",
+    "name": "产品页 - 描述区域 - 运费",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content":"product-page-tabs_shipping"
+      },
+      {
+        "type": "textarea",
+        "id": "shpping_html",
+        "label": "描述内容"
+      }
+    ]
+}
+{% endschema %}

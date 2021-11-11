@@ -1,0 +1,44 @@
+<!-- /snippets/product-card.liquid -->
+
+{% comment %}
+  The product card snippet is passed a liquid object, used in this file
+  as "product". The object is either "product" or "item", the latter if
+  it is from search results.
+{% endcomment %}
+
+{% assign productTags = product.tags | join:',' %}
+{% assign firstVariant = product.first_available_variant %}
+{% assign pos1 = position | default: 0 %}
+{% assign pos2 = pos1 | plus: 1 %}
+{% assign image1 = product.images[pos1]%}
+{% assign image2 = product.images[pos2] | default: image1 %}
+<div class="product-card__image-container">
+  <a href="{{ product.url | within: collection }}" class="product-card">
+    <div class="product-card__image-wrapper">           
+      {% if productTags contains "custom-tag-discount" %}
+      {% endif %}
+      <div class="product-card__image">
+        <img class="lazyload defaultImage"
+          src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+          data-src="{{ image1 | img_url: 'master' }}"
+          alt="{{ image1.alt | escape }}">
+      </div>
+    </div>
+  </a>
+</div>
+<div class="product-card__info">
+   <div class="product-card__name">{{ product.title }}</div>
+  <div class="product-card__price">
+    <span class="product-card__sale-price" data-money="{{ firstVariant.price }}"></span> 
+    <span class="product-card__regular-price" data-money="{{ firstVariant.compare_at_price }}"></span>
+  </div>
+  <div class="ratings-fa-star">
+    <div class="yotpo bottomLine" data-product-id="{{ product.selected_or_first_available_variant.sku }}"></div>    
+  </div>
+  <div class="hide_sku_tag" style="display:none;">{{product.variants[0].sku}}</div>
+    {%- if product.metafields["global"]["cattribute"] or product.variants.size > 1 or productTags contains "custom" or productTags contains "Custom" -%}
+      {% assign cartText = 'Diseña Tu Propio' %}
+    {% else %}  
+      {% assign cartText = 'Agregar al carrito' %}
+    {% endif %}
+</div>

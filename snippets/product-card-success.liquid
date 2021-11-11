@@ -1,0 +1,90 @@
+
+{% assign swiperContainerId = "swiper-recommend-" | append: section.id %}
+<div id="{{swiperContainerId}}" class="swiper-container swiper-collection-container pop-collection-container">
+  <ul class="swiper-wrapper items">
+    {% assign max = current_collection.all_products_count %}
+    {% assign min = 1 %}
+   
+    {% if block.settings.limit %}
+    	{% assign _limit = block.settings.limit | default: 4 %}
+    {% else %}
+    	{% assign _limit = section.settings.default_limit | default: 4 %}
+    {% endif %}
+    
+    {% assign diff = max | minus: min %}
+    {% assign randomNumber = "now" | date: "%N" | modulo: diff | plus: min %}
+    {% assign offset = max | minus:randomNumber %}
+    {% if offset < _limit %}
+    {% assign randomNumber = 0 %}
+    {% endif %}
+    {% if current_collection.products.size > 0%}
+    	{% for item in current_collection.products  limit: _limit %}
+          {% assign firstVariant = item.first_available_variant %}
+          {% assign image = item.images[0]%}
+          <li class="item swiper-slide">
+            <a href="{{item.url}}">
+              <picture>
+                <img
+                    title=""  
+                    data-src="{{ image | img_url: '300x' }}"
+                    class="scrollable-01-div-img lazyload"
+                    alt="{{ image.alt | escape }}" />
+              </picture>
+              <div class="box-price">
+                <div class="new-price"><span class="price" data-money="{{ firstVariant.price }}"></span></div>
+                <div class="old-price"><span class="price" data-money="{{ firstVariant.compare_at_price }}"></span></div>                                
+              </div> 
+              <div class="cheap-title">{{ item.title }}</div>                           
+              <div class="home-collection-off">
+                {% if firstVariant.compare_at_price > firstVariant.price %} 
+                  <span> 
+                    {{ firstVariant.compare_at_price | minus: firstVariant.price | times: 100.0 | divided_by: firstVariant.compare_at_price | round}}% {{ 'product.price.off' | t }}
+ 				  </span>
+                {% endif %}
+             	</div>
+            </a>
+          </li>
+    	{% endfor %}
+    {% endif %}
+  </ul>
+ 
+  
+  {% assign pagination = swiperContainerId | append: "-swiper-pagination" %}
+   <div class="swiper-pagination" id="{{pagination}}"></div>
+</div>
+
+<!-- Initialize Swiper -->
+<script>
+  var swipersuccess = new Swiper('#{{swiperContainerId}}', {
+    observer: true,
+    observeParents: true,
+    slidesPerView: 2,
+    slidesPerGroup : 4, 
+    spaceBetween: 10,
+    pagination: {
+      el: '#{{pagination}}',
+      clickable: true,
+    },
+    breakpoints: {
+        2048: {
+          // show 4.5 product
+          slidesPerView: 4,
+          slidesPerGroup:4,
+          spaceBetween: 20,
+		  slidesOffsetBefore:12
+        },
+        1024: {
+          // show 4.5 product
+          slidesPerView: 4,
+          slidesPerGroup:4,
+          spaceBetween: 20
+        },
+        768: {
+          // show 3.5 product
+          slidesPerView: 2,
+          slidesPerGroup:2,
+          spaceBetween: 5
+        }
+    }
+  });  
+</script>

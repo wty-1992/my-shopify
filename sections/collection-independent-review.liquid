@@ -1,0 +1,194 @@
+{% if section.settings.enable %}  
+
+<style>
+  .collection-independent-review .reviews-box{
+    background: {{section.settings.color_bg}};
+    color: {{section.settings.color_text}};
+  }
+  .collection-independent-review .reviews-box .home-start svg{
+    margin:0 1px;
+    fill: {{section.settings.color_star}};
+  }
+  .collection-independent-review .reviews-box .title {
+    text-align: center;
+    font-size: 1.8rem;
+    padding: 2rem .2rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    word-spacing: 2px;
+    color: {{section.settings.color_title}};
+  }
+  .reviews-box{
+    width:100%;
+    max-width:1200px;
+    margin: 35px auto;  
+  }
+  .reviews-box ul{
+    width:100%;
+    column-count: 5;
+    column-gap: 14px;
+  }
+  .reviews-box ul li .left img{
+    width:100%;
+  }
+  .reviews-box ul li .name {
+    font-weight: 900;
+    font-size: 20px;
+    font-family: sans-serif;
+    padding: 0px;
+  }
+  .home-start {
+    margin: 7px 0 0;
+  }
+  .home-start img {
+    width: 90px;
+  }
+  .reviews-box .right {
+    background: #f9f9f9;
+    padding: 15px 10px 22px;
+    margin-bottom: 15px;
+  }
+  .reviews-box .content {
+    font-size: 14px;
+    color: #000;
+    line-height: 1.8;
+  }
+  .reviews-box ul .item {
+	height: 100%;
+    overflow: auto;
+    break-inside: avoid;
+  }
+  @media(max-width:768px){
+    .reviews-box ul{
+      column-count: 2;
+      column-gap: 10px;
+      padding: 0 10px;
+      -webkit-column-break-inside:avoid;
+    }
+    .reviews-box .right{
+      padding: 8px 6px 16px;
+      margin-bottom: 10px;
+    }
+    .reviews-box ul li .name{
+      font-size: 16px;
+    }
+    .home-start {
+      margin: 4px 0 0;
+    }
+    .reviews-box .content {
+      font-size: 12px;     
+      line-height: 1.4;
+    }
+    .home-start img {
+      width: 80px;
+    }
+  }
+</style>
+
+<div class="reviews-box">
+  {% unless section.settings.title == blank %}
+  <div class="title">{{section.settings.title}}</div>
+  {% endunless %}
+  <ul class="items">
+    {% for block in section.blocks %}
+      {% if handle == block.settings.handle %}
+        <li class="item">
+          <div class="left"> 
+            <img src="{{ block.settings.image | img_url: '200x' }}" />
+          </div>
+          <div class="right">
+            <div class="name">
+              <span>{{ block.settings.Atitle }}</span>
+            </div>
+            <div class="home-start">
+              {% if section.settings.star_icon != blank %}
+              <img src="{{ section.settings.star_icon | img_url: 'master' }}" />
+              {% endif %}
+            </div>            
+            <div class="content">{{ block.settings.content }}</div>
+          </div>
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+</div>
+
+{% endif %}
+{% schema %}
+  {
+    "name": "通用 - 评论块",
+    "class": "collection-independent-review",
+    "settings": [
+	  {
+        "type": "paragraph",
+        "content": "collection-independent-review"
+      },
+      {
+	     "type": "checkbox",
+		 "id": "enable",
+		 "label": "开启"
+	  },
+	  {
+        "type": "color",
+        "id": "color_bg",
+        "label": "背景颜色",
+        "default": "#000"
+      },
+      {
+        "type": "color",
+        "id": "color_title",
+        "label": "标题颜色",
+        "default": "#fff"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "文字颜色",
+        "default": "#fff"
+      },
+      {
+          "type": "text",
+          "id": "title",
+          "label": "评论块总标题"
+      },
+      {
+        "type": "image_picker",
+        "id": "star_icon",
+        "label": "评论星星"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "additional_info",
+        "name": "添加元素",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "哪个页面"
+          },
+          {
+            "type": "text",
+            "id": "handle",
+            "label": "页面url"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "上传头像"
+          },
+          {
+            "type": "text",
+            "id": "Atitle",
+            "label": "标题"
+          },
+          {
+            "type": "textarea",
+            "id": "content",
+            "label": "评论正文"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

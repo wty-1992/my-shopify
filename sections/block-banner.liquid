@@ -1,0 +1,393 @@
+{% assign min = 10 %}
+{% assign max = 100000 %}
+{% assign diff = max | minus: min %}
+{% assign randomNumber = "now" | date: "%N" | modulo: diff | plus: min %}
+{% assign swiperContainerId = "swiper-banner-container-" | append: randomNumber %}
+{% if section.blocks.size > 0 %}
+{% assign advantages = section.settings.advantage | split: ";"  %}
+{% assign title-texts = section.settings.title | split: "."  %}
+ 
+  <div id="{{swiperContainerId}}" class="swiper-container" data-section-id="{{ section.id }}">
+     <!-- text -->
+    <div class="text-box">
+      <div class="text-title">
+        {%for text-item in title-texts%}
+          <span class="text-title-item">{{text-item}}</span>
+        {% endfor %}
+      </div>
+      <div class="advantage-details-box">
+        {%for advantage-item in advantages%}
+        <div class="advantage-details-item">
+          {% include 'icon-hook' %}
+          <div class="details-text-box">
+            {% assign items = advantage-item | split: "-"  %}
+             {%for item in items%}
+             <span class="details-text">{{item}}</span>
+             {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="botton-box-pc">
+        <a class="botton botton-sell" href="{{section.settings.skip_sell}}"> {{section.settings.sell_text}}</a> 
+        <a class="botton botton-work"  href="{{section.settings.skip_work}}">{{section.settings.work_text}}</a>
+      </div>
+    </div>
+     <!-- banner -->
+    <div class="swiper-wrapper">
+      {% for block in section.blocks %}
+      {% assign swiperSlideId = swiperContainerId | append: "-swiper-slide-"  | append: forloop.index %}
+      <div class="swiper-slide {{swiperSlideId}}">
+        <a {% if block.settings.link %} href="{{ block.settings.link }} {% endif %}">
+          <picture>
+            <!-- default 500px --> 
+            {% assign pc_img_url = block.settings.pc_image | img_url: '1x1' | replace: '_1x1.', '_500' %}
+            {% assign pc_resize = block.settings.pc_image.width | append: "x" | append: block.settings.pc_image.height %}
+            {% assign mb_resize = block.settings.mb_image.width | append: "x" | append: block.settings.mb_image.height %}
+            <source
+                    data-srcset="{{ block.settings.mb_image | img_url: mb_resize }}"
+                    media="(max-width: 750px)" />
+            <source
+                    data-srcset="{{ block.settings.pc_image | img_url: pc_resize  }}"
+                    media="(max-width: 1024px)" />
+            <source
+                    data-srcset="{{ block.settings.pc_image | img_url: pc_resize }}" />
+            <img
+                 src="{{ pc_img_url }}"
+                 data-src="{{ block.settings.pc_image | img_url: pc_resize }}"
+                 class="lazyload"
+                 alt="{{ block.settings.image.alt | escape }}" />
+          </picture>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    {% assign prev = swiperContainerId | append: "-button-prev" %}
+    {% assign next = swiperContainerId | append: "-button-next" %}
+    
+    {% assign pagination = swiperContainerId | append: "-swiper-pagination" %}
+    
+    {% if section.blocks.size > 1%}
+      <!-- Add Pagination -->
+	  <div id="{{pagination}}" class="swiper-pagination"></div>
+      
+      
+      <!-- Add Arrows -->
+      <div id="{{prev}}">
+        {% include 'icon-swiper-button-prev' %}
+      </div>
+      <div id="{{next}}">
+        {% include 'icon-swiper-button-next' %}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="botton-box-mb">
+    <a class="botton botton-sell" href="{{section.settings.skip_sell}}"> {{section.settings.sell_text}}</a> 
+    <a class="botton botton-work"  href="{{section.settings.skip_work}}">{{section.settings.work_text}}</a>
+  </div>
+
+  <ul class="advantage-list">
+    {%for advantage-item in advantages%}
+    <li class="advantage-item">
+      {% assign items = advantage-item | split: "."  %} 
+      {%for item in items%}
+      <div class="advantage-item-box-mb">{{item}}</div>
+      {% endfor %}
+    </li>
+    {% endfor %}
+  </ul>
+
+  {% if section.blocks.size > 1%}
+  <!-- Initialize Swiper -->
+  <script>
+    var swiper = new Swiper("#{{swiperContainerId}}", {
+      slidesPerView: 1,
+      spaceBetween: 30,
+      loop: true,
+      autoplay: {{section.settings.autoplay}}, 
+      keyboard: true,
+      pagination: {
+        el: '#{{pagination}}',
+        type: 'fraction'
+      },
+      navigation: {
+        nextEl: "#{{next}}",
+        prevEl: "#{{prev}}"
+      }
+    });
+  </script>
+  {% endif %}
+{% endif %}
+
+<style>
+  .template-index main.main-content .index-home-container{
+	max-width:100%;
+   }
+  .block-banner{
+    padding:0px;
+    margin:0px;
+    margin-top: 2rem;
+  }
+  .template-index .block-banner{margin-top:0;}
+  .swiper-container{
+   background: #F6F6F9;
+  }
+  .swiper-container .picture{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .template-index  {
+    padding-top: 0;
+    background:url("{{'vbg.jpg' | asset_url }}") repeat-y center center;  
+      /*   background-color:#ffc6d3; */
+      position:relative;
+      }
+  @media only screen and (max-width: 768px){
+    .template-index  {
+      padding-top: 0;
+      background:url("{{'vbg.jpg' | asset_url }}") repeat-y center center;  
+        position:relative;
+        background-size: contain;
+        }
+  }
+  .text-box{
+    position: absolute;
+    top:124px;
+    left:15.72%;
+    z-index: 10;
+  }
+  .text-title{
+    width:686px;
+    font-size:60px;
+    line-height:78px;
+    color:#222;
+    z-index:10px;
+    position: relative;
+  }
+  .text-title-item:nth-of-type(2){
+    color:#F9423A;
+  }
+  .text-special{
+    color:#F9423A;
+  }
+  .advantage-details-box{
+    margin-top:19px
+  }
+  .botton-box-pc{
+   margin-top:40px;
+  }
+  .botton{
+    padding:14px 60px 15px 60px;
+    border-radius: 4px;
+    font-size:20px;
+    line-height:24px;
+  }
+  .botton-sell{
+    background:#F9423A;
+    color:#fff;
+  }
+  .botton-work{
+   border:1px solid #F9423A;
+    color:#F9423A;
+    margin-left:19px;
+  }
+  .advantage-details-item{
+    font-size:16px;
+    line-height:32px;
+    display:flex;
+    align-items: center;
+  }
+  .details-text-box{
+    margin-left: 5px;
+    line-height:32px;
+    font-size:16px;
+  }
+  .botton-box-mb,.advantage-list{
+    display:none;
+  }
+  @media screen and (max-width: 768px){
+    .details-text-key{
+     line-height:13px;
+      font-size:13px;
+    }
+    .details-text{
+    line-height:12px;
+    font-size:12px;
+    transform: scale(0.8);
+    }
+    .botton-box-pc{
+     display:none;
+    }
+    .swiper-container{
+	 padding-top:45px
+    }
+    .text-box{
+      top:39px;
+      left:20px;
+      display:bock;
+    }
+    .text-title{
+      font-size:28px;
+      line-height:48px;
+      text-align: left;
+      color:#222;
+      width: 47.2%;
+    }
+    .text-special{
+      position: absolute;
+      right: 57px;
+      top: 49px;
+    }
+    .details-box,.botton-box{
+     display:none;
+    }
+    .details-item{
+      font-size:14px;
+    }
+    .botton-box-mb{
+      display:block;
+      width:100%;
+      padding:15px 20px;
+      background: #F6F6F9;
+    }
+    .botton{
+      width:100%;
+      padding:14px 14px 18px 15px;
+      font-size:16px;
+      line-height:19px;
+      display:block;
+      text-align: center;
+    }
+    .botton-work{
+      margin-left:0px;
+      margin-top:20px;
+    }
+    .advantage-box{
+      width:100%;
+      padding:29px 27px 26px 40px;
+    }
+    .advantage-list{
+      width:100%;
+      display:flex;
+      justify-content: center;
+      align-items: center;
+      background: #F6F6F9;
+      padding:29px 0 40px 0;
+    }
+    .advantage-item{
+      width:33.33%;
+      color:#222;
+    }
+    .advantage-item:nth-of-type(1){
+      border-right:1px solid rgba(34,34,34,0.16);
+      border-left:1px solid rgba(34,34,34,0.16);
+    }
+    .advantage-item-box-mb:nth-of-type(1){
+      width:100%;
+      line-height:17px;
+      font-size:13px;
+      text-align:center;
+    }
+     .advantage-item-box-mb:nth-of-type(2){
+/*       width:100%; */
+      line-height:15px;
+      font-size:12px;
+      text-align:center;
+      transform: scale(0.8);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "轮播图",
+  "max_blocks": 4,
+  "class": "block-banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "private",
+      "label": "程序参考字段默认勿动",
+      "default": "block-banner"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "是否自动轮播",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "标题",
+      "default": "Sell custom products，get all ideas.for FREE"
+    },
+    {
+      "type": "text",
+      "id": "sell_text",
+      "label": "按钮1文案",
+      "default": "Start selling"
+    },
+    {
+      "type": "text",
+      "id": "skip_sell",
+      "label": "按钮1跳转链接"
+    },
+    {
+      "type": "text",
+      "id": "work_text",
+      "label": "按钮2文案",
+      "default": "How it works"
+    },
+    {
+      "type": "text",
+      "id": "skip_work",
+      "label": "按钮2跳转链接"
+    },
+    {
+      "type": "text",
+      "id": "advantage",
+      "label": "优点",
+	  "default":"100%.Free to use;300+.High-Quality Products;Largest.global print network"
+    }
+
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "单个元素",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "pc_image",
+          "label": "PC图片"
+        },
+        {
+          "type": "image_picker",
+          "id": "mb_image",
+          "label": "MB图片"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "点击图片的链接"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "首页轮播图",
+      "category": "1-Custom",
+      "blocks": [
+        {
+          "type": "slide"
+        }
+      ]
+    }
+  ]
+}
+
+{% endschema %}

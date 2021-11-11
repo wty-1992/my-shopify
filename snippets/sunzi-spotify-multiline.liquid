@@ -1,0 +1,349 @@
+{% comment %}
+** @name SpotifyCode多行刻字 **
+** @author 劳紫恩 **
+** @integrate 劳紫恩 王天宇 **
+{% endcomment %}
+
+{% comment %} 引用公共插槽 {% endcomment %}
+{% include 'sunzi-solt-template' %}
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'sunzi.sprotify.multiline.js' %}
+
+{% comment %} 谷歌分析id {% endcomment %}
+{% assign gtag = 'G-R132WKL1C2' %}
+
+{% comment %} 加价变体 {% endcomment %}
+{% assign variantMarkup = 0 %}
+
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign requestURL = '' %}
+{% comment %} 摆件数据 {% endcomment %}
+{% if product.tags contains 'custom-sunzi-type-ornament-x01' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/X01.json' %}
+{% elsif product.tags contains 'custom-sunzi-type-ornament-x02' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/X02.json' %}
+{% elsif product.tags contains 'custom-sunzi-type-ornament-x03' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/X03.json' %}
+{% comment %} 摆件+金色边框数据 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-type-frame-x01' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/biankuang-X01.json' %}
+{% elsif product.tags contains 'custom-sunzi-type-frame-x02' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/biankuang-X02.json' %}
+{% elsif product.tags contains 'custom-sunzi-type-frame-x03' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/biankuang-X03.json' %}
+{% comment %} 夜灯 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-type-light-x01' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/yedeng-X01.json' %}
+{% elsif product.tags contains 'custom-sunzi-type-light-x02' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/yedeng-X02.json' %}
+{% elsif product.tags contains 'custom-sunzi-type-light-x03' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/yedeng-X03.json' %}
+{% endif %}
+
+
+{% comment %} 定制按钮文案 {% endcomment %}
+{% assign buttonText = section.settings.sunzi_button_upload_text %}
+
+{% comment %} 默认唱片图片 {% endcomment %}
+{% assign defaultCustomAlbum = section.settings.sunzi_param_spotify_default_custom_album %}
+
+{% comment %} 推荐唱片列表 {% endcomment %}
+{% assign recommendTracks = section.settings.sunzi_param_spotify_recommend_tracks %}
+
+{% comment %} 站点语种 {% endcomment %}
+{% assign sunzi_shop_language = section.settings.sunzi_shop_language %}
+{% comment %} 货币符号 {% endcomment %}
+{% assign sunzi_shop_symbol = section.settings.sunzi_shop_symbol %}
+
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+  .select-option {
+  	display: none !important;
+  }
+  .sunzi-item-label{
+    color:#333;
+    font-weight:800;
+   	font-size:18px;
+    line-height:21px;
+    margin-top:12px;
+    margin-top: -30px;
+  }
+  .sunzi-content{
+    position: relative;
+    display: flex;
+    width: 100%;
+    margin-bottom: 36px;
+  }
+  .sunzi-size{
+    max-width: min-content;
+    padding: 0 10px;
+  }
+  .sunzi-content-item{
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    width: fit-content;
+    height: 100px;
+    overflow: hidden;
+  }
+  .svg-wrapper{
+    position: relative;
+    box-sizing: border-box;
+    padding: 6px;
+    overflow: hidden;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .svg{
+    height: 100%;
+    display: flex;
+  }
+  .svg svg{
+   stroke: #dedede;
+   stroke-width: 2%;
+   height: 100%;
+   display: flex;
+  }
+  .wrapper{
+  	display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+  .icon{
+    width: 24px;
+    height: 24px;
+    background-color: #fff;
+    border-radius: 50%;
+    display: none;
+    }
+  .title{
+  	font-size:14px;
+	color:#333;
+    line-height:16px;
+    margin-top:6px;  
+  }  
+  .active{
+   border:2px solid #FF7152;
+  background-color:rgba(255,13,86,0.06);
+   
+  }
+  .active .svg svg{
+ 	 stroke:rgba(255,13,86,0.06);
+    display: flex;
+  }
+  .active .title{
+  	color:#FF7152;
+    font-weight: 600;
+  }
+  .active .icon{
+   display: flex;
+  }    
+  .active-title{
+  	color:#FF7152;
+    font-weight: 600;
+  }  
+  @media screen and (min-width: 768px) {
+    .sunzi-modal-content {
+      width: 400px!important;
+      height: 640px!important;
+    }
+  }
+
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 额外的表单参数 {% endcomment %}
+  <div class="sunzi-form-item">
+    {% for option in product.options_with_values %}
+    <div class="sunzi-variant-item" id="sunzi-variant-item-{{ forloop.index }}">
+        <div class="sunzi-item-label">{{ option.name }}</div>
+        <div class="sunzi-content">
+     		{% for value in option.values %}
+            <div class="sunzi-size" data-value="{{ value | escape }}">
+              <div class="sunzi-content-item">
+                <div class="svg-wrapper {% if option.selected_value == value %} active {% endif %}">
+                  <div class="svg"></div>
+                  <div class="wrapper">
+                    <div class="icon ">
+                      <svg class="tick-circle" viewBox="2 2 20 20" fill="#FF533A">
+                        <path d="M12,3.2 C16.8601058,3.2 20.8,7.1398942 20.8,12 C20.8,16.8601058 16.8601058,20.8 12,20.8 C7.1398942,20.8 3.2,16.8601058 3.2,12 C3.2,7.1398942 7.1398942,3.2 12,3.2 Z M17.3656854,8.63431458 C17.053266,8.32189514 16.546734,8.32189514 16.2343146,8.63431458 L16.2343146,8.63431458 L10.8,14.068 L7.76568542,11.0343146 L7.69031955,10.9677637 C7.37648659,10.7237438 6.92270174,10.7459274 6.63431458,11.0343146 C6.32189514,11.346734 6.32189514,11.853266 6.63431458,12.1656854 L6.63431458,12.1656854 L10.2343146,15.7656854 L10.3096804,15.8322363 C10.6235134,16.0762562 11.0772983,16.0540726 11.3656854,15.7656854 L11.3656854,15.7656854 L17.3656854,9.76568542 L17.4322363,9.69031955 C17.6762562,9.37648659 17.6540726,8.92270174 17.3656854,8.63431458 Z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="title {% if option.selected_value == value %} active-title {% endif %}">{{value}} </div>
+          </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="hidden" id="sunzi-input" name="properties[customInfo]" />
+  <input type="hidden" id="sunzi-cart" name="properties[_sunzi_cart]" />
+  <input type="hidden" id="_sunzi_add_text" name="properties[_sunzi_add_text]" />
+  <input type="hidden" id="sunzi-vip" name="properties[VIPService]" />
+  <input type='hidden' id="_tempVip"  name='properties[_tempVip]' />
+
+  {% comment %} 定制按钮 {% endcomment %}
+  <button type="button" id="sunzi-button" disabled class="dots-loading">
+    <span class="dots">
+      <i></i>
+      <i></i>
+      <i></i>
+    </span>
+    <div class="sunzi-button-text">{{ buttonText }}</div>
+  </button>
+</div>
+
+<!-- sunzi core js -->
+<script src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{ coreJs }}" defer="defer"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ gtag }}" async="async"></script>
+<script async="async">
+  _sunzi_gtag('{{ gtag }}');
+</script>
+
+{% comment %} 1.隐藏掉变体，加车按钮等等 {% endcomment %}
+<script defer="defer">
+</script>
+
+{% comment %} 2.请求定制化数据 {% endcomment %}
+<script defer="defer">
+</script>
+
+{% comment %} 3.开始定制 {% endcomment %}
+<script defer="defer">
+  var response
+  // 初始化数据
+  _sunzi_request('{{ requestURL }}', function(res) {
+    response = JSON.parse(JSON.stringify(res));
+  	initSize(res.layout);
+  });
+  $('#sunzi-button').click(function() {
+    var curProduct = _sunzi_get_product_info();
+
+    var sku = curProduct.sku;
+    var price = curProduct.price / 100;
+     // sku对应的layout信息
+    var layoutInfo = response.layout.find(item => item.sku === sku);
+    _sunzi_response.layout = layoutInfo;
+    _sunzi_response.shop = {
+      language: '{{sunzi_shop_language}}',
+      currencySymbol: '{{sunzi_shop_symbol}}',
+    };
+    _sunzi_response.defaultCustomAlbum = "{{defaultCustomAlbum}}";
+    _sunzi_response.recommendTracks = {{recommendTracks}};
+    _sunzi_response.theme = {
+      r: 255,
+      g: 1,
+      b: 54
+    };
+    _sunzi_response.price = price;
+    // 夜灯额外参数
+    if(layoutInfo.type === "yedeng") _sunzi_response.addPrice = _sunzi_get_markup_price({{variantMarkup}});
+    // 开始渲染
+    _sunzi_custom(
+      SpotifyCode.SpotifyMultiline,
+      function(effect,data,value) {
+        _sunzi_loading();
+
+        var { multipleTextCoord, singlelineTextCoord } = data.layout;
+        // 定制化加车参数
+        var param = {
+          '_sunzi_source': data.source,
+          '_sunzi_compose': [{
+            'rule': 19.16,
+            'data': data
+          }],
+          '_sunzi_effect': _sunzi_get_product_info("featuredImage"),
+          '_sunzi_text': {
+            value: `${data.color.value}|${data.track.name}|${data.track.artists}|${data.track.uri}|${SpotifyCode.formatTime(data.track.duration_ms)}`
+          }
+        }
+        
+        // 添加音轨刻字
+        param['_sunzi_spotify_text'] = [];
+        // 如果存在多行刻字
+        if (multipleTextCoord) {
+          param['_sunzi_spotify_text'].push({
+            value: multipleTextCoord.value,
+            font: multipleTextCoord.font.name
+          })
+        }
+        // 如果存在单行刻字
+        if (singlelineTextCoord) {
+          param['_sunzi_spotify_text'].push({
+            value: singlelineTextCoord.value,
+            font: singlelineTextCoord.font.name
+          })
+        }
+      
+      
+        // 是夜灯 & 存在刻字 === 底座刻字
+        if(layoutInfo.type === "yedeng" && value)
+          param['_sunzi_stand_texts'] = [value]
+          
+        $('#sunzi-input').val(JSON.stringify(param));
+        $('#sunzi-cart').val(JSON.stringify({
+          'image': [ effect ]
+        }));
+        
+        // 夜灯根据是否刻字添加刻字虚拟产品 用变体控制
+
+        value && _sunzi_variant_change({{variantMarkup}}, 1);
+		//	加车事件触发
+        Product.addFormToCart($('.product-form'), function() {
+          // 重置变体
+          value && _sunzi_variant_change({{variantMarkup}}, 0);
+        })
+        _sunzi_hide_loading();
+      }
+    );
+  });
+     
+  
+  //选择尺寸
+  function initSize(data){
+    var html = '';
+    var htmlIcon = '';
+    $.each(data, function(index, item) {
+      html=` <svg class="" viewBox="0 0 ${item.makeWidth} ${item.makeHeight}">
+              <line x1="0" y1="${item.makeHeight}" x2="${item.makeWidth}" y2="0"></line>
+              <line x1="0" y1="0" x2="${item.makeWidth}" y2="${item.makeHeight}"></line>
+            </svg>`
+      $(`.svg-wrapper:eq(${index}) .svg`).html(html);
+      $(`.svg-wrapper:eq(${index})`)[0].style.height=`${item.makeHeight*0.07}px`
+    } ) 
+    //只有一个变体时隐藏
+    if(data.length===1)
+      $('.sunzi-variant-item').hide();
+  }
+           
+  // 绑定变体切换事件
+  $('div[id^="sunzi-variant-item"]').each(function(index) {
+    $(this).find('.sunzi-size').on('click', function() {
+      if($(this).find('.svg-wrapper').hasClass('active')) return;
+       if($(this).find('.title').hasClass('active-title')) return;
+      $(`#sunzi-variant-item-${index+1} .svg-wrapper`).removeClass('active');
+       $(`#sunzi-variant-item-${index+1} .title`).removeClass('active-title');
+      $(this).find('.svg-wrapper').addClass('active');
+      $(this).find('.title').addClass('active-title');
+      _sunzi_variant_change(index, $(this).data('value'));
+    });
+  });
+
+   
+  /** 其他自定义函数 end **/
+</script>

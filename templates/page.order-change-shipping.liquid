@@ -1,0 +1,1306 @@
+{{ 'address_countries_meta.js' | asset_url | script_tag }}
+
+<style>
+.cancel-container {
+  font-family: 'OpenSans';
+}  
+.new-message-form {
+  width: 100%;
+  max-width: 750px;
+  margin: 20px auto 60px;
+  transform: translateX(-4vw);
+}
+.input-box {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 32px;
+}
+.input-box input {
+  font-size: 13px;
+  height: 34px;
+  font-weight: 600;
+  font-family: 'OpenSans';
+  background: #fff;
+  border-color: #b2aeae;
+  width: 100%;
+}
+.new-message-form h2 {
+  font-weight: 100;
+  color: #000;
+  font-size: 25px;	
+  line-height: 1;
+  margin: 40px 0 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateX(100px);
+}
+.new-message-form .left {
+  width: 530px;
+  padding-left: 10px;
+}
+.cd-label {
+  font-weight: 100;
+  color: #000;
+  text-transform: capitalize;
+  margin: 0;
+  line-height: 1;
+}
+.tingle-modal-box__content {
+  font-family: 'OpenSans';
+}
+.receive-data .input-box,.delivery-data .input-box {
+  margin-bottom: 0;
+  align-items: flex-start;
+}
+.order-policy .input-box {
+  margin-top: 4px;
+  margin-bottom: 55px;
+}
+span.order-status {
+  font-size: 14px;
+  color: #000;
+  font-weight: 600;
+  font-family: 'OpenSans';
+}
+.hover-tipswarn {
+  color: #818181;
+  transform: translate(0px,-1px);
+  font-size: 14px;
+}
+.btn-group {
+  display: flex;
+  align-items: center;
+}
+.btn-group .left {
+  display: flex;
+}
+.btn-group .left .photo-iup{
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: #787878;
+}
+#dropdownReason {
+  border-color: #b2aeae;
+  background: #fff;
+  font-size: 13px;
+  height: 34px;
+}
+.order-policy .left{
+  font-size: 12px;
+  color: #000;
+  padding-top: 8px;
+}
+.order-policy .left a{
+  color: blue;
+  text-decoration: underline;
+}
+.submit-button button {
+  letter-spacing: 0;
+  text-transform: capitalize;
+  font-size: 12px;
+  width: auto;
+  padding: 10px 14px;
+  background: #e60044;
+}
+.submit-row button.submit-close {
+  background: #e60345;
+  color: #fff;
+  border-color: #e60345;
+}
+.submit-button {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 25px;
+}
+.submit-button div{
+  width: 300px;
+  text-align: center;
+}
+.custom-order-cancel .tingle-modal__close{
+  display:none;
+}
+.custom-order-cancel .tingle-modal-box {
+  text-align: center;
+  width: 100%;
+  padding: 35px 20px 30px;
+  border-radius: 5px;
+  color: #000;
+  max-width: 500px;
+}
+.submit-row {
+  margin-top: 40px;
+  text-align: center;
+}
+.submit-row button {
+  background: #fff;
+  border: 1px solid;
+  padding: 9px 20px;
+  color: #000;
+  border-radius: 4px;
+  min-width: 30%;
+}
+button.submit-cancel{
+  margin-left: 10px;
+}
+span.toggle-tooltip {
+  position: absolute;
+  font-weight: 100;
+  font-size: 12px;
+  width: 200px;
+  text-align: center;
+  background: rgba(0,0,0,.8);
+  color: #ffff;
+  line-height: 1.2;
+  padding: 10px 10px;
+  border-radius: 6px;
+  left: -170px;
+  bottom: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.3s;
+  transform: translateY(-25px);
+}
+.hover-tipswarn:hover .toggle-tooltip{
+  opacity: 1;
+  pointer-events: auto;
+}
+span.toggle-tooltip:after {
+  content: "";
+  margin-left: -5px;
+  border-width: 5px 5px 0;
+  border-color: transparent;
+  border-top-color: rgba(0,0,0,.8);
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  bottom: -5px;
+  display: block;
+  right: 20px;
+}
+/*关闭弹窗*/
+.custom-order-hlnts .tingle-modal__close {
+  display: none;
+}
+.photofont-close {
+  position: absolute;
+  right: 8px;
+  top: 4px;
+}  
+.photofont-close span{
+  font-size: 36px;
+  height: auto;
+  width: auto;
+  line-height: 1;
+}
+
+.modal-transition .tingle-modal-box:after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  transition: background .5s;
+  background: rgba(0,0,0,.6);
+}
+.modal-transition{  
+  background: transparent;  
+}
+.modal-transition .tingle-modal-box{
+  position: fixed;  
+  transform: scale(0);
+  transition: transform .5s;
+}
+.col1-question+.input-box {
+  margin-top: 0;
+}
+.col1-question{
+  text-align: right;
+  padding: 14px 0 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  line-height: 1;  
+  color: #e50044;  
+  width: 100%;
+  max-width: 100%;
+}
+.col1-question p{
+  text-decoration: underline;
+  margin:0 2px 0 0;
+  line-height: 1; 
+}
+  
+/*提示弹层*/
+  
+.photofont-top {
+  padding: 35px 0 20px;
+  color: #000;
+  text-align: center;
+  font-size: 20px;
+}
+.photofont-content {
+  display: flex;
+  flex-flow: wrap;
+  justify-content: space-between;
+}
+.photofont-step{
+  padding: 5px 10px;
+  color: #000;
+  position: relative;
+  box-shadow: 3px 3px 6px rgb(0 0 0 / 50%);
+}
+.photofont-step1{
+  width: 30%;
+  order:1;
+  margin-bottom: 25px;
+  background: #facd91;
+}
+.photofont-step2{
+  width: calc(70% - 25px);
+  order:2;
+  margin-bottom: 25px;
+  background: #f59a23;
+}
+.photofont-step3{
+  order:4;
+  width: calc(70% - 25px);
+  background: #d6551d;
+}
+.photofont-step4{
+  order:3;
+  width: 30%;
+  background: #cc8566;
+}
+.photofont-step span{
+  font-size: 14px;
+}
+.photofont-step p{
+  font-size: 12px;
+  line-height: 1.4;
+}
+.photofont-step:before,.photofont-step:after{
+  content: "";
+  display: block;
+  position: absolute;  
+}
+.photofont-step1:before {  
+  right: -45px;
+  top: 50%;
+  border: 20px solid transparent;
+  border-left: 10px solid #acacac;
+  transform: translateY(-50%);
+}
+.photofont-step1:after {
+  right: -16px;
+  top: 50%;
+  background: #acacac;
+  width: 10px;
+  height: 24px;
+  transform: translateY(-50%);
+} 
+.photofont-step2:before {
+  left: 50%;
+  bottom: -43px;
+  border: 20px solid transparent;
+  border-top: 10px solid #9f9f9f;
+  transform: translateX(-50%);
+}
+.photofont-step2:after {
+  left: 50%;
+  bottom: -14px;
+  background: #9f9f9f;
+  width: 24px;
+  height: 10px;
+  transform: translateX(-50%);
+}
+.photofont-step3:before {
+  left: -45px;
+  top: 50%;
+  border: 20px solid transparent;
+  border-right: 10px solid #3e3e3e;
+  transform: translateY(-50%);
+}
+.photofont-step3:after {
+  left: -16px;
+  top: 50%;
+  background: #3e3e3e;
+  width: 10px;
+  height: 24px;
+  transform: translateY(-50%);
+} 
+.photofont-bottom {
+  margin: 10px 0;
+  color: #000;
+}
+.photofont-bottom div{
+  font-weight: 600;
+  padding: 10px 0;
+}
+.photofont-bottom p {
+  line-height: 1.2;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+  
+/*页下提示*/
+.hint-footer{
+  width:100%;
+  max-width:650px;
+  margin:0 auto;
+}
+.hint-footer h4 {
+  margin: 0 0 20px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 100;
+  line-height: 1;
+  color: #000;
+}
+.hint-footer h4 span:nth-child(1) {
+  font-weight: 600;
+}
+.hint-footer-content p {
+  display: inline;
+  color: blue;
+}
+.hint-footer-content {
+  font-size: 13px;
+  color: #000;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+.hint-shipping-time {
+  display: flex;
+  background: #facd91;
+  color: #000;
+  position: relative;
+}
+.hint-shipping-time span:nth-child(2) {
+  background: #f59a23;
+}
+.hint-shipping-time span {
+  width: 50%;
+  text-align: center;
+  padding: 5px 0;
+}
+.hint-shipping-time:after {
+  content: "";
+  display: block;
+  position: absolute;
+  right: -45px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 25px solid transparent;
+  border-left: 20px solid #f59a23;
+}
+.hint-place-order {
+  margin: 35px 0 50px;
+  display: flex;
+  width: 100%;
+  padding-top: 20px;
+  border-top: 1px solid #000;
+  justify-content: space-between;
+  color: #000;
+  position: relative;
+}
+.hint-place-order span{
+  position: relative;
+  line-height: 1.2;
+}
+.hint-place-order span:after{
+  content: "";
+  display: block;
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  background: #f59a23;
+  border-radius: 100%;
+  border: 1px solid #333;
+  top: -25px;
+}
+.hint-place-order span:nth-child(1)::after{left: 0;}
+.hint-place-order span:nth-child(2)::after{left: 50%;transform: translateX(-50%);}
+.hint-place-order span:nth-child(3)::after{right: -5px;}
+.policy_confirm{
+  width: 13px;
+  height: 13px;
+  line-height: 1;
+  border:1px solid #000;
+  display: inline-block;
+  position: relative;
+}
+input#newsletter_policy {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: auto;
+  opacity: 0;
+  z-index: 1;
+}
+.policy_confirm span.icon.photofont.photo-check {
+  font-size: 12px;
+  font-weight: 900;
+  transform: translate(0px, -1px);
+  opacity: 0;
+}  
+.policy_confirm input:checked~span.icon.photofont.photo-check{
+  opacity: 1;
+}
+.cake{
+  animation:move 1s 0s;
+  -webkit-animation:move 1s 0s;
+  transform-origin:bottom;
+  -webkit-transform-origin:bottom;
+  border-color:red;
+}
+.submit-before {
+  color: #000;
+  font-family: 'OpenSans';
+}
+span.msg-title {
+  padding-bottom: 20px;
+  display: block;
+  text-align: center;
+  font-size: 20px;
+  line-height: 1;
+}
+.msg-main {
+  padding: 0 20px;  
+  text-align: left;
+}
+.msg-main li>span:nth-child(1){
+  font-weight: 600;
+  padding-right: 10px;
+}
+.msg-main li>span:nth-child(2) {
+  color: #e0001b;
+}
+.msg-main>span {
+  padding-top: 10px;
+  display: inline-block;
+  color: #000;
+  font-weight: 600;
+}
+.field-box.delivery-revise{
+  position: relative;
+  margin-top: 15px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: left;
+  line-height: 1;
+}
+.field-box.delivery-revise input {
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  opacity: 0;
+}
+.field-box.delivery-revise .delivery_diff_price{
+  padding-left: 10px;
+  color: #e70044;
+  font-weight: 900;
+}
+.field-box.delivery-revise .delivery_checked{
+  width: 12px;
+  height: 12px;
+  border: 1px solid #333;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 5px;
+}
+.field-box.delivery-revise input:checked~.delivery_checked:after{
+  width:6px;
+  height:6px;
+  border-radius: 100%;
+  background: #333;
+  content:"";
+  display:block;  
+}
+.Ais_state {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+a.RestoreLabel {
+  line-height: 1;
+  margin-bottom: 13px;
+  cursor: pointer;
+  color: red !important;
+  text-decoration: underline !important;
+}
+@keyframes move
+{
+	0%, 45%{
+	  -webkit-transform:rotate(0deg);
+	  transform:rotate(0deg);
+	}
+	50% {  
+	  -webkit-transform:rotate(15deg);
+	  transform:rotate(15deg);
+	}
+	60% {  
+	  -webkit-transform:rotate(-15deg);
+	  transform:rotate(-15deg);
+	}
+	70% {  
+	  -webkit-transform:rotate(15deg);
+	  transform:rotate(15deg);
+	}
+	80% {  
+	  -webkit-transform:rotate(-15deg);
+	  transform:rotate(-15deg);
+	}
+	90% {  
+	  -webkit-transform:rotate(15deg);
+	  transform:rotate(15deg);
+	}
+	100% {  
+	  -webkit-transform:rotate(-15deg);
+	  transform:rotate(-15deg);
+	}
+}
+.status-box .photo-hover:before {
+  margin-right: 5px;
+}
+.status-box .photo-hover {
+  color: #818181;
+  transform: translate(0px,-1px);
+  font-size: 14px;
+  position: relative;
+}
+.btn-group {
+  display: flex;
+  align-items: center;
+}
+.btn-group .left {
+  display: flex;
+}
+.btn-group .left .photo-iup{
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: #787878;
+}
+.order-policy .left{
+  font-size: 12px;
+  color: #000;
+}
+.order-policy .left a{
+  color: #e70044;
+}
+.submit-button button {
+  letter-spacing: 0;
+  text-transform: capitalize;
+  font-size: 12px;
+  width: auto;
+  padding: 10px 14px;
+  background: #e70044;
+}
+.submit-button div{
+  width: 530px;
+  text-align: center;
+}
+.input-box.address-box label,.input-box.delivery-box label {
+  text-transform: unset;
+  font-weight: 100;
+}
+.input-box.address-box label.form_edit,.input-box.delivery-box label.form_edit {
+  width: 100%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  line-height: 1;
+  color: #000;
+  font-weight: 600;
+  font-family: 'OpenSans';
+}
+.input-box.address-box .form_edit input,.input-box.delivery-box .form_edit input{
+  width: auto;
+  height: auto;
+  margin-right: 4px;
+}
+.billing-new-address-form{
+  display: flex;
+  flex-flow: wrap;
+  justify-content: space-between;
+}
+.billing-new-address-form .field-box{
+  position: relative;
+  width: 100%;
+  padding: 0.4285714286em 0;
+}
+.submit-button {
+  display: flex;
+  justify-content: flex-end;
+}
+.billing-new-address-form .field-box.double-row{
+  width: calc(50% - 3px);
+}
+.billing-new-address-form .field-box.triplex-row{
+  width: calc(33.3% - 3px);
+}
+.billing-new-address-form .field-box .form-label{
+  margin-bottom: 0;
+  position: absolute;
+  opacity: 0;
+  left: 6px;
+  top: 3px;
+  font-size: 12px;
+  pointer-events: none;
+}
+.billing-new-address-form .field-box .field__input{
+  width: 100%;
+  height: 46px;
+  color: #000;
+  font-weight: 100;
+  border-radius: 5px;
+  background: #fff;
+  border-color: #b2aeae;
+  transition: padding .3s;
+}
+.billing-new-address-form .field-box input:focus{
+  border-color:#d8232f;
+  border-width:2px;
+}
+.billing-new-address-form .field-box .form-label.float {
+  opacity: 1;
+  top: 11px;  
+  transition: all .3s;
+}
+.billing-new-address-form .field-box .form-label.float~.field__input{
+  padding-top: 18px;
+}
+.no-drop{
+  opacity: .5;
+}
+.no-drop .field-box{
+  cursor: no-drop;
+}
+.no-drop .field__input{
+  pointer-events: none;  
+}
+.billing-new-address-form input.field__input::placeholder {
+  color: #666;
+  opacity: 1;
+}
+.field-box .photo-iup {
+  position: absolute;
+  z-index: 1;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  border-left: 1px rgba(179,179,179,0.5) solid;
+  padding-left: 8px;
+  pointer-events: none;
+}
+#checkout_shipping_address_country {
+  pointer-events: none;
+}
+span.toggle-tooltip {
+  position: absolute;
+  font-weight: 100;
+  font-size: 12px;
+  width: 200px;
+  text-align: center;
+  background: rgba(0,0,0,.8);
+  color: #ffff;
+  line-height: 1.2;
+  padding: 10px 10px;
+  border-radius: 6px;
+  left: -170px;
+  bottom: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.3s;
+  transform: translateY(-25px);
+}
+.status-box .hover-tipswarn:hover .toggle-tooltip{
+  opacity: 1;
+  pointer-events: auto;
+}
+span.toggle-tooltip:after {
+  content: "";
+  margin-left: -5px;
+  border-width: 5px 5px 0;
+  border-top-color: rgba(0,0,0,.8);
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  bottom: -5px;
+  display: block;
+  right: 20px;
+}
+@media(max-width:768px){
+  .photofont-step1{width: 40%;}
+  .photofont-step2{width: calc(60% - 25px);}
+  .photofont-step3{width: calc(60% - 25px);}
+  .photofont-step4{width: 40%;}
+  .input-box{
+    flex-flow: wrap;
+    justify-content: left;
+    padding: 0;
+    margin-top: 20px;
+    position: relative;
+  }
+  span.delivery_rule_name{
+    max-width:80%;
+  }
+  .input-box.address-box label.form_edit, .input-box.delivery-box label.form_edit{
+    margin-bottom: 0;
+  }
+  .Ais_state{
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  a.RestoreLabel{
+	margin-bottom: 0;
+    margin-left: 15px;
+  }
+  .new-message-form{
+    transform: translateX(0vw);
+    padding: 0 20px;
+  }
+  .input-box input{
+    width:100%;
+  }
+  .new-message-form .left{
+    width:100%;
+    padding-left: 0;
+  }
+  .input-box.status-box .left {
+    width: auto;
+    padding-left: 10px;
+    margin-top: 0;
+  }
+  .hint-footer{
+	padding: 0 20px;
+  }
+  .new-message-form .receive-data .status-box .left {
+    width: auto;
+    margin: 0;
+    padding-left: 10px;
+  }
+  .submit-button div {
+    width: 100%;
+  }
+  .order-policy .input-box {
+    margin-bottom: 25px;
+  }
+  .btn-group {   
+    width: 100%;
+    flex-flow: wrap;
+  }
+  .btn-group .left .photo-iup{
+    transform: translateY(0%);
+  }
+  .custom-order-cancel .tingle-modal-box{
+    max-width: 100%;
+    border-radius: 0;
+  }
+  .new-message-form h2{
+    transform: translateX(0px);
+  }
+  .field-box.delivery-default.no-drop {
+    margin-top: 10px;
+  }
+}
+</style>
+
+<div class="cancel-container">
+  <div class="new-message-form">
+    
+    <h2>{{'customer.order_cancel.shipping_title' | t }}</h2>
+    <div class="col1-question" onclick="hlnts()"><p>{{'customer.order_cancel.cancelHlnts' | t }}</p><span class="icon photofont photo-question"></span></div>
+    <div class="input-box">
+      <label class="cd-label" for="cancelEmail">{{'customer.order_cancel.EmailLabel' | t }}</label>
+      <div class="left">
+                <input type="email" id="cancelEmail" name="email" value="" maxlength="255" class="input-message cancel-email">
+      </div>
+    </div>
+    
+    <div class="input-box">
+      <label class="cd-label" for="cancelOrder">{{'customer.order_cancel.OrderLabel' | t }}</label>
+      <div class="left">
+               <input type="text" id="cancelOrder" name="order_cancel" value="" maxlength="255" class="input-message cancel-order">
+      </div>
+    </div>
+    <div class="input-box status-box" style="display:none">
+      <label class="cd-label">{{'customer.order_cancel.statusLabel' | t }}</label>
+      <div class="left">
+        <span class="order-status"></span>
+      </div>
+    </div>
+    <div class="receive-data" style="display:none">
+      <div class="input-box address-box">
+        <label class="cd-label">
+          <span>{{'customer.order_cancel.AddressLabel' | t }}</span>
+        </label>
+        <div class="left">
+          <div class="Ais_state">
+          <label class="form_edit"><input type="checkbox" name="{{'customer.order_cancel.EditLabel' | t }}" class="checkbox_edit" value="female" /><span class="hover-tipswarn">{{'customer.order_cancel.EditLabel' | t }}<span class="toggle-tooltip">{{'customer.order_cancel.change_shippingHint1' | t }}</span></span></label>
+          <a class="RestoreLabel hover-tipswarn" style="display:none;"><span class="toggle-tooltip">{{'customer.order_cancel.change_shippingHint2' | t }}</span>{{'customer.order_cancel.RestoreLabel' | t }}</a>
+          </div>
+          <div class="billing-new-address-form no-drop">
+            <div class="field-box double-row">
+              <label class="form-label" for="checkout_shipping_address_first_name">{{'customer.order_cancel.FirstNameLabel' | t }}</label>
+              <input data-rawdata="" placeholder="{{'customer.order_cancel.FirstNameLabel' | t }}" disabled="disabled" class="field__input" type="text" name="checkout[shipping_address][first_name]" id="checkout_shipping_address_first_name">
+            </div>
+            <div class="field-box double-row">
+              <label class="form-label" for="checkout_shipping_address_last_name">{{'customer.order_cancel.LastNameLabel' | t }}</label>
+              <input data-rawdata="" placeholder="{{'customer.order_cancel.LastNameLabel' | t }}" disabled="disabled" class="field__input" type="text" name="checkout[shipping_address][last_name]" id="checkout_shipping_address_last_name">
+            </div>
+            
+            <div class="field-box">
+              <label class="form-label" for="checkout_shipping_address_company">{{'customer.order_cancel.CompanyLabel' | t }}</label>
+              <input data-rawdata="" placeholder="{{'customer.order_cancel.CompanyLabel' | t }}" disabled="disabled" class="field__input" type="text" name="checkout[shipping_address][company]" id="checkout_shipping_address_company">
+            </div>
+            
+            <div class="field-box">
+              <label class="form-label" for="checkout_shipping_address_address1">{{'customer.order_cancel.FullAddressLabel' | t }}</label>
+              <input data-rawdata="" placeholder="{{'customer.order_cancel.FullAddressLabel' | t }}" disabled="disabled" class="field__input" type="text" name="checkout[shipping_address][address1]" id="checkout_shipping_address_address1">
+            </div>           
+            
+            <div class="field-box">
+              <label class="form-label" for="checkout_shipping_address_city">{{'customer.order_cancel.CityLabel' | t }}</label>
+              <input data-rawdata="" placeholder="{{'customer.order_cancel.CityLabel' | t }}" disabled="disabled" class="field__input" type="text" name="checkout[shipping_address][city]" id="checkout_shipping_address_city">
+            </div>
+            
+            <div class="field-box triplex-row">
+              <label class="form-label" for="checkout_shipping_address_country">{{'customer.order_cancel.CountryLabel' | t }}</label>
+              <input data-rawdata="" placeholder="{{'customer.order_cancel.CountryLabel' | t }}" disabled="disabled" class="field__input" type="text" name="checkout[shipping_address][country]" id="checkout_shipping_address_country">
+            </div>
+            <div class="field-box triplex-row">
+              <label class="form-label" for="checkout_shipping_address_province">{{'customer.order_cancel.ProvinceLabel' | t }}</label>              
+              <select  placeholder="{{'customer.order_cancel.ProvinceLabel' | t }}" disabled="disabled" class="field__input" name="checkout[shipping_address][province]" id="checkout_shipping_address_province"></select>
+              <span class="icon photofont photo-iup"></span>
+            </div>
+            <div class="field-box triplex-row">
+              <label class="form-label" for="checkout_shipping_address_zip">{{'customer.order_cancel.PostalCodeLabel' | t }}</label>
+              <input data-rawdata="" placeholder="{{'customer.order_cancel.PostalCodeLabel' | t }}" disabled="disabled" class="field__input" type="text" name="checkout[shipping_address][zip]" id="checkout_shipping_address_zip">
+            </div>
+            
+            <div class="field-box">
+              <label class="form-label" for="checkout_shipping_address_phone">{{'customer.order_cancel.PhoneLabel' | t }}</label>
+              <input data-rawdata="" placeholder="{{'customer.order_cancel.PhoneLabel' | t }}" disabled="disabled" class="field__input" type="text" name="checkout[shipping_address][phone]" id="checkout_shipping_address_phone">
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    
+	<div class="delivery-data" style="display:none">      
+      <div class="input-box delivery-box">
+        <label class="cd-label">
+          <span>{{'customer.order_cancel.deliveryLabel' | t }}</span>
+        </label>
+        <div class="left">
+          <div class="Ais_state">
+          	<label class="form_edit"><input type="checkbox" name="{{'customer.order_cancel.EditLabel' | t }}" class="delivery_edit" value="female" />{{'customer.order_cancel.EditLabel' | t }}</label>
+          </div>
+          <div class="billing-new-delivery-form">
+            <div class="field-box delivery-default no-drop"></div>
+            
+          </div>
+        </div>
+      </div>
+    </div>    
+    
+    <div class="order-policy" style="display:none">
+      <div class="input-box">
+        <label class="cd-label"></label>
+        <div class="left">
+          <span class="policy_confirm">
+            <input type="checkbox" id="newsletter_policy" class="newsletter_policy_confirm">
+            <span class="icon photofont photo-check"></span>
+          </span>
+          <span>{{'customer.order_cancel.policy_text_html' | t }}</span>
+          <a href="javascript:;" onclick="returnPolicy()">{{'customer.order_cancel.policy_contact' | t }}</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="submit-button">
+      <div>
+        <button class="btn btn-order-track" id="SubmitTrack">{{'customer.order_cancel.SubmitTrack' | t }}</button>
+        <button class="btn btn-order-cancel" id="SubmitCancel" style="display:none">{{'customer.order_cancel.Confirm_Modification' | t }}</button>
+      </div>
+    </div>
+
+  </div>
+  <div class="hint-footer">
+    <h4>
+      <span>{{'customer.order_cancel.Please_Note' | t }}:</span> 
+      <span>{{'customer.order_cancel.Please_Note_title' | t }}</span>
+    </h4>    
+    <div class="hint-footer-content">{{ 'customer.order_cancel.Please_Note_html' | t }}</div>
+    <div class="hint-footer-layout">
+      <div class="hint-shipping-time">
+        <span>{{'customer.order_cancel.Processing_Time' | t }}</span>
+        <span>{{'customer.order_cancel.Shipping_Time' | t }}</span>
+      </div>
+      <div class="hint-place-order">
+        <span>{{'customer.order_cancel.Place_Order' | t }}</span>
+        <span>{{'customer.order_cancel.Leave_Our_Warehouse' | t }}</span>
+        <span>{{'customer.order_cancel.Receive_Your_Order' | t }}</span>      
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col1-layout" style="display:none;">
+  <div class="photofont-close top"><span class="icon photofont photo-close"></span></div>
+  <div class="main container">
+    <div class="photofont-top">{{'customer.order_cancel.change_shipping_Guide' | t }}</div>
+    <div class="photofont-content">
+      <div class="photofont-step photofont-step1">
+        <span>{{'customer.order_cancel.STEP' | t }} 1</span>
+        <p>{{'customer.order_cancel.change_shippingSTEP1' | t }}</p>
+      </div>
+      <div class="photofont-step photofont-step2">
+        <span>{{'customer.order_cancel.STEP' | t }} 2</span>
+        <p>{{'customer.order_cancel.change_shippingSTEP2' | t }}</p>
+      </div>
+      <div class="photofont-step photofont-step3">
+        <span>{{'customer.order_cancel.STEP' | t }} 3</span>
+        <p>{{'customer.order_cancel.change_shippingSTEP3' | t }}</p>
+      </div>
+      <div class="photofont-step photofont-step4">
+        <span>{{'customer.order_cancel.STEP' | t }} 4</span>
+        <p>{{'customer.order_cancel.change_shippingSTEP4' | t }}</p>
+      </div>
+    </div>
+    <div class="photofont-bottom">
+      <div class="">{{'customer.order_cancel.Please_Note' | t }}:</div>
+      <p>{{'customer.order_cancel.change_shippingSTEP5' | t }}</p>
+      <p>{{'customer.order_cancel.change_shippingSTEP6' | t }}</p>
+      <p>{{'customer.order_cancel.change_shippingSTEP7' | t }}</p>
+      <p>{{'customer.order_cancel.change_shippingSTEP8' | t }}</p>
+      <p>{{'customer.order_cancel.change_shippingSTEP9' | t }}</p>
+      <p>{{'customer.order_cancel.change_shippingSTEP10' | t }}</p>
+    </div>
+  </div>
+</div>
+<div class="days-return-policy" style="display:none">
+  {{pages['90-day-returns'].content}}
+</div>
+<div id="submit_confirm" style="display:none;">
+    <div>{{'customer.order_cancel.msg_Status_Affirm' | t }}</div>
+    <div class="submit-row">
+      <button type="button" class="submit-close" data-action="close">{{'customer.order_cancel.no' | t }}</button>
+      <div type="button" class="submit-cancel" id="submitCancelPaypal">{{'customer.order_cancel.yes' | t }}</div>
+    </div>
+</div>
+<div id="paypal-button-container"></div>
+<script src="https://www.paypal.com/sdk/js?client-id=AdWdMY37kr1znvtcXzlBRVXZOFy1Bi_FkVIyRb41LYH9-DakZU55oaLdyUr1pDbLTKTRnAdgezJuyAFU"></script>
+<script>
+  
+  var returnCancel = new tingle.modal({
+    footer: false,
+    cssClass: ['custom-order-return']
+  });
+  var submitCancel = new tingle.modal({
+    footer: false,
+    cssClass: ['custom-order-cancel']
+  });
+  var hlntsCancel = new tingle.modal({
+    footer: false,
+    cssClass: ['custom-order-hlnts']
+  });
+
+  var cancelEmail=$('#cancelEmail');
+  var cancelOrder=$('#cancelOrder');
+  var str = [];
+  var reMail =/^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
+  var rePhone=/^((\+?86)|(\(\+86\)))?1\d{10}$/;
+  
+  $(function(){
+     
+    $("#SubmitTrack").click(function(e){
+      if(reMail.test(cancelEmail.val())==false || cancelOrder.val()==""){
+        reMail.test(cancelEmail.val())==false?cancelEmail.css("border-color","red"):cancelEmail.css("border-color","#b2aeae");
+        cancelOrder.val()==""?cancelOrder.css("border-color","red"):cancelOrder.css("border-color","#b2aeae");
+      }else{
+        cancelEmail.css("border-color","#b2aeae");
+        cancelOrder.css("border-color","#b2aeae");
+        
+        str = '';
+        str=JSON.stringify({"Email":cancelEmail.val(),"Order":cancelOrder.val()});
+        //ajax提交
+        
+        $.ajax({ 
+          type:"POST", 
+          url:"https://serp.maiyuan.online/merpupdate/ShopSearchInfo/getShopifySearchInfo", 
+          data:str, 
+          success:function(data){
+            var data_status=eval('(' + data + ')').status;
+            var orderData = eval('(' + data + ')').data;
+            var deliveryData = eval('(' + data + ')').delivery;
+            console.log(eval('(' + data + ')'));
+            if(data_status == "success"){
+              var dataStr = JSON.stringify({
+                "Email":cancelEmail.val(),
+                "Order":cancelOrder.val(),
+                "first_name":orderData.name?orderData.name:"",
+                "last_name":orderData.name?orderData.name:"",
+                "company":orderData.company?orderData.company:"",
+                "address1":orderData.addr?orderData.addr:"",
+                "city":orderData.district?orderData.district:"",
+                "country":orderData.province?orderData.province:"",
+                "province":orderData.city?orderData.city:"",
+                "zip":orderData.zip?orderData.zip:"",
+                "phone":orderData.tel?orderData.tel:""
+              });
+              if($.trim(orderData.name)!=""){//名字
+                $("#checkout_shipping_address_first_name").val(orderData.name).prev("label").addClass("float");//名
+                $("#checkout_shipping_address_first_name").data("rawdata",orderData.name);
+              }
+              if($.trim(orderData.name)!=""){//名字
+                $("#checkout_shipping_address_last_name").val(orderData.name).prev("label").addClass("float");//姓
+                $("#checkout_shipping_address_last_name").data("rawdata",orderData.name);
+              }
+              if($.trim(orderData.company)!=""){//公司名称
+                $("#checkout_shipping_address_company").val(orderData.company).prev("label").addClass("float");//公司地址
+                $("#checkout_shipping_address_company").data("rawdata",orderData.company);
+              }
+              if($.trim(orderData.addr)!=""){//详细地址
+                $("#checkout_shipping_address_address1").val(orderData.addr).prev("label").addClass("float");//门牌号
+                $("#checkout_shipping_address_address1").data("rawdata",orderData.addr);
+              }
+              if($.trim(orderData.district)!=""){//城市
+                $("#checkout_shipping_address_city").val(orderData.district).prev("label").addClass("float");//城市
+                $("#checkout_shipping_address_city").data("rawdata",orderData.district);
+              }
+              if($.trim(orderData.province)!=""){//国家
+                $("#checkout_shipping_address_country").val(orderData.province).prev("label").addClass("float");//国家
+                $("#checkout_shipping_address_country").data("rawdata",orderData.province);
+              }
+              if(orderData.province && $.trim(orderData.province)!=""){
+
+                $.each(CheckoutMetaCountries,function(){//省
+                  if(this.code==$.trim(orderData.province)){
+                    let CheckoutItem =this.provinces;
+                    $.each(CheckoutItem,function(item){
+                      if(item==orderData.city){
+                        var provinceDom=`<option value="`+item+`" selected="selected" data-rawdata="`+item+`">`+item+`</option>`;
+                      }else{
+                        var provinceDom=`<option value="`+item+`">`+item+`</option>`;
+                      }
+                      $("#checkout_shipping_address_province").append(provinceDom);
+                    });
+                  }
+                });
+              }else{
+                $("#checkout_shipping_address_province").parent().hide().prev().css("width","calc(66.3% - 3px)");
+              };
+
+              if($.trim(orderData.zip)!=""){//邮编
+                $("#checkout_shipping_address_zip").val(orderData.zip).prev("label").addClass("float");
+                $("#checkout_shipping_address_zip").data("rawdata",orderData.zip);
+              }
+              if($.trim(orderData.tel)!=""){//手机号
+                $("#checkout_shipping_address_phone").val(orderData.tel).prev("label").addClass("float");
+                $("#checkout_shipping_address_phone").data("rawdata",orderData.tel);
+              }
+              if(orderData.update_state == 1){
+                $(".status-box").show();  //显示订单状态
+                $(".receive-data").show();//显示订单信息
+                $(".order-status").html(`<span class="tipswarn">`+orderData.order_status+`</span>`);
+                $("#SubmitTrack").hide(); //隐藏查询订单按钮
+                $("#SubmitCancel").show();//显示提交表单按钮
+                $(".order-policy").show();//显示90天退换货
+                
+                if(deliveryData.update_delivery == 1){
+                  $(".delivery-data").show();//显示修改快递
+                  $(".delivery-default").html(`默认的快递方式`);
+                  $.each(deliveryData.data,function(i,item){
+                    console.log(item)
+                    var deliveryHtml=`<div class="field-box delivery-revise" style="display:none;">
+                      <input type="radio" name="deliveryradio" value="`+item.rule_name+`" data-deliverymoney="`+item.diff_price+`">
+					  <span class="delivery_checked"></span>
+                      <span class="delivery_rule_name">`+item.rule_name+`</span>
+					  <span class="delivery_diff_price">`+Currency.formatMoney(item.diff_price*100)+`</span>
+  					</div>`;
+                    $(".billing-new-delivery-form").append(deliveryHtml);
+                  });
+                  
+                }
+                
+                $(".RestoreLabel").click(function(){//点击恢复原始地址
+                  $("#checkout_shipping_address_province").val($("#checkout_shipping_address_province option[data-rawdata]").val())
+                  $("#checkout_shipping_address_province option[data-rawdata]").attr("selected", true);
+                  $("input[data-rawdata]").each(function(i,item){
+                    $(this).val($(this).data("rawdata"));
+                  });
+                });
+                
+              }else if(orderData.update_state == 0){//已发货
+                $(".status-box").show();  //显示订单状态
+                $(".receive-data").show();//显示订单信息
+                $(".Ais_state").hide();
+                $(".order-status").html(orderData.order_status).css("color","red");
+                $("#SubmitTrack").hide(); //隐藏查询订单按钮
+                $("#SubmitCancel").html("{{'customer.order_cancel.Contact_Support' |t}}");
+                $("#SubmitCancel").show();//显示提交表单按钮
+              }
+              //？？？？$('[data-toggle="tooltip"]').tooltip();
+              
+              /*提交*/
+              $("#SubmitCancel").click(function(){
+                if(orderData.update_state == 1){
+                  if(!$("#newsletter_policy").is(":checked")){//判断是否阅读90天退换政策
+                    $(".policy_confirm").addClass("cake");
+                  }else{//展开提交弹层
+                    $(".policy_confirm").removeClass("cake");//恢复状态
+
+                    str=JSON.stringify({"Email":cancelEmail.val(),"Order":cancelOrder.val(),"first_name":$("#checkout_shipping_address_first_name").val()?$("#checkout_shipping_address_first_name").val():"","last_name":$("#checkout_shipping_address_last_name").val()?$("#checkout_shipping_address_last_name").val():"","company":$("#checkout_shipping_address_company").val()?$("#checkout_shipping_address_company").val():"","address1":$("#checkout_shipping_address_address1").val()?$("#checkout_shipping_address_address1").val():"","city":$("#checkout_shipping_address_city").val()?$("#checkout_shipping_address_city").val():"","country":$("#checkout_shipping_address_country").val()?$("#checkout_shipping_address_country").val():"","province":$("#checkout_shipping_address_province").val()?$("#checkout_shipping_address_province").val():"","zip":$("#checkout_shipping_address_zip").val()?$("#checkout_shipping_address_zip").val():"","phone":$("#checkout_shipping_address_phone").val()?$("#checkout_shipping_address_phone").val():""});
+
+                    if(str!=dataStr || $('input[name="deliveryradio"]:checked').val()){                      
+                      //str!=dataStr?console.log(str,"===========",dataStr):console.log(11111);
+                   	  str=JSON.stringify({"Email":cancelEmail.val(),"Order":cancelOrder.val(),"first_name":$("#checkout_shipping_address_first_name").val()?$("#checkout_shipping_address_first_name").val():"","last_name":$("#checkout_shipping_address_last_name").val()?$("#checkout_shipping_address_last_name").val():"","company":$("#checkout_shipping_address_company").val()?$("#checkout_shipping_address_company").val():"","address1":$("#checkout_shipping_address_address1").val()?$("#checkout_shipping_address_address1").val():"","city":$("#checkout_shipping_address_city").val()?$("#checkout_shipping_address_city").val():"","country":$("#checkout_shipping_address_country").val()?$("#checkout_shipping_address_country").val():"","province":$("#checkout_shipping_address_province").val()?$("#checkout_shipping_address_province").val():"","zip":$("#checkout_shipping_address_zip").val()?$("#checkout_shipping_address_zip").val():"","phone":$("#checkout_shipping_address_phone").val()?$("#checkout_shipping_address_phone").val():"","delivery":$('input[name="deliveryradio"]:checked').val()?$('input[name="deliveryradio"]:checked').val():"","change_address":str!=dataStr?1:0,"modify_mail":$('input[name="deliveryradio"]:checked').val()?1:0});                      
+                      submitCancel.setContent($("#submit_confirm").html());
+                      submitCancel.open();
+                      $(".submit-close").click(function(){//关闭弹层
+                        submitCancel.close();
+                      });
+                      if($('input[name="deliveryradio"]:checked').val()){
+                       paypal.Buttons({
+                        createOrder: function(data, actions) {
+                          // Set up the transaction
+                          return actions.order.create({
+                            purchase_units: [{
+                              amount: {
+                                value: $('input[name="deliveryradio"]:checked').data("deliverymoney")
+                              }
+                            }]
+                          });
+                        }
+                      }).render('#submitCancelPaypal');
+                      }
+//                       $(".submit-cancel").click(function(){//提交表单
+//                         console.log("提交----",str);
+//                         submitAjax(str,'https://help.soufeel.com/hc/en-us/requests/new')
+//                       });
+                    }
+                    //手机号验证
+    //                 if(rePhone.test($("#checkout_shipping_address_phone").val()) == false){
+    //                   $("#checkout_shipping_address_phone").css("border-color","red");
+    //                 }else{      
+    //                   str[0]["phone"]=$("#checkout_shipping_address_phone").val();
+    //                   
+    //                 }; 
+                   
+                  }
+                }else if(orderData.update_state == 0){
+                  window.location = "https://help.soufeel.com/hc/en-us/requests/new?ticket_form_id=360000431311";
+                }
+                
+                
+              });
+            }else{              
+              submitCancel.setContent(eval('(' + data + ')').msg);
+              submitCancel.open();
+            };
+            
+          },
+          error : function(e){
+              console.log(e.status);
+              console.log(e.responseText);
+          }
+        });
+
+      }
+    });        
+    
+    /*表单鼠标滑入效果*/
+    $(".field__input").each(function(){
+      var singleInput = $(this);
+      checkVal(singleInput);
+      singleInput.on('change keyup', function(){
+        checkVal(singleInput);	
+      });
+    });
+    function checkVal(inputField) {
+      ( inputField.val() == '' ) ? inputField.prev('.form-label').removeClass('float') : inputField.prev('.form-label').addClass('float');
+    };
+    
+    /*禁止开启表单输入*/
+    $(".checkbox_edit").change(function(){
+      if($(this).is(':checked')){
+        $(".billing-new-address-form").removeClass("no-drop");        
+        $(".field__input").attr("disabled",false);
+        $(".RestoreLabel").show();
+      }else{
+        $(".billing-new-address-form").addClass("no-drop");
+        $(".field__input").attr("disabled",true);
+        $(".RestoreLabel").hide();
+      }
+    });
+    $(".delivery_edit").change(function(){
+      if($(this).is(':checked')){
+        $(".field-box.delivery-revise").show();
+      }else{
+        $(".field-box.delivery-revise").hide();
+      }
+    });
+  });
+    
+  /* 提示弹层 */
+  hlntsCancel.setContent($(".col1-layout").html());
+  function hlnts(){
+    hlntsCancel.open();
+    $(".photofont-close.top").click(function(){
+      $(".custom-order-hlnts").addClass("modal-transition");
+      let hlntsLeft = $(".col1-question .photo-question").offset().left - ($(".modal-transition .tingle-modal-box").width()/2.05);
+      let hlntsTop = $(".col1-question .photo-question").offset().top - ($(".modal-transition .tingle-modal-box").height()/2.05);
+      $(".modal-transition .tingle-modal-box").css({"left":hlntsLeft+"px","top":hlntsTop+"px"});
+      setTimeout(function(){
+        hlntsCancel.close();
+        $(".modal-transition .tingle-modal-box").css({"left":0,"top":0});
+        $(".custom-order-hlnts").removeClass("modal-transition");
+      },600);
+    });
+  };
+  hlnts();
+  //提示弹层结束  
+  function returnPolicy(){
+    returnCancel.setContent($(".days-return-policy").html());
+    returnCancel.open();
+  } 
+  
+  function submitAjax(str,url){
+    $.ajax({ 
+      type:"POST", 
+      url:"https://serp.maiyuan.online/merpupdate/ShopSearchInfo/getShopifySearchInfo", 
+      data:str, 
+      success:function(data){
+        var orderData = eval('(' + data + ')').data;
+        if(orderData.refund_state==1 || orderData.update_state==1){
+          window.location = url;          
+        }
+      },
+      error : function(e){
+          console.log(e.status);
+          console.log(e.responseText);
+      }
+    });
+  }  
+</script>

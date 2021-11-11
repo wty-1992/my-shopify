@@ -1,0 +1,256 @@
+<style>
+  .home-festival-surprise{
+      background: #fff;
+  }
+  .swiper_text .hot_tittle{
+    font-size:51px;
+    color:#000;
+  }
+  .swiper_text .hot_tittle:after{
+    content: "";
+    width: 130px;
+    border: 1px solid;
+    display: block;
+    margin: 0 auto;
+    margin-top: 25px;
+  }
+  .home-festival-surprise .swiper-slide{    
+    list-style: none;
+    width:calc( 25% - 10px );
+    margin-bottom: 2rem;
+  }
+  .home-festival-surprise .product-card__name{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 14px 0 5px 0;
+    font-size: 12px;
+  }
+  .home-festival-surprise .product-card__price{
+    text-align: left;
+  }
+  .home-festival-surprise .product-card__price .product-card__sale-price{
+    color: #000;
+    font-size: 14px;
+  }
+  .home-festival-surprise .product-card__price .product-card__regular-price{
+    text-decoration: line-through;
+    font-size: 14px;
+  }
+  .home-festival-surprise .hot_text{
+    margin: 46px 0 66px 0;
+  }
+  .home-festival-surprise .swiper-container-horizontal>.swiper-pagination-bullets, .home-festival-surprise .swiper-pagination-custom, .home-festival-surprise .swiper-pagination-fraction{
+    bottom: 30px;
+  }
+  .home-festival-surprise .swiper-container-hot{    overflow: hidden;}
+  .home-festival-surprise .swiper-button-next, .home-festival-collection .swiper-button-prev{    height: 15px;}
+  .home-festival-surprise .home-daohangqi{
+    position: relative;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    width: 55%;
+    margin: 0 auto;
+    margin-top: 50px;
+  }
+  .home-festival-surprise .swiper-pagination-clickable .swiper-pagination-bullet {
+    cursor: pointer;
+    margin-right: 5px;
+  }
+  .home-festival-surprise .swiper-button-next,.home-festival-collection .swiper-button-prev{
+    margin-top: -8px;
+  }
+  .home-festival-surprise .swiper-button-next, .home-festival-surprise .swiper-container-rtl .swiper-button-prev{    
+    right: 0px;
+    left: auto;
+  }
+  .home-festival-surprise .swiper-button-prev,.home-festival-collection .swiper-container-rtl .swiper-button-next{    
+    left: 0;
+    right: auto
+  }
+  .home-festival-surprise .swiper-pagination-bullet-active{
+    opacity: 1;
+    background: #fff;
+    border: 1px solid #999;
+    transform: scale(1.5);
+  }
+  .home-festival-surprise .hot_swiper{
+    width:1200px;
+    margin:0 auto;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .home-festival-surprise .free-time-shopping{
+    position: relative;
+  }
+  .home-festival-surprise .right-b h2.title {
+    text-align: left;
+    font-size:4rem;
+    color: #000;
+    font-weight: lighter;
+    margin-top: 6rem;
+    margin-left: 0;
+  }
+  .home-festival-surprise .right-b hr {
+    margin: 2.5rem 0;
+    border: none;
+    width: 130px;
+    height: 2px;
+    background: #000;
+}
+  .home-festival-surprise .swiper_text{
+      background: #fff;
+     text-align: center;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    overflow: hidden;
+        padding:100px 100px 60px 100px;
+        transform: translateY(0);
+  }
+ .home-festival-surprise .title-description {
+    padding: 0;
+    text-align: left;
+    width: 66%;
+    color: #202020;
+    font-size: 14px;
+    line-height: 1.8;
+    margin-bottom: 5rem;
+}
+  .home-festival-surprise .right-b {
+    z-index: 1;
+    width: 45%;
+    position: absolute;
+    right: 0;
+    top: 45%;
+    transform: translateY(-50%);
+  }
+  .pc_img{display:block;}
+  .mb_img{display:none;}
+  .mb-right-b{display:none;}
+  @media(max-width:768px){
+    .mb_img{display:block;}
+    .pc_img{display:none;}
+    .home-festival-surprise .swiper_text{
+    padding: 16px;
+    }
+    .home-festival-surprise .hot_swiper{
+    width:100%;
+    }
+    .home-festival-surprise .swiper-slide {
+    list-style: none;
+    width: calc( 50% - 6px );
+    margin-bottom: 1rem;
+	}
+    .home-festival-surprise .right-b{
+    display:none;
+    }
+    .mb-right-b{
+      display:block;   
+      padding-left: 2rem;
+    }
+    .mb-right-b .title{
+      text-align: left;
+      margin-left: 0;
+      color: #000;
+      font-weight: 100;
+    }
+    .mb-right-b hr{
+      width: 62px;
+      height: 2px;
+      background: #000;
+      margin: 1.5rem 0;
+    }
+    .home-festival-surprise .title-description{
+      width: 95%;
+      color: #202020;
+      font-size: 13px;
+      line-height: 1.4;
+      margin-bottom: 1rem;
+    }
+    .home-festival-surprise .free-time-shopping{
+      background: #fee5e9;
+      padding: 2rem 0 1px;
+      margin-bottom: 2rem;
+    }
+  }
+
+</style>
+
+<div class="home-free-shopping-box">
+  <div class="free-time-shopping">
+    <img src="{{section.settings.iconimage  | img_url: '1920x' }}  " class="pc_img">
+    <img src="{{section.settings.mbiconimage  | img_url: '1920x' }}  " class="mb_img">
+    <div class="right-b"> 
+      <h2 class="title">{{section.settings.hot_tittle}}</h2>
+      <hr>
+      <p class="title-description">
+        {{section.settings.hot_text}}
+       </p>
+    </div>
+    <div class="mb-right-b"> 
+      <h2 class="title">{{section.settings.hot_tittle}}</h2>
+      <hr>
+      <p class="title-description">
+        {{section.settings.hot_text}}
+       </p>
+    </div>
+  </div>
+  <div class="swiper_text">
+    <div class="hot_swiper">
+      {% assign current_collection = collections[section.settings.collection] %}
+      {% for item in current_collection.products limit: section.settings.limit %}         
+      <li class="item swiper-slide">{% include 'home-product-list', product:item %}</li>
+      {% endfor %}
+    </div>     
+  </div>
+  
+</div>
+{% schema %}
+{
+  "name": "首页 超级产品",
+  "class": "home-festival-surprise",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content":"home-festival-surprise"
+    },
+    {
+      "type": "image_picker",
+      "id": "iconimage",
+      "label": "背景图"
+    },
+	{
+      "type": "image_picker",
+      "id": "mbiconimage",
+      "label": "MB背景图"
+    },
+	{
+      "type": "text",
+      "id": "hot_tittle",
+      "label": "产品标题"
+    },
+	{
+      "type": "text",
+      "id": "hot_text",
+      "label": "产品介绍"
+    },
+	{
+      "type": "collection",
+      "id": "collection",
+      "label": "产品集合"
+    },
+{
+          "type": "range",
+          "id": "limit",
+          "label": "产品limit总数量",
+          "min": 1,
+          "max": 80,
+          "step": 1,
+          "default": 4
+        }
+  ]
+}
+{% endschema %}

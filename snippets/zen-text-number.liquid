@@ -1,0 +1,114 @@
+{% assign cattribute = '{}' %}
+{% if product.metafields["global"]["cattribute"] %}
+  {% assign cattribute = product.metafields["global"]["cattribute"] | replace: "'", "" %}
+  <input type="hidden" id="customInfo" name="properties[customInfo]" />
+{% else %}
+  <input type="hidden" id="fonttext" name="properties[fonttext]" />
+  <input type="hidden" id="fontfamily" name="properties[fontfamily]" value="Arial Rounded MT Bold"/>
+{% endif %}
+
+<h1 class="textTitle">{{ 'zen.textnumber.Add_your_personalization' | t }}</h1>
+<div class="inputBox">
+	<input type="text" class="textInput" value="" maxlength="0" placeholder="{{ 'zen.textnumber.Please_enter_the_name_you_would_like_to_use' | t }}." required>
+	<span><b>*</b><i class="textNum"></i>{{ 'zen.textnumber.left' | t }}</span>
+</div>
+
+<script>
+  var jsonCustom = JSON.parse('{{cattribute}}');
+  var dataType = typeof jsonCustom.dataType != 'undefined' ? jsonCustom.dataType : '';
+  var productImage = '{{product.images[0] | img_url: '1000x1000' | prepend: "https:"}}';
+  
+  var textInput = document.querySelector('.textInput')
+  var textNum = document.querySelector('.textNum')
+  var sw = false;
+  textInput.addEventListener("input",
+  function(e) {
+      if (sw == false) {
+          countTxt(e);
+      }
+  });
+  textInput.addEventListener("cut",
+  function(e) {
+      console.log('cut') 
+      if (sw == false) {
+          countTxt(e);
+      }
+  });
+  textInput.addEventListener("compositionstart",
+  function() {
+      sw = true;
+  });
+  textInput.addEventListener("compositionend",
+  function() {
+      sw = false;
+      countTxt();
+  });
+  function countTxt(e) {
+      if (sw == false) {
+        if (textInput.value.length === 0) {
+            textNum.textContent = textInput.getAttribute('maxLength');
+        } else {
+            if (textInput.value.replace(/(^\s*)|(\s*$)/g, "") != '') {
+                textNum.textContent = textInput.getAttribute('maxLength') - textInput.value.length;
+            }
+        }
+      }
+  }
+//   var url = new URL(window.location);
+//   console.log(url,'url--1');
+//   if(url.search == '') {
+//     var lableButton = document.querySelector('.input-checkbox-title-active input');
+//     textInput.maxLength = parseInt(lableButton.value);
+// 	textNum.innerHTML = lableButton.value;
+//   }
+  
+  
+//   window.addEventListener('VARIANT_CHANGE', function(event){
+  Listener.on([ Listener.product.update.before ], function(event, variant, dom) { 
+    
+  //     var option = event.detail.option1;
+    let option = $(".single-option-selector[data-name*='{{ 'variant.title.Number' | t }}']").val();
+                   console.log('option', option);
+    textInput.value = '';
+    textInput.maxLength = parseInt(option);
+    textNum.innerHTML = option;
+    
+    if(variant.featured_image){
+      productImage = variant.featured_image.src;
+    }
+      
+  })
+  
+  // 加车验证
+  Product.validators.push(async () => {
+	var zenFlag = true
+    if(textInput.value != '') {
+        if(textInput.value.length != textInput.maxLength) {
+            alert("{{'zen.general.placeholder2' | t}}");
+            textInput.style.cssText = 'border: 1px solid red';
+			zenFlag = false;
+        }else {
+                  
+            if(dataType == 1 ){
+              var customInfo = {};
+              customInfo['_sunzi_text'] = {};
+              
+              customInfo['_sunzi_text']['value'] = textInput.value;
+              customInfo['_sunzi_text']['font'] = jsonCustom.font;
+              
+              customInfo['_sunzi_effect'] = productImage;
+              
+              $("#customInfo").val(JSON.stringify(customInfo));
+            }else{
+            	$('#fonttext').val(textInput.value);
+            }
+            textInput.style.cssText = 'border: 1px solid #000';
+			
+        }
+    }else {
+    	zenFlag = false;
+        textInput.style.cssText = 'border: 1px solid red';
+    }
+    return zenFlag;
+  })
+</script>

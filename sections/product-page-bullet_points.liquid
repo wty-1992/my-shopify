@@ -1,0 +1,66 @@
+<style>
+
+.product-page-bullet_points-section ul {
+  list-style: unset;
+  margin: unset;
+  padding: unset;
+  line-height:20px;
+  margin-left:20px;
+  font-weight: bold;
+  color: #000;
+  font-size:12px;
+}
+.product-page-bullet_points-section ul li{
+  display: block;
+  position: relative;
+}
+.product-page-bullet_points-section ul li:before{
+  content: "";
+  display: block;
+  position: absolute;
+  left: -8px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #888;
+  top: 8px;
+}
+@media(max-width:768px){
+  .product-page-bullet_points-section ul li:before{
+    top: 6px;
+  }
+  .product-page-bullet_points-section ul{
+    margin-left: 32px;
+    color: #575757;
+    line-height: 1.1;
+  }
+  .product-page-bullet_points-section ul li{
+    margin-bottom: 10px;
+  }
+  .product-page-bullet_points a.return-shipping{
+    color: #575757;
+    padding-top: 2px;
+  }
+  .product-page-bullet--points{
+    margin-top:15px;
+  }
+}
+</style>
+{% assign items = product.metafields["global"]["bullet_points"] | replace: '<br>', '<br />' | split: '<br />' %}
+<div class="product-page-bullet--points">  
+  {% for item in items %}
+   {{item | strip}} 
+  {% endfor %}
+</div>
+{% schema %}
+{
+  "class": "product-page-bullet_points-section",
+  "name": "产品页 - BP",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content":"product-page-bullet_points"
+    }
+  ]
+}
+{% endschema %}

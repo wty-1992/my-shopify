@@ -1,0 +1,478 @@
+{{ 'zen-custom.scss.css' | asset_url | stylesheet_tag }}
+<link href="https://fonts.googleapis.com/css?family=Charm|Black+And+White+Picture|Indie+Flower|Kumar+One+Outline|Pacifico|Patrick+Hand|Merriweather" rel="stylesheet">
+<script src="{{ 'jquery-ui.min.js' | asset_url }}"></script>
+<script src="{{ 'fabric.min.js' | asset_url }}"></script>
+<script src="{{ 'fontfaceobserver.js' | asset_url }}"></script>
+<script src="{{ 'qiniu.min.js' | asset_url }}" ></script>
+<script src="{{ 'zen-base.js?2019052111' | asset_url }}"></script>
+<script src="{{ 'zen-carving.js?2019052111' | asset_url }}"></script>
+<div id="simple-photo-body" style="display:none;">
+  <button type="button" class="close-new close custom-close" data-action="close">
+    <i class="photofont icon photo-close"></i>
+  </button>
+  <div id="tabs" class="customer-photo">
+    <ul style="display:none;">
+      <li><a id="photo-carving"  data-index="0" href="#tabs-0">{{ 'zen.general.carving' | t }}</a></li>
+      <li><a id="photo-loading" data-index="1" href="#tabs-1">{{ 'zen.general.loading' | t }}</a></li>
+    </ul>
+    <div id="tabs-0" class="carving-photo">
+      <div class="carvingcanvas-left">
+        <canvas id="carvingcanvas"></canvas> 
+      </div>
+      <div class="carvingcanvas-right">
+        <div class="carvingcanvas-content">
+          {% capture lines %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "lines" %}{{ verify__rules_json_result }}{% endcapture %}
+          {% assign lines = lines | strip | abs %}
+          {%- capture carvingoption -%}{%- include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "carvingoption" -%}{{ verify__rules_json_result | strip }}{%- endcapture -%}
+          {% assign carvingoption = carvingoption | strip %}
+          <!--
+            <div style="display:{% if carvingoption != "1" %}none{% endif %};">
+              <div  class="ProductSubTitleText">Select  number of inscriptions  (1-{{lines}}):
+              </div> 
+              <div class="more-caving">
+                <span class="addoptionprice"></span>
+                <select class="more-caving-select" id="carvingOption">
+                  {% for i in (1..lines) %}
+                  {% assign k = forloop.index0 | plus: 1 %}
+                  <option value="{{k}}" {% if k == lines %}selected{% endif %} data-key="{{forloop.index0}}" data-markupindex="">{{k}} inscription </option>
+                  {% endfor %}
+                </select>
+                <i class="photofont photo-unfold"></i>
+              </div> 
+            </div>
+          -->
+          {% assign texttitle = 'Front|Left|Back|Right' | split: "|" %}
+          {% for i in (1..lines) %}
+			
+          {% if carvingoption == 1 %}
+          <span>{{texttitle[forloop.index0]}} inscription {% if forloop.index0 != 0 %}+{{ product.variants[1].price | minus: product.variants[0].price | money }}{% endif %}</span>
+          {% endif %}
+
+          <textarea id="textInput{{forloop.index0}}" class="textInput" data-index="{{forloop.index0}}" rows="3" cols="43" placeholder="{{'zen.engrave.placeholder' | t}}" disabled></textarea>
+          {% endfor %}
+          <div class="custom-size">
+            <span class="sizefont">{{ 'zen.general.font_size' | t }}:</span>
+            <select id="sizeSlt"></select>
+          </div>
+        </div> 
+        {%- comment -%}need add font by jenny 2018-12-21{%- endcomment -%}
+        <div class="popups-font-family">
+          <span class="font-title">{{ 'zen.general.font' | t }} :</span>
+          <div class="font-list-flex"></div>
+        </div>
+        <button type="button" class="btn-confirm" data-isbig="0" id="btn-carving-comfirm">{{ 'zen.general.confirm' | t }}<span class="is-markup"  style="display:none;" data-money="{{ addprice }}">{{ addprice | money }}</span></button>
+        <button type="button" class="no-comfirm-text btn-confirm">{{ 'zen.general.without_engraving' | t }}</button>
+        <p class="product-reminder">
+          {{ 'zen.general.please_note' | t }}
+        </p>
+      </div>      
+    </div>
+
+    <div id="tabs-1">
+      <div id="cloading"><img class="cloadingimg" src="{{section.settings.upload_loading_image | img_url: 'master'}}" /><div class="sprogress"><div class="sbar" style="width: 0%;">0%</div></div></div>
+    </div>
+  </div>
+</div>
+<div class="lettering-box lettering-box-carving">
+  <div class="Previewlettering Previewletteringcarving">
+    <span class="Previewlettering-title">
+      {{ 'zen.general.add_engravings' | t }} 
+    </span>
+    <span id="previewengravedtext"></span>
+  </div>        
+  <div class="after-preview-text">
+    <span class="an-pri AddAnPri is-markup" id="AddAnPri" data-money="{{ addprice }}" style="display:none;">{{ addprice | money }}</span>
+    <button type="button" id="addengraving">{{ 'zen.general.add' | t }}</button>
+  </div>
+  </div>
+<div class="validation-advice" id="advice-validate-select-engraved" style="display: none; border: 0px solid rgb(235, 52, 10);">{{ 'zen.general.required_field' | t }}</div>
+<input type="text" id="engraving-crop" name="properties[engravingCrop]" value="" style="display:none" /><!--效果图-->
+<input type="text" id="engraving-big"  name="properties[engravingBig]"  value="" style="display:none" /><!--大图-->
+<input type="text" id="engraving-text" name="properties[engravingText]" value="" style="display:none" />
+<input type="text" id="engraving-size" name="properties[engravingSize]" value="" style="display:none" />
+<input type="text" id="engraving-font" name="properties[engravingFont]" value="" style="display:none" />
+{% assign skuArr = product.selected_or_first_available_variant.sku | split: "-"%}
+{% assign sku = skuArr[0] %}
+<script>
+  $( "#tabs" ).tabs();
+  var simpleModal = new tingle.modal({ 
+    closeMethods: ['escape']
+  });
+  simpleModal.setContent('<div id="simple-photo-modal"  class="simple--modal"></div>');
+  $("#simple-photo-modal").html($('#simple-photo-body').contents());
+  var jsonCustom = JSON.parse('{{ product.metafields["global"]["cattribute"] }}');
+//                               var productItem = '{{ productItem }}';
+//                               var sku = '{{sku}}';
+//                               try {
+//                               var productItemJson = JSON.parse(productItem);
+//   if(typeof productItemJson == 'object'){
+//     productItem = productItemJson[sku];
+//   }
+//   } catch(e) {}
+  
+  var sku = '{{sku}}';
+  var productItem = '{{ productItem }}'.indexOf("{")==-1?'{{ productItem }}':{{ productItem }};
+  if(typeof productItem == 'object'){
+    var productItemJson = productItem;
+    productItem = productItemJson[sku];
+  }
+  
+  
+  
+
+  if(jsonCustom.isoption==0){   //不可选刻字，隐藏without engraving按钮
+    $(".no-comfirm-text").hide();
+  }
+  if(jsonCustom.ismarkup){   //如果有加价，comfirm按钮添加刻字加价价格
+    //$(".is-markup").text(' +'+jsonCustom.ismarkup);
+  }else{
+    $(".is-markup").text(' {{ 'zen.general.free' | t }}');
+  }
+    $(".no-comfirm-text").click(function(){
+      $(".textInput, #engraving-crop, #engraving-text, #engraving-size, #engraving-font, #engraving-big").val('');
+      jsonCustom.coors.forEach(function(v, i){
+        $("#textInput"+i).trigger('propertychange');
+      });
+      if(jsonCustom.ismarkup){
+        ubase.util.setShopifyVariant('Markup',0);
+      }
+      $(".Previewlettering-title").html('{{ 'zen.general.none' | t }}');
+      $("#addengraving").text('{{ 'zen.general.change' | t }}');
+      simpleModal.close();
+    });
+    jsonCustom.coors.forEach(function(v, i){
+      $("#textInput"+i).attr("maxlength", v.limit).attr("disabled", false);
+      // $("#carvingOption").find('option').eq(i).data("markupindex", v.markupindex);
+    });
+    var ucarving = new ucarving({
+      "picurl": "https://pic.stylelab.com/",
+      "canvasid" : "carvingcanvas",
+      "type": 2,   //1:照片 2:刻字 3:照片+刻字
+      "sku": productItem,
+      "in": productItem+"-IN.png",
+      "out": productItem+"-OUT.png",
+      "custom": jsonCustom,
+      "cWidth": 500,
+      "cHeight": 400,
+    });
+    if(jsonCustom.size){
+      jsonCustom.size.forEach(function(v, i){
+        $("#sizeSlt").append("<option value='"+v+"'>"+v+"</option>");
+      });
+    }else{
+      $("#sizeSlt").append("<option value='"+jsonCustom.coors[0].size+"'>"+jsonCustom.coors[0].size+"</option>");
+      $(".custom-size").hide();
+    }
+    if(jsonCustom.font){
+      var str = '';
+      jsonCustom.font.forEach(function(v, i){
+        if(jsonCustom.secondtype == 'MonogramsThree'){
+          str = 'aBc';
+        }else if(jsonCustom.secondtype == 'CircleThree'){
+          str = 'aB3';
+        }else{
+          str = 'Abc';
+        }
+        $(".font-list-flex").append('<div class="font-list"><div class="carvingfont selected" style="font-family:'+v+';">'+str+'</div><input  id="fontradio'+i+'" class="cfont in-radio" type="radio" value="'+v+'" name="fontradio"></div>');  
+      });
+      $(".cfont").click(function(){
+        var fontVal = $("input[name='fontradio']:checked").val();
+        $(".font-list").removeClass('active');
+        $(this).parent().addClass("active");
+        var _this = this;
+        jsonCustom.coors.forEach(function(v,i){
+          ucarving.changeFont(i, fontVal);
+        })
+      });
+      $("#fontradio0").attr('checked', true).trigger('click');
+    }
+
+    $("#sizeSlt").change(function(){
+      var _this = this;
+      jsonCustom.coors.forEach(function(v,i){
+        ucarving.changeSize(i, $(_this).val());
+      })
+    });
+    $(".textInput").bind('input propertychange', function() {
+      var str = $(this).val();
+      if(jsonCustom.secondtype == 'MonogramsThree'){
+        str = (str[0]?str[0].toLowerCase():'')+(str[1]?str[1].toUpperCase():'')+(str[2]?str[2].toLowerCase():'');
+      }else if(jsonCustom.secondtype == 'CircleThree'){
+        str = (str[0]?str[0].toLowerCase():'')+(str[1]?str[1].toUpperCase():'')+(str[2]?ucarving.convertChar(str[2].toLowerCase()):'');
+      }
+      if(jsonCustom.constraint == 'upperCase'){
+      	str = str.toUpperCase();
+      }else if(jsonCustom.constraint == 'initialUpper'){
+        str = (str[0]?str.substr(0, 1).toUpperCase():'')+(str[1]?str.substr(1).toLowerCase():'');
+      }
+      $(this).val(str);
+      ucarving.changeText(str, $(this).data("index"));
+      carvingOptionChange();
+    });
+    $(".lettering-box-carving").click(function(){
+      $("#tabs").tabs("option", "active", $('#photo-carving').data('index'));
+      simpleModal.open();
+    });
+    $("#btn-carving-comfirm").click(function(){
+      var lines = '{{lines}}';
+      var t = 0;
+      var e = 0;
+      if(jsonCustom.carvingoption == 1){
+        $('.textInput').each(function (i){$.trim($(this).val()) == ''?(e++):(t++);});
+        if((t+e) != lines){
+          carvingOptionChange();
+          console.log('stop!!!');
+          return false;
+        }
+      }
+      var fontVal = $("input[name='fontradio']:checked").val();
+      var str;
+      if(jsonCustom.secondtype == 'MonogramsThree' || jsonCustom.secondtype == 'CircleThree'){  //检测Monograme字体
+        str = $(".textInput").val();
+        if(str.length!=3){
+          $(".textInput").addClass('validation-warning'); 
+          return false;
+        }else{
+          $(".textInput").removeClass('validation-warning'); 
+        }
+      }
+      if(jsonCustom.carvingoption != 1){
+        var flag = true;
+        jsonCustom.coors.forEach(function(v, i){
+          if(!$("#textInput"+i).val() && $("#textInput"+i).css('display')!='none'){
+            $("#textInput"+i).addClass('validation-warning'); 
+            flag = false;
+          }else{
+            $("#textInput"+i).removeClass('validation-warning'); 
+          }
+        });
+        if(!flag){
+          return flag;
+        }
+      }
+
+      $("#tabs").tabs("option", "active", $('#photo-loading').data('index'));
+      var base64 = ucarving.canvas.toDataURL({format: 'png', quality: 0.8});
+      var blob = ucarving.convertBase64ToBlob(base64);
+      var filename = ubase.util.getFilename();
+      var carvingText = '';
+      $(".textInput").each(function(i){
+        if(jsonCustom.carvingoption != 1){
+          if($(this).val() && $(this).css('display')!='none'){
+            carvingText += (i!=0?' | ':'') + $(this).val();
+            hasCarvingText = true;
+          }
+        }else{
+          carvingText += (i!=0?' | ':'') + $(this).val();
+          hasCarvingText = true;
+        }
+      });
+//       carvingText = carvingText.substring(1);
+      ucarving.cdnUpload(function(token){
+        var key = filename + productItem+'.png';
+        var observer = {
+          next(result){
+            $(".sbar").css({'width':parseInt(result.total.percent)+'%'});
+            $(".sbar").html(parseInt(result.total.percent)+'%'); 
+          },
+          error(err){
+            alert('{{ 'zen.general.upload_error' | t }}');
+                  },
+          complete(res){
+            if(jsonCustom.ismarkup){
+              if(carvingText){
+                ubase.util.setShopifyVariant('Markup',1);
+              }else{
+                ubase.util.setShopifyVariant('Markup',0);
+              }
+            }
+            $("#engraving-crop").val(ubase.util.cdnurl + res.key);
+            $("#engraving-text").val(carvingText);
+            $("#engraving-size").val(carvingText ? $("#sizeSlt").val() : '');
+            $("#engraving-font").val(carvingText ? $("input[name='fontradio']:checked").val() : '');
+            $(".Previewlettering-title").html(carvingText || '{{ 'zen.general.none' | t }}');
+            $("#addengraving").text('{{ 'zen.general.change' | t }}');
+            $(".sbar").css({'width':'0%'});
+            $(".sbar").html('0%');
+            simpleModal.close();
+          }
+        };
+          var observable = qiniu.upload(blob, key, token, ubase.util.putExtra, ubase.util.config);
+          observable.subscribe(observer);
+        });
+        if($(this).data('isbig')){
+          var bigImage;
+          document.createElement("canvas").id = "tmpcanvas";
+          var tmpCanvas = new fabric.Canvas("tmpcanvas");
+          tmpCanvas.setWidth(ucarving.canvas.width);
+          tmpCanvas.setHeight(ucarving.canvas.height);
+          var multiplier = 800/ucarving.canvas.width; 
+
+          tmpCanvas.loadFromJSON(JSON.stringify(ucarving.canvas), function(){
+            tmpCanvas.setBackgroundImage(null, tmpCanvas.renderAll.bind(tmpCanvas));
+            tmpCanvas.backgroundColor="white";
+            tmpCanvas.setOverlayImage(null, tmpCanvas.renderAll.bind(tmpCanvas)); 
+            var aobjects = tmpCanvas.getObjects();
+            aobjects.forEach(function(e) {
+              console.log(e.type);
+              if(e.type == 'text'){
+                e.set({fontWeight: bigFontWeight, fontSize: bigFontSize});
+                e.setShadow("");
+              }
+            })
+            tmpCanvas.renderAll();
+            bigImage = tmpCanvas.toDataURL({
+              format: 'png',
+              multiplier: multiplier,
+              quality: 0.8
+            });
+          });
+          ucarving.cdnUpload(function(token){
+            var bigBlob = ucarving.convertBase64ToBlob(bigImage);
+            //       var key = ubase.util.prefix + filename + '.png';
+            var key = filename + '-'+productItem+'.png';
+
+            var observer2 = {
+              next(result){
+                //console.log(parseInt(result.total.percent)+'%');
+              },
+              error(err){
+                alert('{{ 'zen.general.upload_error' | t }}');
+                      },
+                      complete(res){
+                  $("#engraving-big").val(ubase.util.cdnurl + res.key);  //大图
+                  console.log(ubase.util.cdnurl + res.key)
+                }
+              };
+              var observable2 = qiniu.upload(bigBlob, key, token, ubase.util.putExtra, ubase.util.config);
+              observable2.subscribe(observer2);
+            });
+          }
+      });
+        Product.validators.push(
+            () => {
+            return validateFormData();
+          }
+        );
+        function validateFormData(){
+          var flag = true;
+          if(jsonCustom.carvingoption != 1){// 刻字位置可选
+            if(jsonCustom.isoption==0 || jsonCustom.isoption==undefined){
+              jsonCustom.coors.forEach(function(v, i){
+                if(!$("#textInput"+i).val() && $("#textInput"+i).css('display')!='none'){
+                  flag = false;
+                }
+              });
+            }
+          }
+          if(!($("#engraving-crop").val() && $("#engraving-text").val())){
+            flag = false;
+            $(".lettering-box-carving").addClass("validation-warning");
+            throw 'Validate Carving Error1';
+          }else{
+            $(".lettering-box-carving").removeClass("validation-warning");
+          }
+          if(!flag) {
+            return 'Validate Carving Error2';
+          }else{
+            return true;
+          }
+        }
+        function carvingOptionChange(){
+          if(jsonCustom.carvingoption != 1){return;}
+          var n = 0;
+          jQuery('.textInput').each(function (){if(jQuery.trim(jQuery(this).val()) != ''){n++;}});
+          n = n<2?0:(n-1);
+          var price = '';
+          var optionCurrency = '{{ 0 | money }}'.replace(/[.0-9]/g, '');
+          var priceHTML = (Product.variants[n].price - Product.variants[0].price) == 0?'':('<font style="margin-left:10px;">+</font>'+optionCurrency+(Product.variants[n].price - Product.variants[0].price));
+          $('#btn-carving-comfirm').html('{{ 'zen.general.confirm' | t }}'+(priceHTML==''?'':priceHTML.substr(0, priceHTML.length-2)+'.'+priceHTML.substr(priceHTML.length-2, priceHTML.length)));
+          ubase.util.setShopifyVariant('Markup',(n+1));
+        }
+        $('#carvingOption').change(function(){
+          carvingOptionChange_(this);
+        });
+        function carvingOptionChange_(othis){
+          var val = othis.value;
+          var price = '';
+          var optionCurrency = '{{ 0 | money }}'.replace(/[.0-9]/g, '');
+          var markupindex = parseInt($(othis).find("option:selected").data('markupindex'))-1||0;
+          var priceHTML = (Product.variants[markupindex].price - Product.variants[0].price) == 0?'':('<font>+</font>'+optionCurrency+(Product.variants[markupindex].price - Product.variants[0].price));
+          $('.addoptionprice').html(priceHTML==''?'':priceHTML.substr(0, priceHTML.length-2)+'.'+priceHTML.substr(priceHTML.length-2, priceHTML.length));
+          $('.textInput').each(function(i){
+            i<val ?$(this).show():ucarving.changeText('', $(this).hide().val('').data("index"));
+          });
+          console.log($(othis).find("option:selected").data('markupindex'));
+          ubase.util.setShopifyVariant('Markup',($(othis).find("option:selected").data('markupindex')||''));
+          //     setTimeout("$('.is-markup').html($('#ProductPriceproduct-page-price').html())",500);
+          //     $('.is-markup').html($('#ProductPriceproduct-page-price').html());
+        }
+        function setVariantOption(){
+          var markupindex = 0;
+          Product.variants.forEach(function (v, i){
+            if(v.id == getQueryVariable("variant")){
+              markupindex = v.option1;
+            }
+          })
+          if(markupindex == 0 && jsonCustom.coors[0].markupindex != '' && jsonCustom.coors[0].markupindex != undefined){
+            //     $('#carvingOption').find('option').eq(parseInt(markupindex)-1).attr("selected",true);
+            $('#carvingOption').find('option').eq(0).attr("selected",true);
+          }
+          if(markupindex != 0 && jsonCustom.coors[0].markupindex != '' && jsonCustom.coors[0].markupindex != undefined){
+            $('#carvingOption').find('option').eq(markupindex-1).attr("selected",true);
+            $('.is-markup').html($('#ProductPriceproduct-page-price').html());
+          }
+          $('#carvingOption').change(); 
+        }
+        function getQueryVariable(variable){
+          var query = window.location.search.substring(1);
+          var vars = query.split("&");
+          for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable){return pair[1];}
+          }
+          return(false);
+        }
+
+        var cang = {{ product.metafields["global"] | json}};
+
+        //         var FilterProductMetafields = {
+        //           {% paginate collection.products by 1000 %}
+        //           {%- for item in collection.products -%}
+        //           "{{item.id}}":{{item.metafields["global"] | json}},
+          //           {%- endfor -%}
+          //           {%- endpaginate -%}
+          //         };
+
+
+          /* Select Finish / change color */
+          $('.single-option-selector[data-name="Color"]').change(function (){
+            $('input[name="id"]').val();
+            Product.variants.forEach(function (v, k){
+              if(v.id == getQueryVariable("variant")){
+                if(productItemJson != undefined){
+                  var IN  = ucarving.picurl+ucarving.cdir+productItemJson[v.sku]+'-IN.png';
+                  var OUT = ucarving.picurl+ucarving.cdir+productItemJson[v.sku]+'-OUT.png';
+                  ucarving.setObject(ucarving, IN, OUT, 1);
+                }
+              }
+            });
+            /* clear text */
+            if($.trim($("#engraving-text").val()) != ''){
+              $('.Previewlettering-title').html('{{ 'zen.general.add_engravings' | t }}');
+            }
+            $("#engraving-text").val('');
+          });
+
+          $(document).ready(function(){
+            $("#sizeSlt").get(0).selectedIndex=0;
+            $("#sizeSlt").trigger("change");
+            $(document).trigger("hide-qty",1);
+            setVariantOption();
+          });
+</script>
+<style scoped>
+
+.canvas-container{    width: 100%!important;}
+#carvingcanvas,.upper-canvas{width: 100%!important; height: auto!important;}
+</style>

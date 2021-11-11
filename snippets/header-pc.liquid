@@ -1,0 +1,161 @@
+{% comment %}
+** @name header部分pc端功能/样式代码 **
+** @author 王天宇 **
+** @integrate 王天宇 **
+{% endcomment %}
+{% comment %}样式部分{% endcomment %}
+<style>
+  .headerContainer {
+    display: flex;
+    padding: 15px 80px;
+    width: 100%;
+    height: 70px;
+    align-items: center;
+    justify-content: space-between;
+    color: #000;
+    font-size: 16px;
+  }
+  .headerLeft {
+    display: flex;
+  }
+  .headerLeft .leftLogo {
+    margin-right: 48px;
+  }
+  .headerLeft .leftNav {
+    display: flex;
+    align-items: center;
+  }
+  .headerLeft .leftNav p {
+    display: flex;    
+    margin: 0 14px;
+    align-items: baseline;
+  }
+  .headerLeft .leftNav p img,
+  .headerContainer .headerRight .rightShop {
+  	margin-left: 6px;
+    align-items: center;
+  }
+  .headerContainer .headerRight .rightShop p {
+    margin: 0 7px 0 0;
+    width: 85px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 14px;
+  }
+  .headerContainer .headerNav {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+  }
+  .headerContainer .headerRight {
+  	display: flex;
+  }
+  .headerContainer .headerRight .rightCart {
+    position: relative;
+    margin-right: 30px;
+    width: 36px;
+  	height: 36px;
+    cursor: pointer;
+  }
+  .headerContainer .headerRight .rightCart img {
+    width: 100%
+  	height: 100%;
+  }
+  .headerContainer .headerRight .rightCart .cartCount {
+  	position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 4px;
+    bottom: 4px;
+    width: 14px;
+    height: 14px;
+    background: #F9423A;
+    font-size: 10px;
+    border-radius: 3px;
+  }
+  .headerContainer .headerRight .rightCart .cartCount span {
+    transform: scale(0.7);
+    color: #fff;
+  }
+  .headerContainer .headerRight .rightShop {
+    display: flex;
+    margin-right: 30px;
+    align-items: baseline;
+    width: 85px;
+    line-height: 40px;
+    cursor: pointer;
+  }
+  .headerContainer .headerRight .rightUser {
+    height: 36px;
+    cursor: pointer;
+  }
+  
+</style>
+{% comment %}dom{% endcomment %}
+<div class="headerContainer">
+  <div class="headerLeft">
+    <div class="leftLogo">
+      {% if section.settings.logo != blank %}
+        <a class="logo" href="/" itemprop="url" >
+          <img itemprop="logo" src="{{ section.settings.logo | img_url: 'x40' }}" alt="{{ section.settings.logo.alt | default: shop.name }}">
+        </a>
+      {% else %}
+        <a href="/" itemprop="url">{{ shop.name }}</a>
+      {% endif %}
+    </div>
+  
+    <div class="leftNav">
+      <p>Products<img src="{{ 'showMore.svg' | asset_url }}" /></p>
+      {% if customer %}
+      <p>My store</p>
+      {% endif %}
+      <p>How it works</p>
+      <p>Help center</p>
+    </div>
+  </div>
+  <div class="headerRight">
+    <div class="rightCart">
+      <img src="{{ 'shoppingcart.png' | asset_url }}" />
+      <div class="cartCount"><span></span></div>
+    </div>
+    {% if customer %}
+    <div class="rightLogin">Log in</div>
+    <div class="rightSignup">Sign up</div>
+    {% else %}
+    <div class="rightShop">
+      <img class="shop-logo" src="" />
+      <p>AttentionSurprise</p>
+      <img class="shop-arrow" src="{{ 'showMore.svg' | asset_url }}" />
+    </div>
+    <img class="rightUser" src="{{ 'userLogo.png' | asset_url }}" />
+    {% endif %}
+  </div>
+</div>
+{% comment %}js{% endcomment %}
+<script>
+  // 页面渲染执行
+  {% if cart.item_count %}
+  $('.cartCount span').html({{cart.item_count}});
+  $('.cartCount').show();
+  {% else %}
+  $('.cartCount').hide();
+  {% endif %}
+  
+  // 监听加车刷新事件，更新购物车数量
+  Listener.on([ Listener.cart.refresh ], function(event, cart) {
+    var cartCount = cart.item_count;
+    $('.cartCount span').html(cartCount);
+    if(cartCount) {
+      $('.cartCount').show();
+    } else {
+      $('.cartCount').hide();
+    }
+  });
+  // 点击购物车事件
+  $('.rightCart').click(function() {
+    // 在snippets => cart-popup.liquid中定义
+  	openPopUp();
+  });
+</script>

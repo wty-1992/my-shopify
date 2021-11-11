@@ -1,0 +1,64 @@
+<style>
+.form-vertical input,
+.form-vertical select,
+.form-vertical textarea {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.form-vertical input[type=radio],
+.form-vertical input[type=checkbox] {
+  display: inline-block;
+  width: auto;
+  margin-right: 5px;
+}
+.form-vertical input[type=submit],
+.form-vertical .btn {
+  display: inline-block;
+}
+</style>
+<div class="page-width">
+  <h1 class="small--text-center">{{ page.title }}</h1>
+  {% if page.content != blank %}
+    <div class="content-block">
+      <div class="rte">
+        {{ page.content }}
+      </div>
+    </div>
+  {% endif %}
+  <div class="content-block">
+    <div class="contact-form form-vertical">
+      {% form 'contact' %}
+
+        {% if form.posted_successfully? %}
+          <p class="form-success">
+            {{ 'page.contact.post_success' | t }}
+          </p>
+        {% endif %}
+
+        {{ form.errors | default_errors }}
+
+        <div class="grid grid--half-gutters">
+          <div class="grid__item medium-up--one-half">
+            <label for="ContactFormName" class="label--hidden">{{ 'page.contact.name' | t }}</label>
+            <input type="text" id="ContactFormName" name="contact[name]" placeholder="{{ 'page.contact.name' | t }}" value="{% if form[name] %}{{ form[name] }}{% elsif customer %}{{ customer.name }}{% endif %}">
+          </div>
+          <div class="grid__item medium-up--one-half">
+            <label for="ContactFormEmail" class="label--hidden">{{ 'page.contact.email' | t }}</label>
+            <input type="email" id="ContactFormEmail" name="contact[email]" placeholder="{{ 'page.contact.email' | t }}" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+          </div>
+        </div>
+
+        <label for="ContactFormPhone" class="label--hidden">{{ 'page.contact.phone' | t }}</label>
+        <input type="tel" id="ContactFormPhone" name="contact[phone]" placeholder="{{ 'page.contact.phone' | t }}" pattern="[0-9\-]*" value="{% if form[phone] %}{{ form[phone] }}{% elsif customer %}{{ customer.phone }}{% endif %}">
+
+        <label for="ContactFormMessage" class="label--hidden">{{ 'page.contact.message' | t }}</label>
+        <textarea rows="10" id="ContactFormMessage" name="contact[body]" placeholder="{{ 'page.contact.message' | t }}">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+
+        <input type="submit" class="btn" value="{{ 'page.contact.send' | t }}">
+      {% endform %}
+    </div>
+  </div>
+
+  {% section 'featured-products-subsection' %}
+</div>

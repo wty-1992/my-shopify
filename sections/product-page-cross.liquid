@@ -1,0 +1,271 @@
+<style> 
+  
+/*================ Product Collection ================*/
+  
+.product-collection-list .title {
+  font-size:2rem;
+  padding: 2rem;
+  text-align: center;
+  font-weight: bold;
+}
+.product-collection-list .item {
+  position: relative;
+  padding: 1rem;
+}
+.product-collection-list .items{
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+  
+/*================ Product Card ================*/
+  
+.product-collection-list .product-card{
+  position: unset;
+} 
+.product-card:hover .product-card__overlay, .product-card:focus .product-card__overlay {
+  visibility: visible;
+  opacity: 1;
+}
+.product-collection-list .product-card__overlay {
+  visibility: hidden;
+  background-color: transparent;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: all 0.15s ease-in;
+}
+.product-collection-list .product-card__name{
+  font-weight: bold;
+}
+.product-collection-list .product-card:hover .product-card__overlay, .product-card:focus .product-card__overlay{
+  visibility: visible;
+  opacity: 1;
+}
+.product-collection-list .product-card__sale-price{
+  color:#D81E06;
+  font-size: 1.5rem;
+}
+  
+.product-card__image-wrapper .product-card__tag {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.product-collection-list .product-card__image-container {
+  width: 100%;
+}
+
+.product-collection-list .product-card__image-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+ 
+}
+.product-collection-list .product-card__image{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width:100%;
+}
+  
+.product-collection-list .product-card__image-container{
+  position: relative;
+}
+.product-collection-list .product-card__tag{
+  position: absolute;
+  top: -1rem;
+  right: -1rem;
+}
+.product-collection-list .product-card__tag .tag__label{
+  color: #fff;
+  text-align: center;
+  border-radius: 3px;
+  width: 3rem;
+  height: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  margin-bottom: .2rem;
+  text-transform: uppercase;
+}
+.product-collection-list .product-card__tag .tag__label.tag__custom-tag-discount{
+  background-image: url(https://cdn.shopify.com/s/files/1/0059/9854/2917/files/discount-tag-hat.png); 
+  color: #fff;
+  height: 5rem;
+  width: 5rem;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  justify-content: left;   
+   font-weight: bold;
+    margin-bottom: .2rem;
+    text-transform: uppercase;
+}
+.product-collection-list .product-card__tag .tag__label.tag__custom-tag-discount .discount_box{
+  position: absolute;
+  font-size: 1.2rem;
+  left: 7px;
+  top: 19px;
+}
+
+.product-collection-list .product-card__tag .tag__label svg{
+  height:3rem;
+  width:3rem;
+}
+  
+@media (min-width:375px){
+	.product-collection-list  .item{
+      flex:0 1 50%;
+    }
+  }
+  
+  @media (min-width:768px){
+	.product-collection-list  .item{
+      flex:0 1 33.3%;
+    }
+  }
+  
+  @media (min-width:1024px){
+	.product-collection-list  .item{
+      flex:0 1 25%;
+    }
+  }
+  
+  @media (min-width:1440px){
+	.product-collection-list  .item{
+      flex:0 1 20%;
+    }
+  }
+</style>
+
+{% assign types = 'related,cross' %}
+{% for block in section.blocks %}
+
+  {% unless block.type =='collection' %}
+  {% continue %}
+  {% endunless %}
+
+  {% unless types contains block.settings.type %}
+  {% continue %}
+  {% endunless %} 
+
+  {% unless block.settings.enable %}
+  {% continue %}
+  {% endunless %}
+
+  {% unless block.settings.tag != blank %}
+  {% continue %}
+  {% endunless %}
+
+  {% unless product.tags contains block.settings.tag %}
+  {% continue %}
+  {% endunless %}
+
+  {% assign current_collection = collections[block.settings.collection] %}
+  {% unless current_collection %}
+  {% continue %}
+  {% endunless %}
+
+  {% assign max = current_collection.all_products_count %}
+  {% assign min = 1 %}
+  {% assign limit = block.settings.limit | default: 4 %}
+  {% assign diff = max | minus: min %}
+  {% assign randomNumber = "now" | date: "%N" | modulo: diff | plus: min %}
+  {% assign offset = max | minus:randomNumber %}
+  {% if offset < limit %}
+  {% assign randomNumber = 0 %}
+  {% endif %}
+  <div class="product-collection-list">
+    {% if block.settings.title %}
+    <div class="title">{{ block.settings.title }}</div>
+    {% endif %}
+    <div class="items">
+      {% for product in current_collection.products offset:randomNumber limit: limit %}
+      <div class="item item-{{randomNumber}}">{% include 'product-card', product: product, collection: current_collection %}</div>
+      {% endfor %}
+    </div>
+  </div>
+{% endfor %}
+
+
+
+{% schema %}
+{
+  "name": "产品页 - 交叉销售推荐",
+  "settings":[
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "标签关联集合",
+      "limit": 12,
+  	   "settings": [
+        {
+          "type": "checkbox",
+          "id": "enable",
+          "label": "是否开启",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "显示的标题"
+        },
+		{
+          "type": "textarea",
+          "id": "description",
+          "label": "功能描述"
+        },
+  		{
+          "type": "select",
+          "id": "type",
+          "label": "类型",
+          "options": [
+            {
+              "value": "cross",
+              "label": "交叉销售集合"
+            },
+            {
+              "value": "related",
+              "label": "相关产品集合"
+            }
+          ],
+          "info": "模板里用来判断引入的块",
+          "default": "cross"
+        },
+		{
+          "type": "text",
+          "id": "tag",
+          "label": "产品标签(单数)",
+          "info": "这个tag与产品的标签对应, 对上号之后就会显示这个集合的推荐在固定的位置"
+        },
+        
+        
+        {
+		   "type": "collection",
+		   "id": "collection",
+		   "label": "选择集合"
+    	},
+
+        {
+            "type": "range",
+            "id": "limit",
+            "min": 1,
+            "max": 20,
+            "step": 1,
+            "unit": "num",
+            "label": "显示数量",
+            "default": 4
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

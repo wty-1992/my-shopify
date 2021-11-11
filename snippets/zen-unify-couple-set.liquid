@@ -1,0 +1,301 @@
+{% assign target_tag = '' %}
+{% for tag in product.tags %}
+	{% if tag contains 'custom-couple-set-' %}
+	  {% assign target_tag = tag %}
+      {% break %}
+	{% endif %}
+{% endfor %}
+
+{% assign target_man = target_tag | append: '-man' %}
+{% assign target_woman = target_tag | append: '-woman' %}
+
+{% assign target_collection = collections['underwear'] %}
+
+{% paginate target_collection.products by 1000 %}
+
+	{% for item in target_collection.products %}
+		{% assign pro_tags = item.tags | join:',' %}
+		{% if pro_tags contains target_man %}
+          {% assign man_product = item %}
+          {% break %}
+        {% endif %}
+	{% endfor %}
+
+	{% for item2 in target_collection.products %}
+		{% assign pro_tags2 = item2.tags | join:',' %}
+		{% if pro_tags2 contains target_woman %}
+          {% assign woman_product = item2 %}
+          {% break %}
+        {% endif %}
+	{% endfor %}
+
+{% endpaginate %}
+
+{% assign twofaceName = 'variant.title.TwoFace' | t  %}
+
+<div class="couple-set-container">
+  <div class="operation-container bg-blue">
+    <div>{{ 'zen.coupleSet.MAN' | t }}:</div>
+    
+    <div class="selector-man">
+      {% for man_option in man_product.options_with_values %}
+    	<div class="selector-wrapper js product-form__item">
+          <label {% if man_option.name == 'default' %}class="label--hidden" {% endif %}for="SingleOptionSelector-{{ forloop.index0 }}">
+            {{ man_option.name }}
+            {% if man_option.name == twofaceName %}
+            {%- assign isManTwoFace = 1 -%}
+            {% endif %}
+          </label>
+          <select class="{% if man_option.name == twofaceName %}hide{% endif %} set-selector set-single-option-selector-{{ man_option.name }} single-option-selector set-single-option-selector-{{ section.id }} product-form__input" id="SingleOptionSelector-{{ forloop.index0 }}" data-index="option{{ forloop.index }}">
+            {% for value in man_option.values %}
+            <option value="{{ value | escape }}"{% if man_option.selected_value == value %} selected="selected"{% endif %}>{{ value }}</option>
+            {% endfor %}
+          </select>
+      </div>
+      {% endfor %}
+    </div>
+    
+    <div class="upload-images-box">
+      <span class="area-crop-upload-text">{{ 'zen.general.uploadLabel' | t }}</span>
+      <div class="upload-images">
+          <input type="file" id="inputImage" name="ucpic" accept="*" />
+          <span class="btn btn-color">{{ 'zen.cropcarving.upload' | t }}</span>
+      </div>
+    </div>
+
+    <div class="uploadafterimg1" style="display:none;"><img id="previewpicture" width="200" src="{{ 'default.png' | asset_img_url: '1x' }}" /></div>
+
+    {% if isManTwoFace==1 %}
+    <div class="product-addon product-addon-1-face-or-2" style="display:none">
+    <h3 class="addon-name">{{ 'zen.cropcarving.addon_title' | t }} </h3>
+      <div class="addon-description"><p>{{ 'zen.coupleSet.if_two_face' | t }}</p></div>
+    <div style="width:100%;margin-top: 16px;"><input type="checkbox" id="addon-checkbox" style="min-height: 10px;"> <span id="checkText" style="font-weight: bold;cursor:pointer;">{{ 'zen.cropcarving.addon_label' | t }}</span></div>
+    </div>
+    {% endif %}
+
+    <input type="hidden" id="crop_picture" value="" style="display:none" required />
+    
+  </div>
+  
+  
+  <div class="operation-container bg-pink">
+    <div>{{ 'zen.coupleSet.WOMAN' | t }}:</div>
+    
+    <div class="selector-woman">
+      {% for woman_option in woman_product.options_with_values %}
+    	<div class="selector-wrapper js product-form__item">
+          <label {% if woman_option.name == 'default' %}class="label--hidden" {% endif %}for="SingleOptionSelector-{{ forloop.index0 }}">
+            {{ woman_option.name }}{% if woman_option.name == twofaceName %}2{% endif %}
+            {% if woman_option.name == twofaceName %}
+            {%- assign isWomanTwoFace = 1 -%}
+            {% endif %}
+          </label>
+          <select class="{% if woman_option.name == twofaceName %}hide{% endif %} set-selector set-single-option-selector-{{ woman_option.name }} single-option-selector set-single-option-selector-{{ section.id }} product-form__input" id="SingleOptionSelector-{{ forloop.index0 }}" data-index="option{{ forloop.index }}">
+            {% for walue in woman_option.values %}
+            <option value="{{ walue | escape }}"{% if woman_option.selected_value == walue %} selected="selected"{% endif %}>{{ walue }}</option>
+            {% endfor %}
+          </select>
+      </div>
+      {% endfor %}
+    </div>
+    
+    <div class="upload-images-box">
+      <span class="area-crop-upload-text">{{ 'zen.general.uploadLabel' | t }}</span>
+      <div class="upload-images">
+          <input type="file" id="inputImage2" name="ucpic2" accept="*" />
+          <span class="btn btn-color">{{ 'zen.cropcarving.upload' | t }}</span>
+      </div>
+    </div>
+
+    <div class="uploadafterimg2" style="display:none;"><img id="previewpicture2" width="200" src="{{ 'default.png' | asset_img_url: '1x' }}" /></div>
+
+    {% if isWomanTwoFace==1 %}
+    <div class="product-addon product-addon-1-face-or-2-2" style="display:none">
+    <h3 class="addon-name">{{ 'zen.cropcarving.addon_title' | t }} </h3>
+      <div class="addon-description"><p>{{ 'zen.coupleSet.if_two_face' | t }}</p></div>
+    <div style="width:100%;margin-top: 16px;"><input type="checkbox" id="addon-checkbox2" style="min-height: 10px;"> <span id="checkText" style="font-weight: bold;cursor:pointer;">{{ 'zen.cropcarving.addon_label' | t }}</span></div>
+    </div>
+    {% endif %}
+
+    <input type="hidden" id="crop_picture2" value="" style="display:none" required />
+    
+  </div>
+  
+</div>
+
+<script>
+var manArray = [];
+var womanArray = [];
+
+{% for man in man_product.variants %}
+  
+  {% assign man_op_val = '' %}
+  {% for man_op in man.options %}
+    {% assign man_op_val = man_op_val | append: man_op %}
+  {% endfor %}
+
+  if(typeof manArray["{{man_op_val}}"] == 'undefined'){
+     manArray["{{man_op_val}}"] = {};
+  }
+  manArray["{{man_op_val}}"]['id'] = "{{man.id}}";
+  manArray["{{man_op_val}}"]['price'] = "{{man.price}}";
+{% endfor %}
+
+{% for woman in woman_product.variants %}
+           
+  {% assign woman_op_val = '' %}
+  {% for woman_op in woman.options %}
+   {% assign woman_op_val = woman_op_val | append: woman_op %}
+  {% endfor %}
+           
+  if(typeof womanArray["{{woman_op_val}}"] == 'undefined'){
+     womanArray["{{woman_op_val}}"] = {};
+  }
+  womanArray["{{woman_op_val}}"]['id'] = "{{woman.id}}";
+  womanArray["{{woman_op_val}}"]['price'] = "{{woman.price}}";
+{% endfor %}
+console.log(manArray);
+console.log(womanArray);
+  $(function(){
+    setItemPrice();
+                     
+	$('#custom-cart-btn').click(function(){
+		manAddToCart();
+    });
+                     
+    $('.set-selector').change(function(){
+		setItemPrice();
+    });
+           
+  })
+  
+  function setItemPrice(){
+  	let manLabel = '';
+    $('.selector-man').find('select').each(function(){
+      manLabel += $(this).val();
+    });
+
+    let manPrice = parseInt(manArray[manLabel]['price']);
+
+    let womanLabel = '';
+    $('.selector-woman').find('select').each(function(){
+      womanLabel += $(this).val();
+    });
+
+    let womanPrice = parseInt(womanArray[womanLabel]['price']);
+    
+    let itemPrice = (manPrice + womanPrice)/100;
+    itemPrice = itemPrice.toFixed(2);
+    $('.price-item--sale').text('$'+itemPrice);
+  }
+  
+  function manAddToCart(){
+    if($('#crop_picture').val()==""){
+      alert('{{ 'zen.coupleSet.design_first' | t }}');
+      return false;
+    }
+           
+    if($('#crop_picture2').val()==""){
+      alert('{{ 'zen.coupleSet.design_first' | t }}');
+      return false;
+    }
+
+    var data = {};
+    var manLabel = '';
+    $('.selector-man').find('select').each(function(){
+      manLabel += $(this).val();
+    });
+
+    data['id']=manArray[manLabel]['id'];
+    data['sex']='man';
+    data['quantity']=1;
+    data['properties[picture]']=$('#crop_picture').val();
+    console.log(data);
+  
+    if($(".product-vip-gift-box-div").length > 0 && $('#vipBox').is(':checked') == true){
+      data['properties[_tempVip]'] = cateTempVip();
+      data['properties[VIPService]'] = 'VIP Service';
+    }
+    
+    $('#custom-cart-btn').attr('disabled', true);
+
+    $.ajax({
+      type: 'POST',
+      url: '/cart/add.js',
+      data: data,
+      dataType: 'json',
+      context: this,
+      beforeSend: function(xhr) {
+
+      },
+      complete(){
+
+      },
+      success: function(lineItem) {
+        womanAddToCart();
+        
+        $('#custom-cart-btn').removeAttr('disabled');
+        
+        var modal = new tingle.modal({
+          footer: false,
+          stickyFooter: false,
+          //closeMethods: ['button'], 
+          //closeLabel: "Close11",
+          cssClass: ['addtocart-pop'],
+          onOpen: function() {
+            console.log('modal open');
+          },
+          onClose: function() {
+            console.log('modal closed');
+          },
+          beforeOpen: function() {
+          },
+          beforeClose: function() {
+            // e.g. save content before closing the modal
+            return true; // close the modal
+          }
+        });     
+        
+        if($(".product-vip-gift-box-div").length > 0 && $('#vipBox').is(':checked') == true){
+          boxAddToCart();
+        }
+        
+        modal.setContent($('#product_addtocart_success').html());
+        modal.open();
+
+        $('.continue-shopping').click(function(){
+          modal.close();
+        });
+      },
+      error: function(XMLHttpRequest, textStatus){
+        console.log('product to cart error');
+      }
+    });
+  }
+  
+  function womanAddToCart(){ 
+    var data = {};
+    var womanLabel = '';
+    $('.selector-woman').find('select').each(function(){
+      womanLabel += $(this).val();
+    });
+
+    data['id']=womanArray[womanLabel]['id'];
+    data['quantity']=1;
+    data['sex']='woman';
+    data['properties[picture]']=$('#crop_picture2').val();
+    $.ajax({
+      type: 'POST',
+      url: '/cart/add.js',
+      data: data,
+      dataType: 'json',
+      context: this,
+      success: function(lineItem) {
+        
+      },
+      error: function(XMLHttpRequest, textStatus){
+        console.log('product to cart error');
+      }
+    });
+  }  
+</script>

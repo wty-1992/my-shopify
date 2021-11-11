@@ -1,0 +1,231 @@
+
+<style>
+.product-price-info{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.mb_switchover .yotpo.bottomLine.yotpo-small{
+  display:none;
+}
+.product-page-price-section{
+  padding-top: 24px;
+  width:100%;
+}
+.product-infos__line .my-review-list-con{
+  text-align: right;
+}
+.product-infos__line .my-review-list-con div.my-review-sum{
+  text-transform: uppercase;
+}
+.product-page-price-section .product-label-items {
+  margin-top:12px;
+}
+.product-page-price-section .product-label-item {
+  padding: 4px 10px;
+  border-radius: 20px;
+  display: inline-block;
+  background: #e9034d;
+  color: #fff;
+  font-size: 12px;
+  margin: 2px 2px 2px 0;
+}
+.product-page-price-section .product-single__price--special{
+  color:#000;
+  font-weight: 600;
+  font-size: 18px;
+}
+.product-page-price-section .product-single__price--discount{
+  font-size: 14px;
+  margin-left: .7rem;
+  color: #de0047;
+  font-weight: 600;
+  line-height: 26px;
+  transform: translateY(-1px);
+}
+.product-page-price-section .product-page-price__compare{
+  margin-top:10px;
+}
+.product-page-price-section .product-single__price--compare{
+  font-size: 14px;
+  vertical-align: unset;
+  color: #979797;
+  text-decoration: line-through;
+  line-height: 1.2;
+  margin-top: 8px;
+}
+.product-page-price__selling{
+  display: flex;
+  align-items: end;
+}
+.timeview-countdown{
+  display: flex;
+  font-size: 12px;
+  align-items: baseline;
+  color: #000;
+}
+.product-page-price__selling .price-column{
+  display: flex;
+  flex-flow: column;
+} 
+.product-price-info #remainTime{
+  display: flex;
+  color: #000;
+}
+.product-price-info #remainTime>div{
+  margin-left: 4px;
+}
+.product-price-info #remainTime .num{
+  font-size: 14px;
+}
+.product-price-info #remainTime .text{
+ font-size: 12px;
+}
+.mb_switchover{
+  display:none;
+}
+@media(max-width:768px){
+.product-price-info #remainTime .num{
+  font-size: 12px;
+}  
+.product-page-price-section .product-single__price--special{
+  font-size: 20px;
+  line-height: 1;
+}
+.mb_switchover{
+  display:block;
+}
+.product-page-price-section .product-label-item{
+  margin: 2px 2px 5px 0;
+}
+.product-page-price-section .product-single__price--discount{
+  transform: translateY(-2px);
+}
+.mb_switchover .yotpo.bottomLine.yotpo-small{
+  display:block;
+}  
+.product-page-price-section{
+  padding: 0 20px 0;
+  width: 100%;
+}
+.yotpo.bottomLine .yotpo-bottomline .yotpo-icon-star, .yotpo.bottomLine .yotpo-bottomline .yotpo-icon-half-star, .yotpo.bottomLine .yotpo-bottomline .yotpo-icon-empty-star, .yotpo.bottomline .yotpo-bottomline .yotpo-icon-star, .yotpo.bottomline .yotpo-bottomline .yotpo-icon-half-star, .yotpo.bottomline .yotpo-bottomline .yotpo-icon-empty-star, .yotpo .yotpo-modal-bottom-line .yotpo-bottomline .yotpo-icon-star, .yotpo .yotpo-modal-bottom-line .yotpo-bottomline .yotpo-icon-half-star, .yotpo .yotpo-modal-bottom-line .yotpo-bottomline .yotpo-icon-empty-star{font-size: 15px;}
+.product-page-price-section .product-single__price--compare{
+  color: #6d6d6d;
+  margin-top: 18px;
+}
+.timeview__title{
+  background: #000;
+  color: #fff;
+  padding: 5px 8px;
+}
+.mb_switchover{
+  padding-top: 3px;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-end;
+}
+.timeview-countdown{
+  margin-top: 8px;
+  justify-content: flex-end;
+  border: 1px solid #000;
+  border-radius: 5px;
+  overflow: hidden;  
+  padding-right: 8px;
+}
+.product-page-price-section .product-label-items {
+  margin-top:18px;
+}
+.my-star-con div.my-star{
+  width: auto;
+  height: auto;
+  line-height: 1;
+  font-size: 13px;
+  transform: scale(1);
+}
+.my-review-list-con .my-star-con{
+  transform: translateY(-1px);
+}
+.my-review-list-con{
+  transform: translateY(-3px);
+}
+}
+</style>
+{% assign productTags = product.tags | join:',' %}
+{% assign current_variant = product.selected_or_first_available_variant %}
+{% assign productPriceId = "ProductPrice" | append: section.id %}
+{% assign productDiscountPriceId = "ProductDiscountPrice" | append: section.id %}
+{% assign productComparePriceId = "ProductComparePrice" | append: section.id %}
+<div class="product-price-info">
+  <div class="product-page-price__selling">
+    <div class="price-column">
+      <span id="{{ productPriceId }}" class="product-single__price--special" itemprop="price" content="{{ current_variant.price | divided_by: 100.00 }}" data-money="{{ current_variant.price }}"></span>
+      {% if current_variant.compare_at_price > current_variant.price %}  
+      <span id="{{ productComparePriceId }}" class="product-single__price--compare"><s><span data-money="{{ current_variant.compare_at_price }}"></span></s></span>
+      {% endif %}
+    </div>
+    {% if current_variant.compare_at_price > current_variant.price %}  
+      <span class="product-single__price--discount" id="{{ productDiscountPriceId }}">
+        <span>{{ current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | money_without_currency | times: 100 | replace: '.0', ''}}</span>% {{ 'product.price.off' | t }}
+      </span>
+    {% endif %}
+  </div>
+  <div class="mb_switchover">
+    <a href="#my-review-main">
+      <div class="my-review-goods-list" data-product-id="{{ product.selected_or_first_available_variant.sku }}"></div>
+    </a>
+    {%- include 'func-verify_rules', contain: section.settings.contain, detail: product -%}
+    {% unless verify__rules_result == false %}  
+    <div class="timeview-countdown">
+      <div class="timeview__title">{{ 'product.countdown.ends' | t }}:</div>
+      <div id="remainTime" data-until="" data-offset='0'></div>
+    </div>    
+    {% endunless %}
+  </div>
+</div>                             
+<div class="product-label-items"> 
+<div class="hide_sku_tag"style="display:none;" >{{ product.selected_or_first_available_variant.sku }}</div>
+</div>
+<script>
+//获取当天11点59分59秒的时间戳
+$("#remainTime").data("until", Math.round(new Date(new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000 - 1) / 1000));
+jQuery('#remainTime').scojs_countdown({
+  strings: {d: 'd: ', h: 'h: ', m: 'm: ', s: 's: ', ms:' '},
+  css: {
+    dcss:'c-day', 
+    hcss:'c-hour', 
+    mcss:'c-min',
+    scss:'c-sec'
+  },
+  interval:100,
+  showMS:true,
+  moreHour: true
+  }
+);
+
+// select 更改价格
+Listener.on([ Listener.product.update.before ], function(event, variant) { 
+  $('#{{ productPriceId }}').data('money', variant.price);
+  $('#{{ productComparePriceId }}').data('money', variant.compare_at_price);
+  $('#{{ productDiscountPriceId }} > span').html(-Math.floor((variant.compare_at_price - variant.price) / variant.compare_at_price * 100));
+});
+</script>
+
+
+{% schema %}
+{
+  "class": "product-page-price-section",
+  "name": "产品页 - 价格区域",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content":"product-page-price"
+    },
+    {
+        "type": "textarea",
+        "id": "contain",
+        "label": "倒计时显示规则",
+        "info": "{\"handle\": \"a,b,c...\", \"sku\": \"C021,C022...\"}"
+    }
+  ]
+}
+{% endschema %}

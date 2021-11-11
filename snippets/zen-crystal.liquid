@@ -1,0 +1,516 @@
+{{ 'zen-custom.scss.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'jquery-ui.min.js' | asset_url }}"></script>
+<script src="{{ 'fabric.min.js' | asset_url }}"></script>
+<script src="{{ 'fontfaceobserver.js' | asset_url }}"></script>
+<script src="{{ 'konva.min.js' | asset_url }}"></script>
+<script src="{{ 'qiniu.min.js' | asset_url }}" ></script>
+<script src="{{ 'zen-base.js' | asset_url }}"></script>
+<script src="{{ 'zen-crystal.js?aaa' | asset_url }}"></script>
+<script src="{{ 'zen-namenecklace.js' | asset_url }}"></script>
+
+{% capture diamondLines %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "diamondlines" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign diamondLines = diamondLines | strip %}
+{% capture textLines %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "textlines" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign textLines = textLines | strip %}
+{% capture isSinglelineInput %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "issinglelineinput" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign isSinglelineInput = isSinglelineInput | strip %}
+{% capture lines %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "lines" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign lines = lines | strip %}
+{% capture secondType %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "secondtype" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign secondType = secondType | strip %}
+{% capture type %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "type" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign type = type | strip %}
+{% capture code %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "code" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign code = code | strip %}
+{% capture style %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "style" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign style = style | strip %}
+{% capture fontfamily %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "fontfamily" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign fontfamily = fontfamily | strip %}
+
+
+<div id="simple-photo-body" style="display:none;">
+<button type="button" class="close-new close custom-close" data-action="close">
+    <i class="photofont icon photo-close"></i>
+  </button>
+<div id="tabs" class="customer-photo customer-crystal">
+  <ul style="display:none;">
+    <li><a id="photo-diamond" data-index="0" href="#tabs-0">{{ 'zen.crystal.diamond' | t }}</a></li>
+    <li><a id="photo-loading" data-index="1" href="#tabs-1">{{ 'zen.general.loading' | t }}</a></li>
+  <li><a id="photo-big"     data-index="2" href="#tabs-2">{{ 'zen.crystal.bigimage' | t }}</a></li>
+  </ul>
+<div id="tabs-0" class="carving-photo">
+<div class="carvingcanvas-left"><canvas id="crystalcanvas"></canvas></div> 
+
+
+<div class="customer-crystal-right carvingcanvas-right">
+<div id="accordion">
+{% if type == "CrystalName" %}
+<div class="namenecklace-photo">
+  <div class="view-name"> 
+    <span>{{ 'zen.general.preview' | t }}:</span>
+    <div id="showtext" class="showtext" style="font-family:{{fontfamily}};" >  <!--{% include 'func-jd' with 'echo|customopt.fontfamily' %}-->
+      {% for i in (1..lines) %} 
+        <span class="showtext-in" id="showtext_{{ forloop.index0 }}" style="{{style}}"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+      {% endfor %}
+    </div>
+    <div id="hideShowText" style="display:none;"></div>
+  </div>
+
+  <div class="carvingcanvas-content {% if lines == '1' %} first {% endif %}">
+  {% for i in (1..lines) %}  
+      <div class="curve-textarea">
+      <input class="alpha_text" data-leftnum='leftnum{{ forloop.index0 }}' type="text" data-prefix='ctext' data-index="{{ forloop.index0 }}" id="ctext{{ forloop.index0 }}" readonly maxlength="" placeholder="{{ 'zen.crystal.enter_name' | t }}"/>
+      <div class="validation-advice" id="advice-validate-select-carving{{ forloop.index0 }}" style="display:none;border:0px solid #eb340a;">{{ 'zen.general.required_field' | t }}</div>
+      <div class="leftnum"><span id="leftnum{{ forloop.index0 }}"></span> Left</div>
+      </div>
+  {% endfor %} 
+  </div>
+</div>
+{% endif %}
+{% for i in (1..diamondLines) %}
+<div class="card">
+  <div class="card-header" id="headingOne">
+      <div class=" btn-link" data-toggle="collapse" data-target="#collapse{{forloop.index0}}" aria-expanded="true" aria-controls="collapseOne">
+        <div class="flex-between ">
+          <img class="showdiamondimg diamondimg{{forloop.index0}}" src="">				
+          <span>{{ 'zen.crystal.select' | t }} {{forloop.index}} </span>	
+        </div>
+        <div class="free">{{ 'zen.general.free' | t }}</div> 
+      </div>
+  </div>
+
+  <div id="collapse{{forloop.index0}}" class="collapse {% if forloop.index0 == 0 %}show{% endif %}" aria-labelledby="headingOne" data-parent="#accordion">
+    <div class="card-body">
+    <div class="crystal-all{{forloop.index0}}" ></div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+{% if type == 'CrystalCurve' or type == 'CrystalCarving' %}
+<div class="card">
+<div class="card-header" id="headingOne">
+  <div class=" btn-link tab-carving" data-toggle="collapse" data-target="#collapsetext" aria-expanded="true" aria-controls="collapseOne">
+      <div class="flex-between ">
+    <div class="showdiamondimg"><i class="icon photofont photo-bi1"></i></div>
+        <span>{{ 'zen.general.add_engravings' | t }}</span>
+  </div> 
+        <div class="free">{{ 'zen.general.free' | t }}</div>
+  </div>
+</div>
+<div id="collapsetext" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+  <div class="card-body ">
+    {% for i in (1..textLines) %}
+      <div class="engravings">Name{{forloop.index}} 
+        {% if isSinglelineInput == '1' or type == 'CrystalCurve' %}
+        <input id="textInput{{forloop.index0}}" class="textInput" data-index="{{forloop.index0}}" rows="3" cols="43" placeholder="{{ 'zen.general.type_words' | t }}" />
+        {% else %} 
+        <textarea id="textInput{{forloop.index0}}" class="textInput multiLines" data-index="{{forloop.index0}}" rows="3" cols="43" placeholder="{{ 'zen.general.type_words' | t }}" /></textarea> 
+        {% endif %}
+        <span class="num textNum{{forloop.index0}}">0</span> {{ 'zen.general.left' | t }}
+      </div>
+    {% endfor %}
+  <div class="popups-font-family">
+      <span class="font-title">{{ 'zen.general.font' | t }} :</span>
+          <div class="font-list-flex">
+              <div class="font-list active">
+              <div class="carvingfont selected" style="font-family:TimesNewRoman;">{{ 'zen.general.abc' | t }}</div>
+              <input class="cfont in-radio" type="radio" checked="" value="TimesNewRoman" name="fontradio">
+              </div>
+              <div class="font-list">
+              <div class="carvingfont " style="font-family:AlluraRegular;">{{ 'zen.general.abc' | t }}</div>
+              <input class="cfont in-radio" type="radio" value="AlluraRegular" name="fontradio">
+              </div>
+              <div class="font-list">
+              <div class="carvingfont " style="font-family:AppleChancery;">{{ 'zen.general.abc' | t }}</div>
+              <input class="cfont in-radio" type="radio" value="AppleChancery" name="fontradio">
+              </div>
+              <div class="font-list">
+              <div class="carvingfont " style="font-family:holyunion;">{{ 'zen.general.abc' | t }}</div>
+              <input class="cfont in-radio" type="radio" value="holyunion" name="fontradio">
+              </div>
+              <div class="font-list">
+              <div class="carvingfont " style="font-family:NexaScript-Free;">{{ 'zen.general.abc' | t }}</div>
+              <input class="cfont in-radio" type="radio" value="NexaScript-Free" name="fontradio">
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+</div>  
+{% endif %} 
+
+
+</div> 
+<!--end accordion-->
+<button type="button" class="btn-confirm" id="btn-confirm">{{ 'zen.general.confirm' | t }}</button> 
+</div>
+</div>
+<!--end tabs-0-->
+
+<div id="tabs-1">
+<div id="cloading"><img class="cloadingimg" src="{{section.settings.upload_loading_image | img_url: 'master'}}" /><div class="sprogress"><div class="sbar" style="width: 0%;">0%</div></div></div>
+</div>
+
+<div id="tabs-2"><!--big image-->
+  <div class="big-img"><img src="" /></div>
+</div>
+
+</div> <!--end tabs-->
+
+
+</div> <!--simple-photo-body-->
+
+ <div class="lettering-box lettering-box-carving">
+	<div class="Previewlettering Previewletteringcarving">
+		<span class="Previewlettering-title">
+			{{ 'zen.crystal.design_your_own' | t }}
+		</span> 
+	</div>        
+	<div class="after-preview-text"> 
+		<button type="button">{{ 'zen.crystal.design' | t }}</button>
+	</div>
+</div>
+ 
+<div class="upload-images-photo editzoom after" style="display:none;">
+<div class="big">
+      <img id="preview-crop" width="50" height="40" src="">
+      <i class="icon photofont photo-view-fangda"></i>
+  </div>
+<div class="after-preview">
+  <span>{{ 'zen.general.change' | t }} </span>
+</div>
+</div>
+
+
+<div id="container" style="display:none;"></div>
+<input type="text" id="piccrop" name="properties[diamondImage]"   value="" style="display:none" required/>
+<input type="text" id="engraving-text" name="properties[engravingText]" value="" style="display:none" />
+<input type="text" id="engraving-font" name="properties[engravingFont]" value="" style="display:none" />
+<input type="text" id="diamond-custom" name="properties[diamondCustom]" value="" style="display:none" />
+<input type="text" id="code-engraving-text" name="properties[fontCode]" value="{{code}}" style="display:none" />
+<input type="text" id="alpha-text" name="properties[alphaText]" value="" style="display:none" />
+<input type="text" id="name-crop" name="properties[nameCrop]" value="" style="display:none" />
+<div style="display: none;">
+<canvas id="myCanvas" width="3000" height="170" style="border:1px solid #d3d3d3;"></canvas>
+<canvas id="myCanvas2" style="border:1px solid #d3d3d3;"></canvas>
+</div>
+
+<script>
+$( "#tabs" ).tabs();
+var simpleModal = new tingle.modal({ 
+  closeMethods: ['escape']
+});
+simpleModal.setContent('<div id="simple-photo-modal"  class="simple--modal"></div>');
+$("#simple-photo-modal").html($('#simple-photo-body').contents());
+//$("#tabs").tabs("option", "active", $('#photo-diamond').data('index'));
+
+var jsonCustom = JSON.parse('{{ product.metafields["global"]["cattribute"] }}');
+
+// name
+if(jsonCustom.type=="CrystalName"){
+
+  var Uqname = new Uqname({ json:jsonCustom });
+  $('.alpha_text').bind('keyup change', function (){
+    var i = $(this).data('index');
+    Uqname.process(this.value, i); // 过滤 
+    $(this).val(Uqname.text[i].text);
+    $('#showtext_'+i).html(Uqname.text[i].showText);
+    $('#leftnum'+i).html( ( $(this).attr('maxlength') - Uqname.text[i].text.length )<0?0:( $(this).attr('maxlength') - $(this).val().length ) );
+  });
+  $.each(jsonCustom.text, function(i, v){/* 属性动态赋值 */
+    $('#leftnum'+i).html(v.limit.split('-')[1]);
+    $('#ctext'+i).attr('maxlength', v.limit.split('-')[1]);
+  });
+  $('.alpha_text').removeAttr("readonly");
+  if(jsonCustom.class){
+    $(".showtext-in").addClass(jsonCustom.class);
+    $(".showtext-in").css("font-size","36px");
+  } 
+
+  function checkNametoBase64(){
+    var on_off = 0;
+    $.each(jsonCustom.text, function(i, v){
+      if(on_off=Uqname.checkQuantity($('#ctext'+i).val(), v.limit.split('-')[0], v.limit.split('-')[1])==1){return;} //* 检查合法性
+    });
+    if(on_off == 1){
+      $(".curve-textarea").addClass('validation-warning');
+      return false;
+    }
+    var alphaTextVal = Uqname.setInputVal(jsonCustom.lines);
+    return alphaTextVal;
+  }
+
+}
+
+// crystal
+if(jsonCustom.type=="CrystalCarving"){
+  var bgImg = ubase.util.picurl + 'img/textdesign/diamond/{{productItem}}-IN.png?'+Math.random();
+  var overlayImg = ubase.util.picurl + 'img/textdesign/diamond/{{productItem}}-OUT.png?'+Math.random();
+}else{
+  var bgImg = ubase.util.picurl + 'img/textdesign/diamond/{{productItem}}-IN.png?'+Math.random();
+}
+if(jsonCustom.coors){
+  jsonCustom.coors.forEach(function(v, i){
+    $("#textInput"+i).attr("maxlength", v.textNum).attr("disabled", false);
+    $(".textNum"+i).text(v.textNum);
+  });
+}
+
+var diamond = [];
+jsonCustom.diamond.forEach(function(v, i){
+  diamond[i] = ubase.util.picurl + 'img/textdesign/diamond/{{productItem}}-'+(i+1)+'.png?'+Math.random();
+  $(".diamondimg"+i).attr("src",$('.color-'+i).eq(0).data("img"));
+});
+
+appendCrystalDom(jsonCustom);// add dom 
+var colorMagic = new ColorMagic({
+  "bg": bgImg+'?'+Math.random(),
+  "overLay": overlayImg,
+  "cWidth":500,
+  "cHeight":400,
+  "canvasid":"crystalcanvas",
+  "defaultFont":$("input[name='fontradio']:checked").val(),
+  "diamond":diamond,
+  "custom": jsonCustom,
+  "path" : jsonCustom.coors,
+  "callback":function (_this){
+    jsonCustom.diamond.forEach(function(item, i){
+      if(jsonCustom.type == 'CrystalCurve'){
+        _this.initPath();
+      }else if(jsonCustom.type == 'CrystalCarving'){
+        _this.initCarvingPath();
+      }
+      _this.setColor(_this.canvas.item(i), $('.color-'+i).eq(0).data("color")); // 初始化
+    });
+  }
+});
+
+$(".colorful").click(function(){
+  var index = parseInt($(this).data("index"));
+  var key = $(this).data("color");
+  obj = colorMagic.canvas.item(index);
+  colorMagic.setColor(obj, key);
+  $(".diamondimg"+index).attr("src",$(this).data("img"));
+});
+
+$(".textInput").bind('input propertychange', function() {
+  var i = $(this).data("index");
+  if(jsonCustom.type == 'CrystalCurve'){
+    colorMagic.changeText($(this).val(), $(this).data("index"));
+  }else if(jsonCustom.type == 'CrystalCarving'){
+    colorMagic.changeCarvingText($(this).val(), $(this).data("index"));
+  }
+  $(".textNum"+i).text(jsonCustom.coors[i].textNum-$(this).val().length);
+});
+
+$(".photo-diamond-image, .after-preview, .after-preview-text").click(function(){
+    $("#tabs").tabs("option", "active", $('#photo-diamond').data('index'));
+    simpleModal.open();
+});
+$(".cfont").click(function(){
+  $(".font-list").removeClass('active');
+  $(this).parent().addClass("active");
+  var _this = this;
+  jsonCustom.coors.forEach(function(v,i){
+    if(jsonCustom.type == 'CrystalCurve'){
+      colorMagic.changeFont($(_this).val(), i);
+    }else if(jsonCustom.type == 'CrystalCarving'){
+      colorMagic.changeCarvingFont($(_this).val(), i);
+    }
+  })
+});
+
+$(".big").click(function(){
+  $("#tabs").tabs("option", "active", $('#photo-big').data('index'));
+  simpleModal.open();
+});
+
+$("#btn-confirm").click(function(){
+  if(jsonCustom.type=="CrystalName"){
+    if(nameText = checkNametoBase64()){
+      $('#alpha-text').val(nameText);// 需要提交的 名字 数据
+    }else{
+      return false;
+    }
+  }
+
+  if(jsonCustom.coors){
+    var flag = true;
+    jsonCustom.coors.forEach(function(v, i){
+      if(!$("#textInput"+i).val()){
+          $("#textInput"+i).addClass('validation-warning'); 
+          flag = false;
+        }else{
+          $("#textInput"+i).removeClass('validation-warning'); 
+        }
+    });
+    if(!flag){
+      $('#collapsetext').hasClass('show')?'':$('.tab-carving').click();
+      return flag;
+    }
+  }
+  upPhoto();
+});
+  
+  async function upPhoto(){
+    $("#tabs").tabs("option", "active", $('#photo-loading').data('index'));
+    var base64 = colorMagic.canvas.toDataURL({format: 'png', quality: 0.8});
+    var blob = colorMagic.convertBase64ToBlob(base64);
+    var filename = ubase.util.getFilename(6);
+    var carvingText = '', diamondColor = '';
+    $(".textInput").each(function(){
+      carvingText += '|' + $(this).val();
+    });
+    carvingText = carvingText.substring(1);
+    jsonCustom.diamond.forEach(function(v, i){
+      diamondColor += '|' + $("input[name='color"+i+"']:checked").val();
+    })
+    diamondColor = diamondColor.substring(1);
+    
+    if(jsonCustom.type=="CrystalName"){
+      await Uqname.cdnAsyncUpload((token, resolve) => {
+        var ctx = getCtx();
+        var key = ctx.filename + '.png';
+        var observer = {
+          next(result){
+            $(".sbar").css({'width':parseInt(result.total.percent)+'%'});
+            $(".sbar").html(parseInt(result.total.percent)+'%'); 
+          },
+          error(err){
+            console.log('qiniu error - ', err);
+            return false;
+          },
+          complete(res){
+            $("#name-crop").val(ubase.util.cdnurl + res.key);
+            resolve();
+            return true;
+          }
+        };
+        var observable = qiniu.upload(ctx.blob, key, token, ubase.util.putExtra, ubase.util.config);
+        observable.subscribe(observer);
+      });
+    }
+
+    colorMagic.cdnUpload(function(token){
+      var key = ubase.util.prefix + filename + '.png';
+      var observer = {
+        next(result){
+          $(".sbar").css({'width':parseInt(result.total.percent)+'%'});
+          $(".sbar").html(parseInt(result.total.percent)+'%'); 
+        },
+        error(err){
+          alert('Upload Error, Please refresh now');
+        },
+        complete(res){
+          $("#preview-crop").attr("src", ubase.util.cdnurl + res.key);
+          $("#piccrop").val(ubase.util.cdnurl + res.key);
+          if(diamondColor){
+            $("#diamond-custom").val(diamondColor);
+          }
+          if(carvingText){
+            $("#engraving-text").val(carvingText);
+            $("#engraving-font").val($("input[name='fontradio']:checked").val());
+          }
+
+
+          $(".big-img img").attr("src",  ubase.util.cdnurl + res.key);
+          $(".photo-diamond-image, .lettering-box-carving").hide();
+          $(".editzoom").show();
+          $("#addengraving").text('{{ 'zen.general.change' | t }}');
+                                  $(".sbar").css({'width':'0%'});
+          $(".sbar").html('0%');
+          simpleModal.close();
+        }
+      };
+      var observable = qiniu.upload(blob, key, token, ubase.util.putExtra, ubase.util.config);
+      observable.subscribe(observer);
+    });
+  }
+  
+  function getCtx(){
+    var str = '';
+    $(".showtext-in").each(function(){
+      str += ' |'+ $(this).text();
+    });
+    str = str.substring(2);
+    var c=document.getElementById("myCanvas");
+    var ctx=c.getContext("2d");
+    ctx.fillStyle = 'rgba(255,255,255,1)';
+    ctx.fillRect(0,0,3000,100);
+    if($.trim(jsonCustom.class)=='silver'){
+      ctx.fillStyle = '#808080';
+      ctx.font="80px " + jsonCustom.fontfamily;
+    }else if($.trim(jsonCustom.class)=='gold'){
+      ctx.fillStyle = '#eac855';
+      ctx.font="80px " + jsonCustom.fontfamily;
+    }else if($.trim(jsonCustom.class)=='rosegold'){
+      ctx.fillStyle = '#c8977b';
+      ctx.font="80px " + jsonCustom.fontfamily;
+    }
+    var txtWidth = ctx.measureText(str).width;
+//     var w = txtWidth+40;
+//     ctx.fillText(str,10,80);
+    {% comment %} 
+    	2019.03.08. 防止特殊字体(类似内边距)超出可视范围, 顾将起始位置累加30px. 白板宽度累加30px.  By.Coman 
+    {% endcomment %}
+    var w = txtWidth+150;
+    ctx.fillText(str,40,80);
+
+    var c2=document.getElementById("myCanvas2");
+    c2.width = w;
+    c2.height = 100;
+    var ctx2=c2.getContext("2d");
+    
+    ctx2.drawImage(c, 0, 0, w, 170, 0, 0, w, 170);
+    var blob = Uqname.convertBase64ToBlob(c2.toDataURL('image/png', 0.8 ));
+    var filename = ubase.util.getFilename();
+    return {
+      ctx,
+      blob,
+      filename
+    }
+  } 
+
+function appendCrystalDom(jsonCustom){
+  var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
+  jsonCustom.diamond.forEach(function(item, i){
+    //allStr += '<div class="crystal">';
+    var str = '';
+    item.forEach(function (val, key){
+      str += '<div class="crystal-list">';
+      str += '<div class="img" style="background-image:url(https://pic.stylelab.com/img/textdesign/diamond/'+val.sku+'.png?'+Math.random()+');"></div>';
+      str += '<input data-index="'+i+'" '+(key==0?'checked':'')+' data-color="'+val.color+'" value="'+val.sku+'" class="colorful color-'+i+'" name="color'+i+'" type="radio" data-img="https://pic.stylelab.com/img/textdesign/diamond/'+val.sku+'.png?'+Math.random()+'">';
+      str += '<div class="name">'+month[key]+'</div>';
+      str += '</div>';
+    });
+    $('.crystal-all'+i).html('<div class="crystal">'+str+'</div>');
+  });
+  //allStr += '</div>';
+}
+Product.validators.push(
+  () => {
+    return validateFormData();
+  }
+);
+function validateFormData(){
+  if(!$("#piccrop").val()){
+    // $(".photo-diamond-image").addClass('validation-warning');
+    $(".lettering-box-carving").addClass('validation-warning');
+    return 'Validate Crystal Error';
+  }else{
+    $(".lettering-box-carving").removeClass('validation-warning');
+  }
+  return true;
+}
+$(document).ready(function(){
+  $(document).trigger("hide-qty",1);
+  jsonCustom.diamond.forEach(function(v, i){
+    $(".diamondimg"+i).attr("src",$('.color-'+i).eq(0).data("img"));
+  });
+});
+</script>
+<style scoped>
+
+.canvas-container{    width: 100%!important;}
+#crystalcanvas,.upper-canvas{width: 100%!important; height: auto!important;}
+</style>

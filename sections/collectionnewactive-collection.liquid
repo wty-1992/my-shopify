@@ -1,0 +1,501 @@
+<style>
+.banner-mb{display:none;}
+.tittle_img{
+  text-align: center;
+}
+.direction-top-nav.y-swiper,.direction-top-nav.no-swiper{
+  display: flex;
+  width: 100%;
+  padding:0 6vw;
+  position: relative;
+  opacity:1;
+}
+.direction-top-nav.no-swiper .direction-shade{
+  width: calc(100% - 80px );
+  overflow: hidden;
+}
+.direction-top-nav.no-swiper .direction-shade .swiper-slide{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.direction-top-nav.no-swiper .direction-shade .swiper-slide a{
+  color: #e60044;
+}
+.direction-top-nav{
+  display: flex;
+  width: 100%;
+  opacity:0;
+}
+.direction-top-nav.y-swiper .direction-shade{
+  width: calc(100% - 80px );
+  overflow: hidden;
+}
+.direction-top-nav.y-swiper .direction-shade .swiper-slide{
+  width: auto;
+  text-align: center;
+  overflow: hidden;
+  position: relative;  
+  padding: 0 24px;
+  margin: 0 auto;
+}
+.direction-top-nav.y-swiper .direction-shade .swiper-slide a{
+  color: #000;
+  display: flex;
+  width: 100%;
+  height: 48px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+.direction-top-nav.y-swiper .direction-shade .swiper-slide.active a{
+  color: #e60044;
+}
+.collection-label span{
+  color: #E9034D;
+  border: 1px solid #E9034D;
+  padding: 0px 10px;
+  font-size: 12px;
+  border-radius: 3px;
+  display: inline-block;
+  transform: translateY(3px);
+}
+.collection-label span.green{
+  color: #81c730;
+  border: 1px solid #81c730;
+}
+.swiper-button-next1, .swiper-button-next2{
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.swiper-button-next1 i,.swiper-button-next2 i{
+  font-size: 30px;
+  color: #000;
+  font-weight: 900;
+}
+.swiper-button-next1{
+  display: block;
+  transform: rotate(180deg);
+}
+.blackfriday-time-pc{
+  width: 100%;
+  height: 48px;
+  margin-bottom: 50px;
+}
+.time.view-place-top{
+  background:#fff;
+  z-index: 10;
+}
+.uldiv{
+  position: relative;  
+}
+.maodian {
+  width: 1px;
+  height: 1px;
+  position: absolute;
+  top: -100px;
+}
+.blackfriday-time-pc.stick-sub .time.view-place-top{
+  width: 100%;
+  position: fixed;
+  top: 56px;
+}
+.uldiv .title{
+  text-align: center;
+  color: #777;
+  font-size: 20px;
+}
+.sub_title{
+  text-align: center;
+  margin: 0 auto;
+  width: 50%;
+}
+.block-collection{
+  margin-bottom:30px;
+}
+.block-collection-items{
+  display: flex;
+  flex-flow: wrap;
+}
+.block-collection-items li{
+  width: calc(20% - 10px);
+  margin: 0 5px 10px;
+  position: relative;
+}
+.product-card__image{
+  position: relative;
+}
+.hoverImage{
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  transition:opacity 0.3s;
+}
+.product-card__image:hover .defaultImage{
+  opacity:0;
+}
+.product-card__image:hover .hoverImage{
+  opacity:1;
+}
+.block-collection-items{
+  margin:10px auto; 
+}
+.product-card__price{
+  margin: 4px 0 2px;
+}
+.product-card__sale-price{
+  font-size: 12px;
+  color: #e81150;
+  font-weight: bold;
+}
+.product-card__regular-price{
+  text-decoration: line-through;
+  font-size: 12px;
+  vertical-align: middle;
+  color: #888;
+}
+.product-card__name{
+  height: 20px;
+  padding: 0 0px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 11px;
+  margin: 0;
+  line-height: 12px;
+  text-overflow: ellipsis;
+  color: #000;
+}
+.collection-label{
+  height: 32px;
+}
+.medium-up--btn.btn{
+  position: absolute;
+  bottom: 0;
+  border-radius: 0;
+  letter-spacing: 0;
+  font-size: 12px;
+  padding: 8px 0;
+  opacity: 0;
+  transition: all 0.3s;
+}
+.block-collection-items li:hover .medium-up--btn.btn{
+  opacity: 1;
+}
+.discount_box_pc{
+  display:none;
+}
+.text.discount_box_mb{
+  background: linear-gradient(to left,#da004e,#fa474d);
+  display: inline-block;
+  color: #fff;
+  padding: 4px 12px;
+  font-size: 12px;
+  line-height: 1;
+  border-radius: 0 0 0 10px;
+}
+.discount_box {
+  text-align: right;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  width: 100%;  
+}  
+{%if collection.handle=="daily-flash-sale"%}
+.blackfriday-time-pc{
+  display:none;
+}
+ul.block-collection-items{
+  margin-top:0;
+  padding-top:20px;
+}
+div.text.discount_box_mb{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  padding: 0;
+  line-height: 40px;
+  text-align: center;
+  -webkit-transform: scale(0.91);
+}
+.block-collection-items li{
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.block-collection-items li button.btn{
+  background-color: #000000;
+}
+span.product-card__sale-price{
+  color: #e60044 !important;
+  font-size: 20px;
+}
+span.product-card__regular-price{
+  color: #000;
+}
+.product-card__price,.product-card__name{
+  padding:0 10px;
+}
+.collection-label{
+  padding:0 10px;
+}
+div.time.view-place-top{
+  background: transparent;
+}
+{% endif %}
+@media(max-width:768px){
+.text.discount_box_mb{
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(245,52,73,.7);
+  -webkit-transform: scale(0.91);
+  transform: scale(0.91);
+  position: absolute;
+  right: 0;
+  z-index: 1;
+}  
+.banner-pc{display:none;}
+.banner-mb{display:block;}
+.direction-top-nav.y-swiper{
+  padding: 0 10px;
+}
+.block-collection-items li:hover .medium-up--btn.btn{
+  opacity: 0;
+}
+.swiper-button-next1, .swiper-button-next2{
+  width: 20px;
+}  
+.direction-top-nav.y-swiper .direction-shade{
+  width: calc(100% - 20px);
+}
+.direction-top-nav.y-swiper .direction-shade .swiper-slide{
+  padding: 0 10px;
+}
+.block-collection-items li.item{
+  width: calc(50% - 10px);
+}
+}
+</style>
+<div class="blackfriday-time-pc">
+  <div class="blackfriday-time" data-section-id="{{ section.id }}">
+    <div class="menutime">
+      <div class="time view-place-top">
+        <div class="direction-top-nav">
+          <div class="swiper-button-next1"><i class="icon photofont photo-more1"></i></div>
+          <div class="direction-shade">
+            <div class="swiper-wrapper">                  
+              {% for block in section.blocks %}              
+                {% if handle == block.settings.handle %}
+                  <div class="swiper-slide m-top-nav-slide">
+                    <a href="#section-{{block.id}}"><span class="itext">{{block.settings.text1}}</span></a>
+                  </div>
+                {%endif%}
+              {%endfor%}
+            </div>
+          </div>
+          <div class="swiper-button-next2"><i class="icon photofont photo-more1"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="bf-bg">
+  {% for block in section.blocks %}
+  {% assign blockId = block.id %}
+  {% if handle == block.settings.handle %}
+    {% assign style = "block-collection-" | append: section.id | append: forloop.index %}
+    {% assign current_collection = collections[block.settings.collection] %}
+     <div class="{{style}} block-collection {{block.settings.style}}" data-section-id="{{ section.id }}" >                   
+     {% if current_collection.products.size > 0%}
+       <div class="uldiv">
+        <div class="maodian" id="section-{{blockId}}"></div>
+        {% if block.settings.banner_enable %}         
+          <div class="huichang">
+            <div class="tittle_img">
+              <img src="{{block.settings.pc_banner | img_url: 'master' }}" class="lazyload banner-pc" />
+              <img src="{{block.settings.mb_banner | img_url: 'master' }}" class="lazyload banner-mb" />
+            </div>    
+          </div>                  
+        {% endif %}
+         
+        {% if block.settings.text1 != "" %}
+          <div class="title"><span>{{block.settings.text1}}</span></div>
+        {% endif %}
+         
+        {% if block.settings.sub_title %}
+          <div class="sub_title">{{block.settings.sub_title}}</div>
+        {% endif %}   
+         
+        <ul class="block-collection-items page-width">  
+          {% for item in current_collection.products limit: block.settings.limit %}         
+            <li class="item">{% include 'product-list', product:item %}</li>
+          {% endfor %}
+        </ul>            
+
+      </div>
+      {% endif %}
+    </div>
+    <style>
+      {% if block.settings.portion_style %}
+      {% endif %}
+    </style>
+  {% endif %}
+  {%endfor%}
+</div>
+<script type="text/javascript">
+//加载更多  
+var happyCustomerSay = new LoadMore.toLoad(".customers-say-view",{
+  view:20,//一开始显示几个
+  count: 20,//每次加载的数量  
+  btnHTML:".viewmore",//触发加载的元素
+  moreText:"{{ "general.social.page_show_more_reviews" | t }}", //按钮文案  
+  moreEndText:"end" //全部显示之后按钮的文案
+});    
+$(function(){  
+  $(window).scroll(function(){
+    var scrollTop = jQuery(window).scrollTop();
+    if(($('.blackfriday-time-pc').offset().top - scrollTop) < $(".menu-nav").height()){
+      $('.blackfriday-time-pc').addClass('stick-sub');
+      if($(window).width() > 768){
+        $('.blackfriday-time-pc.stick-sub .time.iew-place-top').css("top",$(".menu-nav").height());
+      }else{
+        $('.blackfriday-time-pc.stick-sub .time.iew-place-top').css("top",$(".header-mb-top header").height());
+      };
+    }else{
+      $('.blackfriday-time-pc').removeClass('stick-sub');
+    }    
+    jQuery('.maodian').each(function(){
+      var juliheight =  jQuery(this).offset().top - scrollTop;
+      if(juliheight <= 1 && ( juliheight + jQuery(this).siblings('.block-collection-items').height()) >= 0 ){
+        var oid = "#" + jQuery(this).attr("id");
+        jQuery("a[href='"+oid+"']").parent().addClass("active");
+        jQuery("a[href='"+oid+"']").parent().siblings().removeClass("active");
+      }
+    });
+  });
+  if(jQuery(window).width() > 768 && jQuery('.m-top-nav-slide').length > 3 ){    
+    jQuery(".direction-top-nav").addClass("y-swiper");
+    let PageNavSwiper = new Swiper(".direction-shade",{
+        slidesPerView: 'auto',
+        navigation: {
+          nextEl: '.swiper-button-next2',
+          prevEl: '.swiper-button-next1',
+        },
+    });
+    $(window).on('scroll', function () {
+      var index_num = $('.direction-shade .swiper-slide.active').index();
+      //console.log(index_num);
+      PageNavSwiper.slideTo(index_num, 1000);
+    });
+  }else if(jQuery(window).width() > 768 && jQuery('.m-top-nav-slide').length <= 3){
+    jQuery(".direction-top-nav").addClass("no-swiper");
+  }  
+  if(jQuery(window).width() < 768 && jQuery('.m-top-nav-slide').length > 1 ){
+    jQuery(".direction-top-nav").addClass("y-swiper");
+    let PageNavSwiper = new Swiper(".direction-shade",{
+        slidesPerView: 'auto',
+        navigation: {
+          nextEl: '.swiper-button-next2',
+          prevEl: '.swiper-button-next1',
+        },
+    });
+    $(window).on('scroll', function () {
+      var index_num = $('.direction-shade .swiper-slide.active').index();
+      //console.log(index_num);
+      PageNavSwiper.slideTo(index_num, 1000);
+    });
+  }else if(jQuery(window).width() < 768 && jQuery('.m-top-nav-slide').length <= 1){
+    jQuery(".direction-top-nav").addClass("no-swiper");
+  };
+
+}); 
+</script> 
+<script>
+
+</script>
+{% schema %}
+{
+  "name": "分会场集合块",
+  "max_blocks": 2000,
+  "class": "collectionnewactive-collection",
+  "settings": [
+      {
+        "type": "paragraph",
+        "content": "collectionnewactive-collection"
+      },
+      {
+        "type": "textarea",
+        "id": "label_sort",
+        "label":"标签",
+        "info":"tag-1,tag-2,(多个标签时标签与标签之间用逗号分隔)"          
+      }
+  ],
+  "blocks": [
+    {
+      "type": "additional_info",
+      "name": "collection",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "哪个活动"
+        },
+        {
+          "type": "text",
+          "id": "handle",
+          "label": "活动url"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "导航文案&&会场标题"
+        },
+        {
+          "type": "text",
+          "id": "sub_title",
+          "label": "会场副标题"
+        },
+        {
+          "type": "checkbox",
+          "id": "banner_enable",
+          "label": "开启横幅"
+        },
+        {
+          "type": "image_picker",
+          "id": "pc_banner",
+          "label":"PC会场标题图片"
+        },
+        {
+          "type": "image_picker",
+          "id": "mb_banner",
+          "label":"MB会场标题图片"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "选择集合"
+        },
+        {
+          "type": "range",
+          "id": "limit",
+          "label": "产品limit总数量",
+          "min": 1,
+          "max": 80,
+          "step": 1,
+          "default": 4
+        }
+      ]
+    }     
+  ]
+}
+{% endschema %}

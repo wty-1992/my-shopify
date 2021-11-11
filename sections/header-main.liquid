@@ -1,0 +1,188 @@
+<style>
+.tingle-modal-box__page{width:100%;}
+.site-header .header-cart-sections .login{ 
+  cursor: pointer;
+}
+.site-header>div:nth-child(3) .cart {
+  position: relative;
+  padding-right: .5rem;
+  cursor: pointer;
+}
+.shopify-section.sticky-header{
+  height: 47px;
+}
+#shopify-section-menu.sticky-header .pclogo{
+  display:block;
+}
+.site-header-sections .site-header{ 
+  transition: all .2s ease-in-out 0s;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 1.2rem; 
+  width: 100%;
+  height: 5rem;
+  background: #fff;
+  z-index: 10;
+}
+.site-header-sections .site-header .logo {text-align:center}
+.site-header-sections .site-header .logo img {
+  width:85%;
+}
+@media(min-width:768px){ 
+  
+.header-cart-sections span.icon{
+  font-size: 22px;
+  color: #000;
+  cursor: pointer;
+}
+.header-cart-sections span.icon.photo-cart{
+  font-size: 19px;
+  transform: translateY(-1px);
+}
+.header-cart-sections span.small--hide{
+  font-size: 12px;
+  transform: translateY(1px);
+  display: inline-block;
+  color: #000;
+}
+#shopify-section-header{
+  height:auto;
+}  
+.site-header-sections .site-header .logo img {
+  width: 100%;
+
+  image-rendering: pixelated;
+}
+.site-header-sections .site-header{  
+  height:6.4rem; 
+  margin:25px auto 15px; 
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 1.2rem;
+  background: #fff;
+  position: relative;
+} 
+.site-header-sections .header-mb-nav i, 
+.site-header-sections .header-cart-sections i{
+  font-size:1.5rem;
+}
+.site-header-sections  .commonlogo{
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+} 
+ 
+}
+
+</style>
+
+
+<!-- template.name  shop.name -->
+{% include 'header-pc'%}
+{% if section.settings.show_search %}
+  {% include 'search-slide' %}
+{% endif %}
+{% include 'sunzi-solt-template' %}
+<div id='CustomerLogin' style="display:none" class="tingle-modal-box__page">
+  {% include 'customers-login', include_id:1 %}
+</div>
+<script>
+// 更新头部数量
+Listener.on([ Listener.cart.refresh ], function(event, cart) { 
+  $('.cart-item-count').html(cart.item_count);
+});
+</script> 
+
+{% schema %}
+{
+  "name": "头部 - 基础设置",
+  "class":"site-header-sections",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content":"header-main"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": {
+        "en": "Logo 图片"
+      }
+    },
+    {
+      "type": "text",
+      "id": "logo_max_width",
+      "label": "logo的最大尺寸max-width",
+      "default": "450"
+    },
+    {
+      "type": "image_picker",
+      "id": "note_mb_img",
+      "label": "MB的NOTE提示信息 图片"
+    },
+    {
+      "type": "html",
+      "id": "note_mb",
+      "label": "MB的NOTE提示信息"
+    },
+    {
+      "type": "image_picker",
+      "id": "app_img",
+      "label": "App 推广横幅图片"
+    },
+    {
+      "type": "text",
+      "id": "app_link",
+      "label": "App 推广横幅链接"
+    },
+    {
+      "type": "image_picker",
+      "id": "app_img1",
+      "label": "App 推广二维码"
+    },
+    {
+      "type": "image_picker",
+      "id": "app_img2",
+      "label": "App 推广图标1"
+    },
+    {
+      "type": "image_picker",
+      "id": "app_img3",
+      "label": "App 推广图标2"
+    },
+    {
+      "type": "image_picker",
+      "id": "app_img4",
+      "label": "App 推广图标3"
+    },
+    {
+      "type": "text",
+      "id": "app_title",
+      "label": "App 推广标题"
+    },
+    {
+      "type": "text",
+      "id": "app_money",
+      "label": "App 推广金额文案"
+    },
+    {
+      "type": "text",
+      "id": "app_text",
+      "label": "App 推广文案"
+    },
+    {
+      "type": "text",
+      "id": "app_btn",
+      "label": "App 推广按钮"
+    },
+	{
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "是否展示搜索框",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

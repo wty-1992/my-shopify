@@ -1,0 +1,114 @@
+
+{{ 'jquery-ui.min.css' | asset_url | stylesheet_tag }} 
+{{ 'jquery-ui.min.js' | asset_url | script_tag }}
+<style>
+  .common-standar_btn {display:none;}
+  .ui-widget-header .ui-icon {
+  	background-image: url({{ 'ui-icons_444444_256x240.png' | asset_url }});
+  }
+  .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover {
+    border: 1px solid #42ace8 !important;
+    background: #42ace8 !important;
+  }
+  #ui-datepicker-div {
+  	z-index: 1001 !important;
+  }
+  #datepicker {
+    border: 1px solid #c7cecf;
+    height: 52px;
+    width: 100%;
+    margin-top: 10px;
+    padding-left: 15px;
+    border-radius: 5px;
+  }
+  .news-date-confirm-content p {
+  	font-weight: 600;
+    text-align: center;
+  }
+  .red {
+  	color: red;
+  }
+  .ui-datepicker select.ui-datepicker-year {
+    width: 90%;
+  }
+  .ui-datepicker-calendar,.ui-datepicker-month,.ui-datepicker-prev,.ui-datepicker-next{
+    display: none;
+  }
+  .ui-datepicker-current {
+    opacity: 1 !important;
+
+  }
+  .ui-datepicker-close {
+    font-weight: normal !important;
+  }
+  
+  .area-crop-upload, .area-carving, .area-photo-upload {
+    margin-bottom: 1rem!important;
+    align-items: center;
+    display: flex;
+    cursor: pointer;
+    overflow: hidden;
+    width: 100%;
+    background: #f8f8f8!important;
+    position: relative;
+    border: 1px solid #c7cecf;
+    border-radius: 5px;
+    padding: 10px;
+    line-height: 1 !important;
+    justify-content: space-between;
+    height: 52px;
+    margin-top: 1rem;
+  }
+  .btn-upload-open, .btn-carving-open {
+    cursor: pointer;
+    background: #000;
+    color: #fff;
+    border-radius: 25px;
+    padding: 2px 15px;
+    text-align: center;
+    text-transform: capitalize;
+    font-weight: bold;
+    border: none;
+    font-size: 16px;
+    line-height: 1.625;
+  }
+  .area-crop-upload-text {
+  	font-size: 1rem !important;
+  }
+  
+  #app .dialog-footer .el-button--primary {
+  	background: #e60044 !important;
+    border-color: #e60044 !important;
+  }
+  
+  #app .dialog-footer .el-button--default {
+    border: 1px solid #dcdfe6 !important;
+    color: #606266 !important;
+  }
+  #app .dialog-footer {
+    margin-top: 1rem;
+    display: block;
+  }
+  .el-dialog {min-width: 550px;}
+  @media (max-width: 768px) { 
+    .news-date-confirm-content {
+      margin-top: 200px;
+    }
+    .tingle-modal--visible .tingle-modal-box__footer {
+    	bottom: 200px !important;
+    }
+    
+    .el-message-box {
+      width: 100% !important;
+      height: 100%;
+    }
+    .el-dialog {min-width: 100%;}
+    
+    .el-dialog__body > div:nth-child(2) > div:nth-child(1) {
+    	height: calc(100% - 200px);
+    }
+    .el-dialog__body, .el-dialog__body > div:nth-child(2), .el-dialog__body > div:nth-child(2) > div:nth-child(1) > div:nth-child(1), .custom-cropper{
+      height: 100%;
+    }
+  }
+</style>

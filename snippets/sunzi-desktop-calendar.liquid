@@ -1,0 +1,213 @@
+{% comment %}
+** @name 台历 **
+** @author 金忠帅 **
+** @integrate 王天宇 **
+{% endcomment %}
+
+{% comment %} 调用参数 {% endcomment %}
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'sunzi.desktop.calendar.test.js' %}
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/desktop-calendar.test.json' %}
+{% comment %} 谷歌分析id {% endcomment %}
+{% assign gtag = 'UA-174675922-8' %}
+{% comment %} 定制按钮文案 {% endcomment %}
+{% assign buttonText = section.settings.sunzi_button_upload_text %}
+
+{% comment %} 站点语种 {% endcomment %}
+{% assign sunzi_shop_language = section.settings.sunzi_shop_language %}
+{% comment %} 货币符号 {% endcomment %}
+{% assign sunzi_shop_symbol = section.settings.sunzi_shop_symbol %}
+
+{% comment %} 孙子定制化模板 {% endcomment %}
+{% include 'sunzi-solt-template' %}
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+  /*  根据站点调整  */
+  .product-quantity,
+  .product-form .common-standar_btn,
+  .inline-field-wrapper {
+  	display: none !important;
+  }
+  /*  站点样式调整结束  */
+  .sunzi-form-item {
+    padding-bottom: 20px;
+  }
+  .sunzi-form-item-label {
+    margin: 0;
+    padding-bottom: 8px;
+    font-size: 14px;
+    color: #000;
+    font-weight: 500;
+    font-family: 'Open Sans';
+    text-transform: unset;
+  }
+  .sunzi-form-item-value {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  .sunzi-form-item-value .sunzi-select-wrapper {
+    flex: 1;
+    position: relative;
+  }
+  .sunzi-form-item-value .sunzi-select-wrapper:after {
+    
+  }
+  .sunzi-form-item-value .sunzi-select-wrapper.month {
+    margin-right: 10px;
+  }
+  .sunzi-form-item-value select {
+    padding: 0 10px;
+    width: 100%;
+    height: 55px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #fff;
+    color: #888;
+    font-size: 13px;
+    font-family: inherit;
+    font-weight: 500;
+    -webkit-appearance: auto;
+    -moz-appearance: auto;
+    appearance: auto;
+  }
+  .catalog-product-view .sunzi-form .sunzi-button-text .icon-cart {
+    font-family: "photofont" !important;
+    font-style: normal;
+    margin-right: 5px;
+  }
+  .catalog-product-view .sunzi-form .sunzi-button-text .icon-cart:before {
+    content: "\e679";
+  }
+  .cr-slider {
+    border: none
+  }
+  @media(max-width:768px) {
+    .sunzi-form-item-value select {
+      height:50px;
+    }
+    .sunzi-form-item {
+      padding: 0 5px 20px 5px;
+    }
+  }  
+  @media screen and (min-width: 768px) {
+    .sunzi-modal-content {
+      width: 460px;
+      height: 720px;
+    }
+  }
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 额外的表单参数 {% endcomment %}
+  <div id="sunzi-form-item-time" class="sunzi-form-item">
+    <label class="sunzi-form-item-label"></label>
+    <div class="sunzi-form-item-value">
+      <div class="sunzi-select-wrapper month">
+        <select class="month">
+        </select>
+      </div>
+      <div class="sunzi-select-wrapper">
+        <select class="year">
+        </select>
+      </div>
+    </div>
+  </div>
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="text" id="sunzi-input" name="properties[customInfo]" required="required"></input>
+  <input type="text" id="sunzi-cart" name="properties[_sunzi_cart]"></input>
+  {% comment %} 定制按钮 {% endcomment %}
+  <button type="button" id="sunzi-button" disabled class="dots-loading">
+    <span class="dots">
+      <i></i>
+      <i></i>
+      <i></i>
+    </span>
+    <div class="sunzi-button-text">{{ buttonText }}</div>
+  </button>
+</div>
+
+<!-- sunzi core js -->
+<script src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{ coreJs }}" defer="defer"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ gtag }}" async="async"></script>
+<script async="async">
+  _sunzi_gtag('{{ gtag }}');
+</script>
+
+{% comment %} 1.隐藏掉变体，加车按钮等等 {% endcomment %}
+
+{% comment %} 2.请求定制化数据 {% endcomment %}
+<script defer="defer">
+  _sunzi_request('{{ requestURL }}', function(data) {
+    renderSelectContent(data.translate["{{sunzi_shop_language}}"].month, data.translate["{{sunzi_shop_language}}"].startingMonth);
+  });
+</script>
+
+{% comment %} 3.开始定制 {% endcomment %}
+<script defer="defer">
+
+  $('#sunzi-button').click(function() {
+  
+    // 定制之前的参数构建
+    const month = $('select.month').val();
+    const year = $('select.year').val();
+    _sunzi_response.shop = {
+      language: '{{sunzi_shop_language}}',
+      currencySymbol: '{{sunzi_shop_symbol}}',
+      logo: 'https://assets.sunzi.cool/soufeel/soufeel-logo.png'
+    };
+    _sunzi_response.defaultCalendarValue = `${year}-${month}`;
+    _sunzi_response.shopURL = '{{ shop.url }}';
+    _sunzi_response.timeStamp = new Date().getTime();
+    // 开始渲染
+    _sunzi_custom(
+      DesktopCalendar.default,
+      function(data) {
+        _sunzi_loading();
+        $('#sunzi-input').val(JSON.stringify({
+          '_sunzi_compose': [{
+            'rule': 11,
+            'type': 'photo_design',
+            'data': data
+          }],
+        }));
+        //加车事件触发
+        $('.product-form__cart-submit').click();
+        _sunzi_hide_loading();
+      });
+  });
+  
+  /** 其他自定义函数 start **/
+  // 生成select标签内容
+  function renderSelectContent(monthList, timeName) {
+    // 生成月份
+    var monthHtml = "";
+    monthList.forEach(function(month, index) {
+      var monthValue = index < 9 ? ("0" + (index + 1)) : (index + 1);
+      monthHtml += `<option value="${monthValue}">${month}</option>`
+    });
+   	$("select.month").html(monthHtml);
+    
+    // 生成年份
+    var currentYear = new Date().getFullYear();
+    var yearHtml = "";
+    for(var i=0; i<3; i++) {
+      yearHtml += `<option value="${currentYear}">${currentYear}</option>`;
+      currentYear += 1;
+    }
+    $("select.year").html(yearHtml);
+    
+    // 添加label文本
+    $("#sunzi-form-item-time label").html(timeName);
+    
+    // 更改当前月份
+    var month = new Date().getMonth();
+    $('select.month').val(month + 1 < 10 ? `0${month + 1}` : month);
+  }
+
+  /** 其他自定义函数 end **/
+</script>

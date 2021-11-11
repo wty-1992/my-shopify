@@ -1,0 +1,88 @@
+<script src="{{ 'jquery-3.3.1.min.js' | asset_url }}"></script>
+<script src="{{ 'fabric.min.js' | asset_url }}"></script>
+<script src="{{ 'zen-base.js' | asset_url }}"></script>
+<script src="{{ 'zen-crystal.js' | asset_url }}"></script>
+
+<div><canvas id="crystalcanvas"></canvas></div>
+<div class="crystal-all" ></div>
+<style>
+  .range-value{width:600px;}
+</style>
+<div class="">
+  <div>对比度:<input type="range" class="range-value" data-filtersindex="1" data-name="contrast" value="0" min="-1" max="1" step="0.003921"></div>
+  <div>亮度:<input type="range" class="range-value" data-filtersindex="2" data-name="brightness" value="0.1" min="-1" max="1" step="0.003921"></div>
+  <div>色饱和度:<input type="range" class="range-value" data-filtersindex="3" data-name="saturation" value="0" min="-1" max="1" step="0.003921"></div>
+  <div>色调:<input type="range" class="range-value" data-filtersindex="4" data-name="rotation" value="0" min="-2" max="2" step="0.002"></div>
+  <div style="width:600px;">
+	<div style='float:left;width:150px;'><span style="float:left;">对比度: </span> <input type="text" id="contrast" style="width:95px;float:left;text-align: center;height: 20px;" value="0"></div>
+	<div style='float:left;width:150px;'><span style="float:left;">亮度: </span> <input type="text" id="brightness" style="width:95px;float:left;text-align: center;height: 20px;" value="0.1"></div>
+	<div style='float:left;width:150px;'><span style="float:left;">色饱和度: </span> <input type="text" id="saturation" style="width:95px;float:left;text-align: center;height: 20px;" value="0"></div>
+	<div style='float:left;width:150px;'><span style="float:left;">色调: </span> <input type="text" id="rotation" style="width:95px;float:left;text-align: center;height: 20px;" value="0"></div>
+  <div>
+</div>
+
+
+
+
+<script>
+  var sku = '{{product.selected_or_first_available_variant.sku}}';
+  var crystalJson = JSON.parse('{{ product.metafields["global"]["cattribute"] }}');
+  var diamond = [];
+  crystalJson.diamond.forEach(function(item, i){
+    diamond[i] = 'https://pic.stylelab.com/img/textdesign/diamond/'+sku+'-'+(i+1)+'.png';
+  });
+
+  appendCrystalDom(crystalJson);// add dom 
+
+  var colorMagic = new ColorMagic({
+    "bg":'https://pic.stylelab.com/img/textdesign/diamond/'+sku+'.png',
+    "cWidth":500,
+    "cHeight":400,
+    "canvasid":crystalcanvas,
+    "color":crystalJson.diamond[0].color,
+    "diamond":diamond,
+    "callback":function (_this=this){
+      console.log(_this);
+      crystalJson.diamond.forEach(function(item, i){
+        _this.setColor(_this.canvas.item(0), $('.color-'+i).eq(0).data("color")); // 初始化
+      });
+    }
+  });
+  
+  $(".colorful").click(function(){
+    var index = parseInt($(this).data("index"));
+    var key = $(this).data("color");
+    obj = colorMagic.canvas.item(index);
+    colorMagic.setColor(obj, key);
+  });
+  
+  $('.range-value').bind("input propertychange",function (){
+  	var val = $(this).val();
+    var name = $(this).data('name');
+    var filtersindex = $(this).data('filtersindex');
+    obj = colorMagic.canvas.item(0);//index+objectStartIndex
+    obj.filters[filtersindex][name] = val;
+    obj.applyFilters();
+    colorMagic.canvas.renderAll();
+	
+	  $('#'+name).val(val);
+  });
+
+  function appendCrystalDom(crystalJson){
+    var allStr = '';
+    crystalJson.diamond.forEach(function(item, i){
+      allStr += '<div class="crystal">';
+      var str = '';
+      item.forEach(function (val, key){
+        str += '<div class="crystal-list" style="float:left;">';
+        str += '<div class="" style="width:50px;background-image:url(https://pic.stylelab.com/img/textdesign/diamond/'+val.sku+'.png);"></div>';
+        str += '<input data-index="'+i+'" data-color="'+val.color+'" value="'+val.sku+'" class="colorful color-'+i+'" name="color'+i+'" type="radio">';
+        str += '</div>';
+      });
+      allStr += str;
+    });
+    allStr += '</div>';
+    $('.crystal-all').html(allStr);
+  }
+  
+</script>

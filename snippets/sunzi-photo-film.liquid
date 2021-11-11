@@ -1,0 +1,194 @@
+{% comment %}
+** @name 胶卷钥匙链 **
+** @author 劳紫恩 **
+** @integrate 王天宇 **
+{% endcomment %}
+
+{% comment %} 调用参数 {% endcomment %}
+{% assign numberIndex = 0 %}
+
+{% comment %} 胶卷类别 {% endcomment %}
+{% assign film_type = '' %}
+{% if product.tags contains 'custom-photo-film-dth002' %}
+{% assign film_type = 'dth002' %}
+{% endif %}
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'sunzi.multi.photo.js' %}
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign requestURL = '' %}
+{% comment %} 谷歌分析id {% endcomment %}
+{% assign gtag = 'UA-174675922-8' %}
+{% comment %} 定制按钮文案 {% endcomment %}
+{% assign buttonText = section.settings.sunzi_button_upload_text %}
+
+{% comment %} 站点语种 {% endcomment %}
+{% assign sunzi_shop_language = section.settings.sunzi_shop_language %}
+{% comment %} 货币符号 {% endcomment %}
+{% assign sunzi_shop_symbol = section.settings.sunzi_shop_symbol %}
+
+{% comment %} 孙子定制化模板 {% endcomment %}
+{% include 'sunzi-solt-template' %}
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+  /*  根据站点调整  */
+  .view-size-quantity,
+  .common-standar_btn {
+  	display: none;
+  }
+  .sunzi-modal img {
+  	max-width: unset;
+  }
+  select {
+  	font-size: 12px;
+  }
+  #sunzi-button-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .product-page-add_to_cart-section .select-option .selector-wrapper select {
+  	font-size: 12px;
+  }
+  /*  站点样式调整结束  */
+
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 额外的表单参数 {% endcomment %}
+  <input type="text" hidden id="sunzi-input-crop" name="properties[multi_crop]" required="required" >
+  <input type="text" hidden id="sunzi-input-images" name="properties[multi_images]" required="required" >
+  {% comment %} 默认表单参数 {% endcomment %}
+  {% comment %} 定制按钮 {% endcomment %}
+  <button type="button" id="sunzi-button" disabled class="dots-loading">
+    <span class="dots">
+      <i></i>
+      <i></i>
+      <i></i>
+    </span>
+    <input id="sunzi-button-input" disabled type="file" multiple  accept="image/*" />
+    <div class="sunzi-button-text">{{ buttonText }}</div>
+  </button>
+</div>
+
+<!-- sunzi core js -->
+<script src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{ coreJs }}" defer="defer"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ gtag }}" async="async"></script>
+<script async="async">
+  _sunzi_gtag('{{ gtag }}');
+</script>
+
+{% comment %} 1.隐藏掉变体，加车按钮等等 {% endcomment %}
+
+{% comment %} 2.请求定制化数据 {% endcomment %}
+<script defer="defer">
+  _sunzi_request('{{ requestURL }}', function() {
+  	$("#sunzi-button-input").removeAttr("disabled");        
+  });
+</script>
+
+{% comment %} 3.开始定制 {% endcomment %}
+<script defer="defer">
+  $('#sunzi-button-input').click(function(event) {
+    Product.verify().then(function() {
+    }).catch(function(rej) {
+      event.preventDefault();
+      console.log(rej);
+    })
+    
+  });
+  $('#sunzi-button-input').on("change", async function() {
+    // 根据判断条件确定胶卷个数限制
+    var photoList = getVariantValue("{{numberIndex}}");
+    
+    // 定制之前的参数构建
+	var files = $("#sunzi-button-input").get(0).files;
+    var promiseArray = Array.from(files).map((item) => fileToBase64(item))
+    _sunzi_response.sources = await Promise.all(promiseArray);
+    _sunzi_response.handleType = "cropper";
+    _sunzi_response.imageList = photoList.photo;
+    _sunzi_response.minCount = photoList.minCount;
+    _sunzi_response.supportSort = true;
+    _sunzi_response.needCompose = true;
+    _sunzi_response.shop = {
+      language: '{{sunzi_shop_language}}',
+      currencySymbol: '{{sunzi_shop_symbol}}'
+    };
+    _sunzi_response.shopURL = '{{ shop.url }}';
+    // 开始渲染
+    _sunzi_custom(
+      MultiPhoto.PhotoFilm,
+      function(result, compose) {
+        _sunzi_loading();
+        var images = {};
+        result.forEach((item, index) => {
+          images[index] = { src: item.handle };
+        });
+        $('#sunzi-input-images').val(JSON.stringify(images));
+        $('#sunzi-input-crop').val(compose);
+        //加车事件触发
+        _sunzi_add_to_cart();
+        _sunzi_hide_loading();
+      },
+      function() {
+    	$("#sunzi-button-input").val("");
+      })
+  });
+  
+  /** 其他自定义函数 start **/
+  // 文件转换为base64结构
+  function fileToBase64 (img) {
+    return new Promise(function (resolve, reject) {
+      const reader = new FileReader()
+      reader.addEventListener('load', () => resolve(reader.result))
+      reader.readAsDataURL(img)
+    })
+  }
+  
+  // 	获取变体值
+  function getVariantValue(index) {
+    var numberValue = _sunzi_variant_value(index);
+    var photoLength = getTagValue("{{product.tags | join:','}}");  // 获取标签内图片个数
+    //如果没有多变体使用默认值，如果有标签值，使用标签值
+    if(!numberValue || photoLength > 0) return getFilmParams(photoLength || 15,photoLength || 5);
+    var valueArr = numberValue.match(/\d+/g);
+    var _result = {
+      imageLength: Number(valueArr[0]) || 10
+    }
+    if(valueArr.length > 1) {
+      _result.imageLength = Number(valueArr[1]);
+      _result.minCount = Number(valueArr[0]);
+    }
+    
+    var _number = _result.imageLength;
+    return getFilmParams(_number, _result.minCount || _number);
+  }
+  
+  // 判断标签是否有个数控制
+  function getTagValue(tagString) {
+  	var _tag = tagString.match(/custom-length-photo-\d+/);
+    return _tag ? Number(_tag[0].match(/\d+/)[0]) : 0;
+  }
+  
+  // 生成胶卷配置参数
+  function getFilmParams(length, min) {
+    var photoList = [];
+    if('{{film_type}}' == 'dth002') {
+      photoList = [...new Array(8).fill({width: 639, height: 403.5}), ...new Array(7).fill({width: 378, height: 553.5})];
+  	} else {
+      photoList = new Array(length).fill({width: 426, height: 269});
+    }
+    return {
+      photo: photoList,
+      minCount: min
+    }
+  }
+
+  /** 其他自定义函数 end **/
+</script>

@@ -1,0 +1,287 @@
+{% comment %}
+** @name 杯子 **
+** @author 劳紫恩 **
+** @integrate 王天宇 **
+{% endcomment %}
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'sunzi.mug.js' %}
+{% comment %} 谷歌分析id {% endcomment %}
+{% assign gtag = 'UA-147646006-1' %}
+{% comment %} 店铺CODE {% endcomment %}
+{% assign sunzi_shop_code = section.settings.sunzi_shop_code %}
+{% comment %} 定制按钮文案 {% endcomment %}
+{% assign sunzi_button_text = section.settings.sunzi_button_upload_text %}
+{% comment %} 默认值变体标题 {% endcomment %}
+{% assign sunzi_variant_number = 100 %}
+{% comment %} 无损放大变体标题 {% endcomment %}
+{% assign sunzi_variant_amplify_name = 100 %}
+{% comment %} 操作提示文案 {% endcomment %}
+{% assign sunzi_guide_texts = section.settings.sunzi_mug_guide_texts %}
+{% assign sunzi_guide_array = sunzi_guide_texts | split: '|' %}
+{% comment %} 操作水印地址 {% endcomment %}
+{% assign sunzi_path_watermark = section.settings.sunzi_mug_path_watermark %}
+{% comment %} 引导视频地址 {% endcomment %}
+{% assign sunzi_path_guide = section.settings.sunzi_mug_path_guide%}
+
+{% comment %} 站点语种 {% endcomment %}
+{% assign sunzi_shop_language = section.settings.sunzi_shop_language %}
+{% comment %} 货币符号 {% endcomment %}
+{% assign sunzi_shop_symbol = section.settings.sunzi_shop_symbol %}
+
+{% comment %} 根据标签判断产品类型和无损放大 {% endcomment %}
+{% assign type = 'MUG' %}
+{% assign amplify = false %}
+{% if product.tags contains 'sunzi-mug-digital-image' %}
+  {% comment %} 数字图片 {% endcomment %}
+  {% assign type = 'DIGITAL_IMAGE' %}
+{% elsif product.tags contains 'sunzi-mug-pillow' %}
+  {% comment %} 双面抱枕 {% endcomment %}
+  {% assign type = 'PILLOW' %}
+  {% assign amplify = true %}
+{% elsif product.tags contains 'sunzi-mug-spillow' %}
+  {% comment %} 单面抱枕 {% endcomment %}
+  {% assign type = 'sPILLOW' %}
+  {% assign amplify = true %}
+{% elsif product.tags contains 'sunzi-mug-canvas' %}
+  {% comment %} 油画 {% endcomment %}
+  {% assign type = 'CANVAS' %}
+  {% assign amplify = true %}
+{% elsif product.tags contains 'sunzi-mug-hcanvas' %}
+  {% comment %} 横版油画 {% endcomment %}
+  {% assign type = 'hCANVAS' %}
+  {% assign amplify = true %}
+{% elsif product.tags contains 'sunzi-mug-vcanvas' %}
+  {% comment %} 竖版油画 {% endcomment %}
+  {% assign type = 'vCANVAS' %}
+  {% assign amplify = true %}
+  {% assign sunzi_variant_number = 1 %}
+  {% assign sunzi_variant_amplify_name = 0 %}
+{% elsif product.tags contains 'sunzi-mug-vblanket' %}
+  {% comment %} 竖版毯子 {% endcomment %}
+  {% assign type = 'vBLANKET' %}
+  {% assign amplify = true %}
+  {% assign sunzi_variant_number = 1 %}
+  {% assign sunzi_variant_amplify_name = 0 %}
+{% elsif product.tags contains 'sunzi-mug-disc' %}
+  {% comment %} 小圆盘 {% endcomment %}
+  {% assign sunzi_variant_number = 0 %}
+  {% assign type = 'DISC' %}
+{% elsif product.tags contains 'sunzi-mug-tapestry' %}
+  {% comment %} 挂毯 {% endcomment %}
+  {% assign type = 'TAPESTRY' %}
+{% elsif product.tags contains 'custom-sunzi-mug-mspillow' %}
+  {% comment %} 800*800抱枕 {% endcomment %}
+  {% assign type = 'msPILLOW' %}
+  {% assign amplify = true %}
+  {% assign sunzi_variant_number = 1 %}
+  {% assign sunzi_variant_amplify_name = 0 %}
+{% endif %}
+
+{% comment %} 定制初始化 {% endcomment %}
+{% include 'sunzi-solt-template' %}
+
+{% comment %} 样式库 {% endcomment %}
+<style type="text/css">
+  .product-quantity,
+  .zen-customer-lr .common-standar_btn,
+  .inline-field-wrapper {
+  	display: none !important;
+  }
+  .sunzi-form {
+  	padding-bottom: 0;
+  }
+  
+  .sunzi-result {
+    margin-top: 20px;
+    min-height: 80px;
+    height: auto!important;
+    width: auto!important;
+    display: none;
+    position: relative;
+    border-radius: 6px;
+    border: 1px solid rgb(0, 0, 0, 0.2);
+    overflow: hidden;
+  }
+  .sunzi-result .sunzi-result-loading {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: center;
+  }
+  #sunzi-result-image {
+  	width: 100%;
+  }
+
+</style>
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 额外的表单参数 {% endcomment %}
+  
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="text" id="sunzi-input" name="properties[customInfo]" required="required"></input>
+  {% comment %} 定制按钮 {% endcomment %}
+  <button type="button" id="sunzi-button" disabled class="dots-loading">
+    <span class="dots">
+      <i></i>
+      <i></i>
+      <i></i>
+    </span>
+     <div class="sunzi-button-text">{{ sunzi_button_text }}</div>
+  </button>
+
+  {% comment %} 结果图 {% endcomment %}
+  <div class="sunzi-result dots__loading">
+    <input id="sunzi-share-image" type="hidden">
+    <img id="sunzi-result-image" onload="resultOnload();">
+    <div class="sunzi-result-loading">
+      <span class="dots">
+        <i></i>
+        <i></i>
+        <i></i>
+      </span>
+    </div>
+  </div>
+</div>
+
+<!-- sunzi core js -->
+<script src="https://sunzi7n.imaiyuan.com/core/{{ coreJs }}"  defer="defer"></script>
+<script src="https://sunzi7n.imaiyuan.com/sunzi/js/sunzi.36e37.js" defer="defer"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ gtag }}" async="async"></script>
+<script async="async">
+  _sunzi_gtag('{{ gtag }}');
+</script>
+
+{% comment %} 1.隐藏掉变体，加车按钮等等 {% endcomment %}
+<script defer>
+  // 隐藏掉无损放大的变体
+_sunzi_variant_hide('{{ sunzi_variant_amplify_name }}');
+</script>
+
+{% comment %} 2.请求定制化数据 {% endcomment %}
+<script defer="defer">
+  var sku = '{{ product.selected_or_first_available_variant.sku }}';
+  var sunzi_sku = sku.split("-")[0];
+  _sunzi_request('https://sunzi.stylelab.com/template?sku='+ sunzi_sku +'&storeCode={{ sunzi_shop_code }}');
+</script>
+
+{% comment %} 3.开始定制 {% endcomment %}
+<script defer="defer">
+  // 获取杯子类型
+  var mugType = '{{ type }}';
+
+  // 监听number变体改变，如果改变，隐藏结果图与加车按钮
+  var variantNumber = _sunzi_find_variant({{sunzi_variant_number}});
+  variantNumber && variantNumber.on('change', function() {
+    $('.sunzi-result').hide();
+    // 根据站点不同隐藏对应的dom
+    $(".zen-customer-lr .common-standar_btn").css("cssText", "display:none !important;");
+  });
+
+  // 定制化按钮点击事件 && 定制化组件初始化
+  $('#sunzi-button').click(function() {       
+    Product.verify().then(function() {
+      // 定制之前的参数构建
+      _sunzi_response.shop = {
+        language: '{{sunzi_shop_language}}',
+        currencySymbol: '{{sunzi_shop_symbol}}',
+      };
+      _sunzi_response.bottomImages = _sunzi_response.bottomImage;
+      _sunzi_response.pathGuide = '{{ sunzi_path_guide }}';
+      _sunzi_response.price = $('.product-single__price--special').first().html().trim();
+      mugType && (_sunzi_response.type = mugType);
+      _sunzi_response.tips = [
+        {%- for guide_item in sunzi_guide_array -%}
+        '{{ guide_item }}',
+        {%- endfor -%}
+      ];
+      _sunzi_response.defaultOptionValue = _sunzi_variant_value('{{ sunzi_variant_number }}');
+
+      _sunzi_custom(Mug.default, async function(result, data, variantValue) {
+        _sunzi_loading();
+        // 切换变体
+        if (variantValue) _sunzi_variant_change("{{ sunzi_variant_number }}", variantValue);
+        
+        // 常规加车参数
+        var cropImage = AES.default.encrypt(result[0]);
+        var output = {
+          '_sunzi_mug_json': data,
+          '_sunzi_mug_result': cropImage
+        };
+         // 判断是否需要无损放大
+        var _amplify = [];
+        var variantAmplify = _sunzi_variant_value('{{ sunzi_variant_amplify_name }}');
+        if ('{{ amplify }}' === 'true') {
+          // 特殊放大倍数
+          // 竖版毯子
+          if(mugType == 'vBLANKET') {
+            var _amplifyMap = {
+              '30in*40in': [4866, 6201],
+              '40in*50in': [6083, 7417],
+              '50in*60in': [7299, 9390],
+              '50in*80in': [8634, 12165],
+              '60in*80in': [9390, 12165]
+            };
+            var amplifyArr = variantAmplify.split(' ');
+            amplifyArr.shift();
+            _amplify = _amplifyMap[amplifyArr.join('')];
+            //  竖版毯子加车数据需要原图传未加密的效果图
+            output._sunzi_source = result[0];
+            //  删除mug_result
+            delete output._sunzi_mug_result;
+          }
+          // 800*800抱枕
+          else if(mugType == 'msPILLOW') {
+            var _amplifyMap = {
+              '16"*16"(40*40cm)': [2362, 2362],
+              '18"*18"(45*45cm)': [2657, 2657],
+              '20"*20"(50*50cm)': [2953, 2953]
+            };
+            _amplify = _amplifyMap[variantAmplify];
+          }
+          // 常规放大倍数
+          else if (variantAmplify) {
+            // 去除变体中的描述信息
+            variantAmplifySize = variantAmplify.split(" - ")[0];
+            _amplify = variantAmplify.replace(/"*/g,"").split(" x ").map(item => parseInt(item) * 150);
+          } 
+        }
+        // 放大倍数参数
+        output._sunzi_mug_amplify = _amplify;
+
+        $('#sunzi-input').val(JSON.stringify(output));
+        // 结果图样式
+        var style7n = '?imageView2/0/w/500/h/500';
+        
+        $('.sunzi-result').show(0, function() {
+          $('.sunzi-result-loading').show();
+          $('#sunzi-result-image').attr("src", "");
+          $('#sunzi-result-image').attr("src", result[0] + style7n);
+          $('#sunzi-share-image').val(result[0].replace('imaiyuan', 'myuxc'));
+          $('.sunzi-result').show();
+          // 显示加车
+          $(".zen-customer-lr .common-standar_btn").css("cssText", "display:flex !important;");
+        });
+        _sunzi_hide_loading();          
+      })
+    }).catch(function(res){
+      console.log('Add to Cart Error', res);
+    })
+  });
+   
+  
+  /** 其他自定义函数 start **/
+  //  隐藏结果图dom
+  function resultOnload() {
+    $(".sunzi-result-loading").hide();
+    $("#sunzi-result-image").addClass("sunzi-result-image");
+  }
+
+  /** 其他自定义函数 end **/
+</script>

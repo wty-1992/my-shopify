@@ -1,0 +1,225 @@
+{% if section.settings.enable %}
+
+<style>
+.common-adp-sections picture{
+  padding-bottom:100%;
+  height:0;
+  position: relative;
+}
+.common-adp-sections picture img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  border: none;
+  overflow: hidden;
+}
+@media(min-width:220px){
+.common-adp-sections{
+
+}
+.common-adp-sections picture{
+  display:block;
+}
+.common-adp-sections .title{
+    text-align: center;
+    font-size: 1.6rem;
+    margin: 3rem 0 0;
+    color: #000;
+} 
+.common-adp-sections .sub_title{
+    font-size:1.2rem;
+    margin:1rem;
+    text-align: center;}
+.common-adp-sections ul{
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+.common-adp-sections ul li{   
+    width: calc(50% - 1rem);
+    text-align: center;
+    padding: .5rem;
+    margin:0.5rem
+}
+.common-adp-sections ul li .adp__name{
+    font-size: 1rem;
+    letter-spacing: 1px;
+    text-align: left;
+    color: #888;
+    line-height: 1.2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;    
+    height: 1.4rem; 
+    margin-bottom: 1rem;
+}
+.common-adp-sections .adp-box-price {
+    display: flex;
+    padding: 0.83rem 0;
+    text-align: left;
+    flex-direction: column;
+}
+.common-adp-sections .adp-box-price .new-price{
+    margin-right: .2rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #D81E06;
+}
+.common-adp-sections .adp-box-price .old-price{    
+    opacity: 1;
+    color: #000;
+    font-size: .8rem;  
+    text-decoration: line-through;
+}
+}
+@media(min-width:768px){
+.common-adp-sections ul li{   
+    width: calc(33.33% - 1.5rem);}
+    
+.common-adp-sections .adp-box-price .new-price{
+    font-size:1.2rem;
+}
+.common-adp-sections ul li .adp__name{
+    height:2.4rem
+}
+}
+@media(min-width:1024px){
+.common-adp-sections .title{ 
+font-size: 2rem;}
+.common-adp-sections .sub_title{ 
+font-size: 1.4rem;
+margin: 1rem 0 2rem 0;
+}
+.common-adp-sections ul li{
+width:calc( 25% - 1rem);
+}
+.common-adp-sections ul li.item:hover .adp__name {
+white-space: unset; 
+text-overflow: unset;
+}
+.common-adp-sections .adp-box-price { 
+    flex-direction: unset;
+}
+.common-adp-sections .adp-box-price .new-price{
+    font-size:1rem;
+}
+}
+</style>
+
+<div id="AdpTemplate"></div>
+
+<template id="AdpCompileTemplate">
+{% unless section.settings.content == blank %}
+<div class="content">{{section.settings.content}}</div>
+{% endunless %}
+{% raw %}
+    <div class="common-adp-sections"> 
+      <ul class="items">
+     {{#each this}}
+       <li class="item">
+       <a href="{{ url }}">
+        <picture>
+          <img data-src="{{featured_image}}" class="lazyload" alt=""/>
+        </picture> 
+        <div class="adp-box-price">
+          <div class="new-price"><span data-money="{{price}}"></span></div>
+          <div class="old-price"><span data-money="{{compare_at_price}}"></span></div>
+        </div>
+        <div class="adp__name">{{{ title }}}</div>
+        </a>
+       </li>   
+    {{/each}}
+     </ul> 
+   </div>
+{% endraw %}
+</template>
+<script>
+var urlParam = Shopify.urlParam('adp');
+if(urlParam) {
+  urlParam = urlParam.split(',');
+  {% assign current_collection = collections[section.settings.collection] %}
+  {% paginate current_collection.products by 200 %}
+  var current_collection_products = [
+    {%- for item in current_collection.products -%}
+      {
+        url: "{{ item.url }}",
+        title: "{{item.title | escape}}",
+        price: "{{item.price}}",
+        compare_at_price: "{{item.compare_at_price}}",
+        featured_image:"{{ item.featured_image | img_url: 'medium' }}",
+        handle: "{{item.handle}}"
+      },
+    {%- endfor -%}
+  ];
+  {% endpaginate %}
+  if(current_collection_products.length > 0) {
+    var items = [];
+    var adps  = {{ section.settings.adps }};
+    // 替换id为handel
+    $.each(urlParam, function(key, value){
+      value = $.trim(value);
+      $.each(adps, function(key, adp){
+        var adp_id = $.trim(adp.id);
+        var adp_handle = $.trim(adp.handle);
+        if(adp_id == value) {
+          urlParam.splice(key, 1, adp_handle);
+        }
+      });
+    });
+
+    // 循环产品匹配handel
+    $.each(current_collection_products, function(key, product){
+      if($.inArray(product.handle, urlParam) != -1) {
+        items.push(product);
+      }
+    });
+    if(items.length > 0) {
+      // 编译模板
+      var compileTemplate = Handlebars.compile($('#AdpCompileTemplate').html());
+      // 输出
+      $('#AdpTemplate').empty().append(compileTemplate(items));
+    }
+  }
+}
+</script>
+
+
+
+{% endif %}
+{% schema %}
+{
+  "name": "通用 - ADP的产品列表",
+  "class": "common-adp-section page-width",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable",
+      "label": "开启",
+      "default": true
+    },
+    {
+      "type": "html",
+      "id": "content",
+      "label": "总标题"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "选择集合"
+    },
+    {
+      "type": "textarea",
+      "id": "adps",
+      "label": "ADP id与handle的映射"
+    }
+  ],
+  "presets": [
+    {
+      "name": "通用 - ADP的产品列表",
+      "category": "通用"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,102 @@
+{% comment %}
+** @name 文字二维码着陆页 **
+** @author 劳紫恩**
+** @integrate 劳紫恩 **
+{% endcomment %}
+
+{% comment %} 引用公共插槽 {% endcomment %}
+{% include 'sunzi-slot-template-2' %}
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'text-qrcode-v1.0.0.js'  %}
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/land-page.json' %}
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+  @media (max-width: 768px) {
+    [id^='shopify-section-header'] {
+      display: none;
+    }
+  }
+ @media only screen and (min-width: 750px)
+.main-content {
+    padding-top: 0px !important;
+}
+  .main-content {
+    padding-top: 0px !important;
+}
+  .sunzi-form{
+    padding:0;
+  }
+  .sunzi-node-loading{
+    display:none;
+  }
+  .site-footer {
+    display: none;
+  }
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 着落页容器 {% endcomment %}
+  <div class="sunzi-form-content">
+    <div id="sunzi-node">
+    </div>
+  </div>
+</div>
+
+{% comment %} 产品推荐 {% endcomment %}
+<div class="page-width" data-base-url="{{ routes.product_recommendations_url }}"data-product-id="6552357994548" data-section-id="{{ section.id }}" data-section-type="product-recommendations">
+  <div class="product-recommendations__inner">
+    <div class="section-header text-center">
+      <h2>{{ section.settings.heading | escape }}</h2>
+    </div>
+    <ul class="grid grid--uniform grid--view-items">
+      {%- for product in recommendations.products -%}
+      <li class="grid__item small--one-half medium-up--one-quarter">
+        {% include 'product-card-grid', max_height: 250, product: product, show_vendor: section.settings.show_vendor %}
+      </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+
+<!-- sunzi core js -->
+<script src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{ coreJs }}" defer="defer"></script>
+<!-- 配置文件件js -->
+<script src="{{ 'sunzi-global-data.js' | asset_url }}"></script>
+
+{% comment %} 1.隐藏掉变体，加车按钮等等 {% endcomment %}
+<script defer="defer">
+</script>
+
+{% comment %} 2.界面定制 {% endcomment %}
+<script defer="async">
+  var windowUrl = window.location.href
+  var urlArr = windowUrl.split('?')
+  var textArr = urlArr[1].split('&')
+  var letterImage =`https://sunzi7n.imaiyuan.com/text-qrcode/${textArr[0].split('=')[1]}.png` 
+  var color = `#${textArr[1].split('=')[1]}`
+     _sunzi_request('{{ requestURL }}',function(data){
+     TextQrcode.render(
+      TextQrcode.LandPage,
+       {
+        ...data, 
+        shop: _sunzi_global_data.shop,
+        color,
+    	letterImage,
+       //首页url           
+       houseUrl:"{{section.settings.house_url}}",
+       //再次定制url
+       customizeUrl:"{{section.settings.customize_url}}",
+      },
+       _matomoId,
+       document.getElementById("sunzi-node")
+  )
+ })
+
+</script>
+{% section 'text-qrcode' %}
+
+
+
+

@@ -1,0 +1,415 @@
+{{ 'jquery-ui.min.css' | asset_url | stylesheet_tag }} 
+{{ 'jquery-ui.min.js' | asset_url | script_tag }}
+
+<style>
+  .common-standar_btn .product-form__item {
+    display: none !important;
+  }
+  .date-container {
+  	margin-bottom: 1rem;
+  }
+  .ui-widget-header .ui-icon {
+  	background-image: url({{ 'ui-icons_444444_256x240.png' | asset_url }});
+  }
+  .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover {
+    border: 1px solid #42ace8 !important;
+    background: #42ace8 !important;
+  }
+  #ui-datepicker-div {
+  	z-index: 1001 !important;
+  }
+  #datepicker {
+    border: 1px solid #c7cecf;
+    height: 52px;
+    width: 100%;
+    margin-top: 10px;
+    padding-left: 15px;
+  }
+  .news-date-confirm-content {
+  	text-align: center;
+  }
+  .news-date-confirm-content p {
+  	font-weight: 600;
+  }
+  .red {
+  	color: red;
+  }
+  .ui-datepicker select.ui-datepicker-year {
+    width: 90%;
+  }
+  .ui-datepicker-calendar,.ui-datepicker-month,.ui-datepicker-prev,.ui-datepicker-next{
+    display: none;
+  }
+  .ui-datepicker-current {
+    opacity: 1 !important;
+
+  }
+  .ui-datepicker-close {
+    font-weight: normal !important;
+  }
+  
+  
+.area-carving, .area-photo-upload {
+  	background: #f8f8f8 !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    height: 56px;
+    margin-bottom: 10px;
+    border: 1px solid #e7e7e7;
+    border-radius: 0 !important;
+  }
+  .btn-carving-open, .btn-upload-open {
+  	cursor: pointer;
+    background: #000;
+    color: #fff;
+    border-radius: 25px;
+    padding: 4px 15px;
+    width: 100px;
+    text-align: center;
+    text-transform: capitalize;
+    font-weight: 100;
+    border: none;
+    font-size: 14px;
+    line-height: 1.625;
+  }
+  .carving-textarea-box{
+    position: relative;
+  }
+  .custom-carving-container .leftnum{
+    position: absolute;
+    bottom: 1px;
+    right: 11px;
+    font-size: 12px;
+    color: #9d9d9d;
+  }
+  .area-carving-preview-text, .area-photo-upload-text, .area-photo-upload-flex {
+  	color: #333;
+    font-size: 1rem !important;
+  }
+  .carving-container {
+  	margin-bottom: 1rem;
+    width:100%;
+  }
+  .el-dialog__footer {
+    padding: 1rem 2rem;
+    width: auto;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    background-color: #f5f5f5;
+    cursor: auto;
+    justify-content: center;
+  }
+  .btn-carving, .photo-confirm-btn, .photo-cancel-btn{
+  	padding: 1.5rem 2rem!important;
+    border: none!important;
+    color: #fff;
+    border-radius: 0px!important;
+    width: auto!important;
+    font-size: 12px!important;
+  }
+  .btn-carving.el-button--default,.photo-cancel-btn.el-button--default  {
+  	background-color: #000;
+  }
+  .btn-carving.el-button--primary,.photo-confirm-btn.el-button--primary  {
+  	background-color: #bfa175;
+  }
+  div .dialog-footer-carving {
+    justify-content: center;
+    flex-flow: column-reverse;
+    padding-top: 0;
+  }
+
+  .action-info{
+    color: #777;
+    padding-bottom: 4px;
+  }
+  .note-info{
+    color: #e60044;
+  }
+  .handcraft-info{
+    color: #f4354a;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #d8d8d8;
+  }
+  .action-info,.note-info,.handcraft-info{
+    font-size:12px;
+  }
+  .operation-part .el-button+.el-button{
+    margin-left: 0;
+    margin-bottom: 15px;
+  }
+  #app .btn-carving.el-button--default, #app .photo-cancel-btn.el-button--default{
+    color:#fff;
+    background-color: #9d9d9d;
+  }
+  
+  .size-label-part.el-col.el-col-24 {
+    padding: 10px 0 8px;
+    font-size: 13px;
+  }
+  .carving-prompt {
+  	color: red;
+    font-size: 16px;
+    text-align: center;
+  }
+  .carving-textarea-box {
+    border: 1px solid #ddd!important;
+    border-radius: 0px!important;
+    background: #fff;
+  }
+  .btn-carving.el-button--default.is-active, .btn-carving.el-button--default:active,.btn-carving.el-button--default:focus, .btn-carving.el-button--default:hover {
+    background: #000;
+  }
+  .carving-textarea textarea {
+  	overflow: hidden;
+    min-height: auto !important;
+    height: 4rem;
+  }
+  .el-dialog__body .slt-font-size{
+    width: 100%;
+    margin-top: 0px;
+  }
+  .el-dialog__body .slt-font-size .el-input__inner{
+    background: #f1f3f4;
+    border: none;
+    height:42px;
+  }
+  .slt-font-size input {
+  	border-radius: 0px !important;
+  }
+  .zen-photo-carving .el-button:focus, .zen-photo-carving .el-button:hover{
+    background-color: #ddd;
+    color: #000;
+  }
+  .zen-photo-carving .btn-carving.el-button--primary,.zen-photo-carving .photo-confirm-btn.el-button--primary{
+    background-color: #de0047;
+    color:#fff;
+    text-transform: uppercase;
+    font-size: 12px;
+  }
+  .zen-photo-carving .btn-carving.el-button--default,.zen-photo-carving .photo-cancel-btn.el-button--default{
+    background-color: #ddd;
+    color: #000;
+  }
+  .crop-prompt.photo-prompt{
+    margin: 12px 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #000;
+  }
+  .el-dialog--center{
+    width:100% !important;
+    max-width:800px;
+  }
+  .custom-carving-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  .carving-container .photo-design-body,.carving-container .operation-part{
+    width:48.5%;
+    overflow: hidden;
+  }
+  div .el-dialog__headerbtn{
+    top: 0;
+    right: 0;
+  }
+  .label-input-text,.textarea-text{
+    margin-top:0;
+    margin-bottom: 0;
+  }
+  textarea.el-textarea__inner::-webkit-input-placeholder{    
+    color: #484747 !important;
+    font-size:12px;    
+    line-height: 1.5;
+  }
+  .carving-textarea textarea{
+    padding: 5px 10px;
+  }
+  .font-radio-label{
+    padding: 10px 0 8px;
+    font-size:13px;
+  }
+  #app .el-radio.is-bordered.is-checked{
+    border-color: #e60044;  
+  }
+  #app .el-radio__input.is-checked+.el-radio__label{
+    color: #e60044;
+  }
+  .el-select-dropdown.el-popper{
+    margin-top: 5px;
+  }
+  .el-scrollbar__view .el-select-dropdown__item{
+    height: 24px;
+    line-height: 24px;
+  }
+  #app .el-radio.is-bordered{
+    border: 1px solid #777;
+    color: #000;
+    padding: 10px 15px;
+    border-radius: 0;
+    vertical-align: middle;
+    height: auto;
+    margin-left: 0;
+    margin-right: 8px;
+  }
+  #app .el-radio.is-bordered .el-radio__label{
+    padding-left: 0;
+  }
+  .el-dialog__headerbtn{
+    right: 0;
+    top: 0;
+  }
+  .el-dialog__headerbtn .el-dialog__close{
+    font-size: 36px;
+  }
+  .carving-prompt{
+    font-size: 12px;
+    margin-top: 10px;
+    line-height: 1.2;
+    text-align: left;
+  }
+  
+ @media (max-width: 768px) {
+    .el-dialog {
+      width: 100%;
+      margin-top: 0 !important;
+      margin-bottom: 0;
+      height: 100%;
+      overflow: auto;
+    }
+    #app a.photocharms-warnfill{
+      width: 40%;
+      text-align: center;
+      margin-bottom: 5px;
+      font-size: 12px;
+      text-decoration: underline;
+    }    
+    .el-dialog__body>div:nth-child(1)>div>div {
+    /*     	height: 240px !important; */
+    } 
+    .el-dialog--center .el-dialog__footer {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+    .el-message-box {
+      width: 100%!important;
+      margin-top: 0;
+      margin-bottom: 0;
+      height: 100%;
+    }
+    .area-carving{
+      height: 48px;
+    }
+    .carving-container .btn-carving-open{
+      font-size: 12px;
+      padding: 3px 16px 2px;
+      width: auto;
+    }
+    .carving-container .el-dialog--center{
+      background: #f7f8f9;
+    }
+    .carving-container .el-dialog__header{
+      padding: 0px 20px 0px;
+    }
+    .photo-design-body .canvas-container{
+      margin: 0% auto 0 auto;
+    }
+    .carving-container .custom-carving-container .el-textarea{
+      vertical-align: bottom;
+      margin-top: 0;
+    }
+    
+    .carving-container .rad-font .el-radio.is-bordered{
+      padding: 6px 12px;
+      height: auto;
+    }
+    .carving-container .rad-font .el-radio.is-bordered .el-radio__label{
+      padding-left: 0;
+    }
+    .carving-container textarea.el-textarea__inner{
+      font-size: 12px;
+    }
+    .carving-container .el-radio__input.is-checked+.el-radio__label{
+      color: #e60044;
+    }
+    .carving-container .el-radio.is-bordered.is-checked{
+      border-color: #e60044;
+    }
+    .zen-photo-carving .el-dialog__headerbtn .el-dialog__close{
+      color: #333;
+      font-size: 20px;
+    }
+    .zen-photo-carving .el-dialog__headerbtn{
+      top: 10px;
+      right: 10px;
+    }    
+    .carving-container .photo-design-body, .carving-container .operation-part{
+      width: 100%;
+    }
+    .custom-carving-container{
+      flex-flow: wrap;
+    }
+    #app .el-radio.is-bordered{
+      padding: 6px 10px;
+      height: auto;
+    }
+    .step-wrapper{
+      padding: 0 10px;
+    }
+    .carving-textarea textarea::-webkit-input-placeholder{color:#999;}/* 使用webkit内核的浏览器 */
+    .carving-textarea textarea:-moz-placeholder{color:#999;}/* Firefox版本4-18 */
+    .carving-textarea textarea::-moz-placeholder{color:#999;}/* Firefox版本19+ */
+    .carving-textarea textarea:-ms-input-placeholder{color:#999;}/* IE浏览器 */
+    
+    .step-wrapper ~ #photo-container-1.photo-container {
+      position: relative;
+      left: 38px;
+      width: calc(100% );
+    }
+
+    .step-wrapper ~ #photo-container-1.photo-container ~ #photo-container-2.photo-container {
+      position: relative;
+      left: 38px;
+      width: calc(100% );
+    }
+
+    .step-wrapper ~ #photo-container-1.photo-container ~ #photo-container-2.photo-container ~ #photo-container-3.photo-container {
+      padding-left: 38px;
+      width: calc(100%);
+    }
+    .el-dialog__footer .dialog-footer{
+      display: flex;
+    }
+  }
+
+  @media(min-width:768px){
+    .photo-container .photo-box{
+      width: 120px;
+      height: 120px;
+    }   
+    #photo-container-1 .photocharms-warnfill{
+      display: none !important;
+    }
+  }
+  @media(max-width:768px){
+  {% if product.selected_or_first_available_variant.sku == 'TC328A' %}
+    .step-wrapper ~ #photo-container-1.photo-container{
+      position: unset;
+      left: 0;
+      padding: 0 10px;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .step-wrapper ~ #photo-container-1.photo-container .photo-box{
+      width: calc(100% - 28px);
+    }
+    #app a.photocharms-warnfill{
+      display: none !important;
+    }
+  {% endif %}
+  }
+</style>

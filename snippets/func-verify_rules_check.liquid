@@ -1,0 +1,60 @@
+{% assign rules_check_result = false %}
+
+{% if values %}
+    {% include 'func-verify_rules_value', detail: detail, key: key %}
+    {% if verify__rules_value_result %}
+        {% case key %}
+            {% when "handle" %}
+                {% if values contains verify__rules_value_result %}
+                    {% assign rules_check_result = true %}
+                {% endif %}
+            {% when "tags" %}
+                {% for tag in verify__rules_value_result %}
+                    {% if values contains tag %}
+                        {% assign rules_check_result = true %}
+                        {% break %}
+                    {% endif %}
+                {% endfor %}
+            {% when "type" %}
+                {% if values contains verify__rules_value_result %}
+                    {% assign rules_check_result = true %}
+                {% endif %}
+            {% when "sku" %}
+                {% if values contains verify__rules_value_result %}
+                    {% assign rules_check_result = true %}
+                {% endif %}
+            {% else %}
+                {% if key contains '+' %}
+                    {% assign keyArray = key | split: '+' %}
+                    {% assign groupValue = '' %}
+                    {% for valueKey in keyArray %}
+                        {% include 'func-verify_rules_value', detail: detail, key: valueKey %}
+                        {% if valueKey == 'tags' %}
+                            {% assign ruleItems = '' | split: '' %}
+                            {% assign ruleItem = '' %}
+                            {% for itemVlaue in verify__rules_value_result %}
+                                {% assign ruleItem = groupValue | append: '+' | append: itemVlaue %}
+                                {% assign ruleItem = ruleItem | remove_first: '+' | split: '@SHOPIFY@' %}
+                                {% assign ruleItems = ruleItems | concat: ruleItem %}
+                            {% endfor %}
+
+                            {% for item in ruleItems %}
+                                {% if values contains item %}
+                                    {% assign rules_check_result = true %}
+                                    {% break %}
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            {% assign groupValue = groupValue | append: '+' | append: verify__rules_value_result %}
+                        {% endif %}
+                    {% endfor %}
+
+                    {% assign groupValue = groupValue | remove_first: '+' %}
+
+                    {% if values contains groupValue %}
+                        {% assign rules_check_result = true %}
+                    {% endif %}
+                {% endif %}
+        {% endcase %}
+    {% endif %}
+{% endif %}

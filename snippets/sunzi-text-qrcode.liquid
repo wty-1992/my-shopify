@@ -1,0 +1,119 @@
+{% comment %}
+** @name 文字二维码 **
+** @version 1.0.0 **
+** @author 劳紫恩 **
+** @integrate 劳紫恩 **
+{% endcomment %}
+
+
+{% comment %} 引入公共插槽v2.0 {% endcomment %}
+{% include 'sunzi-slot-template-2' %}
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'text-qrcode-v1.0.0.js' %}
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/text-qrcode.json' %}
+
+{% comment %} 着陆页url前缀 {% endcomment %}
+
+
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+  .product-form input{
+  	border-width:0px;
+  	min-height:0px;
+  }
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 额外的表单参数 {% endcomment %}
+  {% assign from = coreJs | split: '-v' %}
+  <input type="hidden" name="properties[_from]" value="sunzi-{{ from[0] }}" />
+
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="text" id="sunzi-input" name="properties[customInfo]" required="required"></input>
+  <input type="hidden" id="sunzi-cart" name="properties[_sunzi_cart]" />
+  {% comment %} 定制按钮 {% endcomment %}
+  <div class="sunzi-form-content">
+    <div id="sunzi-node">
+      <div class="sunzi-node-loading">
+        <span class="dots">
+          <i></i>
+          <i></i>
+          <i></i>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- sunzi core js -->
+<script crossorigin src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{ coreJs }}" defer="defer"></script>
+
+
+<script defer="async">
+
+</script>
+
+{% comment %} 2.请求定制化数据 & 渲染 {% endcomment %}
+<script defer="async">
+  //着陆页url前缀
+  var prefixUrl =`${window.location.host}/pages/text-qrcode?`;
+  _sunzi_request('{{ requestURL }}', function(data) {  
+   
+    TextQrcode.render(
+      TextQrcode.default,
+      {
+        ...data,
+        prefixUrl,
+        price: $(".product-single__price--special").first().html(),
+        shop: _sunzi_global_data.shop,
+        async onConfirm(output) {
+    
+          // 唤醒loading
+          _sunzi_loading();
+          
+
+          // 组装加车参数
+          var param = {
+            'sunzi_source': output.cropper,
+            '_sunzi_effects': [ output.effectQrcode, output.effectBackImage ],
+            '_sunzi_compose': [{
+              rule: 1.1,
+              data: {
+                'makeWidth': output.makeWidth,
+                'makeHeight': output.makeHeight,
+                'makeDpi': output.makeDpi,
+                'images': [
+                  output.qrcode,
+                  output.backImage,
+                ]
+              }
+            }]
+          };
+
+          $('#sunzi-input').val(JSON.stringify(param));
+          $('#sunzi-cart').val(JSON.stringify({
+            image: [ output.effectBackImage ]
+          }));
+
+          // 加车队列
+          var _queue = [];
+          
+          // 加车事件触发
+          await Promise.all(_queue);
+          // 由于主产品涉及vip/质保产品等额外加车事件的判断，因此沿用站点加车方法
+          $('.product-form__cart-submit').click();
+          $('#sunzi-loading').hide();
+            
+        }
+      },
+      _matomoId,
+      document.getElementById("sunzi-node")
+    );
+  });
+
+  /** 其他自定义函数 start **/
+
+  /** 其他自定义函数 end **/
+</script>

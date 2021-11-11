@@ -1,0 +1,414 @@
+<style > 
+  .home-recommend-view{
+    width:100%;
+    background: #fff;
+    padding-top: 151px;
+  }
+  .recommend-view{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .recommend-view-title{
+    font-size:44px;
+    line-height:53px;
+    color:#222;
+    width:100%;
+    padding:0 28px;
+    text-align:center;
+  }
+  .recommend-view-text{
+    font-size:20px;
+    line-height:24px;
+    color:#222;
+    margin-top:44px;
+    text-align:center;
+    width:100%;
+  }
+  .recommend-view-image{
+    width:100%;
+    margin-top:56px;
+    padding:0 14.16%;
+  }
+  .bottom-box-item{
+    width:31.5%;
+    margin-left:28px;
+    height:500px;
+  }
+
+  .recommend-text-box{
+    width:53.22%;
+  }
+  .recommend-top{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    height:304px;
+  }
+  .recommend-top-box-one{
+    width:30.08%;
+  }
+  .radius{
+    border-radius: 12px;
+  }
+  .recommend-top-box-three{
+    flex:1;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    padding:5px 31px;
+    margin-bottom:29px;
+    height:304px;
+  }
+  .recommend-view-box{
+    width:100%;
+    display:flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+  .theme-bg{
+    background:#F6F6F9
+  }
+  .theme-color{
+    color:#222;
+  }
+  .top-box-item{
+    width: 21.42%;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    margin-right:28px;
+    padding: 5px 0;
+    margin-bottom: 29px;
+    height:304px;
+  }
+  .recommend-img{
+    width:45.31%;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    margin-right:68px;
+    padding:32px;
+  }
+  .recommend-img::before {
+    display: block;
+    padding-top: 100%;
+    content: '';
+  }
+  .top-box-text{
+    width: 226px;
+  }
+  .box-title{
+    font-size:20px;
+    line-height:32px;
+    text-align: center;
+  }
+  .box-text{
+    font-size:16px;
+    line-height:32px;
+    text-align: center;
+  }
+  .background-main{
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .image-box{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width:50%;
+  }
+
+  .image-box::before {
+    display: block;
+    padding-top: 100%;
+    content: '';
+  }
+  .recommend-top-box-four{
+    display:flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    padding:53px 48px 16px 48px;
+    flex:1;
+    height:500px;
+
+  }
+  .image_pc{
+    display:block;
+  }
+  .image_mb{
+    display:none;
+  }
+  .db-center{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .bottom-image-box{
+    width:100%;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height:236px;
+  }
+  .bottom-image-box:nth-of-type(2){
+    margin-top:28px
+  }
+  .image-box-item{
+    width:28%;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .flex-wrap{
+    flex-wrap: wrap;
+  }
+  .top-box-four{
+    margin-top:31px;
+  }
+  @media screen and (max-width: 768px){
+    .home-recommend-view{
+      padding-top:40px;
+    }
+    .recommend-top-box-four{
+      height:139px;
+      flex-direction: row;
+      padding:12px 32px 12px 20px;
+    }
+    .recommend-text-box{
+      width:100%;
+      padding: 0 12px;
+    }
+    .recommend-view-title{
+      font-size:20px;
+      line-height:29px;
+    }
+    .recommend-view-text{
+      font-size:16px;
+      line-height:19px;
+      margin-top:30px;
+    }
+    .recommend-view-image{
+      margin-top:27px;
+      padding:0 20px;
+      width:100%;
+    }
+    .image_pc{
+      display:none ;
+    }
+    .image_mb{
+      display:block;
+    }
+    .top-box-item{
+      margin-right: 0px;  
+      margin-bottom:10px;
+      height: 167px;
+      width:48.4%;
+      padding: 0px;
+      border-radius: 6px;
+    }
+    .recommend-top-box-three{
+      height:139px;
+      padding:0px;
+      margin-bottom:10px;
+    }
+    .box-title{
+      font-size: 16px;
+    }
+    .box-text{
+      font-size:12px;
+      line-height:24px;
+      text-align: center;
+    }
+    .recommend-img{
+      width:40.31%;
+      margin-right:0px;
+    }
+    .top-box-text{
+      width:160px;
+    }
+    .flex-column{
+      flex-direction: column;
+    }
+    .recommend-view-text{
+      margin-top:14px;
+    }
+    .bottom-box-item{
+      width:100%;
+      display:flex;
+      align-items: center;
+      justify-content: space-between;
+      height:167px;
+      margin-left:0px;
+      margin-top:10px;
+    }
+
+    .bottom-image-box:nth-of-type(2){
+      margin-top:0px
+    }
+    .bottom-image-box{
+      width:49%;
+      border-radius: 6px;
+      height:100%;
+
+    }
+    .image-box-item{
+      width:54%
+    }
+    .top-box-four{
+      width:35%;
+      margin-top:0px;
+    }
+    .main-text{
+      width:153px;
+    }
+  }
+
+</style > 
+
+<div class="recommend-view">
+  <div class="recommend-text-box">
+    <div class="recommend-view-title">{{section.settings.title}}</div>
+    <div class="recommend-view-text">{{section.settings.text}}</div>
+  </div>
+  <div class="products-link">
+    <a class="link"  href="{{section.settings.link}}">
+      <span class="link-text">{{section.settings.skip-text}} </span>
+      {% include 'icon-arrow' %}
+    </a>
+  </div>
+  <div class="recommend-view-image">
+    <div class="recommend-view-box flex-wrap">
+      {% for block in section.blocks %}
+      {% assign pc_resize = block.settings.product_image_pc.width | append: "x" | append: block.settings.product_image_pc.height %}
+      {% if block.settings.image_index =="1" or block.settings.image_index =="2" %}
+      <div class="top-box-item theme-bg radius"  >
+        <div class="image-box">
+          <img src="{{block.settings.product_image_pc | img_url: pc_resize }}"/>
+        </div>
+      </div>
+      {%elsif block.settings.image_index =="3"  %}
+      <div class="recommend-top-box-three theme-bg radius" >
+        <div class="recommend-img ">
+          <img src="{{block.settings.product_image_pc | img_url: pc_resize }}"/>
+        </div>
+        <div class="top-box-text">
+          <div class="box-title theme-color">{{block.settings.title}}</div>
+          <div class="box-text theme-color">{{block.settings.describe}}</div>
+        </div>
+      </div>
+      {% endif %}
+      {% endfor%}
+    </div>
+    <div class="recommend-view-box flex-column">
+      <div class="recommend-top-box-four theme-bg radius">
+        {% for block in section.blocks %}
+        {% if block.settings.image_index =="4" %}
+        {% assign mb_resize = block.settings.product_image_mb.width | append: "x" | append: block.settings.product_image_mb.height %}
+        <div class="main-text">
+          <div class="box-title theme-color">{{block.settings.title}}</div>
+          <div class="box-text theme-color">{{block.settings.describe}}</div>
+        </div>
+        <div class="top-box-four">
+          <img class="image_pc" src="{{block.settings.product_image_pc | img_url: pc_resize }}"/>
+          <img class="image_mb" src="{{block.settings.product_image_mb | img_url: mb_resize }}"/>
+        </div>
+        {% endif %}
+        {% endfor%}
+      </div>
+      <div class="bottom-box-item">
+        {% for block in section.blocks %}
+        {% if block.settings.image_index =="5" or block.settings.image_index =="6"%}
+        <div class="bottom-image-box theme-bg radius">
+          <div class="image-box-item">
+            <img src="{{block.settings.product_image_pc | img_url: pc_resize }}"/>
+          </div>
+        </div>
+        {% endif %}
+        {% endfor%}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% schema %}
+{
+  "name": "首页 展示推荐预览",
+  "class": "home-recommend-view",
+  "settings": [
+    {
+      "type": "text",
+      "id": "private",
+      "label": "程序参考字段默认勿动",
+      "default": "recommend-view"
+    },
+    {
+      "type": "text",
+      "id": "skip-text",
+      "label": "跳转文案"
+    },
+    {
+      "type": "text",
+      "id": "link",
+      "label": "跳转链接"
+    },
+     {
+       "type": "text",
+        "id": "title",
+        "label": "标题 "
+      },
+      {
+        "type": "textarea",
+        "id": "text",
+        "label": "描述"
+      }
+  ],
+  "blocks": [
+    {
+      "type": "recommend",
+      "name": "每张图片",
+      "settings": [
+        {
+          "type": "text",
+          "id": "image_index",
+          "label": "图片顺序"
+        },
+        {
+          "type": "image_picker",
+          "id": "product_image_pc",
+          "label": "PC产品图片"
+        },
+		{
+          "type": "image_picker",
+          "id": "product_image_mb",
+          "label": "MB产品图片"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "标题 "
+        },
+        {
+          "type": "textarea",
+          "id": "describe",
+          "label": "描述"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "首页 展示推荐预览",
+      "category": "Custom"
+    }
+  ]
+}
+
+{% endschema %}

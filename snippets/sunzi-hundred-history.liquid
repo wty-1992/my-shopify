@@ -1,0 +1,328 @@
+{% comment %}
+** @name 报纸系列-拼图 **
+** @version 1.0.0 **
+** @author 江春霖 **
+** @integrate 江春霖 王天宇 **
+{% endcomment %}
+
+{% comment %} 引入公共插槽v2.0 {% endcomment %}
+{% include 'sunzi-slot-template-2' %}
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'hundred-history-offical.js' %}
+{% comment %} 测试用，通过后删除 {% endcomment %}
+{% assign coreJs = 'hundred-history-v1.0.2-beta.js' %}
+
+{% comment %} 变体dom {% endcomment %}
+{% comment %} 尺码变体 {% endcomment %}
+{% assign variantSize = 0 %}
+{% comment %} 边框变体 {% endcomment %}
+{% assign variantFrame = 1 %}
+{% comment %} 颜色变体 {% endcomment %}
+{% assign variantColor = 100 %}
+{% comment %} 相框文案--如果变体value匹配，切换为对应的变体 {% endcomment %}
+{% assign variantFrameText = 'Wooden Frame' %}
+
+{% comment %}定制化文件类型{% endcomment %}
+{% assign reactType = 'default' %}
+{% comment %} 定制化数据地址 {% endcomment %}
+{% comment %} 油画 {% endcomment %}
+{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/hundred-history-oil-test.json' %}
+{% if product.tags contains 'custom-sunzi-hundred-history-puzzle' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/hundred-history-puzzle-test.json' %}
+{% comment %} 拼图 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-hundred-history-ornaments' %}
+  {% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/hundred-history-ornaments.json' %}
+  {% assign variantSize = 100 %}
+{% comment %} 挂毯 {% endcomment %}
+  {% elsif product.tags contains 'custom-sunzi-hundred-history-tapestry' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/hundred-history-tapestry.json' %}
+{% comment %} 贺卡 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-hundred-history-greeting-card' %}
+  {% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/hundred-history-greeting-card.json' %}
+  {% assign reactType = 'GreetingCard' %}
+  {% assign variantSize = 100 %}
+  {% assign variantFrame = 100 %}
+  {% assign variantColor = 1 %}
+{% comment %} 结婚纪念日-油画 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-hundred-history-marriage-oil' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/hundred-history-marriage-oil.json' %}
+	{% assign reactType = 'Marriage' %}
+{% comment %} 结婚纪念日-拼图 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-hundred-history-marriage-puzzle' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/hundred-history-married-puzzle.json' %}
+	{% assign reactType = 'Marriage' %}
+{% comment %} 时间回溯-油画 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-hundred-history-backInTime-oil' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/hundred-history-backInTime.json' %}
+	{% assign reactType = 'BackInTime' %}
+{% comment %} 时间回溯-拼图 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-hundred-history-backInTime-puzzle' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/hundred-history-backInTime-puzzle.json' %}
+	{% assign reactType = 'BackInTime' %}
+  {% endif %}
+
+
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% assign from = coreJs | split: '-v' %}
+  <input type="hidden" name="properties[_from]" value="sunzi-{{ from[0] }}" />
+  {% comment %} 额外的表单参数 {% endcomment %}
+  <input type="hidden" id="sunzi-input-sku" name="properties[custom_sku]" required="required" />
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="text" id="sunzi-input" name="properties[customInfo]" required="required" />
+  <input type="hidden" id="sunzi-cart" name="properties[_sunzi_cart]" />
+  {% comment %} 定制按钮 {% endcomment %}
+  <div class="sunzi-form-content">
+    <div id="sunzi-node">
+      <div class="sunzi-node-loading">
+        <span class="dots">
+          <i></i>
+          <i></i>
+          <i></i>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- sunzi core js -->
+<script crossorigin src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{ coreJs }}" defer="defer"></script>
+
+{% comment %} 渲染前执行 {% endcomment %}
+<script defer="async">
+
+</script>
+
+{% comment %} 2.请求定制化数据 & 渲染 {% endcomment %}
+<script defer="async">
+  _sunzi_request('{{ requestURL }}', function(data) {
+    // 初始化数据
+    initData(data);
+
+    {% for tag_item in product.tags %}
+      {%comment%}通过标签获取默认年份 {%endcomment%}
+      {% if tag_item contains "custom-default-year-" %}
+        {%- assign defaultYear = tag_item | strip | replace: "custom-default-year-", "" -%}
+        data.dateRange.default = new Date({{defaultYear}}, Math.floor(Math.random()*12), Math.ceil(Math.random()*31));
+  	  {%comment%}通过标签获取默认主题 {%endcomment%}
+  	  {% elsif tag_item contains "custom-default-topic-" %}
+  		{%- assign topic_type = tag_item | strip | replace: "custom-default-topic-", "" -%}
+  		data.defaultTopicType = `{{topic_type}}`;
+      {% endif %}
+    {% endfor %}
+  
+    var shareProduct;  //  分享产品
+    var relatedProductAll;  //关联产品
+    {% for block in section.blocks %}
+      {% if block.type =='hundred_history_product' %}
+  		{%comment%}分享产品配置{%endcomment%}
+        {% if product.tags contains 'custom-sunzi-hundred-history-puzzle' %}
+          {%- assign product_share = all_products[block.settings.hundred_history_product_puzzle] -%} 
+          shareProduct = {{product_share | json}}
+        {% elsif product.tags contains 'custom-sunzi-hundred-history-oil' %}
+          {%- assign product_share = all_products[block.settings.hundred_history_product_canvas] -%} 
+          shareProduct = {{product_share | json}}
+        {% elsif product.tags contains 'custom-sunzi-hundred-history-ornaments' %}
+          {%- assign product_share = all_products[block.settings.hundred_history_product_ornaments] -%} 
+          shareProduct = {{product_share | json}}
+        {% elsif product.tags contains 'custom-sunzi-hundred-history-greeting-card' %}
+          {%- assign product_share = all_products[block.settings.hundred_history_product_greeting_card] -%} 
+          shareProduct = {{product_share | json}}
+        {% elsif product.tags contains 'custom-sunzi-hundred-history-tapestry' %}
+          {%- assign product_share = all_products[block.settings.hundred_history_product_tapestry] -%} 
+          shareProduct = {{product_share | json}}
+        {% elsif product.tags contains 'custom-sunzi-hundred-history-marriage-oil' %}
+          {%- assign product_share = all_products[block.settings.hundred_history_product_marriage_oil] -%} 
+          shareProduct = {{product_share | json}}
+        {% elsif product.tags contains 'custom-sunzi-hundred-history-marriage-puzzle' %}
+          {%- assign product_share = all_products[block.settings.hundred_history_product_marriage_puzzle] -%} 
+          shareProduct = {{product_share | json}}
+        {% elsif product.tags contains 'custom-sunzi-hundred-history-backInTime-oil' %}
+          {%- assign product_share = all_products[block.settings.hundred_history_product_backInTime_oil] -%} 
+          shareProduct = {{product_share | json}}
+        {% elsif product.tags contains 'custom-sunzi-hundred-history-backInTime-puzzle' %}
+          {%- assign product_share = all_products[block.settings.hundred_history_product_backInTime_puzzle] -%} 
+          shareProduct = {{product_share | json}}
+        {% endif %}
+        {%comment%}关联产品配置{%endcomment%}
+        {% if product.tags contains 'custom-sunzi-hundred-history-ornaments' %}
+          {%- assign product_related = all_products[block.settings.hundred_history_product_ornaments_related] -%}
+          {% unless product_related.error %}
+          relatedProductAll = {{product_related | json}};
+          data.relatedProduct = {
+            id: 1,
+            title: 'Would You Like To Add The Metal Photo Frame',
+            price: relatedProductAll.price / 100,
+            variantData: [
+              {% for variant in product_related.variants %}
+              {%- assign resize =  image.width | append: 'x' | append: image.height -%}
+              {
+                id: "{{variant.id}}",
+                name: "{{variant.title}}",
+                price: {{variant.price}} / 100,
+                image: data.variantImages[{{ forloop.index0 }}].url
+              },
+              {% endfor %}
+            ]
+          };
+  		  data.getProductImage = () => relatedProductAll.images[0],  
+          {%endunless%}
+        {% else %}
+          {%- assign product_related = all_products[block.settings.hundred_history_product_related] -%}
+          {% unless product_related.error %}
+          relatedProductAll = {{product_related | json}};
+          data.relatedProduct = {
+            id: 1,
+            title: 'Would You Like To Add The Magnifying Glass',
+            price: relatedProductAll.price / 100,
+            variantId : relatedProductAll.variants[0].id,
+            image: 'https://cdn.shopifycdn.net/s/files/1/0472/0761/2575/products/il_794xN.2039160962_1zb0_794x794.jpg?v=1600142313'
+          };
+  		  data.getProductImage = () => "https://sunzi7n.imaiyuan.com/hundred-history/images/product-image-1.png";
+          {% endunless %}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  
+    HundredHistory.render(
+      HundredHistory['{{reactType}}'],
+      {
+        ...data,
+        shop: _sunzi_global_data.shop,
+        offPrice: 1,
+        shareLink: window.location.href,
+        onVariantChange:(data0, data1, data2) => {
+          data0 && _sunzi_variant_change({{variantSize}}, data0.name);
+          if('{{reactType}}' === 'Marriage') {
+            data1 && _sunzi_variant_change({{variantFrame}}, data1.name);
+          } else {
+            data2 && _sunzi_variant_change({{variantFrame}}, data2.name);
+            data1 && _sunzi_variant_change({{variantColor}}, data1);
+          }
+          
+        },
+        async onConfirm(output, share, relatedProduct) {
+          // 唤醒loading
+          _sunzi_loading();
+          
+          // 组装加车参数
+          var param = {
+            '_sunzi_remark': {},
+            '_sunzi_effect': output.effect,
+            '_sunzi_source': output.source,
+            '_sunzi_compose': [{
+               'rule': 21.1,
+              'data': output
+            }],
+          };
+          const remark = param._sunzi_remark;
+          const {name, title, th, year1, footer} = output.size.content;
+
+          name && (remark.name = name);
+          title && (remark.state = title);
+          footer && (remark.kezi = footer);
+          if('{{reactType}}' === 'GreetingCard') {
+			year1 && (remark.year = year1);
+          } else if ('{{reactType}}' === 'Marriage' || '{{reactType}}' === 'BackInTime') {
+            param._sunzi_remark = output.sunziRemark;
+          } else {
+          	th && (remark.year = th);
+          }
+          
+          $('#sunzi-input').val(JSON.stringify(param));
+          
+          var customSku = output.size.contentInfo.id;
+          var frameValue = _sunzi_variant_value({{variantFrame}});
+          //根据是否选择相框切换sku
+          frameValue && (frameValue == (data.extraVariant && data.extraVariant.variantData[1].name)) && (customSku += 'K');
+          $('#sunzi-input-sku').val(customSku);
+          
+          // 购物车预览图
+          $('#sunzi-cart').val(JSON.stringify({
+            'image': [ output.effect ]
+          }));
+          
+          // 加车队列
+          var _queue = [];
+          // 是否分享
+          if(share) {
+            if(shareProduct) {
+              // 产品数据
+              var product = {{ product | json }};
+              var variantId = getQueryVariable("variant") || "{{ product.variants.first.id }}";
+              // 当前sku
+              var sku = product.variants.find(item => item.id == variantId).sku;
+              
+              curVariant = shareProduct.variants.find(item => item.sku == sku);
+              if($("select[name=id]").length > 0) {
+              	$("select[name=id]").append("<option data-variant-id="+ curVariant.id +" data-sku="+ curVariant.sku +" value="+ curVariant.id +"></option");
+                $("select[name=id]").val(curVariant.id);
+                $("select[name=id]").change();
+              } else {
+              	$("[name=id]").val(curVariant.id);
+              }
+            }
+          }
+          // 主产品加车
+//           _queue.push(_sunzi_add_cart());
+          
+          // 如果存在关联产品
+          if (relatedProduct) {
+            _queue.push(_sunzi_add_cart({
+              id: relatedProduct.variantId
+            }));
+          }
+          
+
+
+          // 加车事件触发
+          await Promise.all(_queue);
+          
+          // 由于主产品涉及vip/质保产品等额外加车事件的判断，因此沿用站点加车方法
+          $('.product-form__cart-submit').click();
+          $('#sunzi-loading').hide();
+
+        }
+      },
+      _matomoId,
+      document.getElementById("sunzi-node")
+    );
+  });
+
+  /** 其他自定义函数 start **/
+  // 初始化数据
+  function initData(data) {
+    var sizeList = [];
+    var frameList = [];
+    var productJSON = {{product | json}};
+    productJSON.variants.forEach(variant => {
+      var sizeValue = variant.options[{{variantSize}}];
+      var frameValue = variant.options[{{variantFrame}}];
+      var colorValue = variant.options[{{variantColor}}];
+      sizeValue && !sizeList.some(sizeItem => sizeItem.value == sizeValue) && sizeList.push(sizeValue);
+      frameValue && !frameList.some(frameItem => frameItem.value == frameValue) && frameList.push(frameValue);
+    });
+
+    sizeList.length > 0 && data.sizeData.forEach((item, index) => item.name = sizeList[index]);
+    frameList.length > 0 && data.extraVariant.style == "style" && data.extraVariant.variantData.forEach((item, index) => item.name = frameList[index]);
+  }
+
+  // 获取地址栏参数
+  function getQueryVariable(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i=0;i<vars.length;i++) {
+      var pair = vars[i].split("=");
+      if(pair[0] == variable){return pair[1];}
+    }
+    return(false);
+  }
+
+  /** 其他自定义函数 end **/
+</script>

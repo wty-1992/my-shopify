@@ -1,0 +1,105 @@
+<style>
+.product_page_plans{
+  margin-top: 2.14289rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+}
+.product_page_plans p{
+  font-size: 1.4rem;
+  color: #bca175;
+  text-align: center;
+  margin-bottom: 0.1rem;
+}
+.product_page_plans p .text-top{
+  font-size: 2rem;
+  color: #000;
+  display:block;
+  margin-bottom: 4px;
+}
+.product_page_plans p .line-hua{
+  text-decoration: underline;
+}
+@media(max-width:768px){
+  .product_page_plans p {
+    font-size: 1.2rem;
+    margin-right: 5px;
+  }
+  .product_page_plans p:last-child {
+    margin-right: 0;
+  }
+  .product_page_plans p .text-top {
+    font-size: 1.6rem;
+  }
+}
+</style>
+{% if section.settings.enable %}
+<div class="product_page_plans">
+  <p>
+    <span class="text-top">{{section.settings.first_text_top}}</span>
+    {{section.settings.first_text}}
+  </p>
+  <p>
+    <span class="text-top">{{section.settings.second_text_top}}</span>
+    {{section.settings.second_text}}
+  </p>
+  <p>
+    <span class="text-top">{{section.settings.threed_text_top}}</span>
+    {{section.settings.threed_text}}
+  </p>
+</div>
+{% endif %}
+{% schema %}
+  {
+    "name": "产品页-自定义文按",
+	"class": "product-page-plans",
+    "settings": [
+	  {
+        "type": "paragraph",
+        "content":"product-page-plans"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable",
+        "label": "Enable"
+      },
+      {
+        "type": "text",
+        "id": "first_text_top",
+        "label": "第一句文案(上)"
+      },
+      {
+        "type": "text",
+        "id": "first_text",
+        "label": "第一句文案"
+      },
+      {
+        "type": "text",
+        "id": "second_text_top",
+        "label": "第二句文案(上)"
+      },
+      {
+        "type": "text",
+        "id": "second_text",
+        "label": "第二句文案"
+      },
+      {
+        "type": "text",
+        "id": "threed_text_top",
+        "label": "第三句文案(上)"
+      },
+      {
+        "type": "text",
+        "id": "threed_text",
+        "label": "第三句文案"
+      }
+    ],
+    "presets": [
+      {
+        "name":"详情页自定义文案",
+        "category": "product-page-plans"
+      }
+    ]
+  }
+{% endschema %}

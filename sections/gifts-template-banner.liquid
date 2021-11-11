@@ -1,0 +1,129 @@
+<style>
+.title-box{
+  text-align: center;
+}
+.title1{
+  font-size:30px;
+  margin: 65px 0 10px;
+  position: relative;
+  font-family: 'OpenSans-Light';
+  color: #000;
+}
+.title1:after{
+  content: "";
+  position: absolute;
+  width: 66%;
+  height: 1px;
+  background: #eee;
+  left: 50%;
+  bottom: -14px;
+  transform: translate(-50%);
+}
+.title2{
+  font-size: 14px;
+  margin: 60px 0px 20px;
+  font-family: OpenSans-Semibold;
+}
+.pc-hide{display:none !important;}
+.pages-banner-mb{display:none;}
+.collection-banner-slide{
+  text-align: center;
+}
+@media(max-width:768px){
+  .title1:after {
+    content: "";
+    position: absolute;
+    width: 50px;
+    height: 1px;
+    background: #000;
+    left: 50%;
+    bottom: -15px;
+    transform: translate(-50%);
+  }
+  .title2{
+    font-size: 14px;
+    margin: 52px 32px 20px;
+    font-family: OpenSans-Semibold;
+  }
+  .title1{
+    margin-top:35px;
+  }
+  .title1{font-size:24px;       
+    padding: 0 10px;
+    font-family: OpenSans-Semibold;    
+    margin: 30px 0 10px;
+  }
+  .pages-banner-pc{display:none;}
+  .pages-banner-mb{display:block;}
+}
+</style>
+{% for block in section.blocks %}
+  {% if handle == block.settings.handle %}	
+    <div class="title-box">
+      {% if block.settings.text1 !=blank%}
+      <div class="title1">{{block.settings.text1}}</div>
+      {% endif %}
+      {% if block.settings.text2 !=blank%}
+      <div class="title2">{{block.settings.text2}}</div>
+      {% endif %}
+    </div>
+    <div class="collection-banner-slide swiper-slide">
+      {% if block.settings.pc_coupon_image %}
+      <img data-src="{{ block.settings.pc_coupon_image | img_url: 'master' }}" class="lazyload pages-banner-pc" />
+      {% endif %}
+      {% if block.settings.mb_coupon_image %}
+      <img data-src="{{ block.settings.mb_coupon_image | img_url: 'master' }}" class="lazyload pages-banner-mb" />
+      {% endif %}
+    </div>
+  {% endif%}
+{% endfor %}
+
+{% schema %}
+  {
+    "name": "gifts-template-banner",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "gifts-template-banner"
+      }
+	],
+    "blocks": [
+      {
+        "type": "banner",
+        "name": "分类页banner",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "哪个页面"
+          },
+          {
+            "type": "text",
+            "id": "handle",
+            "label": "页面url"
+          },
+		  {
+            "type": "text",
+            "id": "text1",
+            "label": "导航文案1"
+          },
+          {
+            "type": "text",
+            "id": "text2",
+            "label": "导航文案2"
+          },
+          {
+            "type": "image_picker",
+            "id": "pc_coupon_image",
+            "label": "顶部PC图片"
+          },
+          {
+            "type": "image_picker",
+            "id": "mb_coupon_image",
+            "label": "顶部MB图片"
+          }
+        ]
+      }    
+    ]
+  }
+{% endschema %}

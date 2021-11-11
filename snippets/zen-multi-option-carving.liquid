@@ -1,0 +1,388 @@
+{% assign selectText = 'zen.general.click_to_choose' | t %}
+{% assign cancelText = 'zen.general.click_to_cancel' | t %}
+
+
+<script>
+  
+  var _zenEngravingSizeOptions = [
+    {
+      value: "45",
+      label: "45"
+    }
+  ];
+  
+  var _zenEngravingFontOptions = [
+    {
+      value: "MAAX ROUNDED BOLD",
+      label: "MAAX ROUNDED BOLD"
+    }
+  ];
+  
+  var total_num = 4;
+  var remain_num = total_num - 1;
+  var pieceArr = [{"label":"{{'variant.piece.one_piece' | t}}","value":1},{"label":"{{'variant.piece.two_piece' | t}}","value":2},{"label":"{{'variant.piece.three_piece' | t}}","value":3},{"label":"{{'variant.piece.four_piece' | t}}","value":4}];
+  console.log(pieceArr);
+  var ubase_ = new ubase();
+  
+  var _zenSku = "{{ current_variant.sku }}";
+  	
+  var _zenConfig = {
+    photoObj: [],
+    carvingObj: [],
+    crystalObj: [],
+    curveCarvingObj: [],
+    nameObj: [],
+    photo: [],
+    isCloseOnClickModal:false,
+    carving: [
+    	{
+          enable: true,
+          require: true,
+          previewText: "{{'zen.curvecarving.confirmText' | t}}",  //左侧预览文字
+          btnText: "{{'zen.photocarving.add' | t}}",     //按钮文案
+          type: "",
+          sku: _zenSku,
+          in:  _zenSku+"-IN.png",
+          out: _zenSku+"-OUT.png",
+          isBig: false,    //是否生成大图
+          bigParam: { width: 1200, height: 840, fontWeight: 'bold', fontSize: 60},  //刻字大图参数
+          showSize: _zenEngravingSizeOptions.length > 1 ? true : false,  //是否显示字号选项
+          showFont: _zenEngravingFontOptions.length > 1 ? true : false,  //是否显示字体选项
+          checkLimitAreaNew: true,
+          engravingSizeOptions: _zenEngravingSizeOptions,
+          engravingFontOptions: _zenEngravingFontOptions,
+          isSelectStyle: true,
+          fontFamilyLabel: '{{'zen.photocarving.font' | t}}:',
+          fontSizeLabel: '{{'zen.photocarving.size' | t}}:',
+          textPlaceHolder:'{{'zen.photocarving.please_note' | t}}',
+          cropPrompt:'{{'zen.general.crop_Prompt' | t}}',
+      	  confirmText:"{{'zen.general.confirm' | t }}",
+          cancelText:'{{'zen.general.cancel' | t }}',
+          coors: [    //初始化文字数组，有几个元素，前台就显示几个输入框
+          {
+            left: 250,  //输入文字left坐标
+            top: 200,   //输入文字top坐标
+            limit: "60",  //限制字符数
+            angle: "0",    //文字角度
+            textColor: "black",  //文字颜色
+            direction: "",   //文字方向
+            isWrap: false,    //是否自动换行
+            limitArea: {left:0, top:0, width:500,height:400},  //限制区域坐标
+            banDrag: "0",
+            lineHeight: "1",
+            rows: "2",   //输入框默认行数
+            resize: "none", //控制是否能被用户缩放
+            text: "",     //绑定文字变量
+            size: _zenEngravingSizeOptions[0].value,   //绑定字号变量，canvas渲染时使用，不同于vue的页面变量，必填
+            font: _zenEngravingFontOptions[0].value,     //绑定字体变量，canvas渲染时使用，不同于vue的页面变量，必填
+          }
+        ]
+      }
+    ],
+    crystal:[],
+    crystalText:[],
+  };
+  
+</script>
+
+<div class="multi-option-carving-box">
+  <div id="zen-photocarving"></div>
+</div>
+
+<div class="remain-part">
+  
+  <div class="remain-text input-field-title">{{'zen.general.prompt_text2' | t}} <span id="remian-number">3</span> {{'zen.general.piece' | t}}:</div>
+  <div class="remain-list">
+    {% for i in (1..10) %}
+    {% assign imgName = 'piece' | append:i | append:'.jpg' | file_url | prepend:'https:' %}
+    <label class="remain-label" for="remain-image-{{i}}" title="{{selectText}}">
+      	<img src="{{ imgName }}" />
+    </label>
+    {% endfor %}
+    
+  </div>
+  
+  <div class="remain-text input-field-title">{{'zen.general.remain_piece' | t}}:</div>
+  <div class="remain-piece-box">
+  	{% for n in (1..3) %}
+    <div id="remain-piece-{{n}}" class="remain-piece">
+    </div>
+    
+    {% endfor %}
+  </div>
+</div>
+
+<input type="text" id="engraving-crop" name="properties[engravingCrop]" value="" style="display:none" /><!--效果图-->
+<input type="text" id="engraving-text" name="properties[engravingText]" value="" style="display:none" />
+
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.3.4/zen-photo-carving-chunk-vendors.css?202012141627" rel="stylesheet" />
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.3.4/zen-photo-carving-app.css?202012141627" rel="stylesheet" />
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.3.4/zen-photo-carving-chunk-vendors.js?202012141627"></script>
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.3.4/zen-photo-carving-app.js?202012141627"></script>
+
+<script>
+  $(function() {
+  	$('.zen-require').attr('name','customVal');
+    
+    $('.remain-label').click(function(){
+      var rSelf = $(this);
+      $('.remain-piece').each(function(i,v){
+        if($(this).find('img').length < 1){
+          let rHtml = rSelf.html() + '<div class="remain-cancel-btn">{{cancelText}}</div>'
+          $(this).html(rHtml);
+          return false;
+        }
+      });
+    });
+    
+    $('.remain-piece').bind('click',function(){
+      if($(this).html() != ''){
+      	$(this).html('');
+      }
+    });
+  })
+  
+  //监听变体变化事件
+  Listener.on([ Listener.product.update.before ], function(event, variant) {
+console.log('variant', variant);
+    var goal_num_str = variant.title.toLowerCase();
+    var goal_num = 1;
+    
+    console.log(goal_num_str);
+    pieceArr.forEach(function(item){
+      console.log(item.label);
+      if(goal_num_str.indexOf(item.label) > -1){
+      	goal_num = item.value;
+      }                         
+    });
+    
+    var current_num = _zenConfig.carving.length;
+    
+    if(goal_num > 0){
+      createCarving(goal_num, current_num);
+    }
+    
+    remain_num = total_num - goal_num;
+    
+    $('#remian-number').text(remain_num);
+    
+    if(remain_num == 0){
+      $('.remain-part').hide();
+    }else{
+      $('.remain-part').show();
+    }
+    
+    createRemainPiece(remain_num, $('.remain-piece').length);
+    
+  });
+  
+  //计算对象元素个数
+  function objCount(obj) {
+    var count = 0;
+    for(var i in obj) {
+      count++;
+    }
+    return count;
+  }
+    
+  function createRemainPiece(goal_num, current_num){
+	var diff_num = goal_num - current_num;
+    if(diff_num > 0){
+      let remainHtml = '';
+      for(var ii = 1;ii <= diff_num;ii++ ){
+        let remainNo = current_num+ii;
+      	remainHtml += '<div id="remain-piece-'+remainNo+'" class="remain-piece"></div>';
+      }
+      
+      $('.remain-piece-box').append(remainHtml);
+      
+      $('.remain-piece').bind('click',function(){
+        if($(this).html() != ''){
+          $(this).html('');
+        }
+      });
+    }else{
+      for(var j = current_num;j >goal_num;j-- ){
+        $('#remain-piece-'+j).remove();
+      }
+    }
+  }
+  
+  function createCarving(goal_num, current_num){
+    var diff_num = goal_num - current_num;
+    if(diff_num > 0){
+
+      for(var ii = 0;ii <diff_num;ii++ ){
+        var photoNum = current_num + ii + 1;
+        window._zenConfig.carving.push({
+          enable: true,
+          require: true,
+          previewText: "{{'zen.curvecarving.confirmText' | t}}",  //左侧预览文字
+          btnText: "{{'zen.photocarving.add' | t}}",     //按钮文案
+          type: "",
+          sku: _zenSku,
+          in:  _zenSku+"-IN.png",
+          out: _zenSku+"-OUT.png",
+          isBig: false,    //是否生成大图
+          bigParam: { width: 1200, height: 840, fontWeight: 'bold', fontSize: 60},  //刻字大图参数
+          showSize: _zenEngravingSizeOptions.length > 1 ? true : false,  //是否显示字号选项
+          showFont: _zenEngravingFontOptions.length > 1 ? true : false,  //是否显示字体选项
+          checkLimitAreaNew: true,
+          engravingSizeOptions: _zenEngravingSizeOptions,
+          engravingFontOptions: _zenEngravingFontOptions,
+          isSelectStyle: true,
+          fontFamilyLabel: '{{'zen.photocarving.font' | t}}:',
+          fontSizeLabel: '{{'zen.photocarving.size' | t}}:',
+          textPlaceHolder:'{{'zen.photocarving.please_note' | t}}',
+          cropPrompt:'{{'zen.general.crop_Prompt' | t}}',
+      	  confirmText:"{{'zen.general.confirm' | t }}",
+          cancelText:'{{'zen.general.cancel' | t }}',
+          coors: [    //初始化文字数组，有几个元素，前台就显示几个输入框
+          {
+            left: 250,  //输入文字left坐标
+            top: 200,   //输入文字top坐标
+            limit: "60",  //限制字符数
+            angle: "0",    //文字角度
+            textColor: "black",  //文字颜色
+            direction: "",   //文字方向
+            isWrap: false,    //是否自动换行
+            limitArea: {left:0, top:0, width:500,height:400},  //限制区域坐标
+            banDrag: "0",
+            lineHeight: "1",
+            rows: "2",   //输入框默认行数
+            resize: "none", //控制是否能被用户缩放
+            text: "",     //绑定文字变量
+            size: _zenEngravingSizeOptions[0].value,   //绑定字号变量，canvas渲染时使用，不同于vue的页面变量，必填
+            font: _zenEngravingFontOptions[0].value,     //绑定字体变量，canvas渲染时使用，不同于vue的页面变量，必填
+          }
+        ]
+      });
+      }
+    }else if(diff_num < 0){
+      for(var j = current_num;j >goal_num;j-- ){
+        window._zenConfig.carving.splice(j-1, 1);
+
+      }
+
+    }
+  }
+    
+  Product.validators.push(async () => {
+    var customData = JSON.parse($(".zen-require").val());
+    var zenFlag = true;
+    var engraveText = [];
+    if(typeof customData.engraving !== 'undefined'){
+      $('.area-carving').each(function(index){
+        let item = customData.engraving[index];
+        let n = index + 1;
+      	if(!item.engravingCrop) {
+          $('.area-carving-'+index).css('border-color',"red");
+          zenFlag = false;
+        }else{
+          $('.area-carving-'+index).css('border-color',"#f7f8fa");
+          engraveText.push(n+':'+item.engravingText);
+        }
+      });      
+    }else{
+      zenFlag = false;
+    }
+    
+    $('#engraving-text').val(engraveText.join(' '));
+  
+    if($('.remain-piece').length > 0){
+      
+      $('.remain-piece').each(function(i,v){
+        if($(this).find('img').length < 1){
+          $(this).css('border-color','red');
+          zenFlag = false;
+        }else{
+          $(this).css('border-color','#e8eced');
+        }
+      });
+    }
+    
+    if(!zenFlag){
+      return false;
+    }
+    
+  	Mask.show();
+      let customInfo = customData;
+      let tmpCanvas = new fabric.Canvas(); // 展示效果图画布
+      let obj = [];
+      let leftVal = 0;
+      let w = 500;
+      let h = 400;
+      let previewWidth = w * total_num;
+
+      tmpCanvas.setWidth(previewWidth).setHeight(h).setBackgroundColor('white');
+      $('.area-carving').each( function (i){
+        let v = customData.engraving[i];
+        if( $.trim(v.engravingCrop) != ''){
+          var p1 = new Promise(function (resolve, reject) {
+            let src = $.trim(v.engravingCrop);
+            fabric.Image.fromURL(src, function (oImg) {
+              oImg.scaleToWidth(w);
+//               oImg.scaleToHeight(400);
+              tmpCanvas.add(oImg);
+              tmpCanvas.renderAll();
+              resolve();//ok的位置执行这个函数
+            }.bind(this),{crossOrigin: 'anonymous',left:leftVal});
+          });
+          obj.push(p1);
+          leftVal+=w;
+        }
+      });
+    
+      $('.remain-piece img').each(function(){
+        let leftCha = (w-h)/2;
+        let src2 = $.trim($(this).attr('src'));
+        
+        var p2 = new Promise(function (resolve, reject) {
+          fabric.Image.fromURL(src2, function (oImg2) {
+            oImg2.scaleToWidth(h);
+//             oImg2.scaleToWidth(w);
+            tmpCanvas.add(oImg2);
+            tmpCanvas.renderAll();
+            resolve();//ok的位置执行这个函数
+          }.bind(this),{crossOrigin: 'anonymous',left:leftVal+leftCha});
+        });
+        obj.push(p2);
+        leftVal+=w;
+      });
+  		
+      if(leftVal > 0){
+        // 同时执行p1和p2，并在它们都完成后执行then:
+        await Promise.all(obj).then(async (results) => {
+          console.log(results); // 获得一个Array: ['P1', 'P2']
+          var base64 = tmpCanvas.toDataURL({format: 'png',quality: 0.8});
+          var blob = ubase_.convertBase64ToBlob(base64);
+          var filename = 'scrop/' + new Date().Format("yyyyMMdd") + '/' + ubase.util.randomString(6);//修改上传到七牛的图片路径 2019-11-11 Alice
+          await ubase_.cdnAsyncUpload((token, resolve) => {
+            var key = filename + '-'+_zenSku+'.png';
+            console.log(key);
+            var observer = {
+              next(result){
+//                 console.log('ok');
+              },
+              error(err){
+                console.log(err.message);
+              },
+              complete(res){
+                $("#engraving-crop").val(ubase.util.cdnurl + res.key);
+                resolve();
+                return true;
+              }
+            };
+            var observable = qiniu.upload(blob, key, token, ubase.util.putExtra, ubase.util.config);
+            observable.subscribe(observer);
+          });
+          return true;
+        });
+      }else{
+        return false;
+      }
+  
+  	return true;
+  })
+
+</script>

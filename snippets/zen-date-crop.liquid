@@ -1,0 +1,179 @@
+{%comment%}通过标签获取默认年份 {%endcomment%}
+{% assign defaultYear = '' %}
+{% for tag_item in product.tags %}
+  {% if tag_item contains "custom-default-year-" %}
+    {% assign defaultYear = tag_item | strip | replace: "custom-default-year-", "" %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+<input type="hidden" id="cropPromptValue" value="{{ 'zen.general.cropPrompt' | t }}"/>
+<script>
+  var _zenSku = "{{ product.selected_or_first_available_variant.sku }}";
+  var jsonCustom = JSON.parse('{"crop":[{"width":"0","height":0}]}');
+
+  {% if product.metafields["global"]["cattribute"] %}
+    jsonCustom = JSON.parse('{{product.metafields["global"]["cattribute"]}}');//1:标品 2：自定义
+  {% endif %}
+                          
+  var cropList = [];
+  
+  if(typeof jsonCustom.crop != 'undefined'){
+    
+    jsonCustom.crop.forEach(function(_v,_i){
+      var uploadLabel = "{{ 'zen.general.uploadLabel' | t }}";
+      if(typeof _v.uploadLabel != 'undefined'){
+      	uploadLabel = _v.uploadLabel;
+      }
+      
+      var aspectRatio = 0;
+      if(_v.width > 0){
+        aspectRatio = _v.width / _v.height;
+      }
+      
+      cropList.push({
+        uploadLabel: uploadLabel,  //传图描述标签
+        btnUploadText: "{{ 'zen.photo.upload' | t }}",  //上传按钮文案
+        require: true,//是否必传图片
+        hasCropOrigin: true,
+        sku: _zenSku,
+        style: 0, //设置上传样式，0:单行展示 1：矩形上传表单
+        type: '',
+        aspectRatio: aspectRatio
+      });
+      
+    });
+  
+  }
+  
+  var _zenConfig = {
+    photoObj: [],
+    carvingObj: [],
+    crystalObj: [],
+    curveCarvingObj: [],
+    nameObj: [],
+    carvingBigObj: [],
+    cropPrompt: $('#cropPromptValue').val(),
+    isCloseOnClickModal: false,
+    cropConfirmText:"{{ 'zen.general.confirm' | t }}",
+    cropCancelText:"{{ 'zen.general.cancel' | t }}",
+    uploadLoadingImage: 'https://ik.imagekit.io/soufeel/en/skin/frontend/smartwave/default/images/soufeel-30.gif',
+    wrapperBackgroudColor:'#000000',
+//     isModalAppendToBody:false,
+    crop: cropList,
+    photo: [],
+    carving: [],
+    crystal:[],
+    crystalText:[],
+    curveCarving:[]
+  };
+                          
+</script>
+
+<div class="date-container">
+<div>{{ "zen.general.select_year" | t }}:</div>
+<div><input type="text" id="datepicker" name="fonttext" readonly="readonly" value="{{defaultYear}}"></div>
+</div>
+
+<div class="photo-select-carving">
+  <div id="zen-photocarving"></div>
+</div>
+
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.4.8/zen-photo-carving-chunk-vendors.css?202004171143" rel="stylesheet" />
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.4.8/zen-photo-carving-app.css?202004171143" rel="stylesheet" />
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.4.8/zen-photo-carving-chunk-vendors.js?202004171143"></script>
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.4.8/zen-photo-carving-app.js?202004171143"></script>
+
+<input type="text" id="custom-info" name="properties[customInfo]" value="" style="display:none"/>
+
+<script>
+  var _zenFlag = 1;
+  $(function() {
+    $('.zen-require').attr('name','customVal');
+    
+    $('#datepicker').datepicker({  
+      changeYear: true, 			// 年下拉菜单
+      showButtonPanel: true, 		// 显示按钮面板
+      currentText: "{{'zen.general.current_year' | t}}", 		// 当前日期按钮提示文字
+      dateFormat: "yy",		// 日期格式
+      yearRange: "1851:c",		//年份选择范围
+      defaultDate: new Date(parseInt('{{defaultYear}}'), 01, 01),
+                                     onClose: function(dateText, inst) {// 关闭事件
+                            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();//获取用户选择的年份值
+      var defaultDate = new Date(year, 01, 01);
+      $(this).datepicker( "option", "defaultDate", defaultDate );
+      $(this).datepicker('setDate', defaultDate);//月、日设置为12月25日，这里的月份数字要减一
+
+    }
+    });
+    
+    var defaultDate = new Date(parseInt('{{defaultYear}}'), 01, 01)
+    $(this).datepicker('setDate', defaultDate);//月、日设置为12月25日，这里的月份数字要减一
+  
+    var modal = new tingle.modal({
+      footer: true,
+      stickyFooter: false,
+      onOpen: function() {
+      },
+      onClose: function() {
+        //console.log('modal closed');
+      },
+      beforeClose: function() {
+        return true; // close the modal
+      }
+    });
+  
+    modal.addFooterBtn('Reselect', 'tingle-btn tingle-btn--danger', function() {
+      modal.close();
+    });
+    modal.addFooterBtn('Confirm', 'tingle-btn tingle-btn--primary c_photo', function() {
+      if($('.mpw-add-to-cart').length > 0){
+      	$('.mpw-add-to-cart').click();
+      }else{
+      	$(".product-form__item--submit button").click();
+      }
+	  
+      modal.close();
+    });
+    
+    $('.news-date-btn').click(function(){
+      var _flag = true;
+      if($.trim($('#datepicker').val()) == ''){
+        $('#datepicker').css('border-color','#ff0000');
+        _flag = false;
+      }
+      
+      if(typeof jsonCustom.crop != 'undefined'){
+        var zenInfo = JSON.parse($(".zen-require").val());
+        if(!zenInfo.crop[0].crop){
+        	$('.area-crop-upload-0').css('border-color',"red");
+        	_flag = false;
+        }else{
+        	$('.area-crop-upload-0').css('border-color',"#c7cecf");
+        }
+      }
+      
+      if(_flag){
+        $('#datepicker').css('border-color','#e7e7e7');
+        var zenCustomInfo = {};
+        zenCustomInfo['_sunzi_text'] = {};
+        zenCustomInfo['_sunzi_text']['value'] = $('#datepicker').val();
+        
+        zenCustomInfo['_sunzi_effect'] =  "https:"+'{{product.images[0]|img_url: '600x600'}}'
+        
+        if(typeof jsonCustom.crop != 'undefined'){
+          zenCustomInfo['_sunzi_source'] = zenInfo.crop[0].cropOrigin;
+          zenCustomInfo['_sunzi_ai'] = zenInfo.crop[0].cropOrigin;
+        }
+
+        $('#custom-info').val(JSON.stringify(zenCustomInfo));
+        modal.setContent('<div class="news-date-confirm-content"><p>{{ "zen.general.select_year_notice" | t }}</p><p class="red">'+$( "#datepicker" ).val()+'</p></div>');
+        modal.open();
+      }
+
+      
+    });
+    
+  })
+  
+</script>

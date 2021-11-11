@@ -1,0 +1,129 @@
+{%comment%}通过标签获取typeid 2020-9-17 by alice typeid --1 报纸 2 内裤 3 手机壳 4 T恤 5 袜子 6 画{%endcomment%}
+{% assign typeid = 1 %}
+{% for tag_item in product.tags %}
+  {% if tag_item contains "custom-typeid-" %}
+    {% assign typeid = tag_item | strip | replace: "custom-typeid-", "" %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+<style>
+  .require-info-box {
+  	display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .require-info-box input, .require-info-box textarea {
+  	width: 72%;
+    border: 1px solid #e7e7e7;
+    height: 2rem;
+    margin-bottom: 1rem
+  }
+  .require-info-box textarea{
+  	min-height: 5rem;
+    resize: none;
+  }
+  .red{
+  	color: red;
+  }
+  .require-title {
+  	margin-bottom: 1rem;
+    text-align: center;
+  }
+  .require-paper-box a {
+    text-decoration: underline;
+  }
+  .require-paper-btn {
+  	color: #d95e9a;
+  }
+  @media (max-width: 768px) {
+    .require-title {
+      margin-top: 60px;
+    }
+    .require-info-box input, .require-info-box textarea {
+      width: 60%;
+    }
+    .require-tingle-modal .tingle-modal-box__footer {
+    	bottom: 0px !important;
+    }
+  }
+</style>
+
+<div class="require-paper-box">
+	<a class="require-paper-btn" href="javascript:void(0)">{{'zen.general.placeholder3' | t}} </a>
+</div>
+
+<script>
+  $(function(){
+  	//用户填写产品需求信息的弹窗
+    var requireModal = new tingle.modal({
+      footer: true,
+      stickyFooter: false,
+      cssClass: ['require-tingle-modal'],
+      onOpen: function() {
+      },
+      onClose: function() {
+        //console.log('modal closed');
+      },
+      beforeClose: function() {
+        return true; // close the modal
+      }
+    });
+    
+    //提交用户填写的信息
+    requireModal.addFooterBtn("{{'customer.recover_password.submit' | t}}", 'tingle-btn tingle-btn--primary', function() {
+      //必填验证
+      var submit_flag = true;
+      $('.require-info-box input').each(function(){
+        if(!$.trim($(this).val())){
+          $(this).css('border-color','red');
+          submit_flag = false;
+        }else{
+          $(this).css('border-color','#e7e7e7');
+        }
+      });
+      
+      $('.require-info-box textarea').each(function(){
+        if(!$.trim($(this).val())){
+          $(this).css('border-color','red');
+          submit_flag = false;
+        }else{
+          $(this).css('border-color','#e7e7e7');
+        }
+      });
+      
+      if(!submit_flag){
+      	return submit_flag;
+      }
+      
+      //ajax请求
+      $.ajax({
+        type: "POST",
+        url: "https://pic.stylelab.com/zg/index.php",
+        dataType: 'json',
+        data: $('#require-form').serialize()
+      });
+      
+      requireModal.close();
+      alert('{{'zen.general.write_back' | t}}');
+      
+    });
+    
+    $('.require-paper-btn').click(function(){
+      //构造弹窗表单内容
+      requireModal.setContent(<div class="require-title">{{'zen.general.placeholder4' | t}}</div><form action="" method="post" id="require-form"><div class="require-info-box"><label>{{'customer.login.email' | t}}<span class="red">*</span>:</label><input type="text" name="email"/></div><div class="require-info-box"><label>{{'page.contact.name' | t}}<span class="red">*</span>:</label><input type="text" name="name"/></div><div class="require-info-box"><label>{{'customer.addresses.country' | t}}<span class="red">*</span>:</label><input type="text" name="country"/></div><div class="require-info-box"><label>{{'zen.general.product_title' | t}}<span class="red">*</span>:</label><input type="text" name="newspaper"/></div><div class="require-info-box"><label>{{'zen.general.product_describe' | t}}<span class="red">*</span>:</label><input type="text" id="otherdatepicker" name="cdate" readonly="readonly"/></div><div class="require-info-box"><label>{{'zen.general.Remarks' | t}}<span class="red">*</span>:</label><textarea name="remarks"></textarea></div><input type="hidden" name="productname" value="{{product.title}}"/><input type="hidden" name="websiteid" value="72"/><input type="hidden" name="typeid" value="{{typeid}}"/></form>');
+      
+      $( "#otherdatepicker" ).datepicker({
+        maxDate: 0,
+        yearRange: "1700:c",
+        dateFormat: "yymmdd",
+        changeYear: true,
+        changeMonth: true,
+        showMonthAfterYear:true//true：选择年份显示在选择月份前面
+      });
+      requireModal.open();
+    });
+  
+  })
+  
+</script>

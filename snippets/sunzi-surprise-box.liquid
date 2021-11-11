@@ -1,0 +1,130 @@
+{% comment %}
+** @name 惊喜盒子 **
+** @author 金忠帅 **
+** @integrate 王天宇 **
+{% endcomment %}
+
+{% comment %} 调用参数 {% endcomment %}
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'sunzi.box.js?1610178123' %}
+
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign requestURL = '' %}
+
+{% comment %} 谷歌分析id {% endcomment %}
+{% assign gtag = 'G-R132WKL1C2' %}
+
+{% comment %} 定制按钮文案 {% endcomment %}
+{% assign buttonText = section.settings.sunzi_button_upload_text %}
+
+{% comment %} 站点语种 {% endcomment %}
+{% assign sunzi_shop_language = section.settings.sunzi_shop_language %}
+{% comment %} 货币符号 {% endcomment %}
+{% assign sunzi_shop_symbol = section.settings.sunzi_shop_symbol %}
+
+{% comment %} 定制初始化 {% endcomment %}
+{% include 'sunzi-solt-template' %}
+
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+  .product-quantity,
+  .product-form .common-standar_btn,
+  .inline-field-wrapper {
+  	display: none !important;
+  }
+  @media screen and (min-width: 768px) {
+    .sunzi-modal-content {
+      width: 500px!important;
+      height: 680px!important;
+    }
+  }
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  
+  <input type="text" hidden id="sunzi-input-crop" name="properties[multi_crop]" >
+  <input type="text" hidden id="sunzi-input-images" name="properties[multi_images]" >
+  {% comment %} 默认表单参数 {% endcomment %}
+<!--   <input type="hidden" id="sunzi-input" name="properties[customInfo]" required="required"></input> -->
+  <input type="hidden" id="sunzi-cart" name="properties[_sunzi_cart]"></input>
+
+  {% comment %} 定制按钮 {% endcomment %}
+  <button type="button" id="sunzi-button" disabled class="dots-loading">
+    <span class="dots">
+      <i></i>
+      <i></i>
+      <i></i>
+    </span>
+    <div class="sunzi-button-text">{{ buttonText }}</div>
+  </button>
+</div>
+
+<!-- sunzi core js -->
+<script src="https://sunzi7n.imaiyuan.com/core/{{coreJs}}" defer="defer"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ gtag }}" async="async"></script>
+<script async="async">
+  _sunzi_gtag('{{ gtag }}');
+</script>
+
+{% comment %} 1.隐藏掉变体，加车按钮等等 {% endcomment %}
+<script defer="defer">
+</script>
+
+{% comment %} 2.请求定制化数据 {% endcomment %}
+<script defer="defer">
+  _sunzi_request('{{ requestURL }}');
+</script>
+
+{% comment %} 3.开始定制 {% endcomment %}
+<script defer="defer">
+  // 初始化数据
+  var defaultMap = [{"name":"Cube1","src":"https:\/\/spic.qn.cdn.imaiyuan.com\/img\/photo\/DTH003X01_1.png"},{"name":"Cube2","src":"https:\/\/spic.qn.cdn.imaiyuan.com\/img\/photo\/DTH003X01_2.png"},{"name":"Cube3","src":"https:\/\/spic.qn.cdn.imaiyuan.com\/img\/photo\/DTH003X01_3.png"},{"name":"Cube4","src":"https:\/\/spic.qn.cdn.imaiyuan.com\/img\/photo\/DTH003X01_4.png"},{"name":"Cube5","src":"https:\/\/spic.qn.cdn.imaiyuan.com\/img\/photo\/DTH003X01_5.png"},{"name":"Cube6","src":"https:\/\/spic.qn.cdn.imaiyuan.com\/img\/photo\/DTH003X01_6.png"}];
+  var dataImages = [{"id":"1","src":"https:\/\/spic.qn.cdn.imaiyuan.com\/img\/photo\/confetti_1.jpg","alt":"Alt Image 1","name":"Stars","type":"star","colors":["#FFE23B","#4CE07F","#FD6956","#07FEFF","#FE44FE","#CA7C35","#2F9360","#6A3C2D","#E14543"],"cdTime":1},{"id":"2","src":"https:\/\/spic.qn.cdn.imaiyuan.com\/img\/photo\/confetti_2.jpg","alt":"Alt Image 2","name":"Hearts","type":"heart","colors":["#F8598C","#8FBFDF","#D3B03C","#A7750A","#7A6174"],"cdTime":1},{"id":"3","src":"https:\/\/spic.qn.cdn.imaiyuan.com\/img\/photo\/confetti_3.jpg","alt":"Alt Image 3","name":"Circles","type":"circle","colors":["#23D4F7","#D0388B","#D53342","#355C4C","#B2813C","#FFF38E","#263F61","#264BBF"],"cdTime":1},{"id":"4","src":"https:\/\/spic.qn.cdn.imaiyuan.com\/img\/photo\/confetti_4.jpg","alt":"Alt Image 4","name":"Snow","type":"snow","colors":["#FEFEFE"],"cdTime":4}];
+  const textureNames = defaultMap.slice(0,4).map((item) => {
+    item.source = item.src;
+    return item;
+  });
+  const boxConfettis = dataImages.map((item) => {
+    item.image = item.src;
+    return item;
+  });
+  
+  $('#sunzi-button').click(function() {
+    _sunzi_response.shop = {
+      language: '{{sunzi_shop_language}}',
+      currencySymbol: '{{sunzi_shop_symbol}}',
+    };
+    
+    _sunzi_response.textureNames = textureNames;
+    _sunzi_response.boxConfettis = boxConfettis;
+    _sunzi_response.resultTransparent = true;
+   
+    // 开始渲染
+    _sunzi_custom(
+      Box.default,
+      function(data, compose) {
+        _sunzi_loading();
+        var images = {};
+        data.forEach((item, index) => {
+          images[index] = { src: item };
+        });
+        $('#sunzi-input-images').val(JSON.stringify(images));
+        $('#sunzi-input-crop').val(compose);
+        $('#sunzi-cart').val(JSON.stringify({
+          'image': [ compose ]
+        }));
+        
+		//	加车事件触发
+      	$('.product-form__cart-submit').click();
+        _sunzi_hide_loading();
+      }
+    );
+  });
+  
+  /** 其他自定义函数 start **/
+
+  /** 其他自定义函数 end **/
+</script>

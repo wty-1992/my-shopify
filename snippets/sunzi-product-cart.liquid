@@ -1,0 +1,139 @@
+{% comment %} 
+*** 孙子定制化产品-购物车样式 
+*** wty 2021-08-03
+{% endcomment %}
+
+
+<style>
+
+  .cart-item .sunzi-preview-img-wrap {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+  }
+  .cart-item .sunzi-preview-img {
+    width: 80px;
+    margin-left: -10px;
+  }
+  
+  @media(max-width:768px){
+    .cart-item .sunzi-preview-img {
+      width: 60px;
+    }
+  }
+  
+</style>
+
+<script>
+  $(document).ready(function() {
+    var sunziTempcart = {{ cart | json }};
+    updateEffectImage(sunziTempcart.items);
+    updateCartItemStyle(sunziTempcart.items);
+    Listener.on([ Listener.cart.refresh ], function(event, cart) {
+      var cartItems = JSON.parse(JSON.stringify(cart.items));
+      cartItems.forEach(cartItem => {
+        if(!cartItem.properties) return;
+        var properties = {};
+        cartItem.properties.forEach(property => properties[property.name] = property.value);
+        cartItem.properties = properties;
+      });
+      // 刷新后重置样式
+      updateCartItemStyle(cartItems);
+      // 删除关联产品
+      deleteRelatedProduct(cartItems);
+    });
+  });
+  
+  // 更新孙子产品的效果图
+  function updateEffectImage(cartData) {
+        var appendDomOrigin = 'cart__image-';  //  定制化图片domID前缀
+        {% assign tobi = 0 %}
+        {% for item in cart.items %}
+          cartData[{{tobi}}].product_type = "{{item.product.tags}}";
+          {% assign tobi = tobi | plus:1 %}
+        {% endfor %}
+        cartData.forEach(function(item, index) {
+          var _sunzi_cart = item.properties && item.properties._sunzi_cart && JSON.parse(item.properties._sunzi_cart)  || item.properties && item.properties.customInfo && JSON.parse(item.properties.customInfo)._sunzi_cart || null;
+          // 判断是否是定制化产品，并添加展示图
+          if(_sunzi_cart) {
+            var appendDomID = appendDomOrigin + (index + 1);
+            var _cart_images = _sunzi_cart.image;
+            if(_cart_images && _cart_images.length > 0) {
+              $('.' + appendDomID).find('.cart__image').hide();
+              if(_cart_images[0] == 'default') {
+                var _image = item.image.replace(/(\.[^.]*)$/, '_240x240$1').replace('http:', '');
+                $('.' + appendDomID).addClass('sunzi-preview-img-wrap');
+                $('.' + appendDomID).append("<img class='sunzi-preview-img' src='"+ _image +"' />");
+              } else {
+                _cart_images.forEach(function(image) {
+                  $('.' + appendDomID).addClass('sunzi-preview-img-wrap');
+                  $('.' + appendDomID).append("<img class='sunzi-preview-img' src='"+ image +"' />");
+                });
+              }
+              
+            }
+          }          
+        });
+  }
+
+  // 更新产品样式
+  function updateCartItemStyle(cartData) {
+    cartData.forEach(function(item, index) {
+      if(item.properties && item.properties._sunzi_main_product) {
+        var rowDom = $(".cart__row[data-line=" + (index + 1) + "]");
+        // 数量按钮样式
+        var qtyDom = rowDom.find(".js-qty");
+        qtyDom.find("button") && qtyDom.find("button").hide();
+        qtyDom.find("input") && qtyDom.find("input").attr("readOnly","true");
+        // 删除按钮
+        rowDom.find(".remove") && rowDom.find(".remove").css("opacity", 0);
+      } 
+    });
+  }
+  
+  // 删除关联产品
+  function deleteRelatedProduct(cartData) {
+    var updateQtyList = [];
+    // 获取未删除的主产品的关联产品列表
+    var validProduct = cartData.reduce((total, item, index) => {
+      if(index == 1) total = getRelatedProductList(total.properties);
+      return total.concat(getRelatedProductList(item.properties));
+    });
+    // 如果关联产品的主产品被删除，quantity设置为0
+    cartData.forEach(cartItem => {
+      var mainID = cartItem.properties && cartItem.properties['_sunzi_main_product'];
+      updateQtyList.push(mainID && validProduct.indexOf(mainID) < 0 ? 0 : cartItem.quantity);
+    });
+    updateQtyList.indexOf(0) > -1 && updateCart(updateQtyList);
+    
+  }
+  
+  // 获取关联产品id
+  function getRelatedProductList(properties) {
+    return properties && properties._sunzi_related_products ? JSON.parse(properties._sunzi_related_products) : [];
+  }
+  
+  // 更新购物车产品信息
+  function updateCart(updateData) {
+    debugger
+    var promise = new Promise((resolve, reject) => {
+      $.ajax({
+        type: "POST",
+        async: false,  
+        url: "/cart/update.js",
+        data: {
+          updates: updateData
+        },
+        dataType: "json",
+        success: (item) => {
+		  Cart.refresh();
+          resolve(item);
+        },
+        error: (request, status) => {
+          reject(request, status);
+        }
+      })
+    });
+    return promise;
+  }
+</script>

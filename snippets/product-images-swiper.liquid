@@ -1,0 +1,155 @@
+{% assign productId = product.id %}
+{% assign galleryId = 'product-gallery-' | append: productId  %}
+{% assign thumbsId = 'product-thumbnail-' | append: productId %}
+{% assign videoId = 'product-video-' | append: productId %}
+{% assign prev = 'product-prev-' | append: productId %}
+{% assign next = 'product-next-' | append: productId %}
+
+<div class="product-images">
+    <div id="{{ galleryId }}" class="top5-pro-img swiper-container gallery-top" pro-handle="{{ product.handle }}">
+        <div class="swiper-wrapper">
+            {% for image in product.images %}
+            <div class="swiper-slide" data-image-id="{{ image.id }}">
+                <div class=" swiper-zoom-container" data-swiper-zoom="2">
+                  <a href="{{ product.url }}">
+                    {% comment %}<img class="lazyload" data-src="{{ image | img_url: '500x' }}" />{% endcomment %}
+                    <picture>
+                      <source
+                              data-srcset="{{ image | img_url: '200x' }}"
+                              media="(max-width: 750px)" />
+                      <source
+                              data-srcset="{{ image | img_url: '400x'  }}"
+                              media="(max-width: 1024px)" />
+                      <img
+                           data-src="{{ image | img_url: '400x' }}"
+                           class="lazyload"
+                           alt="{{ image.alt | escape }}" />
+                    </picture>
+                  </a>
+                </div>              
+            </div>
+            {% endfor %}
+                   
+        </div>
+      <a id="{{ product.handle | prepend: 'design-btn-' }}" class="design-btn" href="{{ product.url }}" style="display: none;">DESIGN YOUR OWN</a>
+      <span style="display: none;">{% increment top_num %}</span>
+      <div class="top-num">
+        <p>{{ top_num }}</p>
+        <p>Top</p>
+      </div>
+    </div>
+  <div class="details-area">
+    <div class="preview" id="{{ product.handle | prepend: 'swiper-' }}" style="display:none;">
+        <div id="{{ thumbsId }}" class="swiper-container gallery-thumbs">
+            <div class="swiper-wrapper">
+                {% for image in product.images %}
+                <div class="swiper-slide">
+                    <img class="lazyload" data-src="{{ image | img_url: '50x' }}" />
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Add Arrows -->
+        <div id="{{ prev }}" class="gallery-button-prev">
+            <i class="photofont photo-back"></i>
+        </div>
+        <div id="{{ next }}" class="gallery-button-next">
+            <i class="photofont photo-jinru"></i>
+        </div>
+    </div>
+      <div class="box-shadow">
+        {% assign firstVariant = product.first_available_variant %}
+        <div class="cheap-title">{{ product.title }}</div>
+        <div class="box-price">
+          <div class="new-price"><span class="price" data-money="{{ firstVariant.price }}"></span></div>
+          <div class="old-price"><span class="price" data-money="{{ firstVariant.compare_at_price }}"></span></div>                
+          <div class="home-collection-off">
+            <span>
+              {{ firstVariant.compare_at_price | minus: firstVariant.price | times: 100.0 | divided_by: firstVariant.compare_at_price | money_without_currency | times: 100 | replace: '.0', ''}}% {{ 'product.price.off' | t }}
+            </span>
+          </div>
+        </div>
+        <div class="ratings-fa-star top6-stars" id="top6-star-{{ product.handle }}">
+          <div class="yotpo bottomLine" data-product-id="{{ product.selected_or_first_available_variant.sku }}"></div>
+        </div>
+      </div>
+    </div>
+  <style>
+    .tag-product-custom{
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: #f00 ;
+      color: #fff !important;
+      padding: 10px;
+      z-index:1;
+    }
+
+    @media(max-width:768px){                      
+      .tag-product-custom{ padding: 2px;}
+    }
+  </style>
+  <div class="tag-product">
+    {% for tag in product.tags %}
+    {% if tag contains 'tag-product-' %}
+    {% assign tag_name = tag | remove: 'tag-product-'  | replace:"-#ff5252",""%}
+    {% assign tag_all = tag | remove: 'tag-product-'  | replace:"-#ff5252","" %}
+    {% assign tag_array = tag_all | replace:"-"," " %}
+    {% assign tag_name = tag_array | first %}
+    {% assign tag_color = tag_array[1] %}
+    {% assign tag_background = tag_array[2] %}
+    <span class="tag-product-custom" >{{ tag_array }}</span>
+    {% break %}
+    {% endif %}
+    {% endfor %}
+  </div>
+</div>
+<script>
+  $(function(){
+    
+  	$(".top5-pro-img").mouseover(function(){
+      var pro_handle = $(this).attr('pro-handle');
+      $( "#design-btn-"+pro_handle ).show();
+      
+      $(this).mouseout(function(){
+        $( "#design-btn-"+pro_handle ).hide();
+      })
+    });
+    
+  })
+  
+  
+  var productThumbnail{{ productId }} = new Swiper("#{{ thumbsId }}", {
+    //spaceBetween: 10,
+    slidesPerView: 5,
+    loop: false,
+    freeMode: true,
+    //looped slides should be the same
+    loopedSlides: 1, 
+    watchSlidesVisibility: true,
+    watchSlidesProgress: true,
+	observer: true,
+    observeParents: true
+});
+  
+var productGallery{{ productId }} = new Swiper("#{{ galleryId }}", {
+    //spaceBetween: 10,。
+    loop: false,
+    speed:500,
+    slidesPerView: 1,
+    //looped slides should be the same
+    loopedSlides: 1,
+    zoom: {
+      maxRatio: 2,
+    },
+    navigation: {
+      prevEl: "#{{ prev }}",
+      nextEl: "#{{ next }}"
+    },
+    thumbs: {
+      swiper: productThumbnail{{ productId }}
+    }
+});
+  
+</script>

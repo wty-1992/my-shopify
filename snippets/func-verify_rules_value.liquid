@@ -1,0 +1,13 @@
+{% assign verify__rules_value_result = '' %}
+{% case key %}
+    {% when 'handle' %}
+        {% assign verify__rules_value_result = detail.handle %}
+    {% when 'tags' %}
+        {% assign verify__rules_value_result = detail.tags %}
+    {% when 'type' %}
+        {% assign verify__rules_value_result = detail.type %}
+    {% when 'sku' %}
+        {% assign current_variant = detail.selected_or_first_available_variant %}
+        {% assign verify__rules_value_result = current_variant.sku %}
+    {% else %} 
+{% endcase %}

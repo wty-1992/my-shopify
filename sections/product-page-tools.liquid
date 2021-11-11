@@ -1,0 +1,166 @@
+<style>
+.product-page-tools-section .tools-box{
+  display: flex; 
+  padding: 1.4rem 0 1.4rem 0;
+  border-top: 1px solid #eee;
+  margin-top: 2.14289rem; 
+  justify-content:space-evenly;
+}
+.product-page-tools-section .tools-box .tools-item{
+  align-items: center;
+  display: flex;
+  flex-direction: column; 
+  flex: 0 1 33.3%;
+  cursor: pointer;
+  position:relative;
+}
+.product-page-tools-section .tools-box .tools-item .icon {
+  font-size: 1.8rem;
+  font-weight: 100;
+  color: #6d6d6d;
+  line-height: 1;
+}
+.product-page-tools-section .tools-box .tools-item > span{
+  color: #3c3c3c;
+  margin-top: 0;
+  font-weight: 100;
+  text-align: center;
+}
+@media(max-width:768px){
+  .product-page-tools-section .tools-box{
+    justify-content:center;
+    border-bottom: 1px solid #eee;
+    padding: .7rem 0;
+  }
+  .product-page-tools-section .tools-box .tools-item .icon{  
+    font-size: 2.4rem;
+  }
+}
+
+.product-page-tools-section .media-icons {
+  position: relative;
+}
+.product-page-tools-section .tools-share-box{    
+  height: 44px;
+  width: 198px;
+  background: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 4px rgba(0,0,0,.1);
+  border-radius: 10px;
+  position: absolute;
+  z-index: 10;
+  left: 25%;
+  top: 150%;
+  display: none;
+  padding-top:5px;
+}
+.product-page-tools-section .tools-share__items{
+  display:flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.product-page-tools-section .sharp-corner {
+  position: absolute;
+  z-index: 11;
+  transform: scale(0.6);
+  top: -36px;
+  left: 10px;
+}
+</style>
+
+<div class="tools-box">
+  {%- comment -%}
+  <div class="tools-item">
+    <i class="photofont icon photo-weiguanzhu bb"></i>
+      <span>{{ 'product.tools.wishlist' | t }}</span>
+  </div>
+  {%- endcomment -%}
+  <div class="tools-item" id="tools-share">
+    <i class="icon photofont photo-fenxiang"></i>
+    <span>{{ 'product.tools.share' | t }}</span>
+    <div class="tools-share-box">
+      <div class="sharp-corner">
+        <svg version="1.1"
+          xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+          x="0px" y="0px" width="41px" height="45px" viewBox="-5.786 -21.649 41 45" enable-background="new -5.786 -21.649 41 45"
+          xml:space="preserve"><defs></defs><path fill="#FFFFFF" stroke="#999" stroke-miterlimit="10" d="M6.38,23.268c0,0,2.167-14.333-5-22.458c0,0,13.333,2.875,19.417,23.125"/>
+        </svg>
+      </div>
+      <div class="tools-share__items">
+        <div class='st_facebook_large Shares' displayText='Facebook'></div>
+        <div class='st_pinterest_large Shares' displayText='Pinterest'></div>
+        <div class='st_instagram_large Shares' displayText='Instagram Badge'></div>
+        <div class='st_twitter_large Shares' displayText='Tweet'></div>
+      </div>
+    </div>
+  </div>
+  <div class="tools-item">
+    <a href="javascript:;" >
+      <div class="tools-item" id="tools-kayako">
+        <i class="icon photofont photo-kefu4"></i>
+        <span>{{ 'product.tools.support' | t }}</span>
+      </div>
+    </a> 
+    {%- comment -%}
+    <div class="tools-item">
+      <i class="icon photofont photo-VIP1"></i>
+      <span>VIP</span>
+    </div>
+    {%- endcomment -%}
+  </div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        $.getScript("{{'share.js' | asset_url}}", function() {
+            stLight.options({publisherGA:"UA-34410748-22",publisher: "c8cd59db-ee3e-486b-9c51-bc4dad07532f", doNotHash: false, doNotCopy: false, hashAddressBar: false});
+        });
+        $('#tools-share').click(function(){
+            $(this).find('.tools-share-box').toggle();
+        })
+        /*
+        if($(window).width()<=992){
+            kayako.ready(function () {
+                kayako.config = {
+                    hideLauncher: true
+                }
+                kayako.on('chat_window_minimized', function () {
+                    kayako.hide();
+                })
+                $('#tools-kayako').click(function(){
+                    kayako.maximize();
+                    kayako.show();
+                    
+                })
+            })
+        }
+        if($(window).width()>992){
+            $('#tools-kayako').click(function(){
+                kayako.maximize();
+                setTimeout(function(){
+                    $('body').one('click', function(){
+                        kayako.minimize();
+                    })
+                }, 500)
+            })
+        }
+        */
+        $('#tools-kayako').click(function(){
+          $("#launcher").contents().find('button').click()
+		})
+    })
+</script>
+
+
+
+{% schema %}
+{
+  "class": "product-page-tools-section",
+  "name": "产品页 - 工具栏",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content":"product-page-tools"
+    }
+  ]
+}
+{% endschema %}

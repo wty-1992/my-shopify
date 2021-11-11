@@ -1,0 +1,240 @@
+<style>
+ .banner_title{
+  text-align: center;
+  padding-bottom: 50px;
+}
+.banner_title span{
+  position: relative;
+  padding: 0;
+  color: #000;
+  font-weight: 200;
+  display: inline-block;
+  font-size: 42px;
+  font-family: 'OpenSans-Light';
+  padding-bottom: 0px;
+  line-height: 80px;
+  text-transform: capitalize;
+}
+  .collection-banner-pc{display:block;margin: auto;}
+.collection-banner-mb{display:none;margin: auto;}
+.collection-banner{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+/*     margin-bottom: 16px; */
+  flex-flow: wrap;  
+}  
+@media(min-width:768px){
+.homegreen-bottom{
+  font-family: "OpenSans-Light";
+}
+.homegreen-bottom .banner_title{
+  margin-top: 30px;
+}
+.home-classify-common{  
+  width: 100%;
+  margin: auto;
+  max-width: 1240px;
+  overflow: hidden;
+}
+.home-classify{
+  display: flex;
+  flex-flow: wrap;  
+  justify-content: space-between;
+  width:calc(100% - 40px);
+  padding:0 20px;
+}
+.home-classify .h-total{
+  width: calc(50% - 20px);
+  padding: 15px 0 30px;
+  display: flex;
+  flex-flow: column;
+}
+.home-classify .h-total:nth-child(2n) .h-description{
+  order: 2;
+  margin-top: 20px;
+}
+.h-description{
+  text-align: center;
+}
+.h-des-title{
+  display: block;
+  font-size: 32px;
+  color: #000;
+}
+.h-des-text{
+  display: block;
+  font-size: 14px;
+  margin: 10px 0 12px 0;
+  color: #7e7e7e;
+}
+.home-classify .h-total a{
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  transition: unset;
+  border-radius: 15px;
+}
+.home-classify .h-total a img{
+  width: 100%;
+  -webkit-transition: all .5s;
+  transition: all .5s;
+}
+.home-classify .h-total a:hover{
+  box-shadow: 1px 2px 9pt 3px #c8c8c8;
+}
+.home-classify .h-total a:hover img{
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+  transition: all .2s;
+}
+}
+@media(max-width:768px){
+  .collection-banner-pc{display:none;}
+  .collection-banner-mb{display:block;}
+  .collection-banner{margin-bottom: 0;}
+  .banner_title span{
+    padding: 25px 0 34px 0;
+    font-size: 24px;
+    line-height: 1;
+  }  
+  .home-classify-common{
+    width: 100%;
+    overflow: hidden;
+  }
+  .homegreen-bottom .banner_title span{
+    padding: 30px 0 47px 0;
+  }
+  .home-classify .h-total{
+    display: flex;
+    flex-flow: column;
+  }
+  .home-classify .h-total .h-description{
+    order: 2;
+    margin-top: 20px;
+    text-align: center;
+  }
+  span.h-des-title{
+    display: block;
+    font-size: 21px;
+    color: #000;
+    font-family: "OpenSans-Light";
+  }
+  span.h-des-text{
+    display: block;
+    font-size: 12px;
+    margin: 10px 0 12px 0;
+    color: #7e7e7e;
+    font-family: "OpenSans-Light";
+  }
+  .classify-pagination{
+    text-align: center;  
+    padding-top: 20px;
+  }
+  .classify-pagination .swiper-pagination-bullet-active{
+    background: #7a7879;
+  }
+   .banner_title{
+  		padding-bottom: 0;
+	}
+}
+</style>
+<div class="homegreen-bottom">
+  <div class="banner_title">
+    <span>{{section.settings.banner_title}}</span>
+  </div>
+  <div class="home-classify-common">
+    <div class="home-classify swiper-wrapper">
+    {% for block in section.blocks %}
+      <div class="h-total swiper-slide">
+        <div class="h-description ">
+          <span class="h-des-title">{{ block.settings.picture_title1 }}</span>
+          <span class="h-des-text">{{ block.settings.picture_text1 }}</span>
+        </div>
+        <a href="{{ block.settings.link1 }}">        
+          <img data-src="{{ block.settings.pc_image1 | img_url: 'master' }}" class="collection-banner-pc lazyload" />
+          <img data-src="{{ block.settings.mb_image1 | img_url: 'master' }}" class="collection-banner-mb lazyload" />
+        </a>
+      </div>        
+    {% endfor %}  
+    </div>
+    <div class="classify-pagination"></div>
+  </div>
+</div>
+<script>
+$(function(){
+  if($(window).width() < 768){
+    let swiper_{{section.id}} = new Swiper('.home-classify-common',{
+      slidesPerView : 1.22,
+      slidesOffsetBefore : 35,
+      slidesOffsetAfter : 25,
+      spaceBetween : 20, 
+      pagination: {
+        el: '.classify-pagination',
+      },  
+    });
+  };
+});
+
+</script>
+{% schema %}
+  {
+    "name":"通用 - 图片布局 第二版",
+    "class": "common-classify-picture",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "common-classify-picture"
+      },
+      {
+        "type": "text",
+        "id": "banner_title",
+        "label":"标题"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "pictures",
+        "name": "container",
+        "settings": [
+		  {
+		    "type": "text",
+			"id": "title",
+			"label": "模块标题"
+		  },
+          {
+		    "type": "url",
+			"id": "link1",
+			"label": "图片链接 "
+		  },
+		  {
+		    "type": "text",
+			"id": "picture_title1",
+			"label": "标题"
+		  },
+		  {
+		    "type": "text",
+			"id": "picture_text1",
+			"label": "描述"
+		  },
+		  {
+		    "type": "image_picker",
+			"id": "pc_image1",
+			"label": "PC 图片"
+		  },
+		  {
+		    "type": "image_picker",
+			"id": "mb_image1",
+			"label": "MB 图片"
+		  }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "通用 - 图片布局 第二版",
+        "category":"通用"
+      }
+    ]
+  }
+{% endschema %}

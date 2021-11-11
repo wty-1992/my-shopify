@@ -1,0 +1,345 @@
+{% if section.settings.enable %}  
+{% assign swiperContainerId = "swiper-collection-" | append: section.id %} 
+<style>
+.cart-recommend-section{
+  margin: 1rem;
+  background: #fff; 
+  padding: 10px 0;
+}
+.cart-recommend-section h5 { 
+  width: 100%;
+  margin: 0;
+  padding:11px 0 4px;  
+  color: #e60044;
+  font-size:16px;
+}
+.cart-recommend-section .home-best-seller-title{    
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 3.4rem;
+  color: #f90042;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.cart-recommend-section .home-best-seller-title span{
+  margin:0 1rem;
+}
+.cart-recommend-section #{{swiperContainerId}} {    
+  padding: 0;margin:1rem 0;
+}
+.cart-recommend-section #{{swiperContainerId}} .prev, .cart-recommend-section #{{swiperContainerId}} .next{ 
+  position: absolute;
+  left: 0px;
+  width: 3%;
+  background: #fff;
+  top: 0;
+  height: 100%;
+  z-index: 1; 
+  display: flex;
+  justify-content: center;
+}
+.cart-recommend-section #{{swiperContainerId}}  i.photofont{
+  top: 50%;
+  transform: translateY(-50%);
+  display: block;
+  position: absolute; 
+  cursor: pointer;
+  font-size: 4rem;
+  opacity: .5;
+}
+.cart-recommend-section #{{swiperContainerId}} .next{
+  right:0; 
+  left:inherit
+}
+.cart-recommend-section #{{swiperContainerId}} .home-view-more{   
+  margin: 0 auto; 
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;  
+  height:100%
+}
+.cart-recommend-section #{{swiperContainerId}} .home-view-more span{
+  position:relative;
+}
+.cart-recommend-section #{{swiperContainerId}} .home-view-more span:after{    
+  content: '';
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: #959595;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.cart-recommend-section #{{swiperContainerId}} svg{
+  margin-top: -30px;
+  width: 2rem;
+  height: 2rem;
+}
+.cart-recommend-section #{{swiperContainerId}} .block-collection-items .item{
+  position: relative;
+  padding:0rem; 
+}
+.cart-recommend-section #{{swiperContainerId}} .block-collection-items .item a{
+  color: #000;
+}
+.cart-recommend-section #{{swiperContainerId}} .block-collection-items .item img{
+  background: #fff;
+}
+.cart-recommend-section #{{swiperContainerId}} .block-collection-items .product-card__tag {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+}
+
+.cart-recommend-section #{{swiperContainerId}} .block-collection-items .product-card__image-wrapper{
+  position: relative;
+}
+.product-card__image-wrapper .product-card__tag {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.cart-recommend-section #{{swiperContainerId}} .block-collection-items .product-card__name{
+  text-align: center;
+  text-transform: uppercase;
+  color: #000;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 85%;
+  margin: auto;
+}
+.cart-recommend-section #{{swiperContainerId}} .block-collection-items  .product-card__price{ 
+  text-align: center;
+  padding: 0.66rem 0;
+}	
+.cart-recommend-section #{{swiperContainerId}} .block-collection-items .product-card__sale-price{
+  font-size: 1rem;
+  color:#F70724;
+  font-weight: bold;
+}
+.cart-recommend-section #{{swiperContainerId}} .block-collection-items .product-card:hover>*, .block-collection .block-collection-items .product-card:focus-within>* {
+  opacity: 0.9;
+}
+.cart-recommend-section #{{swiperContainerId}} li.swiper-slide{
+  position: relative; 
+  border: 1px solid #eee;
+  margin-right:-1px; 
+  padding:1rem 0 2rem 0; 
+  height: auto;
+}
+.cart-recommend-section #{{swiperContainerId}} li.swiper-slide .add a{
+  display: flex;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 100;
+}
+.cart-recommend-section #{{swiperContainerId}} li.swiper-slide .add{
+  width: 20px;
+  height: 20px;
+  right: 0;
+  position: absolute;
+  top: 0;
+  font-size: 1.8rem;
+  background: #e60044;
+  border-radius: 50%;
+  color: #fff;
+  border: none;
+  text-align: center;
+  line-height: 1rem;
+  margin: 1rem;
+}
+.cart-recommend-section #{{swiperContainerId}} li.swiper-slide picture{
+  margin: 0 auto;      
+  width: 100%;
+  display: block; 
+  text-align: center;
+}
+.cart-recommend-section #{{swiperContainerId}} li.swiper-slide picture img{
+  width:65%;
+}
+.cart-recommend-section #{{swiperContainerId}} li.swiper-slide .cheap-title{
+  word-wrap: break-word;
+  display: block;
+  max-height: 13px;
+  font-size:12px;
+  line-height: 13px;
+  overflow: hidden;
+  text-align: center;
+  margin:.2rem 0 0;
+}
+.cart-recommend-section #{{swiperContainerId}} li.swiper-slide .box-price {
+  display: flex;
+  justify-content: center;
+  margin-top:5px;
+  flex-direction: row-reverse;
+}
+.cart-recommend-section #{{swiperContainerId}} li.swiper-slide .box-price .old-price{
+  opacity: 1;
+  color: #000;
+  font-size: .8rem;
+  text-decoration: line-through;
+}
+.cart-recommend-section #{{swiperContainerId}} li.swiper-slide .box-price .new-price{
+  margin-right: .2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #D81E06;
+} 
+@media (min-width:768px){
+  .cart-recommend-section {
+    margin: 0 auto 12px;
+    background: #fff;
+    padding-top: 10px;
+  }
+  .cart-recommend-section #{{swiperContainerId}} .block-collection-items .item{
+    flex:0 1 25%;
+  }
+}
+@media (min-width:1024px){
+  .cart-recommend-section #{{swiperContainerId}} .block-collection-items .item{
+    flex:0 1 20%;
+  }   
+}
+</style>
+{% if section.settings.title %}
+  <h5>{{section.settings.title}}</h5>
+{% endif %}
+
+<div id="{{swiperContainerId}}" class="swiper-container swiper-collection-container collection-container">
+  <ul class="swiper-wrapper items">
+    {% assign current_collection = collections[section.settings.collection] %}
+    {% if current_collection.products.size > 0%}
+    	{% for item in current_collection.products limit: section.settings.limit %}
+          {% assign firstVariant = item.first_available_variant %}
+          {% assign position = section.settings.position | default: 0 %}
+          {% assign image = item.images[position]%}
+          <li class="item swiper-slide">
+            <form method="post" {% comment %}action="/cart/add"{% endcomment %} accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="Mask.show()">
+              <input type="hidden" name="form_type" value="product">
+              <input type="hidden" name="utf8" value="✓">
+              <input type="hidden" name="id" value="{{firstVariant.id}}">
+              {% comment %} <button type="submit" class="add"><a>+</a></button> {% endcomment %}
+              <button type="button" onclick="window.location.href='{{item.url}}'" class="add"><a>+</a></button>
+            </form>
+            <picture>
+              <img data-src="{{ image | img_url: '300x' }}" class="lazyload" alt="{{ image.alt | escape }}" />
+            </picture>
+            <div class="cheap-title">{{ item.title }}</div>
+            <div class="box-price">
+              <div class="old-price"><span class="price" data-money="{{ firstVariant.compare_at_price }}"></span></div>
+              <div class="new-price"><span class="price" data-money="{{ firstVariant.price }}"></span></div>
+            </div>
+          </li>
+    	{% endfor %}
+    {% endif %}
+    {% if section.settings.show_more %}
+      <li class="swiper-slide item view-more">
+        <div class="home-view-more">   
+          <span>{{ 'cart.recommend.view_more' | t }} ></span>
+         </div>
+      </li>
+    {% endif %}
+  </ul>
+  <!-- Add Arrows -->
+  {% assign prev = swiperContainerId | append: "-button-prev" %}
+  {% assign next = swiperContainerId | append: "-button-next" %}
+  {% assign pagination = swiperContainerId | append: "-swiper-pagination" %}
+<!--   <div id="{{prev}}" class="prev">
+    <i class="photofont photo-back1"></i>
+  </div>
+  <div id="{{next}}" class="next">
+    <i class="photofont photo-more1"></i>
+  </div> -->
+</div>
+
+  <!-- Initialize Swiper -->
+<script>
+  var swiper = new Swiper('#{{swiperContainerId}}', {
+    observer: true,
+    observeParents: true,
+    slidesPerView: 2.3,
+    slidesPerGroup : 2, 
+    spaceBetween: 0,                     
+    autoplay: {{section.settings.autoplay}}, 
+    pagination: {
+      el: '#{{pagination}}',
+      clickable: true,
+    },
+    loop: false,
+    keyboard: true,   
+    breakpoints: {
+        2048: {
+          slidesPerView: 5.3,
+          spaceBetween: 0,
+        },
+        1024: {
+          slidesPerView: 4.3,
+          spaceBetween: 0,
+        },
+        768: {
+          slidesPerView: 2.3,
+          spaceBetween:0, 
+          slidesPerGroup : 2, 
+        }
+    }, 
+    navigation: {
+      nextEl: "#{{next}}",
+      prevEl: "#{{prev}}"
+    }
+  });
+</script>
+
+{% endif %}
+{% schema %}
+  {
+    "name": "购物车 - 产品推荐 ( 滑动 )",
+    "class": "cart-recommend-section page-width",
+    "settings": [
+      {
+	      "type": "checkbox",
+        "id": "enable",
+        "label": "开启",
+        "default": true
+      },
+      {
+         "type": "text",
+          "id": "title",
+          "label": "标题",
+          "default": "We Also Recommend"
+       },
+      {
+        "type": "collection",
+        "id": "collection",
+        "label": "选择集合"
+      },
+      {
+        "type": "range",
+        "id": "limit",
+        "label": "产品limit总数量",
+        "min": 1,
+        "max": 12,
+        "step": 1,
+        "default": 8
+      },
+      {
+          "type": "checkbox",
+          "id": "autoplay",
+          "label": "是否自动轮播",
+          "default": false
+      },
+      {
+          "type": "checkbox",
+          "id": "show_more",
+          "label": "显示-View More",
+          "default": true
+      }
+    ]
+  }
+{% endschema %}

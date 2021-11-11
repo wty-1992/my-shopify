@@ -1,0 +1,33 @@
+
+  <div class="custom-block">
+    <div class="footer-payments">
+      {% if section.settings.footer-payment  %}
+      <img src="{{section.settings.footer-payment | img_url: 'master' }}" alt="" style="max-width: 100%;">
+      {% endif %}
+
+    {% if section.settings.footer-klarna  %}
+    <div class="klarna-link" href="/pages/klarna">
+   	 <img class="klarna-img" src="{{section.settings.footer-klarna | img_url: 'master' }}" alt="" width="46" height="31" border="0" style="max-width: 100%;">      
+      <div class="link-box">
+        <a class="k-link" href="/pages/klarna"><span>?</span>About Klarna</a>
+      </div> 
+    </div>
+    {% endif %}
+
+          {% if section.settings.footer-payments  %}
+    <img src="{{section.settings.footer-payments | img_url: 'master' }}" alt="" style="max-width: 100%;">
+    {% endif %}
+    </div>
+    <div class="footer-bizrate">
+      <script src="//medals.bizrate.com/medals/js/276454_medal.js" type="text/javascript"></script>
+      <div style="position:relative;z-index:1;width:69px;height:40px;">
+        <a style="bottom:0;right:0;display:block;position:absolute;width:55px;height:23px;z-index:2;text-decoration:none;background:#fff;filter:alpha(opacity=0);opacity: 0;" href="//www.bizrate.com/?rf=sur" title="Bizrate" target="_blank"></a>
+        <a class="br-button" href="//www.bizrate.com/ratings_guide/merchant_detail__mid--276454.html?rf=sur" title="See Soufeel Jewelry Reviews at Bizrate.com" target="_blank" style="position: absolute;left:0px;">
+          <img src="//medals.bizrate.com/medals/dynamic/276454_medal.gif" width="74" height="45" border="0" alt="See Soufeel Jewelry Reviews at Bizrate.com">
+        </a>
+      </div>
+    </div>
+    <div class="footer-trustwave">
+       <script type="text/javascript" src="https://sealserver.trustwave.com/seal.js?code=c508f999f0294706b6fa74d38561e0ce" po_cmp_ignore=""></script>
+    </div>                
+  </div>

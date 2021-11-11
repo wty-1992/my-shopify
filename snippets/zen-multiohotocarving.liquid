@@ -1,0 +1,1219 @@
+
+{% assign sku = product.selected_or_first_available_variant.sku %}
+
+{% assign cattribute = '{}' %}
+{% if product.metafields["global"]["cattribute"] %}
+  {% assign cattribute = product.metafields["global"]["cattribute"] | replace: "'", "" %}
+{% endif %}
+
+{% assign variantCattribute = '{}' %}
+{% if product.metafields["global"]["variantCattribute"] %}
+  {% assign variantCattribute = product.metafields["global"]["variantCattribute"] | replace: "'", "" %}
+{% endif %}
+
+
+
+
+{% capture hasNoPreview %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "hasNoPreview" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign hasNoPreview = hasNoPreview | strip %}
+
+{% capture num %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "imgtotal" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign num = num | strip %}
+{% capture textnum %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "lines" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign textnum = textnum | strip %}
+
+{% capture secondtype %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "secondtype" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign secondtype = secondtype | strip %}
+
+{% comment %} By.Coman.2019.05.24.photo传图数量可选.1:可选; 0:必选; 如果是可选.其余数量photo则轮训使用以上传的图片路径.传给erp.而不是选一个photo就传一个photo给erp.{% endcomment %}
+{% capture photooption %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "photooption" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign photooption = photooption | strip %}
+
+{% assign x = 0 %}
+
+
+<div class="customgift">  
+  
+  <span class="input-field-title input-field-text-title"></span>
+  <div class="text-area"></div>
+  
+  <span class="input-field-title input-field-imgoption-title"></span>
+  <div class="custom-photo-options"></div>
+  
+  <span class="input-field-title input-field-img-title"></span>
+  <div class="inputImage-info"></div>  
+  
+  <input type="text" id="custom_json" name="properties[custom_json]" value="" style="display:none">
+  <input type="text" id="custom_info" name="properties[customInfo]" value="" style="display:none">
+<!--   <input type="text" id="customInfo" name="properties[customInfo]" value="" style="display:none"> -->
+  
+  <input type="text" id="preview_picture" name="properties[crop]" value="" style="display:none" required/>
+  <input type="text" id="bgtowordphoto" name="properties[engravingBig]" value="" style="display:none" required/>
+  <input type="hidden" name="is_upload" value="1"/>
+  
+  
+  
+<!--  单条信息使用  -->
+  	<input type="text" id="fontfamily" name="properties[fontfamily]"   value="" style="display:none" />
+    <input type="text" id="fonttext" name="properties[fonttext]"     value="" style="display:none" />
+</div>
+
+
+
+<script>
+  
+//   productcolor
+//   tmpCanvas.setBackgroundColor(getGone(jQuery(this).val()),tmpCanvas.renderAll.bind(tmpCanvas));   
+  
+
+  function formatSku(sku){
+    var sku_val = sku;
+    {% if product.tags contains "custom-sku-nosplit" %}
+    {% else %}
+  	if(sku_val.indexOf('-') > -1){
+      var zenSkuArr = sku_val.split('-');
+      var regPos = /^\d+(\.\d+)?$/;
+      zenSkuArr.forEach(function(item,i){
+          if(!regPos.test(item)){
+              sku_val = item;
+          }
+      });
+    }
+    {% endif %}
+    
+    return sku_val;
+  }
+  
+  var sku = formatSku('{{sku}}');
+  var ubase_ = new ubase();
+  var jsonCustom, objBgImg, arrayConfig=[],custom_json = {},custom_text_json_shopify={};
+  var remoteBackUrl = ubase_.picurl+ubase_.pdir;// "https://pic.stylelab.com/img/photo/bg/";
+  var secondtype = '{{secondtype}}';
+  jsonCustom = JSON.parse('{{ cattribute }}');
+  jsonCustom.imgtotal = jsonCustom.imgtotal?jsonCustom.imgtotal:(jsonCustom.photo?jsonCustom.photo.length:0);
+  
+  var jsonCustomCoors = jsonCustom.coors;
+  if(secondtype == 'changeVariant'){
+  	jsonCustomCoors = jsonCustom.coors[sku];
+  }
+  
+  jsonCustom.lines = jsonCustom.lines?jsonCustom.lines:(jsonCustomCoors?jsonCustomCoors.length:0);
+  
+  var tmpCanvas, imgBase64, cropper ;
+  var currentSku = sku;
+  var remoteBackImg = remoteBackUrl + currentSku + ".png"; 
+  var hasNoPreview = jsonCustom.hasNoPreview || 0;
+  document.createElement("canvas").id = "tmpcanvas";
+  tmpCanvas = new fabric.Canvas("tmpcanvas");
+  
+  if(jsonCustom.sizeOptions){// 拼图遮罩尺寸数据
+  	jsonCustom.size = jsonCustom.sizeOptions['{{ product.selected_or_first_available_variant.sku }}'].size;
+    jsonCustom.photo = jsonCustom.sizeOptions['{{ product.selected_or_first_available_variant.sku }}'].photo;
+    jsonCustom.previewOverlay = jsonCustom.sizeOptions['{{ product.selected_or_first_available_variant.sku }}'].previewOverlay;
+  }
+  
+  if(jsonCustom.size != undefined){
+    if(jsonCustom.size.width != undefined && jsonCustom.size.height != undefined){
+console.log('w--h--if', jsonCustom.size.width, jsonCustom.size.height);
+      tmpCanvas.setWidth(jsonCustom.size.width);
+  	  tmpCanvas.setHeight(jsonCustom.size.height); 
+    }
+  }else{
+    jsonCustom.size = {};
+    tmpCanvas.setWidth(500);
+  	tmpCanvas.setHeight(400); 
+    jsonCustom.size.width=500;
+    jsonCustom.size.height=400;
+console.log('w--h--else', jsonCustom.size.width, jsonCustom.size.height);
+  }
+  for(var i=0;i<jsonCustom.imgtotal;i++){
+    if(jsonCustom.photo){
+      if(jsonCustom.photo[i] == undefined){
+        jsonCustom.photo[i] = {"width":"","height":"","left":"","top":""};
+      }
+      var opt = jsonCustom.photo[i];
+console.log('p--w--h--opt.width/opt.height', opt.width, opt.height);
+      arrayConfig.push({width:parseFloat(opt.width), height:parseFloat(opt.height), left: parseFloat(opt.left), top: parseFloat(opt.top), aspectRatio: parseFloat(opt.width)/parseFloat(opt.height)});
+    }
+  }
+  var arrayImg = jsonCustom.photo?new Array(jsonCustom.photo.length):[];
+  
+  var getOverlayUrl = (sku) => {
+    return remoteBackUrl+sku+'-overlay.png';
+  }
+
+  var getSku = () => {
+    var index = $('select[data-name*="{{ 'variant.title.Choose_Your_Size' | t }}"]').find('option:selected').index();
+console.log('index---', index);
+    return formatSku(sku)+'-'+(index+1);
+  }
+
+  
+  
+  {%comment%}写入dom{%endcomment%}
+  for(var i=0;i<jsonCustom.imgtotal;i++){
+    var str = '';
+    str += `
+	<div class="inputImage-area"> 
+      <div class="uploadafterimg`+i+`" >
+        <img id="previewpicture`+i+`" class="previewpicture" width="200" src="{{ 'default.png' | asset_img_url: '1x' }}" style="display:none;" />
+		<span class="span-text-upload">{{ 'zen.general.photo' | t }} `+(i+1)+`</span>
+      </div>
+      <div class="upload-images">
+        <div class="add" id="add-photo`+i+`">{{ 'zen.general.add' | t }}</div>
+        <input type="file" id="inputImage`+i+`" accept="*" />
+      </div>
+      <input type="text" class="crop_picture" id="crop_picture`+i+`" value="" style="display:none" required/>
+    </div>
+	`;
+    $('.inputImage-info').append(str);
+  }
+	
+  
+  for(var i=0;i<jsonCustom.lines;i++){
+    if(jsonCustomCoors==undefined){ 
+      jsonCustomCoors = [];
+      if(jsonCustomCoors[i]==undefined){
+        jsonCustomCoors[i] = {}; 
+      }
+    }
+    var v = jsonCustomCoors[i];
+    var str = '';
+      var isInputOneToMultiple = '';
+      if(jsonCustom.isInputOneToMultiple == 1 && i>0){ // 只显示一个输入框.其他隐藏
+        isInputOneToMultiple = ' style="display:none;" ';
+      }
+      if($.trim(v.label) != '' ){
+        str += `<span class="input-field-title input-field-text-title" style="display:block;">`+v.label+`</span>`;
+      }else{
+//         $('.input-field-text-title').show()
+      }
+      str += `
+      <div class="text-section" ${isInputOneToMultiple}>
+        <div class="text-length-view" style="display:none"><span class="num">`+v.limit+`</span> Izquierda</div>`;
+        if(v.inputType == 'textarea'){
+			str += `<textarea class="custom-text" id="custom-text`+i+`" disabled="disabled" required placeholder="{{ 'zen.engrave.placeholder' | t }}"></textarea>`;
+        }else{
+        	str += `<input type="text" class="custom-text" id="custom-text`+i+`" disabled="disabled" required placeholder="{{ 'zen.engrave.placeholder' | t }}">`;
+        }
+        
+      str += `</div>`;
+      $('.text-area').append(str);
+  }
+  if(jsonCustomCoors != undefined){
+    $.each(jsonCustomCoors, function(i, v){
+      loadCustomFonts(v.font);//加载字体文件 20210818
+    });
+    
+  }
+
+  if(jsonCustom.photoOption == 1 && jsonCustom.photo && jsonCustom.photo.length >0 ){
+    var str = '';
+    str += `
+      <div class="more-photo">
+        <select class="more-photo-select" id="photoOption">`;
+    $.each(jsonCustom.photo, function(i, v){
+      var n = i+1;
+      str += `
+		<option value="${n}" 
+		`+(i==0?'selected':'')+`
+		data-price="" 
+		data-key="${i}" 
+		data-markupindex="${n}">
+		${i} Photo`+((n>1?'s':''))+` 
+  	  </option>
+      `;
+	});
+      
+	str += `
+  		</select>
+        <i class="photofont photo-unfold"></i>
+      </div>`;
+      $('.custom-photo-options').append(str);
+    
+    
+  }
+    
+  {%comment%}默认标题{%endcomment%}
+  jsonCustomCoors&&jsonCustomCoors.length>0?$('.input-field-text-title').eq(0).html('{{ 'variant.title.Add_Your_Text' | t }}:'):'';
+  jsonCustomCoors&&jsonCustomCoors.length>0&&jsonCustom.photoOption == 1?$('.input-field-imgoption-title').html(`Select  number of photos  (1-${jsonCustomCoors.length}):`):'';
+  jsonCustom.photo&&jsonCustom.photo.length>0?$('.input-field-img-title').html('{{ 'variant.title.Add_Your_Photo' | t }}:'):'';
+  
+  
+  var customModal3 = new tingle.modal({
+    footer: true,
+    stickyFooter: false,
+    cssClass: ['custom-custom-multiple']
+  });
+  
+  customModal3.setContent('<div>'
+  +'<div class="tingle-img-preview">'
+    +'<img id="imagemerge" />'
+    +'</div>'
+  +'<div id="notice_text">'
+    +'<span>{{ 'zen.photo.ps_please_well' | t }} <br>{{ 'zen.curveevgraved.prompt_message' | t }}</span><br>'
+//     +'<span style="color:#F00">* Don\'t put any faces at the camera area, please! :) </span>'
+//     +(jsonCustom.secondtype=='box'?'':'<span style="color:#F00">* Don\'t put any faces at the camera area, please! :) </span>')
+    +'</div>'
+  +'<div class="tingle-btn-box">'
+    // +'<label class="product-quantity-label" for="quantity">Qty</label> '
+    +'<input class="input-field product-quantity-input" type="text" name="tingle_quantity" value="1" style="display:none;">'
+    +'<button type="button" data-isajax="true" class="change-picture tingle-btn button" onclick="customModal3.close()"> {{ 'zen.photo.change_picture' | t }}</button>'
+    +'<button id="sp-add-to-cart" class="tingle-btn button">{{ 'product.cart.add_to_cart' | t }}</button>'
+    +'</div>'
+  +'</div>'); 
+  {%comment%}by.Coman 限制输入emoji类表情 限制输入emoji类表情 2019.01.21 {%endcomment%}
+  $('.custom-text').bind('input propertychange', function(){
+    var _this = this;
+    $(_this).val(replaceEmoji(_this.value));
+    checkLength(this);
+  });
+  function replaceEmoji(text){
+    var emojiReg = /(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c\ude32-\ude3a]|[\ud83c\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])/g;
+    return text.replace(emojiReg, '');
+  }
+  {%comment%}by.Coman 限制输入emoji类表情 限制输入emoji类表情 2019.01.21 {%endcomment%}
+  $(function(){
+console.log('$(function(){');
+      if(typeof(jsonCustomCoors) != "undefined"){ // 有刻字
+        $("#merge").html('Wait...');
+        $("#merge").attr('disabled','disabled');
+        var loadFontFlag = false;
+        var textKeyNum = jsonCustomCoors.length;
+        var textX = 0;
+        jsonCustomCoors.forEach(function(v,i){
+          $("#custom-text"+i).keyup(function(){
+            if($(this).val() != ''){
+              if(typeof(v.isUpper) != "undefined"){
+                if(v.isUpper == '1'){
+                  $(this).val($(this).val().toUpperCase());
+                }else if(v.isUpper == '2'){
+                  $(this).val($(this).val().toLowerCase());
+                }
+              }
+            }
+          })
+          if($("#custom-text"+i).length > 0){
+            $("#custom-text"+i).attr("disabled",false);
+            if(v.limit){
+              $("#custom-text"+i).attr("maxlength",v.limit);
+            }
+          }
+          {%comment%}检查字体加载成功后,才可以使用合成的动作 By.Poison{%endcomment%}
+          var vfamily = '';
+          if($.trim(v.font)){
+            vfamily = (v.font== '\u5fae\u8f6f\u96c5\u9ed1'?'微软雅黑':v.font);
+    console.log('vfamily', vfamily);
+          }
+          var myfont = new FontFaceObserver(vfamily);
+          myfont.load().then(function() {
+    console.log('font----ok');
+            textX ++ ;
+            if(textX == textKeyNum){
+              loadFontFlag = true;
+            }
+            if(loadFontFlag == true){          
+              $("#merge").removeAttr('disabled');
+              $("#merge").html($("#merge").attr('default-value')); 
+              $("body").on("click","#merge",function(){
+    //           $("#merge").click(function(){
+                updateArrayImg();
+                setArrayConfig(jsonCustom.photo);
+                if(checkImgText()){
+                    mergeImage(arrayImg, arrayConfig);
+                }
+
+              });          
+            }        
+          }).catch(function(e) {
+    console.log('font----err');
+            textX ++ ;
+            if(textX == textKeyNum){
+              loadFontFlag = true;
+            }
+            if(loadFontFlag == true){          
+              $("#merge").removeAttr('disabled');
+              $("#merge").html($("#merge").attr('default-value')); 
+              $("body").on("click","#merge",function(){
+    //           $("#merge").click(function(){
+                updateArrayImg();
+                setArrayConfig(jsonCustom.photo);
+                if(checkImgText()){
+                    mergeImage(arrayImg, arrayConfig);
+                }
+
+              });          
+            } 
+          });     
+        });
+      }else{ // 无刻字
+    console.log('not---carving');
+        $("body").on("click","#merge",function(){
+    //     $("#merge").click(function(){
+    console.log('not-carving-merge-click');
+            updateArrayImg();
+            setArrayConfig(jsonCustom.photo);
+            if(checkImgText()){
+                mergeImage(arrayImg, arrayConfig);
+            }
+        });
+      } 
+  })
+	function updateArrayImg(){ // 如果有需要重复的图片数据在这里处理.
+      if(jsonCustom.photooption){
+        var n = parseInt($('select[data-name*="{{ 'variant.title.Select_number_of_photos' | t }}"]').val().split('{{ 'variant.title.photos' | t }}')[0]);
+      
+	    var arr = new Array;
+	    var crop_picture_arr = new Array;
+	    var num = jsonCustom.photo.length;
+	    var arrayImgLen = 0;
+	    
+	    for(var i=0;i<num;i++){
+	      if(i>=n){arrayImg[i]=undefined;}
+	      if(arrayImg[i]!=undefined){
+	        arr.push(arrayImg[i]);
+	        crop_picture_arr.push($('#crop_picture'+i).val());
+	      }
+	    }
+	    $.each(arrayImg, function (i, n){
+	      if(n!=undefined && n!=''){
+	        arrayImgLen++;
+	      }
+	    });
+	    if(arr[0]){
+	      var y = 0;
+	      for(var i=0;i<num;i++){
+	        if(arrayImg[i]==undefined && arrayImgLen==n){
+	          if(arr[y] == undefined){
+	            y = 0;
+	          }
+	          arrayImg[i] = arr[y];
+	          $('#crop_picture'+i).val($('#crop_picture'+y).val());
+	          y++;
+	        }
+	      }
+	    }
+      }
+	}
+
+  function setArrayConfig(photo){
+    if(jsonCustom.photo){
+      arrayConfig = [];
+      photo.forEach(function(opt){
+console.log('setArrayConfig::opt', opt);
+//         arrayConfig.push({type:opt.type?opt.type:'',width:parseInt(opt.width),height:parseInt(opt.height), left: parseInt(opt.left), top: parseInt(opt.top), aspectRatio: parseInt(opt.width)/parseInt(opt.height), angle:parseInt(opt.angle)});
+        arrayConfig.push({width:parseFloat(opt.width), height:parseFloat(opt.height), left: parseFloat(opt.left), top: parseFloat(opt.top), aspectRatio: parseFloat(opt.width)/parseFloat(opt.height), angle:parseFloat(opt.angle)});
+      });
+    }
+  }
+
+	function checkImgText(){
+console.log('check---arrayImg', arrayImg);
+	  	var flag = true;
+	    if(typeof(jsonCustomCoors) != "undefined"){
+	    	$.each(jsonCustomCoors, function (i, v){
+	    		if($("#custom-text"+i).length > 0){
+					if($.trim($("#custom-text"+i).val() ) == '' ){
+						$("#custom-text"+i).css("border", "1px solid #F00");
+						flag = false;
+					}else{
+						$("#custom-text"+i).css("border", "0px solid #949494");
+					}
+				}
+	    	});
+	    }
+	    if(typeof(jsonCustom.photo) != "undefined"){
+		    $.each(jsonCustom.photo, function (i, v){
+		    	if(arrayImg[i]==undefined){
+			      $("#inputImage"+i).parent().parent('.inputImage-area').css("border", "1px solid #F00");  
+			      flag = false;
+			    }else{
+			      $("#inputImage"+i).parent().parent('.inputImage-area').css("border", "1px dashed #ed515d");
+			    }
+		    });
+		} 
+// 	    flag || alert("Please design first.");
+console.log('flag--', flag);
+	    return flag;
+	}
+
+	function mergeImage(imgdata, target){
+//       $("#merge").attr("disabled", "disabled").html('Wait...');
+      let _sunzi_json = {};
+      if(hasNoPreview==1){
+console.log('hasNoPreview -1 -setJson()', setJson());
+        var _json = setJson();
+console.log('_json', _json);
+        if(_json.font != undefined && _json.font[1]==undefined && _json.font[0]!=undefined){
+          //"font_family":"微软雅黑","text_str":"eeeeeeee"
+          $('#fonttext').val(_json.font[0].text_str);
+          $('#fontfamily').val(_json.font[0].font_family);
+          delete _json.font;
+        }
+        
+        
+        
+        if(_json.image != undefined){
+          if(_json.image[1] != undefined){
+            _sunzi_json._sunzi_sources = [];
+            _sunzi_json._sunzi_ais = [];
+            $.each(_json.image, function (i, v){
+              _sunzi_json._sunzi_sources.push(v.src); // 原图位置放ai图
+//               _sunzi_json._sunzi_sources.push(window.photoDesign[i]); // 原图位置
+              {% if product.tags contains 'custom-origin-ai' %}
+              _sunzi_json._sunzi_ais.push(v.src); // ai图位置
+              {% endif %}
+            });
+          }else{
+//             _sunzi_json._sunzi_source = _json.image[0].src;
+             {% if product.tags contains 'custom-origin-ai' %}
+            _sunzi_json._sunzi_source = _json.image[0].src;
+            {% else %}
+            _sunzi_json._sunzi_source = window.photoDesign[0];
+            {% endif %}
+            
+            _sunzi_json._sunzi_ai = _json.image[0].src;
+          }
+        }
+        if(_json.font != undefined){
+          if(_json.font[1] != undefined){
+            _sunzi_json._sunzi_texts = [];
+        	var fontarr = [];
+            $.each(_json.font, function (i, v){
+              fontarr.push('-');
+            });
+            $.each(_json.font, function (i, v){
+              let n = parseInt(i)+1;
+              let lsjson = {"value":v.text_str,"fontSize":v.font_size,"font":v.font_family, "number": n};
+              if(sku == 'BL026'){
+                lsjson.textNmu = fontarr.length;
+              }
+              _sunzi_json._sunzi_texts.push(lsjson);
+            });
+          }else{
+            _sunzi_json._sunzi_text = {"value":_json.font[0].text_str,"fontSize":_json.font[0].font_size,"font":_json.font[0].font_family};
+          }
+        }
+        if(_json.properties != undefined){
+          if(Object.keys(_json.properties).length>0){
+            _sunzi_json._sunzi_texts = [];
+            var fontarr = [];
+            $.each(_json.properties, function (i, v){
+              fontarr.push('-');
+            });
+            $.each(_json.properties, function (i, v){
+              let lsjson = {"value":v, "number":i};
+              if(sku == 'BL026'){
+                lsjson.textNmu = fontarr.length;
+              }
+              _sunzi_json._sunzi_texts.push(lsjson);
+            });
+          }else{
+            _sunzi_json._sunzi_text = '';
+            $.each(_json.properties, function (i, v){
+              _sunzi_json._sunzi_text = v;
+            });
+          }
+
+        }
+        {% comment %}不预览产品,预览图中放产品主图{% endcomment %}
+        _sunzi_json._sunzi_effect = 'https:'+$('.swiper-slide-active .swiper-zoom-container img').attr('src') || '';
+        
+        
+        
+        $("#custom_info").val(JSON.stringify(_sunzi_json));
+        
+//         $("#custom_json").val(JSON.stringify(_json));
+        
+        // to cart.
+        $("#merge").html($("#merge").attr('default-value')).removeAttr("disabled");
+        $('.product-form__item--submit-custom-multiple button').click();
+    	$("#sp-add-to-cart").removeAttr("disabled");
+        return false;
+      }
+      
+      Mask.show();
+        var obj = [];
+      	tmpCanvas.clear();
+      
+        
+
+	  	$.each(jsonCustom.photo, function (i, v){
+	        var p1 = new Promise(function (resolve, reject) {
+	            fabric.Image.fromURL(imgdata[i], function (img) {
+	                var scale = target[i].width/img.width; 
+					img.set({left: target[i].left, top: target[i].top, scaleX: scale, scaleY:scale});    
+					tmpCanvas.add(img);
+					tmpCanvas.renderAll();
+	                resolve();//ok的位置执行这个函数
+	            }.bind(this),{crossOrigin: 'anonymous'});
+	        });
+	        obj.push(p1);
+	    });
+		
+      	if(jsonCustom.nonuseBaseImg != 1){ // nonuseBaseImg: 不使用底图(默认空-使用) 1: 不使用
+          var p2 = new Promise(function (resolve, reject) {
+              fabric.Image.fromURL(remoteBackImg+'?'+Math.random(), function (img) { // 底图
+                  tmpCanvas.add(img);
+                  tmpCanvas.moveTo(img, jsonCustom.photo.length+1); // 改变图片层级
+                  tmpCanvas.renderAll();
+                  resolve();//ok的位置执行这个函数
+              }.bind(this),{crossOrigin: 'anonymous'});
+          });
+          obj.push(p2);
+        }
+
+	    // 同时执行p1和p2，并在它们都完成后执行then:
+	    Promise.all(obj).then(function (results) {
+          imgBase64 = tmpCanvas.toDataURL({
+                  format: 'png',
+                  multiplier: 1
+                });
+	        console.log(results); // 获得一个Array: ['P1', 'P2']
+			if(typeof(jsonCustomCoors) != "undefined"){
+				jsonCustomCoors.forEach(function(v,i){  
+					if($("#custom-text"+i).length > 0){ 
+                      var vfamily = '微软雅黑';
+                      if(v.font){
+                        vfamily = v.font== '\u5fae\u8f6f\u96c5\u9ed1'?'微软雅黑':v.font
+                      }      
+                      
+                      if(v.type==2){
+                        
+                        var Otext = new fabric.Text($("#custom-text"+i).val(), { 
+                          fontFamily: vfamily,
+                          fontSize: v.size
+                        })
+                        
+                        var coox = v.left+(v.width-Otext.width)/2;    
+                        Otext.set({left:coox, top:v.top, fill: v.textColor?v.textColor:"#FFF",fontSize:v.size});// "#FFF"
+                      
+                      }else{
+                      	var Otext = new fabric.Text($("#custom-text"+i).val(), { 
+							fontFamily: vfamily,
+							fontSize: v.size,       
+                        	originX: v.type==2?'center':'left',
+                            originY: v.type==2?'center':'top',          
+							fill: v.textColor?v.textColor:"#FFF",// "#FFF",
+							left: v.left,
+							top: v.top
+					  });
+                      }
+                      
+                      if(v.shadowColor != ''){
+                        Otext.setShadow({
+                          color: v.shadowColor,
+                          blur: -10,
+                          offsetX: 1.5,
+                          offsetY: 1.5
+                        });
+                      }
+                      tmpCanvas.add(Otext);  
+                      
+                      
+					}
+				})
+                tmpCanvas.renderAll();
+			}
+            var overlayUrl = '';
+            if(jsonCustom.previewOverlay == 1){
+              tmpCanvas.setOverlayImage(null, tmpCanvas.renderAll.bind(tmpCanvas));
+              overlayUrl = getOverlayUrl(getSku())+'?'+Math.random();
+            }
+            if( $('select[data-name="{{ 'variant.title.Color' | t }}"]').length>0){
+              changeColor($('select[data-name="{{ 'variant.title.Color' | t }}"]').val());
+            }
+console.log('overlayUrl', overlayUrl);
+          	tmpCanvas.setOverlayImage(overlayUrl, function(){
+              	tmpCanvas.overlayImage && tmpCanvas.overlayImage.scaleToWidth(tmpCanvas.width);
+            	tmpCanvas.renderAll();
+              	imgBase64 = tmpCanvas.toDataURL({
+                  format: 'png',
+                  multiplier: 1
+                });
+              let getjson = setJson();
+                $("#imagemerge").attr("src", imgBase64);
+//                 $("#custom_json").val(JSON.stringify(getjson));
+                $("#custom_info").val(JSON.stringify(getSunziJson(getjson)));
+                customModal3.open();
+//                 $("#merge").html($("#merge").attr('default-value')).removeAttr("disabled");
+              Mask.hide();
+            },{
+              angle: 0,
+              left: 0,
+              top: 0,
+              originX: 'left',
+              originY: 'top',
+              crossOrigin: 'anonymous'
+            });
+                
+	    });
+	}
+  
+  function getSunziJson(jsonInfo){
+    
+    let _sunzi_json = {};
+    
+    if(!!jsonInfo.image){
+      if(!!jsonInfo.image[1]){
+        _sunzi_json._sunzi_sources = [];
+        _sunzi_json._sunzi_ais = [];
+        $.each(jsonInfo.image, function (i, v){
+              _sunzi_json._sunzi_sources.push(v.src); // 原图位置放ai图
+//               _sunzi_json._sunzi_sources.push(window.photoDesign[i]); // 原图位置
+          	  {% if product.tags contains 'custom-origin-ai' %}
+                _sunzi_json._sunzi_ais.push(v.src); // ai图位置
+              {% endif %}
+        });
+      }else{
+//         _sunzi_json._sunzi_source = jsonInfo.image[0].src;
+        
+        {% if product.tags contains 'custom-origin-ai' %}
+        _sunzi_json._sunzi_source = jsonInfo.image[0].src;
+        {% else %}
+        _sunzi_json._sunzi_source = window.photoDesign[0];
+        {% endif %}
+        _sunzi_json._sunzi_ai = jsonInfo.image[0].src;
+      }
+    }
+    
+    if(!!jsonInfo.properties){
+      if(Object.keys(jsonInfo.properties).length>0){
+        _sunzi_json._sunzi_texts = [];
+        var fontarr = [];
+        $.each(jsonInfo.properties, function (i, v){
+          fontarr.push('-');
+        });
+        $.each(jsonInfo.properties, function (i, v){
+          let lsjson = {"value":v, "number":i};
+          if(sku == 'BL026'){
+            lsjson.textNmu = fontarr.length;
+          }
+          _sunzi_json._sunzi_texts.push(lsjson);
+        });
+      }else{
+        _sunzi_json._sunzi_text = '';
+        $.each(jsonInfo.properties, function (i, v){
+          _sunzi_json._sunzi_text = v;
+        });
+      }
+    }
+    
+    if(!!jsonInfo.font){
+      if(!!jsonInfo.font[1]){
+        _sunzi_json._sunzi_texts = [];
+        var fontarr = [];
+        $.each(jsonInfo.font, function (i, v){
+          fontarr.push('-');
+        });
+        $.each(jsonInfo.font, function (i, v){
+		  let n = parseInt(i)+1;
+          let lsjson = {"value":v.text_str, "fontSize":v.font_size, "font":v.font_family, "number": n};
+          if(sku == 'BL026'){
+            lsjson.textNmu = fontarr.length;
+          }
+          _sunzi_json._sunzi_texts.push(lsjson);
+        });
+      }else{
+        $.each(jsonInfo.font, function (i, v){
+          _sunzi_json._sunzi_text = {"value":v.text_str, "fontSize":v.font_size, "font":v.font_family};
+        });
+      }
+    }
+    
+    return _sunzi_json;
+  }
+
+	function setJson(){
+		  $("#custom_json").val('');          
+	      if(jsonCustom.photo && jsonCustom.photo.length > 0){        
+	        if(typeof (custom_json['image']) == "undefined"){
+	          custom_json['image'] = {};
+	        }               
+	        for(x = 0;x < jsonCustom.photo.length;x++){ 
+	          crop_picture = $("#crop_picture"+x);       
+	          if(crop_picture.length >0){
+	            imgSrc = crop_picture.val();
+	            if(typeof (custom_json['image'][x]) == "undefined"){
+	              custom_json['image'][x] = {};
+	            }
+	            if(typeof (custom_json['image'][x]['src']) == "undefined"){
+	              custom_json['image'][x]['src'] = {};
+	            } 
+	            custom_json['image'][x]['src'] = imgSrc;
+	          }
+	        }
+	      }  
+	      if(typeof(jsonCustomCoors) != "undefined" && jsonCustomCoors.length > 0){        
+	        if(typeof (custom_json['font']) == "undefined"){
+	          custom_json['font'] = {};
+	        }               
+	        for(x = 0;x < jsonCustomCoors.length;x++){ 
+	          textObj = $("#custom-text"+x);       
+	          if(textObj.length >0){
+	            text_str = textObj.val();
+                if(jsonCustomCoors[x].label){ // 自定义标签
+
+                  if(typeof (custom_json.properties) == "undefined"){
+                    custom_json.properties = {};
+                  }
+                  custom_json.properties[jsonCustomCoors[x].label] = text_str; // 有自定义标签的存储方式.
+                  delete custom_json.font; 
+                  
+                }else{
+                  
+                    if(typeof (custom_json['font'][x]) == "undefined"){
+                      custom_json['font'][x] = {};
+                    }
+                    if(typeof (custom_json['font'][x]['font_family']) == "undefined"){
+                      custom_json['font'][x]['font_family'] = {};
+                    } 
+                    if(typeof (custom_json['font'][x]['font_size']) == "undefined"){
+                      custom_json['font'][x]['font_size'] = {};
+                    } 
+                    if(typeof (custom_json['font'][x]['text_str']) == "undefined"){
+                      custom_json['font'][x]['text_str'] = {};
+                    }            
+                    if(jsonCustomCoors[x]['font']){
+                      custom_json['font'][x]['font_family'] = jsonCustomCoors[x]['font']== '\u5fae\u8f6f\u96c5\u9ed1'?'微软雅黑':jsonCustomCoors[x]['font']
+                    }else{
+                      custom_json['font'][x]['font_family'] = '微软雅黑';                         
+                    }            
+                    custom_json['font'][x]['font_size'] = jsonCustomCoors[x]['size'];
+                    custom_json['font'][x]['text_str'] = text_str;
+                  
+                }
+                        
+	          }
+	        }
+	      } 
+	      return custom_json;
+	}
+  
+  
+//   optionSelect.change(function(){        
+//     jQuery("#merge").html('Wait...');
+//     jQuery("#merge").attr('disabled','disabled');  
+//     var currentSku = jQuery(this).find(":selected").data('sku');
+//     // console.log(currentSku);
+//     var remoteBackImg = remoteBackUrl + currentSku + ".png";  
+//     tmpCanvas.setBackgroundImage(remoteBackImg, function(e){
+//         if(e){
+//           tmpCanvas.renderAll();
+//           jQuery("#merge").removeAttr('disabled');
+//           jQuery("#merge").html(jQuery("#merge").attr('default-value'));
+//         }
+
+//       }, {
+//         opacity: 1,
+//         angle: 0,
+//         left: 0,
+//         top: 0,
+//         originX: 'left',
+//         originY: 'top',
+//         crossOrigin: 'anonymous'
+//     });
+//   })
+
+
+                           
+  // 旋转  
+  $(".cropper-rotate-btn").on("click", function() {
+    var cropperId = $(this).attr('data-id');
+    var cropperOption = $(this).attr('data-option');
+    $('#'+cropperId).cropper("rotate", cropperOption);
+  });  
+  // 复位  
+  $(".cropper-reset-btn").on("click", function() {  
+    var cropperId = $(this).attr('data-id');
+    console.log('cropperId==='+cropperId);
+    $('#'+cropperId).cropper("reset");  
+  });
+
+  function uploadtoqiniu(callback){
+console.log('uploadtoqiniu--');
+    
+    customModal3.close();
+    Mask.show();
+    imgBase64 = tmpCanvas.toDataURL({
+      format: 'png',
+      multiplier: 0.5
+    });      
+    {%comment%}by.Coman 将图片边角颜色进行替换{%endcomment%}
+    if(jsonCustom.isAiDiaphaneity == 1){
+      handleColorToColor(imgBase64, remoteBackUrl + currentSku +'.png?'+Math.random(), [247,248,249], jsonCustom.size.width, jsonCustom.size.height).then(res => {
+console.log('w--h--handleColorToColor', jsonCustom.size.width, jsonCustom.size.height);
+        var blob = convertBase64ToBlob(res); 
+        _ajax(blob, callback);
+      });
+    }else{
+      var blob = convertBase64ToBlob(imgBase64);
+      _ajax(blob, callback);
+    }
+                       
+  } 
+  
+  function _ajax(blob, callback){
+    var crop_picture = '', text_picture = '';
+    $.ajax({
+        type: "POST",
+        url: "https://pic.stylelab.com/assist/uptoken",
+        dataType: 'json',
+        beforeSend: function() {
+        },
+        success: function(data){
+          var observer = {                         
+            next(result){
+          },
+          error(err){
+            console.log(err.message);
+          },
+          complete(res1){
+            $(".custom-text").each(function(v){
+              text_picture += '@|||@'+$(this).val();
+              $("#text_picture").val(text_picture.substring(2));              
+            });
+
+            $(".crop_picture").each(function(v){
+              crop_picture += '@|||@'+$(this).val();
+              $("#crop_picture").val(crop_picture.substring(2));              
+            });
+
+            $("#preview_picture").val("https://spic.qn.cdn.imaiyuan.com/" + res1.key);
+//             if(!!$("#custom_info").val()){
+              var sunziInfo = JSON.parse($("#custom_info").val());// custom_json
+              sunziInfo._sunzi_effect = "https://spic.qn.cdn.imaiyuan.com/" + res1.key;
+              $("#custom_info").val(JSON.stringify(sunziInfo));
+//             }
+            
+            callback();
+  console.log('callback();');
+            //customModal3.close();
+          }
+        };
+        var putExtra = {
+          fname: "",                          
+          params: {},                         
+          mimeType: null                      
+        };
+        var config = {
+          region:qiniu.region.na0,
+          concurrentRequestLimit:3
+        };
+        var filename = new Date().Format("yyyyMMddhhmmss") + randomString(6);
+        var key = 'getcustomphonecase_' + filename + '.png';
+        var observable = qiniu.upload(blob, key, data.token, putExtra, config);
+        observable.subscribe(observer);
+      }
+    })
+  }
+
+  function checkLength(obj){  
+    var count_length = $(obj).attr('maxlength')  
+    var current_length = $(obj).val().length;
+    var num = 0;
+    if( current_length <= count_length){    
+      num = count_length - current_length
+      $(obj).parent().find('.text-length-view .num').html(num);
+    }  
+  } 
+  function clickAddFormToCart(){
+    $('.product-form__item--submit-custom-multiple button').click();
+    $("#sp-add-to-cart").removeAttr("disabled");
+    Mask.hide();
+  }
+  $("#sp-add-to-cart").click(function(){
+    var quantity = $('input[name="tingle_quantity"]').val() ? $('input[name="tingle_quantity"]').val() : 1;  
+    $('input[name="quantity"]').val(quantity);  
+    $("#sp-add-to-cart").attr("disabled","disabled");
+    uploadtoqiniu(clickAddFormToCart);
+//     $(".product-form-submit-wrap button").trigger("click");
+  }); 
+  
+  Product.validators.push(
+    () => {
+      return validateFormData();
+    }
+  );
+  function validateFormData(){
+    if($.trim($("#custom_info").val() ) == '' ){
+      return 'Validate PhotoCarving Error';
+    }
+//     if(typeof(jsonCustom['coors']) != "undefined" && !$("#custom_json").val()){
+//       return 'Validate PhotoCarving Error';
+//     }
+    return true;
+  }
+  
+  
+    
+  var photooptionNum = 1;
+  Listener.on([ Listener.product.update.before ], function(event, variant, dom) {
+    
+    changeVariant(variant, dom, event);
+      
+//     var currentSku = variant.sku;
+//     if(typeof productItemJson == 'object'){
+//       currentSku = productItemJson[currentSku];
+//     }
+//     jQuery("#merge").html('Wait...');
+//     jQuery("#merge").attr('disabled','disabled');  
+// //     //     var currentSku = jQuery(this).find(":selected").data('sku');
+//     var remoteBackImg = remoteBackUrl + currentSku + ".png";  
+// //         tmpCanvas.setBackgroundImage(remoteBackImg, function(e){
+//     tmpCanvas.setOverlayImage(null, tmpCanvas.renderAll.bind(tmpCanvas));
+//     tmpCanvas.setOverlayImage(remoteBackImg+'?'+Math.random(), function(e){
+//       if(e){
+//         tmpCanvas.renderAll();
+//         jQuery("#merge").removeAttr('disabled');
+//         jQuery("#merge").html(jQuery("#merge").attr('default-value'));
+//       }
+
+//     },{
+//       //         opacity: 1,
+//       angle: 0,
+//       left: 0,
+//       top: 0,
+//       originX: 'left',
+//       originY: 'top',
+//       crossOrigin: 'anonymous'
+//     });
+//     {% if photooption == "1" %}
+// //       if(photooptionNum != variant.option1){
+// //         photooptionNum = variant.option1;
+// //         $('#photoOption').val(variant.option1);
+// //         $('#photoOption').change();
+// //       }
+//     {% endif %}
+  });
+  
+ 
+  function changeVariant(variant, dom, event){
+    let sku = variant.sku;
+console.log('$(dom).length', $(dom).length);
+    if($(dom).length > 0){
+console.log("$(dom).data('name')", $(dom).data('name'));
+      var val = $(dom).val();
+      if( $(dom).data('name').toLowerCase().indexOf('{{ 'variant.title.Color' | t }}'.toLowerCase()) > -1){
+        changeColor(val);
+      }
+      if( $(dom).data('name').toLowerCase().indexOf('{{ 'variant.title.Select_number_of_photos' | t }}'.toLowerCase()) > -1){
+        changePhotoOprion(val);
+      }
+      if( $(dom).data('name').toLowerCase().indexOf('{{ 'variant.title.Choose_Your_Size' | t }}'.toLowerCase()) > -1){
+        changeSize(val);
+      }
+      if($(dom).data('name').toLowerCase().indexOf('{{ 'variant.title.Material' | t }}'.toLowerCase()) > -1 || $(dom).data('name').toLowerCase().indexOf('{{ 'variant.title.Version' | t }}'.toLowerCase()) > -1 || $(dom).data('name').toLowerCase().indexOf('{{ 'variant.title.Color' | t }}'.toLowerCase()) > -1){ // 材质型号
+        remoteBackImg = remoteBackUrl + variant.sku + ".png"; // 切换底图
+console.log('remoteBackImg', remoteBackImg);
+      }
+  
+      if(secondtype == 'changeVariant'){
+		jsonCustomCoors = jsonCustom.coors[sku];
+      }
+  
+  
+//       if(!!variantCattribute[sku] && currentSku != sku){
+// 		reloadCustomJson(variantCattribute[sku]);
+//       }
+    }
+  }
+  
+  function reloadCustomJson(_json){
+	    jsonCustom = _json;
+    	// set photo
+        setArrayConfig(jsonCustom.photo);
+        tmpCanvas.setWidth(jsonCustom.size.width);
+        tmpCanvas.setHeight(jsonCustom.size.height); 
+        arrayImg.forEach(function(v, i){
+          arrayImg[i] = undefined;
+        });
+        jsonCustom.photo.forEach(function(v, i){
+          if(cropper[i]){ // 页面加载不存在
+          	cropper[i].cropperOpt = arrayConfig[i].aspectRatio || '';
+            cropper[i].defOption.aspectRatio = arrayConfig[i].aspectRatio || '';
+            cropper[i].defOption.options = arrayConfig[i].aspectRatio || '';
+          }
+        }); 
+        $('.inputImage-area .span-text-upload').show();
+        $('.inputImage-area .previewpicture').hide(); 
+        $('.avatar-input').css('visibility', '');
+  }
+  
+  function changeColor(val){
+      if(hasNoPreview!=1){
+console.log('getGone(val)', getGone(val));
+        tmpCanvas.setBackgroundColor(getGone(val),tmpCanvas.renderAll.bind(tmpCanvas));
+      }
+  }
+    
+  function changePhotoOprion(val){
+console.log('jsonCustom', jsonCustom);
+      if(jsonCustom.photooption){
+        var num = parseInt(val.split('{{ 'variant.title.Photo' | t }}')[0]);
+console.log('num',num);
+        $('.inputImage-area').each(function (i){
+            num <= i?$(this).hide():$(this).show();
+            if($('#previewpicture'+i).is(':hidden')){
+              arrayImg[i]=undefined;
+              $('#crop_picture'+i).val('');
+            }
+            if(i >= num){
+              arrayImg[i]=undefined;
+              $('#crop_picture'+i).val('');
+              $('#previewpicture'+i).hide().next('.span-text-upload').show();
+            }
+
+        });
+      }
+  }
+    
+  function changeSize(val){
+      if(typeof jsonCustom.sizeOptions == 'object'){
+console.log('getSku()', getSku());
+
+        jsonCustom.size = jsonCustom.sizeOptions[getSku()].size;
+        jsonCustom.photo = jsonCustom.sizeOptions[getSku()].photo;
+        jsonCustom.previewOverlay = jsonCustom.sizeOptions[getSku()].previewOverlay;
+        setArrayConfig(jsonCustom.photo);
+        tmpCanvas.setWidth(jsonCustom.size.width);
+        tmpCanvas.setHeight(jsonCustom.size.height); 
+console.log('w--h--changeSize', jsonCustom.size.width, jsonCustom.size.height);
+        arrayImg.forEach(function(v, i){
+          arrayImg[i] = undefined;
+        });
+        jsonCustom.sizeOptions[getSku()].photo.forEach(function(v, i){
+          if(cropper[i]){ // 页面加载不存在
+          	cropper[i].cropperOpt = arrayConfig[i].aspectRatio || '';
+            cropper[i].defOption.aspectRatio = arrayConfig[i].aspectRatio || '';
+            cropper[i].defOption.options = arrayConfig[i].aspectRatio || '';
+          }
+        }); 
+        $('.inputImage-area .span-text-upload').show();
+        $('.inputImage-area .previewpicture').hide(); 
+        $('.avatar-input').css('visibility', '');
+
+      }
+  }
+  
+
+  function getGone(name){ // 获取色值 给画布背景
+      var arr = {"Black":"#000000","Purple":"#5c1865","Pink":"#eb0080","Teal":"#41bdbf","Light Blue":"#b1e0f2","Red":"#d91217","Orange":"#ed8411","Lime Green":"#7bbe30","Blue":"#1e2188","Grey":"#7c7c7c",
+                 "Negro":"#000000","Púrpura":"#5c1865","Rosado":"#eb0080","Azul Claro":"#41bdbf","Verde Azulado":"#b1e0f2","Rojo":"#d91217","Naranja":"#ed8411","Lime Green":"#7bbe30","Azul":"#1e2188","Gris":"#7c7c7c"
+                };
+      return arr[name]?arr[name]:'#000000';
+  }
+  
+  
+  $(function (){
+    
+    {%comment%}只显示一个输入框. 其余隐藏. 输入框内容复制到其他隐藏输入框中. 其余流程不变.{%endcomment%}
+    if(jsonCustom.isInputOneToMultiple == 1){
+      $('.text-area .custom-text').bind('keyup change', function (){
+        textChangeSiblings();
+      });
+    }
+  
+    {%comment%}photo 数量{%endcomment%}
+    var selectphoto = $('select[data-name*="{{ 'variant.title.Select_number_of_photos' | t }}"]'); 
+    if(selectphoto.length>0){
+      changeVariant({sku:sku}, selectphoto);
+    }
+                        
+    //初始化cropper 
+console.log('cropper arrayConfig', arrayConfig);
+    jsonCustom.photo && $.each(jsonCustom.photo, function (i, v){
+      cropper = new start({id:'#inputImage'+i, preview:'#previewpicture'+i, popImg:'popimage'+i, idx: i, cropPicture:'#crop_picture'+i, cropperOpt: arrayConfig, hasNoPreview:hasNoPreview});
+      cropper.initCropper(cropper);
+    })
+    
+    addbgtowordphoto();
+    
+  });
+                      
+  function addbgtowordphoto(){
+    if($.trim(jsonCustom.bgtowordphoto) != ''){
+      $('#bgtowordphoto').val(jsonCustom.bgtowordphoto);
+    }
+  }
+  
+  function textChangeSiblings(){
+    var _this = $('.text-area .custom-text').eq(0);
+    $(_this).parent().siblings().children('input').val($(_this).val() );
+  }
+
+  /**
+   * 将图片其中颜色转换为另一种颜色
+   * @param {string} source  结果图
+   * @param {string} cropSource  crop图
+   * @param {number[]} color  需要替换的颜色 比如: [255,255,255]
+   * @param {number} width  canvas宽度
+   * @param {number} height  canvas高度
+   * @return {string}  处理后的图片base64
+   */
+  const handleColorToColor = async (source, cropSource, color, width, height) => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.src = cropSource;
+      await new Promise(resolve => { img.onload = resolve });
+      canvas.width = width;
+      canvas.height = height;
+console.log('p--w--h--handleColorToColor--width', width, height);
+      ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, width, height);
+      const indexArr = []
+      if (ctx) {
+        const spixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < spixels.data.length; i += 4){
+          if (spixels.data[i] == color[0] && spixels.data[i + 1] == color[1] && spixels.data[i + 2] == color[2]) {
+              indexArr.push(i + 3);
+          }
+        }
+      }
+      const resultImg = new Image();
+      resultImg.crossOrigin = 'anonymous';
+      resultImg.src = source;
+      await new Promise(resolve => { resultImg.onload = resolve });
+      const mergeCanvas = document.createElement('canvas');
+      const mergeCtx = mergeCanvas.getContext('2d');
+      mergeCanvas.width = width;
+      mergeCanvas.height = height;
+      if(mergeCtx) {
+console.log('p--w--h--handleColorToColor--resultImg--width', resultImg.width, resultImg.height);
+          mergeCtx.drawImage(resultImg, 0, 0, resultImg.width, resultImg.height, 0, 0, width, height);
+          const imageData = mergeCtx.getImageData(0, 0, width, height);
+          // 排除字体
+          indexArr.forEach((item) => {
+              const data =  imageData.data;
+              if(data[item - 3] == color[0] && data[item - 2] == color[1] && data[item - 1] == color[2]) {
+                  data[item] = 0;
+              }
+          })
+          mergeCtx.putImageData(imageData, 0, 0);
+      }
+      return mergeCanvas.toDataURL('image/png');
+  }
+  {% if product.tags contains 'phone-step-guide' %}
+  var productStep = new Step.open([".select-option.show",".text-area",".inputImage-info"],{
+    config: {
+      translatePC:"32px",
+      translateMB:"40px"
+    },
+    custom:[
+      {"name":".text-area","translatePC":"15px","translateMB":"10px"},
+      {"name":".inputImage-info","translatePC":"40px","translateMB":"15px"}
+    ]
+  }); 
+  {% endif %}
+                      
+// // $.getJSON('/products/red-rain-coat.js', function(product) {
+// fetch('/products/red-rain-coat.js').then(data => {
+//   console.log('getjsonproduct:--->', data);
+// //   alert('The title of this product is ' + product.title);
+// });
+// var ccID = '39463107133589';
+// fetch(`/search/suggest.json?type=product&q=id:${ccID}&resources[type]=product`).then(data => {
+//   console.log('dataProduct===>', data)
+// });
+</script>

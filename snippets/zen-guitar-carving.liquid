@@ -1,0 +1,273 @@
+
+<script>
+  	window.addEventListener('EVENT_CROP_SAVE_AFTER', function(event){
+      var index = event.detail.index;
+      var data = event.detail.data;
+      
+      $(".area-crop-upload-"+index).css('border-color', '#d0d0d0');
+    });
+  
+    var _zenEngravingSizeOptions = [
+      {
+        value: "20",
+        label: "20"
+      }
+    ];
+
+    var _zenEngravingFontOptions = [
+      {
+        value: "TimesNewRoman",
+        label: "TimesNewRoman"
+      }
+    ];  
+    var _zenSku = "";
+  	var currentCoors = "";
+    var coorSymbol = " $%# ";
+  	var customOpt = `{{ product.metafields["global"]["cattribute"] }}`?JSON.parse(`{{ product.metafields["global"]["cattribute"] }}`):{};    
+    var carvingArray = [];
+    customOpt.config.forEach(function(v,i){
+      var templateCoord = {};
+      var templateImages = false;
+      if(typeof v.templateImages != 'undefined'){
+        templateImages = v.templateImages;
+      }
+      var originX = "center";
+      if(typeof v.originX != 'undefined'){
+      	originX = v.originX;
+      }
+   	  carvingArray.push({
+        templateOut:true,
+      	require: true,
+        btnChangeText:"{{ 'zen.general.change' | t }}",
+        previewText: "{{ 'zen.general.add_engravings' | t }}", //左侧预览文字
+        btnText: "{{ 'zen.general.add' | t }}", //按钮文案
+        type: "",
+        sku: v.sku,
+        in:  v.sku+"-IN.png",
+        out: v.sku+"-OUT.png",
+        showSize: false,  //是否显示字号选项
+        showFont: false,  //是否显示字体选项
+        engravingSizeOptions: _zenEngravingSizeOptions,
+        engravingFontOptions: _zenEngravingFontOptions,
+        isBig: false, //是否生成大图
+        bigParam: { width: 800, height: 640, fontWeight: 'bold', fontSize: 30}, //刻字大图参数 是只有文字的大图
+        originX:originX,
+        textPlaceHolder:"",
+        cropPrompt:" ",
+        errorWordShow:true,
+        emojiErrorField: "{{ 'zen.curvecarving.error_emoji' | t }}",
+        templateTitle:"{{ 'zen.curveevgraved.templateTitle' | t }}",
+        templateImages:templateImages,
+        coorSymbol: coorSymbol,  
+        cancelText:"{{ 'customer.recover_password.cancel' | t }}",
+        confirmText:"{{ 'zen.general.confirm' | t }}",
+        textPlaceHolder:"{{ 'zen.curveevgraved.textPlaceHolder' | t }}",
+        loadingFullScreen: true,
+        coors:v.coors
+      });
+    });
+   
+//console.log(JSON.stringify(carvingArray));
+    
+    window._zenConfig = {
+        photoObj: [],
+        carvingObj: [],
+        crystalObj: [],
+        curveCarvingObj: [],
+        nameObj: [],
+        photoUrl: "https://pic.stylelab.com/img/photo/",
+        uploadLoadingImage:"{{ 'sandglass.gif' | asset_img_url: '260x' }}",
+        uploadLoadingImage: 'https://ik.imagekit.io/soufeel/en/skin/frontend/smartwave/default/images/soufeel-30.gif',
+        wrapperBackgroudColor: '#000000',
+        wrapperBackgroudColor: "#000000",
+        ifCarvingHorizontal:true,
+        isCloseOnClickModal:false,
+        leftText: "{{ 'zen.general.left' | t }}",
+        crop: [],
+        photo: [],
+        carving: carvingArray,
+        crystal: [],
+        curveCarving: []
+    };
+</script>
+<div class="custom-step option-carving-container">
+  <div id="zen-photocarving"></div>
+</div>
+<div class="pen-info">
+<input type="text" id="engraving-crop" name="properties[engravingCrop]" value="" style="display:none" /><!--效果图-->
+<!-- <input type="text" id="engraving-big"  name="properties[engravingBig]"  value="" style="display:none" /> -->
+<input type="text" id="engraving-text" name="properties[engravingText]" value="" style="display:none" />
+<input type="text" id="engraving-size" name="properties[engravingSize]" value="" style="display:none" />
+<input type="text" id="engraving-font" name="properties[engravingFont]" value="" style="display:none" />
+<input type="text" id="templateUrl" name="properties[templateUrl]" value="" style="display:none" /> 
+<input name="properties[custom_info]" type="hidden"  />
+<input name="properties[custom_info_title]" type="hidden" />
+</div>
+<link class="photo-carving-js" href="https://pic.stylelab.com/js/zen-photo-carving-0.3.4/zen-photo-carving-chunk-vendors.css?202011201840" rel="stylesheet" />
+<link class="photo-carving-js" href="https://pic.stylelab.com/js/zen-photo-carving-0.3.4/zen-photo-carving-app.css?202011201840" rel="stylesheet" />
+<script class="photo-carving-js" src="https://pic.stylelab.com/js/zen-photo-carving-0.3.4/zen-photo-carving-chunk-vendors.js?202011201840"></script>
+<script class="photo-carving-js" src="https://pic.stylelab.com/js/zen-photo-carving-0.3.4/zen-photo-carving-app.js?202011201840"></script>
+<script>  
+  $(function(){
+    $('.area-carving').eq(0).css('display', 'flex');
+      $('.zen-require').attr('name','customVal');    
+//       window.addEventListener('VARIANT_CHANGE', function(event){
+    Listener.on([ Listener.product.update.before ], function(event, variant, dom) {
+//         if(_zenSku !== variant.sku){
+          _zenSku = variant.sku;
+      
+      	setcurrentCoors(dom);
+
+//         }
+    });
+      
+  });
+  
+  function setcurrentCoors(dom){
+    customOpt.config.forEach(function(v,i){
+console.log('v.label', v.label);
+console.log('$(dom).val()', $(dom).val());
+      if($(dom).val().indexOf(v.label) >= 0){
+        var carvingNum = $('.carving-container').length;
+        $('.area-carving').hide();              
+        currentCoors = v.no;              
+        for(var j=0;j<carvingNum;j++){
+
+          if(j == v.no){
+            $('.area-carving-'+j).css('display', 'flex');
+          }
+        }
+      }
+    });
+  } 
+  Product.validators.push(async () => {  //验证定制化必填字段
+//   function carvingValidateForm(){  //验证定制化必填字段
+    var zenInfo = document.getElementsByClassName("zen-require")[0].value;
+    var zenFlag = true;
+    
+    if(zenInfo){
+      var zenInfo = JSON.parse(zenInfo);
+      $('.pen-info input').val('');      
+      setcurrentCoors($('select[data-name*="{{'variant.title.Choose_your_style' | t}}"]'));      
+        var v = zenInfo.engraving[currentCoors];
+        if(!v.engravingCrop) {
+          $('.area-carving-'+currentCoors).css('border-color',"red");
+          zenFlag = false;
+        }else{
+          $('.area-carving-'+currentCoors).css('border-color',"#333");		  
+          $("#engraving-crop").val(v.engravingCrop);
+          $("#templateUrl").val(v.templateUrl);
+          if(v.templateLabel){
+          	var custom_json = {};
+            if(typeof (custom_json['properties']) == "undefined"){
+              custom_json['properties'] = {};
+            }            
+            custom_json['properties']['TemplateName:'] = v.templateLabel;
+            custom_json = JSON.stringify(custom_json);
+            $('.shopify-product-form').find('[name="properties[custom_info]"]').val(custom_json);
+            $('.shopify-product-form').find('[name="properties[custom_info_title]"]').val(v.templateLabel);
+          }          
+          var pickStr = '';
+          var boxStr = '';
+          var textArr = v.engravingText.split(coorSymbol);
+          console.log(textArr);
+          textArr.forEach(function(item,index){
+            console.log(index);
+            if(item){            
+              var pickArr = [];
+              if(item.indexOf('|') > -1){
+                pickArr = item.split('|');
+              }
+              if(index == 1){
+                  if(pickArr.length > 0){
+                    pickArr.forEach(function(vv,ii){
+                      let iii = ii+1;
+                      pickArr[ii] = '&%#'+iii+':'+vv;
+                    })
+                    pickStr = pickArr.join('|');
+                  }else{
+                    pickStr = '&%#'+':'+item;
+                  }
+              }else{
+                if(pickArr.length > 0){
+                  pickArr.forEach(function(vv,ii){
+                    let iii = ii+1;
+                    pickArr[ii] = '&%*'+iii+':'+vv;
+                  })
+                  boxStr = pickArr.join('|');
+                }else{
+                  boxStr = '&%*'+':'+item;
+                }
+              }              
+            }            
+          });          
+          if(pickStr && boxStr){
+          	$("#engraving-text").val(pickStr+'|'+boxStr);
+          }else if(pickStr){
+            $("#engraving-text").val(pickStr);
+          }else{
+            $("#engraving-text").val(boxStr);
+          }
+          
+          var _size = [];
+          var _font = [];
+
+//           let n = 1;
+//           customOpt.config[currentCoors].coors.forEach(function(vv,ii){
+            
+//             if(vv.label){
+//               if(vv.label.toLowerCase()== 'pen'){
+//                 _size.push('&%#'+n+':'+vv.size);
+//                 _font.push('&%#'+n+':'+vv.font);
+//                 n++;
+//               }else{
+//                 _size.push('&%*:'+vv.size);
+//                 _font.push('&%*:'+vv.font);
+//               }
+              
+//             }else{
+//               _size.push(vv.size);
+//               _font.push(vv.font);
+//             }
+//           });
+          
+          customOpt.config[currentCoors].coors.forEach(function(vv,ii){
+            
+            if(vv.label){
+              if(vv.label.toLowerCase()== 'pen'){
+                if($.inArray('&%#:'+vv.size, _size) < 0){
+                  _size.push('&%#:'+vv.size);
+                }
+
+                if($.inArray('&%#:'+vv.font, _font) < 0){
+                  _font.push('&%#:'+vv.font);
+                }
+                  
+              }else{
+                _size.push('&%*:'+vv.size);
+                _font.push('&%*:'+vv.font);
+              }
+              
+            }else{
+              _size.push(vv.size);
+              _font.push(vv.font);
+            }
+          });
+		  console.log(_size);     
+          console.log(_font);
+          $("#engraving-size").val(_size.join("|"));
+          $("#engraving-font").val(_font.join("|"));
+        }
+        
+      
+    }else{
+      console.log('flag-flase');
+      zenFlag = false;
+    }
+    
+    console.log("zenFlag:", zenFlag);
+    return zenFlag;
+    
+  })
+  
+</script>

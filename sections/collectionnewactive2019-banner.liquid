@@ -1,0 +1,76 @@
+{% comment %}
+活动页如需改版请在这个文件里添加css文件 例如：
+{% if handle == 'ade-demo' %}
+	{{'ade-demo.scss.css' | asset_url | stylesheet_tag }}
+{% endif%}
+{% endcomment %}
+<style>
+  .pages-banner-pc{
+    display:block;
+    margin: 0 auto;
+  }
+  .pages-coupon-banner-pc{
+    display:block;
+    margin: 0 auto;
+  }
+  .pages-banner-mb{display:none;}
+  .pages-coupon-banner-mb{display:none;}
+  @media(max-width:768px){
+    .pages-banner-pc{display:none;}
+    .pages-banner-mb{display:block;}
+    .pages-coupon-banner-pc{display:none;}
+    .pages-coupon-banner-mb{display:block;}
+  }
+</style>
+
+{% for block in section.blocks %}
+{% if handle == block.settings.handle %}
+  <div class="pages-banner">
+    <img data-src="{{ block.settings.pc_image | img_url: 'master' }}" class="lazyload pages-banner-pc" />
+    <img data-src="{{ block.settings.mb_image | img_url: 'master' }}" class="lazyload pages-banner-mb" />
+  </div>
+{% endif%}
+{% endfor %}
+    
+{% schema %}
+{
+  "name": "banner",  
+  "class":"collectionnewactive2019-banner",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "collectionnewactive2019-banner"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "活动页banner",
+      "settings": [
+    	{
+		  "type": "text",
+          "id": "title",
+          "label": "哪个页面"
+	    },
+		{
+		  "type": "text",
+          "id": "handle",
+          "label": "活动url"
+	    },
+        {
+          "type": "image_picker",
+          "id": "pc_image",
+          "label": "PC图片"
+        },
+        {
+          "type": "image_picker",
+          "id": "mb_image",
+          "label": "MB图片"
+        }
+
+      ]
+    }    
+  ]
+}
+{% endschema %}
+

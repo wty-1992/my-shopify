@@ -1,0 +1,121 @@
+{% comment %}
+** @name 声波钥匙扣 **
+** @author 黄创业 **
+** @integrate 黄创业 王天宇 **
+{% endcomment %}
+
+{% comment %} 引用公共插槽 {% endcomment %}
+{% include 'sunzi-solt-template' %}
+
+{% comment %} 调用参数 {% endcomment %}
+
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'sunzi.sonic.photo.keychain.test.js' %}
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/sonic-photo-keychain.json' %}
+{% comment %} 谷歌分析id {% endcomment %}
+{% assign gtag = 'UA-174675922-8' %}
+{% comment %} 定制按钮文案 {% endcomment %}
+{% assign buttonText = section.settings.sunzi_button_upload_text %}
+
+{% comment %} 站点语种 {% endcomment %}
+{% assign sunzi_shop_language = section.settings.sunzi_shop_language %}
+{% comment %} 货币符号 {% endcomment %}
+{% assign sunzi_shop_symbol = section.settings.sunzi_shop_symbol %}
+
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+  .common-standar_btn {
+  	display: none;
+  }
+  @media screen and (min-width: 768px) {
+    .sunzi-modal-content {
+       width: 400px;
+       height: 660px;
+    }
+  }
+</style>
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 额外的表单参数 {% endcomment %}
+  
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="text" id="sunzi-input" name="properties[customInfo]" required="required"></input>
+  <input type="text" id="sunzi-cart" name="properties[_sunzi_cart]"></input>
+  {% comment %} 定制按钮 {% endcomment %}
+  <button type="button" id="sunzi-button" disabled class="dots-loading">
+    <span class="dots">
+      <i></i>
+      <i></i>
+      <i></i>
+    </span>
+    <div class="sunzi-button-text">{{ buttonText }}</div>
+  </button>
+</div>
+
+<!-- sunzi core js -->
+<script src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{ coreJs }}" defer="defer"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ gtag }}" async="async"></script>
+<script async="async">
+  _sunzi_gtag('{{ gtag }}');
+</script>
+
+{% comment %} 1.隐藏掉变体，加车按钮等等 {% endcomment %}
+<script defer="defer">
+</script>
+
+{% comment %} 2.请求定制化数据 {% endcomment %}
+<script defer="defer">
+  var layoutData;
+  _sunzi_request('{{ requestURL }}', function(data) {
+  	layoutData = data.layout;
+  });
+</script>
+
+{% comment %} 3.开始定制 {% endcomment %}
+<script defer="defer">
+  $('#sunzi-button').click(function() {
+    // 获取当前产品sku
+    var curSku = _sunzi_get_product_info().sku;
+    _sunzi_response.price = _sunzi_get_product_info().price / 100;
+    _sunzi_response.sonicTheme = _sunzi_response.type;
+    _sunzi_response.qrcodePath = '{{ shop.url }}/pages/sonic-photo';
+    _sunzi_response.layout = layoutData.find(item => item.sku === curSku);
+    
+    _sunzi_response.shop = {
+      language: '{{sunzi_shop_language}}',
+      currencySymbol: '{{sunzi_shop_symbol}}'
+    };
+    // 开始渲染
+    _sunzi_custom(
+      SonicPhoto.default,
+      function(data) {
+        _sunzi_loading();
+        
+        $('#sunzi-input').val(JSON.stringify({
+          '_sunzi_text': {
+            value: data.lineText.value,
+            font: data.lineText.font.name,
+            effect: data.preview
+          },
+          '_sunzi_effect': data.preview,
+          '_sunzi_compose': [{
+            'rule': 14.1,
+            'type': 'photo_design',
+            'data': data,
+          }],
+        }));
+		//	加车事件触发
+      	$('.product-form__cart-submit').click();
+        _sunzi_hide_loading();
+      }
+    );
+  });
+  
+  /** 其他自定义函数 start **/
+ 
+
+  /** 其他自定义函数 end **/
+</script>

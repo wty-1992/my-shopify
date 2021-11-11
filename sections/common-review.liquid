@@ -1,0 +1,199 @@
+{% if section.settings.enable %}  
+
+<style>
+  .common-reivews-section{
+    padding:0;
+    border-bottom: 1px solid #333;
+  }
+  .common-reivews-section .reviews-box{
+    background: {{section.settings.color_bg}};
+    color: {{section.settings.color_text}};
+  }
+  .common-reivews-section .reviews-box .home-start{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .common-reivews-section .reviews-box .home-start svg{
+    margin:0 1px;
+    fill: {{section.settings.color_star}};
+  }
+ .common-reivews-section .reviews-box .title {
+    text-align: center;
+    font-size: 1.8rem;
+    padding: 2rem .2rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    word-spacing: 2px;
+   color: {{section.settings.color_title}};
+ }
+  .common-reivews-section .reviews-box .items{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .common-reivews-section .reviews-box .item{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: .5rem;
+    flex:0 1 100%;
+  }
+  .common-reivews-section .reviews-box .item .left{
+    width:8rem;
+    margin-right: 2rem;
+  }
+  .common-reivews-section .reviews-box .item .left img{
+    border-radius: 10rem;
+  }
+  
+  .common-reivews-section .reviews-box .item .right{
+    flex:0 1 60%;
+  }
+  .common-reivews-section .reviews-box .item .right .name{
+    font-size: 1.2rem;
+    padding: .5rem 0;
+    font-weight: bold;
+  }
+  
+  .common-reivews-section .reviews-box .item .right .origin{
+    font-size: .8rem;
+    padding: 1rem 0;
+  }
+    
+  
+  .common-reivews-section .reviews-box .item .right .origin{
+    font-size: .8rem;
+    padding: 1rem 0;
+  }
+  
+  .common-reivews-section .reviews-box .item .right .content{
+    padding: .5rem 0;
+  }
+  
+  @media (min-width:1024px){
+	.common-reivews-section .reviews-box .item{
+      flex:0 1 50%;
+    }
+  } 
+</style>
+
+<div class="reviews-box">
+  {% unless section.settings.title == blank %}
+  <div class="title">{{section.settings.title}}</div>
+  {% endunless %}
+  <ul class="items">
+    {% for block in section.blocks %}
+    <li class="item">
+      <div class="left"> 
+        <img src="{{ block.settings.image | img_url: '200x' }}" />
+      </div>
+      <div class="right">
+        <div class="home-start">
+          {% for i in (1..5) %}
+            {% include 'icon-review-star' %}
+          {% endfor %}
+        </div>
+        <div class="name">
+          <span>{{ block.settings.title }}</span>
+        </div>
+        <div class="content">{{ block.settings.content }}</div>
+        <div class="origin">{{ block.settings.author }} / {{ block.settings.source }}</div>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+  
+  <!--
+  <div class="reviewdog">
+    <h2 class="outreviews">
+      <a href="/pages/all-reviews">see reviews page ></a>
+    </h2>
+  </div>
+  -->
+
+
+
+{% endif %}
+{% schema %}
+  {
+    "name": "通用 - 评论块",
+    "class": "common-reivews-section",
+    "settings": [
+      {
+	     "type": "checkbox",
+		 "id": "enable",
+		 "label": "开启"
+	  },
+	 {
+        "type":      "color",
+        "id":        "color_bg",
+        "label":     "背景颜色",
+        "default":   "#000"
+      },
+      {
+        "type":      "color",
+        "id":        "color_title",
+        "label":     "标题颜色",
+        "default":   "#fff"
+      },
+      {
+        "type":      "color",
+        "id":        "color_text",
+        "label":     "文字颜色",
+        "default":   "#fff"
+      },
+      {
+        "type":      "color",
+        "id":        "color_star",
+        "label":     "评论星星颜色",
+        "default":   "#FFC100"
+      },
+      {
+          "type": "text",
+          "id": "title",
+          "label": "评论块总标题"
+      }
+    ],
+    "blocks": [
+        {
+          "type": "additional_info",
+          "name": "添加元素",
+          "settings": [
+			      {
+              "type": "image_picker",
+              "id": "image",
+              "label": "上传头像"
+            },
+            {
+              "type": "text",
+              "id": "title",
+              "label": "标题"
+            },
+            {
+              "type": "textarea",
+              "id": "content",
+              "label": "评论正文"
+            },
+		    {
+              "type": "text",
+              "id": "author",
+              "label": "评论者英文名"
+            },
+            {
+              "type": "text",
+              "id": "source",
+              "label": "评论渠道来源", 
+              "default": "Facebook"
+            }
+          ]
+        }
+      ],
+    "presets": [{
+      "name": "通用 - 评论块",
+      "category": "通用"
+    }]
+  }
+{% endschema %}

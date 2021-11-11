@@ -1,0 +1,469 @@
+<style>
+  
+  .banner_title{
+    text-align: center;
+    padding-bottom: 50px;
+    position: relative;
+  }
+  .banner_title span{
+    position: relative;
+    padding: 0;
+    color: #000;
+    font-weight: 200;
+    display: inline-block;
+    font-size: 42px;
+    font-family: 'OpenSans-Light';
+    padding-bottom: 0px;
+    line-height: 80px;
+    text-transform: capitalize;
+  }
+  .collection-banner-pc{display:block;margin: auto;}
+  .collection-banner-mb{display:none;margin: auto;}
+  .collection-banner{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+/*     margin-bottom: 16px; */
+    flex-flow: wrap;  
+  }
+  
+  .collection-banner .collection-banner-row{
+    position: relative;
+    overflow: hidden;
+  }
+  .collection-banner.collection-banner-two,.collection-banner.collection-banner-three,.collection-banner.collection-banner-four{
+    width:100%;
+    max-width: 1240px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .collection-banner .collection-banner-row .homeblackoff{
+    width: auto;
+    top: 0;
+    left: 30px;
+    display: inherit;
+    position: absolute;
+    z-index: 1;
+  }
+  .h-b-txt.last{
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .h-b-txt.last .h-classify-id{
+z-index: 1;
+    display: block;
+    margin-bottom: 14px;
+    color: #050100;
+    font-size: 32px;
+    font-family: OpenSans-Light;
+  }
+  .collection-banner .collection-banner-row a:hover{box-shadow: 1px 2px 9pt 3px #c8c8c8;}
+  .collection-banner .collection-banner-row a:hover img{-webkit-transform: scale(1.1);transform: scale(1.1);}
+  .collection-banner.collection-banner-two:nth-child(3) .collection-banner-row:nth-child(1){overflow: hidden;border-radius: 10px;}
+  .collection-banner.collection-banner-two:nth-child(3) .collection-banner-row:nth-child(2){overflow: hidden;border-radius:10px;}
+  .collection-banner.collection-banner-two:nth-child(5) .collection-banner-row:nth-child(1){overflow: hidden;border-radius: 10px;}
+  .collection-banner.collection-banner-two:nth-child(5) .collection-banner-row:nth-child(2){overflow: hidden;border-radius: 10px;}
+  .collection-banner.collection-banner-two .collection-banner-row:nth-child(2) .homeblackoff{left: inherit;right: 22px;}  
+  .collection-banner.collection-banner-two:nth-child(3) .collection-banner-row:nth-child(1){width: 62.2%;}
+  .collection-banner.collection-banner-two:nth-child(3) .collection-banner-row:nth-child(2){width:36.8%;}
+  .collection-banner.collection-banner-two:nth-child(4) .collection-banner-row:nth-child(1){width: 36.8%;}
+  .collection-banner.collection-banner-two:nth-child(4) .collection-banner-row:nth-child(2){width: 62.2%;}
+    .collection-banner.collection-banner-two:nth-child(5) .collection-banner-row:nth-child(1){width: 62.2%;}
+  .collection-banner.collection-banner-two:nth-child(5) .collection-banner-row:nth-child(2){width: 36.8%;}
+  .collection-banner.collection-banner-one{margin-top:50px;}
+  
+
+  .collection-banner.collection-banner-two .collection-banner-row{width:calc(50% - 8px); border-radius: 10px;}
+  .collection-banner.collection-banner-three .collection-banner-row{width:calc(33% - 8px);}
+  .collection-banner.collection-banner-four .collection-banner-row{width:calc(25% - 10px);}
+  .collection-banner .collection-banner-row a img{width:100%;transition: all .5s;}  
+  @media(min-width:1200px){
+    .collection-banner.collection-banner-two{
+      padding: 6px 20px;
+    }
+    .collection-banner.collection-banner-two .h-b-txt.last .h-classify-id{
+/*       text-shadow: 0 1px 1pc rgba(0,0,0,.4) */
+    }
+    
+    
+    
+   
+    .collection-banner.collection-banner-two .collection-banner-row:nth-child(2) .h-b-txt.last
+    .collection-banner.collection-banner-two .collection-banner-row:after{
+      content: "";
+      display: block;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: linear-gradient(to bottom, rgba(255,0,0,0), rgb(0 0 0));
+      opacity: 0;
+      pointer-events: none;
+      transition: all .3s;
+    }
+    .collection-banner.collection-banner-two .collection-banner-row:hover::after{
+      opacity: 0.3;
+    }  
+    
+   
+  }
+  @media(max-width:1200px){
+    .collection-banner.collection-banner-two:nth-child(3) .collection-banner-row:nth-child(1){width: calc(100%);}
+    .collection-banner.collection-banner-two:nth-child(3) .collection-banner-row:nth-child(2){width: calc(100%);}
+    .collection-banner.collection-banner-two:nth-child(4) .collection-banner-row:nth-child(1){width: calc(100%);}
+    .collection-banner.collection-banner-two:nth-child(4) .collection-banner-row:nth-child(2){width: calc(100%);}
+    .shopify-section.common-logo-list{padding:0;}
+    .collection-banner .collection-banner-row a:hover{box-shadow: none;}
+    .collection-banner .collection-banner-row a:hover img{-webkit-transform: none;transform: none;}
+    .collection-banner.collection-banner-two,.collection-banner.collection-banner-three,.collection-banner.collection-banner-four{width:100%;}
+    .collection-banner.collection-banner-four .collection-banner-row{width:calc(50% - 5px);}
+    .collection-banner.collection-banner-one{margin-top:0px;}
+    .collection-banner-pc{display:none;}
+    .collection-banner-mb{display:block;}
+    .collection-banner{margin-bottom: 0;}
+    .collection-banner.collection-banner-two .collection-banner-row{
+      padding:0 10px;
+      margin-bottom: 25px;
+    }
+    .collection-banner.collection-banner-two .collection-banner-row,.collection-banner.collection-banner-three .collection-banner-row{width:100%;}
+    .banner_title{padding-bottom: 0;}
+    .collection-banner .collection-banner-row .homeblackoff{width:60px;left:25px;}
+    .collection-banner.collection-banner-two .collection-banner-row:nth-child(2) .homeblackoff{left: 25px;right: unset;}
+    .h-b-txt.last{
+      pointer-events: auto;      
+      padding-bottom: 0px;
+      justify-content: flex-end;
+    }
+    .banner_title span{
+      padding: 25px 0 34px 0;
+      font-size: 24px;
+      line-height: 1;
+    }
+    .h-b-txt.last:after{
+      content: "{{ section.settings.btn_text }}";
+      display: inline-block;
+      background: #ffd5d5;
+      padding: 8px 38px;
+      color: #000;
+      text-transform: uppercase;
+      line-height: 1.5;
+      display: none;
+    }
+    .h-b-txt.last .h-classify-id{
+      font-size: 21px;
+      color: #000 !important;
+      display: block;
+      margin-bottom: 10px;
+      text-transform: capitalize;
+      position: relative;
+      text-shadow: unset;
+      margin-top: 15px;
+    }
+    .collection-banner.collection-banner-two:nth-child(5) .collection-banner-row:nth-child(1),.collection-banner.collection-banner-two:nth-child(5) .collection-banner-row:nth-child(2){width:100%;}
+    .collection-banner .shadow-box{
+    	display: block;
+        width: 100%;
+        background: #fff;
+        height: 48px;
+        position: absolute;
+        opacity: .3;
+    }
+  }
+  {% for block in section.blocks %}
+    {% if block.type == "tow_pictures" %}
+		@media (min-width: 1200px) {
+          .h-b-txt.last {
+          	padding: 25px 45px 0 45px;
+          }
+          .list{{ block.id}} .collection-banner-row:nth-child(1) .h-b-txt.last {
+            justify-content:{{ block.settings.text_position  }};
+            align-items: {{ block.settings.text_position2  }};
+		  }
+          .list{{ block.id}} .collection-banner-row:nth-child(2) .h-b-txt.last {
+            justify-content:{{ block.settings.text_position3  }};
+            align-items: {{ block.settings.text_position4  }};
+		  }
+      	}
+     {% endif %}
+  {%endfor%}
+</style>
+<div class="banner_title">
+  <span>{{section.settings.banner_title}}</span>
+</div>
+
+{% for block in section.blocks %}
+{% case block.type %}
+
+{% when 'A_pictures' %}
+<div class="collection-banner collection-banner-one">
+  <a href="{{ block.settings.link }}">
+    <img data-src="{{ block.settings.pc_image | img_url: 'master' }}" class="collection-banner-pc lazyload" />
+    <img data-src="{{ block.settings.mb_image | img_url: 'master' }}" class="collection-banner-mb lazyload" />
+  </a>
+</div>
+{% when 'tow_pictures' %}
+
+<div class="collection-banner collection-banner-two list{{ block.id}}">
+
+  <div class="collection-banner-row ">
+    {% if block.settings.icon_off1 %}
+    <div class="homeblackoff right"><img src="{{ block.settings.icon_off1 | img_url: 'master' }}"></div>
+    {% endif %}
+    <a href="{{ block.settings.link1 }}">
+      <img data-src="{{ block.settings.pc_image1 | img_url: 'master' }}" class="collection-banner-pc lazyload" />
+      <img data-src="{{ block.settings.mb_image1 | img_url: 'master' }}" class="collection-banner-mb lazyload" />
+      <div class="h-b-txt last"><span class="h-classify-id">{{ block.settings.title1 }}</span><span class="shadow-box"></span></div>
+    </a>
+  </div>
+  <div class="collection-banner-row right">
+    {% if block.settings.icon_off2 %}
+    <div class="homeblackoff right"><img src="{{ block.settings.icon_off2 | img_url: 'master' }}"></div>
+    {% endif %}
+    <a href="{{ block.settings.link2 }}">
+      <img data-src="{{ block.settings.pc_image2 | img_url: 'master' }}" class="collection-banner-pc lazyload" />
+      <img data-src="{{ block.settings.mb_image2 | img_url: 'master' }}" class="collection-banner-mb lazyload" />
+      <div class="h-b-txt last"><span class="h-classify-id">{{ block.settings.title2 }}</span><span class="shadow-box"></span></div>
+    </a>
+  </div>  
+</div>
+
+{% when 'three_pictures' %}
+
+<div class="collection-banner collection-banner-three">
+  <div class="collection-banner-row">
+    {% if block.settings.icon_off1 %}
+    <div class="homeblackoff right"><img src="{{ block.settings.icon_off1 | img_url: 'master' }}"></div>
+    {% endif %}
+    <a href="{{ block.settings.link1 }}">
+      <img data-src="{{ block.settings.pc_image1 | img_url: 'master' }}" class="collection-banner-pc lazyload" />
+      <img data-src="{{ block.settings.mb_image1 | img_url: 'master' }}" class="collection-banner-mb lazyload" />
+      <div class="h-b-txt last"><span class="h-classify-id">{{ block.settings.title1 }}</span><span class="shadow-box"></span></div>
+    </a>
+  </div>
+  <div class="collection-banner-row">
+    {% if block.settings.icon_off2 %}
+    <div class="homeblackoff right"><img src="{{ block.settings.icon_off2 | img_url: 'master' }}"></div>
+    {% endif %}
+    <a href="{{ block.settings.link2 }}">
+      <img data-src="{{ block.settings.pc_image2 | img_url: 'master' }}" class="collection-banner-pc lazyload" />
+      <img data-src="{{ block.settings.mb_image2 | img_url: 'master' }}" class="collection-banner-mb lazyload" />
+      <div class="h-b-txt last"><span class="h-classify-id">{{ block.settings.title2 }}</span><span class="shadow-box"></span></div>
+    </a>
+  </div>
+  <div class="collection-banner-row">
+    {% if block.settings.icon_off3 %}
+    <div class="homeblackoff right"><img src="{{ block.settings.icon_off3 | img_url: 'master' }}"></div>
+    {% endif %}
+    <a href="{{ block.settings.link3 }}">
+      <img data-src="{{ block.settings.pc_image3 | img_url: 'master' }}" class="collection-banner-pc lazyload" />
+      <img data-src="{{ block.settings.mb_image3 | img_url: 'master' }}" class="collection-banner-mb lazyload" />
+      <div class="h-b-txt last"><span class="h-classify-id">{{ block.settings.title3 }}</span><span class="shadow-box"></span></div>
+    </a>
+  </div>  
+</div>
+
+{% when 'four_pictures' %}
+
+<div class="collection-banner collection-banner-four">
+  <div class="collection-banner-row">
+    {% if block.settings.icon_off1 %}
+    <div class="homeblackoff right"><img src="{{ block.settings.icon_off1 | img_url: 'master' }}"></div>
+    {% endif %}
+    <a href="{{ block.settings.link1 }}">
+      <img data-src="{{ block.settings.pc_image1 | img_url: 'master' }}" class="collection-banner-pc lazyload" />
+      <img data-src="{{ block.settings.mb_image1 | img_url: 'master' }}" class="collection-banner-mb lazyload" />
+      <div class="h-b-txt last"><span class="h-classify-id">{{ block.settings.title1 }}</span><span class="shadow-box"></span></div>
+    </a>
+  </div>
+  <div class="collection-banner-row">
+    {% if block.settings.icon_off2 %}
+    <div class="homeblackoff right"><img src="{{ block.settings.icon_off2 | img_url: 'master' }}"></div>
+    {% endif %}
+    <a href="{{ block.settings.link2 }}">
+      <img data-src="{{ block.settings.pc_image2 | img_url: 'master' }}" class="collection-banner-pc lazyload" />
+      <img data-src="{{ block.settings.mb_image2 | img_url: 'master' }}" class="collection-banner-mb lazyload" />
+      <div class="h-b-txt last"><span class="h-classify-id">{{ block.settings.title2 }}</span><span class="shadow-box"></span></div>
+    </a>
+  </div>
+  <div class="collection-banner-row">
+    {% if block.settings.icon_off3 %}
+    <div class="homeblackoff right"><img src="{{ block.settings.icon_off3 | img_url: 'master' }}"></div>
+    {% endif %}
+    <a href="{{ block.settings.link3 }}">
+      <img data-src="{{ block.settings.pc_image3 | img_url: 'master' }}" class="collection-banner-pc lazyload" />
+      <img data-src="{{ block.settings.mb_image3 | img_url: 'master' }}" class="collection-banner-mb lazyload" />
+      <div class="h-b-txt last"><span class="h-classify-id">{{ block.settings.title3 }}</span><span class="shadow-box"></span></div>
+    </a>
+  </div>
+  <div class="collection-banner-row">
+    {% if block.settings.icon_off4 %}
+    <div class="homeblackoff right"><img src="{{ block.settings.icon_off4 | img_url: 'master' }}"></div>
+    {% endif %}
+    <a href="{{ block.settings.link4 }}">
+      <img data-src="{{ block.settings.pc_image4 | img_url: 'master' }}" class="collection-banner-pc lazyload" />
+      <img data-src="{{ block.settings.mb_image4 | img_url: 'master' }}" class="collection-banner-mb lazyload" />
+      <div class="h-b-txt last"><span class="h-classify-id">{{ block.settings.title4 }}</span><span class="shadow-box"></span></div>
+    </a>
+  </div>  
+</div>
+{% endcase %}
+{% endfor %}
+
+{% schema %}
+  {
+    "name":"通用 - 图片布局 ",
+    "class": "common-logo-list",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "common-logo-list"
+      },
+      {
+        "type": "text",
+        "id": "banner_title",
+        "label":"标题"
+      },
+      {
+        "type": "text",
+        "id": "btn_text",
+        "label":"手机端按钮文案",
+		"default":"Compra ahora"
+      }
+    ],
+    "blocks": [
+      {
+      "type": "A_pictures",
+      "name": "一张图片",
+      "settings": [
+	    {"type": "url","id": "link","label": "图片链接"},
+        {"type": "image_picker","id": "pc_image","label": "PC 图片"},
+        {"type": "image_picker","id": "mb_image","label": "MB 图片"}
+      ]
+      },
+		
+      {
+        "type": "tow_pictures",
+        "name": "两张图片",
+        "settings": [
+		  {"type": "url","id": "link1","label": "图片链接 - 1"},
+		  {"type": "text","id": "title1","label": "标题 - 1"},
+          {"type": "image_picker","id": "pc_image1","label": "PC 图片 - 1"},
+          {"type": "image_picker","id": "mb_image1","label": "MB 图片 - 1"},
+		  {"type": "image_picker","id": "icon_off1","label": "折扣图标 - 1"},
+		  {
+             "type": "radio",
+             "id": "text_position",
+             "label": "文案上中下位置",
+             "options": [
+				 { "value": "flex-start", "label": "上" },
+                 { "value": "center", "label": "中" },
+                 { "value": "flex-end", "label": "下" }
+             ],
+             "default": "flex-end"
+           },
+		   {
+             "type": "radio",
+             "id": "text_position2",
+             "label": "文案左中右位置",
+             "options": [
+				 { "value": "flex-start", "label": "左" },
+                 { "value": "center", "label": "中" },
+                 { "value": "flex-end", "label": "右" }
+             ],
+             "default": "flex-end"             
+          },
+		  {"type": "url","id": "link2","label": "图片链接 - 2"},
+		  {"type": "text","id": "title2","label": "标题 - 2"},
+          {"type": "image_picker","id": "pc_image2","label": "PC 图片 - 2"},
+          {"type": "image_picker","id": "mb_image2","label": "MB 图片 - 2"},
+		  {"type": "image_picker","id": "icon_off2","label": "折扣图标 - 2"},
+		  {
+             "type": "radio",
+             "id": "text_position3",
+             "label": "文案上中下位置",
+             "options": [
+				 { "value": "flex-start", "label": "上" },
+                 { "value": "center", "label": "中" },
+                 { "value": "flex-end", "label": "下" }
+             ],
+             "default": "flex-end"
+           },
+		   {
+             "type": "radio",
+             "id": "text_position4",
+             "label": "文案左中右位置",
+             "options": [
+				 { "value": "flex-start", "label": "左" },
+                 { "value": "center", "label": "中" },
+                 { "value": "flex-end", "label": "右" }
+             ],
+             "default": "flex-end"             
+          }
+		  
+        ]
+      },
+      {
+        "type": "three_pictures",
+        "name": "三张图片",
+        "settings": [
+		  {"type": "url","id": "link1","label": "图片链接 - 1"},
+		  {"type": "text","id": "title1","label": "标题 - 1"},
+          {"type": "image_picker","id": "pc_image1","label": "PC 图片 - 1"},
+          {"type": "image_picker","id": "mb_image1","label": "MB 图片 - 1"},
+		  {"type": "image_picker","id": "icon_off1","label": "折扣图标 - 1"},
+ 		  {"type": "url","id": "link2","label": "图片链接 - 2"},
+		  {"type": "text","id": "title2","label": "标题 - 2"},
+          {"type": "image_picker","id": "pc_image2","label": "PC 图片 - 2"},
+          {"type": "image_picker","id": "mb_image2","label": "MB 图片 - 2"},
+		  {"type": "image_picker","id": "icon_off2","label": "折扣图标 - 2"},
+		  {"type": "url","id": "link3","label": "图片链接 - 3"},
+		  {"type": "text","id": "title3","label": "标题 - 3"},
+          {"type": "image_picker","id": "pc_image3","label": "PC 图片 - 3"},
+          {"type": "image_picker","id": "mb_image3","label": "MB 图片 - 3"},
+		  {"type": "image_picker","id": "icon_off3","label": "折扣图标 - 3"}
+        ]
+      },
+      {
+        "type": "four_pictures",
+        "name": "四张图片",
+        "settings": [
+		  {"type": "url","id": "link1","label": "图片链接 - 1"},
+		  {"type": "text","id": "title1","label": "标题 - 1"},
+          {"type": "image_picker","id": "pc_image1","label": "PC 图片 - 1"},
+          {"type": "image_picker","id": "mb_image1","label": "MB 图片 - 1"},
+		  {"type": "image_picker","id": "icon_off1","label": "折扣图标 - 1"},
+		  {"type": "url","id": "link2","label": "图片链接 - 2"},
+		  {"type": "text","id": "title2","label": "标题 - 2"},
+          {"type": "image_picker","id": "pc_image2","label": "PC 图片 - 2"},
+          {"type": "image_picker","id": "mb_image2","label": "MB 图片 - 2"},
+		  {"type": "image_picker","id": "icon_off2","label": "折扣图标 - 2"},
+		  {"type": "url","id": "link3","label": "图片链接 - 3"},
+		  {"type": "text","id": "title3","label": "标题 - 3"},
+          {"type": "image_picker","id": "pc_image3","label": "PC 图片 - 3"},
+          {"type": "image_picker","id": "mb_image3","label": "MB 图片 - 3"},
+		  {"type": "image_picker","id": "icon_off3","label": "折扣图标 - 3"},
+		  {"type": "url","id": "link4","label": "图片链接 - 4"},
+		  {"type": "text","id": "title4","label": "标题 - 4"},
+          {"type": "image_picker","id": "pc_image4","label": "PC 图片 - 4"},
+          {"type": "image_picker","id": "mb_image4","label": "MB 图片 - 4"},
+		  {"type": "image_picker","id": "icon_off4","label": "折扣图标 - 4"}
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "通用 - 图片布局 ",
+        "category":"通用"
+      }
+    ]
+  }
+{% endschema %}

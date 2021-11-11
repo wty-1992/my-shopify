@@ -1,0 +1,389 @@
+{% if section.settings.enable %}
+
+<style>
+#ReCoupon {
+	display:none;
+}
+#ReCoupon .recoupon-content {
+	text-align:center;
+	padding:3rem;
+}
+#ReCoupon h2 {
+	background:#fafafa;
+	margin:0;
+	height:7rem;
+	line-height:7rem;
+	font-size:1.4rem;
+}
+#ReCoupon ul {
+	display:flex;
+	flex-wrap:wrap;
+	justify-content:flex-start;
+	margin-top:1rem;
+}
+#ReCoupon ul li {
+	flex:0 1 31%;
+	min-height:10rem;
+	margin-bottom:2rem;
+	margin-right:2rem;
+	cursor:pointer;
+}
+#ReCoupon ul li:nth-child(3n) {
+	margin-right:0px;
+}
+#ReCoupon ul li .ReCoupon-left {
+	background:#ffa200;
+	position:relative;
+	display:-webkit-flex;
+	-webkit-justify-content:center;
+	-webkit-flex-direction:column;
+	-webkit-align-items:center;
+	display:flex;
+	justify-content:center;
+	flex-direction:column;
+	align-items:center;
+	height:108px;
+	padding-left:0;
+	padding-top:28px;
+	overflow:hidden;
+	color:#fff;
+	font-weight:600;
+}
+#ReCoupon ul li .ReCoupon-left span.fs28 {
+	font-size:2.6rem;
+	padding-bottom:.4rem;
+}
+#ReCoupon ul li .ReCoupon-left span.fs14 {
+	font-size:1.1rem;
+	text-transform:uppercase;
+}
+#ReCoupon ul li .ReCoupon-right {
+	background:#ffad1f;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	color:#fff;
+	height:40px;
+	font-size:16px;
+	text-transform:uppercase;
+	font-weight:900;
+	overflow:hidden;
+	position:relative;
+}
+#ReCoupon ul li .ReCoupon-left:before,#ReCoupon ul li .ReCoupon-left:after,#ReCoupon ul li .ReCoupon-right:before,#ReCoupon ul li .ReCoupon-right:after {
+	content:' ';
+	width:0;
+	height:100%;
+	/* 绝对定位进行偏移 */
+position:absolute;
+	top:5px;
+}
+#ReCoupon ul li .ReCoupon-left:before,#ReCoupon ul li .ReCoupon-right:before {
+	/* 圆点型的border */ 
+border-right:5px dotted white;
+	/* 偏移一个半径，让圆点的一半覆盖p */
+left:-2px;
+}
+#ReCoupon ul li .ReCoupon-left:after,#ReCoupon ul li .ReCoupon-right:after {
+	/* 圆点型的border */
+border-right:5px dotted white;
+	/* 偏移一个半径，让圆点的一半覆盖p */
+right:-2px;
+}
+#ReCoupon ul li .ReCoupon-right i {
+	font-size:2.1rem;
+	display:none;
+}
+#ReCoupon ul li.active .ReCoupon-right i {
+	display:block;
+}
+#ReCoupon ul li.active .ReCoupon-right a {
+	display:none;
+}
+.cart-coupons-section {
+	background:#fff;
+	padding:2rem 1rem;
+	margin-bottom:1rem;
+	display:flex;
+	flex-direction:column;
+}
+.cart-coupons-section .reminder-txt {
+	color:#000;
+	line-height:1.2rem;
+	width:100%;
+	text-align:left;
+	display:inline-block;
+	padding:0 0 1.4rem 0;
+	font-size:1.1rem;
+}
+.cart-coupons-section .coupon-box {
+	display:flex;
+	align-items:center;
+	justify-content:flex-start;
+	display:-webkit-flex;
+	-webkit-align-items:center;
+	-webkit-justify-content:flex-start;
+	flex:auto;
+}
+#discount-coupon-form {
+	flex:0 1 76%;
+}
+.cart-coupons-section .coupon-box .input-box {
+	flex:0 1 28%;
+	height:35px;
+	border-radius:5px 0 0 5px;
+	border:1px solid #656466;
+}
+.cart-coupons-section .coupon-box .input-box input {
+	background-color:#fff;
+	height:100%;
+	display:flex;
+	border:none;
+	border-radius:5px 0 0 5px;
+	padding:1rem;
+    font-size:13px;
+}
+.cart-coupons-section .coupon-btn_lr {
+	display:flex;
+}
+.cart-coupons-section button {
+	height:100%;
+	font-size:13px;
+	background:#ff3266;
+	border-radius:0 5px 5px 0;
+	padding:0 1.5rem;
+	border:none;
+	margin-left:-1px;
+	display:flex;
+	line-height:35px;
+	font-weight:500;
+	color:#fff;
+}
+.cart-coupons-section button.coupon-content__choose {
+	background-color:rgb( 255,171,11 );
+	border-radius:5px;
+	display:block;
+}
+.cart-coupons-section button.Cancel {
+	background:#000;
+	margin-left:1rem;
+	border-radius:5px;
+}
+.cart-coupons-section span.coupon-content__or {
+	color:#000;
+	text-transform:uppercase;
+	padding:0 1rem;
+}
+.cart-coupons-section .coupon-content {
+	display:flex;
+	align-items:center;
+}
+@media(max-width:768px) {
+	.cart-coupons-section {
+    padding:0 1rem 1rem;
+    background:#fff;
+    margin:0 1rem 1rem;
+  }
+  .cart-coupons-section .coupon-box {
+    -webkit-justify-content:flex-end;
+    flex-wrap:wrap;
+    width:100%
+  }
+  .cart-coupons-section .coupon-box .input-box {
+    border-radius:.3rem;
+    flex:0 1 100%;
+  }
+  .cart-coupons-section .coupon-btn_lr {
+    width:100%;
+    flex-direction:row-reverse;
+  }
+  .cart-coupons-section span.coupon-content__or {
+    padding:1rem;
+    position:relative;
+  }
+  .cart-coupons-section span.coupon-content__or:before {
+    content:'';
+    height:1px solid #ddd;
+    width:100%;
+  }
+  .cart-coupons-section .reminder-txt{
+    padding-top:1rem;
+  }
+  .cart-coupons-section .coupon-box button {
+    margin-top:1rem;
+    border-radius:0;
+    width:auto;
+    text-align:center;
+    display:block;
+  }
+  .cart-coupons-section .coupon-content {
+    flex-direction:column;
+  }
+  .cart-coupons-section button.coupon-content__choose {
+    border-radius:0;
+    width:100%;
+    text-align:center;
+  }
+  #ReCoupon .recoupon-content {
+    text-align:center;
+    padding:1rem;
+  }
+  #ReCoupon ul li {
+    flex:0 1 100%;
+    min-height:8rem;
+    margin-bottom:1rem;
+    margin-right:0;
+    display:flex;
+    justify-content:space-between;
+  }
+  #ReCoupon ul li .ReCoupon-left {
+    height:100%;
+    padding-left:2rem;
+    padding-top:0;
+    width:65%;
+    align-items:flex-start;
+  }
+  #ReCoupon ul li .ReCoupon-right {
+    height:100%;
+    padding-left:0;
+    padding-top:0;
+    width:35%;
+  }
+  #ReCoupon ul li .ReCoupon-left:after {
+    border-right:none;
+  }
+  #ReCoupon ul li .ReCoupon-right:before {
+    border-left:5px dotted  #ffad1f;
+    left:-10px
+  }
+}
+</style>
+
+{% if section.settings.before_html %}
+<div class="reminder-txt">{{section.settings.before_html}}</div>
+{% endif %}
+
+<div class="coupon-content">
+  {%- comment -%}
+  <button type="button" title="{{ 'cart.coupons.choose_a_coupon_to_use' | t }}" class="button coupon-content__choose" onclick="Dialog.open('#ReCoupon')">{{ 'cart.coupons.choose_a_coupon_to_use' | t }}</button>
+  <div id="ReCoupon">
+    <button type="button" class="close-new close" data-action="close">
+        <i class="photofont icon photo-close"></i>
+    </button>
+    <h2>{{ 'cart.coupons.choose_a_coupon_to_use' | t }}</h2>
+    <div class="recoupon-content">
+      <ul id="ApplyCoupon">
+      {% for block in section.blocks %}
+      <li onclick='applyCoupon({code:"{{block.settings.code}}"})' data-code="{{block.settings.code}}">
+        <div class="ReCoupon-left">{{block.settings.content}}</div> 
+        <div class="ReCoupon-right">
+          <a>{{ 'cart.coupons.use_it' | t }}</a>
+          <i class="photofont icon photo-zhengque2"></i>
+        </div> 
+      </li>   
+      {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <span class="coupon-content__or">{{ 'cart.coupons.or' | t }}</span>
+  {%- endcomment -%}
+  <div class="coupon-box flex-between-start">
+    <div class="input-box">
+      <input class="input-text" id="coupon_code" name="coupon_code" value="" placeholder="{{ 'cart.coupons.enter_your_coupon_code' | t }}">
+    </div> 
+  <div class="coupon-btn_lr">
+    <button type="button" title="{{ 'cart.coupons.apply_coupon' | t }}" class="button" onclick='applyCoupon({code: $("#coupon_code").val()})' value="Apply Coupon">{{ 'cart.coupons.apply_coupon' | t }}</button>
+    <!-- <button type="button" title="Cancel Coupon" class="button Cancel" onclick="discountForm.submit(true)" value="Cancel Coupon">Cancel Coupon</button>-->
+  </div>
+  </div>
+
+</div>
+
+<script>
+var data = [];
+{% for block in section.blocks %}
+data.push({
+  price: {{block.settings.price}},
+  discount: {{block.settings.discount}},
+  code: "{{block.settings.code}}"
+});
+{% endfor %}
+Coupon.init(data);
+function applyCoupon(options = {}) {
+  if(!options.code) {
+    return;
+  }
+  Coupon.use(options).then(coupon =>{
+    var container = $('#ApplyCoupon');
+    container.children('li').removeClass('active');
+    Cart.fetch().then(cart => {
+      if(coupon) {
+        cart.total_discount = coupon.discount;
+        var elements = container.find(`[data-code=${coupon.code}]`);
+        if(elements.length > 0 ) {
+          $(elements.get(0)).addClass('active');
+        }
+        $('#coupon_code').val(coupon.code);
+      }else{
+        $('#coupon_code').val('');
+      }
+      Cart.refresh(cart).then(cart => {
+        Dialog.close();
+      })
+    });
+  })
+}
+applyCoupon({
+  code:$.cookie('discount_code'),
+  mask:false
+});
+</script>
+
+{% endif %}
+
+{% schema %}
+  {
+    "name": "购物车 - 优惠券",
+    "class": "cart-coupons-section page-width",
+    "settings": [
+      {
+	      "type": "checkbox",
+        "id": "enable",
+        "label": "开启",
+        "default": false
+      },
+      {
+				"type": "html",
+				"id": "before_html",
+				"label": "块之前的额外的HTML"
+			}
+    ],
+    "blocks": [{
+      "type": "coupon",
+      "name": "添加优惠券",
+      "settings": [
+        {
+          "type": "html",
+          "id": "content",
+          "label": "文案"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "使用门槛，满多少可以使用"
+        },
+        {
+          "type": "text",
+          "id": "discount",
+          "label": "优惠金额"
+        },
+        {
+          "type": "text",
+          "id": "code",
+          "label": "优惠码"
+        }
+        
+      ]
+    }]
+  }
+{% endschema %}

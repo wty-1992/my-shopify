@@ -1,0 +1,182 @@
+<style>
+
+.form-sex{ 
+    display: flex;
+    justify-content: space-between;
+}
+.form-sex .icon-sex{
+    padding:0px
+}
+.form-sex .icon-sex  select{
+     height:54px;
+     background: transparent;
+     padding-left: 1rem;
+ }
+.form-sex .icon-sex i.photo-unfold{
+    position: absolute;
+    right: 1rem;
+    top: 1.1rem;
+
+}
+.form-sex .icon-sex.col-9{
+    max-width:72%
+}
+
+input:internal-input-suggested{
+    width:100%!important;
+}
+.form-vertical input,
+.form-vertical select,
+.form-vertical textarea {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.form-vertical input[type=radio],
+.form-vertical input[type=checkbox] {
+  display: inline-block;
+  width: auto;
+  margin-right: 5px;
+}
+.form-vertical input[type=submit],
+.form-vertical .btn {
+  display: inline-block;
+}
+  /*login & register global style*/
+  /*Just for separate references!!!*/
+  .register_block {
+    display:none;
+  }
+  .register_block .form-vertical form{ 
+    display: flex;
+    flex-direction: column; 
+  }
+  .register_block  .floating-labels{
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .register_block  .floating-labels input{
+      height: 54px;
+      padding: 1rem 3rem;
+  }
+  .register_block  .floating-labels input:focus{
+      background:transparent;
+  }
+  .floating-labels input[type="text"], 
+  .floating-labels input[type="password"], 
+  .floating-labels input[type="email"] 
+  { 
+    border: 1px solid #cfd9db;
+    background-color: #ffffff;
+    border-radius: 3px;
+  }
+  input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+    -webkit-text-fill-color: #333;
+  }
+  input:-webkit-autofill:focus {
+    border: 1px solid #cfd9db;
+  }
+  .register_block .floating-labels i{     
+    z-index: 1;
+    position: absolute;
+    left: 1rem;
+    top: 41%;
+    font-size: 1.1rem;
+    color: #d5dddf;
+    transform: translateY(-50%);
+} 
+  .register_block .password_login{
+      text-align:right; 
+      font-size: 1.5rem;
+      text-decoration: underline
+  }
+  .register_block .addresstips {
+  	margin-bottom: 25px;
+    color: #e60044;
+    margin-top: 8px;
+    text-align: left;
+    line-height: 13px;
+    font-size: 13px;
+  }
+  .register_block .policy-login {
+  	font-weight: normal;
+    font-size: 13px;
+    color: #2b3e51;
+    text-transform: unset;
+    text-align: left;
+    letter-spacing: 0px;
+    line-height: 13px;
+  }
+  .register_block .policy-login .text-u {
+  	text-decoration: underline;
+  }
+</style>
+<div class="register_block">
+ 
+  <div class="form-vertical text-center">
+    {% form 'create_customer',class:"customer_register" %}
+      {{ form.errors | default_errors }}
+      <div class="form-sex">
+        <div class="icon-sex col-3">
+          <i class="photofont icon photo-unfold"></i>
+          <select id="CustomerFormGender" name="customer[tags]" title="Gender" class="validate-select">
+            <option value="Miss.">{{ 'customer.register.miss' | t }}</option>
+            <option value="Mrs.">{{ 'customer.register.mrs' | t }}</option>
+            <option value="Mr.">{{ 'customer.register.mr' | t }}</option> 
+          </select>
+        </div><!-- /col-3 of sex -->
+        <div class="icon-sex floating-labels col-9">
+          <i class="input-icon photofont icon photo-peoplefill"></i>
+          <label for="FirstName" class="label--hidden cd-label">{{ 'customer.register.first_name' | t }}</label>
+          <input type="text" name="customer[first_name]" id="FirstName" placeholder="" {% if form.first_name %}value="{{ form.first_name }}"{% endif %} autofocus>
+        </div><!-- /col-9 of firstname  -->
+      </div><!-- /form-sex -->
+      <div class="icon floating-labels">
+        <i class="input-icon photofont icon photo-peoplefill"></i>
+        <label for="LastName" class="label--hidden cd-label">{{ 'customer.register.last_name' | t }}</label>
+        <input type="text" name="customer[last_name]" id="LastName" placeholder="" {% if form.last_name %}value="{{ form.last_name }}"{% endif %}>
+      </div>
+      <div class="icon floating-labels">
+        <i class="input-icon photofont icon photo-email"></i>
+        <label for="Email" class="label--hidden cd-label">{{ 'customer.register.email' | t }}</label>
+        <input type="email" name="customer[email]" id="Email" class="{% if form.errors contains 'email' %} input--error {% endif %}" placeholder="" {% if form.email %} value="{{ form.email }}"{% endif %} autocorrect="off" autocapitalize="off">
+      </div>
+      <div class="icon floating-labels">
+        <i class="input-icon photofont icon photo-lock"></i>
+        <label for="CreatePassword" class="label--hidden cd-label">{{ 'customer.register.password' | t }}</label>
+        <input type="password" name="customer[password]" id="CreatePassword" class="{% if form.errors contains 'password' %} input--error{% endif %}" placeholder="">
+      </div>
+     
+      <div  class="addresstips">
+    	  {{ 'customer.register.addresstips' | t }}
+      </div>
+      <p><input type="submit" value="{{ 'customer.register.submit' | t }}" class="btn"></p>
+      
+    {% endform %}
+  </div>
+
+</div>
+<!-- /register_block -->
+ <script>
+  if( jQuery('.floating-labels').length > 0 ) {
+    floatLabels();
+  }
+  function floatLabels() {
+    var inputFields = jQuery('.floating-labels .cd-label').next();
+    inputFields.each(function(){
+      var singleInput = jQuery(this);
+      //check if user is filling one of the form fields 
+      checkVal(singleInput);
+      singleInput.on('change keyup', function(){
+          checkVal(singleInput);	
+      });
+    });
+  }
+  function checkVal(inputField) {
+    (inputField.val() == '') ? inputField.prev('.cd-label').removeClass('float') : inputField.prev('.cd-label').addClass('float');
+  }
+</script>
+

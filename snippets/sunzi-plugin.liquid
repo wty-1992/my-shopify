@@ -1,0 +1,111 @@
+{% if product.tags contains 'sunzi-sketch' %}
+	{% include 'sunzi-sketch' %}
+{% elsif product.tags contains 'custom-sunzi-clay-figurine-body' %} {% comment %} 泥人-全身 2021-09-23 wty {% endcomment %}
+    {% include 'sunzi-clay-figurine-body' %}
+{% elsif product.tags contains 'custom-sunzi-dynamic-form-animals' %} {% comment %} 动态表单-动物表带系列 2021-09-17 wty {% endcomment %}
+    {% include 'sunzi-dynamic-form-animals' %}
+{% elsif product.tags contains 'custom-sunzi-dynamic-form-fridge' %} {% comment %} 动态表单-冰箱贴系列 2021-09-17 wty {% endcomment %}
+    {% include 'sunzi-dynamic-form-fridge' %}
+{% elsif product.tags contains 'custom-sunzi-dynamic-form' %} {% comment %} 动态表单-表带系列 2021-09-17 wty {% endcomment %}
+    {% include 'sunzi-dynamic-form' %}
+{% elsif product.tags contains 'custom-sunzi-name-puzzle' %} {% comment %} 名字拼图积木 2021-09-13 wty {% endcomment %}
+    {% include 'sunzi-name-puzzle' %}
+{% elsif product.tags contains 'custom-sunzi-birthday-puzzle-blanket' %} {% comment %} 生日拼图毯子 2021-09-09 wty {% endcomment %}
+    {% include 'sunzi-birthday-puzzle-blanket' %}
+{% elsif product.tags contains 'custom-sunzi-spotify-multiline' %} {% comment %} spotify-多行刻字 2021-09-08 wty {% endcomment %}
+    {% include 'sunzi-spotify-multiline' %}
+{% elsif product.tags contains 'custom-sunzi-spotify-qrcode' %} {% comment %} spotify-二维码摆件 2021-09-06 wty {% endcomment %}
+    {% include 'sunzi-spotify-qrcode' %}
+{% elsif product.tags contains 'custom-sunzi-spotify-guitar-pick' %} {% comment %} spotify-吉他拨片 2021-09-01 wty {% endcomment %}
+    {% include 'sunzi-spotify-guitar-pick' %}
+{% elsif product.tags contains 'custom-sunzi-fisher-cap' %} {% comment %} 渔夫帽 2021-08-27 wty {% endcomment %}
+    {% include 'sunzi-fisher-cap' %}
+{% elsif product.tags contains 'custom-sunzi-lyrics-painting-collection' %} {% comment %} 歌词油画 2021-08-17 wty {% endcomment %}
+    {% include 'sunzi-lyrics-painting-collection' %}
+{% elsif product.tags contains 'custom-sunzi-spotify-lyric' %} {% comment %} spotify-歌词亚克力 2021-08-02 wty {% endcomment %}
+    {% include 'sunzi-spotify-lyric' %}
+{% elsif product.tags contains 'custom-sunzi-new-boxer-preset' %} {% comment %} 3D预览内裤-预设文案 2021-08-10 wty {% endcomment %}
+    {% include 'sunzi-new-boxer-preset' %}
+{% elsif product.tags contains 'custom-sunzi-artistic-letter-shirt' %} {% comment %} 艺术字母-T恤 2021-08-09 wty {% endcomment %}
+    {% include 'sunzi-artistic-letter-shirt' %}
+{% elsif product.tags contains 'custom-sunzi-artistic-letter' %} {% comment %} 艺术字母 2021-08-09 wty {% endcomment %}
+    {% include 'sunzi-artistic-letter' %}
+{% elsif product.tags contains 'sunzi-multi-photo' %} {% comment %} 闹钟多图 2020-5-20 alice {% endcomment %}
+	{% include 'sunzi-multi-photo' %}
+{% elsif product.tags contains 'autocamera' or product.tags contains 'custom-sunzi-photo-film' %} {% comment %} 胶卷钥匙扣多图 2021-01-08 wty {% endcomment %}
+	{% include 'sunzi-photo-film' %}
+{% elsif product.tags contains 'sunzi-photo-film-share' %} {% comment %} 胶卷分享 2020-8-6 zy {% endcomment %}
+	{% include 'sunzi-photo-film-share' %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code' or product.tags contains 'custom-sunzi-spotify-code-group' %} {% comment %} spotify 2021-01-08 wty {% endcomment %}
+	{% include 'sunzi-spotify-code', tags: product.tags %}
+{% elsif product.tags contains 'custom-sunzi-spotify-color-light' %} {% comment %} spotify-彩灯 2021-03-02 wty {% endcomment %}
+	{% include 'sunzi-spotify-color-light', tags: product.tags %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-film' %} {% comment %} spotify-胶卷 2021-03-22 wty {% endcomment %}
+	{% include 'sunzi-spotify-code-film', tags: product.tags %}
+{% elsif product.tags contains 'custom-sunzi-spotify-post-card' %} {% comment %} spotify-贺卡 2021-03-30 wty {% endcomment %}
+	{% include 'sunzi-spotify-post-card', tags: product.tags %}
+{% elsif product.tags contains 'sunzi-mug' %} {% comment %} 小圆盘 2020-12-03 laozien {% endcomment %}
+	{% include 'sunzi-mug' %}
+{% elsif product.tags contains 'custom-sunzi-infinite-cube' %} {% comment %} 无限魔方 2021-01-08 wty {% endcomment %}
+	{% include 'sunzi-infinite-cube' %}
+{% elsif product.tags contains 'custom-sunzi-multipic-necklace' %} {% comment %} 图片项链 2021-01-09 wty {% endcomment %}
+	{% include 'sunzi-multipic-necklace' %}
+{% elsif product.tags contains 'custom-sunzi-surprise-box' %} {% comment %} 惊喜盒子 2021-01-09 wty {% endcomment %}
+	{% include 'sunzi-surprise-box' %}
+{% elsif product.tags contains 'custom-sunzi-new-sock-share' %} {% comment %} 分享袜子 2021-01-11 wty {% endcomment %}
+	{% include 'sunzi-new-sock-share' %}
+{% elsif product.tags contains 'custom-sunzi-pet-blanket' %} {% comment %} 宠物毯子 2021-01-11 wty {% endcomment %}
+	{% include 'sunzi-pet-blanket' %}
+{% elsif product.tags contains 'custom-sunzi-desktop-calendar' %} {% comment %} 台历 2021-01-11 wty {% endcomment %}
+	{% include 'sunzi-desktop-calendar' %}
+{% elsif product.tags contains 'custom-sunzi-wall-calendar' %} {% comment %} 墙历 2021-01-11 wty {% endcomment %}
+	{% include 'sunzi-wall-calendar' %}
+{% elsif product.tags contains 'custom-sunzi-photo-book-lite' %} {% comment %} 简版照片书 2021-01-12 wty {% endcomment %}
+	{% include 'sunzi-photo-book-lite' %}
+{% elsif product.tags contains 'custom-sunzi-mug' %} {% comment %} 杯子 2021-01-13 wty {% endcomment %}
+	{% include 'sunzi-mug' %}
+{% elsif product.tags contains 'custom-sunzi-multi-photo' %} {% comment %} 多图 2021-01-28 wty {% endcomment %}
+	{% include 'sunzi-multi-photo' %}
+{% elsif product.tags contains 'custom-sunzi-three-cube' %} {% comment %} 三阶魔方 2021-01-29 wty {% endcomment %}
+	{% include 'sunzi-three-cube' %}
+{% elsif product.tags contains 'custom-sunzi-photo-wallet' %} {% comment %} 多图钱包 2021-02-02 wty {% endcomment %}
+	{% include 'sunzi-photo-wallet' %}
+{% elsif product.tags contains 'custom-sunzi-photo-wall-mixtiles' %} {% comment %} 照片墙 2021-04-14 wty {% endcomment %}
+	{% include 'sunzi-photo-wall-mixtiles' %}
+{% elsif product.tags contains 'custom-sunzi-instagram-plaque' %} {% comment %} ins亚克力板 2021-04-14 wty {% endcomment %}
+	{% include 'sunzi-instagram-plaque' %}
+{% elsif product.tags contains 'custom-sunzi-blanket' or product.tags contains 'custom-sunzi-template' %} {% comment %} 多图毯子 2021-04-29 wty {% endcomment %}
+	{% include 'sunzi-blanket' %}
+{% elsif product.tags contains 'custom-sunzi-sonic-photo' %} {% comment %} 音波油画 2021-05-17 wty {% endcomment %}
+	{% include 'sunzi-sonic-photo' %}
+{% elsif product.tags contains 'custom-sunzi-hundred-history' %} {% comment %} 百年历史 2021-05-17 wty {% endcomment %}
+	{% include 'sunzi-hundred-history' %}
+{% elsif product.tags contains 'custom-sunzi-greeting-card' %} {% comment %} 贺卡 2021-05-22 wty {% endcomment %}
+	{% include 'sunzi-greeting-card' %}
+{% elsif product.tags contains 'custom-sunzi-new-photo-wallet' %} {% comment %} 影刻钱包 2021-05-27 wty {% endcomment %}
+    {% include 'sunzi-new-photo-wallet' %}
+{% elsif product.tags contains 'custom-sunzi-clay-figurine' %} {% comment %} 泥人 2021-06-05 wty {% endcomment %}
+    {% include 'sunzi-clay-figurine' %}
+{% elsif product.tags contains 'custom-sunzi-text-qrcode' %} {% comment %} 文字二维码 2021-06-09 wty {% endcomment %}
+    {% include 'sunzi-text-qrcode' %}
+{% elsif product.tags contains 'custom-sunzi-sonic-photo-keychain' %} {% comment %} 声波-钥匙扣 2021-06-17 wty {% endcomment %}
+    {% include 'sunzi-sonic-photo-keychain' %}
+{% elsif product.tags contains 'custom-sunzi-sonic-photo-plaque' %} {% comment %} 声波-亚克力板 2021-06-17 wty {% endcomment %}
+    {% include 'sunzi-sonic-photo-plaque' %}
+{% elsif product.tags contains 'custom-sunzi-spotify-infinite-cube' %} {% comment %} spotify-无限魔方 2021-06-22 wty {% endcomment %}
+    {% include 'sunzi-spotify-infinite-cube' %}
+{% elsif product.tags contains 'custom-sunzi-mini-me' %} {% comment %} mini-me 2021-06-22 wty {% endcomment %}
+    {% include 'sunzi-mini-me' %}
+{% elsif product.tags contains 'custom-sunzi-puzzle' %} {% comment %} 拼图 2021-06-23 wty {% endcomment %}
+    {% include 'sunzi-puzzle' %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-pillow' %} {% comment %} spotify-音轨抱枕 2021-06-23 wty {% endcomment %}
+    {% include 'sunzi-spotify-code-pillow' %}
+{% elsif product.tags contains 'custom-sunzi-map-display' %} {% comment %} 地图摆件 2021-07-16 wty {% endcomment %}
+    {% include 'sunzi-map-display' %}
+{% elsif product.tags contains 'custom-sunzi-map-display-light' %} {% comment %} 地图摆件-夜灯 2021-07-16 wty {% endcomment %}
+    {% include 'sunzi-map-display-light' %}
+{% elsif product.tags contains 'custom-sunzi-spotify-multi-photo' %} {% comment %} spotify-多图 2021-07-20 wty {% endcomment %}
+    {% include 'sunzi-spotify-multi-photo' %}
+{% elsif product.tags contains 'custom-sunzi-watch-collection' %} {% comment %} 逆时针手表集合 2021-07-29 wty {% endcomment %}
+    {% include 'sunzi-watch-collection' %}
+{% endif %}

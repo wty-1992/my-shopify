@@ -1,0 +1,257 @@
+{% for tag in product.tags %}
+    {% if tag contains 'custom-Num-' %}
+		{% assign maxlength = tag | remove: "custom-Num-" | split:"-" %}
+    {% endif %}
+	{% if tag contains 'custom-textTitle-' %}
+		{% assign title = tag | remove: "custom-textTitle-" | split:"-" %}
+    {% endif %}
+	{% if tag contains 'custom-placeholder-' %}
+		{% assign placeholder = tag | remove: "custom-placeholder-" | split:"-" %}
+    {% endif %}
+{% endfor %}
+<script>
+    var baseurl = 'https://pic.stylelab.com/';
+    var _zenSku = "{{ product.selected_or_first_available_variant.sku }}";
+    
+    //vue-photocarving插件遮罩图传图+刻字配置
+    var _zenConfig = {
+      photoObj: [],
+      carvingObj: [],
+      crystalObj: [],
+      curveCarvingObj: [],
+      nameObj: [],
+      carvingBigObj: [],
+      cropPrompt: "Please make sure you're putting your picture in correct position, we'll make it exactly the same as shown in the preview above.",   //刻字弹层提示文字, 可选, 默认无
+      requirePrompt: "This is a required field.",  //传图必填提示文案
+      uploadLabel: "Upload Your Photo",  //传图描述标签
+      btnUploadText: "Upload",  //上传按钮文字
+      photoCancelText: "Cancel",  //传图层Cancel文案
+      photoConfirmText: "Confirm", //上传按钮文案
+      photoUrl: "https://pic.stylelab.com/img/photo/",//传图、刻字底图的存储位置
+      crop: [
+        {
+          uploadLabel: "Upload Your Photo",  //传图描述标签
+          btnUploadText: "Upload",  //上传按钮文案
+          require: true,
+          hasCropOrigin: true,
+          sku: _zenSku,
+          style: 0, //设置上传样式，0:单行展示 1：矩形上传表单
+          type: 'zen_multi_croppic',
+        }
+      ],
+      photo: [],
+      carving: [],
+      crystal:[],
+      crystalText:[],
+      curveCarving:[]
+    };
+</script>
+<div class="photo-select-carving">
+  	<div id="zen-photocarving"></div>
+  	<div class="mandatory">
+      {% if product.tags contains "custom-mandatory-family" %}
+      <h1 class="titleList">Engraved text:</h1>
+      {% endif %}
+      	{% for max in maxlength %}
+      	  <p>{{ title[forloop.index0] }}</p>
+          <div class="custom-index">
+            {% if product.tags contains "custom-noInpiut" %}
+          	<textarea type="text" class="input-cusom-text fonttext" maxlength="{{ max }}" {% if productTags contains "custom-title" %}placeholder="Step 2: Please enter the name you would like to use."{% else %} placeholder="{{ placeholder[forloop.index0] }}"{% endif %}></textarea>
+            {% else %}
+            <input type="text" class="input-cusom-text fonttext" value="" maxlength="{{ max }}" required {% if productTags contains "custom-title" %}placeholder="Step 2: Please enter the name you would like to use."{% else %} placeholder="{{ placeholder[forloop.index0] }}"{% endif %}>
+            {% endif %}
+            <span><b>*</b><i class="txtNum">{{ max }}</i>left</span>
+          </div>
+        {% endfor %}
+  	</div>
+  	{% if product.tags contains "custom-mandatory-family" %}
+  	<h1 class="titleList">fonts:</h1>
+  	<div id="familyList"></div>
+  	<h1 class="titleList">fontColor:</h1>
+  	<div id="colorList"></div>
+  	{% endif %}
+  	<input type="text" id="piccustomInfo" name="properties[customInfo]"   value="" style="display:none" />
+</div>
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.2.1/zen-photo-carving-chunk-vendors.css?201912091454" rel="stylesheet" />
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.2.1/zen-photo-carving-app.css?201912091454" rel="stylesheet" />
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.2.1/zen-photo-carving-chunk-vendors.js?201912091454"></script>
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.2.1/zen-photo-carving-app.js?201912091454"></script>
+<script>
+  var fontList = [
+      {font:'Minion Variable Concept',id:"one"},
+      {font:'Swiss 721 Heavy BT',id:"two"},
+      {font:'Copperplate Gothic',id:"three"},
+      {font:'MONOTON-REGULAR',id:"four"},
+      {font:'Academic M54',id:"five"},
+      {font:'SapirSans',id:"six"},
+      {font:'COPGOTHB',id:"seven"},
+      {font:'Beau Normal',id:"eight"},
+      {font:'CAI978',id:"nine"},
+      {font:'Berling-Italic',id:"ten"}
+    ]
+  	var backgroundList = ['#FFFFFF','#7C4497','#040000','#33A0DB','#EE9FC3','#526F11','#B40A06','#E2E65D','#EC7B16','#481A0D']
+    
+    var fontColor = ''
+    var fontOn = ''
+
+    var mainImg = ''
+    Listener.on([ Listener.product.update.before ], function(event, variant) { 
+        if(variant.featured_image != null) {
+          mainImg = variant.featured_image.src
+        }
+    })
+    
+    var colorList = document.getElementById("colorList")
+    if(colorList) {
+      backgroundList.forEach((e,i)=> {
+        colorList.innerHTML += `<div style="background:${e}"><span>${e}</span></div>`
+      })
+    }
+    var familyList = document.getElementById("familyList")
+    if(familyList) {
+      fontList.forEach((e,i)=> {
+        familyList.innerHTML += `<div class="${e.id}"><span>${e.font}</span>ABC</div>`;
+      })
+    }
+    var coList = document.querySelectorAll("#colorList div")
+    coList.forEach((e,i)=> {
+      e.onclick = function() {
+        coList.forEach(o=> {
+       		o.classList.remove("on")
+        })
+        this.className = "on"
+        fontColor = this.firstChild.innerHTML
+      }
+    })
+    
+    var faList = document.querySelectorAll("#familyList div")
+    faList.forEach((e,i)=> {
+      e.onclick = function() {
+        faList.forEach(o=> {
+       		o.style.cssText = "border-color: #999;"
+        })
+        this.style.cssText = "border-color: red;"
+        fontOn = this.firstChild.innerHTML
+      }
+    })
+    
+	$(function(){
+    	$('.zen-require').attr('name','customVal');
+      $("#AddToCart-product-dog, #AddToCart-product-template").click(function(e){
+        e.preventDefault();
+        if(photoCarvingValidateForm()){
+          $("form.product-form").submit();
+        }
+      });
+    })
+    
+    // 限制字符
+    var txt = document.querySelectorAll(".input-cusom-text");
+    var txtNum = document.querySelectorAll(".txtNum");
+    var sw = false;
+    for (var i = 0; i < txt.length; i++) {
+        txt[i].addEventListener("input", function(e) {
+            if (sw == false) {
+                countTxt(e);
+            }
+        });
+        txt[i].addEventListener("cut", function(e) {
+            if (sw == false) {
+                countTxt(e);
+            }
+        });
+        txt[i].addEventListener("compositionstart", function() {
+            sw = true;
+        });
+        txt[i].addEventListener("compositionend", function() {
+            sw = false;
+            countTxt();
+        });
+    }
+    function countTxt(e) {
+        if (sw == false) {
+            for (var o = 0; o < txtNum.length; o++) {
+                for (var i = 0; i < txt.length; i++) {
+                    if (txt[o].value.length === 0) {
+                        txtNum[o].textContent = txt[o].getAttribute('maxLength');
+                    } else {
+                        if (txt[o].value.replace(/(^\s*)|(\s*$)/g, "") != '') {
+                            txtNum[o].textContent = txt[o].getAttribute('maxLength') - txt[o].value.length;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    Product.validators.push(async () => {
+		var zenFlag = true; 
+      	var zenInfo = document.getElementsByClassName("zen-require")[0].value;
+      	var zenCrop = document.querySelector(".area-crop-upload");
+      	var fontText = document.querySelectorAll(".fonttext")
+        
+        
+        var InfoJson = JSON.parse(zenInfo);
+      	console.log('InfoJson------1',InfoJson)
+      	
+      	if(InfoJson.crop[0].crop == '') {
+      		zenCrop.style.cssText = "border-color: red;"
+            zenFlag = false;
+        }else {
+          zenCrop.style.cssText = "border-color: block;"
+        }
+        fontText.forEach((e,i)=> {
+            if(e.value == "") {
+            	e.style.cssText = "border-color: red;"
+                zenFlag = false;
+            }else {
+                e.style.cssText = "border-color: block;"
+            }
+        })
+        if(fontOn == '') {
+          faList.forEach((e,i)=> {
+          	e.style.cssText = "border-color: red;"
+            zenFlag = false;
+          })
+        }
+        if(fontColor == '') {
+          coList.forEach((e,i)=> {
+            e.className = "on"
+            zenFlag = false;
+          })
+  		}
+        var data = {}
+        if(zenFlag) {
+          if(fontText.length>1) {
+            data._sunzi_texts = []
+            fontText.forEach((e,i)=> {
+              data._sunzi_texts.push({
+                value: e.value,
+                number: i+1
+              })
+            })
+            data['_sunzi_source'] = InfoJson.crop[0].cropOrigin
+          }else {
+            data['_sunzi_text'] = { 
+              value: fontText[0].value
+              {% if product.tags contains "custom-mandatory-family" %}
+              ,font: fontOn,
+              fontColor: fontColor
+              {% endif %}
+            }
+            data['_sunzi_source'] = InfoJson.crop[0].cropOrigin
+          }
+          {% if product.tags contains 'custom-main-picture' %}
+          data['_sunzi_effect'] = "https:"+'{{product.images[0]|img_url: '600x600'}}'
+		  {% else %}
+			data['_sunzi_effect'] = mainImg
+          {% endif %}
+        }
+
+      $('#piccustomInfo').val(JSON.stringify(data));
+      return zenFlag;
+    })
+        
+        
+        
+</script>

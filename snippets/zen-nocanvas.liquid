@@ -1,0 +1,527 @@
+{{ 'zen-custom.scss.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'jquery-ui.min.js' | asset_url }}"></script>
+<script src="{{ 'zen-base.js' | asset_url }}"></script>
+{% capture secondType %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "secondtype" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign secondType = secondType | strip %}
+
+{% capture isOption %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "isoption" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign isOption = isOption | strip %}
+
+{% capture lines %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "lines" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign lines = lines | strip %}
+
+{% assign fonts = "AlluraRegular, NexaScript-Free, holyunion, TimesNewRoman, Arial" | split: ", " %}
+
+<div id="simple-photo-body" style="display:none;">
+  <button type="button" class="close-new custom-close close" data-action="close">
+    <i class="photofont icon photo-close"></i>
+  </button>
+  <div id="tabs" class="customer-photo customer-nocanvas">
+    <ul style="display:none;">
+      <li><a id="photo-upload"  data-index="0" href="#tabs-0">{{ 'zen.general.carving' | t }}</a></li>
+      <li><a id="photo-loading" data-index="1" href="#tabs-1">{{ 'zen.general.loading' | t }}</a></li>
+    </ul>
+    <div id="tabs-0" class="carving-photo no-nocanvas">
+      {% if secondType == 'InOutCarving' %} 
+      <div class="carvingcanvas-right no-nocanvas-outtype">
+        <div class="carvingcanvas-content">
+          <h3>{{ 'zen.nocanvas.add_engravings_upper' | t }}</h3>
+          <div class="curve-textarea">
+          <textarea type="text" id="textInput0" class="textInput" style="font-family: AlluraRegular; font-size: 15px; padding-top: 20px;" data-index="0" name="properties[outsidetext]" placeholder="{{ 'zen.nocanvas.click_to_add_outside_engravings' | t }}" disabled></textarea>
+          <div class="numleft"><span class="num-tan0 c00"></span><span> {{ 'zen.general.left' | t }}</span></div>
+          </div>
+          {% if lines != '1' %}
+          <div class="curve-textarea">
+          <textarea type="text" id="textInput1" class="textInput" style="font-family: AlluraRegular; font-size: 15px; padding-top: 20px;" data-index="1" name="properties[insidetext]" placeholder="{{ 'zen.nocanvas.click_to_add_inside_engravings' | t }}" disabled></textarea>
+          <div class="numleft"><span class="num-tan1 c00"></span><span> {{ 'zen.general.left' | t }}</span></div>
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="popups-font-family">
+          <span class="font-title">{{ 'zen.nocanvas.font_style' | t }}:</span> 
+            <div class="font-list-flex">
+              <div class="font-list active">
+                <div class="carvingfont selected" style="font-family:AlluraRegular;">{{ 'zen.general.abc' | t }}</div>
+                <input class="cfont in-radio" type="radio" checked="" value="AlluraRegular" name="fontradio">
+              </div>
+              <div class="font-list">
+                <div class="carvingfont " style="font-family:NexaScript-Free;">{{ 'zen.general.abc' | t }}</div>
+                <input class="cfont in-radio" type="radio" value="NexaScript-Free" name="fontradio">
+              </div>
+              <div class="font-list">
+                <div class="carvingfont " style="font-family:holyunion;">{{ 'zen.general.abc' | t }}</div>
+                <input class="cfont in-radio" type="radio" value="holyunion" name="fontradio">
+              </div>
+              <div class="font-list">
+                <div class="carvingfont " style="font-family:TimesNewRoman;">{{ 'zen.general.abc' | t }}</div>
+                <input class="cfont in-radio" type="radio" value="TimesNewRoman" name="fontradio">
+              </div>
+              <div class="font-list">
+                <div class="carvingfont " style="font-family:Arial;">{{ 'zen.general.abc' | t }}</div>
+                <input class="cfont in-radio" type="radio" value="Arial" name="fontradio">
+              </div>
+            </div>
+        </div>
+      <div class="a-btn-encarving">
+        {% if isOption == '1' %}
+          <button id="btn-without" type="button" class="no-comfirm-text btn-confirm"> {{ 'zen.nocanvas.without_engravings' | t }} </button>
+        {% endif%}  
+        <button id="btn-confirm" type="button" class="btn-confirm"> {{ 'zen.general.confirm' | t }} <span class="is-markup" data-money="{{ addprice }}">{{ addprice | money }}</span></button>
+      </div>
+      <p class="product-reminder">
+        {{ 'zen.general.please_note' | t }}
+      </p>
+      </div>
+      {% elsif secondType == 'CoupleCarving' %}
+        {% assign genders = "men, women" | split: ", " %}
+        {% for gender in genders %}
+        <div class="carvingcanvas-right no-nocanvas-outtype engraving-{{gender}}">
+           <div class="carvingcanvas-content">
+          <h3>{{ 'zen.nocanvas.add_engravings_upper' | t }}</h3> 
+          <div class="curve-textarea" style="">
+            <textarea id="text-{{gender}}-0" class="textInput ctext-{{gender}}" data-sex="{{gender}}-0" placeholder="{{ 'zen.nocanvas.click_to_add_outside_engravings' | t }}" style="font-size:20px" disabled></textarea>
+            <div class="numleft"><span class="{{gender}}-0">14</span><span> {{ 'zen.general.left' | t }}</span></div>
+          </div>
+          <div class="curve-textarea" style="">
+            <textarea id="text-{{gender}}-1" class="textInput ctext-{{gender}}" data-sex="{{gender}}-1"  placeholder="{{ 'zen.nocanvas.click_to_add_inside_engravings' | t }}" style="font-size:20px" disabled></textarea>
+            <div class="numleft"><span class="{{gender}}-1">10</span><span> {{ 'zen.general.left' | t }}</span></div>
+          </div>
+          </div>
+          <div class="font-but" style="">
+            <div class="popups-font-family">
+              <span class="font-title">{{ 'zen.nocanvas.font_style' | t }}:</span>
+               
+                <div class="font-list-flex font-list-flex-{{gender}}" id="mencfont">
+                  {% comment %}
+                  {% for font in fonts %}
+                  <div class="font-list">
+                    <div class="carvingfont " style="font-family:{{font}};">{{ 'zen.general.abc' | t }}</div>
+                    <input class="mencfont cfont in-radio" type="radio" value="{{font}}" name="properties[{{gender}}-font]">
+                  </div>
+                  {% endfor %}
+                  {% endcomment %}
+                </div>               
+            </div>
+          </div>
+          <div class="a-btn-encarving">
+            <button type="button" class="withoutbtn-{{gender}} no-comfirm-text btn-confirm" data-sex="{{gender}}"> {{ 'zen.nocanvas.without_engravings' | t }} </button>
+            <button type="button" class="btn-confirm btn-couple-confirm" data-sex="{{gender}}" id="{{gender}}-carvingConfirm"> 
+              {{ 'zen.general.confirm' | t }}  +$5.99 </button>
+          </div>
+          <p class="product-reminder">{{ 'zen.general.please_note' | t }}</p> 
+          <div class="panel-heading" >
+            <p class="product-reminder"> 
+              {{ 'zen.nocanvas.this_item_requires_3_4' | t }}    </p>
+          </div>      
+        </div>
+      {% endfor%}
+      {% elsif secondType == 'optionalCarving' %}
+      {% assign skuArr = product.selected_or_first_available_variant.sku | split: "-"%}
+      {% assign sku = skuArr[0] %}
+      <div class="carvingcanvas-left">
+      <img id="custom-showimg" src="https://ik.imagekit.io/soufeel/en/media/catalog/product/cache/0/image/500x/9df78eab33525d08d6e5fb8d27136e95/G/K/GKNL103.jpg">
+      </div>
+      <div class="carvingcanvas-right">
+      <div class="custom-optional-carving"></div>
+      
+      <div class="popups-font-family"></div>
+      <select id="custome_size" class="csize" style="display:none;"> <option value="20">20</option> </select>   
+      <button type="button" class="btn-confirm" id="btn-check"> 
+            {{ 'zen.general.confirm' | t }}<span id="addPriceTotal"></span>
+      </button>
+      </div>
+      <script>
+        var sku = '{{sku}}';
+        var optionalJson = JSON.parse('{{ product.metafields["global"]["cattribute"] }}');
+        var info = optionalJson.info;
+        var fontArr = ["NexaScript-Free", "TimesNewRoman", "AppleChancery", "holyunion", "AlluraRegular"];
+        var fontSize = 20;
+        var flag = false;
+		var optionCurrency = '{{ 0 | money }}'.replace(/[.0-9]/g, '');
+// 		var priceHtml = $('#ProductPriceproduct-page-price').html().replace(/[.0-9]/g, '');
+        appendOprionalDom(info);
+      /* 
+       *  The number of choices
+       */
+        jQuery('.numselect').bind('change', function (){
+          var imgSrc = 'https://spic.qn.cdn.imaiyuan.com/'+sku;
+          var _this = this;
+          var total = 0;
+          var totalPrice = 0;
+          // var imgSrc = 'https://pic.stylelab.com/img/textdesign/optioncarving/'+sku; //https://pic.stylelab.com/img/textdesign/diamond/
+          
+          var n = $(this).data('key') == 0 ? 1:0;
+
+          $('.numselect').eq(n).children('option').each(function (){
+            if(parseInt($(this).val())+parseInt($(_this).val()) > 5){
+              $(this).attr('disabled', true);
+            }else{
+              $(this).removeAttr('disabled');
+            }
+          })
+
+          $('.numselect').each(function (i, v){
+            var _this = this;
+            var val = parseInt($(this).val());
+            var defaultShowNmu = parseInt(info[i].defaultShowNmu);
+            var optionAddPrice = (val-defaultShowNmu)*$(this).data('price')>=0?'<font>+</font>'+optionCurrency+(val-defaultShowNmu)*$(this).data('price'):'<font>-</font>'+optionCurrency+Math.abs((val-defaultShowNmu)*$(this).data('price'));
+            $(this).prev().html(optionAddPrice+'.00');
+            totalPrice += (val-defaultShowNmu)*$(this).data('price');
+            $('.custom-text-'+$(this).data('key')).each(function (ii, vv){
+              if(ii < val){
+                $(this).show();
+              }else{
+                $(this).hide();
+              }
+              $('.numselect').eq(i).children('option:selected').val() == 1 && ii==0?$(this).addClass('custom-textarea-w100'):$(this).removeClass('custom-textarea-w100');
+            });
+            total += val;
+            imgSrc += val;
+          });
+          ubase.util.setShopifyVariant('Markup', total);
+          $('#custom-showimg').attr('src', imgSrc+'.png?'+Math.random());
+          // $('#addPriceTotal').text(totalPrice);
+        });
+
+        $(".cfont").click(function(){
+          var fontVal = $(this).val();
+          $(".font-list").removeClass('active');
+          $(this).parent().addClass("active");
+          info.forEach(function(v,i){
+            $(".custom_text_"+i).css('font-family', fontVal);
+          })
+        });
+        $("#btn-check").click(function(){
+          var arr = [];
+          info.forEach(function (v, i){
+            var val = [];
+            $('.custom_text_'+i).each(function (ii){
+              if(jQuery(this).parent().css('display') != 'none'){ 
+                if($.trim($(this).val()) == ''){ flag=false; return;}else{flag=true;}
+                val[ii] = $(this).val(); 
+              }
+            });
+            if(!flag){return;}
+            arr[i] = val.join(' | ');
+          });
+          if(!flag){
+            return flag;
+          }
+          $("#custom-text").val(arr.join(' @#* '));
+//           if(info.length == 2 && (info[0].name=='BOY'||info[1].name=='BOY')){
+//             $("#custom-text").val('男孩:'+arr.join(' 女孩:'));
+//           }else{
+//           	$("#custom-text").val(arr.join(' @#* '));
+//           }
+          $("#custom-font").val($("input[name='fontradio']:checked").val());
+          $("#addengraving").text('Change');
+          $(".Previewlettering").text(arr.join(' | '));
+          $(".Previewlettering").data('ischeck', '1');
+          simpleModal.close();
+        });
+        $(".product-form-product-page-add_to_cart").submit(function(){
+          flag?$(".lettering-box-carving").removeClass("validation-warning"):$(".lettering-box-carving").addClass("validation-warning");
+          return flag;
+        });
+
+
+        function appendOprionalDom(info){
+          var allStr = '';
+          var ii = 0;
+          for(var i=0; i<info.length; i++){
+            var name = info[i].name;
+            var defaultShowNmu = info[i].defaultShowNmu;
+            var loopNum = info[i].loopNum;
+            var addPrice = info[i].addPrice;
+            var limit = info[i].limit;
+            var option = '';
+            var input = '';
+            var fontStr = '';
+            var fontList = '';
+            allStr += '<div class="carvingNumoption">';
+            allStr += '<span class="addoptionprice"><font>+</font>'+optionCurrency+'0.00</span>';
+            allStr += '<select name="numselect" class="numselect" data-price="'+addPrice+'" data-key="'+i+'" id="numselect'+i+'">';
+            for(var y=0; y<loopNum; y++){
+              var selected = (y+1)==defaultShowNmu?' selected ':'';
+              option += '<option value="'+(y+1)+'" '+selected+'>'+(y+1)+'  '+name+'</option>';
+            }
+            allStr += option;
+            allStr += '</select>';
+            allStr += '</div>';
+            allStr += '<div class="carving-select">';
+            for(var n=0; n<loopNum; n++){
+              var class100 = (n==0 && defaultShowNmu==1) ? ' custom-textarea-w100 ':'';
+              var display = n < defaultShowNmu?'':'none';
+              input += '<div class="custom-text  custom-text-'+i+class100+'" style="display:'+display+';">';
+              input += '  <input type="text" name="custom_text[]" id="custom_text_'+ii+'" class="custom_text custom_text_'+i+'" maxlength="'+limit+'" data-sexindex="'+i+'" data-index="'+ii+'" placeholder="{{ 'zen.nocanvas.name' | t }}" style="font-family:'+fontArr[0]+';">';
+              input += '  <div class="left_num"><span class="">'+limit+'</span> {{ 'zen.general.left' | t }}</div>';
+              input += '</div>'; 
+              ii++;
+            }
+            allStr += input;  
+            allStr += '</div>';
+          }
+
+          fontStr += '<span class="font-title">{{ 'zen.general.font' | t }} :</span>';
+          fontStr += '<div class="font-list-flex">';
+          for(var l=0; l<fontArr.length; l++){
+            var checked = l==0?' checked ':'';
+            var selected = l==0?' selected ':'';
+            fontList += '<div class="font-list '+(l==0?'active':'')+'">';
+            fontList += '<div class="carvingfont '+selected+'" style="font-family:'+fontArr[l]+';">{{ 'zen.general.abc' | t }}</div>';
+            fontList += '<input class="cfont in-radio" type="radio" '+checked+' value="'+fontArr[l]+'" name="fontradio" />';
+            fontList += '</div>';
+          }
+          fontStr += fontList;
+          fontStr += '</div>';
+
+          $('.popups-font-family').html(fontStr);
+          $('.custom-optional-carving').html(allStr);
+        }
+        $(document).ready(function(){ 
+          ubase.util.setShopifyVariant('Markup', parseInt(info[0].defaultShowNmu)+parseInt((info[1]?info[1].defaultShowNmu:0)));
+          $('#custom-showimg').attr('src', 'https://spic.qn.cdn.imaiyuan.com/'+sku+info[0].defaultShowNmu+(info[1]?info[1].defaultShowNmu:'')+'.png?'+Math.random());
+          
+          
+        });
+        /* Select Finish / change color */
+        Listener.on([ Listener.product.update.before ], function(event, variant) { 
+          // 选色功能开启
+          if(optionalJson.iscolors == 1){
+			//   $('.select-option').find("[data-name='Color']").parent().parent().css('display', 'none');
+          }
+          var src = $('#custom-showimg').attr('src').split("/")[0]+'//'+$('#custom-showimg').attr('src').split("/")[2]+'/'+variant.sku+$('#custom-showimg').attr('src').split("/")[3].split('.png')[0].substr(0-optionalJson.info.length)+'.png?'+Math.random();
+          $('#custom-showimg').attr('src', src)
+        });
+      </script>
+      {% endif%}
+    </div>
+    <div id="tabs-1">
+      <div id="cloading"><img class="cloadingimg" src="{{section.settings.upload_loading_image | img_url: 'master'}}" />
+        <div class="sprogress">
+          <div class="sbar" style="width: 0%;">0%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $( "#tabs" ).tabs();
+  var simpleModal = new tingle.modal({ 
+    closeMethods: ['escape']
+  });
+  simpleModal.setContent('<div id="simple-photo-modal" class="simple--modal"></div>');
+  $("#simple-photo-modal").html($('#simple-photo-body').contents());
+</script>
+
+{% if secondType == 'InOutCarving' %}
+  <div class="lettering-box lettering-box-carving">
+    <div class="Previewlettering Previewletteringcarving">
+      <span class="Previewlettering-title">
+        {{ 'zen.general.add_engravings' | t }} 
+      </span>
+      <span id="previewengravedtext"></span>
+    </div>        
+    <div class="after-preview-text">
+      <span class="an-pri AddAnPri is-markup" id="AddAnPri" data-money="{{ addprice }}" style="display:none">{{ addprice | money }}</span>
+      <button type="button" id="addengraving">{{ 'zen.general.add' | t }}</button>
+    </div>
+    <div class="validation-advice" id="advice-validate-select-engraved" style="display: none; border: 0px solid rgb(235, 52, 10);">{{ 'zen.general.required_field' | t }}.
+    </div>
+  </div>
+  <input type="text" id="custom-text" name="properties[engravingText]"   value="" style="display:none" required/>
+  <input type="text" id="custom-font" name="properties[engravingFont]"   value="" style="display:none" required/>
+  <script>
+    $(".lettering-box-carving").click(function(){
+      simpleModal.open();
+    });
+    var jsonCustom = JSON.parse('{{ product.metafields["global"]["cattribute"] }}');
+    jsonCustom.limit.forEach(function(v, i){
+      $("#textInput"+i).attr("maxlength", v).attr("disabled", false);
+      $(".num-tan"+i).text(v);
+    });
+    $(".textInput").bind('input propertychange', function() {
+      var idx = $(this).data("index");
+      $(".num-tan"+idx).text(jsonCustom.limit[idx]-$(this).val().length);
+    });
+    $(".cfont").click(function(){
+      var fontVal = $("input[name='fontradio']:checked").val();
+      $(".font-list").removeClass('active');
+      $(this).parent().addClass("active");
+      var _this = this;
+      jsonCustom.limit.forEach(function(v,i){
+        $("#textInput"+i).css('font-family', fontVal);
+      })
+    });
+    $("#btn-confirm").click(function(){
+      if(jsonCustom.limit){
+        var flag = true;
+        jsonCustom.limit.forEach(function(v, i){
+          if(!$("#textInput"+i).val()){
+              $("#textInput"+i).addClass('validation-warning'); 
+              flag = false;
+            }else{
+              $("#textInput"+i).removeClass('validation-warning'); 
+            }
+        });
+        if(!flag){
+          return flag;
+        }
+      }
+      
+      $("#custom-text").val($("#textInput0").val() + (jsonCustom.lines!=1?' #@# ' + $("#textInput1").val():''));
+      $("#custom-font").val($("input[name='fontradio']:checked").val());
+      $(".Previewlettering-title").text($("#textInput0").val() + (jsonCustom.lines!=1?' | ' + $("#textInput1").val():''));
+      $("#AddAnPri").show();
+      $("#addengraving").text('{{ 'zen.general.change' | t }}');
+      simpleModal.close();
+      ubase.util.setShopifyVariant('Markup', 1);
+    });
+    $("#btn-without").click(function(){
+      if(jsonCustom.limit){
+        jsonCustom.limit.forEach(function(v, i){
+          $("#textInput"+i).removeClass('validation-warning'); 
+        });
+      }
+      $(".textInput, #custom-text, #custom-font").val('');
+      $(".Previewlettering-title").text('{{ 'zen.general.none' | t }}');
+      $("#addengraving").text('{{ 'zen.general.change' | t }}');
+      $("#AddAnPri").hide();
+      simpleModal.close();
+      ubase.util.setShopifyVariant('Markup', 0);
+    })
+  </script>
+{% elsif secondType == 'CoupleCarving' %}
+
+
+  <div class="open-carving-modal lettering-box lettering-box-carving" data-sex="men">
+  <div class="Previewlettering">{{ 'zen.nocanvas.mens' | t }}:<span class="ptwm Previewlettering-men"></span></div>
+  <button type="button" class="btn-men">{{ 'zen.general.add_engravings' | t }}</button>
+  </div> 
+  <div class="open-carving-modal lettering-box lettering-box-carving" data-sex="women">
+  <div class="Previewlettering">{{ 'zen.nocanvas.womens' | t }}:<span class="ptwm Previewlettering-women"></span></div>
+  <button type="button" class="btn-women">{{ 'zen.general.add_engravings' | t }}</button>
+  </div>
+  <input type="text" id="custom-text" name="properties[engravingText]"   value="" style="display:none" required/>
+  <input type="text" id="custom-font" name="properties[engravingFont]"   value="" style="display:none" required/>
+  <script>
+    var jsonCustom = JSON.parse('{{ product.metafields["global"]["cattribute"] }}');
+    var postObj = {};
+    postObj.men = {};
+    postObj.women = {};
+    jsonCustom.coors.forEach(function(v, i){
+      v.limit.forEach(function(x,y){
+        // console.log(v.gender, x,y);
+        $("."+v.gender+"-"+y).text(x); //left number span
+        $("#text-"+v.gender+"-"+y).attr("maxlength", x).attr("disabled", false);
+      });
+    })
+    $(".textInput").bind('input propertychange', function() {
+      $("."+$(this).data("sex")).text($(this).attr("maxlength")-$(this).val().length);
+    });
+    var fonts = ["AlluraRegular", "NexaScript-Free", "holyunion", "TimesNewRoman", "Arial"];
+    jsonCustom.coors.forEach(function(value,key){
+      fonts.forEach(function(v, i){
+        $(".font-list-flex-"+value.gender).append('<div class="font-list"><div class="carvingfont selected" style="font-family:'+v+';">{{ 'zen.general.abc' | t }}</div><input  id="fontradio'+i+'" data-sex="'+value.gender+'" class="cfont in-radio" type="radio" value="'+v+'" name="fontradio"></div>');  
+      });
+    })
+    
+    $(".cfont").click(function(){
+      var fontVal = $("input[name='fontradio']:checked").val();
+      var sex = $(this).data('sex');
+      $(".font-list").removeClass('active');
+      $(this).parent().addClass("active");
+      var _this = this;
+      jsonCustom.coors.forEach(function(v,i){
+        $('#text-'+sex+'-'+i).css("font-family", fontVal);
+      })
+    });
+    $("#fontradio0").attr('checked', true).trigger('click');
+    // $(".withoutbtn-{{gender}}").click(function(){
+    //   $(".ctext-{{gender}}").val('');
+    // })
+    $(".btn-couple-confirm").click(function(){
+      var gender = $(this).data('sex');
+      $("#text-"+gender+"-0").val() + ' | ' + $("#text-"+gender+"-1").val();
+      $(".Previewlettering-"+gender).text($("#text-"+gender+"-0").val() + ' | ' + $("#text-"+gender+"-1").val());
+      $(".btn-"+gender).text('{{ 'zen.general.change' | t }}');
+      // $("#custom-text").val($(".Previewlettering-men").text() + ' @#@ ' + $(".Previewlettering-women").text());
+      // $("#custom-font").val($("input[name='fontradio']:checked").val());
+      simpleModal.close();
+    });
+    $(".no-comfirm-text").click(function(){
+      var gender = $(this).data('sex');
+      if(jsonCustom.coors){
+        jsonCustom.coors.forEach(function(v, i){
+          //$("#textInput"+i).removeClass('validation-warning'); 
+          $("#text-"+gender+"-"+i).val('');
+          $(".Previewlettering-"+gender).text('{{ 'zen.general.none' | t }} | {{ 'zen.general.none' | t }}');
+          $(".btn-"+gender).text('{{ 'zen.general.change' | t }}');
+          simpleModal.close();
+        });
+      }
+      //$(".textInput").val('');
+      //$("#custom-text").val('');
+      //$("#custom-font").val('')
+      $(".Previewlettering-title").text('{{ 'zen.general.none' | t }}');
+      $("#addengraving").text('{{ 'zen.general.change' | t }}');
+      simpleModal.close();
+
+    });
+    $(".open-carving-modal").click(function(){
+      var gender = $(this).data('sex')=='men' ? 'women' : 'men';
+      $(".engraving-"+$(this).data('sex')).show();
+      $(".engraving-"+gender).hide();
+      simpleModal.open();
+    });
+    $("body").on('DOMSubtreeModified', ".ptwm", function() {
+      var strMen   = $(".Previewlettering-men").text()   ? $(".Previewlettering-men").text() : 'None';
+      var strWomen = $(".Previewlettering-women").text() ? $(".Previewlettering-women").text() : 'None';
+      $("#custom-text").val(strMen + ' @#@ ' + strWomen);
+      //postObj.menIn = 
+      console.log(strMen + '@#@' + strWomen);
+      //$("#custom-font").val($("input[name='fontradio']:checked").val());
+    });
+  </script>
+
+{% elsif secondType == 'optionalCarving' %} 
+  <input type="text" id="custom-text" name="properties[engravingText]" value="" style="display:none" required/>
+  <input type="text" id="custom-font" name="properties[engravingFont]" value="" style="display:none" required/>
+  <div class="lettering-box-carving"id="preview-letter">
+  <div class="Previewlettering">{{ 'zen.nocanvas.design_your_own' | t }}</div>
+  <button>{{ 'zen.general.add_engravings' | t }}</button>
+  </div>
+  <script>
+    $("#preview-letter").click(function(){
+      simpleModal.open();
+      return false;
+    })  
+  </script>
+{% endif%}
+
+<script>
+  var jsonCustom = JSON.parse('{{ product.metafields["global"]["cattribute"] }}');
+if(jsonCustom.isMarkup){   //如果有加价，comfirm按钮添加刻字加价价格
+  //$(".is-markup").text(' +'+jsonCustom.isMarkup);
+}else{
+  $(".is-markup").text(" {{'zen.general.free' | t}}");
+}
+Product.validators.push(
+  () => {
+    return validateFormData();
+  }
+);
+function validateFormData(){
+  if($(".Previewlettering").data('ischeck') != 1){
+      $(".lettering-box-carving").addClass("validation-warning");
+      return '{{'zen.general.validation_error' | t}}';
+   }else{
+      $(".lettering-box-carving").removeClass("validation-warning");
+   }
+   return true;
+}
+$(document).ready(function(){ 
+  $(document).trigger("hide-qty",1);
+});
+</script>

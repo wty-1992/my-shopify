@@ -1,0 +1,194 @@
+<style>
+  .home-tips{
+    width:100%;
+    padding-top:25px;    
+    background: #fff;
+  }
+  .home-tips-box{  
+    width:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 14.16%;
+
+  }  
+  .tips-box{
+    width:100%;
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+  }
+  .tips-item-box{
+    width:31.5%;
+    display:flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    min-height: 279px;
+    padding:26px 20px 0 20px;
+  }
+  .tips-icon{
+    width:29.15%;
+    position: relative;
+  }
+  .tips-icon::before {
+    display: block;
+    padding-top: 100%;
+    content: '';
+  }
+  .tips-image{
+    position: absolute;
+    top:0px;
+  }
+  .tips-text-title{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .title-text{
+    font-size:20px;
+    line-height:32px;
+    color:#222;
+    text-align: center;
+  }
+  .title-key{
+    color:#F9423A;
+  }
+  .tips-content{
+    text-align: center;
+    font-size:16px;
+    line-height:32px;
+    margin-top:7px
+  }
+  .products-link{
+    width:100%
+      cursor: pointer;
+    margin-top:56px;
+  }
+  .link{
+    padding:10px 24px 10px 29px;
+    display: flex;
+    background: #F9423A;
+    border-radius: 4px;
+    justify-content: center;
+    align-items: center;  
+  }
+  .link-text{
+    font-size:20px;
+    line-height:30px;
+    color:#fff;
+  }
+  @media screen and (max-width: 768px){
+    .tips-text-box{
+      flex:1;
+    }
+    .tips-item-box{
+      width:100%;
+      margin-top:0px;
+      margin-bottom:10px;
+      min-height:0px;
+      padding:20px 36px 14px 36px;
+    }
+    .tips-icon{
+      width:88px;
+      height:88px;
+    }
+    .title-text{
+      font-size:16px;
+    }
+    .link{
+      padding:6px 7px 6px 14px;
+      width: 100%;
+    }
+    .link-text{
+      font-size:16px;
+      line-height:33px;
+    }
+    .tips-content{
+      font-size:12px;
+      line-height:24px;
+      margin-top:0px;
+    }
+    .home-tips{
+      padding-top:10px;
+    }
+    .tips-box{
+      flex-wrap: wrap;
+    }
+    .products-link{
+      margin-top:40px;
+    }
+    .home-tips-box{
+      padding:0 20px;
+    }
+  }
+</style>
+<div class="home-tips-box">
+  <div class="tips-box">
+    {% for block in section.blocks %}
+    {% assign resize = block.settings.iconimage.width | append: "x" | append: block.settings.iconimage.height %}
+    <div class="tips-item-box theme-bg radius">
+      <div class="tips-icon">
+        <img class="tips-image" src="{{block.settings.iconimage  | img_url: resize }}"/>
+      </div>
+      <div class="tips-text-box">
+        <div class="tips-text-title">
+          <div class="title-text">
+            {{block.settings.title}}
+          </div>
+        </div>
+        <div class="tips-content">
+          {{block.settings.content_text}}
+        </div>
+        <div class="explain"></div>
+      </div>
+
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% schema %}
+  {
+    "name": {
+      "en": "首页 提示"
+    },
+    "class": "home-tips",
+    "settings": [  {
+        "type": "text",
+        "id": "private",
+        "label": "程序参考字段默认勿动",
+        "default": "home-tips"
+        }
+    ], 
+   "blocks": [
+       {
+          "type": "tips",
+          "name": "每个提示",
+          "settings": [
+        {
+          "type": "image_picker",
+          "id": "iconimage",
+          "label": "icon图标"
+        },  
+        {
+          "type": "text",
+          "id": "title",
+          "label": "标题 "
+        }, 
+        {
+          "type": "textarea",
+          "id": "content_text",
+          "label": "提示内容"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "category": "Custom",
+      "name": "首页 提示"
+    }
+  ]
+}
+{% endschema %}

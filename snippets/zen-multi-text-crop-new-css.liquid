@@ -1,0 +1,168 @@
+
+<style>
+  .template-product .right-content {
+    border: 1px solid rgba(0,0,0,0);
+    background-color: transparent;
+  }
+    .photo-select-carving {
+  	width: 100%;
+    margin: 20px 0;
+  }
+  .fonttext {
+    border-radius: 5px;
+    width: 100%;
+    padding: 13px 45px 13px 15px;
+    font-size: 1rem;
+    line-height: 1.625;
+    border: 1px solid #000;
+  }
+  .photo-select-carving .btn-upload-open {
+    cursor: pointer;
+    background: #4bd863;
+    color: #fff;
+    border-radius: 25px;
+    padding: 2px 15px;
+/*     width: 100px; */
+    text-align: center;
+    text-transform: capitalize;
+    font-weight: bold;
+    border: none;
+    font-size: 16px;
+    line-height: 1.625;
+  }
+  .photo-select-carving {
+  	font-size: 1rem !important;
+    color: #000;
+  }
+  .area-photo-upload-text, .area-crop-upload-text {
+  	font-size: 1rem !important;
+    /* color: #e44946; */
+    font-weight: 400;
+  }
+  .photo-select-carving .label-input-text {
+  	display: none;
+  }
+  .photo-select-carving .demonstration {
+  	display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+  }
+
+  .photo-select-carving .font-label {
+    margin-left: 10%;
+  }
+  .el-button--primary {
+  	background-color: #4bd863!important;
+    border-color: #4bd863!important;
+    padding: 1rem 2rem!important;
+  }
+  .photo-cancel-btn, .dialog-footer .el-button--default{
+  	color: #fff!important;
+    background-color: #000!important;
+    border-color: #000!important;
+    padding: 1rem 2rem!important;
+  }
+  
+  .photo-select-carving .el-dialog__wrapper .el-button {
+  	border-radius: 0px!important;
+  }
+/*   .photo-select-carving .el-progress-bar__inner {
+  	background-color: #e44946 !important;
+  } */
+  
+
+  .preview-thumbnail {
+  	margin-right: 10px;
+  }
+
+  .crop-prompt {
+  	margin: 10px 0;
+    color: red;
+    text-align: center;
+  }
+  .photo-design-body {
+  	margin-bottom: 10px;
+  }
+  .dialog-footer-carving {
+  	padding-top: 0 !important;
+  }
+  .crop-progerss {
+  	margin-bottom: 1rem;
+  }
+  
+  .fonttext-container, .photoselector-container{
+    display: flex;
+    justify-content: space-between;
+    flex: 0 1 100%;
+    background: #fff;
+    border: 1px solid #000;
+    align-items: center;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .fonttext-container input, .fonttext-container select, .photoselector-container select {
+    height: 4rem;
+    margin-bottom: 0;
+    border: none;
+    margin: 0;
+    background: #fff;
+    padding: 0 0 0 1rem;
+    color: #000;
+    outline: none !important;
+  }
+  .fonttext-container select, .photoselector-container select {
+  	width: calc(100% - 180px);
+  }
+  .fonttext-container input {
+  	width: calc(100% - 240px);
+  }
+  .fonttext-container .leftnum {
+    padding-right: 1rem;
+    width: 60px;
+  }
+  .fonttext-container label, .photoselector-container label {
+    font-weight: normal;
+    color: #000;
+    font-size: 0.9375rem;
+    width: auto;
+    padding-left: 1rem;
+    text-transform: initial;
+    margin-bottom: 0px;
+    width: 180px;
+  }
+    
+  .area-photo-upload,.area-crop-upload {
+  	background: #fff !important;
+    font-size: 1rem;
+    padding: 11px 15px !important;
+    border-radius: 5px !important;
+    border: 1px solid #000;
+    height: 4rem;
+  }
+  .require-tag{
+  	color: red;
+  }
+  @media (max-width: 768px) { 
+    .el-message-box {
+      width: 100% !important;
+      height: 100%;
+    }
+    .el-dialog__body > div:nth-child(2) > div:nth-child(1) {
+    	height: calc(100% - 200px);
+    }
+    .el-dialog__body, .el-dialog__body > div:nth-child(2), .el-dialog__body > div:nth-child(2) > div:nth-child(1) > div:nth-child(1), .custom-cropper{
+      height: 100%;
+    }
+    .fonttext-container label, .photoselector-container label {
+    	width: 110px;
+    }
+    .fonttext-container select, .photoselector-container select {
+      width: calc(100% - 110px);
+    }
+    .fonttext-container input {
+      width: calc(100% - 170px);
+    }
+  }
+</style>

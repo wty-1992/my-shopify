@@ -1,0 +1,362 @@
+{% assign Choose_material = "variant.title.Choose_material" | t %}
+{% assign Choose_material_color = "variant.title.Choose_material_color" | t | replace: "&amp;", "&"  %}
+{% assign Choose_material_colortwo = "variant.title.Choose_material_colortwo" | t %}
+{% assign Markup = "variant.title.Markup" | t %}
+{% assign Printing = "variant.title.Printing" | t %}
+{% assign Frame = "variant.title.Frame" | t %}
+{% assign Color = "variant.title.Color" | t %}
+{% assign Size = "variant.title.Size" | t %}
+{% assign How_Many_Pictures = "variant.title.How_Many_Pictures" | t %}
+{% assign Choose_your_style = "variant.title.Choose_your_style" | t %}
+{% assign Product_Status = "variant.title.Product_Status" | t %}
+{% assign Choose_more_stickers_to_avoid_pasting_mistakes = "variant.title.Choose_more_stickers_to_avoid_pasting_mistakes" | t %}
+{% assign Number_of_photos = "variant.title.Number_of_photos" | t %}
+{% assign Number_Of_Best_Friends = "variant.title.Number_Of_Best_Friends" | t %}
+{% assign Choose_Your_Size =  'variant.title.Choose_Your_Size' | t %}
+<style>
+  .serial.correct{
+    color:#000;
+  }
+  .input-checkbox-title{
+    display: inline-block;
+    padding: 5px 5px;
+    font-size: 0.875rem;
+    background-color: #fff;
+    border-radius: 5px;
+    line-height: 1.2;
+  }
+  .input-checkbox{display:none;}
+  .input-checkbox-title-active{
+    font-style: normal;
+    font-weight: 700;
+    color: #000;
+    background-color: #fff;
+    border: 2px solid #000!important;
+  } 
+  .input-checkbox-title-active .input-checkbox-title{  font-style: normal;
+    font-weight: 700;
+    color: #000;
+    background-color: #fff;
+/*     border-color: #ac8952!important; */
+  }
+  .blackdinos.input-checkbox-title-active{
+    border: 1px solid #000!important;
+    border-radius: 5px;
+  }
+  .input-checkbox-wrapper-box {
+    display: flex;
+    flex-flow: wrap;
+    margin-bottom: 20px;
+  }
+  .input-checkbox-wrapper{
+    margin-right: 0;
+    display: inline-block;
+    width: 18%;
+    border: 1px solid #cecece;
+    height: 200px;
+    border-radius: 20px;
+    text-align: center;
+    overflow: hidden;
+    margin: 3px;
+  }
+  .input-checkbox-wrapper img{
+    width: 90%;
+/* 	width: 55%; */
+    max-width: 103px;
+    margin-top: 10px;
+  }
+  .input-field-title{
+    display: inline-block;
+    color: #000;
+    font-weight: 700;
+  }
+  #specel-inline-3 .input-checkbox-wrapper{
+  	margin-right: 5px;
+    display: inline-block;
+    width: calc(33% - 10px);
+    border: 1px solid #cecece;
+    height: 130px;
+    border-radius: 20px;
+    text-align: center;
+    overflow: hidden;
+  }
+  #specel-inline-2 .input-checkbox-wrapper{
+    margin-right: 5px;
+    display: inline-block;
+    width: calc(33% - 10px);
+    border: 1px solid #cecece;
+    height: 110px;
+    border-radius: 20px;
+    text-align: center;
+    overflow: hidden;
+  }
+  #specel-inline-3 .input-checkbox-wrapper img{
+  	margin-top: 16px;
+    width: auto;
+    max-width: inherit;
+    min-height: 46px;
+    height: 46px;
+  }
+  #specel-inline-2 .input-checkbox-wrapper img{
+    margin-top: 16px;
+    width: auto;
+    max-width: inherit;
+    min-height: 46px;
+    height: 46px;
+  }
+  #specel-inline-2 .input-checkbox-title{
+/*       margin-top: 10px; */
+  }
+  .product-page-add_to_cart-section .select-option { 
+    width: 50%;
+    display: none;
+  } 
+  .input-checkbox-wrapper-nomal {
+    margin-right: 10px;
+    display: inline-block;
+    margin-top: 10px;
+  }
+  .input-checkbox-wrapper-nomal .input-checkbox-title{
+	display: inline-block;
+    padding: 10px 7.5px;
+    font-size: 0.875rem;
+    background-color: #fff;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+  }
+  .product-size-container { 
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #e7e7e7; 
+    width: 100%;
+  } 
+ .camera{
+    position: relative;
+    height: 148px;
+  }
+  #specel-inline-1 .camera .input-checkbox-title{
+    position: absolute;
+    left: 13%;
+    top: 33%;
+    background: transparent;
+    font-size: 2rem;
+    display: inline-block;
+    width: 80px;
+  }
+  #specel-inline-1 .camera .input-checkbox-title .pics{
+    font-size: 0.8rem;
+    position: absolute;
+    left: 26px;
+    bottom: -7px;
+  }
+  #specel-inline-2 .camera{
+    width: calc(20% - 10px);
+    height: 180px;
+  }
+  #specel-inline-2 .camera img {
+    min-height: 46px;
+    height: 102px;
+  }
+  .dinos{
+/*      width: 24% !important; */
+/*      height: 160px !important;   */
+    width: 18% !important;
+    height: 120px !important;
+    position: relative;
+  }
+  .dinos img {
+  	width: 55%;
+  }
+  .asdqweqwewq .step-wrapper .step-count{
+    display: none;  
+  }
+  .asdqweqwewq .step-wrapper .step-module {
+    width: 100%;
+  }
+  @media (min-width: 768px){
+    div.photo-container{
+      margin-right:0;
+    }
+    .photo-container div.photo-box {
+        width: auto;
+        height: auto;
+        border: none;
+    }
+  }
+  @media(max-width:768px){
+    .input-checkbox-wrapper-box{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+    .input-checkbox-wrapper{
+      width: calc(33% - 4px);
+      margin: 2px;
+    }
+    #specel-inline-2 .camera {
+      width: calc(33% - 10px);
+      height: 180px;
+    }
+    #specel-inline-1 .camera .input-checkbox-title{
+      position: absolute;
+      left: 17%;
+      top: 33%;
+      background: transparent;
+      font-size: 2rem;
+      display: inline-block;
+      width: 80px;
+    }
+    .dinos{
+/*       width: calc(33% - 2px) !important; */
+/*       height: 150px !important;   */
+      width: calc(33% - 42px) !important;
+      height: 100px !important;
+    }
+    .dinos img{
+/*       margin-top:10px !important */
+    	margin-top: 8px !important
+    }
+    .dinos .input-checkbox-title {
+      padding: 5px .5px !important;
+      font-size: 10px !important;
+      word-break:break-all;
+    }
+    .inline-field-wrapper1 {
+      padding: 0 10px;
+    }
+    .input-checkbox-wrapper img{
+      margin-top: 2px;
+    }
+    
+    #specel-inline-2 .input-checkbox-wrapper,.input-checkbox-wrapper{
+      padding-bottom: 5px;
+      height: auto;
+    }         
+  }
+</style>
+{% for option in product.options_with_values %}
+{% comment %}颜色变体以单选显示 2019-08-30 by Anna{% endcomment %}
+<div data-select class="select-option {% if  option.name == Choose_Your_Size or option.name == Printing or option.name == Size or option.name == Markup or option.name == Frame or option.name == Color or option.name == Choose_material_color or option.name == Choose_material or option.name == Material or option.name == Choose_material_colortwo or checkout_title contains option.name %} hide{% else%}show{% endif %}" >
+    <div class="selector-wrapper product-form__item hide">
+        <label class="{% if option.name == 'default'%}hide{% endif %} select-field-title" for="OptionSelector-{{ forloop.index }}" data-name="{{ option.name }}">{{ option.name }} :</label>        
+        <select 
+          onchange="Product.changeOption(this)" 
+          class="single-option-selector product-form__input" 
+          id="OptionSelector-{{ forloop.index }}" 
+          data-index="{{forloop.index0}}" 
+          data-option="option{{ forloop.index }}" 
+          data-name="{{option.name}}" >
+
+          {% for value in option.values %}
+            <option value="{{ value | escape }}">{{ value }}</option>
+          {% endfor %}
+        </select>
+    </div>
+    {% if option.name contains Size %}
+    <div class="product-size-container">
+      <div class="product-size" onclick="Dialog.open('#size-guide-contents')">{{ 'product.cart.size_guide' | t }}</div>
+      <div id="size-guide-contents" class=" simple--modal" style="display:none;"> 
+        <button type="button" class="close-new" data-action="close"><i class="photofont icon photo-close"></i></button>
+
+        {% if product.type == 'Lamp' or  product.type == 'simple' %}
+          {% include 'product-necklace_size_guide' %} 
+        {% endif %}      
+      </div>
+    </div>
+    {% endif %}
+</div> 
+{% endfor %}
+{% for option in product.options_with_values %}
+  {% assign option_index = forloop.index0 %}
+  <div class="inline-field-wrapper1 js-required" id="specel-inline-{{forloop.index}}" {% if option.name == Markup%} style="display:none;"{% endif%}>
+
+    <span class="input-field-title">{{ option.name }}:</span>
+    <div class="input-checkbox-wrapper-box">
+    {% for value in option.values %}
+      {%- capture option_id -%}
+        single-option-{{ form_id }}-{{ option_index }}-{{ forloop.index0 }}
+      {%- endcapture -%}
+      {% if option.name == Size or option.name == Color or option.name == Choose_Your_Size %}
+      <label
+        class="input-checkbox-wrapper {% if option.selected_value == value %} input-checkbox-title-active{% endif %}{% if option.name == "How Many Pictures" or option.name == "Package" %} camera{% endif %}{% if option.name == "Style" %} dinos{% endif %}"
+        for="{{ option_id }}">
+        <input                        
+          onclick="change('{{ option_index| plus: 1 }}','{{ value | escape }}')"
+          class="input-checkbox"
+          type="radio"
+          value="{{ value | escape }}"
+          {% if option.selected_value == value %}checked{% endif %}
+          name="option-{{ option_index }}"
+          id="{{ option_id }}"
+          data-option-index="{{ option_index }}"
+          data-option-input="{{ form_id }}"/>
+
+          {% assign value_array = value | split: "=" %}
+          {% assign image_array = value_array.first | split: "(" %}        
+          {% if option.name == Color %}
+            {% assign image_pc = image_array.first | replace: " ", "_" | append: "_Pc.png" %}
+            {% assign image_mb = image_array.first | replace: " ", "_" | append: "_Mb.png" %}
+            <picture>
+              <source
+                      data-srcset="{{ image_mb | file_img_url }}"
+                      media="(max-width: 750px)" />
+              <source
+                      data-srcset="{{ image_pc | file_img_url  }}"
+                      media="(max-width: 1024px)" />
+              <img
+                  title=""  
+                  data-src="{{ image_pc | file_img_url }}"
+                  class="scrollable-01-div-img lazyload" />
+            </picture> 
+          {% else %}
+            {% if productTags contains "special-lamp-heart" %}
+              {% assign image = image_array.first | lstrip | rstrip | append: "_heart.png" %}
+            {% elsif option.name == "How Many Pictures" %}
+              {% assign image = "pics.png" %}
+            {% else %}
+              {% assign image = value_array.first | lstrip | rstrip | append: ".png" %}
+            {% endif %}
+            <img src="{{image | file_img_url }}"/>
+          {% endif %}
+          {% assign value_text = value | replace: "/", "<br>" | replace: "(", "<br>(<span style='color:#ff5252'>" | replace: ")", "</span>)"  %}
+          <span class="input-checkbox-title">{{value_text}}</span>
+      </label>
+      {% else %}
+          <label
+        class="input-checkbox-wrapper-nomal{% if option.selected_value == value %} input-checkbox-title-active{% endif %}{% if option.name == "Choose Size" or option.name == "Choose Style"%} blackdinos{% endif %}"
+        for="{{ option_id }}">
+        <input                        
+          onclick="change('{{ option_index| plus: 1 }}','{{ value | escape }}')"
+          class="input-checkbox"
+          type="radio"
+          value="{{ value | escape }}"
+          {% if option.selected_value == value %}checked{% endif %}
+          name="option-{{ option_index }}"
+          id="{{ option_id }}"
+          data-option-index="{{ option_index }}"
+          data-option-input="{{ form_id }}"/>
+          <span class="input-checkbox-title {{option.name}}-{{value}}">{{value}}</span>
+      </label>
+      {% endif %}
+
+    {% endfor %}
+      </div>
+  </div>
+{% endfor %}
+<script>
+function change(index,value){
+  $('#OptionSelector-'+index).val(value);console.log($('#OptionSelector-'+index).val());
+  $('#OptionSelector-'+index).trigger('change');
+}
+{% if productTags contains "custom-label-show" %}
+    $('.selector-wrapper').find('label').show();
+{% endif %}
+  
+$(document).ready(function(){
+  $(".input-checkbox-wrapper,.input-checkbox-wrapper-nomal").click(function(){
+    $(this).addClass("input-checkbox-title-active").siblings().removeClass("input-checkbox-title-active");
+  });
+});
+</script>

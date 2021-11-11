@@ -1,0 +1,55 @@
+<style>
+.timer_box{
+    background: #fff;
+    text-align: right;
+    color: #000;
+    font-size: 18px;
+    padding-right: 16px;
+}
+.timer_box #cart-time{
+	color: red;
+  font-size:15px;
+}
+</style>
+<div class="timer_box">
+	<span class="cart_text">{{'cart.subtotal.countdown_title' | t}}</span>
+  	<span id="cart-time"></span>
+</div> 
+
+<script type="text/javascript">
+    $(function(){
+		var now=new Date();
+        var end=new Date(2030,9,3,00,00,00);//结束的时间：年，月，日，分，秒（月的索引是0~11）
+        /*两个时间相减,得到的是毫秒ms,变成秒*/
+        var result=Math.floor(end-now)/1000; 
+        var result={{section.settings.endtime}};
+        
+        var interval=setInterval(sub,1000); //定时器 调度对象
+        /*封装减1秒的函数*/
+        function sub(){
+            if(result>=1){
+				result = result - 1; 
+				var second = buquan(Math.floor(result % 60),2);     // 计算秒 ，取余  
+				var minite = buquan(Math.floor((result / 60) % 60),2); //计算分 ，换算有多少分，取余，余出多少秒
+				var hour = buquan(Math.floor((result / 3600) % 24),2); //计算小时，换算有多少小时，取余，24小时制除以24，余出多少小时
+		
+                $("#cart-time").html('<samp class="hour_timer text-left">'+hour+'</samp><span>:</span><samp class="minute_timer">'+minite+'</samp><span>:</span><samp class="second_timer text-right">'+second+'</samp>')
+                //var day = buquan(Math.floor(result / (3600*24)),2);  //计算天 ，换算有多少天
+			}else{
+                //alert("倒计时结束！");
+                window.clearInterval(interval);//这里可以添加倒计时结束后需要执行的事件 
+            }
+        };
+    });
+
+	function buquan(num,length){
+		var numstr = num.toString();
+		var l=numstr.length;
+		if (numstr.length>=length) {return numstr;}
+
+		for(var  i = 0 ;i<length - l;i++){
+			numstr = "0" + numstr;  
+		}
+		return numstr; 
+	}
+</script>  

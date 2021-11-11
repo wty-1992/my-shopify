@@ -1,0 +1,75 @@
+<script>
+
+</script>
+{% for block in section.blocks %}
+{% if handle == block.settings.handle %}
+<script>
+var labels ={{ block.settings.sold_sort }};
+$(function(){
+  $(".hise_sku").each(function(){
+    
+    for( item in labels.base){
+      if(item == $(this).html()){
+        var _qty=labels.base[item].qty;
+        var _sale=labels.base[item].sale
+        if(_qty - _sale){
+        
+        }
+        var _html= `
+    		<div class="ld-progress-con">
+			  <span class="total"></span>
+			  <span class="sold" style="width: `+ Math.round((_qty - _sale) / _qty*100) +`%;"></span>
+			</div>
+			<div class="active-left"><span class="active-left-color">`+( _qty - _sale )+` Izquierda</span> <span class="she-fr">`+ Math.round((_qty - _sale) / _qty*100) +`%</span></div>
+		`;
+        console.log();
+        if((_qty - _sale) == 0){
+          $(this).parent().parent().parent().addClass("out-text");
+          $(this).parent().parent().siblings().prepend(`<img src="{{ '20210121093334.png' | asset_url }}" class="out-images">`);
+          $(this).parent().siblings(".medium-up--btn").text("Sin existencia");
+        }
+         $(this).parent().html(_html);
+      }
+    }
+  });
+});
+</script>
+{% endif%}
+{% endfor %}
+    
+{% schema %}
+{
+  "name": "标签排序",
+  "class":"newactive2019-label-sort",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "newactive2019-label-sort"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "label",
+      "name": "活动页 剩余数量",
+      "settings": [
+    	{
+		  "type": "text",
+          "id": "title",
+          "label": "哪个活动"
+	    },
+		{
+		  "type": "text",
+          "id": "handle",
+          "label": "活动url"
+	    },
+        {
+          "type": "textarea",
+          "id": "sold_sort",
+		  "label":"json"          
+        }
+      ]
+    }    
+  ]
+}
+{% endschema %}
+

@@ -1,0 +1,203 @@
+{% comment %}
+** @name instagram 分享产品 **
+** @author 黄创业 **
+** @integrate 黄创业 王天宇 **
+{% endcomment %}
+
+{% comment %} 引用公共插槽 {% endcomment %}
+{% include 'sunzi-solt-template' %}
+
+{% comment %} 调用参数 {% endcomment %}
+
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'sunzi.instagram.plaque.js' %}
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/instagram-nin1.json' %}
+
+{% comment %} 站点语种 {% endcomment %}
+{% assign sunzi_shop_language = section.settings.sunzi_shop_language %}
+{% comment %} 货币符号 {% endcomment %}
+{% assign sunzi_shop_symbol = section.settings.sunzi_shop_symbol %}
+
+{% comment %} 谷歌分析id {% endcomment %}
+{% assign gtag = 'G-EN88L752TG' %}
+{% comment %} 定制按钮文案 {% endcomment %}
+{% assign buttonText = section.settings.sunzi_button_upload_text %}
+
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+  .product-quantity,
+  .product-form .common-standar_btn {
+  	display: none !important;
+  }
+  @media screen and (min-width: 768px) {
+    .sunzi-modal-content {
+      width: 450px;
+      height: 750px;
+    }
+  }
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 额外的表单参数 {% endcomment %}
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="hidden" id="sunzi-input" name="properties[customInfo]" required="required"></input>
+  <input type="hidden" id="sunzi-cart" name="properties[_sunzi_cart]"></input>
+  <input type="hidden" id="sunzi-related-product" name="properties[_sunzi_related_product]" ></input>
+  {% comment %} 定制按钮 {% endcomment %}
+  <button type="button" id="sunzi-button" disabled class="dots-loading">
+    <span class="dots">
+      <i></i>
+      <i></i>
+      <i></i>
+    </span>
+    <div class="sunzi-button-text">{{ buttonText }}</div>
+  </button>
+</div>
+
+<!-- sunzi core js -->
+<script src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{ coreJs }}" defer="defer"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ gtag }}" async="async"></script>
+<script async="async">
+  _sunzi_gtag('{{ gtag }}');
+</script>
+
+{% comment %} 1.隐藏掉变体，加车按钮等等 {% endcomment %}
+<script defer="defer">
+</script>
+
+{% comment %} 2.请求定制化数据 {% endcomment %}
+<script defer="defer">
+  var response;
+  _sunzi_request('{{ requestURL }}', function(res) {
+	response = res;
+  });
+</script>
+
+{% comment %} 3.开始定制 {% endcomment %}
+<script defer="defer">
+  
+  $('#sunzi-button').click(function() {
+    // 获取sku
+    var sku = _sunzi_get_sku();
+    _sunzi_response = response.find(item => item.sku === sku);
+    _sunzi_response.shop = {
+      language: '{{sunzi_shop_language}}',
+      currencySymbol: '{{sunzi_shop_symbol}}'
+    };
+    // 遥控器or礼盒
+
+    
+    // 开始渲染
+    _sunzi_custom(
+      InstagramPlaque.default,
+      async function(effect, data, vip) {
+        _sunzi_loading();
+                
+        var output = {
+          '_sunzi_compose': [{
+            'rule': 23,
+            'data': data
+          }],
+          '_sunzi_sources': [
+            data.data.avatar,
+            data.data.album
+          ],
+          '_sunzi_texts': [
+            {
+              value: data.data.username,
+              divider: 'mingzi'
+          	},
+            {
+              value: data.data.position,
+              divider: 'weizhi'
+          	},
+            {
+              value: data.data.QRcode ? data.data.QRcode.url : '',
+              divider: 'erweima'
+          	},
+            {
+              value: data.data.likeCount,
+              divider: 'dianzanshu'
+          	},
+            {
+              value: data.data.username + '  ' + data.data.caption,
+              divider: 'biaoti'
+          	},
+            {
+              value: data.data.commentCount,
+              divider: 'pinglunshu'
+          	}
+          ]
+        };
+        
+		// 根据vip添加虚拟产品
+        if(vip) {
+          var tempvip = cateTempVip();
+          addToCart({
+            id: vip.virtualId,
+            quantity: 1,
+            "properties[_sunzi_related_product]": tempvip,
+            mask: 'body',
+            refresh: true,
+          })
+          $('#sunzi-related-product').val(tempvip);
+        } else {
+          $('#sunzi-related-product').val('');
+        }
+        
+        $('#sunzi-cart').val(JSON.stringify({
+          'image': [ effect ]
+        }));
+        $('#sunzi-input').val(JSON.stringify(output));
+      
+      	// await Promise.all(promiseArr);
+        //	加车事件触发
+		$('.product-form__cart-submit').click();
+        _sunzi_hide_loading();
+      }
+    );
+  });
+  
+  
+  /** 其他自定义函数 start **/
+  
+  // 加车
+  function addToCart(data) {
+    return new Promise((resolve, reject) => {
+      $.ajax({
+        type: "POST",
+        url: "/cart/add.js",
+        data,
+        async: false,
+        dataType: "json",
+        context: this,
+        success: (item) => resolve(item),
+        error: (request, status) => {
+          reject(request, status);
+        }
+      })
+    })
+  }
+  
+  function cateTempVip(){
+    var t = jQuery('[name="id"]').val();
+    document.querySelectorAll("[name^='properties[']").forEach(function(e,item){
+      var n = "radio" !== e.type || e.checked;
+      ("properties[_tempId]" != e.name && "properties[_tempVip]" != e.name) && "" != e.value && n && (t += e.name + ":" + e.value + ",")
+    })
+    var e, n, r, i = 0;                
+    for (e = 0, r = t.length; e < r; e++){
+      n = t.charCodeAt(e),
+        i = (i << 5) - i + n,
+        i |= 0;  
+    }
+    return i;
+  }
+
+
+  /** 其他自定义函数 end **/
+</script>

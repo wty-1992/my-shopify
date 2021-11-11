@@ -1,0 +1,471 @@
+{% comment %}
+** @name 卡通抱枕 **
+** @author 黄创业 **
+** @integrate 劳紫恩 王天宇 **
+{% endcomment %}
+
+{% comment %} 引用公共插槽 {% endcomment %}
+{% include 'sunzi-solt-template' %}
+
+{% assign tags = product.tags %}
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'sunzi.mini.me.test.js' %}
+
+{% comment %} 谷歌分析id {% endcomment %}
+{% assign gtag = 'UA-147646006-1' %}
+{% comment %} 定制按钮文案 {% endcomment %}
+{% assign sunzi_button_text = section.settings.sunzi_button_upload_text %}
+
+{% comment %} 尺码变体 {% endcomment %}
+{% assign variantSize = 0 %}
+{% comment %} 加价变体 {% endcomment %}
+{% assign variantType = 1 %}
+{% comment %} 是否单面 {% endcomment %}
+{% assign oneSideStatus = false %}
+
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/mini-me-rebuild.json' %}
+{% if tags contains 'custom-sunzi-mini-me-second' %}
+{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/new-mini-me.json' %}
+{% elsif tags contains 'custom-sunzi-mini-me-side-1' %}
+{% assign variantType = 100 %}
+{% assign oneSideStatus = true %}
+{% endif %}
+
+{% comment %} 站点语种 {% endcomment %}
+{% assign sunzi_shop_language = section.settings.sunzi_shop_language %}
+{% comment %} 货币符号 {% endcomment %}
+{% assign sunzi_shop_symbol = section.settings.sunzi_shop_symbol %}
+
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+  .view-size-quantity,
+  .common-standar_btn {
+  	display: none;
+  }
+  #sunzi-button{
+    position: relative;
+  }
+  .product-form__item label,
+  .color-option .title {
+    font-weight: 700;
+  }
+  .color-option .description {
+    padding: 2px 0;
+    line-height: 1.5;
+    font-size: 12px;
+    color: #888;
+    transform: scale(.83);
+    transform-origin: 0 0;
+  }
+  .color-option {
+    padding: 10px 0 0 5px;
+  }
+  .color-option .options {
+    display: flex;
+    padding: 3px 0 16px;
+  }
+  .color-option .options .option-wrap {
+    padding-right: 6px;
+  }
+  .color-option .options .option-wrap .option {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 64px;
+    height: 32px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .options .option-wrap .option .selected-icon {
+    display: none;
+    background-color: #fff;
+    border-radius: 50%;
+  }
+  .options .option-wrap .option .selected-icon .tick-circle {
+    width: 18px;
+    height: 18px;
+  }
+  .color-option .options .option-wrap .option.selected {
+    box-shadow: 0 0 0 1px #ff533a;
+  }
+  .options .option-wrap .option.selected .selected-icon {
+    display: flex;
+  }
+  .color-option .options .option-wrap .option-color {
+    padding-top: 5px;
+    text-align: center;
+    font-size: 12px;
+    transform: scale(0.83);
+  }
+</style>
+{% comment %} 肤色选择 {% endcomment %}
+<div class="color-option">
+  <div class="title"></div>
+  <div class="description"></div>
+  <div class="options"></div>
+</div>
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 额外的表单参数 {% endcomment %}
+  
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="hidden" id="sunzi-input" name="properties[customInfo]" required="required" />
+  <input type="hidden" id="sunzi-compose" name="properties[compose]" required="required" />
+  <input type="hidden" id="sunzi-cart" name="properties[_sunzi_cart]" />
+  <input type="hidden" id="sunzi-vip" name="properties[VIPService]" />
+  <input type='hidden' id="_tempVip"  name='properties[_tempVip]' />
+  <input type="hidden" id="sunzi-related-product" name="properties[_sunzi_related_product]" />
+  
+  {% comment %} 定制按钮 {% endcomment %}
+  <button type="button" id="sunzi-button" disabled class="dots-loading">
+    <span class="dots">
+      <i></i>
+      <i></i>
+      <i></i>
+    </span>
+    <div class="sunzi-button-text">{{ sunzi_button_text }}</div>
+  </button>
+</div>
+
+
+{% comment %} loading 图片预加载 {% endcomment %}
+<link rel="preload" href="https://sunzi7n.myuxc.com/assets/img_0.png" as="image">
+<link rel="preload" href="https://sunzi7n.myuxc.com/assets/img_1.png" as="image">
+<link rel="preload" href="https://sunzi7n.myuxc.com/assets/img_2.png" as="image">
+<link rel="preload" href="https://sunzi7n.myuxc.com/assets/img_3.png" as="image">
+<link rel="preload" href="https://sunzi7n.myuxc.com/assets/img_4.jpg" as="image">
+
+{% comment %} javascript {% endcomment %}
+<script src="https://sunzi7n.imaiyuan.com/sunzi/js/sunzi.36e37.js" defer="defer"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id={{gtag}}" async="async"></script>
+<script src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{coreJs}}" defer="defer"></script>
+
+<script async="async">
+  _sunzi_gtag('{{ gtag }}');
+</script>
+{% comment %} 1.隐藏掉变体，加车按钮等等 {% endcomment %}
+<script defer="defer">
+  _sunzi_variant_hide({{variantType}});
+ 
+</script>
+
+{% comment %} 2.请求定制化数据 {% endcomment %}
+<script defer="defer">
+</script>
+
+{% comment %} 3.开始定制 {% endcomment %}
+<script defer="defer">
+  var skinColorSelected;
+  _sunzi_request("{{requestURL}}", function(data) {
+    addOptionsSkinDom();
+    bindEvent();
+  	if(data.translation && data.translation['{{sunzi_shop_language}}']) {
+      data.miniMeData.forEach((item, index) => {
+        item.name = data.translation['{{sunzi_shop_language}}']["theme"][index];
+      });
+    }
+  });
+
+  // 产品数据
+  var product = {{ product | json }};
+  $('#sunzi-button').click(function() {
+  	// 定制之前的参数构建
+    _sunzi_response.shop = {
+      language: '{{sunzi_shop_language}}',
+      currencySymbol: '{{sunzi_shop_symbol}}'
+    };
+    _sunzi_response.price = $(".product-single__price--special").first().html();
+    // vip参数
+//     _sunzi_response.increment = {
+//       vip: _sunzi_global_data.vip
+//     };
+    delete _sunzi_response.increment.vip;
+
+    _sunzi_response.defaultOption = getDefaultOption();
+    _sunzi_response.selectedSkinColor = skinColorSelected;
+    // 更新加价价格
+    !{{oneSideStatus}} && (_sunzi_response.productIncrement = updateAddPrice());
+    // 是否双面
+    _sunzi_response.sideCount = {{oneSideStatus}} ? 1 : _sunzi_response.sideCount;
+    // 是否是钥匙扣
+    {% if tags contains 'custom-sunzi-mini-me-keychain' %}
+      _sunzi_response.productIncrement = {
+        "normal": {
+          "price": 2.99
+        },
+        "hood": {
+          "price": 2.99
+        },
+        "lineText": {
+          "price": 2.99
+        }
+      }
+    {% endif %}
+    //开始渲染
+    _sunzi_custom(MiniMe.default,async function(data, type, share, vip, relatedProduct) {
+      _sunzi_loading();
+      var output = {
+        '_sunzi_cart': {
+          'image': data.data.map(item => item.image.compose)
+        },
+        '_sunzi_elements': data.data.map(item => item.image.avatar.image),
+        '_sunzi_product': 'mini-me-number:' +  data.data[0].image.id + data.color.name,
+        '_sunzi_compose': [
+          {
+            'rule': 10,
+            'type': 'photo_design',
+            'data': data,
+            'sideCount': _sunzi_response.sideCount
+          }
+        ],
+      };
+      
+      // 原图判断
+      // 单面
+      if({{oneSideStatus}}) {
+      	output._sunzi_source = data.data[0].image.avatar.originImage;
+      }
+      // 其他类别  
+      else {
+        output._sunzi_sources = data.data.map(item => item.image.avatar.originImage);
+      }
+      
+      $('#sunzi-compose').val(data.data.map(item => item.image.compose)[0]);
+      $('#sunzi-input').val(JSON.stringify(output));
+      
+      var promiseArr = [];
+      // 根据vip添加虚拟产品
+      if(vip) {
+        var tempvip = cateTempVip();
+        promiseArr.push(addToCart({
+          id: vip.virtualId,
+          quantity: 1,
+          "properties[_tempVip]": tempvip,
+          mask: 'body',
+          refresh: true,
+        }));
+        $('#_tempVip').val(tempvip);
+        $('#sunzi-vip').val('VIP Service');
+      } else {
+        $('#sunzi-vip').val('');
+      }
+      
+      if(relatedProduct && relatedProduct.virtualId) {
+    	output._sunzi_compose[0].sideCount = relatedProduct.sideCount;
+      	var tempID = cateTempVip();
+        promiseArr.push(addToCart({
+          id: relatedProduct.virtualId,
+          quantity: 1,
+          "properties[_sunzi_related_product]": tempID,
+          "properties[customInfo]": JSON.stringify(output),
+          mask: 'body',
+          refresh: true,
+        }));
+        $('#sunzi-related-product').val(tempID);
+      } else {
+      	$('#sunzi-related-product').val();
+      }
+      
+      type != undefined && _sunzi_variant_change('{{variantType}}', type);
+      // 关联产品加车
+      await Promise.all(promiseArr);
+      // 触发加车事件
+      Product.addFormToCart($('.product-form'), function() {
+        // 重置变体
+        _sunzi_variant_change({{variantType}}, -1);
+      })
+      _sunzi_hide_loading();
+    
+    })
+  
+  })
+
+  /** 改变选中肤色 */
+  function changeSkinColorSelected() {
+    $('.color-option .option-wrap .option').each(function() {
+      if ($(this).data('name') == skinColorSelected) {
+        $(this).addClass('selected');
+      } else {
+        $(this).removeClass('selected');
+      }
+    });
+  }
+
+  /** 肤色选项 html 模板 */
+  function templateOptionSkinColor(skinColor, translateColor) {
+    return `
+      <div class="option-wrap" title="${skinColor.name}">
+        <div class="option" data-name="${skinColor.name}" style="background-color: ${skinColor.color}">
+          <div class="selected-icon">
+            <svg class="tick-circle" viewBox="2 2 20 20" fill="#ff533a">
+              <path d="M12,3.2 C16.8601058,3.2 20.8,7.1398942 20.8,12 C20.8,16.8601058 16.8601058,20.8 12,20.8 C7.1398942,20.8 3.2,16.8601058 3.2,12 C3.2,7.1398942 7.1398942,3.2 12,3.2 Z M17.3656854,8.63431458 C17.053266,8.32189514 16.546734,8.32189514 16.2343146,8.63431458 L16.2343146,8.63431458 L10.8,14.068 L7.76568542,11.0343146 L7.69031955,10.9677637 C7.37648659,10.7237438 6.92270174,10.7459274 6.63431458,11.0343146 C6.32189514,11.346734 6.32189514,11.853266 6.63431458,12.1656854 L6.63431458,12.1656854 L10.2343146,15.7656854 L10.3096804,15.8322363 C10.6235134,16.0762562 11.0772983,16.0540726 11.3656854,15.7656854 L11.3656854,15.7656854 L17.3656854,9.76568542 L17.4322363,9.69031955 C17.6762562,9.37648659 17.6540726,8.92270174 17.3656854,8.63431458 Z"></path>
+            </svg>
+          </div>
+        </div>
+		<div class="option-color">${translateColor}</div>
+      </div>
+    `;
+  }
+
+  /** 添加肤色 dom */
+  function addOptionsSkinDom() {
+    var skinData = skinTranslate();
+    // 肤色title配置
+  	$('.color-option .title').html(skinData.title);
+  	// 肤色description
+  	$('.color-option .description').html(skinData.description);
+    // 肤色sleect配置
+    var colors = _sunzi_response.colors;
+    // 默认选中第一个颜色
+    skinColorSelected = colors[0].name;
+    colors.forEach(function(item) {
+      var html = templateOptionSkinColor(item, skinData[item.name]);
+      $('.color-option .options').append(html);
+    });
+    changeSkinColorSelected();
+  }
+
+  /** 事件绑定 */
+  function bindEvent() {
+    // 点击尺寸事件
+      $('.color-option .options').click(function(event) {
+        const target = event.target;
+        if (target.classList.contains('option')) {
+          skinColorSelected = target.dataset.name;
+          changeSkinColorSelected();
+        }
+      });
+  }
+  
+  // 获取默认选项
+  function getDefaultOption() {
+    var tags = `{{tags}}`;
+    var optionResult = tags.match(/custom-sunzi-mini-me-default-\d+/);
+    var _number = optionResult && Number(optionResult[0].split('-').pop());
+    return isNaN(_number) ? '' : _number;
+  }
+    
+  // 加车
+  function addToCart(data) {
+    return new Promise((resolve, reject) => {
+      $.ajax({
+        type: "POST",
+        url: "/cart/add.js",
+        data,
+        async: false,
+        dataType: "json",
+        context: this,
+        success: (item) => resolve(item),
+        error: (request, status) => {
+          reject(request, status);
+        }
+      })
+    })
+  }
+    
+  // 生成随机数
+  function cateTempVip(){
+    var t = jQuery('[name="id"]').val();
+    document.querySelectorAll("[name^='properties[']").forEach(function(e,item){
+      var n = "radio" !== e.type || e.checked;
+      ("properties[_tempId]" != e.name && "properties[_tempVip]" != e.name) && "" != e.value && n && (t += e.name + ":" + e.value + ",")
+    })
+    var e, n, r, i = 0;                
+    for (e = 0, r = t.length; e < r; e++){
+      n = t.charCodeAt(e),
+        i = (i << 5) - i + n,
+        i |= 0;  
+    }
+    return i;
+  }
+  
+  // 肤色站点翻译
+  function skinTranslate() {
+    var shopLanguage = "{{sunzi_shop_language}}";
+    var translateLanguage = "";
+    var skinRelation = {
+      "en": {
+        "title": "Choose Your Skin Color",
+        "description": "The face color will be made according to the photo you upload, please choose the skin tone of the exposed body!",
+        "white": "white",
+        "black": "black",
+        "yellow": "yellow"
+      },
+      "es": {
+        "title": "Elija su color de piel",
+        "description": "El color de la cara se hará de acuerdo con la foto que cargues, ¡elige el tono de piel del cuerpo expuesto!",
+        "white": "blanco",
+        "black": "negro",
+        "yellow": "amarillo"
+      },
+      "de": {
+        "title": "Wählen Sie Ihre Hautfarbe",
+        "description": "Die Gesichtsfarbe wird entsprechend dem hochgeladenen Foto erstellt.",
+        "white": "Weiß",
+        "black": "schwarz",
+        "yellow": "Gelb"
+      },
+      "it": {
+        "title": "Scegli il colore della tua pelle",
+        "description": "Il colore del viso verrà creato in base alla foto che carichi",
+        "white": "bianca",
+        "black": "nero",
+        "yellow": "giallo"
+      },
+      "fr": {
+        "title": "Choisissez votre couleur de peau",
+        "description": "La couleur du visage sera faite en fonction de la photo que vous téléchargez, veuillez choisir le teint du corps exposé !",
+        "white": "blanc",
+        "black": "noir",
+        "yellow": "jaune"
+      },
+      "br": {
+        "title": "Escolha a cor da sua pele",
+        "description": "A cor do rosto será feita de acordo com a foto que você enviar, por favor, escolha o tom de pele do corpo exposto!",
+        "white": "Branco",
+        "black": "Preto",
+        "yellow": "amarelo"
+      },
+      "jp": {
+        "title": "肌の色を選択",
+        "description": "顔の色はアップする写真通りに作らせていただきます。露出した体の肌色を選んでください！",
+        "white": "白",
+        "black": "黒",
+        "yellow": "黄"
+      }
+    };
+    translateLanguage = ["en", "uk", "au"].indexOf(shopLanguage) > -1 ? "en": shopLanguage;
+    return skinRelation[translateLanguage];
+  }
+  
+  // 更新加价价格
+  function updateAddPrice() {
+    var addPriceList = [];  //  加价价格数组，需要由小到大排序
+    var sizeValue = _sunzi_variant_value({{variantSize}});
+    var productJson = {{product | json}};
+    var optionLabel = "option" + ({{variantSize}} + 1);
+    var curVariants = productJson.variants.filter(function(item) {return item[optionLabel] == sizeValue});
+    if(curVariants.length > 1) {
+      curVariants.reduce((sum, cur) => {
+        addPriceList.push(Number(Math.abs((sum.price - cur.price) / 100)));
+        return sum;
+      });
+      addPriceList.sort((a,b) => a-b);                                                    
+    }
+    return {
+      "normal": {
+        "price": addPriceList[0]
+      },
+      "hood": {
+         "price": addPriceList[1]
+      },
+      "lineText": {
+        "price": (2 * addPriceList[1] - addPriceList[0])
+      }
+    };
+  }
+  
+/** 其他自定义函数 end **/
+</script>
+

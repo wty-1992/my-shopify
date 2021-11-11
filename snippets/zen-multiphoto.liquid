@@ -1,0 +1,274 @@
+{{ 'api.jquery.js' | shopify_asset_url | script_tag }}
+<script src="{{ 'jquery-ui.min.js' | asset_url }}"></script>
+<script src="{{ 'fabric.min.js' | asset_url }}"></script>
+<script src="{{ 'qiniu.min.js' | asset_url }}" ></script>
+{% assign skuArr = product.selected_or_first_available_variant.sku | split: "-"%}
+{% assign sku = skuArr[0] %}
+<script>
+  	var jsonCustom = JSON.parse('{{ product.metafields["global"]["cattribute"] }}');
+    var photoType = jsonCustom.photo[0].type;
+//   	window.addEventListener('EVENT_PHOTO_SAVE_AFTER', function(event){
+//       var index = event.detail.index;
+//       var data = event.detail.data;
+//         //作如下修改，避免将隐藏的手机托上传按钮显示出来 2019-8-30 by alice
+//       // document.getElementsByClassName("area-photo-upload-"+index)[0].setAttribute('style', 'border: none;');
+//         if(photoType != 'caseGrip'){
+//             document.getElementsByClassName("area-photo-upload-"+index)[0].style.border = "none";
+//         }
+// 	  document.getElementsByClassName("require-prompt-text-"+index)[0].setAttribute('style', 'display: none;');
+//     });
+    var _zenEngravingSizeOptions = [{
+        value: "20",
+        label: "20"
+    }, {
+        value: "30",
+        label: "30"
+    }, {
+        value: "40",
+        label: "40"
+    }, {
+        value: "50",
+        label: "50"
+    }];
+    var _zenEngravingFontOptions = [{
+        value: "TimesNewRoman",
+        label: "TimesNewRoman"
+    }, {
+        value: "NexaScript-Free",
+        label: "NexaScript"
+    }, {
+        value: "AppleChancery",
+        label: "AppleChancery"
+    }, {
+        value: "holyunion",
+        label: "Holyunion"
+    }, {
+        value: "AlluraRegular",
+        label: "AlluraRegular"
+    }];
+    //add by alice 2019-9-7
+    var cropPrompt = "";
+    var noteText = "";
+
+//     if(photoType == 'caseGrip'){
+//         cropPrompt = "P.S. Please make sure you’re putting your picture in correct position, we’ll make it exactly the same as shown in the preview above.";
+//         noteText = "Note: Please don't upload any nude or erotic picture.";
+//     }
+    var _zenConfig = {
+        photoObj: [],
+        carvingObj: [],
+		cropPrompt: cropPrompt,//传图层文案
+        noteText:noteText,
+		requirePrompt: "{{ 'zen.crystal.requiredField' | t }}",
+		uploadLabel: "{{ 'zen.curvecarving.uploadLabel' | t }}", //传图描述标签
+        btnUploadText: "{{ 'zen.photocarving.upload' | t }}", //上传按钮文字
+        photoCancelText: "{{ 'customer.recover_password.cancel' | t }}",  //传图层Cancel文案
+        photoConfirmText: "{{ 'zen.general.confirm' | t }}", //上传按钮文案
+        uploadLoadingImage: 'https://ik.imagekit.io/soufeel/en/skin/frontend/smartwave/default/images/soufeel-30.gif',
+        photo: jsonCustom.photo,
+        carving: []
+    };
+                                
+                                                                
+	Product.validators.push(
+		() => {
+      		return validateFormData();
+    	}
+  	);
+	
+    function validateFormData() {
+	    console.log('validateFormData');
+        var customInfo = document.getElementsByClassName("zen-require")[0].value; 
+        var flag = true;
+        if (customInfo) {
+            customInfo = JSON.parse(customInfo);
+            console.log("customInfo:", customInfo.photo);
+            _zenConfig.photo.forEach(function (v, i) {
+			  console.log("check:", (v.require == true && customInfo.photo[i]));
+              // if (!(v.require == true && customInfo.photo[i].crop)) {
+            if(v.require == true && !customInfo.photo[i].crop){
+                flag = false;
+                console.log("area-photo-upload-"+i);
+                  //作如下修改，避免将隐藏的手机托上传按钮显示出来 2019-8-30 by alice
+                // document.getElementsByClassName("area-photo-upload-"+i)[0].setAttribute('style', 'border: 1px solid red;');
+                document.getElementsByClassName("area-photo-upload-"+i)[0].style.border = "1px solid red";
+                if(document.getElementsByClassName("area-photo-upload-"+i)[0].offsetParent !== null ){
+                    document.getElementsByClassName("require-prompt-text-"+i)[0].setAttribute('style', 'display: block; margin-bottom: 10px; color: red;');
+                }
+              }else{
+                  //作如下修改，避免将隐藏的手机托上传按钮显示出来 2019-8-30 by alice
+                // document.getElementsByClassName("area-photo-upload-"+i)[0].setAttribute('style', 'border: none;');
+                  document.getElementsByClassName("area-photo-upload-"+i)[0].style.border = "none";
+				document.getElementsByClassName("require-prompt-text-"+i)[0].setAttribute('style', 'display: none;');
+              }
+            });
+            /*customInfo.photo.forEach(function (v, i) { 
+              if (v.validate === false) {
+                document.getElementsByClassName("area-photo-upload-"+i)[0].setAttribute('style', 'border: 1px solid red;');
+                document.getElementsByClassName("require-prompt-text-"+i)[0].setAttribute('style', 'display: block; margin-bottom: 10px; color: red;');
+                flag = false;
+              }else{
+                document.getElementsByClassName("area-photo-upload-"+i)[0].setAttribute('style', 'border: none;');
+				document.getElementsByClassName("require-prompt-text-"+i)[0].setAttribute('style', 'display: none;');
+              }
+            });*/
+        } else {
+          console.log('no data');
+          _zenConfig.photo.forEach(function (v, i) {
+              //作如下修改，避免将隐藏的手机托上传按钮显示出来 2019-8-30 by alice
+			// document.getElementsByClassName("area-photo-upload-"+i)[0].setAttribute('style', 'border: 1px solid red;');
+            document.getElementsByClassName("area-photo-upload-"+i)[0].style.border = "1px solid red";
+            if(document.getElementsByClassName("area-photo-upload-"+i)[0].offsetParent  !== null ) {
+                document.getElementsByClassName("require-prompt-text-" + i)[0].setAttribute('style', 'display: block; margin-bottom: 10px; color: red;');
+            }
+          });
+          flag = false;
+        }
+		
+		//选择打印照片后 是否选择了照片模板 mason 20190823
+		if(jQuery("#photo_printing").prop("checked")){
+			var val=jQuery("input[name='photo_printing_id']").val();
+			if(val==''){
+				jQuery("#photo_printing_info_pic").css("border","1px red solid");
+				return false;
+			}
+		}
+		
+		console.log("flag:", flag);
+        return flag;
+    }
+
+    function compositePicture(fid, fthis){
+        jQuery('#loading-mask').show();
+        var customInfo = JSON.parse( jQuery('[name="properties[customInfo]"]').val() );
+        var tmpCanvas = new fabric.Canvas(); // 展示效果图画布
+        var previewHeight = 0;
+        var obj = [];
+        var top = 0;
+        jQuery.each(customInfo.photo, function (i, v){
+            if(jQuery.trim(v.crop) != ''){
+                previewHeight += 400;
+            }
+        });
+        tmpCanvas.setWidth(500).setHeight(previewHeight);  
+        jQuery.each(customInfo.photo, function (i, v){
+            if(jQuery.trim(v.crop) != ''){
+                var p1 = new Promise(function (resolve, reject) {
+                    fabric.Image.fromURL(v.crop, function (oImg) {
+                        tmpCanvas.add(oImg);
+                        tmpCanvas.renderAll();
+                        resolve();//ok的位置执行这个函数
+                    }.bind(this),{crossOrigin: 'anonymous',top:top});
+                });
+                obj.push(p1);
+                top+=400;
+            }
+        });
+
+        // 同时执行p1和p2，并在它们都完成后执行then:
+        Promise.all(obj).then(function (results) {
+            console.log(results); // 获得一个Array: ['P1', 'P2']
+            var imgBase64 = tmpCanvas.toDataURL({format: 'png',multiplier: 1});
+            var blob = convertBase64ToBlob(imgBase64); 
+            _ajax(blob, fid, fthis);
+        });
+
+    }
+
+    function _ajax(blob, fid, fthis){
+        jQuery.ajax({
+            type: "POST",
+            async:false, 
+            url: "https://pic.stylelab.com/assist/uptoken",
+            dataType: 'json',
+            beforeSend: function() {},
+            success: function(data){
+                var observer = {
+                    next(result){},
+                    error(err){console.log(err.message);},
+                    complete(res1){
+                        var customInfo = JSON.parse( $('[name="properties[customInfo]"]').val() );
+                      	var crop = {"type":"multipic", "crop":"https://spic.qn.cdn.imaiyuan.com/" + res1.key};
+                        customInfo.photo.push(crop);
+                        $('[name="properties[customInfo]"]').val( JSON.stringify(customInfo) );
+                      	$('onclick="Product.addFormToCart(this.form)"').click();
+//                         googleDataObject.productAddToCart(<?php echo $jsonData?>, fid,fthis);
+                    }
+                };
+                var putExtra = {
+                    fname: "",                          
+                    params: {},                         
+                    mimeType: null                      
+                };
+                var config = {
+                    region:qiniu.region.na0,
+                    concurrentRequestLimit:3
+                };
+                var filename = new Date().Format("yyyyMMddhhmmss") + randomString(6);
+                var key = 'soufeelen_' + filename + '.png';
+                var observable = qiniu.upload(blob, key, data.token, putExtra, config);
+                observable.subscribe(observer);
+            }
+        }); 
+    } 
+    /** 将base64转换为文件对象
+     *  @param {String} base64 base64字符串
+     * */
+    var convertBase64ToBlob = function(base64){
+        var base64Arr = base64.split(',');
+        var imgtype = '';
+        var base64String = '';
+        if(base64Arr.length > 1){
+            //如果是图片base64，去掉头信息
+            base64String = base64Arr[1];
+            imgtype = base64Arr[0].substring(base64Arr[0].indexOf(':')+1,base64Arr[0].indexOf(';'));
+        }
+        // 将base64解码
+        var bytes = atob(base64String);
+        //var bytes = base64;
+        var bytesCode = new ArrayBuffer(bytes.length);
+         // 转换为类型化数组
+        var byteArray = new Uint8Array(bytesCode);
+        
+        // 将base64转换为ascii码
+        for (var i = 0; i < bytes.length; i++) {
+            byteArray[i] = bytes.charCodeAt(i);
+        }
+       
+        // 生成Blob对象（文件对象）
+        return new Blob( [bytesCode] , {type : imgtype});
+    };
+    function randomString(len){
+      len = len || 32;
+      var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
+      var maxPos = $chars.length;
+      var pwd = '';
+      for (i = 0; i < len; i++) {
+        pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+      }
+      return pwd;
+    }
+</script>
+<div id="zen-photocarving"></div>
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.1.4/zen-photo-carving-chunk-vendors.css?20190605652" rel="stylesheet" />
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.1.4/zen-photo-carving-app.css?20190605652" rel="stylesheet" />
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.1.4/zen-photo-carving-chunk-vendors.js?20190605652"></script>
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.1.4/zen-photo-carving-app.js?20190605652"></script>
+
+<script type="text/javascript">
+//     var Optional = '(Optional)';
+//     var uyp = 'Upload your Photo';
+//     var photo__ = jsonCustom.photo;
+//     // jQuery('#app').children(":first").children(":first").children(":first").children(":first").children(":first").children(":first").text();
+//     jQuery('#app').children(":first").children().each(function (i){ // 显示 传图 加价
+//         if(i==photo__.length){ return; }
+//         console.log('i', i);
+//         if(photo__[i].addprice == undefined){
+//             var addprice = '';
+//         }else{
+//             var addprice = ' +'+photo__[i].addprice;
+//         }
+//         var text = jQuery(this).children(":first").children(":first").children(":first").children(":first").html().replace(uyp, uyp+' '+addprice)+" "+(photo__[i].addprice == undefined?'':Optional);
+//         jQuery(this).children(":first").children(":first").children(":first").children(":first").html(text);
+//     });
+</script>

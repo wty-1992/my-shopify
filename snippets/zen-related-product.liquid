@@ -1,0 +1,107 @@
+{% comment %} 增加花环勾选功能 2019.09.21 by anna{% endcomment %}
+{% assign relatedButton = false %}
+{% assign relatedTitle = '' %}
+{% for block in section.blocks %}
+  {% if block.type =='related_product' %}
+    {% if productTags contains block.settings.related_tag %}
+      {%- assign product_related = all_products[block.settings.product] -%} 
+      {%- assign related_firstVariant = product_related.first_available_variant -%}
+      {% assign relatedButton = true %}
+      {% assign relatedTitle = block.settings.title%}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+{% if relatedButton == true %}
+<style>
+
+  .product-black-related-box {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: left;    
+    padding:10px;
+    padding-left: 0px;
+  }
+  .product-black-related-box .product-black-related-box-input {
+    margin-right: 10px;
+  }
+  .product-black-related-box .mini-cart__product-image {
+    width: 100px;
+    display: block;
+    margin-right: 16px;
+  }
+  label.product-black-related-box-label{
+  	font-weight: 900;
+    font-size: 1rem;
+    line-height: 1.4;
+    width: 75%;
+  }
+  .mini-cart__product-image .lazyloaded{width:100%;}
+  .product-black-related-box-input input {
+  	width: auto;
+  }
+
+</style>
+<div class="product-black-related-box-div">
+  <div class="product-black-related-box">
+    <div class="product-black-related-box-input">
+      <input type="checkbox" id="relatedProduct" value="{{related_firstVariant.id}}">
+    </div>
+    <a href="{{ product_related.url }}" class="mini-cart__product-image">
+      <img class="lazyloaded" src="{{ product_related.featured_image | img_url: 'medium' }}" alt="">
+    </a>
+    <label for="relatedProduct" class="product-black-related-box-label">{{relatedTitle}}</label>	
+  </div>
+</div>
+<script>
+  $('#relatedProduct').change(function(){
+    if($(this).is(':checked')){
+      $('.copyshopify-payment-button__button').hide();
+    }else{
+      $('.copyshopify-payment-button__button').show();
+    }
+  })
+
+  function getRelatedProductData(){
+    var pictureUrl = '';
+    if($("input[name='properties[picture]']").length > 0 && $("input[name='properties[picture]']").val()){
+    	pictureUrl = $("input[name='properties[picture]']").val();
+    }else if($("input[name='properties[origin]']").length > 0 && $("input[name='properties[origin]']").val()){
+    	pictureUrl = $("input[name='properties[origin]']").val();
+    }else if($("input[name='properties[customInfo]']").length > 0){
+      
+      let customInfoJson = JSON.parse($("input[name='properties[customInfo]']").val());
+      if(typeof customInfoJson.crop != 'undefined' && typeof customInfoJson.crop[0] != 'undefined' && typeof customInfoJson.crop[0][0] != 'undefined' && customInfoJson.crop[0][0]['picture'] ){
+      	pictureUrl = customInfoJson.crop[0][0]['picture'];
+      }
+    }
+    
+    var postArr = {};
+    postArr['id'] = $('#relatedProduct').val();
+    postArr['properties[picture]'] = pictureUrl;
+    postArr['quantity'] = 1;
+    postArr['mask'] = 'body';
+    postArr['refresh'] = true;
+    
+    var realatedProductData = JSON.parse(JSON.stringify(postArr));
+    
+    return realatedProductData;
+    
+//     $.ajax({
+//       type: 'POST',
+//       async: false,  
+//       url: '/cart/add.js',
+//       data,
+//       dataType: 'json',
+//       context: this,
+//       success: function(boxItem) {
+//         subtotalTip(boxItem.price);
+//       },
+//       error: function(XMLHttpRequest, textStatus){
+//         console.log('box product to cart error');
+//       }
+//     });
+  }
+</script>
+{% endif %}

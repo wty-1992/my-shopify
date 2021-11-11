@@ -1,0 +1,140 @@
+<style>
+.frame .frame-option span.frame-box{display: inline-block;width: 31%;margin-left: 7px;margin-top: 5px;font-size: 0;position: relative;}
+span.txt-option{position: absolute;width: 150px;color: #fff;background: #000;height: 34px;line-height: 1;padding: 0;text-align: center;opacity: 0;border-radius: 4px;transition: all 0.4s;left: 50%;transform: translateX(-50%);display: flex;justify-content: center;align-items: center;top: auto;bottom: 50%;display:none;}
+span.txt-option-value{font-size: 12px;display: block;}
+span.txt-option:after{content: "";display: block;top: 100%;bottom: auto;border-top: 4px solid #000;border-bottom: 4px solid transparent;position: absolute;left: 50%;margin-left: -4px;width: 0;height: 0;border-right: 4px solid transparent;border-left: 4px solid transparent;}
+span.frame-box:hover span.txt-option{opacity: 0.8;bottom: 106%;}
+  span.frame-box label{margin-bottom:0;}
+.frame-option span label{font-size: 0;}
+.frame input[type="radio"]{display:none;}
+.frame #check_frame{transform: translateY(3px);margin-bottom: 8px;}
+.frame .frame-option{display: none;}
+.frame #check_frame:checked ~ .frame-option{display: block;}
+.frame-selected{border: 3px #4fca47 solid}
+span.frame-b-text{line-height: 1;font-size: 12px;font-style: italic;color: #848484;display: inline-block;font-weight: bold;}
+input#check_frame{width:auto;}
+.insurance-txt{font-size: 16px;color: #000;display: inline-block;transform: translateY(1px);}
+span.frame-b-text{margin: 5px 0 10px;}
+@media(max-width:768px){
+  .frame .frame-option span{margin-left: 3px;margin-top: 2px;}
+  .frame .frame-option span.frame-box{margin-left: 3px;}
+}
+  .frame .validation-warning{
+  	border: 1px solid red !important;
+  }
+</style>
+  	  
+<div class="frame">
+  <input type="checkbox" id="check_frame">
+  <input type="text" id="photo_frame" name="properties[photoframe]" value="" style="display:none;" />
+  <span style="font-weight: bold;" class="insurance-txt">{{ 'photoframe.frame_check' | t }}</span>
+  <div class="frame-option">
+    <div style="font-weight: bold;">
+      {{ 'photoframe.frame_tip' | t }}
+      <a href="/collections/multi-picture-wallet-card" target="_blank" class="more_link"style="float: right;text-decoration: underline;color: #f55734;">{{ 'photoframe.frame_more_styles' | t }} >>></a>
+    </div>
+    <span class="frame-box">
+      <span class="txt-option">
+          <span class="txt-option-value">{{ 'photoframe.frame_alt_1' | t }}</span>
+      </span>
+      <label>
+        <input type="radio" name="photoframe" value="{{ 'photoframe.frame_name_1' | t }}" />
+        <img src="{{ 'photoframe.frame_img_1' | t | file_url  }}" alt="{{ 'photoframe.frame_alt_1' | t }}">
+      </label>
+    </span>
+    <span class="frame-box">
+      <span class="txt-option">
+          <span class="txt-option-value">{{ 'photoframe.frame_alt_2' | t }}</span>
+      </span>
+      <label>
+        <input type="radio" name="photoframe" value="{{ 'photoframe.frame_name_2' | t }}" />
+        <img src="{{ 'photoframe.frame_img_2' | t | file_url  }}" alt="{{ 'photoframe.frame_alt_2' | t }}">
+      </label>
+    </span>
+    <span class="frame-box">
+      <span class="txt-option">
+          <span class="txt-option-value">{{ 'photoframe.frame_alt_3' | t }}</span>
+      </span>
+      <label>
+        <input type="radio" name="photoframe" value="{{ 'photoframe.frame_name_3' | t }}" />
+        <img src="{{ 'photoframe.frame_img_3' | t | file_url  }}" alt="{{ 'photoframe.frame_alt_3' | t }}">
+      </label>
+    </span>
+    <span class="frame-box">
+      <span class="txt-option">
+          <span class="txt-option-value">{{ 'photoframe.frame_alt_4' | t }}</span>
+      </span>
+      <label>
+        <input type="radio" name="photoframe" value="{{ 'photoframe.frame_name_4' | t }}" />
+        <img src="{{ 'photoframe.frame_img_4' | t | file_url  }}" alt="{{ 'photoframe.frame_alt_4' | t }}">
+      </label>
+    </span>
+    <span class="frame-box">
+      <span class="txt-option">
+          <span class="txt-option-value">{{ 'photoframe.frame_alt_5' | t }}</span>
+      </span>
+      <label>
+        <input type="radio" name="photoframe" value="{{ 'photoframe.frame_name_5' | t }}" />
+        <img src="{{ 'photoframe.frame_img_5' | t | file_url  }}" alt="{{ 'photoframe.frame_alt_5' | t }}">
+      </label>
+    </span>
+    <span class="frame-box">
+      <span class="txt-option">
+          <span class="txt-option-value">{{ 'photoframe.frame_alt_6' | t }}</span>
+      </span>
+      <label>
+        <input type="radio" name="photoframe" value="{{ 'photoframe.frame_name_6' | t }}" />
+        <img src="{{ 'photoframe.frame_img_6' | t | file_url  }}" alt="{{ 'photoframe.frame_alt_6' | t }}">
+      </label>
+    </span>
+  </div>
+  <span class="frame-b-text">{{ 'photoframe.frame_desc' | t }}</span>
+</div>
+  
+<script>
+  $('#check_frame').change(function(){
+    var val = 0;
+    if($(this).is(':checked')){
+      val = "1";
+    }
+    //var val = $(this).is(':checked') ? 1 : 0;
+    $(".selector-wrapper label").each(function( index ) { 
+      if($.trim(jQuery(this).attr('data-name'))=='Frame'){
+        $(this).next('select').val(val).trigger('change');
+      }
+    });
+    $('.frame-option input[name="photoframe"]').each(function( index ) { 
+      $(this).prop("checked",false);
+      $(this).parents('span').removeClass('frame-selected');
+      $('#photo_frame').val('');
+    });
+  })
+  
+  $('.frame-option input[name="photoframe"]').click(function(){
+    if($(this).is(':checked')){
+      $(this).parents('span').addClass('frame-selected').siblings().removeClass('frame-selected') ;
+      $('#photo_frame').val($(this).val());
+    }
+  })
+  
+  Product.validators.push(
+    () => {
+      return validateFrame();
+    }
+  );
+  
+  function validateFrame(){
+  	if($('#check_frame').is(':checked')){
+      var frame = $("#photo_frame").val();
+      if(frame == ''){
+        $(".frame-option").addClass("validation-warning");
+        return 'Validate Error';
+      }else{
+      	$(".frame-option").removeClass("validation-warning");
+      }
+    }else{
+      $(".frame-option").removeClass("validation-warning");
+    }
+    return true;
+  }
+</script>

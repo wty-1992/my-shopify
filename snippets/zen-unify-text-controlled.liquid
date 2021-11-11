@@ -1,0 +1,578 @@
+{% assign numberRange = '1-100' | split:'-' %}
+
+{% for tag in product.tags %}
+    {% if tag contains 'custom-unify-text-controlled-' %}
+		{% assign maxlength = tag | remove: "custom-unify-text-controlled-" | split:"-" %}{%comment%}输入框限制字符(同时可表示输入框数量){%endcomment%}
+    {% endif %}
+	{% if tag contains 'custom-text-tips-' %}
+		{% assign tips = tag | remove: "custom-text-tips-" | split:"-" %}{% comment %}输入框上提示{% endcomment %} 
+    {% endif %}
+	{% if tag contains 'custom-text-placeholder-' %}
+		{% assign placeholder = tag | remove: "custom-text-placeholder-" | split:"-" %}{% comment %}输入框内提示{% endcomment %} 
+    {% endif %}
+	{% if tag contains 'custom-text-name-' %}
+		{% assign name = tag | remove: "custom-text-name-" | split:"-" %}{% comment %}输入框内容输入规则 {% endcomment %} 
+    {% endif %}
+	{% if tag contains 'custom-text-fontfamily-' %}
+		{% assign fontfamily = tag | remove: "custom-text-fontfamily-" | split:"-" %}{% comment %}输入框字体{% endcomment %} 
+    {% endif %}
+	{% if tag contains 'custom-text-fontformat-' %}
+		{% assign fontformat = tag | remove: "custom-text-fontformat-" | split:"-" %}{% comment %}输入框内容传输各式{% endcomment %} 
+    {% endif %}
+	{% if tag contains 'custom-text-fontsize-' %}
+		{% assign fontsize = tag | remove: "custom-text-fontsize-" | split:"-" %}{% comment %}输入框字号{% endcomment %} 
+    {% endif %}
+	{% if tag contains 'custom-text-value-' %}
+		{% assign values = tag | remove: "custom-text-value-" | split:"-" %}{% comment %}输入框默认值{% endcomment %} 
+	{% endif %}
+
+
+    {% if tag contains "custom-default-date-number-" %}
+      {% assign defaultNumber = tag | strip | replace: "custom-default-date-number-", "" %} {%comment%}通过标签获取默认年份数字 {%endcomment%}
+    {% endif %}
+    {% if tag contains "custom-range-number-" %}
+      {% assign numberRange = tag | strip | replace: "custom-range-number-", "" | split:"-" %}
+      {% break %}
+    {% endif %}
+
+
+    {% comment %}
+        {% if tag contains "custom-default-date-" %}
+            {% assign defaultDate = tag | strip | replace: "custom-default-date-", "" %} {%comment%}通过标签获取默认年份(标品) {%endcomment%}
+        {% endif %}
+    {% endcomment %} 
+
+
+{% endfor %}
+<div class="text-container">
+  <div class="custom-text">
+  {% for max in maxlength %}
+    <div class="text-title">
+      <p>{{ tips[forloop.index0] }}</p>
+    </div>
+    <div class="custom-index">
+      <input type="text" class="input-cusom-text" value="{{ values[forloop.index0] | default: valiues }}" maxlength="{{ max }}" placeholder="{{ placeholder[forloop.index0] | default: placeholder  }}" name="{{ name[forloop.index0] | default: forloop }}">
+      <span><b>*</b><i class="txtNum">{{ max }}</i>left</span>
+    </div>
+  {% endfor %}
+  </div>
+  {% for num in fontfamily %}
+  	  <input type="hidden" class="fontfamily" value="{{ fontfamily[forloop.index0] | default: fontfamily }}">
+  {% endfor %}
+  {% for num in fontsize %}
+  	  <input type="hidden" class="fontsize" value="{{ fontsize[forloop.index0] | default: fontsize }}">
+  {% endfor %}
+  <input type="hidden" id="fontformat" value="{{ fontformat }}">
+  {% unless product.tags contains 'custom-text-data-new' %}
+  <input type="hidden" id="fontfamily" name="properties[fontfamily]"/>
+  <input type="hidden" id="fonttext" name="properties[fonttext]" />
+  <input type="hidden" id="fontsize" name="properties[fontsize]" />
+  {% endunless%}
+  <input type="hidden" id="customInfo" name="properties[customInfo]" value="">
+</div>
+
+<script>
+  var timesFlag = '{% if product.tags contains "custom-default-date-number" %}1{% endif %}';
+  var customInfo = {};
+  var remarkList = [];
+  var cHtmlKid = '';
+  var tiems_sunzi_texts = [];
+  // 获取sku
+  var _zenSku = "{{ product.selected_or_first_available_variant.sku }}";
+  var mainImg = "{{product.images[0] |img_url: '1000x1000' | prepend: 'https:'}}";
+  
+  // 限制字符
+  var txt = document.querySelectorAll(".input-cusom-text");
+  var txtNum = document.querySelectorAll(".txtNum");
+  var sw = false;
+  for (var i = 0; i < txt.length; i++) {
+      txt[i].addEventListener("input",
+      function(e) {
+          if (sw == false) {
+              countTxt(e);
+          }
+      });
+      txt[i].addEventListener("cut",
+      function(e) {
+          console.log('cut') 
+          if (sw == false) {
+              countTxt(e);
+          }
+      });
+      txt[i].addEventListener("compositionstart",
+      function() {
+          sw = true;
+      });
+      txt[i].addEventListener("compositionend",
+      function() {
+          sw = false;
+          countTxt();
+      });
+    
+    if($(txt).eq(i).val() != ''){
+    	countTxt($(txt).eq(i));
+    }
+  }
+  
+  function countTxt(e) {
+      if (sw == false) {
+          for (var o = 0; o < txtNum.length; o++) {
+              for (var i = 0; i < txt.length; i++) {
+                  if (txt[o].value.length === 0) {
+                      txtNum[o].textContent = txt[o].getAttribute('maxLength');
+                  } else {
+                      if (txt[o].value.replace(/(^\s*)|(\s*$)/g, "") != '') {
+                          txtNum[o].textContent = txt[o].getAttribute('maxLength') - txt[o].value.length;
+                      }
+                  }
+              }
+          }
+      }
+  }
+
+  
+  var custonIndex = document.querySelectorAll('.custom-index')
+  var selectList = document.querySelectorAll('.single-option-selector')
+  var inputV = document.querySelectorAll('.input-cusom-text')
+  var fontV = document.getElementById('fonttext')
+  var familyV = document.getElementById('fontfamily')
+  //监听变体
+  selectList.forEach((item,index)=> {
+    if(item.value == "No") {
+	  Listener.on([ Listener.product.update.before ], function(event, variant) {
+        console.log(variant.option2,'11111')
+        if(variant.option2.indexOf('No') != -1) {
+          inputV.forEach((item,index)=> {
+          	item.value = ''
+          })
+          fontV.value = ''
+          familyV.value = ''
+          custonIndex[0].style.cssText = 'display: none;'
+        }else {
+          custonIndex[0].style.cssText = 'display: block;'
+        }
+        
+        if(variant.featured_image){
+          mainImg = variant.featured_image.src;
+        }
+        
+      });
+    }
+  })
+
+  Listener.on([ Listener.product.update.before ], function(event, variant) {
+        
+    if(variant.featured_image){
+      mainImg = variant.featured_image.src;
+    }
+
+  });
+  
+  // 输入框规则
+  for(var i = 0; i < txt.length; i++) {
+      if(txt[i].name == 1) {
+        txt[i].oninput = function(){
+            this.value = this.value.toUpperCase()
+        }
+      }else if(txt[i].name == 2) {
+        txt[i].oninput = function(){
+            this.value = this.value.toLowerCase()
+        }
+      }else if(txt[i].name == 3) {
+        txt[i].oninput = function(){
+            this.value = this.value.replace(this.value.slice(0, 1), j => j.toUpperCase())
+        }
+      }else if(txt[i].name == 4) {
+        txt[i].oninput = function(){
+            this.value = this.value.match(/^[!@#$%^&*?\.\-\/\\\d]*$/)
+        }
+      }
+
+  }
+  
+  // 检查并组装输入文字
+  function inputTextCheck(){
+    var inputV = document.querySelectorAll('.input-cusom-text')
+  	var fontV = document.getElementById('fonttext')
+    var fontformat = document.getElementById('fontformat').value
+    var fontfamily = document.querySelectorAll('.fontfamily')
+    var familyV = document.getElementById('fontfamily')
+    var fontsizeV = document.querySelectorAll('.fontsize')
+  	var o = true
+    if(selectList.length==0){selectList=[{"value":""}]}
+    
+       for(var p = 0; p < selectList.length; p++) {  
+        if(selectList[p].value == "No") {
+          return true
+        }else {
+          for(var i = 0; i < inputV.length; i++) {
+            if(inputV[i].value.replace(/(^\s*)|(\s*$)/g, "") == '') {
+                inputV[i].style.cssText = 'border-color: red;'
+                inputV[i].value = ''
+                o = false;
+            }else {
+                inputV[i].style.cssText = 'border-color: #e7e7e7;'
+//                 o = true;
+            }
+          }
+
+          if(o) {
+              {% if product.tags contains 'custom-text-data-new' %}{% comment %}新数据各式标签{% endcomment %}
+                var textData = {}
+                if(inputV.length > 1 || timesFlag==1) {
+                    customInfo['_sunzi_texts'] = [];
+                    let len = tiems_sunzi_texts.length;
+                      inputV.forEach((e,i)=> {
+                        let vv = {"value":e.value,"number":""};
+                        if(fontformat == 8) {
+                          vv['number'] = (i+len+1) == 1 ? 'Z' : 'B'
+                        }else if(fontformat == 9) {
+                          vv['number'] = (i+len+1) == 1 ? "man's name" : "woman's name"
+                        }else {
+                          vv['number'] = (i+len+1)+''
+                        }
+                        customInfo['_sunzi_texts'].push(vv);
+                      })
+					customInfo['_sunzi_texts'] = tiems_sunzi_texts.concat(customInfo['_sunzi_texts']);
+                }else {
+                  console.log(inputV[0],'inputV-------1')
+                  textData['value'] = inputV[0].value
+                  if(fontfamily.length > 0) {
+                      textData['font'] = fontfamily[0].value
+                  }
+                  if(textData.value != '') {
+                      customInfo['_sunzi_text'] = textData
+                  }
+                }
+                {% if product.tags contains 'custom-main-picture' %}{% comment %}固定主图, (不加默认变体主图){% endcomment %} 
+                    customInfo['_sunzi_effect'] = "https:"+'{{product.images[0]|img_url: '600x600'}}'
+                {% else %}
+                  customInfo['_sunzi_effect'] = mainImg
+                {% endif %}
+                  $('#customInfo').val(JSON.stringify(customInfo));
+              {% else %}
+              	  let values = []
+                  inputV.forEach(el => values.push(el.value))
+                  let bool = values.every(el => !!el)
+                  if(!bool) return bool;
+
+                  if(_zenSku == 'SKL167') {
+                      fontV.value = values.map((item,index) => index=='1' ? '小'+ ':' + item : "大" + ':' + item?).join().replace(/,/,?" ")
+                  }
+
+                // 数据格式规则
+                  if(fontformat == '1') {
+                      fontV.value = values.join(',')
+                  }else if(fontformat == '2') {
+                      fontV.value = values.map((item,index)=> index+1 +':'+ item ).join().replace(/,/g," ")
+                  }else if(fontformat == '3') {
+                      fontV.value = values.map((item,index) => index=='1' ? '小'+ ':' + item : "大" + ':' + item ).join().replace(/,/g," ")
+                  }else if(fontformat == '4') {
+                      fontV.value = values.map((item,index) => index=='1' ? '小人'+ ':' + item : "吊牌" + ':' + item ).join().replace(/,/g," ")
+                  }else if(fontformat == '5') {
+                      fontV.value = values.map((item,index) => index=='1' ? 'right'+ ':' + item : "left" + ':' + item ).join().replace(/,/g," ")
+                  }else if(fontformat == '6') {
+                      fontV.value = values.map((item,index) => index=='1' ? 'woman'+ ':' + item : "man" + ':' + item ).join().replace(/,/g," ")
+                  }else {
+                      fontV.value = values.join('|')
+                  }
+
+                  // 字体
+                  var familyNum = []
+                  for(var i = 0; i < fontfamily.length; i++) {
+                    if(fontfamily.length > 1) {
+                      familyNum.push(fontfamily[i].value)
+                      familyV.value = familyNum.map((item,index)=> index+1 +':'+ item ).join().replace(/,/g," ")
+                    }else {
+                      familyV.value = fontfamily[i].value
+                    }
+                  }
+          	  {% endif %}
+//                 return true
+          	}
+        }
+    }
+    return o;
+  }
+   
+  
+  // 加车验证
+  Product.validators.push(async () => {
+    {% if product.tags contains "custom-default-date-number" %}
+    	timesGroup();
+    {% endif %}
+  	var flag = inputTextCheck();
+    return flag;
+  })
+  
+  
+  {% if product.tags contains "custom-default-date-number" %}
+      // 组装加车时间  
+      function timesGroup(){
+        remarkList.forEach((e,i)=> {
+          let vv = {"value":e.data,"number":""};
+          if(fontformat == 8) {
+            vv['number'] = (i+1) == 1 ? 'Z' : 'B'
+          }else if(fontformat == 9) {
+            vv['number'] = (i+1) == 1 ? "man's name" : "woman's name"
+          }else {
+            vv['number'] = (i+1)+''
+          }
+          
+          tiems_sunzi_texts.push(vv);
+console.log('tiems_sunzi_texts', tiems_sunzi_texts);
+        })
+      }
+  
+      var modal = new tingle.modal({
+          footer: true,
+          stickyFooter: false,
+          onOpen: function() {
+          },
+          onClose: function() {
+            //console.log('modal closed');
+          },
+          beforeClose: function() {
+            return true; // close the modal
+          }
+        });
+
+        modal.addFooterBtn('Reselect', 'tingle-btn tingle-btn--danger', function() {
+          modal.close();
+        });
+
+        modal.addFooterBtn('Confirm', 'tingle-btn tingle-btn--primary c_photo', function() {
+          if($('.mpw-add-to-cart').length > 0){
+            $('.mpw-add-to-cart').click();
+          }else{
+            $(".product-form__item--submit button").click();
+          }
+
+          modal.close();
+        });
+
+      $(function() {
+        var dFormat = "yy/mm/dd";
+        {% if product.tags contains 'custom-option-date-number-text' %}
+            dFormat = "MM dd, yy";
+        {% endif %}
+//         $('#datepicker').datepicker({  
+//           changeYear: true,
+//           changeMonth: true,			// 年下拉菜单
+//           dateFormat: dFormat,		// 日期格式
+//           yearRange: "1851:c"		//年份选择范围
+//         });
+        var defaultNumber = parseInt("{{defaultNumber}}");
+        if(defaultNumber > 0){
+            setDefaultDate(defaultNumber);
+        } 
+		
+        // 时间弹层
+        $('.news-date-btn').click(function(){
+          var _flag = true;
+//           if($.trim($('#datepicker').val()) == ''){
+//             $('#datepicker').css('border-color','#ff0000');
+//             _flag = false;
+//           }
+
+          if($.trim($('#number-input').val()) == ''){
+            $('#number-input').css('border-color','#ff0000');
+            _flag = false;
+          }
+
+          if($(".fonttext").length > 0){
+            for(var i=0;i<$(".fonttext").length;i++){
+
+              if( $.trim($(".fonttext").eq(i).val()) == '' && customJson.coors[i].require ){
+                $(".text-input-container").eq(i).css('border-color', 'red');
+                _flag = false;
+              }else{
+                $(".text-input-container").eq(i).css('border-color', '#e7e7e7');
+              }
+            }
+          }
+          
+          let flag = inputTextCheck();
+
+          if(_flag && flag){
+//               $('#datepicker').css('border-color','#e7e7e7');
+              $('#number-input').css('border-color','#e7e7e7');
+
+//               getMyTime($('#datepicker').val(),$.trim($('#number-input').val()));
+              getMyTime($.trim($('#number-input').val()));
+//               productImageUrl = '';
+//               templateImageUrl = '';
+//               customInfo['_sunzi_effect'] = productImageUrl;
+//               if(typeof templateImageUrl != 'undefined'){
+//                 customInfo['_sunzi_ai'] = templateImageUrl;
+//               }
+
+//               $('#custom-info').val(JSON.stringify(customInfo));
+              let cHtml = '<div class="news-date-confirm-content"><p>Please confirm the informations</p>'; 
+              cHtml += cHtmlKid;
+              cHtml += '</div>';
+
+              modal.setContent(cHtml);
+              modal.open();
+            }
+
+        });
+
+      })
+
+      function setDefaultDate(myYear){
+        let dateVal = new Date();
+
+        dateVal.setFullYear(dateVal.getFullYear() - parseInt(myYear));
+        dateVal.setDate(dateVal.getDate());
+
+//         $( "#datepicker" ).datepicker( "option", "defaultDate", dateVal );
+      }
+
+      function checkNumber(obj){
+        var val = parseInt($(obj).val());
+        $(obj).val(val);
+        var minN = parseInt('{{numberRange[0]}}');
+        var maxN = parseInt('{{numberRange[1]}}');
+
+        if(val < minN){
+          $(obj).val(minN);
+        }
+
+        if(val > maxN){
+          $(obj).val(maxN);
+        }
+
+      }
+	  
+      // 获取时间各式
+      function getMyTime(myYear, myDate){
+        remarkList = [];
+
+//         let json1 = {};
+//         json1.label = 'anniversary date';
+//         json1.data = myDate;
+//         remarkList.push(json1);
+
+        myYear = parseInt(myYear);
+        myDate = myDate + ' 00:00:00';
+
+        let json2 = {};
+        json2.label = 'YEARS';
+        json2.data = (myYear).toLocaleString();
+        remarkList.push(json2);
+
+//         let dateVal = new Date(myDate);
+        let dateVal = new Date();
+        let time1 = dateVal.getTime();
+
+        dateVal.setFullYear(dateVal.getFullYear()+myYear);
+        dateVal.setDate(dateVal.getDate());
+
+        let time2 = dateVal.getTime();
+
+        {% if product.tags contains 'custom-option-date-number-text' %}
+        let json3 = {};
+        json3.label = 'WEEKS';
+        json3.data = Math.floor((time2 - time1) / 1000 / 60 / 60 / 24 / 7).toLocaleString();
+        remarkList.push(json3);
+        {% else %}
+        let json3 = {};
+        json3.label = 'MONTHS';
+        json3.data = (myYear*12).toLocaleString();
+        remarkList.push(json3);
+
+        {% endif %}
+
+        let json4 = {};
+        json4.label = 'DAYS';
+        json4.data = Math.floor((time2 - time1) / 1000 / 60 / 60 / 24).toLocaleString();
+        remarkList.push(json4);
+
+        let json5 = {};
+        json5.label = 'HOURS';
+        json5.data = Math.floor((time2 - time1) / 1000 / 60 / 60).toLocaleString();
+        remarkList.push(json5);
+
+        let json6 = {};
+        json6.label = 'MINUTES';
+        json6.data = Math.floor((time2 - time1) / 1000 / 60).toLocaleString();
+        remarkList.push(json6);
+
+        let json7 = {};
+        json7.label = 'SECONDS';
+        json7.data = ((time2 - time1) / 1000).toLocaleString();
+        remarkList.push(json7);
+
+        if($("#t_name").length > 0){
+          let specialLabel = [];
+          let specialData = [];
+          let kids = 0;
+          let grandkids = 0;
+          customJson.coors.forEach(function(v,i){
+
+            if(v.label == 'Kids' || v.label == 'Grandkids' ){
+              if(v.label == 'Kids'){
+                kids = $(".fonttext").eq(i).val();
+              }
+
+              if(v.label == 'Grandkids'){
+                grandkids = $(".fonttext").eq(i).val();
+              }
+
+              specialLabel.push(v.label);
+              if($(".fonttext").eq(i).val()){
+                specialData.push($(".fonttext").eq(i).val());
+              }else{
+                specialData.push(0);
+              }
+
+            }else{
+              remarkList[i+6] = {};
+              remarkList[i+6].label = v.label;
+              remarkList[i+6].data = $(".fonttext").eq(i).val();
+            }
+          });
+
+          var specialJson = {};
+          specialJson.label = specialLabel.join('/');
+          specialJson.data = specialData.join('/');
+
+          remarkList.push(specialJson);
+
+          var numberJson = {};
+          numberJson.label = 'number';
+
+          if(parseInt(kids) == 0){
+            kids = '';
+          }
+
+          if(parseInt(grandkids) == 0){
+            grandkids = '';
+          }
+
+          if(kids && grandkids){
+            numberJson.data = 3;
+          }else if(kids) {
+            numberJson.data = 2;
+          }else if(grandkids) {
+            numberJson = '';
+          }else{
+            numberJson.data = 1;
+          }
+
+          if(numberJson){
+            remarkList.push(numberJson);
+          }
+        }
+
+//         customInfo['_sunzi_remark'] = {};
+        cHtmlKid = '';
+        remarkList.forEach(function(vv,ii){
+//           customInfo['_sunzi_remark'][vv.label] = vv.data;
+          cHtmlKid += '<p><span class="remark-key">'+vv.label+':</span><span class="red">'+vv.data+'</span></p>';
+        });
+
+      }
+   {% endif %}
+</script>

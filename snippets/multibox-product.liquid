@@ -1,0 +1,212 @@
+{% include 'func-verify_rules', contain: block.settings.contain, detail: product %}
+{% unless verify__rules_result == false %}
+{% if block.settings.product1 %}
+{%- assign product1 = all_products[block.settings.product1] -%}
+{% endif %}
+{% if block.settings.product2 %}
+{%- assign product2 = all_products[block.settings.product2] -%}
+{% endif %}
+{% if block.settings.product3 %}
+{%- assign product3 = all_products[block.settings.product3] -%}
+{% endif %}
+{% if block.settings.product4 %}
+{%- assign product4 = all_products[block.settings.product4] -%}
+{% endif %}
+<style>
+.multi-product-black-gift-box {
+  border: 1px solid #e5e5e5;
+  margin: 15px 0 30px;
+}
+.product-black-top h3{
+  margin: 0;
+  font-size: 14px;
+  color: #000;
+  background: #e5e5e5;
+  padding: 10px 10px;
+  text-align: center;
+  font-weight: 100;
+}
+.product-black-bottom{
+  display: flex;
+  justify-content: space-evenly;
+  padding: 18px 10px 15px;
+}
+.product-black-gift-box-input{
+  position: relative;
+  width: 20%;
+  text-align: center;
+}
+.checkbox-input{
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  top: 0;
+  left: 3px;
+  background: transparent;
+  font-size: 0;
+  z-index: 1;
+}
+.checkbox-input input{
+  min-height: auto;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
+}
+.checkbox-style{
+  display: block;
+  position: absolute;
+  font-family: "photofont" !important;
+  font-size: 12px;
+  font-weight: 900;
+  left: 0;
+  top: 0;
+  color: #000;
+  WIDTH: 15px;
+  background: #fff;
+  HEIGHT: 15px;
+  border: 1px solid #000;
+  border-radius: 3px;
+}
+.checkbox-input input:checked ~ .checkbox-style:after{
+  content: "\e6f4";
+  transform: translate(0px, 0px);
+  display: inline-block;
+}
+.product-black-gift-box-label a{
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
+.product-black-gift-box-label{
+  margin-bottom: 5px;
+}
+.product-black-gift-box-label a img{
+  border: 1px solid #e5e5e5;
+}
+.product-black-gift-box-label a .product-card__sale-price{
+  font-weight: bold;
+  font-size: 16px;
+  color: #e9034d;
+  margin-top: 8px;
+  line-height: 1;
+}
+@media(max-width:768px){
+  .product-black-gift-box-input{
+    width: 23%;
+  }
+  .product-black-top h3{
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+  .product-black-bottom{
+    padding: 15px 10px 10px;
+  }
+  .product-black-gift-box-label a .product-card__sale-price{
+    font-size: 14px;
+    margin-top: 4px;
+  }
+  .checkbox-input{
+    left: 0px;
+  }
+  .insurance-info .extended-insurance-tip{
+    margin-top: 4px;
+    font-size: 12px;
+    line-height: 1.2;
+  }
+}
+</style>
+<script>
+  let asdqwe = '{{product1}}'
+</script>
+<div class="multi-product-black-gift-box ss">
+  <div class="product-black-top">
+    <h3>{{block.settings.giftitle1}}</h3>
+  </div>
+  <div class="product-black-bottom">    
+    {% if block.settings.product1 != blank %}
+    <div class="product-black-gift-box-input inrow">
+      <div class="checkbox-input">
+        <input type="checkbox" id="giftBox1" value="{{product1.first_available_variant.id}}" class="input-top multibox">
+        <span class="checkbox-style"></span>
+      </div>
+      <label for="giftBox1" class="product-black-gift-box-label">
+        <a href="{{product1.url}}" target="_blank" >
+          <img class="lazyloaded" src="{{ product1.featured_image | img_url: '100*100' }}" alt="">
+          <span class="product-card__sale-price" data-money="{{ product1.price }}"></span>
+        </a>
+      </label>
+    </div>	    
+    {% endif %}    
+    {% if block.settings.product2 != blank %}
+    <div class="product-black-gift-box-input inrow">
+      <div class="checkbox-input">
+        <input type="checkbox" id="giftBox1" value="{{product2.first_available_variant.id}}" class="input-top multibox">
+        <span class="checkbox-style"></span>
+      </div>
+      <label for="giftBox1" class="product-black-gift-box-label">
+        <a href="{{product2.url}}" target="_blank" >
+          <img class="lazyloaded" src="{{ product2.featured_image | img_url: '100*100' }}" alt="">
+          <span class="product-card__sale-price" data-money="{{ product2.price }}"></span>
+        </a>
+      </label>
+    </div>	
+    {% endif %}
+    
+    {% if block.settings.product3 != blank %}
+    <div class="product-black-gift-box-input inrow">
+      <div class="checkbox-input">
+        <input type="checkbox" id="giftBox1" value="{{product3.first_available_variant.id}}" class="input-top multibox">
+        <span class="checkbox-style"></span>
+      </div>
+      <label for="giftBox1" class="product-black-gift-box-label">
+        <a href="{{product3.url}}" target="_blank" >
+          <img class="lazyloaded" src="{{ product3.featured_image | img_url: '100*100' }}" alt="">
+          <span class="product-card__sale-price" data-money="{{ product3.price }}"></span>
+        </a>
+      </label>
+    </div>	
+    {% endif %}    
+    {% if block.settings.product4 != blank %}
+    <div class="product-black-gift-box-input inrow">
+      <div class="checkbox-input">
+        <input type="checkbox" id="giftBox1" value="{{product4.first_available_variant.id}}" class="input-top multibox">
+        <span class="checkbox-style"></span>
+      </div>
+      <label for="giftBox1" class="product-black-gift-box-label">
+        <a href="{{product4.url}}" target="_blank" >
+          <img class="lazyloaded" src="{{ product4.featured_image | img_url: '100*100' }}" alt="">
+          <span class="product-card__sale-price" data-money="{{ product4.price }}"></span>
+        </a>
+      </label>
+    </div>
+    {% endif %}
+    
+  </div>                        
+</div>
+<script>
+  function getMultiboxProductData(){
+    var resData = '';
+    var multiboxProductData = {};
+    var isCheck = false;
+    multiboxProductData['items'] = [];
+    $('.multibox').each(function(){
+      if($(this).is(':checked')){
+        isCheck = true;
+        var multibox = {id:$(this).val(),quantity:1};
+      	multiboxProductData['items'].push(multibox);
+      }
+    })
+    //var realatedProductData = JSON.parse(JSON.stringify(multiboxProductData));
+    //console.log(multiboxProductData);
+    if(isCheck == true){
+      resData = JSON.parse(JSON.stringify(multiboxProductData));
+    }
+    return resData;
+  }
+</script>
+{% endunless %}

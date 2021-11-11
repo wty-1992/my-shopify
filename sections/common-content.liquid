@@ -1,0 +1,559 @@
+
+{% if section.settings.enable %}
+<style>
+.common-images-section1{background-color: #f3e7d3;max-width:1400px;margin:0 auto;border-radius:10%;padding-bottom:96px; box-shadow: 10px 10px 50px #4d1d1d;}
+.shopify-section{
+	clear: both;
+}
+.collection-navigation__title {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+  	font-family:Quentin;font-size:70px;color:#64000c;
+    text-transform: uppercase;
+    padding:4rem 0 3rem 0 !important;
+    margin-top:90px;
+    font-weight:400;
+}
+div .collection-navigation__title span {
+    color: #64000c;
+    position: relative;
+    font-size:70px; 
+    text-transform: capitalize;
+} 
+@media(min-width: 750px){
+.medium-up--hide {
+    display: none;
+} 
+.common-images-section ul{ 
+     display: flex; 
+    max-width: 1228px;
+    margin: 0 auto;
+    padding: 0 1rem; 
+    flex-wrap: wrap;
+    }
+.common-images-section ul li{
+    margin: 0.2rem 0.2rem;
+    width: calc(50% - 0.4rem);
+ }
+.common-images-section ul li div{  
+     margin: .7rem;
+}
+.common-images-section:last-child{
+
+}
+.common-images-section:last-child ul li:last-child{
+    width:50%;
+}
+}
+@media(max-width:768px){
+  .common-images-section1 {
+    background-color: #f3e7d3;
+    max-width: 1400px;
+    margin: 0 auto;
+    border-radius: 30px;
+    padding-bottom: 40px ;
+}
+.common-images-section {padding: 1rem 0 1rem 0;margin-top: 10px;} 
+.small--hide{display:none;}
+div .collection-navigation__title span {     font-size: 30px;    margin-top: 28px;}
+.common-images-section ul{ display: flex;} 
+.collection-navigation__title {
+    font-family: Quentin;
+    font-size: 50px;
+    color: #64000c;
+    text-transform: uppercase;
+    padding: 0rem 0 2rem 0 !important;
+    margin-top: 20px;
+    font-weight: 400;
+}
+.main-content .common-images-section ul li{margin: 0.2rem 0.2rem;width: calc(50% - 0.4rem);}
+}
+  </style>
+
+  {{section.settings.css}}
+<div class="common-images-section1">
+  {% unless section.settings.before == blank %}
+  <div>{{section.settings.before}}</div>
+  {% endunless %}
+
+  {% if section.blocks.size > 0 %}
+
+    {% comment %} 获取分组 {% endcomment %}
+    {% assign groups = '' | split: '' %}
+    {% for block in section.blocks %}
+      {% assign group = block.settings.group | split: '@SHOPIFY@' %}
+      {% assign groups = group | concat: groups %}
+    {% endfor %}
+    {% assign groups = groups | uniq | compact  %}
+
+    {% comment %} 循环分组 {% endcomment %}
+    {% for group in groups %}
+      <!-- group {{group}} -->
+      <ul>
+      {% for block in section.blocks %}
+        {% if block.settings.group == group %}
+        <li>
+          {% unless block.settings.before == blank %}
+          <div>{{block.settings.before}}</div>
+          {% endunless %}
+
+          <div class="common-banner">
+            {% if block.type == 'image' %}
+            <a {% unless block.settings.link == blank %}href="{{block.settings.link}}"{% endunless %}>
+             {% if block.settings.pc_image != blank %}
+              <picture class="small--hide"> 
+                 <img class="lazyload" 
+                     src="{{ block.settings.pc_image | img_url: 'master' }}" 
+                      title="{{ image.alt  | escape }}" 
+                      alt="{{image.alt  | escape }}"/>
+              </picture>
+               {% endif %}
+              <picture class="medium-up--hide" >
+                <img class="lazyload" 
+                      src="{{ block.settings.mb_image | img_url: 'master' }}" 
+                      title="{{ image.alt  | escape }}" 
+                      alt="{{image.alt  | escape }}"/>
+              </picture> 
+            </a>
+            {% endif %}
+
+            {% if block.type == 'product' %}
+              {% assign item = all_products[block.settings.product] %} 
+              {% assign firstVariant = item.first_available_variant %}
+              {% assign position = block.settings.position | default: 0 %}
+              {% assign image = item.images[position] %}
+              <a href="{{item.url}}">
+                <picture>
+                  <img class="lazyload" 
+                      data-src="{{ image | img_url: 'master' }}" 
+                      alt="{{ image.alt | escape }}" 
+                      title="{{ image.alt | escape }}"/>
+                </picture>  
+                <div>{{ item.title }}</div>
+                <div>
+                  <span data-money="{{ firstVariant.price }}"></span>
+                  <span data-money="{{ firstVariant.compare_at_price }}"></span>
+                </div>
+              </a>
+            {% endif %}
+
+
+            {% if block.type == 'collection' %}
+              {% assign current_collection = collections[block.settings.collection] %}
+              <ul>
+                {% for item in current_collection.products limit: block.settings.limit %}
+                {% assign firstVariant = item.first_available_variant %}
+                {% assign position = section.settings.position | default: 0 %}
+                {% assign image = item.images[position]%}
+                <li>
+                    <a href="{{item.url}}">
+                      <picture>
+                        <img class="lazyload" 
+                            data-src="{{ image | img_url: 'master' }}" 
+                            alt="{{ image.alt | escape }}" 
+                            title="{{ image.alt | escape }}"/>
+                      </picture>  
+                      <div>{{ item.title }}</div>
+                      <div>
+                        <span data-money="{{ firstVariant.price }}"></span>
+                        <span data-money="{{ firstVariant.compare_at_price }}"></span>
+                      </div>
+                    </a>
+                </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+            {% if block.type == 'video' %}
+              <video 
+                id="my-video" 
+                class="video-js" 
+                controls 
+                preload="auto" 
+                width="{{block.settings.width}}" 
+                height="{{block.settings.height}}"
+                poster="{{ block.settings.image  | img_url: 'master' }}" 
+                data-setup="{}">
+
+                {% unless block.settings.webm == blank %}
+                <source src="{{ block.settings.webm }}" type="video/webm" />
+                {% endunless %}
+
+                {% unless block.settings.mp4 == blank %}
+                <source src="{{ block.settings.mp4 }}" type="video/mp4" />
+                {% endunless %}
+
+              </video>
+            {% endif %}
+
+            {% if block.type == 'html' %}
+              {{block.settings.html}}
+            {% endif %}
+          </div>
+          
+          {% unless block.settings.after == blank %}
+          <div class="common-title-bottom">{{block.settings.after}}</div>
+          {% endunless %}
+        </li>
+        {% endif %}
+      {% endfor %}
+      </ul>
+    {% endfor %}
+
+  {% endif %}
+
+  {% unless section.settings.after == blank %}
+  <div>{{section.settings.after}}</div>
+  {% endunless %}
+
+{% endif %}
+</div>
+{% schema %}
+  {
+    "name": "通用 - 内容(图片,产品,视频,HTML)",
+    "class":"common-images-section",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable",
+        "label": "是否开启",
+        "default": false
+      },
+      {
+        "type": "html",
+        "id": "before",
+        "label": "上部总标题区域 ( 支持HTML )"
+      },
+      {
+        "type": "html",
+        "id": "after",
+        "label": "下部总标题区域 ( 支持HTML )"
+      },
+      {
+        "type": "html",
+        "id": "css",
+        "label": "css样式代码区 ( 技术代码区,运营勿动 )"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "图片",
+        "settings": [
+          {
+            "type":      "select",
+            "id":        "group",
+            "label":     "所属分组",
+            "options": [
+              {
+                "value": "none",
+                "label": "默认"
+              },
+              {
+                "value": "one",
+                "label": "组1"
+              },
+              {
+                "value": "two",
+                "label": "组2"
+              },
+              {
+                "value": "three",
+                "label": "组3"
+              },
+              {
+                "value": "four",
+                "label": "组4"
+              },
+              {
+                "value": "five",
+                "label": "组5"
+              }
+            ],
+            "default": "none",
+            "info": "元素分组影响布局 ( 通常设置为默认 )"
+          },
+          {
+            "type": "image_picker",
+            "id": "pc_image",
+            "label": "pc上传图片"
+          },
+          {
+            "type": "image_picker",
+            "id": "mb_image",
+            "label": "mb上传图片"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "点击图片的跳转链接"
+          },
+          {
+            "type": "html",
+            "id": "before",
+            "label": "上部标题区域 ( 支持HTML )"
+          },
+          {
+            "type": "html",
+            "id": "after",
+            "label": "下部标题区域 ( 支持HTML )"
+          }
+        ]
+      },
+      {
+        "type": "product",
+        "name": "产品",
+        "settings": [
+          {
+            "type":      "select",
+            "id":        "group",
+            "label":     "所属分组",
+            "options": [
+              {
+                "value": "none",
+                "label": "默认"
+              },
+              {
+                "value": "one",
+                "label": "组1"
+              },
+              {
+                "value": "two",
+                "label": "组2"
+              },
+              {
+                "value": "three",
+                "label": "组3"
+              },
+              {
+                "value": "four",
+                "label": "组4"
+              },
+              {
+                "value": "five",
+                "label": "组5"
+              }
+            ],
+            "default": "none",
+            "info": "元素分组影响布局 ( 通常设置为默认 )"
+          },
+          {
+            "type": "product",
+            "id": "product",
+            "label": "选择产品"
+          },
+          {
+            "type": "html",
+            "id": "before",
+            "label": "上部标题区域 ( 支持HTML )"
+          },
+          {
+            "type": "html",
+            "id": "after",
+            "label": "下部标题区域 ( 支持HTML )"
+          }
+        ]
+      },
+      {
+        "type": "collection",
+        "name": "集合",
+        "settings": [
+          {
+            "type":      "select",
+            "id":        "group",
+            "label":     "所属分组",
+            "options": [
+              {
+                "value": "none",
+                "label": "默认"
+              },
+              {
+                "value": "one",
+                "label": "组1"
+              },
+              {
+                "value": "two",
+                "label": "组2"
+              },
+              {
+                "value": "three",
+                "label": "组3"
+              },
+              {
+                "value": "four",
+                "label": "组4"
+              },
+              {
+                "value": "five",
+                "label": "组5"
+              }
+            ],
+            "default": "none",
+            "info": "元素分组影响布局 ( 通常设置为默认 )"
+          },
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "选择集合"
+          },
+          {
+            "type": "range",
+            "id": "limit",
+            "label": "产品limit总数量",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "default": 4
+          },
+          {
+            "type": "html",
+            "id": "before",
+            "label": "上部标题区域 ( 支持HTML )"
+          },
+          {
+            "type": "html",
+            "id": "after",
+            "label": "下部标题区域 ( 支持HTML )"
+          }
+        ]
+      },
+      {
+        "type": "video",
+        "name": "视频",
+        "settings": [
+          {
+            "type":      "select",
+            "id":        "group",
+            "label":     "所属分组",
+            "options": [
+              {
+                "value": "none",
+                "label": "默认"
+              },
+              {
+                "value": "one",
+                "label": "组1"
+              },
+              {
+                "value": "two",
+                "label": "组2"
+              },
+              {
+                "value": "three",
+                "label": "组3"
+              },
+              {
+                "value": "four",
+                "label": "组4"
+              },
+              {
+                "value": "five",
+                "label": "组5"
+              }
+            ],
+            "default": "none",
+            "info": "元素分组影响布局 ( 通常设置为默认 )"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "视频首图"
+          },
+          {
+            "type": "url",
+            "id": "webm",
+            "label": "webm格式 url地址"
+          },
+          {
+            "type": "url",
+            "id": "mp4",
+            "label": "MP4格式 url地址"
+          },
+          {
+            "type": "text",
+            "id": "width",
+            "label": "视频宽度",
+            "info": "单位 ( px ) "
+          },
+          {
+            "type": "text",
+            "id": "height",
+            "label": "视频高度",
+            "info": "单位 ( px ) "
+          },
+          {
+            "type": "html",
+            "id": "before",
+            "label": "上部标题区域 ( 支持HTML )"
+          },
+          {
+            "type": "html",
+            "id": "after",
+            "label": "下部标题区域 ( 支持HTML )"
+          }
+        ]
+      },
+      {
+        "type": "html",
+        "name": "自定义HTML",
+        "settings": [
+          {
+            "type":      "select",
+            "id":        "group",
+            "label":     "所属分组",
+            "options": [
+              {
+                "value": "none",
+                "label": "默认"
+              },
+              {
+                "value": "one",
+                "label": "组1"
+              },
+              {
+                "value": "two",
+                "label": "组2"
+              },
+              {
+                "value": "three",
+                "label": "组3"
+              },
+              {
+                "value": "four",
+                "label": "组4"
+              },
+              {
+                "value": "five",
+                "label": "组5"
+              }
+            ],
+            "default": "none",
+            "info": "元素分组影响布局 ( 通常设置为默认 )"
+          },
+          {
+            "type": "html",
+            "id": "before",
+            "label": "上部标题区域 ( 支持HTML )"
+          },
+          {
+            "type": "html",
+            "id": "content",
+            "label": "内容 ( 支持HTML )"
+          },
+          {
+            "type": "html",
+            "id": "after",
+            "label": "下部标题区域 ( 支持HTML )"
+          }
+        ]
+      }
+    ],
+    "presets": [{
+      "name": "通用 - 内容(图片,产品,视频,HTML)",
+      "category": "通用"
+    }]
+  }
+{% endschema %}

@@ -1,0 +1,478 @@
+{%comment%}通过标签获取默认年份 {%endcomment%}
+{% assign defaultDate = '' %}
+{% for tag_item in product.tags %}
+  {% if tag_item contains "custom-default-date-" %}
+    {% assign defaultDate = tag_item | strip | replace: "custom-default-date-", "" %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+{%comment%}通过标签获取默认数字 {%endcomment%}
+{% assign defaultNumber = '' %}
+{% for tag_item2 in product.tags %}
+  {% if tag_item2 contains "custom-default-number-" %}
+    {% assign defaultNumber = tag_item2 | strip | replace: "custom-default-number-", "" %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+{% assign numberRange = '1-100' | split:'-' %}
+{% for tag_item3 in product.tags %}
+  {% if tag_item3 contains "custom-range-number-" %}
+    {% assign numberRange = tag_item3 | strip | replace: "custom-range-number-", "" | split:"-" %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+{% if product.metafields["global"]["cattribute"] %}
+	{% assign cattributeValue = product.metafields["global"]["cattribute"] %}
+{% else %}
+	{% assign cattributeValue = '{"coors":[{"label":"Kids","dataLabel":"Kids","require":false,"type":"number"},{"label":"Grandkids","dataLabel":"Grandkids","require":false,"type":"number"},{"label":"name1","dataLabel":"name1","require":true,"type":"text","limit":15},{"label":"name2","dataLabel":"name2","require":true,"type":"text","limit":15},{"label":"state","dataLabel":"state","require":true,"type":"text","limit":20}]}' %}
+{% endif %}
+
+{{ 'jquery-ui.min.css' | asset_url | stylesheet_tag }} 
+{{ 'jquery-ui.min.js' | asset_url | script_tag }}
+
+<div class="date-container">
+  <div>{{ "zen.datenumber.aniversary_year" | t }}:</div>
+	<div>
+      <input type="number" id="number-input" value="{{defaultNumber}}" placeholder="{{numberRange[0]}}~{{numberRange[1]}}" min="{{numberRange[0]}}" max="{{numberRange[1]}}" oninput="checkNumber(this)" />
+    </div>
+</div>
+<div class="date-container">
+  <div>{{ "zen.datenumber.aniversary_date" | t }}:</div>
+  <div><input type="text" id="datepicker" name="fonttext" readonly="readonly" value=""></div>
+</div>
+
+{% if product.tags contains 'custom-option-date-number-text' %}
+<div id="t_name"></div>
+{% endif %}
+
+<input type="text" id="custom-info" name="properties[customInfo]" value="" style="display:none"/>
+
+<script>
+  var _zenFlag = 1;
+  var zenCustomInfo = {};
+  
+  var cHtmlKid = '';
+  var customJson = JSON.parse('{{cattributeValue}}');
+  
+  $(function() {
+    var dFormat = "yy/mm/dd";
+    {% if product.tags contains 'custom-option-date-number-text' %}
+    	dFormat = "MM dd, yy";
+    {% endif %}
+    $('#datepicker').datepicker({  
+      changeYear: true,
+      changeMonth: true,			// 年下拉菜单
+      dateFormat: dFormat,		// 日期格式
+      yearRange: "1851:c"		//年份选择范围
+    });
+    
+    var defaultNumber = parseInt("{{defaultNumber}}");
+    if(defaultNumber > 0){
+    	setDefaultDate(defaultNumber);
+    }                             
+    
+    $("#number-input").change(function(){
+      setDefaultDate($(this).val());
+      
+    });
+    
+    {% assign currentVariant = product.selected_or_first_available_variant.title %}
+      var currentVariant = '{{currentVariant}}';
+      console.log(currentVariant);
+      
+      var productImageUrl = "{{product.images[0] | product_img_url: '1000x1000' | prepend: 'https:'}}";
+      {% if product.tags contains 'custom-template-image' %}
+      var productUrl = "http://pic.stylelab.com/img/photo/";
+      var templateImageUrl = productUrl + "{{product.selected_or_first_available_variant.sku}}" + "-B.png";
+      {% endif %}
+
+    Listener.on([ Listener.product.update.before ], function(event, variant) {
+      var cVariant = variant;
+      
+      if(cVariant.featured_image){
+    	productImageUrl = cVariant.featured_image.src;
+      }
+      
+      if(typeof templateImageUrl != 'undefined'){
+    	templateImageUrl = productUrl + cVariant.sku + "-B.png";
+      }
+      
+    })
+    
+    var modal = new tingle.modal({
+      footer: true,
+      stickyFooter: false,
+      onOpen: function() {
+      },
+      onClose: function() {
+        //console.log('modal closed');
+      },
+      beforeClose: function() {
+        return true; // close the modal
+      }
+    });
+    
+    modal.addFooterBtn('Reselect', 'tingle-btn tingle-btn--danger', function() {
+      modal.close();
+    });
+    
+    modal.addFooterBtn('Confirm', 'tingle-btn tingle-btn--primary c_photo', function() {
+      if($('.mpw-add-to-cart').length > 0){
+      	$('.mpw-add-to-cart').click();
+      }else{
+      	$(".product-form__item--submit button").click();
+      }
+	  
+      modal.close();
+    });
+    
+    $('.news-date-btn').click(function(){
+      var _flag = true;
+      if($.trim($('#datepicker').val()) == ''){
+        $('#datepicker').css('border-color','#ff0000');
+        _flag = false;
+      }
+
+      if($.trim($('#number-input').val()) == ''){
+        $('#number-input').css('border-color','#ff0000');
+        _flag = false;
+      }
+      
+      if($(".fonttext").length > 0){
+      	for(var i=0;i<$(".fonttext").length;i++){
+          
+          if( $.trim($(".fonttext").eq(i).val()) == '' && customJson.coors[i].require ){
+            $(".text-input-container").eq(i).css('border-color', 'red');
+            _flag = false;
+          }else{
+            $(".text-input-container").eq(i).css('border-color', '#e7e7e7');
+          }
+        }
+      }
+      
+      if(_flag){
+          $('#datepicker').css('border-color','#e7e7e7');
+        $('#number-input').css('border-color','#e7e7e7');
+          
+          getMyTime($('#datepicker').val(),$.trim($('#number-input').val()));
+          
+          zenCustomInfo['_sunzi_effect'] = productImageUrl;
+          if(typeof templateImageUrl != 'undefined'){
+            zenCustomInfo['_sunzi_ai'] = templateImageUrl;
+          }
+          
+          $('#custom-info').val(JSON.stringify(zenCustomInfo));
+          let cHtml = '<div class="news-date-confirm-content"><p>{{ 'zen.datenumber.date_number_notice' | t }}</p>'; 
+          cHtml += cHtmlKid;
+          cHtml += '</div>';
+        
+          modal.setContent(cHtml);
+          modal.open();
+        }
+      
+    });
+    
+    if($("#t_name").length > 0){
+      var t_name_str = ''
+      customJson.coors.forEach(function(v, i){
+        var limit = v.limit || 20;
+        var label = v.label || "";
+        var placeholderText = v.placeholder || "";
+
+        t_name_str += '<div class="label-input-container">';
+        if(label){
+          t_name_str += '<label class="product-txt-label" for="fonttext">'+label;
+          if(v.require){
+          	t_name_str += '<span class="red">*</span>';
+          }
+          t_name_str += ':</label>';
+        }
+
+
+        t_name_str += '<div class="text-input-container">';
+          if(v.type == 'number'){
+          	t_name_str += '<input type="number" class="fonttext" name="fonttext" maxlength="'+limit+'" value=""  oninput="checkNumber(this)" placeholder="'+placeholderText+'"/>';
+          }else{
+          	t_name_str += '<input type="text" class="fonttext" name="fonttext" maxlength="'+limit+'" value=""  oninput="changeText('+i+',this,'+limit+')" placeholder="'+placeholderText+'"/>';
+            t_name_str += '<div class="leftnum" id="leftnumbox'+i+'"><span id="leftnum'+i+'">'+limit+'</span> Left</div>';
+          }
+           t_name_str += '</div></div>';
+        
+      });
+
+      $('#t_name').html(t_name_str);
+    }
+
+  });
+  
+  function selectFunction(flag){
+    console.log('flag===',flag);
+    _zenFlag = flag;
+    if(flag == 1){//标品
+      $('#datepicker').val('{{defaultDate}}');
+      $('#number-input').val(parseInt('{{defaultNumber}}'));                              
+      $('.date-container').hide();
+    }else{
+      $('#datepicker').val('');
+      $('#number-input').val('');                     
+      $('.date-container').show();
+    }
+  }
+  
+  function setShopifyVariant(markup, val){
+    $(".inline-field-wrapper span").each(function( index ) {
+      if($.trim($(this).text().replace(':','')).indexOf(markup) > -1){
+        var optionName = $(this).next('label').find('input').attr('name');
+        $("input[name='"+optionName+"'][value='"+val+"']").prop('checked',true).trigger('change');
+      }
+    });
+  }
+  
+  function checkNumber(obj){
+    var val = parseInt($(obj).val());
+    $(obj).val(val)
+    var minN = parseInt('{{numberRange[0]}}');
+    var maxN = parseInt('{{numberRange[1]}}');
+    
+    if(val < minN){
+      $(obj).val(minN);
+    }
+	console.log(val);
+    console.log(maxN);
+    if(val > maxN){
+      $(obj).val(maxN);
+    }
+    
+  }
+  
+  function getMyTime(myDate,myYear){
+    var remarkList = [];
+    var showRemarkList = [];
+    
+    let json1 = {};
+    json1.label = 'anniversary date';
+    json1.data = myDate;
+    remarkList.push(json1);
+    
+    let json11 = {};
+    json11.label = '{{ "zen.datenumber.aniversary_year" | t }}';
+    json11.data = myDate;
+    showRemarkList.push(json11);
+    
+    myYear = parseInt(myYear);
+    myDate = myDate + ' 00:00:00';
+    
+    let json2 = {};
+    json2.label = 'YEARS';
+    json2.data = (myYear).toLocaleString();
+    remarkList.push(json2);
+    
+    let json22 = {};
+    json22.label = '{{ "zen.datenumber.YEARS" | t }}';
+    json22.data = (myYear).toLocaleString();
+    showRemarkList.push(json22);
+    
+    let dateVal = new Date(myDate);
+    let time1 = dateVal.getTime();
+    
+    dateVal.setFullYear(dateVal.getFullYear()+myYear);
+    dateVal.setDate(dateVal.getDate());
+    
+    let time2 = dateVal.getTime();
+    
+    {% if product.tags contains 'custom-option-date-number-text' %}
+    let json3 = {};
+    json3.label = 'WEEKS';
+    json3.data = Math.floor((time2 - time1) / 1000 / 60 / 60 / 24 / 7).toLocaleString();
+    remarkList.push(json3);
+    
+    let json33 = {};
+    json33.label = '{{ "zen.datenumber.WEEKS" | t }}';
+    json33.data = Math.floor((time2 - time1) / 1000 / 60 / 60 / 24 / 7).toLocaleString();
+    showRemarkList.push(json33);
+    
+    {% else %}
+    let json3 = {};
+    json3.label = 'MONTHS';
+    json3.data = (myYear*12).toLocaleString();
+    remarkList.push(json3);
+    
+    let json33 = {};
+    json33.label = '{{ "zen.datenumber.MONTHS" | t }}';
+    json33.data = (myYear*12).toLocaleString();
+    showRemarkList.push(json33);
+    
+    {% endif %}
+    
+    let json4 = {};
+    json4.label = 'DAYS';
+    json4.data = Math.floor((time2 - time1) / 1000 / 60 / 60 / 24).toLocaleString();
+    remarkList.push(json4);
+    
+    let json44 = {};
+    json44.label = '{{ "zen.datenumber.DAYS" | t }}';
+    json44.data = Math.floor((time2 - time1) / 1000 / 60 / 60 / 24).toLocaleString();
+    showRemarkList.push(json44);
+    
+    let json5 = {};
+    json5.label = 'HOURS';
+    json5.data = Math.floor((time2 - time1) / 1000 / 60 / 60).toLocaleString();
+    remarkList.push(json5);
+    
+    let json55 = {};
+    json55.label = '{{ "zen.datenumber.HOURS" | t }}';
+    json55.data = Math.floor((time2 - time1) / 1000 / 60 / 60).toLocaleString();
+    showRemarkList.push(json55);
+    
+    let json6 = {};
+    json6.label = 'MINUTES';
+    json6.data = Math.floor((time2 - time1) / 1000 / 60).toLocaleString();
+    remarkList.push(json6);
+    
+    let json66 = {};
+    json66.label = '{{ "zen.datenumber.MINUTES" | t }}';
+    json66.data = Math.floor((time2 - time1) / 1000 / 60).toLocaleString();
+    showRemarkList.push(json66);
+    
+    let json7 = {};
+    json7.label = 'SECONDS';
+    json7.data = ((time2 - time1) / 1000).toLocaleString();
+    remarkList.push(json7);
+    
+    let json77 = {};
+    json77.label = '{{ "zen.datenumber.SECONDS" | t }}';
+    json77.data = ((time2 - time1) / 1000).toLocaleString();
+    showRemarkList.push(json77);
+    
+    if($("#t_name").length > 0){
+      let specialLabel = [];
+      let showSpecialLabel = [];
+      let specialData = [];
+      let kids = 0;
+      let grandkids = 0;
+      customJson.coors.forEach(function(v,i){
+        
+        if(v.dataLabel == 'Kids' || v.dataLabel == 'Grandkids' ){
+          if(v.dataLabel == 'Kids'){
+          	kids = $(".fonttext").eq(i).val();
+          }
+          
+          if(v.dataLabel == 'Grandkids'){
+          	grandkids = $(".fonttext").eq(i).val();
+          }
+          
+          specialLabel.push(v.dataLabel);
+          showSpecialLabel.push(v.label);
+          if($(".fonttext").eq(i).val()){
+          	specialData.push($(".fonttext").eq(i).val());
+          }else{
+          	specialData.push(0);
+          }
+          
+        }else{
+          remarkList[i+6] = {};
+          remarkList[i+6].label = v.dataLabel;
+          remarkList[i+6].data = $(".fonttext").eq(i).val();
+          
+          showRemarkList[i+6] = {};
+          showRemarkList[i+6].label = v.label;
+          showRemarkList[i+6].data = $(".fonttext").eq(i).val();
+        }
+      });
+      
+      var specialJson = {};
+      specialJson.label = specialLabel.join('/');
+      specialJson.data = specialData.join('/');
+      
+      remarkList.push(specialJson);
+      
+      var specialJson2 = {};
+      specialJson2.label = showSpecialLabel.join('/');
+      specialJson2.data = specialData.join('/');
+      
+      showRemarkList.push(specialJson2);
+      
+      
+      var numberJson = {};
+      numberJson.label = 'number';
+      
+      if(parseInt(kids) == 0){
+      	kids = '';
+      }
+      
+      if(parseInt(grandkids) == 0){
+      	grandkids = '';
+      }
+      
+      if(kids && grandkids){
+      	numberJson.data = 3;
+      }else if(kids) {
+      	numberJson.data = 2;
+      }else if(grandkids) {
+      	numberJson = '';
+      }else{
+      	numberJson.data = 1;
+      }
+      
+      if(numberJson){
+      	remarkList.push(numberJson);
+      }
+    }
+   
+    zenCustomInfo['_sunzi_remark'] = {};
+    cHtmlKid = '';
+    remarkList.forEach(function(vv,ii){
+      zenCustomInfo['_sunzi_remark'][vv.label] = vv.data;
+    });
+    
+    showRemarkList.forEach(function(vvv,iii){
+      cHtmlKid += '<p><span class="remark-key">'+vvv.label+':</span><span class="red">'+vvv.data+'</span></p>';
+    });
+    
+  }
+  
+  function setDefaultDate(myYear){
+    let dateVal = new Date();
+
+    dateVal.setFullYear(dateVal.getFullYear() - parseInt(myYear));
+    dateVal.setDate(dateVal.getDate());
+
+    $( "#datepicker" ).datepicker( "option", "defaultDate", dateVal );
+  }
+  
+//   function checkNumber(obj){
+//     var val = parseInt($(obj).val());
+//     $(obj).val(val)
+//   }
+  
+  function changeText(i,obj,limitv){
+    var objLenOld = $(obj).val().length;
+    var objVal = $(obj).val().replace(/[\r\n]/g,"");
+    var objLen = objVal.length;
+
+    if(objLen < objLenOld){
+      $(obj).attr('maxlength',limitv + objLenOld - objLen);
+    }else{
+      $(obj).attr('maxlength',limitv);
+    }
+
+    if(objLen > limitv){
+      var lenDiff = objLen - limitv;
+      $(obj).val($(obj).val().substr(-1,lenDiff));
+      $('#leftnum'+i).text(0);
+    }else{
+      $('#leftnum'+i).text(parseInt(limitv) - objLen);
+    }
+  }
+  
+  function photoCarvingValidate(){
+    return true;
+  }
+  
+</script>
+
+
+

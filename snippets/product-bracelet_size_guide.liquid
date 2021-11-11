@@ -1,0 +1,43 @@
+
+<style>
+.necklace-size__guide{
+    padding:2rem
+}
+.bracelet-size__gui{   
+    display: flex;
+    justify-content: space-between;
+}
+.bracelet-size__gui.dashed{    border-bottom: 1px #666 dashed;}
+.bracelet-size__gui .bracelet-size__gui_a{
+    padding:0px
+}
+@media(max-width:768px){
+    .bracelet-size__gui{
+
+    }
+}
+</style>
+<div class="necklace-size__guide">
+    <div class="size-gui" style=" ">
+        <h3>{{ 'product.braceletsizeguide.sizeguide' | t }}</h3>
+    </div>
+    <div style=" text-align:center"><iframe class="veo" frameborder="0" allowfullscreen=""></iframe></div>
+    <div class="bracelet-size__gui dashed">
+        <div class="col-xs-12 col-md-5 bracelet-size__gui_a">
+        <img class="lazy" src="https://cdn.shopify.com/s/files/1/0075/2936/5568/files/bracelet-size-1.png?5482567448557011670"></div>
+        <div class="col-xs-12 col-md-6 bracelet-size__gui_a">
+            <h3>{{ 'product.braceletsizeguide.determine_size' | t }}</h3>
+            <p>{{ 'product.braceletsizeguide.perfectly_sized' | t }}</p>
+        </div>
+    </div>
+    <div class="bracelet-size__gui">
+        <div class="p1 mb-zi col-xs-12 col-md-5 bracelet-size__gui_a">
+        <img class="lazy" src="https://cdn.shopify.com/s/files/1/0075/2936/5568/files/bracelet-size-2.png?5482567448557011670">
+        </div>
+        <div class="p2 col-xs-12 col-md-6 bracelet-size__gui_a">
+            <h3>{{ 'product.braceletsizeguide.guideline' | t }}:</h3>
+            <p>{{ 'product.braceletsizeguide.full_charm' | t }}</p>
+        </div> 
+         
+    </div>
+</div>

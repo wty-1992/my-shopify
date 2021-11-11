@@ -1,0 +1,489 @@
+{% if section.settings.customers_say_enable %}
+<style>
+.happy-customers-say-box{
+  width:100%;
+  padding: 30px 0;
+}
+.happy-customers-say-box .banner_title{
+  padding-bottom: 41px;
+}
+.happy-customers-say-box .customers-say-view{
+  -moz-column-count:5; 
+  -webkit-column-count:5; 
+  column-count:5;
+  -moz-column-gap: 1.2em;
+  -webkit-column-gap: 1.2em;
+  column-gap: 1.2em;
+  width: 100%;
+  max-width:1240px;
+  margin:0 auto;
+}
+.happy-customers-say-box .big_title{    
+  font-size: 43px;
+  padding: 60px 0;
+  display: block;
+  color: #000;
+  text-align:center;
+}
+.happy-customers-say-box .customer-items{
+  position: relative;
+  margin-bottom: 20px;
+  border-radius: 3px;
+  color: #000;
+  box-sizing: border-box;
+  word-break: break-word;
+  background: #f8f8f8;
+  -webkit-column-break-inside: avoid;
+  break-inside: avoid;
+  cursor: pointer;
+}
+.happy-customers-say-box .customers-images img,.happy-customers-say-box .customers-start img{width:100%;}
+.happy-customers-say-box .customers-tittle{
+  display: flex;
+  padding: 12px 0 5px 0;
+  font-size: 18px;
+  align-items:center;
+}
+.happy-customers-say-box .customers-start{max-width:75px;}
+.happy-customers-say-box .customers-content{
+  margin-top: 0px;
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: 1.2;
+}
+.happy-customers-say-box .customers-international{
+  padding: 0 16px;
+}
+.happy-customers-say-box .customers-product{
+  display: flex;
+  border: 1px solid #e5e5e5;
+  background: #fff;
+  margin-top: 20px;
+  padding: 18px 10px;
+}
+ .happy-customers-say-box .customers-product a{
+  display: flex;
+  align-items: end;
+}
+.happy-customers-say-box .customers-product span{
+  font-size: 0.8rem;
+  line-height: 1.2;
+  display: block;
+}
+.happy-customers-say-box .circle-right {
+  width: 18px;
+  height: 18px;
+  border-radius: 18px;
+  background: #3085c7;
+  display: block;
+  position: relative;
+  margin-left: 10px;
+  margin-top: 0;
+}
+.happy-customers-say-box .circle-right:before, .happy-customers-say-box .circle-right::after {
+  content: "";
+  height: 8px;
+  width: 1px;
+  border-radius: 10px;
+  display: block;
+  background: white;
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+}
+.happy-customers-say-box .circle-right::before {
+  height: 4px;
+  transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  position: absolute;
+  top: 8px;
+  left: 6px;
+}
+.happy-customers-say-box .review-close-new,.happy-customers-say-box .desgin-bt{
+  display:none;
+}
+.cpinterest-review-modal .tingle-modal__close{
+  display:none;
+}
+.cpinterest-review-modal .tingle-modal-box .review-close-new{
+  position: absolute;
+  right: 10px;
+  top: 0px;
+  z-index: 1;
+}
+.cpinterest-review-modal .tingle-modal-box .review-close-new i{
+  font-size: 30px;
+  color: #000;
+}
+.cpinterest-review-modal .tingle-modal-box__content{
+  display: flex;
+}
+.cpinterest-review-modal .customers-images{
+  width: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.cpinterest-review-modal .content-right{
+  width:calc(100% - 500px);
+  color:#000;
+  position: relative;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+}
+.cpinterest-review-modal.tingle-modal--visible .tingle-modal-box{
+  max-width: 800px;
+  border-radius:0px;
+}
+.cpinterest-review-modal .customers-international{
+  padding: 15px 20px;
+}
+.cpinterest-review-modal .customers-tittle{
+  font-size:24px;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+}
+.cpinterest-review-modal .circle-right{
+  width: 18px;
+  height: 18px;
+  border-radius: 18px;
+  background: #3085c7;
+  display: block;
+  position: relative;
+  margin-left: 10px;
+  margin-top: 0;
+}
+.cpinterest-review-modal .circle-right:before,.cpinterest-review-modal .circle-right:after{
+  content: "";
+  height: 8px;
+  width: 1px;
+  border-radius: 10px;
+  display: block;
+  background: white;
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+}
+.cpinterest-review-modal .circle-right:before{
+  height: 4px;
+  transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  position: absolute;
+  top: 8px;
+  left: 6px;
+}
+.cpinterest-review-modal .customers-start{
+  margin: 10px 0 4px;
+}
+.cpinterest-review-modal .customers-start img{
+  width: 75px;
+}
+.cpinterest-review-modal .customers-product{
+  width: 100%;  
+  padding: 20px;
+  border-top: 1px solid #e5e5e5;
+}
+.cpinterest-review-modal .customers-content{
+  max-height: 350px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.cpinterest-review-modal .customers-content::-webkit-scrollbar {/*滚动条整体样式*/
+  width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
+  height: 1px;
+}
+.cpinterest-review-modal .customers-content::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+  border-radius: 10px;
+   -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+  background: #e4e4e4;
+}
+.cpinterest-review-modal .customers-content::-webkit-scrollbar-track {/*滚动条里面轨道*/
+  -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  background: #fafafa;
+}
+.happy-customers-say-box .customers-product a .customers-modal-layout{
+  margin-left: 10px;
+}
+.cpinterest-review-modal .customers-product a{
+  display: flex;
+  align-items: center;
+}
+.cpinterest-review-modal .customers-modal-layout{
+  display: flex;
+  padding:0 0 0 10px;
+  flex-flow: wrap;
+}
+.cpinterest-review-modal .customers-modal-layout span{
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.1;
+  margin-bottom: 10px;
+  font-family: OpenSans;
+  letter-spacing: 0.5px;
+  width:100%;
+}
+.cpinterest-review-modal .customers-modal-layout .desgin-bt{
+  background: #e9034d;
+  border: none;
+  padding: 7px 16px;
+  color: #fff;
+  font-size: 12px;
+}
+.morebtn-box{
+  text-align: center;
+  margin: 50px 0 10px;
+}
+.morebtn-box a{
+  padding: 10px 20px;
+  background: #000;
+  border-radius: 20px;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  margin-top: 10px;
+}
+.customers-say-view .customer-items:nth-of-type(5n+1) { order: 1; }
+.customers-say-view .customer-items:nth-of-type(5n+2) { order: 2; }
+.customers-say-view .customer-items:nth-of-type(5n+3) { order: 3; }
+.customers-say-view .customer-items:nth-of-type(5n+4) { order: 4; }
+.customers-say-view .customer-items:nth-of-type(5n)   { order: 5; }
+@media screen and (max-width: 768px){
+ .happy-customers-say-box .customers-say-view{
+    -moz-column-count:2; 
+    -webkit-column-count:2; 
+    column-count:2;
+    -moz-column-gap: 0.5em;
+    -webkit-column-gap: 0.5em;
+    column-gap: 0.5em;
+    padding: 0 5px;
+    width: 100%;
+    max-width:1240px;
+    margin:0 auto;
+  }
+  .happy-customers-say-box .banner_title{
+    padding-bottom: 10px;
+  }
+  .happy-customers-say-box .customers-tittle{
+    font-size: 16px;
+  }
+  .happy-customers-say-box .customers-tittle{
+    padding: 8px 0 6px 0;
+  }
+  .happy-customers-say-box .customers-content{
+    margin-top: 2px;
+    font-size: 13px;
+  }
+  .happy-customers-say-box .customers-international{
+    padding: 0 10px;
+  }
+  .happy-customers-say-box .big_title{    
+    font-size: 21px;
+    padding: 30px 0
+  }
+  .happy-customers-say-box .customers-product{
+    padding: 10px;
+  }
+  .happy-customers-say-box .customers-product span{            
+    word-break: break-all;
+    display: block;
+    line-height: 1.1;
+    color:#000;
+  }
+  .content-right{
+    font-family: ProximaNova-Regular;
+  }
+  .cpinterest-review-modal .tingle-modal-box .review-close-new{
+    right: 0;
+    width: 100%;
+    text-align: right;
+    padding: 5px 10px;
+    background: #fff;
+  }
+  .cpinterest-review-modal .tingle-modal-box__content{
+    padding: 55px 0 0;
+    flex-flow: column;
+    align-items: center;
+  }
+  .cpinterest-review-modal .customers-images{
+    width:100%;
+  }
+  .cpinterest-review-modal .content-right{
+    width:100%;
+  }
+  .cpinterest-review-modal .customers-product{
+    border-top: none;
+  }
+  .cpinterest-review-modal .customers-product a{
+    border: 1px solid #e5e5e5;
+    padding: 18px 10px;
+  }
+  .cpinterest-review-modal .customers-content{
+    max-height: unset;
+    overflow: visible;
+    font-size: 14px;
+    line-height: 1.2;
+  }
+  .morebtn-box a{
+    display: inline-block;
+    margin-top: 30px;
+  }
+  .cpinterest-review-modal .customers-images,.content-right{
+    overflow: hidden;
+  }
+}
+
+</style>
+
+<div class="happy-customers-say-box">
+  <div class="banner_title">
+    <span>{{section.settings.titile}}</span>
+  </div>
+    <ul class="customers-say-view">
+    {% for block in section.blocks %}
+      <li class="customer-items">
+
+      <div class="review-close-new"><i class="photofont icon photo-close"></i></div>
+      <div class="customers-images">
+        {% if block.settings.section_image %}
+        <img src="{{block.settings.section_image  | img_url: 'master' }}">
+        {% endif %}
+      </div>
+      <div class="content-right">        
+        <div class="customers-international">
+          <div class="customers-tittle">
+            {{block.settings.titile_content}}
+            <span class="circle-right"></span>
+          </div>
+          <div class="customers-start">
+            <img src="{{section.settings.start_images  | img_url: 'master' }}  ">
+          </div>
+          <div class="customers-content">
+             {{block.settings.section_content}}
+          </div>
+        </div>
+        <div class="customers-product">
+          {%- assign product = all_products[block.settings.product] -%}
+          <a href="{{product.url}}" target="_blank">
+            <img src="{{product.featured_image  | img_url: '50x50'}}">
+            <div class="customers-modal-layout">
+              <span>{{product.title}}</span>
+              <button type="button" class="desgin-bt">{{ 'general.social.design_now' |t }}</button>
+            </div>
+          </a>
+        </div>
+      </div>
+      </li>
+    {% endfor %}
+    </ul>
+  <div class="morebtn-box">
+    <a href="{{ section.settings.more_link }}" target="_blank">{{ 'footer.company_info.show_more_reviews' | t }}</a>
+  </div>
+</div>
+<script>
+var pinterestReviewModal = new tingle.modal({
+  footer: false,
+  stickyFooter: false,
+  cssClass:['cpinterest-review-modal'],
+  onOpen: function() {
+    //console.log('modal open');
+    $(".review-close-new i").on("click",function(){        
+      pinterestReviewModal.close();
+    });
+  },
+  onClose: function() {
+    //console.log('modal closed');
+  },
+  beforeClose: function() {
+    // here's goes some logic
+    // e.g. save content before closing the modal
+    return true; // close the modal
+    return false; // nothing happens
+  }
+});
+$(".customers-product a").on('click',function(){
+  
+  event.stopPropagation();
+});
+$(".customers-say-view .customer-items").each(function(){
+  $(this).on("click",function(){    
+    event.stopPropagation();
+    pinterestReviewModal.setContent($(this).html());
+    pinterestReviewModal.open();
+  });
+});
+
+</script>
+{% endif %}
+{% schema %}
+  {
+    "name":"买家优质评论",
+    "class": "happy-customers-say",
+      "settings": [
+		{
+        "type": "paragraph",
+        "content": "common-pinterest-review"
+        },
+        {
+          "type": "checkbox",
+          "id": "customers_say_enable",
+          "label": "评论开关"
+        },
+        {
+          "type": "text",
+          "id": "titile",
+          "label": "标题"
+        },
+        {
+          "type": "image_picker",
+          "id": "start_images",
+          "label": "评论星星"
+        },
+        {
+          "type": "url",
+          "id": "more_link",
+          "label": "More"
+        }
+      ], 
+      "blocks": [
+        {
+          "type": "text",
+          "name": "text",
+          "settings": [
+          {
+            "type": "image_picker",
+            "id": "section_image",
+            "label": "模块主图"
+          },
+          {
+            "type": "text",
+            "id": "titile_content",
+            "label": "买家姓名"
+          },
+          {
+            "type": "text",
+            "id": "section_content",
+            "label": "模块评论语"
+          },
+			{
+            "type": "product",
+            "id": "product",
+            "label": "产品"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "通用 - 买家优质评论",
+        "category":"通用"
+      }
+    ]
+  }
+{% endschema %}

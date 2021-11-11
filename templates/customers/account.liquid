@@ -1,0 +1,259 @@
+ <style>
+@media (min-width:220px) {
+.account-list {
+	background:#f7f8f9; 
+    padding-bottom: 4rem;
+}
+.account-list h1{
+    font-size: 2rem;
+    padding: 2rem 0;
+    color: #000;
+    margin: 0;
+}
+.account-list .account-portrait {
+	background:#fff;
+	margin-bottom:4px;
+	padding:1rem
+}
+.account-list .account-portrait ul {
+	display:grid;
+	grid-template-columns:repeat(12,1fr);
+	grid-template-areas:"l l l l l l r r r r r r "  "b b b b b b b b b b b b";
+	padding:0 1rem
+}
+.account-list .account-portrait ul li:first-child {
+	grid-area:l;
+	grid-template-rows:3rem
+}
+.account-list .account-portrait ul li:first-child span{
+     margin-left: 1rem;
+    font-size:12px;
+}
+.account-list .account-portrait ul li:nth-child(2n) {
+	grid-area:r;
+	display:grid;
+	justify-content:right;
+	grid-template-rows:3rem
+}
+.account-list .account-portrait ul li:last-child {
+	grid-area:b;
+	align-items:center;
+	justify-content:center;
+	display:flex;
+    flex-flow: column;
+}
+.account-list .account-portrait ul li:last-child img {
+	border-radius:50%;
+	width:80px;
+	height:80px;
+	overflow:hidden
+}
+.account-list .account-portrait ul li:last-child .name {
+	padding-left: 1rem;
+    color: #000;
+    display: block;
+    margin-top: 10px;
+    font-size: 24px;
+}
+.account-list .account-function .title {
+	display:flex;
+	justify-content:space-between;
+	background:#fff;
+	margin:0 0 1rem 0;
+	padding:1.5rem;
+	font-size:1.2rem
+}
+.account-list .account-function .title .dashboard {
+	font-size:16px;
+}
+.account-list .function ul {
+	display:flex;
+	flex-wrap:wrap
+}
+.account-list .function ul a {
+	width:33.33%
+}
+.account-list .function ul a li {
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	flex-direction:column;
+	padding:2rem 0;
+	height:10rem;
+	overflow:hidden;
+	margin:0.15rem;
+	background:#fff;
+	position:relative;
+	text-align:center
+}
+.account-list .function ul a li i {
+	color:#e60044;
+	font-size:3.6rem;
+	padding-bottom:1rem
+}
+.account-list .function ul a li span {
+	right:1rem;
+	top:1rem;
+	padding:.2rem .8px;
+	border-radius:1rem;
+	border:1px solid #dedede;
+	display:inline-block;
+	position:absolute;
+	min-width:2rem;
+	text-align:center
+}
+.account-list .function ul a li:hover {
+	background:#e60044;
+	color:#fff
+}
+.account-list .function ul a li:hover i {
+	color:#fff
+}
+.account-list .content-block {
+	padding:1rem;background:#fff;
+}
+}
+@media (min-width:768px) {
+	.account-list .function ul a {
+	width:25%
+}
+.account-list .function ul a li {
+	padding:8rem 0;
+	height:10rem
+}
+.account-list .function ul a li i {
+	font-size:6.6rem
+}
+.account-list .account-portrait ul li a {
+	display:flex;
+	align-items:center
+}
+.order-history a{
+    font-size: 13px;
+    text-decoration: revert;
+}
+}
+@media(max-width:768px){
+  .account-list .function ul a li i{
+    font-size: 36px;
+  }
+  .account-list .function ul a .classification.app.memebervip i{
+    line-height: 1;
+  }
+  .classification.app.memebervip p{
+    line-height: 1;
+    margin-bottom: 5px;
+  }
+}
+</style>
+<div class="account-list">
+  <div class="page-width">
+    <div class="account-portrait">
+      <ul>
+        <li>
+          <a href="/account/logout">
+            <i class="photofont icon photo-tuichu"></i>
+            <span class="medium-down--hide">{{ 'customer.account.logout' | t }}</span>
+          </a>
+        </li>
+        <!-- 
+        <li>
+          <a href="/customer/account/edit/">
+            <i class="photofont icon photo-set"></i>
+            <span class="medium-down--hide">Settings</span>
+          </a>
+        </li>
+        -->
+        <li>
+          <div class="img"><img src="{{ 'accountLogo.jpg' | asset_url }}"></div>
+          <div class="name">
+            <p class="ca1">{{ customer.email }}</p>
+          </div>
+        </li>
+      </ul>
+
+    </div>
+
+    <div class="account-function">
+      <div class="title">
+        <span class="dashboard">{{ 'customer.account.dashboard' | t }}</span>
+        <span class="order-history "><a href="/account?view=orders">Check all my orders&gt;</a></span>
+      </div>
+    </div>
+
+    {% for order in customer.orders %}
+      {% if order.fulfillment_status == 'fulfilled' %}
+        {% assign order_shipped_count = order_shipped_count | plus: 1 %}
+      {% elsif order.fulfillment_status == 'unfulfilled'  %}
+        {% if order.financial_status == 'pending' %}
+          {% assign order_pending_count = order_pending_count | plus: 1 %}
+        {% elsif order.financial_status == 'voided' or order.financial_status == 'refunded' or order.financial_status =='partially_refunded' %}
+          {% assign order_cancel_count = order_cancel_count | plus: 1 %}
+        {% elsif order.financial_status == 'authorized' or order.financial_status == 'paid' or order.financial_status =='partially_paid' %}
+          {% assign order_processing_count = order_processing_count | plus: 1 %}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+    
+    <div class="function">
+      <ul>
+        <a href="/account?view=orders-pending">
+          <li class="classification payment">
+            <span>{{ order_pending_count | default: 0 }}</span>
+            <i class="photofont icon photo-dingdan3"></i>
+            <p>{{ 'customer.account.pending_payment' | t }}</p>
+          </li>
+        </a>
+        <a href="/account?view=orders-processing">
+          <li class="classification processing">
+            <span>{{ order_processing_count | default: 0 }}</span>
+            <i class="photofont icon photo-check"></i>
+            <p>{{ 'customer.account.processing' | t }}</p>
+          </li>
+        </a>
+        <a href="/account?view=orders-shipped">
+          <li class="classification shipped">
+            <span>{{ order_shipped_count | default: 0 }}</span>
+            <i class="photofont icon photo-feijiiconfont"></i>
+            <p>{{ 'customer.account.shipped' | t }}</p>
+          </li>
+        </a>
+        <a href="/account?view=orders">
+          <li class="classification shipped">
+            <i class="photofont icon photo-daojishi-shijian"></i>
+            <p>{{ 'customer.account.historical_order' | t }}</p>
+          </li>
+        </a>
+        <a href="/account?view=orders-canceled">
+          <li class="classification canceled">
+            <span>{{ order_cancel_count | default: 0 }}</span>
+            <i class="photofont icon photo-iconfontzhizuobiaozhun0262"></i>
+            <p>{{ 'customer.account.canceled' | t }}</p>
+          </li>
+        </a>
+        <a href="/cart">
+          <li class="classification myCart">
+            <span>{{ cart.item_count | default: 0 }}</span>
+            <i class="photofont icon photo-cart"></i>
+            <p>{{ 'customer.account.my_cart' | t }}</p>
+          </li>
+        </a>
+        <a href="/account/addresses">
+          <li class="classification addressBook">
+            <span>{{ customer.addresses.size | default: 0 }}</span>
+            <i class="photofont icon photo-location"></i>
+            <p>{{ 'customer.account.address_book' | t }}</p>
+          </li>
+        </a>
+
+        <a href="http://app.soufeel.com/soufeel-app-com">
+          <li class="classification app memebervip">
+            <i class="icon photofont photo-acountvip1"></i>
+            <p>{{ 'customer.account.hundred_coupons_for_new_users' | t }}</p>
+            <p class="vipExpires Priviledges"><u>{{ 'customer.account.download_now' | t }} &gt;</u></p>
+          </li>
+        </a>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,585 @@
+{% if section.settings.enable %}
+{% assign swiperContainerId = "swiper-collection-container-" | append: section.id %}
+
+<style>
+#shopify-section-{{section.id}} .home-best-seller-container{
+  background:{{section.settings.color}};
+  {% if section.settings.IsGradient %}
+  background-image: linear-gradient(to {{section.settings.gradient}});
+  {% endif %}
+}
+.home-collection-off{
+  display: flex;
+  justify-content: center;
+  margin-left:10px;
+}
+.home-collection-off span{
+  line-height: 1;
+  font-weight: 500;
+  font-size: 12px;
+  padding: 3px 8px;
+  border: 1px solid {{section.settings.offcolor}};
+  color: {{section.settings.offcolor}};
+  border-radius: 4px;
+}
+.common-collection-swiper {
+  margin:1rem auto;
+  background:transparent;;
+  padding-top:10px;
+}
+.common-collection-swiper .before { 
+  width: 100%;
+  color: #000;
+  /*margin: 0 1rem;*/
+  margin: 0 auto; 
+  text-align: center;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0 5.5rem;
+  display: inline-block;
+  font-size: 2.2rem;
+  margin-top: .7rem;
+  font-weight: 400;
+}
+
+.common-collection-swiper #{{swiperContainerId}} {
+  padding: 0;
+  margin: 0;
+  z-index:2
+}
+.common-collection-swiper #{{swiperContainerId}} .prev, 
+.common-collection-swiper #{{swiperContainerId}} .next{
+  position: absolute;
+  left: 2%;
+  width: 3%;
+  top: 0;
+  height: 100%;
+  z-index: 1; 
+  display: flex;
+  justify-content: center;
+  display:none;
+ }
+ .common-collection-swiper #{{swiperContainerId}}  i.photofont{
+  top: 50%;
+  transform: translate(-50%,-50%);
+  display: block;
+  position: absolute; 
+  cursor: pointer;
+  font-size: 3.5rem;
+  left: 50%;
+  font-weight:700;
+  color:#fff;
+  opacity:1;
+}
+.common-collection-swiper #{{swiperContainerId}} .next{
+  right:1%; 
+  left:inherit
+}
+.common-collection-swiper #{{swiperContainerId}} .view-more{   
+  height: 100%;
+  margin: 0 auto;
+  border: 1px solid #ddd;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.3rem; 
+  position: relative;
+  cursor: pointer;
+}
+.common-collection-swiper #{{swiperContainerId}} .view-more span{
+  color:#000;
+  position:relative;
+}
+.common-collection-swiper #{{swiperContainerId}} .view-more span:after{    
+  content: '';
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: #959595;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.common-collection-swiper #{{swiperContainerId}} svg{
+  margin-top: -30px;
+  width: 2rem;
+  height: 2rem;
+}
+.common-collection-swiper #{{swiperContainerId}} .block-collection-items .item{
+  position: relative;
+  padding:0rem; 
+}
+.common-collection-swiper #{{swiperContainerId}} .block-collection-items .item a{
+  color: #000;
+}
+.common-collection-swiper #{{swiperContainerId}} .block-collection-items .item img{
+  background: #fff;
+}
+.common-collection-swiper #{{swiperContainerId}} .block-collection-items .product-card__tag {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+}
+.product-card__image-wrapper .product-card__tag {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.common-collection-swiper #{{swiperContainerId}} .block-collection-items .product-card__image-wrapper{
+  position: relative;
+}
+.common-collection-swiper #{{swiperContainerId}} .block-collection-items .product-card__name{
+  text-align: center;
+  text-transform: uppercase;
+  color: #000;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 85%;
+  margin: auto;
+}
+.common-collection-swiper #{{swiperContainerId}} .block-collection-items  .product-card__price{ 
+  text-align: center;
+  padding: 0.66rem 0;
+}	
+.common-collection-swiper #{{swiperContainerId}} .block-collection-items .product-card__sale-price{
+  font-size: 1rem;
+  color:#F70724;
+  font-weight: bold;
+}
+.common-collection-swiper #{{swiperContainerId}} .block-collection-items .product-card:hover>*, 
+.common-collection-swiper #{{swiperContainerId}} .block-collection-items .product-card:focus-within>* {
+  opacity: 0.9;
+}
+.common-collection-swiper #{{swiperContainerId}}  .prev.swiper-button-disabled, 
+.common-collection-swiper #{{swiperContainerId}}  .next.swiper-button-disabled{
+  opacity: 0 !important;
+}
+.common-collection-swiper-pagination{
+  display: flex;
+  justify-content: center;
+  margin: 10px 0; 
+  align-items: center;
+}
+.common-collection-swiper-pagination .swiper-pagination-bullet{
+  background: #f74845;
+  border: none;
+  width: 10px;
+  height: 10px;
+  opacity: 1;
+}  
+.common-collection-swiper-pagination .swiper-pagination-bullet.swiper-pagination-bullet-active{
+  width: 16px;
+  height: 16px;
+  background: transparent;
+  border: 1px solid #f74845;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.common-collection-swiper-pagination .swiper-pagination-bullet.swiper-pagination-bullet-active:after{
+  content: "";
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #f74845;  
+}
+.common-collection-swiper #{{swiperContainerId}} li.swiper-slide{
+  position: relative;
+  background-color:transparent;
+  height: auto;
+}
+.common-collection-swiper #{{swiperContainerId}} li.swiper-slide img{
+  width: 100%;
+}
+.common-collection-swiper #{{swiperContainerId}} li.swiper-slide .add{
+  width: 20px;
+  height: 20px;
+  right: 10px;
+  position: absolute;
+  top: 10px;
+  font-size: 20px;
+  background: #e60044;
+  border-radius: 12px 12px;
+  text-align: center;
+  color: #fff;
+}
+.common-collection-swiper #{{swiperContainerId}} li.swiper-slide picture{
+  margin: 0 auto;      
+  width: 100%;
+  display: block;
+}
+.common-collection-swiper #{{swiperContainerId}} li.swiper-slide .cheap-title{
+  word-wrap: break-word;
+  display: block;
+  max-height: 2rem;
+  line-height: 1.4rem;
+  text-align: center;
+  text-transform: capitalize;
+  color:{{section.settings.title_color}};
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 90%;
+  margin: 1rem auto 0;
+  font-size: 12px;
+}
+.common-collection-swiper #{{swiperContainerId}} li.swiper-slide .box-price {
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+}
+.common-collection-swiper #{{swiperContainerId}} li.swiper-slide .box-price .old-price{
+  opacity: 1;
+  color: #000;
+  font-size: 12px;
+  text-decoration: line-through;
+  margin-left: 0.3rem;
+}
+
+.common-collection-swiper #{{swiperContainerId}} li.swiper-slide .box-price .new-price{
+  margin-right: .2rem;
+  font-size: 12px;
+  font-weight: bold;
+  color: #000 
+}
+.swiper-slide .product-label-items{
+  display: flex;
+  text-align: center;
+}
+.swiper-slide .product-label-item{
+  color: #fff;
+  border: 1px solid #fec369;
+  padding: .1rem 0; 
+  -webkit-font-smoothing: initial;
+}
+.home-best-seller-container {
+  padding: 25px;
+  padding-bottom: 15px;
+  border-radius: 15px;
+  /*background: #f3f0f7;*/
+  background: #ff7c41;
+  overflow: hidden;
+}  
+@media (min-width:768px){
+.common-collection-swiper #{{swiperContainerId}} li.swiper-slide .cheap-title{ 
+  margin: 1rem auto 0 ;
+}
+.common-collection-swiper #{{swiperContainerId}} .view-more{font-size:1.67rem}
+.common-collection-swiper{
+  margin: 0rem auto;
+  padding-bottom: 3rem;
+}
+.common-collection-swiper #{{swiperContainerId}} li.swiper-slide .box-price { 
+  margin-top:5px; 
+  padding-bottom:5px;
+}
+.common-collection-swiper #{{swiperContainerId}} .block-collection-items .item{
+  flex:0 1 25%;
+} 
+.common-collection-swiper #{{swiperContainerId}} .prev, 
+.common-collection-swiper #{{swiperContainerId}} .next{
+  display:block;
+}
+.common-collection-swiper .before{
+  position: relative;
+  font-size: 42px;
+  font-family: 'OpenSans-Light';
+  line-height: 1;
+  text-transform: capitalize;
+}
+}
+@media (min-width:1024px){
+  .common-collection-swiper #{{swiperContainerId}} .block-collection-items .item{
+    flex:0 1 20%;
+  }    
+}
+@media(max-width:768px){
+.home-best-seller-container{
+  padding: 0;  
+  border-radius:0;
+}
+.common-collection-swiper{
+  padding: 0;
+}  
+.common-collection-swiper-pagination{
+  display:none;
+}
+.common-collection-swiper{margin: 0rem auto;padding-top:0;}
+.common-collection-swiper #{{swiperContainerId}}{margin: 0.5rem 0 0rem 0;}
+.common-collection-swiper .before{   
+    font-size: 30px;
+    padding-top: 1rem;
+}
+.home-collection-off{
+  margin-left:0px;
+  margin-top: 5px;
+}
+.home-collection-off span{
+  padding: .3rem .4rem;
+  transform: scale(.75) translate(11px, -4px);
+}
+.common-collection-swiper #{{swiperContainerId}} li.swiper-slide .cheap-title{width: 100%;}
+.common-collection-swiper #{{swiperContainerId}} li.swiper-slide .box-price{flex-flow: wrap;}
+}
+
+</style>
+<div class="collection_container_addClass">
+{% if section.settings.before %}
+<div class="banner_title">
+  <span>{{section.settings.before}}</span>
+</div>
+{% endif %}
+<div class="home-best-seller-container">
+  <div id="{{swiperContainerId}}" class="swiper-container swiper-collection-container collection-container">
+    <ul class="swiper-wrapper items">
+      {% assign current_collection = collections[section.settings.collection] %}
+      {% if current_collection.products.size > 0%}
+          {% for item in current_collection.products limit: section.settings.limit %}
+            {% assign firstVariant = item.first_available_variant %}
+            {% assign position = section.settings.position | default: 0 %}
+            {% assign image = item.images[position]%}
+            <li class="item swiper-slide">            
+              <a href="{{item.url}}">
+                <picture>
+                  <source data-srcset="{{ image | img_url: '600x' }}" media="(max-width: 750px)" />
+                  <source data-srcset="{{ image | img_url: 'master'  }}" media="(max-width: 1024px)" />
+                  <img
+                      title=""  
+                      data-src="{{ image | img_url: 'master' }}"
+                      class="scrollable-01-div-img lazyload"
+                      alt="{{ image.alt | escape }}" />
+                </picture>
+                <div class="cheap-title">{{ item.title }}</div>
+                <div class="box-price">
+                  <div class="new-price"><span class="price" data-money="{{ firstVariant.price }}"></span></div>
+                  {% if firstVariant.compare_at_price> firstVariant.price %}
+                  <div class="old-price"><span class="price" data-money="{{ firstVariant.compare_at_price }}"></span></div>
+                  {% endif %}
+                  {% if firstVariant.compare_at_price> firstVariant.price %}
+                  <div class="home-collection-off">
+                    <span>                      
+                      	{{ firstVariant.compare_at_price | minus: firstVariant.price | times: 100.0 | divided_by: firstVariant.compare_at_price | round}}% {{ 'product.price.off' | t }}                      
+                    </span>
+                  </div>
+                  {% endif %}
+                </div>
+                {% comment %}
+                <div class="product-label-items">
+                {% for tag in item.tags %}
+                  {% if tag contains 'tag-product-' %}
+                    {% assign tag_all = tag | remove: 'tag-product-' %}
+                    <span class="product-label-item">{{ tag_all }}</span>
+                  {% endif %}
+                {% endfor %}
+                </div>
+                 {% endcomment %}
+              </a>
+            </li>
+          {% endfor %}
+      {% endif %}
+      {% if section.settings.show_more %}
+        <li class="item swiper-slide">
+          <a {% unless section.settings.show_more_link == blank %}href="{{section.settings.show_more_link}}"{% endunless %}>
+            <div class="view-more">   
+              <span>{{ 'common.collection_swiper.view_more' | t }}</span>
+            </div>
+           </a>
+        </li>
+      {% endif %}
+    </ul>
+    {% assign prev = swiperContainerId | append: "-button-prev" %}
+    {% assign next = swiperContainerId | append: "-button-next" %}
+    {% assign pagination = swiperContainerId | append: "-swiper-pagination" %}
+    {% if section.settings.arrows %}
+      <!-- Add Arrows -->
+      <div id="{{prev}}" class="prev">
+        <i class="photofont photo-back1"></i>
+      </div>
+      <div id="{{next}}" class="next">
+        <i class="photofont photo-more1"></i>
+      </div>
+    {% endif %}
+    <div class="{{pagination}} common-collection-swiper-pagination"></div>
+    
+  </div>
+</div>
+{% if section.settings.after %}
+<div class="after">{{section.settings.after}}</div>
+{% endif %}
+</div>
+  <!-- Initialize Swiper -->
+<script>
+  var swiper = new Swiper('#{{swiperContainerId}}', {
+    observer: true,
+    observeParents: true,
+    slidesPerView: 2.4,
+    slidesPerGroup : {{section.settings.slides_per_group}},
+    spaceBetween: 10,
+    autoplay: {{section.settings.autoplay}},
+    pagination: {
+      el: '.{{pagination}}',
+      clickable: true,
+    },
+    loop: {{section.settings.loop}},
+    keyboard: true,
+    breakpoints: {
+      2048: {
+        // show 4.5 product
+        slidesPerView: 4,
+        slidesPerGroup:4,
+        spaceBetween: 20,
+        slidesOffsetBefore:12
+      },
+      1024: {
+        // show 4.5 product
+        slidesPerView: 4,
+        slidesPerGroup:4,
+        spaceBetween: 20
+      },
+      768: {
+        // show 3.5 product
+        slidesPerView: 2.3,
+        slidesPerGroup:3,
+        spaceBetween: 10
+      }
+    },
+    navigation: {
+      nextEl: "#{{next}}",
+      prevEl: "#{{prev}}"
+    }
+  });
+</script>
+
+{% endif %}
+  
+{% schema %}
+  {
+    "name": "通用 - 滑动的产品列表 ( Swiper )",
+    "class": "common-collection-swiper page-width",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "common-collection-swiper"
+      },
+      {
+	    "type": "checkbox",
+        "id": "enable",
+        "label": "开启",
+        "default": true
+      },
+      {
+        "type": "html",
+        "id": "before",
+        "label": "标题区域，支持HTML",
+        "default": "We Also Recommend"
+      },
+      {
+        "type": "color",
+        "id": "color",
+        "label": "背景颜色"
+      },
+      {
+        "type": "color",
+        "id": "title_color",
+        "label": "产品标题颜色",
+        "default": "#000"
+      },
+      {
+        "type": "color",
+        "id": "offcolor",
+        "label": "产品标题颜色",
+        "default": "#E9034D"
+      },
+      {
+        "type": "checkbox",
+        "id": "IsGradient",
+        "label": "是否开启背景渐变",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "gradient",
+        "label": "背景渐变",
+        "default": "bottom right, #c3361a, #ff7d41"
+      },
+      {
+        "type": "collection",
+        "id": "collection",
+        "label": "选择集合"
+      },
+      {
+        "type": "range",
+        "id": "limit",
+        "label": "产品limit总数量",
+        "min": 1,
+        "max": 12,
+        "step": 1,
+        "default": 8
+      },
+      {
+        "type": "checkbox",
+        "id": "autoplay",
+        "label": "是否自动轮播",
+        "default": false
+      },
+      
+      {
+        "type": "checkbox",
+        "id": "loop",
+        "label": "是否循环",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "arrows",
+        "label": "是否有左右翻页箭头",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_more",
+        "label": "显示-View More",
+        "default": true
+      },
+      {
+        "type": "url",
+        "id": "show_more_link",
+        "label": "点击view more的链接"
+      },
+      {
+        "type": "range",
+        "id": "slides_per_view",
+        "label": "滚动一屏显示几个",
+        "min": 1,
+        "max": 12,
+        "step": 1,
+        "default": 4
+      },
+      {
+        "type": "range",
+        "id": "slides_per_group",
+        "label": "几个分为一组",
+        "min": 1,
+        "max": 12,
+        "step": 1,
+        "default": 4
+      },
+      {
+        "type": "html",
+        "id": "after",
+        "label": "下部标题区域，支持HTML"
+      }
+    ],
+    "presets": [
+      {
+        "name": "通用 - 滑动的产品列表 ( Swiper )",
+        "category": "通用"
+      }
+    ]
+  }
+{% endschema %}

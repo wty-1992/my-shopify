@@ -1,0 +1,195 @@
+
+<style>
+.photo-select-carving .area-photo-upload {
+  background: #f8f8f8 !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  height: 56px;
+  margin-bottom: 10px;
+  border: 1px solid #e7e7e7;
+  border-radius: 0 !important;
+}
+.photo-select-carving .btn-upload-open {
+  cursor: pointer;
+  background: #bfa175;
+  color: #fff;
+  border-radius: 25px;
+  padding: 2px 15px;
+  width: 100px;
+  text-align: center;
+  text-transform: capitalize;
+  font-weight: bold;
+  border: none;
+  font-size: 16px;
+  line-height: 1.625;
+}
+.photo-select-carving .area-photo-upload-text {
+  font-size: 1rem !important;
+  color: #000;
+}
+.photo-select-carving .label-input-text {
+  display: none;
+}
+.photo-select-carving .demonstration {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+}
+.photo-select-carving .carving-color-list {
+  display: flex;
+  margin-top: 10px;
+}
+.photo-select-carving .font-label {
+  margin-left: 10%;
+}
+.btn-carving.el-button--primary, .photo-confirm-btn {
+  background-color: #e60044 !important;
+  border-color: #e60044 !important;
+}
+
+.photo-select-carving .el-dialog__wrapper .el-button {
+  border-radius: 0px!important;
+}
+/*   .photo-select-carving .el-progress-bar__inner {
+  background-color: #bfa175 !important;
+} */
+
+.select-carving-dialog .el-button {
+  width: 250px;
+}
+
+.select-carving-dialog .el-button--danger {
+  background-color: #bfa175 !important;
+  border-color: #bfa175 !important;
+}
+.preview-thumbnail {
+  margin-right: 10px;
+}
+.carving-exaple-img-item {
+  width: 7rem;
+  margin: 5px;
+}
+.carving-exaple-text {
+  margin-top: 10px;
+}
+.select-open-carving {
+  background-color: #bfa175 !important;
+  border-color: #bfa175 !important;
+}
+.select-cancel-carving {
+  background-color: #aaa !important;
+  border-color: #aaa !important;
+}
+.photo-design-tool-bar, .carving-prompt {
+  margin-top: 10px;
+}
+.crop-prompt {
+  margin: 10px 0;
+}
+.photo-design-body {
+  margin-bottom: 10px;
+}
+.dialog-footer-carving {
+  padding-top: 0 !important;
+}
+.avatar-uploader.photo-uploader .el-upload{
+  height: 120px;
+  width: 120px;
+  border: 1px dashed #e60044;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
+  overflow: hidden;
+}
+.avatar-uploader.photo-uploader .avatar-uploader-icon{
+  height: auto;
+  width: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #e60044;
+  font-size: 45px;
+}
+.avatar-uploader.photo-uploader .avatar-uploader-icon{
+  line-height: 1;
+  display: inline-block;
+}
+.avatar-uploader.photo-uploader .area-photo-upload-rect-thumbnai{
+  width: 120px;
+}
+.avatar-uploader.photo-uploader .upload-label{
+  color: #e60044;
+  position: unset;
+  font-size: 12px;
+}
+#app .el-dialog__headerbtn{
+  top: 0;
+  right: 0;
+}
+#app .el-dialog__headerbtn .el-dialog__close{
+  font-size:38px;
+}
+.area-photo-upload-rect{
+  flex-flow: wrap;
+}
+#app a.photocharms-warnfill{
+  display: block;
+  width: 100%;
+  font-size: 12px;
+  margin-top: 5px;
+  text-decoration: underline;
+  cursor: pointer;
+  line-height: 1;
+}
+a.photocharms-warnfill:not([href]):not([tabindex]):focus, a.photocharms-warnfill:not([href]):not([tabindex]):hover{
+  text-decoration: underline;
+}
+/*   .area-photo-upload-rect-thumbnai~.area-photo-upload-rect .avatar-uploader.photo-uploader .el-upload{
+    height:auto;
+    min-height:96px;
+  } */
+@media (max-width: 768px) { 
+  .el-message-box {
+    width: 100% !important;
+    height: 100%;
+  }
+  .photo-select-carving .area-photo-upload{
+    width: 60%;
+    border: none;
+    height: 48px;
+    margin-bottom: 0 !important;
+  }
+  .photo-container .photo-box{
+    width: 100%;
+    border-bottom: 1px solid #e7e7e7;
+    border-top: 1px solid #e7e7e7;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+  }
+  #app a.photocharms-warnfill{
+    width: 40%;
+    text-align: center;
+    font-size: 12px;
+    text-decoration: underline;
+  }
+  .photo-select-carving .btn-upload-open{display:none;}
+  .avatar-uploader .el-upload:after{
+    content: "\e6e0";
+    margin-right: 5px;
+    font-size: 18px;
+    color: #000;
+    font-family: "photofont";
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+   #app .el-dialog__headerbtn .el-dialog__close{
+    font-size:28px;
+  }
+}
+</style>

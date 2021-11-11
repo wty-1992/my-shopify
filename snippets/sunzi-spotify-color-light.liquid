@@ -1,0 +1,320 @@
+{% comment %}
+** @name SpotifyCode夜灯 **
+** @author 金忠帅 **
+** @integrate 王天宇 **
+{% endcomment %}
+
+{% comment %} 调用参数 {% endcomment %}
+
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'sunzi.spotify.code.test.js' %}
+
+{% comment %} style变体名称 默认没有，遂赋值100 {% endcomment %}
+{% assign variantStyle = 100 %}
+{% comment %} sku名称 {% endcomment %}
+{% assign variantSku = 0 %}
+{% comment %} 磨砂变体文本 {% endcomment %}
+{% assign mattText = "MATE" %}
+
+{% comment %} 插件版本与规则 {% endcomment %}
+{% assign customType = "ColorLight" %}
+{% assign customRule = 19.4 %}
+
+{% comment %} 产品类型 {% endcomment %}
+{% assign productType = 0 %}
+
+{% comment %} 默认唱片图片 {% endcomment %}
+{% assign defaultCustomAlbum = section.settings.sunzi_param_spotify_default_custom_album %}
+{% comment %} 推荐唱片列表 {% endcomment %}
+{% assign recommendTracks = section.settings.sunzi_param_spotify_recommend_tracks %}
+{% comment %} 站点语种 {% endcomment %}
+{% assign sunzi_shop_language = section.settings.sunzi_shop_language %}
+{% comment %} 货币符号 {% endcomment %}
+{% assign sunzi_shop_symbol = section.settings.sunzi_shop_symbol %}
+
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-color-light.json' %}
+
+{% comment %} 彩灯集合 {% endcomment %}
+{% if product.tags contains 'custom-sunzi-spotify-wood-light' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-wood-light.json' %}
+  {% assign variantStyle = 0 %}
+	{% assign variantSku = 1 %}
+{% comment %} 心形灯 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-heart-light' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-xhd254.json' %}
+{% comment %} 云状灯 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-cloud-light' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-xhd255.json' %}
+{% comment %} 装饰-心形 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-decor-heart' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cbs194.json' %}
+	{% assign customType = 'Cropai' %}
+{% comment %} 装饰-云状 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-decor-cloud' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cbs195.json' %}
+	{% assign customType = 'Cropai' %}
+{% comment %} 彩灯-蓝牙 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-color-bluetooth' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-color-bluetooth.json' %}
+	{% assign productType = 3 %}
+{% comment %} 延展摆件 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-color-cbs20' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-cbs20.json' %}
+	{% assign customType = 'Cropai' %}
+{% comment %} 背包-cropai {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-bag-crop' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-bag-crop.json' %}
+	{% assign customType = 'Cropai' %}
+{% comment %} 心形-图案-常规 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-heart-shape' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-heart-shape.json' %}
+	{% assign customType = 'Cropai' %}
+	{% assign variantSku = 100 %}
+{% comment %} 心形-图案-彩灯 {% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-spotify-code-heart-color' %}
+	{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/spoitfy-code-heart-color.json' %}
+	{% assign customType = 'Cropai' %}
+	{% assign variantSku = 100 %}
+{% endif %}
+
+{% comment %} 谷歌分析id {% endcomment %}
+{% assign gtag = 'G-R132WKL1C2' %}
+{% comment %} 定制按钮文案 {% endcomment %}
+{% assign buttonText = section.settings.sunzi_button_upload_text %}
+
+{% comment %} 定制初始化 {% endcomment %}
+{% include 'sunzi-solt-template' %}
+
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+  .product-quantity,
+  .product-form .common-standar_btn {
+  	display: none !important;
+  }
+  @media screen and (min-width: 768px) {
+    .sunzi-modal-content {
+      width: 400px!important;
+      height: 640px!important;
+    }
+  }
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="hidden" id="sunzi-input" name="properties[customInfo]" required="required"></input>
+  <input type="hidden" id="sunzi-cart" name="properties[_sunzi_cart]"></input>
+  <input type="hidden" id="sunzi-related-product" name="properties[_sunzi_related_product]" ></input>
+
+  {% comment %} 定制按钮 {% endcomment %}
+  <button type="button" id="sunzi-button" disabled class="dots-loading">
+    <span class="dots">
+      <i></i>
+      <i></i>
+      <i></i>
+    </span>
+    <div class="sunzi-button-text">{{ buttonText }}</div>
+  </button>
+</div>
+
+{% comment %} loading 所需图片预加载 {% endcomment %}
+<link rel="preload" href="https://spic.qn.cdn.imaiyuan.com/spotify-code/custom-album.jpg?imageslim" as="image">
+<link rel="preload" href="https://spic.qn.cdn.imaiyuan.com/spotify-code/control-black.png" as="image">
+<link rel="preload" href="https://spic.qn.cdn.imaiyuan.com/spotify-code/control-white.png" as="image">
+
+<!-- sunzi core js -->
+<script src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{ coreJs }}" defer="defer"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ gtag }}" async="async"></script>
+<script async="async">
+  _sunzi_gtag('{{ gtag }}');
+</script>
+
+{% comment %} 1.隐藏掉变体，加车按钮等等 {% endcomment %}
+<script defer="defer">
+  _sunzi_variant_hide('{{variantSku}}');
+</script>
+
+{% comment %} 2.请求定制化数据 {% endcomment %}
+<script defer="defer">
+  var response;
+  _sunzi_request('{{ requestURL }}', function(res) {
+    response = JSON.parse(JSON.stringify(res));
+  });
+</script>
+
+{% comment %} 3.开始定制 {% endcomment %}
+<script defer="defer">
+  var styleDom = _sunzi_find_variant({{variantStyle}});
+  var styleValue = _sunzi_variant_value({{variantStyle}});
+  // 产品数据
+  var product = {{ product | json }};      
+  var sku;
+  //添加监听
+  styleDom && styleDom.on('change', function() {
+  	// sku判断与切换
+    var skuValue = _sunzi_variant_value({{variantSku}});
+    styleValue = _sunzi_variant_value({{variantStyle}});
+  	sku = product.variants.find(item => (styleValue ? item.title.indexOf(styleValue) > -1 : true && item.title.indexOf(skuValue.replace('A', '')) > -1)).sku;
+    _sunzi_variant_change({{variantSku}}, sku);
+  });
+  
+  $('#sunzi-button').click(function() {
+    // 产品类型
+    var productType = {{productType}};
+    var variantId = getQueryVariable("variant") || "{{ product.variants.first.id }}";          
+    // 过滤layout内容
+    if(styleDom.length) {
+      if(styleValue === '{{mattText}}') { //  磨砂
+        _sunzi_response.layouts = response.layouts.filter(item => item.sku.slice(-1) === 'A');
+        productType = 2;
+      } else {  // 普通
+        _sunzi_response.layouts = response.layouts.filter(item => item.sku.slice(-1) !== 'A');
+        productType = 1;
+      }    
+  	} else {
+      var skus = product.variants.map(item => item.sku);
+      _sunzi_response.layouts = _sunzi_response.layouts.filter(item => skus.indexOf(item.sku) > -1);                       
+    }
+    
+    productType && (_sunzi_response.productType = productType);
+  	sku || (sku = product.variants.find(item => item.id == variantId).sku);
+    _sunzi_response.defaultLayoutSku = sku;
+    _sunzi_response.shop = {
+      language: '{{sunzi_shop_language}}',
+      currencySymbol: '{{sunzi_shop_symbol}}'
+    };
+    
+    _sunzi_response.price = $(".product-single__price--special").first().html();
+    _sunzi_response.defaultCustomAlbum = '{{defaultCustomAlbum}}';
+    _sunzi_response.recommendTracks = {{recommendTracks}};
+    _sunzi_response.theme = {
+      r: 255,
+      g: 1,
+      b: 54
+    };
+
+    {% for tag_item in product.tags %}
+      {%comment%}设置vip{%endcomment%}
+      {% if tag_item contains "custom-sunzi-vip" %}
+        // _sunzi_response.increment={
+        //   vip: _sunzi_global_data.vip
+        // }
+      {%comment%}设置默认曲目 {%endcomment%}
+      {% elsif tag_item contains "custom-songsuri-" %}
+      {%- assign songuri = tag_item | strip | replace: "custom-songsuri-", "" -%}
+      _sunzi_response.defaultTrackId = `{{songuri}}`;
+      {% endif %}
+    {% endfor %}
+    
+   
+    
+    // 开始渲染
+    _sunzi_custom(
+      SpotifyCode['{{customType}}'],
+      function(effect, data, vip) {
+        _sunzi_loading();
+        
+        // 加车完清除掉定制化信息
+        clearSunziForm();
+        
+        // 切换变体
+        _sunzi_variant_change({{variantSku}}, data.layout.sku);
+        
+        $('#sunzi-cart').val(JSON.stringify({
+          'image': [ effect ]
+        }));
+        
+        var output = {
+            '_sunzi_source': data.source,
+            '_sunzi_text': {
+              value: `${data.color.value}|${data.track.name}|${data.track.artists}|${data.track.uri}|${SpotifyCode.formatTime(data.track.duration_ms)}`
+            },
+            '_sunzi_compose': [{
+              'rule': {{customRule}},
+              'data': data
+            }]
+          };
+      
+          // 背包加上效果图
+        {% if product.tags contains 'custom-sunzi-spotify-code-bag-crop' %}
+          output['_sunzi_effect'] = effect;
+        {% endif %}
+          
+          $('#sunzi-input').val(JSON.stringify(output));
+        
+        // 根据vip添加虚拟产品
+        if(vip) {
+          var tempvip = cateTempVip();
+          addToCart({
+            id: vip.virtualId,
+            quantity: 1,
+            "properties[_sunzi_related_product]": tempvip,
+            mask: 'body',
+            refresh: true,
+          })
+          $('#sunzi-related-product').val(tempvip);
+        }
+        
+		//	加车事件触发
+      	$('.product-form__cart-submit').click();
+        _sunzi_hide_loading();
+      }
+    );
+  });
+    
+  // 清除孙子定制化信息
+  function clearSunziForm() {
+    $('#sunzi-related-product').val('');
+    // 如果有的站验证custominfo不能为空的
+    $('#sunzi-input').val("{}");
+  }
+  
+  // 加车
+  function addToCart(data) {
+    return new Promise((resolve, reject) => {
+      $.ajax({
+        type: "POST",
+        url: "/cart/add.js",
+        data,
+        async: false,
+        dataType: "json",
+        context: this,
+        success: (item) => resolve(item),
+        error: (request, status) => {
+          reject(request, status);
+        }
+      })
+    })
+  }
+  
+  function cateTempVip(){
+    var t = jQuery('[name="id"]').val();
+    document.querySelectorAll("[name^='properties[']").forEach(function(e,item){
+      var n = "radio" !== e.type || e.checked;
+      ("properties[_tempId]" != e.name && "properties[_tempVip]" != e.name) && "" != e.value && n && (t += e.name + ":" + e.value + ",")
+    })
+    var e, n, r, i = 0;                
+    for (e = 0, r = t.length; e < r; e++){
+      n = t.charCodeAt(e),
+        i = (i << 5) - i + n,
+        i |= 0;  
+    }
+    return i;
+  }
+  
+  // 获取地址栏参数
+  function getQueryVariable(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i=0;i<vars.length;i++) {
+      var pair = vars[i].split("=");
+      if(pair[0] == variable){return pair[1];}
+    }
+    return(false);
+  }
+  
+  /** 其他自定义函数 end **/
+</script>

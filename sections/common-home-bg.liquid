@@ -1,0 +1,256 @@
+<style>
+body.template-index main.main-content{  
+  background:{{section.settings.bg_color}};  
+}
+.before span,.banner_title span{
+  position: relative;
+  z-index: 1;
+}
+ .banner_title:after,h1.c00.no-margin.fs28 span:after{
+  content: "";
+  display: block;
+  {% if section.settings.title_bg_icon %}
+  background: url("{{ section.settings.title_bg_icon | img_url: 'master' }}") no-repeat center 20px;
+  {% endif %}
+  background-size: contain;
+  width: 1200px;
+  height: 115px;
+  position: absolute;
+  top: 28%;
+  left: 50%;
+  transform: translate(-50%,-60%);
+  z-index: 0;
+}
+  h1.c00.no-margin.fs28 span:after {
+  	z-index: -1;
+    top: 50%;
+  }  
+
+  .banner_title span{
+    font-weight: 900;
+  }
+  .banner_title span .b{
+    color: #f4703a;
+  }
+{% if section.settings.iconenable %}
+/*2021年万圣节主题修改*/
+.free-notice{
+  position: relative;
+}
+.common-banner-section{
+  position: relative;
+}
+.common-banner-section:after{
+  content:"";
+  background-size: contain;
+  width: 398px;
+  height: 347px;
+  position: absolute;
+  right: 0;
+  z-index: 0;
+  background: url("{{ section.settings.icon1 | img_url: 'master' }}") no-repeat center 0;    
+}
+.shopify-section.common-logo-list:after{
+  content:"";
+  position: absolute;
+  bottom: 200px;
+  left: 0;
+  width: 350px;
+  height: 519px;
+  background: url("{{ section.settings.icon2 | img_url: 'master' }}") no-repeat center 20px;
+}
+.index-home-container .shopify-section {
+  position: relative;
+  z-index: 1;
+}
+.collection-container0 .banner_title>span:after,.collection-container0 .banner_title>span:before,#cbar_w0_header_s span:after,#cbar_w0_header_s span:before{
+  content:"";
+  width: 54px;
+  height: 95px;
+  display: block;
+  position: absolute;
+  top: 8%;
+  z-index: 0;
+  background: url("{{ section.settings.icon3 | img_url: 'master' }}") no-repeat center 0;
+}
+.home-best-seller-container{
+  position: relative;
+  z-index: 1;
+}
+.collection-container0 .banner_title>span:after,#cbar_w0_header_s span:after{
+  left:-74px;
+  transform: scaleX(-1);
+}
+.collection-container0 .banner_title>span:before,#cbar_w0_header_s span:before{
+  right:-74px;  
+}
+.collection-container0 .banner_title,#cbar_widget0 .banner_title{
+  padding-bottom: 20px;
+}
+.collection-container0,.collection-container1{
+  position: relative;
+}
+#cbar_widget0 {
+  position: relative;
+}
+.collection-container0:after,.collection-container0:before,#cbar_widget0:after,#cbar_widget0:before{
+  content: "";
+  width: 11vw;
+  height: 261px;
+  display: block;
+  position: absolute;
+  top: 40%;
+  z-index: 0;
+  background: url("{{ section.settings.icon4 | img_url: 'master' }}") no-repeat center 0;
+  background-size: contain;
+}
+.collection-container0:after,#cbar_widget0:after{
+  right:calc(-11vw + 15px);
+  transform: scaleX(-1);
+}
+.collection-container0:before,#cbar_widget0:before{
+  left:calc(-11vw + 15px);
+}
+.collection-container1:after{
+  content: "";
+  width: 30vw;
+  height: 125px;
+  display: block;
+  position: absolute;
+  bottom: -75px;
+  left: 70%;
+  z-index: 0;
+  background: url("{{ section.settings.icon5 | img_url: 'master' }}") no-repeat center 0;
+  background-size: contain;
+}
+.collection-banner {
+  position: relative;
+  z-index:1;
+}  
+{% endif %}
+@media(min-width:768px){
+
+  body.template-index main.main-content .index-home-container{
+    {% if section.settings.bg_image %}
+	background-image: url("{{ section.settings.bg_image | img_url: 'master' }}");
+    {% endif %}
+      background-size: contain;
+    background-position: 0px 405px;
+    background-repeat-x: no-repeat;
+  }
+}
+@media(max-width:768px){
+ .before span:after,.banner_title:after,h1.c00.no-margin.fs28 span:after{
+    {% if section.settings.title_bg_icon_mb %}
+      background: url("{{ section.settings.title_bg_icon_mb | img_url: 'master' }}") no-repeat center 20px;
+    {% endif %}
+    background-size: contain;
+    height: 90px;
+    top: 55%;
+    width: 600px;
+  }
+  h1.c00.no-margin.fs28 span:after {
+  	top: 60%;
+  } 
+  .happy-customers-say-box .banner_title:after {
+  	top: 50%;
+  }
+  {% if section.settings.iconenable %}
+  /*2021年万圣节主题修改*/
+  .common-banner-section:after,.collection-container0 .banner_title>span:after,.collection-container0 .banner_title>span:before,.collection-container0:after, .collection-container0:before,.collection-container1:after,.shopify-section.common-logo-list:after, #cbar_w0_header_s span:after, #cbar_w0_header_s span:before,.collection-container0:before, #cbar_widget0:before{
+    display:none;
+  }
+  #cbar_widget0 .home-best-seller-title.title-home span{
+    padding: 5px 0;
+  }
+  .home-best-seller-container{
+    padding: 10px 0;
+  }
+  .banner_title span .b{padding:0;}
+  {% endif %}
+}
+  
+</style>
+{% if section.settings.iconenable %}
+<script>
+  $(".shopify-section .banner_title span").each(function(){
+    $(this).html('<span class="b"># '+$(this).text().replace(" "," </span> "))
+  });
+  $(".common-collection-swiper").each(function(i){
+    $(this).addClass('collection-container'+i);
+  });
+</script>
+{% endif %}
+{% schema %}
+  {
+    "name":"通用 - 背景色&背景图",
+    "class": "common-home-bg",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "common-home-bg"
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label":"背景色"
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label":"背景图"
+      },
+      {
+        "type": "image_picker",
+        "id": "title_bg_icon",
+        "label":"PC - 首页标题背景图标"
+      },
+      {
+        "type": "image_picker",
+        "id": "title_bg_icon_mb",
+        "label":"MB - 首页标题背景图标"
+      },
+      {
+        "type": "header",
+        "content": "首页节日自定义部分"
+      },
+      {
+        "type": "checkbox",
+        "id": "iconenable",
+        "label": "是否开启",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "icon1",
+        "label":"首页节日自定义图标1"
+      },
+      {
+        "type": "image_picker",
+        "id": "icon2",
+        "label":"首页节日自定义图标2"
+      },
+      {
+        "type": "image_picker",
+        "id": "icon3",
+        "label":"首页节日自定义图标3"
+      },
+      {
+        "type": "image_picker",
+        "id": "icon4",
+        "label":"首页节日自定义图标4"
+      },
+      {
+        "type": "image_picker",
+        "id": "icon5",
+        "label":"首页节日自定义图标5"
+      }
+    ],
+    "presets": [
+      {
+        "name": "通用 - 背景色&背景图",
+        "category":"通用"
+      }
+    ]
+  }
+{% endschema %}

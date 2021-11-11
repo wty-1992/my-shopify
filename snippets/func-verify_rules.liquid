@@ -1,0 +1,46 @@
+{% assign verify__rules_result = false %}
+{{relation}}
+{% if detail %}
+    {% comment %} 包含规则 {% endcomment %}
+    {% if contain %}
+        {% include 'func-verify_rules_json_keys', json: contain %}
+        {% for ruleKey in json_keys_result %}
+            {% include 'func-verify_rules_json', json: contain, key: ruleKey %}
+            {% if verify__rules_json_result %}
+                {% assign values = verify__rules_json_result | replace: '，', ',' | strip_html | strip | split: ',' | uniq %}
+                {% if values.size > 0 %}
+                    {% include 'func-verify_rules_check', values: values, key: ruleKey %}
+                    {% if relation == 'and' and rules_check_result == false %}
+                        {% assign verify__rules_result = false %}
+                        {% break %}
+                    {% else %}
+                        {% if rules_check_result %}
+                            {% assign verify__rules_result = true %}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+        
+    {% comment %} 排除规则 {% endcomment %}
+    {% if exclude %}
+        {% include 'func-verify_rules_json_keys', json: exclude %}
+        {% for ruleKey in json_keys_result %}
+            {% include 'func-verify_rules_json', json: exclude, key: ruleKey %}
+            {% if verify__rules_json_result %}
+                {% assign values = verify__rules_json_result | replace: '，', ',' | strip_html | strip | split: ',' | uniq %}
+                {% if values.size > 0 %}
+                    {% include 'func-verify_rules_check', values: values, key: ruleKey %}
+                    {% if rules_check_result %}
+                        {% assign verify__rules_result = false %}
+                        {% break %}
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endif %}
+
+
+

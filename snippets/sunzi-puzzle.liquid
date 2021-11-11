@@ -1,0 +1,464 @@
+{% comment %}
+** @name 多图拼图 **
+** @author 金忠帅 **
+** @integrate 王天宇 **
+{% endcomment %}
+
+{% comment %} 引用公共插槽 {% endcomment %}
+{% include 'sunzi-solt-template' %}
+
+{% comment %} 调用参数 {% endcomment %}
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'sunzi.puzzle.js' %}
+{% comment %} 谷歌分析id {% endcomment %}
+{% assign gtag = 'UA-174675922-8' %}
+{% comment %} 定制按钮文案 {% endcomment %}
+{% assign buttonText = section.settings.sunzi_button_upload_text %}
+{% comment %} 定制按钮文案 {% endcomment %}
+{% assign variantSize = section.settings.sunzi_variant_puzzle %}
+{% comment %} 拼图模板数据json {% endcomment %}
+{% comment %} 语种 {% endcomment %}
+{% assign sunzi_shop_language = section.settings.sunzi_shop_language %}
+{% assign productTags = product.tags | join:',' %}
+
+{% comment %} 样式补充&修正 {% endcomment %}
+<style>
+  .product-options,
+  .selector-wrapper {
+  	display: none;
+  }
+  .product-flex-step {
+	width:100%;  
+  }
+  .product-flex-step .product-form {
+  	width: 100%;
+  }
+  .radio-group .item {
+  	cursor: pointer;
+  }
+  .sunzi-modal img {
+  	max-width: unset;
+  }
+  .sunzi-form #sunzi-button {
+    position: relative;
+    border: none;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+  }
+  #sunzi-button-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .sunzi-result {
+    min-height: 80px;
+    display: none;
+    position: relative;
+    border-radius: 6px;
+    border: 1px solid rgb(0, 0, 0, 0.2);
+    background: #f2f2f2;
+    overflow: hidden;
+    margin-bottom: 15px;
+  }
+  .sunzi-result .sunzi-result-loading {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: center;
+  }
+  #sunzi-result-image-crop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  .product-quantity {
+    display: none;
+    margin-top: -12px !important;
+  }
+  #sunzi-puzzle {
+    height: 100%;
+  }
+  #sunzi-puzzle img {
+    max-width: inherit;
+  }
+  .puzzle-selecter {
+    display: none;
+  	width: 100%;
+    margin-bottom: 15px;
+  }
+  .puzzle-selecter .title {
+    font-family: Branding SemiMedium;
+  	font-size: 16px;
+    color: #000;
+  }
+  .puzzle-selecter .radio-group {
+    display: flex;
+    overflow-x: auto;
+    width: 100%;
+    margin-top: 10px;
+    font-family: Branding SemiMedium;
+    font-size: 16px;
+  }
+  .puzzle-selecter .radio-group .item {
+    padding: 11px 16px;
+    border: 1px solid #000;
+	  border-radius: 4px;
+    margin: 0 7px 10px;
+    display: inline-flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .puzzle-selecter .radio-group .item:first-child {
+    margin-left: 0;
+  }
+  .puzzle-selecter .radio-group .active {
+    padding: 10px 15px;
+    border: 2px solid #52aa77;
+    color: #52aa77;
+  }
+  .puzzle-selecter .radio-group .item span {
+    display: block;
+    height: 24px;
+  }
+  .puzzle-selecter .title span {
+  	color: #52aa77;
+  }
+  .puzzle-for .radio-group .item {
+  	padding: 11px 31px;
+  }
+  .puzzle-for .radio-group .active {
+	padding: 10px 30px;
+  }
+  .puzzle-size {
+  	margin: 15px 0;
+  }
+  .btn-quant,
+  .right-content {
+  	display: none!important;
+  }
+  
+  @media (max-width: 768px) {
+    .puzzle-selecter .radio-group::-webkit-scrollbar {
+      display:none;
+  	}
+  }
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 额外的表单参数 {% endcomment %}
+  <input type="hidden" id="sunzi-input-json" name="properties[custom_json]" required="required">
+  <input type="hidden" id="sunzi-input-crop" name="properties[crop]" required="required">
+  <input type="hidden" id="sunzi-input-sku"  name="properties[custom_sku]" required="required">
+  <input type="hidden" id="sunzi-input-info" name="properties[customInfo]">
+  <input type="hidden" id="sunzi-input-ai" name="properties[ai]">
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="text" id="sunzi-cart" name="properties[_sunzi_cart]"></input>
+
+  <div id="puzzle-for" class="puzzle-for puzzle-selecter">
+    <div class="title">Puzzle for: <span></span></div>
+    <div class="radio-group"></div>
+  </div>
+  
+  <div id="puzzle-size" class="puzzle-size puzzle-selecter">
+    <div class="title">Sizes: <span></span></div>
+    <div class="radio-group"></div>
+  </div>
+  
+  <div class="sunzi-result dots__loading">
+    <img id="sunzi-result-image" onload="resultOnload();">
+    <img id="sunzi-result-image-crop">
+    <div class="sunzi-result-loading">
+      <span class="dots">
+        <i></i>
+        <i></i>
+        <i></i>
+      </span>
+    </div>
+  </div>
+
+  {% comment %} 定制按钮 {% endcomment %}
+  <button type="button" id="sunzi-button" disabled class="dots-loading">
+    <span class="dots">
+      <i></i>
+      <i></i>
+      <i></i>
+    </span>
+    <div class="sunzi-button-text">{{ buttonText }}</div>
+  </button>
+</div>
+
+<!-- sunzi core js -->
+<script src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{ coreJs }}" defer="defer"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ gtag }}" async="async"></script>
+<script async="async">
+  _sunzi_gtag('{{ gtag }}');
+</script>
+
+{% comment %} 1.隐藏掉变体，加车按钮等等 {% endcomment %}
+{% comment %} 2.请求定制化数据 {% endcomment %}
+{% comment %} 3.开始定制 {% endcomment %}
+<script defer="defer">
+  var currentTranslate = {};  //当前语种对应信息
+  var key = 0;
+  var cur_theme = "{{productTags}}".match(/custom-puzzle-template-[a-zA-Z]+/);
+  var productJson = {{product | json}};
+  cur_theme = cur_theme && cur_theme.length > 0 ? cur_theme[0].split("-").pop() : 'default';
+  // 定制化数据地址
+  _sunzi_request(`https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/puzzle-${cur_theme}.json`, function(data) {
+    // 定制之前的参数构建
+    currentTranslate = puzzleTranslate();
+                 
+    //生成尺码与价格信息
+  	var sizeList = {};
+    productJson.variants.forEach(function(item) {
+      sizeList[item.title] = item.price;
+    });
+
+    // 更新当前价格
+    data.sizes.forEach(function(item) {
+      for(var option of item.options) {
+        var _price = (sizeList[option.pieces] / 100).toFixed(2);
+        option.price = _price;
+      }
+    });
+  	initPuzzleFor(data);
+    $('.puzzle-selecter').show();
+  });
+
+  $('#sunzi-button').on("click", async function() {
+    var typeIndex = parseInt($('#puzzle-for .radio-group .active').index());
+    var sizeIndex = parseInt($('#puzzle-size .radio-group .active').index());
+    var defaultSizeOption = [typeIndex, sizeIndex];
+    key += 1;
+    // 定制之前的参数构建
+    _sunzi_response.key = key;
+    _sunzi_response.defaultSizeOption = defaultSizeOption;
+    // 开始渲染
+    _sunzi_custom(
+      Puzzle.default,
+      async function(output, data, variant) {
+        _sunzi_loading();
+      	// 定制化数据
+        var image = {}, font = {};
+        output.images.forEach((item, index) => {
+          image[index]= {
+            src: item
+          }
+        })
+        output.texts.forEach((item, index) => {
+          font[index]= {
+            "text_str": item.value || item.defaultValue ,
+            "lineHeight": item.lineHeight,
+            "rule": item.rule ,
+            "textAlign": item.textAlign,
+            "font_family": item.rule.fonts[0].name,
+            "font_size": item.rule.fontSizes[0]
+          }
+        })
+        $('#sunzi-input-sku').val(data.sku + '-' + variant.id);
+        $('#sunzi-input-crop').val(output.compose);
+        var textOrigin = output.texts[0];
+        var textData = {}
+        output.texts.forEach(function(item, index) {
+          var _key = index + 1;
+          textData[_key] = {
+            "fontFamily": item.rule.fonts[0].name,
+            "fontSize": item.fontSize,
+            "value": item.value
+          }
+        })
+        $('#sunzi-input-info').val(JSON.stringify({ _sunzi_sketch_source: image[0].src, _sunzi_one_pic_multi_text: textData }));
+        $('#sunzi-input-ai').val(image[0].src);
+      	$('#sunzi-input-json').val(JSON.stringify({ image, font }));
+      
+      	var specialSkus = ['CPT043X02','CPT076','CPT043X13'];
+        // 单图
+        if(data.block.images.length === 1 && specialSkus.indexOf(data.sku) < 0) {
+          usableInput("sunzi-input-info");
+          usableInput("sunzi-input-ai");
+          disableInput('sunzi-input-json');
+        }
+        // 多图
+        else {
+          usableInput("sunzi-input-json");
+          disableInput('sunzi-input-info');
+          disableInput('sunzi-input-ai');
+        }
+      
+      	$('#sunzi-cart').val(JSON.stringify({
+          'image': [ output.compose ]
+        }));
+
+        // 改变变体
+      	_sunzi_variant_change("{{variantSize}}", variant.pieces);      
+      
+      	//加车事件触发
+        $('.product-form__cart-submit').click();
+      
+        _sunzi_hide_loading();
+      
+      	// 展示效果图
+      	$('.sunzi-result').css('display','inline-block');
+        $('.sunzi-result-loading').show();
+        $('#sunzi-result-image').attr("src", "");
+        $('#sunzi-result-image').attr("src", output.compose + '?imageView2/0/w/300/interlace/1');
+        if (variant.cropImage) {
+          $('#sunzi-result-image-crop').attr("src", variant.cropImage);
+        }
+      },
+      function() {
+    	$("#sunzi-button-input").val("");
+      });
+  });
+  
+  /** 其他自定义函数 start **/
+  // 结果图加载完成
+  function resultOnload() {
+    $(".sunzi-result-loading").hide();
+    $("#sunzi-result-image").addClass("sunzi-result-image");
+  }
+  
+  // 禁用表单元素
+  function disableInput(id) {
+    var _dom = $("input[id='"+ id +"']");
+    _dom.attr({
+      type: "text",
+      disabled: true
+    });
+    _dom.hide();
+  }
+  
+  // 启用表单元素
+  function usableInput(id) {
+    var _dom = $("input[id='"+ id +"']");
+    _dom.removeAttr("disabled");
+  }
+  
+  // 初始化拼图类别
+  function initPuzzleFor(response) {
+    var html = '';
+    $.each(response.sizes, function(index, item) {
+      if(index == 0) {
+        html += '<div class="item active">'+ currentTranslate.kids +'</div>';
+      } else {
+        html += '<div class="item">'+ currentTranslate.adult +'</div>';
+      }
+    })
+    $('#puzzle-for .radio-group').html(html);
+    $('#puzzle-for .title span').html(currentTranslate.kids);
+    initPuzzleSize(0, response);
+  }
+
+  // 初始化拼图尺码
+  function initPuzzleSize(index, response) {
+    var sizes = response.sizes[index].options;
+    var html = '';
+    $.each(sizes, function(index, item) {
+      if(index == 0) {
+        html += '<div class="item active" data-pieces="'+ item.pieces  +'"><span>'+ item.size  +'</span><span>'+ item.pieces + ' ' + currentTranslate.pieces + ' </span></div>';
+      } else {
+        html += '<div class="item" data-pieces="'+ item.pieces  +'" ><span>'+ item.size  +'</span><span>'+ item.pieces + ' ' + currentTranslate.pieces + ' </span></div>';
+      }
+    })
+    $('#puzzle-size .radio-group').html(html);
+    $('#puzzle-size .title span').html(sizes[0].size + ' ('+ sizes[0].pieces + ' ' + currentTranslate.pieces + ')');
+    _sunzi_variant_change("{{variantSize}}",$('#puzzle-size .radio-group .active').data('pieces'));
+  }
+
+
+  // 拼图类别选中
+  $('#puzzle-for .radio-group').on('click','.item',function() {
+    if($(this).hasClass('active')) return;
+    $('#puzzle-for .radio-group .item').each(function(index, item) {
+      $(item).removeClass('active');
+    })
+    $(this).addClass('active');
+    initPuzzleSize($(this).index(), _sunzi_response);
+    $('#puzzle-for .title span').html($(this).text());
+  })
+
+
+  // 拼图尺码选中
+  $('#puzzle-size .radio-group').on('click','.item',function() {
+    if($(this).hasClass('active')) return;
+    $('#puzzle-size .radio-group .item').each(function(index, item) {
+      $(item).removeClass('active');
+    })
+    var index = $('#puzzle-for .radio-group .active').index();
+    var size = _sunzi_response.sizes[index].options[$(this).index()];
+    $(this).addClass('active');
+    _sunzi_variant_change("{{variantSize}}", $(this).data('pieces'));
+    $('#puzzle-size .title span').html(size.size + ' ('+ size.pieces + ' ' + currentTranslate.pieces + ')');
+  })
+  
+  // 拼图站点翻译
+  function puzzleTranslate() {
+    var shopLanguage = "{{sunzi_shop_language}}";
+    var translateLanguage = "";
+    var puzzleRelation = {
+      "en": {
+        "kids": "Kids",
+        "adult": "Adult",
+        "labelone": "Puzzle for",
+        "labeltwo": "Sizes",
+        "pieces": "Pieces"
+      },
+      "es": {
+        "kids": "Niño",
+        "adult": "Adulto",
+        "labelone": "Rompecabeza para",
+        "labeltwo": "Talla",
+        "pieces": "Piezas"
+      },
+      "de": {
+        "kids": "Kinder",
+        "adult": "Erwachsene",
+        "labelone": "Puzzle für",
+        "labeltwo": "Größe",
+        "pieces": "Stücke"
+      },
+      "it": {
+        "kids": "Bambino",
+        "adult": "Adulto",
+        "labelone": "Puzzle per",
+        "labeltwo": "Taglia",
+        "pieces": "Pezzi"
+      },
+      "fr": {
+        "kids": "Enfant",
+        "adult": "Adulte",
+        "labelone": "Puzzle pour",
+        "labeltwo": "Taille",
+        "pieces": "Pièces"
+      },
+      "br": {
+        "kids": "Filho",
+        "adult": "Adulto",
+        "labelone": "Quebra-cabeça para",
+        "labeltwo": "Tamanho",
+        "pieces": "Peças"
+      }
+    };
+    translateLanguage = ["en", "uk", "au"].indexOf(shopLanguage) > -1 ? "en": shopLanguage;
+    return puzzleRelation[translateLanguage];
+  }
+
+  /** 其他自定义函数 end **/
+</script>

@@ -1,0 +1,372 @@
+{%comment%}通过标签获取默认年份 {%endcomment%}
+{% assign defaultYear = '' %}
+{% for tag_item in product.tags %}
+  {% if tag_item contains "custom-default-year-" %}
+    {% assign defaultYear = tag_item | strip | replace: "custom-default-year-", "" %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+ {% assign noticeText = "zen.general.select_year_notice" | t %}
+<div class="date-container">
+  <div>{{ "zen.general.select_year" | t }}:</div>
+  <div><input type="text" id="datepicker" name="fonttext" readonly="readonly" value="{{defaultYear}}"></div>
+</div>
+
+<script>
+  {% if product.metafields["global"]["cattribute"] %}
+  var jsonCustom = JSON.parse('{{product.metafields["global"]["cattribute"]}}');
+  {% else %}
+  var jsonCustom = JSON.parse('{"options":[{"title":"Use this year","flag":1},{"title":"Custom yourself","flag":2},{"title":"Use This Year","flag":1}],"dateOption":"option3","carving":{"isMarkup":"1","option":"option1","coors":{"Steel Wire Braided Strap":{"sku":"WTC179","data":[{"left":154.2,"top":109.2,"limit":"30","angle":"0","textColor":"black","shadowColor":"","direction":"horizontal","isWrap":false,"banDrag":"0","lineHeight":"1","rows":1,"resize":"none","text":"","size":20,"font":"TimesNewRoman"}]},"Steel Strap":{"sku":"WTC180","data":[{"left":150,"top":92.4,"limit":"30","angle":"0","textColor":"black","shadowColor":"","direction":"horizontal","isWrap":false,"banDrag":"0","lineHeight":"1","rows":1,"resize":"none","text":"","size":20,"font":"TimesNewRoman"}]}}}}');
+  {% endif %}
+  
+  var isCustomJson = jsonCustom.options;
+  
+  var productImageUrl = "{{product.images[0] | product_img_url: '1000x1000' | prepend: 'https:'}}";
+  
+  {% assign currentVariant = product.selected_or_first_available_variant.title %}
+  var currentVariant = '{{currentVariant}}';
+  console.log(currentVariant);
+
+  var modal = new tingle.modal({
+    footer: true,
+    stickyFooter: false,
+    onOpen: function() {
+    },
+    onClose: function() {
+      //console.log('modal closed');
+    },
+    beforeClose: function() {
+      return true; // close the modal
+    }
+  });
+  modal.addFooterBtn('{{'zen.general.reselect' | t}}', 'tingle-btn tingle-btn--danger', function() {
+    if(_zenFlag == 1){
+      var val = '';
+      isCustomJson.forEach(function(item,index){
+        if(item.flag == 2){
+          val = item.title;
+        }
+      });
+      setShopifyVariant(dateOptionName, val,1)
+    }
+    modal.close();
+  });
+  modal.addFooterBtn('{{'zen.general.confirm' | t}}', 'tingle-btn tingle-btn--primary c_photo', function() {
+    if($('.mpw-add-to-cart').length > 0){
+      $('.mpw-add-to-cart').click();
+    }else{
+      $(".product-form__item--submit button").click();
+    }
+
+    modal.close();
+  });
+  
+  var isCarving = false;
+  
+  window.addEventListener('EVENT_ENGRAVING_SAVE_AFTER', function(event){
+    var index = event.detail.index;
+    var data = event.detail.data;
+    if(jsonCustom.carving.isMarkup == 1 && data.engraving[0].engravingCrop){
+      setShopifyVariant('{{'variant.title.Markup' | t}}', 1);
+      isCarving = true;
+      
+      $('.area-carving-preview-text .carving-pre-text').remove();
+      $('.preview-thumbnail').show();
+      
+    }
+	
+  });
+  
+  window.addEventListener('EVENT_ENGRAVING_CANCEL_AFTER', function(event){
+    if(jsonCustom.carving.isMarkup == 1){
+      setShopifyVariant('{{'variant.title.Markup' | t}}', 0);
+      isCarving = false;
+    }
+                        
+    $('.preview-thumbnail').hide();
+    if($('.carving-pre-text').length < 1){
+      $('.area-carving-preview-text').append('<span class="carving-pre-text">{{'zen.curvecarving.add_engravings_back' | t}}</span>');
+    }
+	
+  });
+  
+  var _zenEngravingSizeOptions = [
+    {
+      value: "20",
+      label: "20"
+    },
+    {
+      value: "30",
+      label: "30"
+    },
+    {
+      value: "40",
+      label: "40"
+    },
+    {
+      value: "50",
+      label: "50"
+    },
+    {
+      value: "60",
+      label: "60"
+    }
+  ];
+
+  var _zenEngravingFontOptions = [
+    {
+      value: "TimesNewRoman",
+      label: "TimesNewRoman"
+    },
+    {
+      value: "AlluraRegular",
+      label: "AlluraRegular"
+    },
+    {
+      value: "AppleChancery",
+      label: "AppleChancery"
+    },
+    {
+      value: "Holyunion",
+      label: "Holyunion"
+    },
+    {
+      value: "NexaScript-Free",
+      label: "NexaScript"
+    }
+  ];
+  
+  //如果配置信息中有font则使用font作为字体选项
+    if( typeof jsonCustom.carving.font !== 'undefined' && jsonCustom.carving.font ){
+      var json_font = jsonCustom.carving.font;
+      _zenEngravingFontOptions = [];
+      for(var j = 0; j < json_font.length; j++) {
+        var font_arr = [];
+        font_arr['value'] = json_font[j];
+        font_arr['label'] = json_font[j];
+        _zenEngravingFontOptions.push(font_arr);
+      }
+    }
+
+    //如果配置信息中有size则使用size作为字号选项
+    if( typeof jsonCustom.carving.size !== 'undefined' && jsonCustom.carving.size ){
+      var json_size = jsonCustom.carving.size;
+      _zenEngravingSizeOptions = [];
+      for(var k = 0; k< json_size.length; k++) {
+        var size_arr = [];
+        size_arr['value'] = json_size[k];
+        size_arr['label'] = json_size[k];
+        _zenEngravingSizeOptions.push(size_arr);
+      }
+    }
+  
+    var baseurl = 'https://pic.stylelab.com/';
+    var textUrl = "https://pic.stylelab.com/img/textdesign/";
+  
+  	var optionName = jsonCustom.carving.option;
+  	var dateOptionName = jsonCustom.dateOption;
+  
+    var optionList = {};
+  
+    var optionNum = 0;
+    
+    {% for option in product.selected_or_first_available_variant.options %}
+      optionNum++;
+      optionList['option'+optionNum] = '{{option}}';
+    {% endfor %}
+      
+    var optionVal = optionList[optionName];
+  	console.log('optionVal===========',optionVal);
+    var dateOptionVal = optionList[dateOptionName];
+  
+    var _zenSku = jsonCustom.carving.coors[optionVal].sku;
+    console.log(_zenSku);
+  
+    var _zenConfig = {
+      photoObj: [],
+      carvingObj: [],
+      crystalObj: [],
+      curveCarvingObj: [],
+      nameObj: [],
+      carvingBigObj: [],
+      cropPrompt: " ",   //刻字弹层提示文字, 可选, 默认无
+      uploadLoadingImage:"{{ 'sandglass.gif' | asset_img_url: '260x' }}",
+      leftText: "{{'zen.general.left' | t}}",
+      wrapperBackgroudColor: "#000000",
+      ifCarvingHorizontal:true,
+      isCloseOnClickModal:false,
+      actionInfo: "{{ 'zen.engrave.actionInfo' | t }}",
+      noteInfo: "{{ 'zen.general.type_words' | t }}",
+      fontRadioLabel:"{{ 'zen.general.font' | t }} :",
+      fontSizeSelectLabel:"{{ 'zen.general.font_size' | t }} :",
+      handcraftInfo: "",
+      textUrl: textUrl,
+      crop: [],
+      photo: [],
+      carving: [{
+    	require: false,
+        cWidth: typeof jsonCustom.carving.cWidth != 'undefined' ? jsonCustom.carving.cWidth : 300,//刻字画布的基础宽度 500不用变
+        cHeight: typeof jsonCustom.carving.cHeight != 'undefined' ? jsonCustom.carving.cHeight : 240,//刻字画布的基础高度 400不用变
+        baseWidth: typeof jsonCustom.carving.baseWidth != 'undefined' ? jsonCustom.carving.baseWidth : 300,//画布的实际宽度
+        previewText: "{{'zen.curvecarving.add_engravings_back' | t}}",  //左侧预览文字
+        btnText: "{{'zen.general.add' | t}}",     //按钮文案
+        type: "",
+        sku: _zenSku,
+        in:  _zenSku+"-IN.png",
+        out: _zenSku+"-OUT.png",
+        isBig: true,    //是否生成大图
+        bigParam: { width: 800, height: 640, fontWeight: 'bold', fontSize: 60},  //刻字大图参数 是只有文字的大图
+        showSize: true,  //是否显示字号选项
+        showFont: true,  //是否显示字体选项
+        engravingSizeOptions: _zenEngravingSizeOptions,
+        engravingFontOptions: _zenEngravingFontOptions,
+        isSelectStyle: false,
+        loadingFullScreen:true,
+        fontFamilyLabel: "{{ 'zen.photocarving.font' | t }}:",
+        fontSizeLabel: "{{ 'zen.photocarving.size' | t }}:",
+        confirmText:"{{'zen.general.add_engravings' | t}}",
+        cancelText:"{{'zen.general.without_engraving' | t}}",
+        textPlaceHolder:translation("{{ 'zen.engrave.noteInfo' | t }}"),
+        cropPrompt:' ',
+        coors: jsonCustom.carving.coors[optionVal].data
+      }],
+      crystal:[],
+      crystalText:[],
+      curveCarving:[]
+    };
+
+</script>
+
+<div class="photo-select-carving">
+  <div id="zen-photocarving"></div>
+</div>
+
+<input type="text" id="custom-info" name="properties[customInfo]" value="" style="display:none"/>
+
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.5.2/zen-photo-carving-chunk-vendors.css?202107061025" rel="stylesheet" />
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.5.2/zen-photo-carving-app.css?202107061025" rel="stylesheet" />
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.5.2/zen-photo-carving-chunk-vendors.js?202107061025"></script>
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.5.2/zen-photo-carving-app.js?202107061025"></script>
+
+<script>
+
+  Listener.on([ Listener.product.update.before ], function(event, variant) {
+    var cVariant = variant;
+    
+    if(typeof isCustomJson != "undefined" && dateOptionVal != cVariant[dateOptionName]){
+      dateOptionVal = cVariant[dateOptionName];
+      isCustomJson.forEach(function(item,index){
+        if(cVariant.title.toLowerCase().indexOf(item.title.toLowerCase()) > -1){
+          selectFunction(item.flag)
+        }
+      });
+    }
+
+    if(typeof productImageUrl != 'undefined' && cVariant.featured_image){
+      productImageUrl = cVariant.featured_image.src;
+    }
+    
+    if(optionVal != cVariant[optionName]){
+      optionVal = cVariant[optionName];
+      _zenSku = jsonCustom.carving.coors[optionVal].sku;
+      changeCarvingSku(_zenSku);
+      
+      isCarving = false;
+      setShopifyVariant('{{'variant.title.Markup' | t}}', 0);
+      
+      $('.preview-thumbnail').hide();
+      if($('.carving-pre-text').length < 1){
+      	$('.area-carving-preview-text').append('<span class="carving-pre-text">{{'zen.curvecarving.add_engravings_back' | t}}</span>');
+      }
+      
+    }
+
+  })
+  
+  $(function(){
+    $('.zen-require').attr('name','customVal');
+    
+    isCustomJson.forEach(function(item,index){
+      if(currentVariant.indexOf(item.title) > -1){
+        selectFunction(item.flag);
+      }
+    });
+    
+    $('#datepicker').datepicker({  
+      changeYear: true, 			// 年下拉菜单
+      showButtonPanel: true, 		// 显示按钮面板
+      currentText: "{{'zen.general.current_year' | t}}", 		// 当前日期按钮提示文字
+      dateFormat: "yy",		// 日期格式
+      yearRange: "1851:c",		//年份选择范围
+      defaultDate: new Date(parseInt('{{defaultYear}}'), 01, 01),
+      onClose: function(dateText, inst) {// 关闭事件
+        var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();//获取用户选择的年份值
+        var defaultDate = new Date(year, 01, 01);
+        $(this).datepicker( "option", "defaultDate", defaultDate );
+        $(this).datepicker('setDate', defaultDate);//月、日设置为12月25日，这里的月份数字要减一
+
+      }
+    });
+    
+  	$('.news-date-btn').click(function(){
+      if($.trim($('#datepicker').val()) == ''){
+        $('#datepicker').css('border-color','#ff0000');
+      }else{
+        $('#datepicker').css('border-color','#e7e7e7');
+        var zenCustomInfo = {};
+        zenCustomInfo['_sunzi_remark'] = {};
+        zenCustomInfo['_sunzi_remark']['year'] = $('#datepicker').val();
+        
+        if(isCarving){
+          var zenInfo = JSON.parse($(".zen-require").val());
+          
+          zenCustomInfo['_sunzi_text_effect'] = zenInfo.engraving[0].engravingCrop;
+          
+          zenCustomInfo['_sunzi_text'] = {};
+          zenCustomInfo['_sunzi_text']['value'] = zenInfo.engraving[0].engravingText;
+          let cSize  = zenInfo.engraving[0].engravingSize;
+          cSize += '';
+          zenCustomInfo['_sunzi_text']['fontSize'] = cSize;
+          zenCustomInfo['_sunzi_text']['font'] = zenInfo.engraving[0].engravingFont;
+        }
+        
+
+        if(typeof productImageUrl != 'undefined'){
+          zenCustomInfo['_sunzi_effect'] = productImageUrl;
+        }
+
+        $('#custom-info').val(JSON.stringify(zenCustomInfo));
+        modal.setContent('<div class="news-date-confirm-content"><p>{{ noticeText }}</p><p class="red">'+$( "#datepicker" ).val()+'</p></div>');
+        modal.open();
+      }
+      
+    });
+    
+  })
+  
+  function selectFunction(flag){
+    _zenFlag = flag;
+    if(flag == 1){//标品
+      $('#datepicker').val('{{defaultYear}}');
+      $('.date-container').hide();
+    }else{
+      $('#datepicker').val('');
+      $('.date-container').show();
+    }
+  }
+  
+  function setShopifyVariant(opName, val, type=0){
+    if(type == 1){
+    	$('select[data-option='+opName+']').val(val).trigger('change');
+    }else{
+    	$(".selector-wrapper label").each(function( index ) {
+          if($.trim($(this).text()).indexOf(opName) > -1){
+            $(this).next('select').val(val).trigger('change');
+          }
+        });
+    }
+    
+  }
+  
+</script>

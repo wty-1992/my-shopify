@@ -1,0 +1,240 @@
+{% comment %}
+** @name 手表集合 **
+** @author 罗鸿燊 **
+** @integrate 罗鸿燊 王天宇  **
+{% endcomment %}
+
+{% comment %} 引入公共插槽v2.0 {% endcomment %}
+{% include 'sunzi-slot-template-2' %}
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'watch-v1.0.0.js' %}
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/watch-wtc111.json' %}
+{% assign reactType = 'default' %}
+{% comment %}逆时针手表wtc111{% endcomment %}
+{% if product.tags contains 'custom-sunzi-type-watch-wtc111' %}
+  {% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/watch-wtc111.json' %}
+  {% assign reactType = 'default' %}
+{% comment %}逆时针手表wtc112{% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-type-watch-wtc112' %}
+  {% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/watch-wtc112.json' %}
+  {% assign reactType = 'FacutLineTime' %}
+{% comment %}逆时针手表wtc113{% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-type-watch-wtc113' %}
+  {% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/watch-wtc113.json' %}
+  {% assign reactType = 'PhotoTime' %}
+{% comment %}逆时针手表wtc114{% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-type-watch-wtc114' %}
+  {% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/watch-wtc114.json' %}
+  {% assign reactType = 'SilhouetteTime' %}
+{% comment %}逆时针手表-多图{% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-type-watch-multi' %}
+  {% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/watch-multi.json' %}
+  {% assign reactType = 'MultiPhoto' %}
+{% comment %}逆时针手表-照片融合融合-115{% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-type-watch-fusion-115' %}
+  {% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/watch-fusion-115.json' %}
+  {% assign reactType = 'PhotoFusion' %}
+{% comment %}逆时针手表-照片融合融合-117{% endcomment %}
+{% elsif product.tags contains 'custom-sunzi-type-watch-fusion-117' %}
+  {% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/watch-fusion-117.json' %}
+  {% assign reactType = 'PhotoFusion' %}
+
+{% endif %}
+
+
+{% comment %}变体元素{% endcomment %}
+{% assign vairantStyle = 0 %}
+{% assign vairantAddPrice = 1 %}
+
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 额外的表单参数 {% endcomment %}
+
+  {% comment %} 标记订单来源 {% endcomment %}
+  {% assign from = coreJs | split: '-v' %}
+  <input type="hidden" name="properties[_from]" value="sunzi-{{ from[0] }}" />
+  
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="text" id="sunzi-input" name="properties[customInfo]" required="required"></input>
+  <input type="hidden" id="sunzi-cart" name="properties[_sunzi_cart]" />
+
+  {% comment %} 定制按钮 {% endcomment %}
+  <div class="sunzi-form-content">
+    <div id="sunzi-node">
+      <div class="sunzi-node-loading">
+        <span class="dots">
+          <i></i>
+          <i></i>
+          <i></i>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- sunzi core js -->
+<script crossorigin src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{ coreJs }}" defer="defer"></script>
+
+{% comment %} 渲染前执行 {% endcomment %}
+<script defer="async">
+
+</script>
+
+{% comment %} 2.请求定制化数据 & 渲染 {% endcomment %}
+<script defer="async">
+  _sunzi_request('{{requestURL}}', function(data) {
+    // 定制化参数
+    var _sunzi_props = data;
+    var product = {{product | json}};
+    product.variants.forEach(variant => {
+      _sunzi_props.sizeData.find(sizeItem => {
+        if(variant.title.indexOf(sizeItem.name) > -1) {
+          var variantPrice = variant.price / 100;
+          sizeItem.name = variant.options[0];
+          variantPrice < sizeItem.price || !sizeItem.price && (sizeItem.price = variantPrice);
+          return true;
+        }
+      });
+    });
+    _sunzi_props.shop = _sunzi_global_data.shop;
+    // 加价价格
+    _sunzi_props.lineText.price = getAddPrice();
+    
+    Watch.render(
+      Watch['{{reactType}}'],
+      {
+        ..._sunzi_props,
+        onVariantChange(styleData) {
+          _sunzi_variant_change({{vairantStyle}}, styleData.name);
+        },
+        async onConfirm(data) {
+          // 唤醒loading
+          _sunzi_loading();
+
+          // 组装加车参数
+          var param;
+          if('{{reactType}}' === 'PhotoTime') {
+            param = {
+              '_sunzi_sources': data.front.source,
+              '_sunzi_effect': data.front.ai,
+              '_sunzi_ai': data.front.ai,
+              '_sunzi_remark': {
+                '1': data.front.year[0],
+                '2': data.front.year[1],
+                '3': data.front.year[2]
+              }
+            };
+          } else if('{{reactType}}' === 'SilhouetteTime') {
+            param = {
+              '_sunzi_effect': data.front.ai,
+              '_sunzi_ai': data.front.ai,
+              '_sunzi_remark': {
+                '1': data.front.year[0],
+                '2': data.front.year[1],
+                '3': data.front.year[2]
+              }
+            };
+       	  } else if('{{reactType}}' === 'MultiPhoto') {
+            param = {
+              '_sunzi_sources': data.front.source,
+              '_sunzi_elements': [ data.front.facut ],
+              '_sunzi_effect': data.front.ai,
+      		  '_sunzi_ai': data.front.ai,
+              '_sunzi_site_composes': [ data.front.ai ],
+              '_sunzi_remark': {
+                '1': data.front.text,
+                '2': data.front.year[0],
+                '3': data.front.year[1]
+              }
+            };
+    	  } else if('{{reactType}}' === 'PhotoFusion') {
+          param = {
+            '_sunzi_sources': data.front.source,
+            '_sunzi_effect': data.front.ai,
+            '_sunzi_ai': data.front.ai,
+            '_sunzi_sit_composes': [ data.front.ai ],
+            '_sunzi_remark': {
+              '1': data.front.year[0],
+              '2': data.front.year[1],
+              '3': data.front.year[2],
+            }
+          };
+        }
+        else {
+            param = {
+              '_sunzi_source': data.front.source,
+              '_sunzi_elements': [ data.front.facut ],
+              '_sunzi_effect': data.front.ai,
+              '_sunzi_site_composes': [ data.front.ai ],
+              '_sunzi_remark': {
+                '1': data.front.text,
+                '2': data.front.year[0],
+                '3': data.front.year[1]
+              }
+            };
+          }      
+          
+          // 如果存在刻字
+          if (data.back) {
+            param['_sunzi_text'] = {
+              value: data.back.text,
+              font: data.back.fontName,
+              fontSize: data.back.fontSize,
+            };
+            param['_sunzi_text_effect'] = data.back.effect;
+            param['_sunzi_text_ai'] = data.back.ai;
+            
+            // 加车刻字关联产品 / 改变变体 => 加价
+            // _queue.push(_sunzi_add_cart({
+            //  id: relatedProduct.virtualId
+            // }));
+            _sunzi_variant_change({{vairantAddPrice}}, 1);
+          }
+          
+          $('#sunzi-input').val(JSON.stringify(param));
+          $('#sunzi-cart').val(JSON.stringify({
+            image: [ '{{reactType}}' === 'SilhouetteTime' ? data.front.ai : data.front.source ]
+          }));
+          
+          // 加车队列
+          var _queue = [];
+
+          // 加车事件触发
+          await Promise.all(_queue);
+      	  // 由于主产品涉及vip/质保产品等额外加车事件的判断，因此沿用站点加车方法
+          Product.addFormToCart($('.product-form'), function() {
+            // 重置变体
+            _sunzi_variant_change({{vairantAddPrice}}, 0);
+          })
+          $('#sunzi-loading').hide();
+        }
+      },
+      _matomoId,
+      document.getElementById("sunzi-node")
+    );
+  });
+
+  /** 其他自定义函数 start **/
+  
+  // 获取加价
+  function getAddPrice() {
+    var styleValue = _sunzi_variant_value({{vairantStyle}});
+    var productJson = {{product | json}};
+    var curVariants = productJson.variants.filter(function(item) {return item.option1 == styleValue});
+    var addPrice = 0;
+    if(curVariants.length > 1) {
+      price = (curVariants[0].price - curVariants[1].price) / 100;
+      addPrice = Math.abs(price.toFixed(2));
+    }
+    return addPrice;
+  }
+
+  /** 其他自定义函数 end **/
+</script>

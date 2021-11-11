@@ -1,0 +1,154 @@
+<style>
+.product-info-link {        
+  position: relative;
+  padding-left: 1.8rem;
+  line-height: 1.3rem;
+  margin-bottom: .5rem;
+}
+.product-info-link:before{     
+  font-family: "photofont";
+  font-size: 1.4rem;
+  font-weight: 400; 
+  -webkit-font-smoothing: antialiased;
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #fdd16c;
+}
+.product-info-link.info:before {
+  content:"\e685";
+}
+.product-info-link.question-mark:before {
+  content: "\e6d4";
+} 
+.product-info-link.ruler:before {
+  content: "\e798";
+} 
+.product-info-link.envelope:before {
+  content: "\e710";
+} 
+.product-info-link.pencil:before {
+  content:"\e6c7";
+}
+.product-info-link.shirt:before {
+  content: "\e6d4";
+} 
+ 
+</style>
+
+{% if section.blocks.size > 0 %}
+  {% assign productTags = product.tags | join:',' %}	
+  <div class="product-more-info" style="margin-top: 2rem;">
+    {% for block in section.blocks %}    
+      {% if block.type =='additional_info' %}    
+        {% if block.settings.info_tag != blank %}
+            {% if productTags contains block.settings.info_tag %}
+                {% if block.settings.info_text != blank %}
+                  <p class="product-info-link {{ block.settings.info_icon }}">
+                    {% if block.settings.info_url != blank %}<a href="{{ block.settings.info_url }}">{% endif %}
+                       {% if block.settings.color_text != blank %}
+                          <font color="{{ block.settings.color_text}}">
+                        {% endif %}	
+                          {{ block.settings.info_text }}
+                    {% if block.settings.color_text != blank %}
+                          </font>
+                        {% endif %}	
+                    {% if block.settings.info_url != blank %}</a>{% endif %}
+                  </p>
+                  {% endif %}	
+             {% endif %} 
+        {% else %}
+          {% if block.settings.info_text != blank %}
+            <p class="product-info-link {{ block.settings.info_icon }}">
+              {% if block.settings.info_url != blank %}<a href="{{ block.settings.info_url }}">{% endif %}
+              {% if block.settings.color_text != blank %}
+                          <font color="{{ block.settings.color_text}}">
+                        {% endif %}	
+                    {{ block.settings.info_text}}
+                        {% if block.settings.color_text != blank %}
+                          </font>
+                        {% endif %}	    
+              {% if block.settings.info_url != blank %}</a>{% endif %}
+            </p>
+          {% endif %}
+    
+        {% endif %}
+	  {% endif %}    
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "产品页 - 超级属性",
+  "class": "product-page-more-info-section",
+  "max_blocks": 10,
+  "blocks": [
+    {
+      "type": "additional_info",
+      "name": "Additional info",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "[Additional info](https://s3.amazonaws.com/cdn.pixelunion.net/startup/additional-info-screenshot.png) appear wherever a customer can view product information. They’re perfect for linking to size charts, refund policies, or ordering details. Pick from six unique icons."
+        },
+		{
+          "type": "text",
+          "id": "info_text",
+          "label": "text",
+          "default": "<p>support html</p>"
+        },
+        {
+          "type": "url",
+          "id": "info_url",
+          "label": "Link URL"
+        },
+        { 
+			"type":"color",
+			"id":"color_text",
+			"label":"color",
+			"default":"#3d4246"
+	    },
+		{
+          "type": "text",
+          "id": "info_tag",
+          "label": "TAG"
+        },
+        {
+          "type": "select",
+          "id": "info_icon",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "info",
+              "label": "Information (i)"
+            },
+            {
+              "value": "question-mark",
+              "label": "Question mark"
+            },
+            {
+              "value": "ruler",
+              "label": "Ruler"
+            },
+            {
+              "value": "envelope",
+              "label": "Envelope"
+            },
+            {
+              "value": "pencil",
+              "label": "Pencil"
+            },
+            {
+              "value": "shirt",
+              "label": "Shirt"
+            }
+          ],
+          "default": "info"
+        }
+      ]
+    }
+  ]
+}
+
+{% endschema %}

@@ -1,0 +1,308 @@
+{% for block in section.blocks %}
+  {% if handle == block.settings.handle %}
+	{% if block.settings.enable %}  
+<style>
+  .remainTime{
+  	width:auto;
+  }
+  .blackfriday-time{   
+    height: 64px;
+    display: flex;
+    color: #fff;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    background: {{block.settings.color_bg}};
+}
+  .blackfriday-time svg{
+  }
+  .blackfriday-time .icon{
+    width: 48px;
+    height: 29px;
+    font-size: 34px;
+    color:{{block.settings.color_text}};
+  }
+  .blackfriday-time .icon:before {
+  	font-family: "photofont" !important;
+  }
+  .blackfriday-time ul li{
+    color: red;  
+    margin: 0 8px;
+    float:left;   
+  }
+  .blackfriday-time ul li span{
+    color:{{block.settings.color_text}};
+    font-size: 16px;
+    font-weight: normal;
+    display: inline-block;
+  }
+  .blackfriday-time ul li span.num{
+    width:30px;
+    font-size: 28px;
+    color: {{block.settings.color_time}};
+    display: inline-block;
+  }
+  .shopify-section.block-countdown-section {
+  	padding:0;
+  }
+  .blackfriday-time,.listicon{display:flex}
+  .time{display:flex;padding-top: 15px;}
+  .menutime{width:1200px;display: flex;justify-content: space-between;}
+  .listiconpad{margin-left:100px;display:flex;    margin-top: 10px;}
+  .itext{    margin-top: 12px;
+    margin-left: 10px;   
+    font-size: 16px;
+    color: #fff;
+    font-weight: 600;}
+  .blackfriday-time-mb{display:none}
+  .shuxian{  margin-left: 70px;}
+  @media(max-width:768px){
+    .blackfriday-time-pc{display:none}
+    .blackfriday-time-mb{display:block}
+    .blackfriday-time ul li{margin: 0 3px;}
+    .blackfriday-time ul li span{padding: 0 3px;}
+    .blackfriday-time ul li span.num{font-size: 24px;margin-top:5px}
+    .blackfriday-time ul li span.num1{font-size: 12px;    vertical-align: super;}
+    .blackfriday-time .icon {
+    width: 24px;
+    height: 29px;
+    font-size: 34px;
+    color: #fff;margin-top:2px;
+}
+    .menutime-mb {
+    display: flex;
+    flex-direction: column-reverse;
+}
+    .listiconpad-mb {
+    margin-left: 0px;
+    display: flex;
+}
+  .itext-mb{    margin-top: 12px;
+    margin-left: 3px;   
+    font-size: 12px;
+    color: #fff;
+    font-weight: 600;}
+  .blackfriday-time-mb,.listicon-mb{display:flex}
+  .time-mb{display:flex; background: {{block.settings.color_bg1}};justify-content: center;padding: 5px 0;}
+  .menutime-mb{width:1200px;display: flex;justify-content: space-between;}
+  .listicon-mb{ background: {{block.settings.color_bg}};justify-content: space-around;padding: 10px 0;}
+  }
+</style>
+    <div class="blackfriday-time blackfriday-time-pc" data-section-id="{{ section.id }}">
+      <div class="menutime">
+      <div class="time">
+      <span> {% include 'icon-blacktime' %}</span>
+      <div id="remainTime" class="remainTime"></div>   
+      </div>
+      <div class="shuxian"><img src="{{'count.png' | asset_url }}" style="height:64px"/></div>
+      <div class="listicon">
+       <a href="{{ block.settings.link1 }}"> <div class="listiconpad"><img src="{{block.settings.text1pic  | img_url: '40x'}}"/><div class="itext">{{block.settings.text1}}</div></div></a>
+       <a href="{{ block.settings.link2 }}"> <div class="listiconpad"><img src="{{block.settings.text2pic   | img_url: '40x'}}" /><div class="itext">{{block.settings.text2}}</div></div></a>
+       <a href="{{ block.settings.link3 }}"> <div class="listiconpad"><img src="{{block.settings.text3pic  | img_url: '40x'}}"/><div class="itext">{{block.settings.text3}}</div></div></a>
+      </div>
+      </div>
+    </div>
+
+    <div class="blackfriday-time-mb blackfriday-time" data-section-id="{{ section.id }}">
+      <div class="menutime-mb">
+      <div class="time-mb">
+      <span> {% include 'icon-blacktime' %}</span>
+      <div id="remainTime1" class="remainTime"></div>   
+      </div>
+      <div class="listicon-mb">
+       <a href="{{ block.settings.link1 }}"> <div class="listiconpad-mb"><img src="{{block.settings.text1pic  | img_url: '30x30'}}"/><div class="itext-mb">{{block.settings.text1}}</div></div></a>
+       <a href="{{ block.settings.link3 }}"> <div class="listiconpad-mb"><img src="{{block.settings.text3pic  | img_url: '30x30'}}"/><div class="itext-mb">{{block.settings.text3}}</div></div></a>
+       <a href="{{ block.settings.link2 }}"> <div class="listiconpad-mb"><img src="{{block.settings.text2pic   | img_url: '30x30'}}" /><div class="itext-mb">{{block.settings.text2}}</div></div></a>
+       
+      </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+    $(function(){
+      var now=new Date();
+      var end=new Date(2030,9,3,00,00,00);//结束的时间：年，月，日，分，秒（月的索引是0~11）
+      /*两个时间相减,得到的是毫秒ms,变成秒*/
+      var result=Math.floor(end-now)/1000; 
+      var interval=setInterval(sub,1000); //定时器 调度对象
+      /*封装减1秒的函数*/
+      function sub(){
+          if (result>1) {
+             result = result - 1; 
+             var second = buquan(Math.floor(result % 60),2);     // 计算秒 ，取余  
+             var minite = buquan(Math.floor((result / 60) % 60),2); //计算分 ，换算有多少分，取余，余出多少秒
+         var hour = buquan(Math.floor((result / 3600) % 24),2); //计算小时，换算有多少小时，取余，24小时制除以24，余出多少小时
+             //var day = buquan(Math.floor(result / (3600*24)),2);  //计算天 ，换算有多少天
+         $("#remainTime").html("<ul>" + "<li>"  + "<span class='num'>"+ hour + "</span>" + "<span >&nbsp; {{'activity.countdown.hours' | t}}</span>" + " </li> " + "<li>"+"<span class='num'>"+ minite + "</span> " + "<span >&nbsp; {{'activity.countdown.mins' | t}}</span>"+"</li>" + "<li>"+ "<span class='num'>"+ second + "</span>" + "<span >&nbsp; {{'activity.countdown.sec' | t}}</span>"  +"<li>"+"</ul>");
+            }  else{
+              window.clearInterval(interval);//这里可以添加倒计时结束后需要执行的事件 
+          }
+      
+      };
+    });
+       
+      var now1=new Date();
+      var end1=new Date(2030,9,3,00,00,00);//结束的时间：年，月，日，分，秒（月的索引是0~11）
+      /*两个时间相减,得到的是毫秒ms,变成秒*/
+      var result1=Math.floor(end1-now1)/1000; 
+      var interval1=setInterval(sub1,1000); //定时器 调度对象
+      /*封装减1秒的函数*/
+      function sub1(){
+          if (result1>1) {
+             result1 = result1 - 1; 
+             var second1 = buquan(Math.floor(result1 % 60),2);     // 计算秒 ，取余  
+             var minite1 = buquan(Math.floor((result1 / 60) % 60),2); //计算分 ，换算有多少分，取余，余出多少秒
+             var hour1 = buquan(Math.floor((result1 / 3600) % 24),2); //计算小时，换算有多少小时，取余，24小时制除以24，余出多少小时
+             //var day = buquan(Math.floor(result / (3600*24)),2);  //计算天 ，换算有多少天
+             $("#remainTime1").html("<ul>" + "<li>"  + "<span class='num'>"+ hour1 + "</span>" + "<span class='num1'>&nbsp;{{'activity.countdown.hours' | t}}</span>" + " </li> " + "<li>"+"<span class='num'>"+ minite1 + "</span> " + "<span class='num1'> {{'activity.countdown.mins' | t}}</span>"+"</li>" + "<li>"+ "<span class='num'>"+ second1 + "</span>" + "<span class='num1'> &nbsp;{{'activity.countdown.sec' | t}}</span>"  +"<li>"+"</ul>");
+            }  else{
+              window.clearInterval(interval1);//这里可以添加倒计时结束后需要执行的事件 
+          }
+      
+      };
+ 
+    function buquan(num,length){
+      var numstr = num.toString();
+      var l=numstr.length;
+      if (numstr.length>=length) {return numstr;}    
+      for(var  i = 0 ;i<length - l;i++){
+        numstr = "0" + numstr;  
+       }
+      return numstr; 
+     }
+    </script> 
+	{% endif %}
+  {% endif%}
+{% endfor %}
+{% schema %}
+  {
+    "name": "Block 倒计时",
+    "class": "activity-template-countdown",
+    "settings": [
+      {
+        "type": "text",
+        "id": "private",
+        "label": "程序参考字段默认勿动",
+        "default": "newactive2019-countdown"
+      }      
+    ],
+    "blocks": [
+      {
+      "type": "countdown",
+      "name": "活动页倒计时",
+      "settings": [
+		{
+		  "type": "text",
+          "id": "title",
+          "label": "哪个活动"
+	    },
+		{
+		  "type": "text",
+          "id": "handle",
+          "label": "活动url"
+	    },
+{
+				"type": "image_picker",
+				"id": "text1pic",
+				"label":"icon1"
+			},
+{
+				"type": "image_picker",
+				"id": "text2pic",
+				"label":"icon2"
+			},
+{
+				"type": "image_picker",
+				"id": "text3pic",
+				"label":"icon3"
+			},
+{
+		  "type": "text",
+          "id": "text1",
+          "label": "logo文字1"
+	    },
+{
+		  "type": "text",
+          "id": "text2",
+          "label": "logo文字2"
+	    },
+{
+		  "type": "text",
+          "id": "text3",
+          "label": "logo文字3"
+	    },
+{
+            "type": "url",
+            "id": "link1",
+            "label": {
+              "en": "Link1",
+              "de": "Link1",
+              "fr": "Lien1"
+            },
+            "info": {
+              "en": "Optional1",
+              "de": "Optional1",
+              "fr": "Facultatif1"
+            }
+          },
+{
+            "type": "url",
+            "id": "link2",
+            "label": {
+              "en": "Link2",
+              "de": "Link2",
+              "fr": "Lien2"
+            },
+            "info": {
+              "en": "Optional2",
+              "de": "Optional2",
+              "fr": "Facultatif2"
+            }
+          },
+{
+            "type": "url",
+            "id": "link3",
+            "label": {
+              "en": "Link3",
+              "de": "Link3",
+              "fr": "Lien3"
+            },
+            "info": {
+              "en": "Optional3",
+              "de": "Optional3",
+              "fr": "Facultatif3"
+            }
+          },
+        {
+          "type": "checkbox",
+          "id": "enable",
+          "label": "开启"
+        },
+        {
+          "type":"color",
+          "id":"color_bg",
+          "label":"背景颜色",
+          "default":"#280f12"
+        },
+{
+          "type":"color",
+          "id":"color_bg1",
+          "label":"背景颜色1",
+          "default":"#280f12"
+        },
+        {
+          "type":"color",
+          "id":"color_text",
+          "label":"文字颜色",
+          "default":"#fff"
+        },
+        {
+          "type":"color",
+          "id":"color_time",
+          "label":"时间颜色",
+          "default":"#F70724"
+        }
+      ]
+      }    
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,257 @@
+<style>
+.description-tabs{
+  margin: 2rem 0;
+}
+.description-tabs__line{
+  line-height: 1.5rem;
+  word-spacing: 2px;
+}
+.product-page-price-countdown{
+  display: flex;
+  justify-content: space-between; 
+  align-items: flex-start;
+  flex-flow: wrap;
+}
+.template-product .breadcrumb {
+  background: unset;
+  padding: 20px 0px;
+  display: block;
+  line-height: 1;
+}
+.product-page {
+  max-width: 1263px;
+  margin-bottom:3rem;
+  padding-top:72px;
+  color: #222;
+}
+.namenecklace-photo .view-name span{
+  color:#000;
+}
+.template-product .page-width-t .collection-navigation__title{
+  width:1228px;
+  border-bottom:1px solid #eaecef;
+  margin: auto;
+  text-align: center;
+}
+/* description-tabs-begin */
+.description-tabs dl, .description-tabs dt, .description-tabs dd{
+  margin:0px;
+  padding:0px;
+  display:block;
+}
+.description-tabs dt {
+  border-top: 1px solid #f7f7f7;
+  border-bottom: 1px solid #f7f7f7;
+  height: 50px;
+  line-height: 50px;
+  margin-bottom: -1px;
+  font-size: 12px;
+  color: #999;
+  padding: 0 20px;
+  text-transform: uppercase;
+  overflow: hidden;
+  cursor: pointer;
+  font-weight: 600;
+  position: relative;
+}
+.description-tabs dl.active dt{
+  color:#000;
+}
+.description-tabs dt .symbol {
+  position: absolute;
+  width: 40px;
+  height: 30px;
+  display: block;
+  top: 25%;
+  right: 2%;
+}
+.col{padding:0;color: #000;}
+.description-tabs dt .symbol:before{
+  content: "";
+  width: 12px;
+  height: 2px;
+  background-color: #999;
+  position: absolute;
+  left: 10px;
+  top: 11px;
+  transform: rotate(90deg);
+  transition: transform 0.3s;
+}
+.description-tabs dt .symbol:after{
+  content: "";
+  width: 12px;
+  height: 2px;
+  background-color: #999;
+  position: absolute;
+  right: 18px;
+  top: 11px;
+  transform: rotate(180deg);
+}
+.description-tabs dd p{
+  margin-bottom: 5px;
+  padding: 0 10px;
+  color: #999;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.description-tabs dl.active dt .symbol:before{
+  transform:rotate(180deg);
+  background: #000;
+}
+.description-tabs dl.active dt .symbol:after{
+  background: #000;
+}
+.description-tabs dd {
+  padding: 10px;
+  display:none;
+}
+
+.description-tabs dl.active dd{
+  display:block;
+}
+.description-tabs__line_ul_style>ul{
+  list-style: disc;
+  padding-left: 4px;
+}
+.product-page  .row{
+  justify-content: space-between;
+}
+.product-page .product-page__mb {
+  width: 65.3%;
+  max-width: 825px;
+  position: relative;
+}
+.product-page .product-page__mb__bottom{
+  width: 34.7%;
+}
+.template-product .page-width-t .collection-navigation__title{
+  width:100%;
+} 
+button.btn.product-form__cart-submit:focus{
+  box-shadow:none;
+}
+.description-tabs__line_ul_style span{
+  font-size: 12px;
+  padding: 0 5px 0 10px;
+  display: block;
+  line-height: 1.4;
+}
+.my-review-tabbar-con .my-review-sort ul.my-review-sort-ul>li{min-width:150px;word-break: break-all;}
+.my-review-pagination button.my-pre-page:disabled, .my-review-pagination button.my-next-page:disabled,.my-review-pagination button.my-pre-page, .my-review-pagination button.my-next-page,.my-review-pagination button.my-pre-page:hover, .my-review-pagination button.my-next-page:hover{
+  color: #3085c7;
+}
+.my-review-pagination ul.my-pager-con>li{
+  color:#3085c7;
+}
+.my-review-pagination ul.my-pager-con>li.on,.my-review-pagination ul.my-pager-con>li:hover{
+  color:#599dd2;
+  font-weight: 900;
+}
+@media(max-width:768px){
+  .product-page .row{
+    margin:0px; 
+  }
+  .product-page .row .product-page__mb{
+    padding-right: 0; 
+    padding-left: 0; 
+  }
+  .product-page-price-countdown { 
+    align-items: flex-end;
+  }
+  .product-page{
+    padding-top: 1.5rem;
+    margin-bottom: 0rem; 
+  } 
+  #countdowner{
+    margin-top: 10px;
+  }
+  #countdowner span{
+    padding-right:15px;
+  }
+  .product-page .product-page__mb__bottom{
+    width:100%;
+  }
+  .product-page-assoclate{
+    display: flex;
+    flex-flow: column;
+  }
+  .product-page-infos-section{
+    order: 2;
+  }
+  .product-page-price-countdown{
+    order: 3;
+  }
+  #shopify-section-product-page-related{
+    order: 1;
+  }  
+}
+@media(max-width:640px){
+  .container.product-page{
+    padding:0px
+  }
+  .product-page-images-section .preview {
+    margin: 0 1rem;
+  }
+}
+</style>
+<link rel="stylesheet" type="text/css" href="https://soufeel-commentpic.oss-us-east-1.aliyuncs.com/library/main/reviews.min.css" media="all" />
+<script type="text/javascript" src="https://soufeel-commentpic.oss-us-east-1.aliyuncs.com/library/main/reviews.min.js"></script>
+{{ 'sco.countdown.js' | asset_url | script_tag }}
+<meta itemprop="name" content="{{ product.title }}">
+<meta itemprop="url" content="{{ shop.url }}{{ product.url }}">
+<meta itemprop="image" content="{{ product.featured_image.src | img_url: '600x600' }}">
+<meta itemprop="brand" content="{{ product.vendor }}">
+{% comment %}    
+	add product banners section by lixiang 2019-3-26
+{% endcomment %} 
+
+<div class="container product-page">
+    <div class="row">
+        <div class="product-page__mb">
+          {% section 'product-page-images' %} 
+        </div>
+        <div class="product-page__mb__bottom">      
+          <div class="product-page-assoclate">
+            {% section 'product-page-infos' %}
+            <div class="product-page-price-countdown">
+              {% section 'product-page-price' %}
+            </div>
+            {% section 'product-page-related' %}
+          </div>
+          {% section 'product-page-detail-heengfu' %}            
+          {% section 'product-page-add_to_cart' %}                 
+          {% section 'product-page-plans' %}
+          <div>
+            {{product.description}}
+          </div>
+
+        </div> 
+    </div>
+</div> 
+{% comment %}产品介绍部分{% endcomment %}
+{% section 'product-page-introduce' %}
+{% comment %}产品推荐部分{% endcomment %}
+{% section 'product-page-recommendation' %}
+<script>
+  $(document).ready(function(){
+      var reviews = new MyReviews({
+        merchant_id: 'soufeel.com', // 必传
+        host: 'https://myreview.maiyuan.online' // 未必传
+        // host: 'http://127.0.0.1:8000' // 未必传
+      })
+      reviews.init();
+  })
+</script>
+
+<script>
+Product.init({{ product | json }});
+</script><div id="wc_review_section" class="wc_review_main_content" data-url="{{ shop.url }}" data-handle="{{ product.handle }}" data-limit="0"></div>
+
+<script>
+  fbq('track', 'ViewContent',{
+  	content_type: "product_group",
+    currency: "{{shop.currency}}",
+    content_ids: [{{product.id}}],
+    value: '{{product.price| divided_by: 100.0}}'
+  });
+</script>

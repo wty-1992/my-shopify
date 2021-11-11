@@ -1,0 +1,68 @@
+{{ 'jquery-ui.min.css' | asset_url | stylesheet_tag }} 
+{{ 'jquery-ui.min.js' | asset_url | script_tag }}
+<style>
+  .ui-widget-header .ui-icon {
+  	background-image: url({{ 'ui-icons_444444_256x240.png' | asset_url }});
+  }
+  .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover {
+    border: 1px solid #e60044 !important;
+    background: #e60044 !important;
+  }
+  #ui-datepicker-div {
+  	z-index: 1001 !important;
+  }
+  #datepicker {
+    border: 1px solid #f8f8f8;
+    height: 56px;
+    width: 100%;
+    margin-top: 10px;
+    padding-left: 15px;
+    background: #f8f8f8;
+  }
+  .news-date-title {
+  	color: #000;
+  }
+  .datepickerinput {
+  	position: relative;
+  }
+  .datepickerinput span.icon.photofont.photo-unfold {
+    position: absolute;
+    right: 12px;
+    top: 44%;
+  }
+  .news-date-confirm-content {
+  	text-align: center;
+  }
+  .news-date-confirm-content p {
+  	font-weight: 600;
+  }
+  .red {
+  	color: red;
+  }
+  
+  {% comment %}只选择年，隐藏选择日期和月份{% endcomment %}
+  {%if productTags contains 'custom-newspaper-christmas' %}
+    .ui-datepicker select.ui-datepicker-year {
+      width: 90%;
+    }
+    .ui-datepicker-calendar,.ui-datepicker-month,.ui-datepicker-prev,.ui-datepicker-next{
+      display: none;
+    }
+    .ui-datepicker-current {
+	  opacity: 1 !important;
+      
+    }
+    .ui-datepicker-close {
+	  font-weight: normal !important;
+    }
+  {% endif %}
+  
+  @media (max-width: 768px) { 
+    .news-date-confirm-content {
+      margin-top: 200px;
+    }
+    .tingle-modal--visible .tingle-modal-box__footer {
+    	bottom: 200px !important;
+    }
+  }
+</style>

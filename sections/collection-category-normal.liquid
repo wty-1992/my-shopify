@@ -1,0 +1,198 @@
+{% comment %}
+** @name 目录模块 **
+** @author 王天宇 **
+** @integrate 王天宇 **
+{% endcomment %}
+<style>
+  .main-container-category {
+  	width: 100%;
+    background: #F6F6F9;
+  }
+  .section-normal-category {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    padding: 56px 0 120px;
+    width: 100%;
+    max-width: 1372px;
+    
+    color: #222;
+  }
+  .section-normal-category .category-title {
+    margin-bottom: 14px;
+    height: 80px;
+    font-size: 32px;
+	line-height: 80px;
+  }
+  .section-normal-category .category-content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  .category-content .collection-item {
+    margin-bottom: 28px;
+    width: 32%;
+    border-radius: 4px;
+  }
+  .collection-item .item-top {
+    position: relative;
+  }
+  .item-top .top-featured {
+  	width: 100%;
+  }
+  .item-top .top-shadow {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(34 34 34 / 40%);
+  }
+  .item-top .top-text {
+  	position: absolute;
+    bottom: 16px;
+    left: 28px;
+    color: #fff;
+  }
+  .top-text .text-title {
+    height: 32px;
+    font-size: 24px;
+    line-height: 32px;
+  }
+  .top-text .text-price {
+    display: flex;
+    align-items: center;
+    height: 32px;
+    font-size: 12px;
+    line-height: 32px;
+    margin-right: 20px;
+  }
+  .top-text .text-price span {
+  	margin-right: 20px;
+  }
+  .collection-item .item-bottom {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 28px;
+    background: #fff;
+  }
+  .item-bottom .bottom-product {
+    display: block;
+  	width: 25%;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .bottom-product img {
+  	width: 100%;
+    margin-bottom: 
+  }
+  .bottom-product .product-price {
+  	font-size: 16px;
+    line-height: 2;
+  }
+  @media (max-width: 768px) {
+    .section-normal-category {
+      padding: 0 20px 12px;
+    }
+    .section-normal-category .category-title {
+      margin: 12px 0; 
+    }
+    .section-normal-category .category-content {
+      flex-wrap: nowrap;
+      flex-direction: column;
+    }
+    .category-content .collection-item {
+      width: 100%;
+    }
+    .collection-item .item-bottom {
+      padding: 20px 0;
+    }
+    .item-top .top-featured {
+      height: 230px;
+    }
+  }
+</style>
+<div class="main-container-category alifont">
+  <div class="section-normal-category">
+    <div class="category-title alifont_bold">{{section.settings.title_text}}</div>
+    <div class="category-content">
+      {% for block in section.blocks %}          
+      {% if block.type =='category_collection' %}
+      {% assign cur_collection = collections[block.settings.collection] %}
+      <div class="collection-item">
+        <div class="item-top">
+          <img class="top-featured" src="{{block.settings.position_image | img_url: '500x' }}" alt="">
+          <div class="top-shadow"></div>
+          <div class="top-text">
+            <div class="text-title alifont_bold">{{block.settings.title}}</div>
+            <div class="text-price alifont_bold">
+              <span>Starting from {{block.settings.minimum_price}}</span>
+              <img src="{{ 'arrow-right.svg' | asset_url }}" alt="">
+            </div>
+          </div>
+        </div>
+        <div class="item-bottom">
+          {% for product in cur_collection.products limit:3 %}
+          <a class="bottom-product" href="{{ product.url }}">
+            <img src="{{product.featured_image | img_url }}" alt="">
+            <div class="product-price alifont_bold">{{product.price | money }}</div>
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<script>
+
+</script>
+
+{% schema %} 
+{
+  "name": "产品-目录-通用",
+  "class":"common-top5-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title_text",
+      "label": "模块标题",
+      "default": "Category"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category_collection",
+      "name": "目录展示集合",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "集合名称",
+          "info": "不设置默认显示集合名称"
+        },
+        {
+          "type": "text",
+          "id": "minimum_price",
+          "label": "集合产品最低价格",
+          "default": "19.99"
+        },
+	  	{
+          "type": "image_picker",
+          "id": "position_image",
+          "label": "集合展示图",
+          "info": "16 / 9"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "集合"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

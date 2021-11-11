@@ -1,0 +1,125 @@
+{% comment %}
+** @name 渔夫帽子**
+** @author laozien **
+** @integrate laozien wangtianyu **
+{% endcomment %}
+
+{% comment %} 引用公共插槽 {% endcomment %}
+{% include 'sunzi-slot-template-2' %}
+
+{% comment %} 调用参数 {% endcomment %}
+
+{% comment %} 变体 {% endcomment %}
+{% assign variantColor = 0 %}
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'fisher-cap-v1.0.0-beta.js' %}
+{% comment %} 定制化数据地址 {% endcomment %}
+{% comment %} 渔夫帽 {% endcomment %}
+{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/fisher-cap.json' %}
+
+{% comment %} 棒球帽 {% endcomment %}
+{% if product.tags contains 'custom-baseball-cap' %}
+{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/baseball-cap.json' %}
+{% endif %}
+
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+  select{
+    outline: none;
+  }
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 标记订单来源 {% endcomment %}
+  {% assign from = coreJs | split: '-v' %}
+  <input type="hidden" name="properties[_from]" value="sunzi-{{ from[0] }}" />
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="text" id="sunzi-input" name="properties[customInfo]" required="required"></input>
+<input type="hidden" id="sunzi-cart" name="properties[_sunzi_cart]" />
+{% comment %} 定制按钮 {% endcomment %}
+<div class="sunzi-form-content">
+  <div id="sunzi-node">
+    <div class="sunzi-node-loading">
+      <span class="dots">
+        <i></i>
+        <i></i>
+        <i></i>
+      </span>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- sunzi core js -->
+<script crossorigin src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{coreJs}}" defer="defer"></script>
+
+{% comment %}  2.请求定制化数据& 渲染 {% endcomment %}
+<script defer="defer">
+  _sunzi_request('{{ requestURL }}', function(data){
+    //初始化数据
+    initData(data);  	
+    FisherCap.render(
+      FisherCap.default,
+      {
+        ...data,
+        addPrice:0.99,
+        price:22.76,
+        shop: _sunzi_global_data.shop,
+        //选择帽子事件
+        onSelectCaps(...data){
+          data.forEach(function(item, index) {
+            if(item) _sunzi_variant_change(index, item.color); 
+          });
+        },
+        async onConfirm(output) {
+          _sunzi_loading();
+
+          var {effectImage,textData} =output
+          // 组装加车参数
+          var param = {
+            '_sunzi_effect':effectImage,
+            '_sunzi_text':textData
+          };
+          $('#sunzi-input').val(JSON.stringify(param));
+          $('#sunzi-cart').val(JSON.stringify({
+            image: [ effectImage ]
+          }));
+
+          // 加车队列
+          var _queue = [];
+
+          // 加车事件触发
+          await Promise.all(_queue);
+          // 由于主产品涉及vip/质保产品等额外加车事件的判断，因此沿用站点加车方法
+          $('.product-form__cart-submit').click();
+          $('#sunzi-loading').hide();
+        }
+      },
+      _matomoId,
+      document.getElementById("sunzi-node")
+    )                 
+  })
+
+  /** 其他自定义函数 start **/	
+  // 初始化数据
+  function initData(data) {
+    var productJSON = {{product | json}};
+    var colorList = productJSON.variants.map(variant => {
+      return {
+        color: variant.options[{{variantColor}}],
+        price: variant.price / 100
+      }
+    });
+    data.colorVariant[0].children = data.colorVariant[0].children.filter(child => {
+      return colorList.find(item => {
+        if(item.color == child.color) {
+          child.price = item.price;
+          return true;
+        }
+      });
+    });
+  }
+  /** 其他自定义函数 end **/
+</script>

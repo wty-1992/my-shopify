@@ -1,0 +1,191 @@
+{{ 'zen-custom.scss.css' | asset_url | stylesheet_tag }}
+{{ 'api.jquery.js' | shopify_asset_url | script_tag }}
+<script src="{{ 'jquery-ui.min.js' | asset_url }}"></script>
+<script src="{{ 'fabric.min.js' | asset_url }}"></script>
+<script src="{{ 'qiniu.min.js' | asset_url }}" ></script>
+<script src="{{ 'zen-base.js' | asset_url }}"></script>
+<script src="{{ 'zen-photo.js' | asset_url }}"></script>
+<div id="simple-photo-body" style="display:none;">
+  <button type="button" class="close-new custom-close close" data-action="close">
+    <i class="photofont icon photo-close"></i>
+  </button>
+  <div id="tabs" class="soufeel-tabs-photo customer-photo">
+    <ul style="display:none;">
+      <li><a id="photo-upload"  data-index="0" href="#tabs-0">{{ 'zen.photo.upload_photo' | t }}</a></li>
+      <li><a id="photo-loading" data-index="1" href="#tabs-1">{{ 'zen.general.loading' | t }}</a></li>
+      <li><a id="photo-demo"    data-index="2" href="#tabs-2">{{ 'zen.photo.demo' | t }}</a></li>
+	  <li><a id="photo-big"     data-index="3" href="#tabs-3">{{ 'zen.photo.bigimage' | t }}</a></li>
+    </ul>
+    <div id="tabs-0" class="upload-photo">
+      <canvas id="photocanvas"></canvas>
+      <div class="docs-buttons">
+      
+       <button type="button" class="btn  btn-adjuster" data-method="move-left"><i class="photofont icon photo-xiangzuo"></i></button>
+        <button type="button" class="btn  btn-adjuster" data-method="move-right"><i class="photofont icon photo-xiangyou"></i></button>
+        <button type="button" class="btn  btn-adjuster" data-method="move-up"><i class="photofont icon photo-xiangshang"></i></button>
+        <button type="button" class="btn  btn-adjuster" data-method="move-down"><i class="photofont icon photo-xiangxia"></i></button>
+        <button type="button" class="btn  btn-adjuster" data-method="zoom-big"><i class="photofont icon photo-jia"></i></button>
+        <button type="button" class="btn  btn-adjuster" data-method="zoom-small"><i class="photofont icon photo-jian"></i></button>
+        <button type="button" class="btn  btn-adjuster" data-method="rotate-left"><i class="photofont icon photo-zuoxuan"></i></button>
+        <button type="button" class="btn  btn-adjuster" data-method="rotate-right"><i class="photofont icon photo-youxuan"></i></button>
+        <!--         <button type="button" class="btn btn-primary btn-adjuster" data-method="reset">Reset</button> -->
+      </div>
+      <div class="ps">{{ 'zen.photo.ps_please_well' | t }}</div>
+      <button class="btn-confirm" type="button" id="confirm" >{{ 'zen.general.confirm' | t }}</button>
+      <div class="after-preview">
+       <span>{{ 'zen.photo.change_picture' | t }} </span>
+        <input type="file" id="changePhotoInput">
+      </div>
+    </div>
+    <div id="tabs-1">
+      <div id="cloading">
+        <img class="cloadingimg" src="{{section.settings.upload_loading_image | img_url: 'master'}}" />
+        <div class="sprogress">
+          <div class="sbar" style="width: 0%;">0%</div>
+        </div>
+      </div>
+    </div>
+    <div id="tabs-2"><!--demo-->
+	  <div class="demo-img">
+    {% if product.type == 'Watch' %}
+      <img width="90%" src="{{ 'photocharmswatch-alert.jpg' | asset_img_url: '750x' }}" />
+    {% else %}
+      <img width="90%" src="{{ 'photocharms-alert.jpg' | asset_img_url: '750x' }}" />
+    {% endif%}
+    </div>
+	</div>
+	<div id="tabs-3"><!--big image-->
+	  <div class="big-img"><img src="" /></div>
+	</div>
+  </div> 
+</div>
+
+<div class="upload-images-photo">
+  <div class="upload-images">
+    <input type="file" id="photoFile" class="photo-input">
+    <span class="add-img">
+      <span>{{'zen.photocarving.upload_a_picture' | t}}</span>
+      <i class="photofont icon photo-upload"> </i> 
+    </span>
+    <div class="validation-advice" id="advice-validate-select-photo" style="display:none;">{{ 'zen.general.required_field' | t }}.</div>
+  </div>  
+</div>
+<div class="upload-images-photo editzoom after" style="display:none;">
+	<div class="big">
+      <img id="preview-crop" width="50" height="40" src="">
+      <i class="icon photofont photo-view-fangda"></i>
+    </div>
+	<div class="after-preview">
+		<span>{{'zen.photo.change_picture' | t}} </span>
+        <input type="file" id="changePhotoInput">
+	</div>
+</div>
+<input type="text" id="piccrop" name="properties[crop]"   value="" style="display:none" required />
+<input type="text" id="picai"   name="properties[ai]"     value="" style="display:none" required />
+<input type="text" id="picorigin" name="properties[origin]" value="" style="display:none" required/>
+<script>
+  $( "#tabs" ).tabs();
+  var simpleModal = new tingle.modal({ 
+    closeMethods: ['escape']
+  });
+  simpleModal.setContent('<div id="simple-photo-modal" class="simple--modal"></div>');
+  $("#simple-photo-modal").html($('#simple-photo-body').contents());
+  var jsonCustom = JSON.parse('{{ product.metafields["global"]["cattribute"] }}');
+  var uphoto = new uphoto({
+    "canvasid": "photocanvas",
+    "type": 1, //1:照片 2:刻字
+    //"baseImg"  : ubase.util.picurl + "img/photo/{{ product.variants.first.sku }}.png",
+	"baseImg": "{{ productItem }}.png",
+    "sku": "{{ productItem }}",
+    "cWidth": 500,
+    "cHeight": 400,
+  });
+  $("#photoFile, #changePhotoInput").change(function(e){
+    $("#tabs").tabs("option", "active", $('#photo-upload').data('index'));
+    var file = e.target.files[0];
+    $(this).val("");
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function(evt) {
+      uphoto.compress(uphoto, evt.target.result);
+      uphoto.change(uphoto,evt.target.result);
+      simpleModal.open();
+    }
+  });
+  $(".btn-adjuster").click(function(){
+    uphoto.adjuster($(this).data('method'));
+  });
+  $("#confirm").click(function(){
+    //uphoto.compress(uphoto, '123');
+    if(uphoto.request.originImage){
+      if(jsonCustom.bgcolor){
+        console.log('aaa',jsonCustom);
+        uphoto.request.bgcolor = jsonCustom.bgcolor;
+      }
+      var time=new Date().getTime();
+      var loaded=0;
+      uphoto.serverUpload(uphoto.request, function(){
+        $("#tabs").tabs("option", "active", $('#photo-loading').data('index'));
+      }, function(e){
+        var nowDate = new Date().getTime();
+        if (nowDate - time >= 100) {
+          percentage = parseInt(e.loaded / e.total * 100);
+          velocity = (e.loaded - loaded) / 1024;
+          $(".sbar").css({'width':percentage+'%'}).html(percentage+'%');
+          if (percentage >= 99) {
+            //console.log('Server is being updated, wait a minute...');
+          } else {
+            time = nowDate;
+            loaded = e.loaded;
+          }
+        } else {
+          return;
+        }
+      }, function(data){
+        $("#preview-crop").attr("src", ubase.util.picurl + data.crop);
+        $(".big-img img").attr("src",  ubase.util.picurl + data.crop)
+        $("#piccrop").val(ubase.util.picurl + data.crop);
+        $("#picai").val(ubase.util.picurl + data.ai);
+        $("#picorigin").val(ubase.util.picurl + data.origin);
+		    $(".upload-images-photo").hide();
+		    $(".editzoom").show();
+		    simpleModal.close();
+        $(".sbar").css({'width':'0%'}).html('0%'); 
+      });
+    }
+  });
+  $(".big").click(function(){
+    $("#tabs").tabs("option", "active", $('#photo-big').data('index'));
+    simpleModal.open();
+  });
+  $("#show-demo").click(function(){
+    $("#tabs").tabs("option", "active", $('#photo-demo').data('index'));
+	  simpleModal.open();
+  });
+  Product.validators.push(
+    () => {
+      return validateFormData();
+    }
+  );
+  function validateFormData(){
+    if(!($("#piccrop").val() && $("#picai").val() && $("#picorigin").val())){
+      $(".upload-images").addClass("validation-warning");
+      $(".validation-advice").show();
+      return "{{'zen.general.error_placeholder1' | t}}";
+    }else{
+      if(jsonCustom.secondType=='Bind'){
+        jQuery.getJSON('/products/'+jsonCustom.bindHandle+'.js', function(product){
+          var product_id=product.variants[0].id;
+          jQuery.post('/cart/add.js', {
+            quantity:1,
+            id:product_id
+          })
+        });        
+      }
+      return true;
+    }
+  }
+  $(document).ready(function(){ 
+    $(document).trigger("hide-qty",1);
+  });
+</script>

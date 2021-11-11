@@ -1,0 +1,565 @@
+<style>
+.col, .col-1, .col-10, .col-11, .col-12, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-auto, .col-lg, .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-auto, .col-sm, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-auto, .col-xl, .col-xl-1, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-auto{
+  padding-right: 0;
+  padding-left: 0;
+}
+.top{
+  margin: 60px 0;
+  display: flex;
+  width: 100%; 
+}
+.form-group.name.col-xs-12 li{
+  display: inline-block;
+}
+.top li{ list-style:none; text-align:center}
+.floating-labels li{ list-style:none}
+.floating-labels input{ 
+  height: 50px;
+  line-height: 50px;
+  padding: 0 0 0 20px;
+  width: 100%;
+}
+input[type="checkbox"],input[type="radio"]{width: auto;height: auto;}
+.floating-labels label, h2 {
+  display: block;
+  font-size: 16px;
+  color: #000;
+  font-weight: 600;
+}
+.checkbox label, .gender label{ 
+  display:inline-block; 
+  font-size: 14px;
+  color: #666;
+  font-weight: 200;
+}
+.box select {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 2px 8px;
+  height: 50px;
+  color: #777;
+  width: 100%;
+  font-size: 12px;
+  border-radius: 0;
+}
+input[type=radio] {
+  margin: -3px 0 0;
+}
+sup{ color: #e60044;}
+.checkbox+.checkbox, .radio+.radio, .checkbox{
+  margin-top: 0px;
+  position:relative
+}
+.lastname{ margin-left:20px;}
+#defaultForm h2{ 
+  margin-bottom:10px;
+  text-align: left;
+  margin-left: 0;
+}
+.form-group{ margin-bottom:20px;}
+#submitBtn{ 
+  padding: 15px 40px;
+  color: #fff;
+  background: #e60044; 
+  border:0 solid #fff;
+}
+#otherMainStiteLabel{ 
+  position:absolute; 
+  left:0;
+  top: 20px;
+}
+.cms-page-view .main-container {
+  padding: 0;
+}
+
+@media (max-width: 640px){
+  .top img{ width:100%;} 
+  .top {
+    margin: 25px 0;
+    float: left;
+    width: 100%;
+  }
+}
+.pc-aboutusimg{display:block}
+.mb-aboutusimg{display:none} 
+@media (max-width: 768px){
+  .mb-aboutusimg{display:block}
+  .pc-aboutusimg{display:none}
+  .form-group.name.col-xs-12 li{    
+    width: calc(50% - 8px);
+  }
+  .lastname {
+    margin-left: 10px;
+  }
+  .floating-labels input[type="text"], .floating-labels input[type="password"], .floating-labels input[type="email"]{
+    padding-left:15px;
+  }
+  .checkbox label, .gender label{
+    text-transform: capitalize;
+  }
+  .checkbox label input, .gender label input{
+    margin-right: 6px;
+  }
+  .form-group.col-xs-12 .col-xs-12 {
+    display: flex;
+    flex-flow: wrap;
+  }
+  .form-group.col-xs-12 .col-xs-12 .checkbox.col-xs-6{
+    width: 50%;
+  }
+}
+.validation-advice {
+  clear: both;
+  min-height: 13px;
+  margin: 3px 0 0;
+  padding-left: 10px;
+  font-size: 11px;
+  line-height: 13px;
+  color: #eb340a;
+  position: relative;
+  text-align: left;
+}
+</style>
+<img class="pc-aboutusimg influencerimg"  src="{{ 'influencer-program.jpg' | file_url  }}">   
+<img class="mb-aboutusimg influencerimg" src="{{ 'influencer-program-mb.jpg' | file_url  }}">
+<div class="box container">
+	<div class="top">
+		<li class="col-md-3 col-xs-4"><img src="{{ 'icon01.jpg' | file_url  }}"></li>
+		<li class="col-md-6 col-xs-4"><img src="{{ 'icon2.jpg' | file_url  }}"></li>
+		<li class="col-md-3 col-xs-4"><img src="{{ 'icon3.jpg' | file_url  }}"></li>
+	</div>
+	<form id="defaultForm" method="post" action="?act=record" class='cd-form floating-labels'>
+	
+	<div class="form-group name col-xs-12">
+		<h2>{{'influencer.form.name' | t }}<sup>*</sup></h2>
+		<li class="col-md-2 col-xs-6">
+		<input type="text" id='firstName' name="firstName" placeholder="{{'influencer.form.first_name' | t }}" class='required-entry'/>
+		</li>
+		<li class="lastname col-md-2 col-xs-4">
+			<input type="text" id='lastName' name="lastName" placeholder="{{'influencer.form.last_name' | t }}" class='required-entry'/>
+		</li>
+	</div>		
+	<div class="form-group col-md-6 col-xs-12">
+		<h2 for='email'>{{'influencer.form.email_address' | t }}<sup>*</sup></h2>
+		<input type="text" class="required-entry validate-email" id='email' name="email" placeholder="{{'influencer.form.email_address' | t }}" />
+	</div>
+
+	<div class="form-group gender col-xs-12">
+		<h2>{{'influencer.form.gender' | t }}<sup>*</sup></h2>
+		<li>
+			<label>
+				<input type="radio" name="gender" class="" CHECKED value="male" placeholder="{{'influencer.form.male' | t }}"/>Male
+			</label>
+		</li>
+		<li>
+			<label>
+				<input type="radio" name="gender" class="" value="female" placeholder="{{'influencer.form.female' | t }}"/>Female
+			</label>
+		</li>
+	</div>
+
+	<div class="form-group col-xs-12">
+		<h2>{{'influencer.form.country' | t }}<sup>*</sup></h2>
+		<div>
+			<select name="country_id" id="country" class="validate-select" title="{{'influencer.form.country' | t }}">
+              <option value=""> </option>
+              <option value="AF">{{'influencer.country.AF' | t }}</option>
+              <option value="AX">{{'influencer.country.AX' | t }}</option>
+              <option value="AL">{{'influencer.country.AL' | t }}</option>
+              <option value="DZ">{{'influencer.country.DZ' | t }}</option>
+              <option value="AS">{{'influencer.country.AS' | t }}</option>
+              <option value="AD">{{'influencer.country.AD' | t }}</option>
+              <option value="AO">{{'influencer.country.AO' | t }}</option>
+              <option value="AI">{{'influencer.country.AI' | t }}</option>
+              <option value="AQ">{{'influencer.country.AQ' | t }}</option>
+              <option value="AG">{{'influencer.country.AG' | t }}</option>
+              <option value="AR">{{'influencer.country.AR' | t }}</option>
+              <option value="AM">{{'influencer.country.AM' | t }}</option>
+              <option value="AW">{{'influencer.country.AW' | t }}</option>
+              <option value="AU">{{'influencer.country.AU' | t }}</option>
+              <option value="AT">{{'influencer.country.AT' | t }}</option>
+              <option value="AZ">{{'influencer.country.AZ' | t }}</option>
+              <option value="BS">{{'influencer.country.BS' | t }}</option>
+              <option value="BH">{{'influencer.country.BH' | t }}</option>
+              <option value="BD">{{'influencer.country.BD' | t }}</option>
+              <option value="BB">{{'influencer.country.BB' | t }}</option>
+              <option value="BY">{{'influencer.country.BY' | t }}</option>
+              <option value="BE">{{'influencer.country.BE' | t }}</option>
+              <option value="BZ">{{'influencer.country.BZ' | t }}</option>
+              <option value="BJ">{{'influencer.country.BJ' | t }}</option>
+              <option value="BM">{{'influencer.country.BM' | t }}</option>
+              <option value="BT">{{'influencer.country.BT' | t }}</option>
+              <option value="BA">{{'influencer.country.BA' | t }}</option>
+              <option value="BW">{{'influencer.country.BW' | t }}</option>
+              <option value="BV">{{'influencer.country.BV' | t }}</option>
+              <option value="BR">{{'influencer.country.BR' | t }}</option>
+              <option value="IO">{{'influencer.country.IO' | t }}</option>
+              <option value="VG">{{'influencer.country.VG' | t }}</option>
+              <option value="BN">{{'influencer.country.BN' | t }}</option>
+              <option value="BG">{{'influencer.country.BG' | t }}</option>
+              <option value="BF">{{'influencer.country.BF' | t }}</option>
+              <option value="BI">{{'influencer.country.BI' | t }}</option>
+              <option value="KH">{{'influencer.country.KH' | t }}</option>
+              <option value="CM">{{'influencer.country.CM' | t }}</option>
+              <option value="CA">{{'influencer.country.CA' | t }}</option>
+              <option value="CV">{{'influencer.country.CV' | t }}</option>
+              <option value="KY">{{'influencer.country.KY' | t }}</option>
+              <option value="CF">{{'influencer.country.CF' | t }}</option>
+              <option value="TD">{{'influencer.country.TD' | t }}</option>
+              <option value="CL">{{'influencer.country.CL' | t }}</option>
+              <option value="CX">{{'influencer.country.CX' | t }}</option>
+              <option value="CC">{{'influencer.country.CC' | t }}</option>
+              <option value="CO">{{'influencer.country.CO' | t }}</option>
+              <option value="KM">{{'influencer.country.KM' | t }}</option>
+              <option value="CG">{{'influencer.country.CG' | t }}</option>
+              <option value="CD">{{'influencer.country.CD' | t }}</option>
+              <option value="CK">{{'influencer.country.CK' | t }}</option>
+              <option value="CR">{{'influencer.country.CR' | t }}</option>
+              <option value="CI">{{'influencer.country.CI' | t }}</option>
+              <option value="HR">{{'influencer.country.HR' | t }}</option>
+              <option value="CU">{{'influencer.country.CU' | t }}</option>
+              <option value="CY">{{'influencer.country.CY' | t }}</option>
+              <option value="CZ">{{'influencer.country.CZ' | t }}</option>
+              <option value="DK">{{'influencer.country.DK' | t }}</option>
+              <option value="DJ">{{'influencer.country.DJ' | t }}</option>
+              <option value="DM">{{'influencer.country.DM' | t }}</option>
+              <option value="DO">{{'influencer.country.DO' | t }}</option>
+              <option value="EC">{{'influencer.country.EC' | t }}</option>
+              <option value="EG">{{'influencer.country.EG' | t }}</option>
+              <option value="SV">{{'influencer.country.SV' | t }}</option>
+              <option value="GQ">{{'influencer.country.GQ' | t }}</option>
+              <option value="ER">{{'influencer.country.ER' | t }}</option>
+              <option value="EE">{{'influencer.country.EE' | t }}</option>
+              <option value="ET">{{'influencer.country.ET' | t }}</option>
+              <option value="FK">{{'influencer.country.FK' | t }}</option>
+              <option value="FO">{{'influencer.country.FO' | t }}</option>
+              <option value="FJ">{{'influencer.country.FJ' | t }}</option>
+              <option value="FI">{{'influencer.country.FI' | t }}</option>
+              <option value="FR">{{'influencer.country.FR' | t }}</option>
+              <option value="GF">{{'influencer.country.GF' | t }}</option>
+              <option value="PF">{{'influencer.country.PF' | t }}</option>
+              <option value="TF">{{'influencer.country.TF' | t }}</option>
+              <option value="GA">{{'influencer.country.GA' | t }}</option>
+              <option value="GM">{{'influencer.country.GM' | t }}</option>
+              <option value="GE">{{'influencer.country.GE' | t }}</option>
+              <option value="DE">{{'influencer.country.DE' | t }}</option>
+              <option value="GH">{{'influencer.country.GH' | t }}</option>
+              <option value="GI">{{'influencer.country.GI' | t }}</option>
+              <option value="GR">{{'influencer.country.GR' | t }}</option>
+              <option value="GL">{{'influencer.country.GL' | t }}</option>
+              <option value="GD">{{'influencer.country.GD' | t }}</option>
+              <option value="GP">{{'influencer.country.GP' | t }}</option>
+              <option value="GU">{{'influencer.country.GU' | t }}</option>
+              <option value="GT">{{'influencer.country.GT' | t }}</option>
+              <option value="GG">{{'influencer.country.GG' | t }}</option>
+              <option value="GN">{{'influencer.country.GN' | t }}</option>
+              <option value="GW">{{'influencer.country.GW' | t }}</option>
+              <option value="GY">{{'influencer.country.GY' | t }}</option>
+              <option value="HT">{{'influencer.country.HT' | t }}</option>
+              <option value="HM">{{'influencer.country.HM' | t }}</option>
+              <option value="HN">{{'influencer.country.HN' | t }}</option>
+              <option value="HK">{{'influencer.country.HK' | t }}</option>
+              <option value="HU">{{'influencer.country.HU' | t }}</option>
+              <option value="IS">{{'influencer.country.IS' | t }}</option>
+              <option value="IN">{{'influencer.country.IN' | t }}</option>
+              <option value="ID">{{'influencer.country.ID' | t }}</option>
+              <option value="IR">{{'influencer.country.IR' | t }}</option>
+              <option value="IQ">{{'influencer.country.IQ' | t }}</option>
+              <option value="IE">{{'influencer.country.IE' | t }}</option>
+              <option value="IM">{{'influencer.country.IM' | t }}</option>
+              <option value="IL">{{'influencer.country.IL' | t }}</option>
+              <option value="IT">{{'influencer.country.IT' | t }}</option>
+              <option value="JM">{{'influencer.country.JM' | t }}</option>
+              <option value="JP">{{'influencer.country.JP' | t }}</option>
+              <option value="JE">{{'influencer.country.JE' | t }}</option>
+              <option value="JO">{{'influencer.country.JO' | t }}</option>
+              <option value="KZ">{{'influencer.country.KZ' | t }}</option>
+              <option value="KE">{{'influencer.country.KE' | t }}</option>
+              <option value="KI">{{'influencer.country.KI' | t }}</option>
+              <option value="KW">{{'influencer.country.KW' | t }}</option>
+              <option value="KG">{{'influencer.country.KG' | t }}</option>
+              <option value="LA">{{'influencer.country.LA' | t }}</option>
+              <option value="LV">{{'influencer.country.LV' | t }}</option>
+              <option value="LB">{{'influencer.country.LB' | t }}</option>
+              <option value="LS">{{'influencer.country.LS' | t }}</option>
+              <option value="LR">{{'influencer.country.LR' | t }}</option>
+              <option value="LY">{{'influencer.country.LY' | t }}</option>
+              <option value="LI">{{'influencer.country.LI' | t }}</option>
+              <option value="LT">{{'influencer.country.LT' | t }}</option>
+              <option value="LU">{{'influencer.country.LU' | t }}</option>
+              <option value="MO">{{'influencer.country.MO' | t }}</option>
+              <option value="MK">{{'influencer.country.MK' | t }}</option>
+              <option value="MG">{{'influencer.country.MG' | t }}</option>
+              <option value="MW">{{'influencer.country.MW' | t }}</option>
+              <option value="MY">{{'influencer.country.MY' | t }}</option>
+              <option value="MV">{{'influencer.country.MV' | t }}</option>
+              <option value="ML">{{'influencer.country.ML' | t }}</option>
+              <option value="MT">{{'influencer.country.MT' | t }}</option>
+              <option value="MH">{{'influencer.country.MH' | t }}</option>
+              <option value="MQ">{{'influencer.country.MQ' | t }}</option>
+              <option value="MR">{{'influencer.country.MR' | t }}</option>
+              <option value="MU">{{'influencer.country.MU' | t }}</option>
+              <option value="YT">{{'influencer.country.YT' | t }}</option>
+              <option value="MX">{{'influencer.country.MX' | t }}</option>
+              <option value="FM">{{'influencer.country.FM' | t }}</option>
+              <option value="MD">{{'influencer.country.MD' | t }}</option>
+              <option value="MC">{{'influencer.country.MC' | t }}</option>
+              <option value="MN">{{'influencer.country.MN' | t }}</option>
+              <option value="ME">{{'influencer.country.ME' | t }}</option>
+              <option value="MS">{{'influencer.country.MS' | t }}</option>
+              <option value="MA">{{'influencer.country.MA' | t }}</option>
+              <option value="MZ">{{'influencer.country.MZ' | t }}</option>
+              <option value="MM">{{'influencer.country.MM' | t }}</option>
+              <option value="NA">{{'influencer.country.NA' | t }}</option>
+              <option value="NR">{{'influencer.country.NR' | t }}</option>
+              <option value="NP">{{'influencer.country.NP' | t }}</option>
+              <option value="NL">{{'influencer.country.NL' | t }}</option>
+              <option value="AN">{{'influencer.country.AN' | t }}</option>
+              <option value="NC">{{'influencer.country.NC' | t }}</option>
+              <option value="NZ">{{'influencer.country.NZ' | t }}</option>
+              <option value="NI">{{'influencer.country.NI' | t }}</option>
+              <option value="NE">{{'influencer.country.NE' | t }}</option>
+              <option value="NG">{{'influencer.country.NG' | t }}</option>
+              <option value="NU">{{'influencer.country.NU' | t }}</option>
+              <option value="NF">{{'influencer.country.NF' | t }}</option>
+              <option value="MP">{{'influencer.country.MP' | t }}</option>
+              <option value="KP">{{'influencer.country.KP' | t }}</option>
+              <option value="NO">{{'influencer.country.NO' | t }}</option>
+              <option value="OM">{{'influencer.country.OM' | t }}</option>
+              <option value="PK">{{'influencer.country.PK' | t }}</option>
+              <option value="PW">{{'influencer.country.PW' | t }}</option>
+              <option value="PS">{{'influencer.country.PS' | t }}</option>
+              <option value="PA">{{'influencer.country.PA' | t }}</option>
+              <option value="PG">{{'influencer.country.PG' | t }}</option>
+              <option value="PY">{{'influencer.country.PY' | t }}</option>
+              <option value="PE">{{'influencer.country.PE' | t }}</option>
+              <option value="PH">{{'influencer.country.PH' | t }}</option>
+              <option value="PN">{{'influencer.country.PN' | t }}</option>
+              <option value="PL">{{'influencer.country.PL' | t }}</option>
+              <option value="PT">{{'influencer.country.PT' | t }}</option>
+              <option value="PR">{{'influencer.country.PR' | t }}</option>
+              <option value="QA">{{'influencer.country.QA' | t }}</option>
+              <option value="RE">{{'influencer.country.RE' | t }}</option>
+              <option value="RO">{{'influencer.country.RO' | t }}</option>
+              <option value="RU">{{'influencer.country.RU' | t }}</option>
+              <option value="RW">{{'influencer.country.RW' | t }}</option>
+              <option value="BL">{{'influencer.country.BL' | t }}</option>
+              <option value="SH">{{'influencer.country.SH' | t }}</option>
+              <option value="KN">{{'influencer.country.KN' | t }}</option>
+              <option value="LC">{{'influencer.country.LC' | t }}</option>
+              <option value="PM">{{'influencer.country.PM' | t }}</option>
+              <option value="WS">{{'influencer.country.WS' | t }}</option>
+              <option value="SM">{{'influencer.country.SM' | t }}</option>
+              <option value="ST">{{'influencer.country.ST' | t }}</option>
+              <option value="SA">{{'influencer.country.SA' | t }}</option>
+              <option value="SN">{{'influencer.country.SN' | t }}</option>
+              <option value="RS">{{'influencer.country.RS' | t }}</option>
+              <option value="SC">{{'influencer.country.SC' | t }}</option>
+              <option value="SL">{{'influencer.country.SL' | t }}</option>
+              <option value="SG">{{'influencer.country.SG' | t }}</option>
+              <option value="SK">{{'influencer.country.SK' | t }}</option>
+              <option value="SI">{{'influencer.country.SI' | t }}</option>
+              <option value="SB">{{'influencer.country.SB' | t }}</option>
+              <option value="SO">{{'influencer.country.SO' | t }}</option>
+              <option value="ZA">{{'influencer.country.ZA' | t }}</option>
+              <option value="GS">{{'influencer.country.GS' | t }}</option>
+              <option value="KR">{{'influencer.country.KR' | t }}</option>
+              <option value="ES">{{'influencer.country.ES' | t }}</option>
+              <option value="LK">{{'influencer.country.LK' | t }}</option>
+              <option value="VC">{{'influencer.country.VC' | t }}</option>
+              <option value="SD">{{'influencer.country.SD' | t }}</option>
+              <option value="SR">{{'influencer.country.SR' | t }}</option>
+              <option value="SJ">{{'influencer.country.SJ' | t }}</option>
+              <option value="SZ">{{'influencer.country.SZ' | t }}</option>
+              <option value="SE">{{'influencer.country.SE' | t }}</option>
+              <option value="CH">{{'influencer.country.CH' | t }}</option>
+              <option value="SY">{{'influencer.country.SY' | t }}</option>
+              <option value="TW">{{'influencer.country.TW' | t }}</option>
+              <option value="TJ">{{'influencer.country.TJ' | t }}</option>
+              <option value="TZ">{{'influencer.country.TZ' | t }}</option>
+              <option value="TH">{{'influencer.country.TH' | t }}</option>
+              <option value="TL">{{'influencer.country.TL' | t }}</option>
+              <option value="TG">{{'influencer.country.TG' | t }}</option>
+              <option value="TK">{{'influencer.country.TK' | t }}</option>
+              <option value="TO">{{'influencer.country.TO' | t }}</option>
+              <option value="TT">{{'influencer.country.TT' | t }}</option>
+              <option value="TN">{{'influencer.country.TN' | t }}</option>
+              <option value="TR">{{'influencer.country.TR' | t }}</option>
+              <option value="TM">{{'influencer.country.TM' | t }}</option>
+              <option value="TC">{{'influencer.country.TC' | t }}</option>
+              <option value="TV">{{'influencer.country.TV' | t }}</option>
+              <option value="UG">{{'influencer.country.UG' | t }}</option>
+              <option value="UA">{{'influencer.country.UA' | t }}</option>
+              <option value="AE">{{'influencer.country.AE' | t }}</option>
+              <option value="GB">{{'influencer.country.GB' | t }}</option>
+              <option value="US" selected="selected">{{'influencer.country.US' | t }}</option>
+              <option value="UY">{{'influencer.country.UY' | t }}</option>
+              <option value="UM">{{'influencer.country.UM' | t }}</option>
+              <option value="VI">{{'influencer.country.VI' | t }}</option>
+              <option value="UZ">{{'influencer.country.UZ' | t }}</option>
+              <option value="VU">{{'influencer.country.VU' | t }}</option>
+              <option value="VA">{{'influencer.country.VA' | t }}</option>
+              <option value="VE">{{'influencer.country.VE' | t }}</option>
+              <option value="VN">{{'influencer.country.VN' | t }}</option>
+              <option value="WF">{{'influencer.country.WF' | t }}</option>
+              <option value="EH">{{'influencer.country.EH' | t }}</option>
+              <option value="YE">{{'influencer.country.YE' | t }}</option>
+              <option value="ZM">{{'influencer.country.ZM' | t }}</option>
+              <option value="ZW">{{'influencer.country.ZW' | t }}</option>
+          </select>
+		</div>
+	</div>
+			
+	<div class="form-group col-xs-12">
+		<h2>{{'influencer.form.main_site_type' | t }}<sup>*</sup></h2>
+		<div class="col-xs-12">
+			<div class="checkbox col-xs-6">
+				<label>
+					<input type="checkbox" class="" name="mainSiteType[]" CHECKED value="{{'influencer.form.facebook' | t }}" placeholder="{{'influencer.form.facebook' | t }}"/>{{'influencer.form.facebook' | t }}
+				</label>
+			</div>
+			<div class="checkbox col-xs-6">
+				<label>
+					<input type="checkbox" class="" name="mainSiteType[]" value="{{'influencer.form.youtube' | t }}" placeholder="{{'influencer.form.youtube' | t }}"/>{{'influencer.form.youtube' | t }}
+				</label>
+			</div>
+			<div class="checkbox col-xs-6">
+				<label>
+					<input type="checkbox" class="" name="mainSiteType[]" value="{{'influencer.form.pinterest' | t }}" placeholder="{{'influencer.form.pinterest' | t }}"/>{{'influencer.form.pinterest' | t }}
+				</label>
+			</div>
+			<div class="checkbox col-xs-6">
+				<label>
+					<input type="checkbox" class="" name="mainSiteType[]" value="{{'influencer.form.instagram' | t }}" placeholder="{{'influencer.form.instagram' | t }}"/>{{'influencer.form.instagram' | t }}
+				</label>
+			</div>
+			<div class="checkbox col-xs-6">
+				<label>
+					<input type="checkbox" class="" name="mainSiteType[]" value="{{'influencer.form.pinterest_blog_val' | t }}" placeholder="{{'influencer.form.pinterest_blog' | t }}"/>{{'influencer.form.pinterest_blog' | t }}
+				</label>
+			</div>
+			<div class="checkbox col-xs-6">
+				<label>
+					<input type="checkbox" class="" name="mainSiteType[]" value="{{'influencer.form.other_val' | t }}" placeholder="{{'influencer.form.other_val' | t }}" onclick='isOtherMainStite()'/> {{'influencer.form.other' | t }}
+				</label>
+				<label id='otherMainStiteLabel' style='display:none'>
+					<input type="text" class="" name="otherMainStite" id='otherMainStite' value="" placeholder="{{'influencer.form.please_clarify' | t }}"/> 
+				</label>
+			</div>                              
+		</div>
+	</div>
+
+	<div class="form-group col-xs-12">
+		<h2 class="col-xs-12 control-label">{{'influencer.form.main_site_url' | t }}<sup>*</sup></h2>
+		<div class="col-xs-12">
+			<input type="text" class="required-entry validate-clean-url" name="mainSiteurl" placeholder='{{'influencer.form.main_site_url' | t }}'/>
+		</div>
+	</div>
+
+	<div class="form-group col-xs-12">
+		<h2 class="col-xs-12 control-label">{{'influencer.form.other_site_url' | t }}</h2>
+		<div class="col-xs-12">
+			<input type="text" class="required-entry validate-clean-url" name="otherSiteUrl" placeholder='{{'influencer.form.other_site_url' | t }}'/>
+		</div>
+	</div>
+	
+	<div class="form-group col-xs-12">
+		<h2 class="col-xs-12 control-label">{{'influencer.form.fans' | t }}<sup>*</sup></h2>
+		<div class="col-xs-12">
+			<input type="text" class="required-entry validate-number" name="fansNum" placeholder="{{'influencer.form.fans' | t }}" check-type="number"/>
+		</div>
+	</div>
+
+	<div class="form-group col-xs-12">
+		<h2 class="col-xs-12 control-label">{{'influencer.form.leave_message' | t }}<sup>*</sup></h2>
+		<div class="col-xs-12">
+			<input type="text" class="required-entry" name="leaveMessage" placeholder="{{'influencer.form.leave_message' | t }}"/>
+		</div>
+	</div>
+	
+	<div class="form-group col-xs-12">
+		<div class="col-lg-9 ">
+			<button type='button' name="signup" id='submitBtn' value="Sign up" onclick="subform();">{{'influencer.form.submit' | t }}</button>
+		</div>
+	</div>
+</form>
+</div>
+<script type="text/javascript">  
+  function isOtherMainStite() {
+	var mainSiteType = jQuery("input:checkbox[name='mainSiteType[]']:checked");
+	var val = '';
+	mainSiteType.each(function(){
+      val = jQuery(this).val();
+      if(val == 'Other') {
+        jQuery("#otherMainStiteLabel").show();
+        jQuery("#otherMainStite").addClass('required-entry');
+      } else {
+        jQuery("#otherMainStiteLabel").hide();
+        jQuery("#otherMainStite").removeClass('required-entry');
+      }
+	});
+  }
+  
+  function subform(){
+    var myreg = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
+    var urlreg = /^(http(s)?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?$/;
+    var numreg = /^[\d]+$/;
+    var flag = true;
+    var data = {};
+    $('.validation-advice').remove();
+    $('#defaultForm input[type=text]').each(function(){
+      if($(this).val() == '' && $(this).is(':visible')){
+        var varien = '<div class="validation-advice" id="advice-required-entry-email" style="">{{'influencer.form.msg_required' | t }}</div>';
+      	$(this).after(varien);
+        flag = false;
+      }else if($(this).attr('name') == 'email' && !myreg.test($(this).val())){
+        var varien = '<div class="validation-advice" id="advice-required-entry-email" style="">{{'influencer.form.msg_email_error' | t }}</div>';
+      	$(this).after(varien);
+        flag = false;
+      }else if(($(this).attr('name') == 'mainSiteurl' || $(this).attr('name') == 'otherSiteUrl') && !urlreg.test($(this).val())){
+        var varien = '<div class="validation-advice" id="advice-required-entry-email" style="">{{'influencer.form.msg_url_error' | t }}</div>';
+      	$(this).after(varien);
+        flag = false;
+      }else if($(this).attr('name') == 'fansNum' && !numreg.test($(this).val())){
+        var varien = '<div class="validation-advice" id="advice-required-entry-email" style="">{{'influencer.form.msg_num_error' | t }}</div>';
+      	$(this).after(varien);
+        flag = false;
+      }else{
+        //flag = true;
+        data[$(this).attr('name')] = $(this).val();
+      }
+    })
+    if(flag == false){
+      return false;
+    }
+    var mainSiteType =[];
+    $('input[name="mainSiteType[]"]:checked').each(function(){
+      mainSiteType.push($(this).val());
+    });
+    data['mainSiteType'] = mainSiteType;
+    data['gender'] = $("input[name='gender']:checked").val();
+    data['country_id'] = $('#country').val();
+    $("#submitBtn").attr("disabled", true);
+  	$.ajax({
+      type: 'POST',
+      url: 'https://socks.soufeel.com/supertools/110/save.php',
+      data: data,
+      dataType: 'json',
+      beforeSend: function(xhr) {
+      },
+      success: function(boxItem) {
+        var msg = "{{'influencer.form.msg_success' | t }}";
+        if(boxItem.msg == 'Your infomation has been received.'){
+          msg = "{{'influencer.form.msg_repeat' | t }}";
+        }
+        $('.box').html(msg);
+        $('.box').css({"text-align":"center","padding":"100px 20px"});
+        $('.influencerimg').hide();
+        $("#submitBtn").attr("disabled", false);
+      },
+      error: function(XMLHttpRequest, textStatus){
+        console.log('card product to cart error');
+      }
+    });
+  }
+</script>

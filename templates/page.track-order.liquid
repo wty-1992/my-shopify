@@ -1,0 +1,114 @@
+<style>
+
+.main-content .page-track-order-main {
+    background:none;
+}
+.page-track-order{
+    background:url('https://cdn.shopify.com/s/files/1/0075/2936/5568/files/trackbutton-1.jpg?5244127816143476493') 50% 0 no-repeat fixed;
+    color: #000;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 0;
+    position: relative;
+    background-size: cover;
+    align-items: flex-start;
+    padding-top: 6%;
+}
+.page-track-order-main .box input {
+    border: 1px solid transparent; 
+    border-radius: .2rem;
+}
+.main-content .page-track-order-main .detail .message{
+  min-height: 13px;
+  margin: 6px 0 0;
+  padding-left: 0;
+  font-size: 11px;
+  line-height: 13px;
+  color: #fff;
+  position: relative;
+  text-align: left;
+} 
+#trackorderwapper > div > div > div.title {
+    font-size: 3rem;
+    text-align: center;
+    padding-bottom: 4rem;
+    letter-spacing: 3px;
+     color: #fff; 
+}
+@media(max-width:640px){
+  .page-track-order{
+    align-items: center;
+    padding: 0px ;
+  } 
+  .page-track-order-main {
+    background: none;
+    height: 50vh; 
+  }
+  .main-content .page-track-order-main .box{
+    width:90%;
+  }
+  .page-track-order-main .title{
+    font-size:2.4rem;
+    padding-bottom:2rem;
+  }
+}
+</style> 
+<div class="page-track-order">
+	<div id="trackorderwapper" class="container">
+      <div style="display:flex; justify-content: center; height:200px; align-items:center;"></div> 
+  	</div> 
+</div>
+<script>
+$(function(){
+  function getPar(par){
+    //获取当前URL
+    var local_url = document.location.href; 
+    //获取要取得的get参数位置
+    var get = local_url.indexOf(par +"=");
+    if(get == -1){
+        return false;   
+    }   
+    //截取字符串
+    var get_par = local_url.slice(par.length + get + 1);    
+    //判断截取后的字符串是否还有其他get参数
+    var nextPar = get_par.indexOf("&");
+    if(nextPar != -1){
+        get_par = get_par.slice(0, nextPar);
+    }
+    return get_par;
+}  
+  
+    var store = "soufeel.com" //这里换上相应的店铺域名
+    var e_mail = false;
+    if(getPar('mail')){
+      e_mail = getPar('mail').replace('%40', '@');
+    }  
+    $.ajax({
+        type: "GET",
+        url: "https://trackorder.stylelab.com/dataV3.php",
+        //data: { preinfo: true, "store":  store, "mail": getPar('mail')},
+       
+        data: { preinfo: true, "store":  store, "mail": e_mail },
+        beforeSend: function(XHR){
+            $("#trackorderwapper>div:first").show();
+        },
+        success: function(data, textStatus, XHR){
+          console.log(data)
+      	  if(XHR.getResponseHeader("Content-Type") != 'text/html; charset=utf-8'){
+            $("#trackorderwapper").empty().append(data.message)
+          }else{
+            $("#trackorderwapper").empty().append(data);
+              //setTimeout(()=>{
+      			$("#trackorderwapper .title").css('color','#FFF');     
+              //},300);
+  
+              
+          } 
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            $("#trackorderwapper>div:first").empty().append(errorThrown);
+        }
+
+    })
+})
+</script>

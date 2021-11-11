@@ -1,0 +1,124 @@
+{% comment %}
+** @name 简版照片墙**
+** @author 金忠帅 **
+** @integrate 劳紫恩 王天宇 **
+{% endcomment %}
+
+{% comment %} 孙子定制化模板 {% endcomment %}
+{% include 'sunzi-solt-template' %}
+{% comment %} 调用参数 {% endcomment %}
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'sunzi.photo.wall.mixtiles.js' %}
+
+{% comment %} 个数名称 {% endcomment %}
+{% assign variantCount = 0 %}
+
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign requestURL = '' %}
+
+{% comment %} 谷歌分析id {% endcomment %}
+{% assign gtag = 'UA-174675922-8' %}
+
+{% comment %} 定制按钮文案 {% endcomment %}
+{% assign sunzi_button_text = section.settings.sunzi_button_upload_text %}
+
+{% comment %} 站点语种 {% endcomment %}
+{% assign sunzi_shop_language = section.settings.sunzi_shop_language %}
+{% comment %} 货币符号 {% endcomment %}
+{% assign sunzi_shop_symbol = section.settings.sunzi_shop_symbol %}
+
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+  .product-quantity,
+  .product-form .common-standar_btn,
+  .inline-field-wrapper,
+  .select-option {
+  	display: none !important;
+  }
+  body .sunzi-modal .sunzi-modal-content {
+    width: 100%;
+    height: 100%
+  }
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 额外的表单参数 {% endcomment %}
+  <input type="hidden" id="sunzi-sku" name="properties[custom_sku]" required="required"></input>
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="hidden" id="sunzi-input" name="properties[customInfo]" required="required"></input>
+<!--   <input type="hidden" id="sunzi-cart" name="properties[_sunzi_cart]"></input> -->
+  
+  {% comment %} 定制按钮 {% endcomment %}
+  <button type="button" id="sunzi-button" disabled class="dots-loading">
+    <span class="dots">
+      <i></i>
+      <i></i>
+      <i></i>
+    </span>
+    <div class="sunzi-button-text">{{ sunzi_button_text }}</div>
+  </button>
+</div>
+
+<!-- sunzi core js -->
+<script src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{ coreJs }}" defer="defer"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ gtag }}" async="async"></script>
+<script async="async">
+  _sunzi_gtag('{{ gtag }}');
+</script>
+
+{% comment %} 1.隐藏掉变体，加车按钮等等 {% endcomment %}
+<script defer="defer">
+  $('.product-form__controls-group').hide();
+</script>
+
+{% comment %} 2.请求定制化数据 {% endcomment %}
+<script defer="defer">
+  _sunzi_request("{{requestURL}}");
+</script>
+
+{% comment %} 3.开始定制 {% endcomment %}
+<script defer="defer">
+  var productData = {{ product | json }};
+  var prices = productData.variants.map(item => (item.price / 100).toFixed(2));
+  $('#sunzi-button').click( function() {
+    // 定制之前的参数构建
+    _sunzi_response.shop = {
+      language: '{{sunzi_shop_language}}',
+      currencySymbol: '{{sunzi_shop_symbol}}'
+    };
+    _sunzi_response.factoryWidth=2421;
+    _sunzi_response.factoryHeight= 2421;
+    _sunzi_response.maxCount= 10;
+    _sunzi_response.prices= prices;
+	_sunzi_response.senceImage = "https://spic.qn.cdn.imaiyuan.com/no-tiles-image.jpg";
+    // 开始渲染
+    _sunzi_custom(
+      PhotoWallMixtiles.default,
+      function(data) {
+        _sunzi_loading();
+        $('#sunzi-sku').val((data.frame === 'black' ? 'CBS044A' : 'CBS044B') + '-' + data.images.length)
+        $('#sunzi-input').val(JSON.stringify({
+          '_sunzi_compose': [{
+            'rule': 6,
+            'type': 'photo_design',
+            'data': data
+          }]
+        }));
+        _sunzi_variant_change('{{variantCount}}', data.images.length);
+        //加车事件触发
+		$('.product-form__cart-submit').click();
+        _sunzi_hide_loading();
+      }
+    );
+
+
+  });
+  
+  /** 其他自定义函数 start **/
+
+
+  /** 其他自定义函数 end **/
+</script>

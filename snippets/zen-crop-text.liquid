@@ -1,0 +1,372 @@
+{% assign productTags = product.tags | join:',' %}
+
+{%comment%}通过标签获取切图比例 {%endcomment%}
+{% assign custom_ratio = 'false' %}
+{% for tag_item in product.tags %}
+  {% if tag_item contains "custom-ratio-" %}
+    {% assign custom_ratio = tag_item | strip | replace: "custom-ratio-", "" %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+<div id="custom-photo-body" style="display:none;">
+<!--   <button type="button" class="close-new custom-close close" data-action="close">
+    <i class="photofont icon photo-close"></i>
+  </button> -->
+  <div id="tabs">
+    <ul style="display:none;">
+      <li><a id="crop-upload"   data-index="0" href="#tabs-0">{% comment %}crop传图{% endcomment %}</a></li>
+      <li><a id="photo-loading" data-index="1" href="#tabs-1">{% comment %}进度条{% endcomment %}</a></li>
+      <li><a id="photo-big"     data-index="2" href="#tabs-2">{% comment %}预览大图{% endcomment %}</a></li>
+    </ul> 
+    <div id="tabs-0">
+      <div>
+        <div class="popbox" style="width:100%;"><img id="cropid" src="" style="height:60vh" /></div>  <!--切图图片-->
+        <div class="docs-buttons"><button type="button" class="btn btn-primary rotate_opt" data-opt="rotate_left" data-method="rotate" data-option="-45" title="Rotate Left"><img src="{{ 'left.png' | asset_img_url: '30px' }}"/></button><button type="button" class="btn btn-primary rotate_opt" data-opt="rotate_right" data-method="rotate" data-option="45" title="Rotate Right"><img src="{{ 'right.png' | asset_img_url: '30px' }}"/></button><button type="button" id="reset" class="btn btn-primary" data-method="reset" title="Reset"><ly-as-10920015>Reset</ly-as-10920015> </button></div>
+        <div class="cropcontent" style="text-align: left; margin-left: 18px;"><span style="display:block;">{{ 'zen.engrave.tailorHint' | t }}</span></div>
+        <button class="btn-cancel"  type="button" id="custom-cancel" >{{ 'customer.recover_password.cancel' | t }}</button>
+        <button class="btn-confirm" type="button" id="custom-confirm">{{ 'zen.general.confirm' | t }}</button>
+      </div>
+    </div>
+    <div id="tabs-1">
+      <div id="cloading">
+        <img class="cloadingimg" src="{{ 'sandglass-christmas.gif' | asset_img_url: '260x' }}" />
+        <div class="sprogress">
+          <div class="sbar" style="width: 0%;">0%</div>
+        </div>
+      </div>
+    </div>
+    <div id="tabs-2"><!--big image-->
+	  <div class="big-img"><img class="big-preview" src="" /><button class="custom-close"  type="button">{{ 'customer.recover_password.cancel' | t }}</button></div>
+	</div>
+  </div>
+</div>
+<div class="uploadfont">
+</div>
+<div class="inline-field-wrapper js-required">
+<!--   <div class="serial correct">{% increment step %}</div> -->
+  <div class="upload-flex uploadfont view-img">
+      <div class="left" style="cursor:pointer">
+        <h4 id="photo-text">{{ 'zen.general.uploadLabel' | t }}<font color=red>*</font></h4>
+      </div>
+      <div class="upload-images">
+          <div class="add" id="add-photo">{{ 'zen.photocarving.upload' | t }}</div>
+          <input type="file" id="avatar-file" name="ucpic" accept="*" />
+      </div>
+  </div>
+</div>
+<div class="uploadfont editzoom view-img" style="display:none;">
+  <div class="big left" style="cursor:pointer">
+    <img id="preview-crop" width="50" height="40" src="">
+   {%comment%}{% include 'icon-fangda' %} {%endcomment%}
+  </div>
+  <div class="upload-images">
+    <div class="add" id="add-photo">{{ 'zen.general.change' | t }}</div>
+    <input type="file" class="avatar-input" id="change-avatar-file" name="avatar_file">
+  </div>
+</div>
+
+<input type="hidden" id="crop-picture" name="properties[picture]" value="" style="display:none" required />
+<input type="hidden" name="is_upload" value="0"/>
+<script>
+// $(function(){
+//   $(".product-form-submit-wrap button").click(function(){
+//     console.log('fffffffffffffffff');
+    
+//     return true;
+//   })
+// });  
+$(function(){
+  $( "#tabs" ).tabs();
+  var simpleModal = new tingle.modal({ 
+    closeMethods: ['overlay']
+  });
+  simpleModal.setContent('<div id="simple-photo-modal" class="simple--modal"></div>');
+  $("#simple-photo-modal").html($('#custom-photo-body').contents());
+  //simpleModal.open();
+  
+  /*** 上传代码 ***/
+  var options = {
+    viewMode:1,
+    dragMode:'move',
+    {% if custom_ratio != 'false' %}
+    aspectRatio: {{custom_ratio}}
+    {% endif %}
+  }
+  var $cropImage = $('#cropid');
+  $cropImage.cropper(options);
+  var ucrop = new ubase();
+  var URL = window.URL || window.webkitURL;
+  var uploadedImageURL="";
+  if (URL) {
+    $("#custom-confirm").click(function(){
+      $("#tabs").tabs("option", "active", $('#photo-loading').data('index'));
+      var result = $cropImage.cropper('getCroppedCanvas',{ "maxWidth": 2048, "maxHeight": 2048});
+      console.log(result);
+      var base64 = result.toDataURL({format: 'png', quality: 0.8});
+      var blob = ucrop.convertBase64ToBlob(base64);
+      var filename = ubase.util.getFilename(6);
+      ucrop.cdnUpload(function(token){
+        var key = filename + '{{product.variants.first.sku}}.png';
+        var observer = {
+          next(result){
+            $(".sbar").css({'width':parseInt(result.total.percent)+'%'});
+            $(".sbar").html(parseInt(result.total.percent)+'%'); 
+          },
+          error(err){
+            alert('error');
+          },
+          complete(res){
+            console.log(ubase.util.cdnurl + res.key);
+             $("#preview-crop").attr("src", ubase.util.cdnurl + res.key);
+             $(".big-img img").attr("src",  ubase.util.cdnurl + res.key)
+             $("#crop-picture").val(ubase.util.cdnurl + res.key);
+             $("#previewpicture").attr("src",ubase.util.cdnurl + res.key);
+             //$(".uploadafterimg").show();
+             $(".uploadfont").hide();
+             $(".editzoom").show();
+             $("input[name=is_upload]").val(1);
+            
+//               if(jsonCustom.ismarkup && carvingText){
+//                 ubase.util.setShopifyVariant('Markup',1);
+//               }else{
+//                 ubase.util.setShopifyVariant('Markup',0);
+//               }
+//               $("#engraving-crop").val(ubase.util.cdnurl + res.key);
+//               $("#engraving-text").val(carvingText);
+//               $("#engraving-size").val(carvingText ? $("#sizeSlt").val() : '');
+//               $("#engraving-font").val(carvingText ? $("input[name='fontradio']:checked").val() : '');
+//               $(".Previewlettering-title").html(carvingText || '{{ 'zen.general.none' | t }}');
+//               $("#addengraving").text('{{ 'zen.general.change' | t }}');
+              $(".sbar").css({'width':'0%'});
+              $(".sbar").html('0%');
+              simpleModal.close();
+            console.log(simpleModal)
+            }
+          };  //end complete
+          var observable = qiniu.upload(blob, key, token, ubase.util.putExtra, ubase.util.config);
+          observable.subscribe(observer);
+        }); //end cdnUpload
+    });
+    $("#custom-cancel, .custom-close").click(function(){
+      simpleModal.close();
+      console.log(simpleModal)
+    });
+   	$(".big").click(function(){
+      $("#tabs").tabs("option", "active", $('#photo-big').data('index'));
+      simpleModal.open();
+    });
+    $("#avatar-file, #change-avatar-file").change(function(e) {
+      var files = this.files;
+      var file;
+      $("#tabs").tabs("option", "active", $('#crop-upload').data('index'));  //切换crop传图标签
+      //$("#customModel, .tingle-modal-box__footer, .c_crop").show();  //切换切图按钮显示
+      //$(".c_photo, .c_carving").css('display','none'); //其他按钮隐藏
+      if (files && files.length) {
+        file = files[0];
+        if (/^image\/\w+$/.test(file.type)) {
+          uploadedImageName = file.name;
+          uploadedImageType = file.type;
+
+          if (uploadedImageURL) {
+            URL.revokeObjectURL(uploadedImageURL);
+          }
+
+          uploadedImageURL = URL.createObjectURL(file);
+          $cropImage.cropper('destroy').attr('src', uploadedImageURL).cropper(options);
+          $("#avatar-file, #change-avatar-file").val('');
+          simpleModal.open();
+        } else {
+          window.alert('{{ 'js.fileempty' | t }}');
+        }
+      }
+      //_this.popBox.open();
+    });
+  }
+});
+ 
+</script>
+<style>
+  #cloading{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;  
+}
+  .docs-buttons .btn{
+    border: none;
+    background-color: transparent;
+    background-color: transparent;
+    padding: 5px;
+    width: 45px;
+    box-shadow: none;
+    margin: 10px;
+    color: #000;
+  }
+  .docs-buttons {
+    display: flex;
+    justify-content: center;
+}
+  .ui-widget-content {
+    text-align: center;
+}
+  .tingle-modal-box__content {
+    padding: 2rem;
+}
+  .btn-cancel {
+    display: inline-block;
+    margin: 0 .5rem;
+    padding: 1rem 2rem;
+    border: none;
+    background-color: #000;
+    box-shadow: none;
+    color: #fff;
+    vertical-align: middle;
+    text-decoration: none;
+    font-size: inherit;
+    font-family: inherit;
+    line-height: normal;
+    cursor: pointer;
+    -webkit-transition: background-color .4s ease;
+    transition: background-color .4s ease;
+}
+    .tingle-modal-box {
+    position: relative;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 60%;
+    max-width: 650px;
+    //: ;
+    lduo: ;
+    border-radius: 4px;
+    background: #fff;
+    opacity: 1;
+    cursor: auto;
+    -webkit-transition: -webkit-transform .3s cubic-bezier(.175, .885, .32, 1.275);
+    transition: -webkit-transform .3s cubic-bezier(.175, .885, .32, 1.275);
+    transition: transform .3s cubic-bezier(.175, .885, .32, 1.275);
+    transition: transform .3s cubic-bezier(.175, .885, .32, 1.275), -webkit-transform .3s cubic-bezier(.175, .885, .32, 1.275);
+    -webkit-transform: scale(.8);
+    -ms-transform: scale(.8);
+    transform: scale(.8);}
+  .simple--modal{    width: 100%;
+    display: flex;
+    overflow: auto;
+    justify-content: center;}
+  @media(max-width:640px){
+    .ui-widget-content{width:100%}
+    .tingle-modal-box {
+    position: relative;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 100%;
+    lduo: ;
+    border-radius: 4px;
+    background: #fff;
+    opacity: 1;
+    cursor: auto;
+    -webkit-transition: -webkit-transform .3s cubic-bezier(.175, .885, .32, 1.275);
+    transition: -webkit-transform .3s cubic-bezier(.175, .885, .32, 1.275);
+    transition: transform .3s cubic-bezier(.175, .885, .32, 1.275);
+    transition: transform .3s cubic-bezier(.175, .885, .32, 1.275), -webkit-transform .3s cubic-bezier(.175, .885, .32, 1.275);
+    -webkit-transform: scale(.8);
+    -ms-transform: scale(.8);
+    transform: scale(.8);}
+  }
+
+  .btn-confirm {
+    display: inline-block;
+    margin: 0 .5rem;
+    padding: 1rem 2rem;
+    border: none;
+    box-shadow: none;
+    color: #fff;
+    vertical-align: middle;
+    text-decoration: none;
+    font-size: inherit;
+    font-family: inherit;
+    line-height: normal;
+    cursor: pointer;
+    -webkit-transition: background-color .4s ease;
+    transition: background-color .4s ease;
+    background-color: #4bd863;
+}
+.sprogress {
+  overflow: hidden;
+  height: 20px;
+  margin-bottom: 20px;
+  /*margin-top: 30px;
+  margin-left: 30px;*/
+  background-color: #f7f7f7;
+  background-image: -moz-linear-gradient(top, #f5f5f5, #f9f9f9);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#f9f9f9));
+  background-image: -webkit-linear-gradient(top, #f5f5f5, #f9f9f9);
+  background-image: -o-linear-gradient(top, #f5f5f5, #f9f9f9);
+  background-image: linear-gradient(to bottom, #f5f5f5, #f9f9f9);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff5f5f5', endColorstr='#fff9f9f9', GradientType=0);
+  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  width:308px
+    /*margin-right:12px;*/
+}
+.sprogress .sbar {
+  width: 0%;
+  height: 100%;
+  color: #ffffff;
+  float: left;
+  font-size: 12px;
+  text-align: center;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #0e90d2;
+  background-image: -moz-linear-gradient(top, #149bdf, #0480be);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#149bdf), to(#0480be));
+  background-image: -webkit-linear-gradient(top, #149bdf, #0480be);
+  background-image: -o-linear-gradient(top, #149bdf, #0480be);
+  background-image: linear-gradient(to bottom, #149bdf, #0480be);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff149bdf', endColorstr='#ff0480be', GradientType=0);
+  -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transition: width 0.6s ease;
+  -moz-transition: width 0.6s ease;
+  -o-transition: width 0.6s ease;
+  transition: width 0.6s ease;
+}
+</style>
+{% if productTags contains "custom-text-maxlength-" %}
+    {% for item in product.tags %}
+      {% if item contains "custom-text-maxlength-" %}
+        {% assign itemArr = item | split: "custom-text-maxlength-"%}
+        {% assign maxlength = itemArr[1] | split: "-"%}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+<!-- <div class="serial correct">{% increment step %}</div> -->
+<div class="selector-step" style="margin-top: -19px;}">
+  <div class="content">
+    <div class="uploadfont">
+      
+    </div>
+    <div class="custom-text">
+      <input type="text" id="input-cusom-text" maxlength="{{maxlength}}" name="properties[fonttext]" value="" style="width:100%;border:none;height:54px;margin-top:18px;border: 1px solid #666;margin-bottom:15px" required  placeholder= "&nbsp; {{ 'zen.general.add_text' | t}}"/>
+    </div>  
+    <div class="uploadafterimg1"></div>
+  </div>
+</div>

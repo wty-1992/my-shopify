@@ -1,0 +1,77 @@
+<style>
+    .site-footer {
+    background-color:#F6F6F9;
+    color: #000;
+    margin-top:0px;
+    padding:0px;
+  }
+  .site-footer a {
+    color: #000;
+  }
+  .footer-text{
+    width:100%;
+    font-size:14px;
+    line-height:70px;
+    text-align:center;
+  }
+.site-footer a {
+    color: #000;
+}
+footer a:not([href]):not([tabindex]):focus,footer a:not([href]):not([tabindex]):hover{
+  color: rgb(230, 0, 68);
+}
+
+
+@media(max-width:640px){
+  .site-footer{
+    padding:20px;
+    margin-top:0px;
+  }
+  .footer-text{
+    font-size：12px;
+    line-height:56px;
+  }
+</style>
+
+
+<footer class="site-footer"> 
+  {% include 'footer-pc'%}
+  {% include 'footer-mb'%}
+  {% include 'cart-popup' %}
+</footer>
+{% schema %}
+{
+  "name": "脚部 - 列表",
+  "class": "footer_list",
+  "settings": [
+    {
+      "type": "html",
+      "id": "before_html",
+      "label": "版权信息"
+    },
+    {
+      "type": "image_picker",
+      "id": "footer-logo",
+      "label": "LOGO图片"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "list",
+      "name": "底部列表",
+      "settings": [
+        {
+          "type": "text",
+          "id": "list_title",
+          "label": "标题"
+        },
+        {
+          "type": "textarea",
+          "id": "list_text",
+          "label": "列表"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,395 @@
+
+{% assign infoVal = '' %}
+{% assign cutSku = '' %}
+{% assign otherFont = '' %}
+
+{% assign cattrSKU = product.first_available_variant.sku %}
+
+{% if product.metafields["global"]["cattribute"] %}
+  {% assign cattribute = product.metafields["global"]["cattribute"] %}
+{% elsif productTags contains 'custom-default-name' %}
+		
+    {%comment%}通过标签获取默认名字 {%endcomment%}
+    {% assign defaultName = '' %}
+    {% for tag_item in product.tags %}
+      {% if tag_item contains "custom-default-name-" %}
+        {% assign defaultName = tag_item | strip | replace: "custom-default-name-", "" %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+
+	{% assign cattribute = '{"ismarkup":"","secondtype":"default","isoption":"0","type":"Carving","lines":"1","urlType":"1","productImage":1,"isFont":true,"font":["DancingScriptRegular","TimesNewRoman","AlluraRegular"],"size":[20,30,40,50,60],"attrsFlag":false,"attrs":{"HSKL036A":{"fill":"#000000"},"HSKL036B":{"fill":"#ffffff"},"HSKL036C":{"fill":"#000000"},"HSKL036D":{"fill":"#000000"}},"coors":[{"left":"250","top":"195","limit":"40","angle":"0","size":"20","font":"DancingScriptRegular","textColor":"black","shadowColor":"","direction":"","banDrag":"0","lineHeight":"1","isWrap":false,"text":"","limitArea":{"left":149,"top":173,"width":219,"height":52}}]}' %}
+
+{% elsif cattrSKU == "CWQ034-M" or cattrSKU == "CWQ034-L" %}
+	{% assign cattribute = '{"ismarkup":"","secondtype":"default","isoption":"0","type":"Carving","lines":"1","urlType":"1","coors":[{"left":"250","top":"95","limit":"20","angle":"0","size":"12","font":"Baskerville Old Face","markupindex":"1","textColor":"#e8c871","shadowColor":"","direction":"","banDrag":"0","lineHeight":"1","limitArea":{"left":154,"top":88,"width":184,"height":20}}]}' %}
+{% elsif cattrSKU == "CWQ035-M" or cattrSKU == "CWQ035-L" %}
+	{% assign cattribute = '{"ismarkup":"","secondtype":"default","isoption":"0","type":"Carving","lines":"1","urlType":"1","coors":[{"left":"250","top":"255","limit":"20","angle":"0","size":"12","font":"Cabin","markupindex":"1","textColor":"#ffffff","shadowColor":"","direction":"","banDrag":"0","lineHeight":"1","limitArea":{"left":85,"top":255,"width":309,"height":118}}]}' %}
+{% elsif cattrSKU == "CWQ036-M" or cattrSKU == "CWQ036-L" %}
+	{% assign cattribute = '{"ismarkup":"","secondtype":"default","isoption":"0","type":"Carving","lines":"1","urlType":"1","coors":[{"left":"250","top":"36","limit":"20","angle":"0","size":"20","font":"Baskerville Old Face","markupindex":"1","textColor":"#222122","shadowColor":"","direction":"","banDrag":"0","lineHeight":"1","limitArea":{"left":183,"top":10,"width":309,"height":118}}]}' %}
+{% elsif cattrSKU == "CWQ037-M" or cattrSKU == "CWQ037-L" %}
+	{% assign cattribute = '{"ismarkup":"","secondtype":"default","isoption":"0","type":"Carving","lines":"1","urlType":"1","coors":[{"left":"315","top":"118","limit":"20","angle":"0","size":"23","font":"Thirsty Rough","markupindex":"1","textColor":"#ffffff","shadowColor":"","direction":"","banDrag":"0","lineHeight":"1","limitArea":{"left":265,"top":105,"width":91,"height":51}}]}' %}
+{% elsif cattrSKU contains "CTS442AM" or cattrSKU contains "CTS442AW" %}
+	{% assign cattribute = '{"ismarkup":"","secondtype":"default","isoption":"0","type":"Carving","lines":"1","urlType":"1","font":["AIV74"],"attrs":{"CTS442AM":{"fill":"#ffffff","charSpacing":200,"fontWeight":"bold"},"CTS442AW":{"fill":"#ffffff","charSpacing":200,"fontWeight":"bold"},"CTS442BM":{"fill":"#000000","charSpacing":200,"fontWeight":"bold"},"CTS442BW":{"fill":"#000000","charSpacing":200,"fontWeight":"bold"},"CTS442CM":{"fill":"#000000","charSpacing":200,"fontWeight":"bold"},"CTS442CW":{"fill":"#000000","charSpacing":200,"fontWeight":"bold"}},"coors":[{"left":"250","top":"180","limit":"8","angle":"0","size":"19","font":"AIV74","markupindex":"1","textColor":"#ffffff","shadowColor":"","direction":"","banDrag":"0","lineHeight":"1","limitArea":{"left":174,"top":153,"width":156,"height":55},"initialCarving":{"font":"AIV74","isFull":true}}]}' %}
+	{% assign cutSku = true %}
+{% elsif cattrSKU contains "CTS443AM" or  cattrSKU contains "CTS443AW" %}
+	{% assign cattribute = '{"ismarkup":"","secondtype":"default","isoption":"0","type":"Carving","lines":"1","urlType":"1","attrsFlag":true,"attrs":{"CTS443AM":[{"fill":"#ffffff","charSpacing":600},{"fill":"#ffffff","charSpacing":200,"fontWeight":"normal"}],"CTS443AW":[{"fill":"#ffffff","charSpacing":600},{"fill":"#ffffff","charSpacing":200,"fontWeight":"normal"}],"CTS443BM":[{"fill":"#000000","charSpacing":600},{"fill":"#000000","charSpacing":200,"fontWeight":"bold"}],"CTS443BW":[{"fill":"#000000","charSpacing":600},{"fill":"#000000","charSpacing":200,"fontWeight":"bold"}],"CTS443CM":[{"fill":"#000000","charSpacing":600},{"fill":"#000000","charSpacing":200,"fontWeight":"bold"}],"CTS443CW":[{"fill":"#000000","charSpacing":600},{"fill":"#000000","charSpacing":200,"fontWeight":"bold"}]},"coors":[{"left":"250","top":"170","limit":"8","angle":"0","size":"16","font":"ARLRDBD","markupindex":"1","textColor":"#ffffff","shadowColor":"","direction":"","banDrag":"0","lineHeight":"1","limitArea":{"left":161,"top":155,"width":182,"height":29},"initialCarving":{"font":"SignLan","size":"22.5","left":250,"top":128,"color":"#ffffff","isFull":true}}]}' %}
+	{% assign cutSku = true %}
+{% elsif cattrSKU contains "CTS444AM" or  cattrSKU contains "CTS444AW"  or  cattrSKU contains "CTS444BM" or  cattrSKU contains "CTS444BW" or  cattrSKU contains "CTS444CM"  or  cattrSKU contains "CTS444CW" %}
+	{% assign cattribute = '{"ismarkup":"","secondtype":"default","isoption":"0","type":"Carving","lines":"1","urlType":"2","attrsFlag":true,"attrs":{"CTS444AM":[{"fill":"#ffffff","charSpacing":100},{"fill":"#ffffff","charSpacing":100}],"CTS444AW":[{"fill":"#ffffff","charSpacing":100},{"fill":"#ffffff","charSpacing":100}],"CTS444BM":[{"fill":"#000000","charSpacing":100},{"fill":"#000000","charSpacing":100}],"CTS444BW":[{"fill":"#000000","charSpacing":100},{"fill":"#000000","charSpacing":100}],"CTS444CM":[{"fill":"#000000","charSpacing":100},{"fill":"#000000","charSpacing":100}],"CTS444CW":[{"fill":"#000000","charSpacing":100},{"fill":"#000000","charSpacing":100}]},"coors":[{"left":"140","top":"173","limit":"6","angle":"0","size":"24","font":"ARLRDBD","markupindex":"1","textColor":"#ffffff","shadowColor":"","direction":"","banDrag":"0","lineHeight":"1","limitArea":{"left":140,"top":173,"width":100,"height":46}},{"left":"262","top":"173","limit":"6","angle":"0","size":"24","font":"ARLRDBD","markupindex":"1","textColor":"#ffffff","shadowColor":"","direction":"","banDrag":"0","lineHeight":"2","limitArea":{"left":262,"top":173,"width":100,"height":46}}]}' %}
+	{% assign cutSku = true %}
+{% elsif cattrSKU contains "SKL168A"or cattrSKU contains "SKL168B" or cattrSKU contains "SKL168C"or cattrSKU contains "SKL168D" %}
+	{% assign cattribute = '{"ismarkup":"","secondtype":"default","isoption":"0","type":"Carving","lines":"1","urlType":"1","font":["AIV74"],"attrs":{"SKL168A":{"fill":"#000000","charSpacing":200,"fontWeight":"bold"},"SKL168B":{"fill":"#ffffff","charSpacing":200,"fontWeight":"bold"},"SKL168C":{"fill":"#000000","charSpacing":200,"fontWeight":"bold"},"SKL168D":{"fill":"#000000","charSpacing":200,"fontWeight":"bold"}},"coors":[{"left":"250","top":"220","limit":"8","angle":"0","size":"45","font":"AIV74","markupindex":"1","textColor":"#000000","shadowColor":"","direction":"","banDrag":"0","lineHeight":"1","limitArea":{"left":174,"top":153,"width":156,"height":55}}]}' %}
+	{% assign cutSku = true %}
+{% elsif cattrSKU contains "KNL291" %}
+	{% assign cattribute = '{"ismarkup":"","secondtype":"default","isoption":"0","type":"Carving","lines":"1","urlType":"1","attrsFlag":true,"font":["BODONIANTTDEMBOLITARO1"],"coors":[{"left":"250","top":"120","limit":"8","angle":"0","size":"36","font":"BODONIANTTDEMBOLITARO1","markupindex":"1","textColor":"#8f8882","shadowColor":"","direction":"","banDrag":"0","lineHeight":"1","limitArea":{"left":98,"top":85,"width":306,"height":72},"initialCarving":{"font":"SignLan","size":"36","left":250,"top":286,"color":"#8f8882","fontWeight":"bold","isFull":true}}]}' %}
+    {% assign otherFont = 'AIV74' %}
+	{% assign infoVal = 'The effect is for reference only.' %}
+{% elsif cattrSKU contains "KNL292" %}
+	{% comment %}
+	{% assign cattribute = '{"ismarkup":"","secondtype":"default","isoption":"0","type":"Carving","lines":"1","urlType":"1","attrsFlag":true,"font":["BODONIANTTDEMBOLITARO1"],"coors":[{"left":"160","top":"246","limit":"8","angle":"90","size":"32","font":"BODONIANTTDEMBOLITARO1","markupindex":"1","textColor":"#8f8882","shadowColor":"","banDrag":"0","lineHeight":"1","direction":"","initialCarving":{"font":"SignLan","size":"32","left":340,"top":246,"color":"#8f8882","angle":"90","fontWeight":"bold","isFull":true}}]}' %}
+	{% endcomment %}
+
+	{% assign cattribute = '{"ismarkup":"","secondtype":"default","isoption":"0","type":"Carving","lines":"1","urlType":"1","attrsFlag":true,"font":["BODONIANTTDEMBOLITARO1"],"coors":[{"left":"250","top":"120","limit":"8","angle":"0","size":"32","font":"BODONIANTTDEMBOLITARO1","markupindex":"1","textColor":"#8f8882","shadowColor":"","banDrag":"0","lineHeight":"1","direction":"","limitArea":{"left":58,"top":58,"width":412,"height":110},"initialCarving":{"font":"SignLan","size":"32","left":250,"top":286,"color":"#8f8882","angle":"0","fontWeight":"bold","isFull":true}}]}' %}
+	{% assign otherFont = 'AIV74' %}    
+    {% assign infoVal = 'The effect is for reference only.' %}
+{% elsif cattrSKU contains "CFS140" %}
+	{% assign cattribute = '{"ismarkup":"","secondtype":"default","isoption":"0","type":"Carving","lines":"1","urlType":"1","attrsFlag":true,"font":["Bell MT"],"coors":[{"left":"250","top":"156","limit":"50","angle":"0","size":"20","font":"Bell MT","markupindex":"1","textColor":"#000000","shadowColor":"","banDrag":"0","lineHeight":"1","direction":"","rows":2,"limitArea":{"left":131,"top":142,"width":245,"height":57}}]}' %}
+{% elsif cattrSKU contains "CJJ049" or  cattrSKU contains "CJJ050" or  cattrSKU contains "CJJ051" or  cattrSKU contains "CJJ052" %}
+	{% assign cattribute = '{"ismarkup":"","secondtype":"default","isoption":"0","type":"Carving","lines":"1","urlType":"1","attrsFlag":true,"attrs":{"CJJ049":[{"fill":"#ffffff","fontSize":50,"limitArea":{"left":112,"top":162,"width":278,"height":70}}],"CJJ050":[{"fill":"#ffffff","fontSize":46,"limitArea":{"left":122,"top":158,"width":255,"height":60}}],"CJJ051":[{"fill":"#ffffff","fontSize":42,"top":200,"limitArea":{"left":140,"top":168,"width":215,"height":60}}],"CJJ052":[{"fill":"#ffffff","fontSize":32,"top":200,"limitArea":{"left":170,"top":176,"width":160,"height":40}}]},"coors":[{"left":"250","top":"110","limit":"20","angle":"0","size":"50","font":"ashadiya","markupindex":"1","textColor":"#ffffff","shadowColor":"","direction":"","banDrag":"0","lineHeight":"1","limitArea":{"left":112,"top":162,"width":278,"height":70}}]}' %}
+{% elsif cattrSKU contains "QJ016A" or  cattrSKU contains "QJ016B" %}
+	{% assign cattribute = '{"ismarkup":"","secondtype":"default","isoption":"0","type":"Carving","lines":"1","urlType":"1","attrsFlag":true,"attrs":{"QJ016A":[{"fill":"#040000","fontSize":48,"limitArea":{"left":189,"top":208,"width":126,"height":54}}],"QJ016B":[{"fill":"#040000","fontSize":48,"limitArea":{"left":189,"top":208,"width":126,"height":54}}]},"font":["AdageScriptJF"],"coors":[{"left":"250","top":"208","limit":"7","angle":"0","size":"50","font":"AdageScriptJF","markupindex":"1","textColor":"#ffffff","shadowColor":"","direction":"","banDrag":"0","lineHeight":"1","limitArea":{"left":112,"top":208,"width":278,"height":215}}]}' %}
+{% elsif cattrSKU contains "QJ014A" or  cattrSKU contains "QJ014B" %}
+	{% assign cattribute = '{"ismarkup":"","secondtype":"default","isoption":"0","type":"Carving","lines":"1","urlType":"1","attrsFlag":true,"attrs":{"QJ014A":[{"fill":"#040000","fontSize":48,"limitArea":{"left":53,"top":137,"width":399,"height":130}}],"QJ014B":[{"fill":"#040000","fontSize":48,"limitArea":{"left":53,"top":137,"width":399,"height":130}}]},"font":["AdageScriptJF"],"coors":[{"left":"53","top":"137","limit":"42","angle":"0","size":"50","font":"AdageScriptJF","markupindex":"1","textColor":"#ffffff","shadowColor":"","direction":"","banDrag":"0","lineHeight":"1","isTextarea":true,"limitArea":{"left":53,"top":137,"width":399,"height":130}}]}' %}
+{% elsif cattrSKU contains "QJ005A" or  cattrSKU contains "QJ005B" %}
+	{% assign cattribute = '{"ismarkup":"","secondtype":"default","isoption":"0","type":"Carving","lines":"1","urlType":"1","attrsFlag":true,"attrs":{"QJ005A":[{"fill":"#040000","fontSize":129,"limitArea":{"left":70,"top":130,"width":389,"height":150}}],"QJ005B":[{"fill":"#040000","fontSize":129,"limitArea":{"left":70,"top":140,"width":384,"height":150}}]},"font":["BERNIERShade"],"coors":[{"left":"70","top":"130","limit":"6","angle":"0","size":"6","font":"BERNIERShade","markupindex":"1","textColor":"#ffffff","shadowColor":"","direction":"","banDrag":"0","lineHeight":"1","limitArea":{"left":70,"top":130,"width":389,"height":150}}]}' %}
+{% elsif cattrSKU contains "QJ007A" or  cattrSKU contains "QJ007B" %}
+	{% assign cattribute = '{"ismarkup":"","secondtype":"default","isoption":"0","type":"Carving","lines":"1","urlType":"1","attrsFlag":true,"attrs":{"QJ007A":[{"fill":"#040000","fontSize":42,"limitArea":{"left":320,"top":218,"width":132,"height":48}}],"QJ007B":[{"fill":"#040000","fontSize":42,"limitArea":{"left":321,"top":218,"width":132,"height":49}}]},"font":["AdageScriptJF"],"coors":[{"left":"320","top":"218","limit":"8","angle":"0","size":"50","font":"AdageScriptJF","markupindex":"1","textColor":"#ffffff","shadowColor":"","direction":"","banDrag":"0","lineHeight":"1","limitArea":{"left":320,"top":218,"width":320,"height":225}}]}' %}
+{% elsif cattrSKU contains "QJ015A" or  cattrSKU contains "QJ015B" %}
+	{% assign cattribute = '{"ismarkup":"","secondtype":"default","isoption":"0","type":"Carving","lines":"1","urlType":"1","attrsFlag":true,"attrs":{"QJ015A":[{"fill":"#040000","fontSize":48,"limitArea":{"left":184,"top":219,"width":132,"height":54}}],"QJ015B":[{"fill":"#040000","fontSize":48,"limitArea":{"left":184,"top":219,"width":132,"height":54}}]},"font":["BlackAndWhiteDisplay"],"coors":[{"left":"184","top":"219","limit":"5","angle":"0","size":"50","font":"BlackAndWhiteDisplay","markupindex":"1","textColor":"#ffffff","shadowColor":"","direction":"","banDrag":"0","lineHeight":"1","limitArea":{"left":184,"top":219,"width":132,"height":54}}]}' %}
+{% elsif cattrSKU contains "QJ009A" or  cattrSKU contains "QJ009B" or cattrSKU contains "QJ010A" or  cattrSKU contains "QJ010B" or cattrSKU contains "QJ011A" or  cattrSKU contains "QJ011B" or cattrSKU contains "QJ012A" or  cattrSKU contains "QJ012B" %}
+	{% assign cattribute = '{"ismarkup":"","secondtype":"default","isoption":"0","type":"Carving","lines":"1","urlType":"1","attrsFlag":true,"font":["PoplarStd"],"coors":[{"left":"414","top":"200","limit":"5","angle":"-90","size":"66","font":"PoplarStd","fontSize":68,"markupindex":"1","textColor":"#040000","shadowColor":"","direction":"","banDrag":"1","lineHeight":"1","isUppercase":true}]}' %}
+{% elsif cattrSKU contains "CCJ019A" or  cattrSKU contains "CCJ019B" or cattrSKU contains "CCJ020A" or  cattrSKU contains "CCJ020B" or cattrSKU contains "CCJ021A" or  cattrSKU contains "CCJ021B" %}
+	{% assign cattribute = '{"ismarkup":"","secondtype":"default","isoption":"0","type":"Carving","lines":"1","urlType":"1","attrsFlag":true,"font":["QueenofHeaven"],"attrs":{"CCJ019A":[{"fill":"#80581E","fontSize":23,"fontFamily":"QueenofHeaven","left":358,"top":368,"limitArea":{"left":294,"top":350,"width":134,"height":36}}],"CCJ019B":[{"fill":"#80581E","fontSize":23,"fontFamily":"QueenofHeaven","left":358,"top":368,"limitArea":{"left":294,"top":350,"width":134,"height":36}}],"CCJ020A":[{"fill":"#80581E","fontSize":23,"fontFamily":"QueenofHeaven","left":348,"top":368,"limitArea":{"left":284,"top":350,"width":134,"height":36}}],"CCJ020B":[{"fill":"#80581E","fontSize":23,"fontFamily":"QueenofHeaven","left":348,"top":368,"limitArea":{"left":284,"top":350,"width":134,"height":36}}],"CCJ021A":[{"fill":"#80581E","fontSize":23,"fontFamily":"QueenofHeaven","left":358,"top":374,"limitArea":{"left":294,"top":356,"width":134,"height":29}}],"CCJ021B":[{"fill":"#80581E","fontSize":23,"fontFamily":"QueenofHeaven","left":358,"top":374,"limitArea":{"left":294,"top":356,"width":134,"height":29}}]},"coors":[{"left":"190","top":"326","limit":"10","angle":"0","size":"50","font":"ashadiya","markupindex":"1","textColor":"#ffffff","shadowColor":"","direction":"","banDrag":"0","lineHeight":"1","limitArea":{"left":190,"top":326,"width":278,"height":70}}]}' %}
+{% endif %}
+<script>
+  var defaultName = '{{defaultName}}';
+  
+  var submit_flag = true;
+  window.addEventListener('EVENT_ENGRAVING_SAVE_AFTER', function(event){
+	var index = event.detail.index;
+    var data = event.detail.data;
+    
+    submit_flag = true;
+    $('.preview-thumbnail').show();
+  }); 	
+    var jsonCustom = '{{ cattribute }}';
+    if(jsonCustom){
+      jsonCustom = JSON.parse('{{ cattribute }}');
+    }
+                              
+  var productImage = typeof jsonCustom.productImage != 'undefined' ? jsonCustom.productImage : '';
+  var productImageUrl = "{{product.images[0] | img_url: '1000x1000' | prepend: "https:"}}";
+  
+  var baseurl = 'https://pic.stylelab.com/';
+  var _zenSku = "{{ product.selected_or_first_available_variant.sku }}";
+  {% if cutSku != '' %}
+  if(_zenSku.indexOf('-') > -1){
+     let skuList =  _zenSku.split('-');
+     _zenSku =  skuList[0]; 
+  }
+  {% endif %}
+        console.log(_zenSku);
+  var _zenEngravingSizeOptions = [{
+    value: "20",
+    label: "20"
+  }];
+    
+  var _zenEngravingFontOptions = [{
+    value: "TimesNewRoman",
+    label: "TimesNewRoman"
+  }];
+    
+  //如果配置信息中有font则使用font作为字体选项
+    if( typeof jsonCustom.font !== 'undefined' && jsonCustom.font ){
+      var json_font = jsonCustom.font;
+      _zenEngravingFontOptions = [];
+      for(var j = 0; j < json_font.length; j++) {
+        var font_arr = [];
+        font_arr['value'] = json_font[j];
+        font_arr['label'] = json_font[j];
+        
+        loadCustomFonts(json_font[j]);
+        
+        _zenEngravingFontOptions.push(font_arr);
+      }
+    }
+
+    //如果配置信息中有size则使用size作为字号选项
+    if( typeof jsonCustom.size !== 'undefined' && jsonCustom.size ){
+      var json_size = jsonCustom.size;
+      _zenEngravingSizeOptions = [];
+      for(var k = 0; k< json_size.length; k++) {
+        var size_arr = [];
+        size_arr['value'] = json_size[k];
+        size_arr['label'] = json_size[k];
+        _zenEngravingSizeOptions.push(size_arr);
+      }
+    }
+    
+//     var textUrl = "https://www.soufeel.com/media/textdesign/";
+    
+//     if(typeof jsonCustom.urlType && jsonCustom.urlType){
+    	textUrl = "https://pic.stylelab.com/img/textdesign/";
+    
+    
+  var _zenConfig = {
+    photoObj: [],
+    carvingObj: [],
+    crystalObj: [],
+    curveCarvingObj: [],
+    nameObj: [],
+    carvingBigObj: [],
+    cropPrompt: " ",   //刻字弹层提示文字, 可选, 默认无
+    requirePrompt: "{{'zen.general.required_field' | t}}",  //传图必填提示文案
+    uploadLoadingImage:"{{ 'sandglass.gif' | asset_img_url: '260x' }}",
+    actionInfo: "{{'zen.engrave.actionInfo' | t}}",
+    noteInfo: "{{'zen.photocarving.noteInfo' | t}}{{infoVal}}",
+    leftText: typeof jsonCustom.leftText != 'undefined' ? jsonCustom.leftText : "Left",
+    fontRadioLabel: "{{'zen.photocarving.font' | t}}:",
+    fontSizeSelectLabel: "{{'zen.general.font_size' | t}}:",
+    wrapperBackgroudColor: "#000000",
+    ifCarvingHorizontal:true,
+    isCloseOnClickModal:false,
+    textUrl: textUrl,
+    crop: [],
+    photo: [],
+    carving: [
+      {
+            require: true,
+    		loadingFullScreen:false,
+            previewText: "{{'zen.curvecarving.confirmText' | t}}",  //左侧预览文字
+            btnText: "{{'zen.photocarving.add' | t}}",     //按钮文案
+            confirmText: "{{'zen.curvecarving.confirm_your_design' | t}}",
+            type: "",
+            sku: _zenSku,
+            in:  _zenSku+"-IN.png",
+            out: _zenSku+"-OUT.png",
+            isBig: true,    //是否生成大图
+            bigParam: { width: 1200, height: 840, fontWeight: 'bold', fontSize: 60},  //刻字大图参数 是只有文字的大图
+            // bigParam: { width: 600, height: 450, fontWeight: 'bold', fontSize: 30},  //刻字大图参数test
+            showSize: false,  //是否显示字号选项
+            showFont: false,  //是否显示字体选项
+            checkLimitAreaNew: false,
+            engravingSizeOptions: _zenEngravingSizeOptions,
+            engravingFontOptions: _zenEngravingFontOptions,
+            textPlaceHolder:"{{'zen.engrave.placeholder' | t}}",
+            cropPrompt:' ',
+            cWidth: 500,
+            cHeight: 400,
+            baseWidth: 500,
+        	showSize: _zenEngravingSizeOptions.length > 1?true:false,  //是否显示字号选项
+            showFont: _zenEngravingFontOptions.length > 1?true:false,  //是否显示字体选项
+            isOtherImg: typeof jsonCustom.isOtherImg != 'undefined' ? jsonCustom.isOtherImg : false,
+            bigBackgroundColor: typeof jsonCustom.bigBackgroundColor != 'undefined' ? jsonCustom.bigBackgroundColor : '',
+            dateFormat: typeof jsonCustom.dateFormat != 'undefined' ? jsonCustom.dateFormat : '',
+            dateValueFormat: typeof jsonCustom.dateValueFormat != 'undefined' ? jsonCustom.dateValueFormat : '',
+            loadingFullScreen:true,
+            coors: jsonCustom.coors
+
+          }
+    ],
+    crystal:[],
+    crystalText:[],
+    curveCarving:[]
+  };
+</script>
+<div class="photo-select-carving">
+  <div id="zen-photocarving"></div>
+</div>
+{% if productTags contains "custom-data-new" %}
+<input type="text" id="piccustomInfo"  name="properties[customInfo]"  value="" style="display:none" /><!--大图-->
+
+{% else %}
+<input type="text" id="engraving-crop" name="properties[engravingCrop]" value="" style="display:none" /><!--效果图-->
+<input type="text" id="engraving-big"  name="properties[engravingBig]"  value="" style="display:none" /><!--大图-->
+<textarea id="engraving-text" name="properties[engravingText]" value="" style="display:none" ></textarea>
+<input type="text" id="engraving-size" name="properties[engravingSize]" value="" style="display:none" />
+<input type="text" id="engraving-font" name="properties[engravingFont]" value="" style="display:none" />
+{% endif %}
+
+{% if productTags contains 'custom-default-name' or cattrSKU == 'BAG217' %}
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.5.3/zen-photo-carving-chunk-vendors.css?202010291617" rel="stylesheet" />
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.5.3/zen-photo-carving-app.css?202010291617" rel="stylesheet" />
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.5.3/zen-photo-carving-chunk-vendors.js?202010291617"></script>
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.5.3/zen-photo-carving-app.js?202010291617"></script>
+{% else %}
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.4.1/zen-photo-carving-chunk-vendors.css?202010291617" rel="stylesheet" />
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.4.1/zen-photo-carving-app.css?202010291617" rel="stylesheet" />
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.4.1/zen-photo-carving-chunk-vendors.js?202010291617"></script>
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.4.1/zen-photo-carving-app.js?202010291617"></script>
+{% endif %}
+<script>
+
+  $(function(){  //检测表单
+    $('.zen-require').attr('name','customVal');
+    
+    if(defaultName){
+      setText(0,defaultName);
+    }
+    
+    if(typeof jsonCustom.attrs != 'undefined'){
+      	console.log(jsonCustom.attrs[_zenSku]);
+      	let attrsFlag = false;
+        if(jsonCustom.attrsFlag){
+          attrsFlag = true;
+        }
+    	changeCoord(jsonCustom.attrs[_zenSku],attrsFlag);
+    }
+    
+  })
+  
+   Listener.on([ Listener.product.update.before ], function(event, variant, dom) {
+    
+    let variantSku = variant.sku;
+     console.log(event, variant, dom,1234)
+    {% if cutSku != '' %}
+    if(variantSku.indexOf('-') > -1){
+       let skuList =  variantSku.split('-');
+       variantSku =  skuList[0]; 
+    }
+    {% endif %}
+    if(_zenSku != variantSku){
+      _zenSku = variantSku;
+      
+      if(typeof jsonCustom.attrs != 'undefined'){
+        console.log(jsonCustom.attrs[_zenSku]);
+        let attrsFlag = false;
+        if(jsonCustom.attrsFlag){
+          attrsFlag = true;
+        }
+    	changeCoord(jsonCustom.attrs[_zenSku],attrsFlag);
+      }
+      
+      changeCarvingSku(_zenSku);
+      
+      submit_flag = false;
+      $('.preview-thumbnail').hide();
+      
+      if(productImage && variant.featured_image){
+    	productImageUrl = variant.featured_image.src;
+      }
+    
+      
+    }
+  })
+  Product.validators.push(async () => {
+    if(!submit_flag){
+      $('.area-carving').css("border-color","red");
+      return false;
+    }
+  	var zenInfo = $(".zen-require").val();
+    var zenFlag = true;
+    console.log($(".zen-require").val(),111);
+    if(zenInfo){
+      var zenInfo = JSON.parse(zenInfo);
+      zenInfo.engraving.forEach(function(item,index){
+        if(!item.engravingCrop){
+          zenFlag = false;
+          $('.area-carving-'+index).css("border-color","red");
+        }else{
+          {% if productTags contains "custom-data-new" %}
+          	var data = {}
+            data['_sunzi_text_effect'] = item.engravingCrop;
+
+          
+          
+          	// 新修改 多刻字预览走texts  2021.9.24  lile
+          	let enArr = item.engravingText.split('|');
+          	if(enArr.length > 1) {
+              data._sunzi_texts = []
+              enArr.forEach(function(e,i){
+                data._sunzi_texts.push({
+                  value: e,
+                  number: i+1
+                })
+              })
+            }else {
+            	data['_sunzi_text'] = {value: item.engravingText}
+                if(jsonCustom.isSize){
+                  let cSize  = jsonCustom.coors[0].size;
+                  cSize += '';
+                  data['_sunzi_text']['fontSize'] = cSize;
+                }
+
+              if(jsonCustom.isFont){
+                data['_sunzi_text']['font'] = item.engravingFont;
+              }
+            }
+          
+          
+          // 历史存在问题版本 未找到制作人
+//             if(item.engravingText.indexOf('|')){
+// 			  let enArr = item.engravingText.split('|');
+//               let tempArr = [];
+//               enArr.forEach(function(item,index){
+//                 if(jsonCustom.coors[index].datalabel){
+//                   tempArr.push(jsonCustom.coors[index].datalabel + ':' + item);
+//                 }
+//               });
+              
+//               if(tempArr.length > 0){
+//           		engravingText = tempArr.join(' ');
+//           	  }
+//             }
+          
+//             data['_sunzi_text'] = {value: engravingText}
+            
+            if(productImage == 1){
+                data['_sunzi_effect'] = productImageUrl;
+            }
+            
+            
+            $("#piccustomInfo").val(JSON.stringify(data));
+          {% else %}
+            $("#engraving-crop").val(item.engravingCrop);
+            $('#engraving-big').val(item.engravingBig);
+            $("#engraving-text").val(item.engravingText);
+
+            var textArr = item.engravingText.split('|');
+            if(textArr.length > 1){
+              textArr.forEach(function(vv,ii){
+                let iii = ii+1;
+                textArr[ii] = iii + ':' + vv;
+              });
+
+              $("#engraving-text").val(textArr.join(' '));
+            }
+
+            $('#engraving-size').val(item.engravingSize);
+            $("#engraving-font").val(item.engravingFont);
+
+            {% if otherFont != '' %}
+            var fontStr = item.engravingFont + '|' + '{{otherFont}}';
+            var fontArr = [];
+            var fontArrOld = fontStr.split('|');
+
+            fontArrOld.forEach(function(value,index){
+              let n = index + 1;
+              fontArr.push(n + ':' +value);
+            });
+            $("#engraving-font").val(fontArr.join(' '));
+            {% endif %}
+          {% endif %}
+          $('.area-carving-'+index).css("border-color","#f7f8fa");
+        }
+      });
+    }else{
+      zenFlag = false;
+      $('.area-carving').css("border-color","red");
+    }
+    
+    console.log("zenFlag:", zenFlag);
+    return zenFlag;
+  }
+  )
+</script>

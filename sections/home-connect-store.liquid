@@ -1,0 +1,154 @@
+<style >
+  .home-connect-store{
+    padding:150px 0 151px 0;
+  }
+
+  .home-connect-store,.connect-store-box{
+    width:100%;
+    background:#FFFFFF;
+  }
+  .connect-store-box{
+    width:100%;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .connect-image{
+    width:53.17%;
+  }
+  .title-box{
+    width:100%;
+    font-size: 44px;
+    line-height: 53px;
+    color: #222;
+    width: 100%;
+    padding: 0 28px;
+    text-align: center
+  }
+  .text-connect{
+    font-size: 20px;
+    line-height: 24px;
+    color: #222;
+    margin-top: 44px;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 56px;
+  }
+  .explain{
+    width:100%;
+    text-align: center;
+    font-size: 16px;
+    line-height: 32px;
+    margin-top:14px;
+   
+  }
+  .cennect-button{
+    margin-top:55px
+  }
+
+  @media screen and (max-width: 768px){
+    .home-connect-store{
+      padding:40px 0px 40px 0px ;
+    }
+    .connect-store-box{
+      padding:0 14px;
+    }
+    .explain{
+      font-size: 12px;
+      margin-top:14px;
+      padding-bottom:20px;
+    }
+    .connect-image{
+      width:85.06%;
+    }
+    .cennect-button{
+      padding:0 20px;
+      width: 100%;
+      margin-top:25px;
+    }
+    .title-box{
+      font-size: 20px;
+      line-height: 29px;
+    }
+    .text-connect{
+      font-size: 16px;
+      line-height: 19px;
+      margin-top: 22px;
+      margin-bottom: 28px;
+  }
+  }
+</style > 
+ {% assign pc_resize = section.settings.pc_img.width | append: "x" | append: section.settings.pc_img.height %}
+ {% assign mb_resize = section.settings.mb_img.width | append: "x" | append: section.settings.mb_img.height %} 
+<div class="connect-store-box">
+  <div class="title-box">{{section.settings.title}}</div>
+  <div class=" text-connect">{{section.settings.text}}</div>
+  <div class="connect-image" style="background-image:url()">
+    <img src="{{section.settings.pc_img  | img_url: pc_resize }}" 
+         class="lazyload"
+         />
+  </div>
+  <div class="cennect-button">
+    <a class="link"  href="{{section.settings.link}}">
+      <span class="link-text">{{section.settings.skip-text}} </span>
+      {% include 'icon-arrow' %}
+    </a>
+  </div>
+  <div class="explain">{{section.settings.explain}}</div>
+</div>
+
+{% schema %}
+{
+  "name": "首页 连接商店块",
+  "class":"home-connect-store",
+  "settings": [
+     {
+        "type": "text",
+        "id": "private",
+        "label": "程序参考字段默认勿动",
+        "default": "home-connect-store"
+     },
+
+     {
+       "type": "text",
+       "id": "skip-text",
+       "label": "跳转文案"
+     }, 
+	{
+      "type": "text",
+       "id": "link",
+       "label": "跳转链接"
+     } ,
+    {
+      "type": "text",
+      "id": "title",
+      "label": "标题"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "描述" 
+    },
+   {
+      "type": "textarea",
+      "id": "explain",
+      "label": "说明" 
+    },
+    {
+      "type": "image_picker",
+      "id": "mb_img",
+      "label": "MB图片" 
+    },
+    {
+      "type": "image_picker",
+      "id": "pc_img",
+      "label": "PC图片" 
+    }
+  ],
+  "presets": [{
+    "name": "首页 连接商店块",
+    "category": "Custom"
+  }]
+}
+{% endschema %}

@@ -1,0 +1,156 @@
+<style>
+   #app, .wrap-type-text-box {margin-top: 1rem;}
+/*   .area-crop-upload .area-crop-upload-flex:nth-of-type(2) {
+  	width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+  } */
+/*  .area-crop-upload .area-crop-upload-flex .avatar-uploader, .area-crop-upload .area-crop-upload-flex .avatar-uploader .el-upload {
+ 	height: 100%;
+   width: 100%;
+ } */
+  .area-crop-upload .area-crop-upload-flex:nth-of-type(1) {
+  	height: 3rem;
+  }
+  .preview-thumbnail {
+  	height: 100% !important;
+    width: auto !important;
+  }
+ .area-crop-upload ,.wrap-type-text{     
+    margin-bottom: 1rem!important;
+    align-items: center;
+    display: flex;
+    cursor: pointer;
+    overflow: hidden;
+    width: 100%;
+    height: 4rem;
+    min-height: 30px;
+    background: #fff!important;
+    position: relative;
+    border: 1px solid #e7e7e7;
+    border-radius: 0px!important;  
+    padding: 1rem;
+   line-height: 1 !important;
+   justify-content: space-between;
+}
+  .area-crop-upload .area-crop-upload-text,.wrap-type-title {
+    font-size: 1rem!important;
+    margin-bottom: 0;
+    color: #000;
+}
+.area-crop-upload.red{ 
+  border: 1px solid red;
+}  
+.area-crop-upload .area-photo-upload-flex{
+    position: relative;
+    height: 100%;
+    line-height: 1 !important;
+}
+  .btn-upload-open {
+  	cursor: pointer;
+    background: #bfa175;
+    color: #fff;
+    border-radius: 25px;
+    padding: 2px 15px;
+    width: 100px;
+    text-align: center;
+    text-transform: capitalize;
+    font-weight: bold;
+    border: none;
+    font-size: 16px;
+    line-height: 1.625;
+  }
+/*   .btn-upload-open:before {
+    content: "\e6e0";
+  } */
+  .wrap-type-text input {
+  	width: 80%;
+    border: none !important;
+    margin-left: 10px;
+    box-shadow: none !important;
+  }
+  .leftnum {
+  	min-width: 48px;
+  }
+  .wrap-type-textarea {
+  	border: none;
+    resize: none;
+    box-shadow: none !important;
+    width: 80%;
+  }
+  #app .el-dialog__footer .el-button {
+  	width: 120px;
+  }
+  #app .el-dialog__footer .el-button--primary {
+  	background: #bfa175 !important;
+    border-color: #bfa175 !important;
+    border-radius: 0px !important;
+  }
+  
+  #app .el-dialog__footer .el-button--default {
+  	border-color: grey !important;
+    color: #fff !important;
+    background-color: grey !important;
+    border-radius: 0px !important;
+  }
+  #app .photo-design-tool-bar {
+  	margin-top: 10px;
+  }
+  #app .el-progress-bar__inner {
+  	background-color: #bfa175 !important;
+  }
+  #app .el-dialog__headerbtn:focus .el-dialog__close,#app .el-dialog__headerbtn:hover .el-dialog__close, #app .el-message-box__headerbtn:hover .el-message-box__close {
+  	color: #000 !important;
+  }
+  #app .el-dialog__headerbtn, #app .el-message-box__headerbtn {
+  	font-size: 42px !important;
+  }
+  .display-photo-upload {
+  	background-color: #F7F7F7;
+    display: flex;
+    height: 4rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    cursor: pointer;
+    margin-bottom: 1rem;
+  }
+
+  .rotate-icon {
+  	transform: rotate(0deg) !important;
+    transform: -webkit-rotate(0deg) !important;
+  }
+  .photo-unfold {
+  	transform: rotate(-90deg);
+    transform: -webkit-rotate(-90deg);
+    transition: all .3s ease 0s;
+  }
+  @media (max-width: 768px) { 
+  	.el-dialog {
+        width: 100%;
+        margin-top: 0;
+        margin-bottom: 0;
+        height: 100%;
+        overflow: auto;
+    }
+    .el-dialog__body>div:nth-child(1)>div>div {
+    	height: 240px !important;
+    }
+    .el-dialog__wrapper, .el-message-box__wrapper {
+    	z-index: 10001 !important;
+    }
+    .el-dialog--center .el-dialog__footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+    }
+    .el-message-box {
+    	width: 100%!important;
+        margin-top: 0;
+        margin-bottom: 0;
+        height: 100%;
+    }
+  }
+</style>

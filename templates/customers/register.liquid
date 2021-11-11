@@ -1,0 +1,139 @@
+<div class="account__templates">
+  <div class="container">
+    <div class="grid__item medium-up--one-half medium-up--push-two-quarters">
+      <div class="content-block text-center">
+        <ul class="lr_tag_wapper"> 
+          <li id="login_tag"><a href="/account/login">{{ 'customer.login.title' | t }}</a></li>
+          <li id="register_tag" class="active"> {{ 'customer.register.title' | t }} </li>
+        </ul>
+        <div class="account_content_wapper">
+
+          {% include 'customers-register' %}
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<style>
+  /*login & register global style*/
+.form-vertical input,
+.form-vertical select,
+.form-vertical textarea {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.form-vertical input[type=radio],
+.form-vertical input[type=checkbox] {
+  display: inline-block;
+  width: auto;
+  margin-right: 5px;
+}
+.form-vertical input[type=submit],
+.form-vertical .btn {
+  display: inline-block;
+}
+  .account__templates .form-vertical form{ 
+    display: flex;
+    flex-direction: column; 
+  }
+  .account__templates  .floating-labels{
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .account__templates  .floating-labels input{
+      height: 54px;
+      padding: 1rem 3rem;
+  }
+  .account__templates  .floating-labels input:focus{
+      background:transparent;
+  }
+  .floating-labels input[type="text"], 
+  .floating-labels input[type="password"], 
+  .floating-labels input[type="email"] 
+  { 
+    border: 1px solid #cfd9db;
+    background-color: #ffffff;
+    border-radius: 3px;
+  }
+  input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+    -webkit-text-fill-color: #333;
+  }
+  input:-webkit-autofill:focus {
+    border: 1px solid #cfd9db;
+  }
+  .account__templates  .floating-labels i{    
+      z-index: 1;
+      position: absolute;
+      left: 1rem;
+      top: 40%;
+      font-size: 1.5rem;
+      color: #d5dddf;
+      transform: translateY(-50%);
+  }
+  .account__templates .password_login{
+      text-align:right; 
+      font-size: 1.5rem;
+      text-decoration: underline
+  }
+
+</style>
+
+<style>
+#shopify-section-breadcrumbs{
+  display: none;
+}
+/*
+  out style list:
+    medium-up--one-half 
+    medium-up--push-two-quarters
+    text-center
+*/
+@media(min-width:220px){
+  .account__templates { 
+    background: #f7f8f9;
+    display: flex;
+  }
+  .account__templates .grid__item{
+    padding-top:1rem
+  }
+  .lr_tag_wapper{
+    display:flex;
+    justify-content: space-between;
+    margin-bottom:2rem;
+  }
+  .lr_tag_wapper li{
+      width: 50%;
+      height: 4rem;
+      font-size: 1.4rem;
+      line-height: 4rem; 
+      background: #f7f6f4;
+  }
+  .lr_tag_wapper li.active{
+      background: #fff;
+  }
+  .lr_tag_wapper li{
+    cursor:pointer;
+  }
+  .content-block{    
+    padding: 2rem;background:#fff;
+  }
+}
+@media(min-width:768px){
+  .account__templates .grid__item{
+    padding-top:7rem
+  } 
+  .account__templates{
+    height: 712px; 
+    background:url('{{ 'acount-login-bg.jpg' | asset_url }}')  no-repeat top center;
+    display: flex;
+  }
+}
+</style>

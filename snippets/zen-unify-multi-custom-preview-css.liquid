@@ -1,0 +1,186 @@
+<style>
+  .product-form__item--submit{display:none !important;}
+  .el-progress-bar__inner {background-color: #e74c3c!important;}
+button[disabled], html input[disabled] {
+    cursor: default;
+    opacity: .5;
+}
+ .photo-carving-container .photo-container {
+  	width: 49%;
+  }
+  .text-container .fonttext {
+    width: 100%;
+    border: none;
+    padding-left: 10px;
+    font-size: 1rem !important;
+    background: #fff;
+    box-shadow: none !important;
+    border-radius: 5px;
+  }
+ .text-container .product-txt-label{
+    text-transform: none;
+    color: #000;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+ .text-container .text-container {
+  	width: 100%;
+  }
+ .text-container .text-input-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #000000;
+    margin-bottom: 10px;
+    border-radius: 5px;
+        height: 3rem;
+    background: #fff;
+    position: relative;
+  }
+ .text-container .leftnum {
+    display: flex;
+    position: absolute;
+    right: 8px;
+  }
+  .area-crop-upload, .area-carving, .area-photo-upload {
+    margin-bottom: 1rem!important;
+    align-items: center;
+    display: flex;
+    cursor: pointer;
+    overflow: hidden;
+    width: 90%;
+    background: #fff!important;
+    position: relative;
+    border: 1px solid #000;
+    border-radius: 4px;
+    padding:0 10px;
+    line-height: 1 !important;
+    justify-content: space-between;
+    height: 40px;
+  }
+  .btn-upload-open, .btn-carving-open {
+    cursor: pointer;
+    background: #000;
+    color: #fff;
+    border-radius: 25px;
+    padding: 2px 15px;
+    text-align: center;
+    text-transform: capitalize;
+    font-weight: bold;
+    border: none;
+    font-size: 14px;
+    line-height: 1.625;
+  }
+  .area-crop-upload-text, .carving-pre-text, .area-photo-upload-text {
+  	font-size: 12!important;
+    color: #000;
+  }
+  .carving-textarea-box {
+  	display: flex;
+    align-items: center;
+  }
+  .photo-carving-container{
+  	width: 100%;
+    display: none;
+  }
+ .photo-carving-container .el-progress-bar {
+  	margin-bottom: 10px;
+  }
+ .photo-carving-container  .sp-add-to-cart {
+  	background-color: #e60044;
+  }
+ .photo-carving-container  .sp-add-to-cart:disabled, .merge-button:disabled {
+  	opacity: 0.5;
+  }
+ .merge-button {
+    font-style: normal;
+    display: inline-block;
+    padding: 13px 30px;
+    line-height: 2;
+    cursor: pointer;
+    border: 0;
+    border-radius: 4px;
+    -webkit-appearance: none;
+    font-size:14px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fff;
+    background-color:#FF2D50;
+  }
+  .tingle-modal-box {max-width: 750px;}
+  .tingle-modal-box__content {
+    padding: 2rem 3rem;
+  }
+  .tingle-img-preview, .tingle-btn-box-new {text-align:center;}
+  .product-form__controls-group--submit {display:none;}
+  .zen-photo-carving {
+  	display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .crop-container {
+  	width: 48%;
+  }
+  .display-photo-upload {
+    display: flex;
+    position: relative;
+    background-color: #FF2D50;
+    height: 3rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    cursor: pointer;
+    margin: 1rem 0;
+    width: 100%;
+    color: #fff;
+    font-size: 1rem;
+    border-radius: 4px;
+  }  .product-form .page-temp-img {
+    position: absolute;
+    right: 3%;
+    top: 50%;
+    transform: rotate(0deg) translateY(-60%);
+    transition: all 0.3s;
+  }
+  .product-form .page-temp-img.close {
+    transform: rotate(-90deg) translatex(70%);  
+    transition: all 0.3s;
+  }
+   .page-temp-img .photo-xiangyou{font-size:14px;}}
+  .el-dialog{min-width: 550px;}
+ .text-container #t_name .text-input-container .fonttext{
+    border:none;
+    background: transparent;
+    color: #999;
+  }
+   .rotate-icon {
+  	transform: rotate(0deg) !important;
+    transform: -webkit-rotate(0deg) !important;
+  } 
+    .el-dialog__headerbtn .el-dialog__close{font-size:28px}
+    .el-button--primary,.el-button--primary.is-active, .el-button--primary:active{
+    background-color: #e74c3c!important;
+    border-color: #e74c3c!important;}
+    
+  .tingle-modal-box__content .tingle-quantiy{
+ display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+  }
+  .tingle-modal-box__content .tingle-quantiy .product-quantity-input{
+      padding: 1rem 2rem;
+    width: 20%;
+    margin-left: 1%;}
+  @media (max-width: 768px) { 
+    .el-message-box {
+      width: 100%;
+      height: 100%;
+    }
+    .area-crop-upload-text, .carving-pre-text, .area-photo-upload-text, .btn-upload-open, .btn-carving-open {
+      font-size: 0.8rem !important;
+    }
+    .el-dialog{min-width: 100%;}
+    .area-crop-upload, .area-carving, .area-photo-upload{    width: 87%;}
+  }
+  .check-error{border-color:red}
+</style>

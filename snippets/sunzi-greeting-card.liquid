@@ -1,0 +1,143 @@
+{% comment %}
+** @name 贺卡 **
+** @version 1.0.0 **
+** @author 劳紫恩 **
+** @integrate 劳紫恩 王天宇 **
+{% endcomment %}
+
+{% comment %} 引入公共插槽v2.0 {% endcomment %}
+{% include 'sunzi-slot-template-2' %}
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'greeting-card-v1.0.0.js' %}
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/greeting-card-mother-day.json' %}
+{% if product.tags contains 'custom-card-type-mother-day' %}
+  {% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/greeting-card-mother-day.json' %}
+{% elsif product.tags contains 'custom-card-type-father-day' %}
+  {% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/greeting-card-father-day.json' %}
+  {% elsif product.tags contains 'custom-card-type-birthday-day' %}
+  {% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/greeting-card-birthday.json' %}
+{% endif %}
+
+{% comment %} style变体 {% endcomment %}
+{% assign variantStyle = 0 %}
+
+
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+input{
+  border-width:0px;
+}
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 额外的表单参数 {% endcomment %}
+  
+  {% comment %} 标记订单来源 {% endcomment %}
+  <input type="hidden" name="properties[_from]" value="sunzi-greeting-card" />
+
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="text" id="sunzi-input" name="properties[customInfo]" required="required"></input>
+  <input type="hidden" id="sunzi-cart" name="properties[_sunzi_cart]" />
+  {% comment %} 定制按钮 {% endcomment %}
+  <div class="sunzi-form-content">
+    <div id="sunzi-node">
+      <div class="sunzi-node-loading">
+        <span class="dots">
+          <i></i>
+          <i></i>
+          <i></i>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- sunzi core js -->
+<script crossorigin src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{ coreJs }}" defer="defer"></script>
+
+{% comment %} 渲染前执行 {% endcomment %}
+<script defer="async">
+
+</script> 
+
+{% comment %} 2.请求定制化数据 & 渲染 {% endcomment %}
+<script defer="async">
+  _sunzi_request('{{ requestURL }}', function(data) {   
+    // 定制化数据传入
+    // 产品数据
+    var product = {{ product | json }};
+    // 根据变体筛选展示贺卡数组
+    const skus = product.variants.map(item => item.sku);
+    data.greetingCard = data.greetingCard.filter(item => skus.indexOf(item.sku) > -1);
+                 
+    GreetingCard.render(
+      GreetingCard.default,
+      {
+        ...data,
+        price: '{{ product.price | money }}',
+        shop: _sunzi_global_data.shop,      
+        async onConfirm(output) {
+          // 唤醒loading
+          _sunzi_loading();
+    
+          // 切换变体
+          _sunzi_variant_change({{variantStyle}}, output.cartDate.sku);
+
+          // 组装加车参数
+          var param = {
+        	'_sunzi_compose': [{
+               'rule': 25,
+               'data': output
+             }],
+        	'_sunzi_effect': output.effect
+          };
+      
+          
+          
+          if (output.sources && output.sources.length === 1) {
+            param['_sunzi_source'] = output.sources[0];
+          }
+  
+          if (output.sources && output.sources.length > 1) {
+            param['_sunzi_sources'] = output.sources;
+          }
+  
+          if (output.cartDate.children.lineTexts) {
+            param['_sunzi_text'] = {
+              value: output.cartDate.children.lineTexts.value
+            }
+          }
+  
+          if (output.facutImg) {
+		   param['_sunzi_elements'] = [ output.facutImg ]
+          }
+      
+          $('#sunzi-cart').val(JSON.stringify({
+      		image: [ output.effect ]
+          }))
+
+          $('#sunzi-input').val(JSON.stringify(param));
+
+          // 加车队列
+          var _queue = [];
+          
+          // 加车事件触发
+          await Promise.all(_queue);
+          
+          // 由于主产品涉及vip/质保产品等额外加车事件的判断，因此沿用站点加车方法
+          $('.product-form__cart-submit').click();
+          $('#sunzi-loading').hide();
+        }
+      },
+      _matomoId,
+      document.getElementById("sunzi-node")
+    );
+  });
+
+  /** 其他自定义函数 start **/
+
+  /** 其他自定义函数 end **/
+</script>

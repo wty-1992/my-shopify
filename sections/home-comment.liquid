@@ -1,0 +1,625 @@
+<style >
+  .home-comment{
+    width:100%;
+    background:#FFFFFF;
+    padding-top:148px;
+    padding-bottom:152px;
+  }
+  .home-comment-box{
+    padding: 0 14.16%;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .comment-box{
+    margin-top:59px;
+    width:100%;
+  }
+  .logo-list{
+    width:100%;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .logo-image-box{
+    width:26.01%;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    height:88px;
+    cursor: pointer;
+  }
+  .logo-image{
+    width:40.05%;
+    z-index:10px;
+  }
+  .comment-content{
+    width:100%;
+    margin-top:-13px;
+    display:flex;
+    justify-content:space-around;
+    flex-wrap: wrap;
+    padding:0px 10px 14px 10px;
+    display:none;
+  }
+
+  .item-box{
+    width:46%;
+    background: #fff;
+    margin: 14px;
+    padding:28px;
+    border-radius: 4px;
+  }
+  .star{
+    width:101px;
+  }
+  .comment-text{
+    width:100%;
+    color:#6C6888;
+    margin-top:14px;
+    font-size:16px;
+    line-height:32px;
+    min-height:142px;
+  }
+  .user-information-box{
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top:14px;
+  }
+  .information-box{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .user-image{
+    width:68px;
+    height:68px;
+    border-radius: 50%;
+    margin-right:14px;
+  }
+  .logo-box{
+    width:56px;
+  }
+  .information-text{
+    font-size:14px;
+    line-height:32px;
+    color:#222;
+    margin-top:5px;
+    display:flex;
+  }
+  .comment-link{
+    font-size:16px;
+    line-height:19px;
+  }
+  .comment-content-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position:relative;
+    width:100%;
+/*     border:1px solid; */
+    }
+  .multi-circles{
+  display:none;
+  }
+  .active_image{
+    display:none;
+  }
+  .active-none{
+    display:none;
+  }
+  .active-block{
+    display:block;
+  }
+  .active-flex{
+    display:flex;
+  }
+  .active-box{
+    background:#F6F6F9;
+    border-radius:12px 12px 0 0;
+  }
+  @media screen and (max-width: 768px){
+    .home-comment{
+      padding-top:26px;
+      padding-bottom:56px;
+    }
+    .comment-box{
+      margin-top:32px;  
+    }
+    .home-comment-box{
+      padding:0px;
+    }
+    .comment-text-box{
+      padding:0 20px;
+    }
+    .comment-text{
+      font-size:12px;
+      line-height:24px;  
+      height:120px;
+      width:305px;
+    }
+    .user-text:nth-of-type(2){
+      font-size:12px;
+    }
+    .logo-image-box{
+      height:44px;
+    }
+    .active-box{
+      border-radius: 12px;
+    }
+    .comment-content{
+      margin-top:8px;
+      background:#fff;
+      flex-wrap: revert;
+      justify-content: space-between;
+      position: absolute;
+      left:0px;
+      top:0px;
+    }
+    .item-box{
+      background:#f6f6f9;
+      padding:14px;
+      position: relative;
+	  margin:0 4px;
+      width:333px
+      
+    }
+    .logo-list{
+      padding:0 14px;
+    }
+    .comment-products-link{
+      position: absolute;
+      top: 14px;
+      right:14px;
+    }
+    .comment-link{
+      padding:2px 0 2px 8px; 
+      font-size:12px;
+      line-height:14px;
+    }
+    .comment-link svg{
+        width:28px;
+        height:28px;
+  }
+    .multi-circles{
+      width:100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top:20px;
+      margin-bottom:40px;
+    }
+    .circle-box{
+     background:#E0E0E5;
+     width:8px;
+     height:8px;
+     border-radius: 50%;
+      margin-left:4px;
+    }
+    .active-circle{
+    background:#F9423A;
+      margin-left:4px;
+    }
+    .comment-content-box{
+    height:312px;
+    }
+  }
+</style >
+
+ 
+<div class="home-comment-box">
+  <div class="recommend-text-box comment-text-box">
+    <div class="recommend-view-title">{{section.settings.title}}</div>
+    <div class="recommend-view-text">{{section.settings.explain}}</div>
+  </div>
+  <div class="comment-box">
+    <ul class="logo-list">
+      {% for block in section.blocks %}
+      {% assign logo_resize = block.settings.active_image.width | append: "x" | append: block.settings.active_image.height %}
+      <li class="logo-image-box {% if block.settings.site_index =="1" %} active-box {% endif %}">
+        <div class="logo-image ">
+          <img class=" default_image {% if block.settings.site_index =="1" %}  active-none {% endif %}" src="{{block.settings.default_image | img_url: logo_resize }}"/>
+          <img class=" active_image {% if block.settings.site_index =="1" %}  active-block {% endif %}"
+
+               src="{{block.settings.active_image | img_url: logo_resize }}"/>
+        </div>
+      </li>
+      {% endfor%}
+    </ul>
+    
+    
+    <div class="comment-content-box">
+      {% for block in section.blocks %}
+      <div class="comment-content theme-bg radius {% if block.settings.site_index =="1" %} active-flex {% endif %}">
+        {% assign star_resize = block.settings.rate_image.width | append: "x" | append: block.settings.rate_image.height %}
+        {% assign user_logo_resize = block.settings.user_image_logo.width | append: "x" | append: block.settings.user_image_logo.height %}
+        {% assign user_resize_one = block.settings.user_image_one.width | append: "x" | append: block.settings.user_image_one.height %}
+        {% assign user_resize_two = block.settings.user_image_two.width | append: "x" | append: block.settings.user_image_two.height %}
+        {% assign user_resize_three = block.settings.user_image_three.width | append: "x" | append: block.settings.user_image_three.height %}
+        {% assign user_resize_four = block.settings.user_image_four.width | append: "x" | append: block.settings.user_image_four.height %}
+        <!--     第一个评论框       -->
+        <div class="item-box" sid="0">
+          <div class="star">
+            <img src="{{block.settings.rate_image | img_url: star_resize }}"/>
+          </div>
+          <div class="comment-text">{{block.settings.evaluate_one}}</div>
+          <div class="user-information-box">
+            <div class="information-box">
+              <div class="user-image">
+                <img src="{{block.settings.user_image_one | img_url: user_resize_one }}"/>
+              </div>
+              <div class="information-box-text">
+                <div class="logo-box">
+                  <img src="{{block.settings.user_image_logo | img_url: user_logo_resize }}"/>
+                </div>
+                <div class="information-text">
+                  <div class="user-text"> {{block.settings.user_name_one }}，</div>
+                  <div class="user-text"> {{block.settings.user_introduction_one}}</div>
+                </div>
+
+              </div>
+            </div>
+            <div class="comment-products-link">
+              <a class="link comment-link"  href="{{block.settings.link_one}}">
+                <span class="link-text comment-link">{{block.settings.link_text_one}} </span>
+                {% include 'icon-arrow' %}
+              </a>
+            </div>
+          </div>
+        </div>
+        <!--     第二个评论框       -->
+        <div class="item-box" sid="1">
+          <div class="star">
+            <img src="{{block.settings.rate_image | img_url: star_resize }}"/>
+          </div>
+          <div class="comment-text">{{block.settings.evaluate_two}}</div>
+          <div class="user-information-box">
+            <div class="information-box">
+              <div class="user-image">
+                <img src="{{block.settings.user_image_two | img_url: user_resize_two }}"/>
+              </div>
+              <div class="information-box-text">
+                <div class="logo-box">
+                  <img src="{{block.settings.user_image_logo | img_url: user_logo_resize }}"/>
+                </div>
+                <div class="information-text">
+                  <div class="user-text"> {{block.settings.user_name_two }}，</div>
+                  <div class="user-text"> {{block.settings.user_introduction_two}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="comment-products-link">
+              <a class="link comment-link"  href="{{block.settings.link_two}}">
+                <span class="link-text comment-link">{{block.settings.link_text_two}} </span>
+                {% include 'icon-arrow' %}
+              </a>
+            </div>
+          </div>
+        </div>
+        <!--     第三个评论框       -->
+        <div class="item-box" sid="2">
+          <div class="star">
+            <img src="{{block.settings.rate_image | img_url: star_resize }}"/>
+          </div>
+          <div class="comment-text">{{block.settings.evaluate_three}}</div>
+          <div class="user-information-box">
+            <div class="information-box">
+              <div class="user-image">
+                <img src="{{block.settings.user_image_three | img_url: user_resize_three }}"/>
+              </div>
+              <div class="information-box-text">
+                <div class="logo-box">
+                  <img src="{{block.settings.user_image_logo | img_url: user_logo_resize }}"/>
+                </div>
+                <div class="information-text">
+                  <div class="user-text"> {{block.settings.user_name_three }}，</div>
+                  <div class="user-text"> {{block.settings.user_introduction_three}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="comment-products-link">
+              <a class="link comment-link"  href="{{block.settings.link_three}}">
+                <span class="link-text comment-link">{{block.settings.link_text_three}} </span>
+                {% include 'icon-arrow' %}
+              </a>
+            </div>
+          </div>
+        </div>
+        <!--     第四个评论框       -->
+        <div class="item-box" sid="3">
+          <div class="star">
+            <img src="{{block.settings.rate_image | img_url: star_resize }}"/>
+          </div>
+          <div class="comment-text">{{block.settings.evaluate_four}}</div>
+          <div class="user-information-box">
+            <div class="information-box">
+              <div class="user-image">
+                <img src="{{block.settings.user_image_four | img_url: user_resize_four }}"/>
+              </div>
+              <div class="information-box-text">
+                <div class="logo-box">
+                  <img src="{{block.settings.user_image_logo | img_url: user_logo_resize }}"/>
+                </div>
+                <div class="information-text">
+                  <div class="user-text"> {{block.settings.user_name_four }}，</div>
+                  <div class="user-text"> {{block.settings.user_introduction_four }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="comment-products-link">
+              <a class="link comment-link"  href="{{block.settings.link_four}}">
+                <span class="link-text comment-link">{{block.settings.link_text_four}} </span>
+                {% include 'icon-arrow' %}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor%}
+    </div>
+    <ul class="multi-circles">
+      <li class="circle-box circle-item0 active-circle"></li>
+      <li class="circle-box circle-item1"></li>
+      <li class="circle-box circle-item2" ></li>
+      <li class="circle-box circle-item3"></li>
+    </ul>
+  </div>
+<script defer="defer">
+  //点击logo事件
+  $(' .logo-list').on('click','.logo-image-box', function() {
+  	if($(this).hasClass('active-box')) return false;
+     var i = $(this).index();
+    $('.logo-image-box').each(function(index,item) {
+      $(item).removeClass('active-box')
+      $(item).find(".logo-image .default_image").removeClass('active-none');
+      $(item).find(".logo-image .active_image").removeClass('active-block');
+      $('.comment-content').eq(index).removeClass('active-flex');
+    });
+     $('.logo-image-box').eq(i).addClass('active-box');
+     $('.logo-image-box').eq(i).find(".logo-image .default_image").addClass('active-none');
+     $('.logo-image-box').eq(i).find(".logo-image .active_image").addClass('active-block');
+     $('.comment-content').eq(i).addClass('active-flex');
+  })
+    const screenWidth = document.documentElement.clientWidth
+    if(screenWidth<768){
+      //轮播事件
+      var _focus_num = $(".multi-circles > li").length;
+      var _focus_direction = true;
+      var _focus_pos = 0;
+      var _focus_li_length =$('.item-box').innerWidth();
+      var _focus_max_length = _focus_num * _focus_li_length;
+      var _focus_dsq = null;
+      var _focus_lock = true;
+      function autoExecAnimate() {
+        $(".circle-item" + _focus_pos).addClass("active-circle").siblings("li.active-circle").removeClass("active-circle");
+        var moveLen = _focus_pos * _focus_li_length;
+        $(".comment-content").animate({
+          left: "-" + moveLen + "px"
+        },600);
+        if (_focus_pos == (_focus_num - 1)) {
+          _focus_direction = false
+        }
+        if (_focus_pos == 0) {
+          _focus_direction = true
+        }
+        if (_focus_direction) {
+          _focus_pos++
+        } else {
+          _focus_pos--
+        }
+      }
+
+      _focus_dsq= setInterval("autoExecAnimate()", 3000);
+      
+      
+      $(".item-box").on('touchstart', function() {
+        if (_focus_lock) {
+          clearInterval(_focus_dsq);
+          _focus_lock = false
+        }
+
+      });
+      $(".item-box").on('touchend',function() {
+        if (_focus_lock == false) {
+          _focus_dsq = setInterval("autoExecAnimate()", 3000);
+          _focus_lock = true
+        }
+        
+      });
+    }
+
+
+</script>
+{% schema %}
+{
+  "name": "首页 评论",
+  "class": "home-comment",
+  "settings": [
+    {
+      "type": "text",
+      "id": "private",
+      "label": "程序参考字段默认勿动",
+      "default": "home-comment"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "标题"
+    },
+    {
+      "type": "textarea",
+      "id": "explain",
+      "label": "说明"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "comment",
+      "name": "每个站点的评价",
+      "settings": [
+		{
+ 		 "type": "text",
+          "id": "site_index",
+          "label": "站点的顺序"
+		},
+        {
+          "type": "image_picker",
+          "id": "active_image",
+          "label": "logo图片高亮"
+        },
+        {
+          "type": "image_picker",
+          "id": "default_image",
+          "label": "logo图片灰白"
+        },
+      {
+          "type": "image_picker",
+          "id": "user_image_logo",
+          "label": "用户评价展示的logo"
+        },
+        {
+          "id": "user_image_one",
+          "type": "image_picker",
+          "label": "第一个用户头像图"
+        },
+
+        {
+          "id": "user_name_one",
+          "type": "text",
+          "label": "第一个用户名"
+        },
+        {
+          "id": "user_introduction_one",
+          "type": "text",
+          "label": "第一个用户介绍"
+        },
+        {
+          "id": "evaluate_one",
+          "type": "textarea",
+          "label": "第一个评论内容"
+        },
+        {
+          "id": "link_text_one",
+          "type": "text",
+          "label": "第一个跳转文案"
+        },
+        {
+          "id": "link_one",
+          "type": "text",
+          "label": "第一个跳转链接"
+        },
+        {
+          "id": "user_image_two",
+          "type": "image_picker",
+          "label": "第二个用户头像图"
+        },
+		{
+          "id": "user_name_two",
+          "type": "text",
+          "label": "第二个用户名"
+        },
+        {
+          "id": "user_introduction_two",
+          "type": "text",
+          "label": "第二个用户介绍"
+        },
+       {
+          "id": "rate_image",
+          "type": "image_picker",
+          "label": "星星图片"
+        },
+        {
+          "id": "evaluate_two",
+          "type": "textarea",
+          "label": "第二个评论内容"
+        },
+        {
+          "id": "link_text_two",
+          "type": "text",
+          "label": "第二个跳转文案"
+        },
+        {
+          "id": "link_two",
+          "type": "text",
+          "label": "第二个跳转链接"
+        },
+        {
+          "id": "user_image_three",
+          "type": "image_picker",
+          "label": "第三个用户头像图"
+        },
+		{
+          "id": "user_name_three",
+          "type": "text",
+          "label": "第三个用户名"
+        },
+        {
+          "id": "user_introduction_three",
+          "type": "text",
+          "label": "第三个用户介绍"
+        },
+        {
+          "id": "evaluate_three",
+          "type": "textarea",
+          "label": "第三个评论内容"
+        },
+        {
+          "id": "link_text_three",
+          "type": "text",
+          "label": "第三个跳转文案"
+        },
+        {
+          "id": "link_three",
+          "type": "text",
+          "label": "第三个跳转链接"
+        },
+        {
+          "id": "user_image_four",
+          "type": "image_picker",
+          "label": "第四个用户头像图"
+        },
+        {
+          "id": "user_name_four",
+          "type": "text",
+          "label": "第四个用户名"
+        },
+        {
+          "id": "user_introduction_four",
+          "type": "text",
+          "label": "第四个用户介绍"
+        },
+        {
+          "id": "evaluate_four",
+          "type": "textarea",
+          "label": "第四个评论内容"
+        },
+        {
+          "id": "link_text_four",
+          "type": "text",
+          "label": "第四个跳转文案"
+        },
+        {
+          "id": "link_four",
+          "type": "text",
+          "label": "第四个跳转链接"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "首页 评论",
+      "category": "1-Custom",
+      "blocks": [
+        {
+          "type": "comment"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

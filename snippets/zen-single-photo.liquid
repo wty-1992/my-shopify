@@ -1,0 +1,333 @@
+
+
+<script>
+  window.addEventListener('EVENT_PHOTO_DIALOG', function(event){
+    $('html').css({height: "100%", overflow: "hidden"});
+    $('body').css({height: "100%", overflow: "hidden"});
+  });
+  
+  window.addEventListener('EVENT_PHOTO_DIALOG_CLOSE', function(event){
+    $('html').css({height: "", overflow: ""});
+    $('body').css({height: "", overflow: ""});
+  });
+  
+  //去掉sku中-及后面的部分，有些产品的sku是x-S x-M x-L 不过三个sku的遮罩图、ai图都相同，只传一个遮罩图x.png,xai.png,所以去掉sku中-及后面的部分
+  function formatSku(sku){
+    var sku_val = sku;
+    {% if product.tags contains "custom-sku-nosplit" %}
+    {% else %}
+  	if(sku_val.indexOf('-') > -1){
+      var zenSkuArr = sku_val.split('-');
+//       var regPos = /^\d+(\.\d+)?$/;
+//       zenSkuArr.forEach(function(item,i){
+//           if(!regPos.test(item)){
+//               sku_val = item;
+//           }
+//       });
+      sku_val = zenSkuArr[0];
+    }
+    {% endif %}
+    
+    return sku_val;
+  }
+  //字号选项
+  var _zenEngravingSizeOptions = [
+    {
+      value: "20",
+      label: "20"
+    },
+    {
+      value: "30",
+      label: "30"
+    },
+    {
+      value: "40",
+      label: "40"
+    },
+    {
+      value: "50",
+      label: "50"
+    },
+    {
+      value: "60",
+      label: "60"
+    }
+  ];
+ //字体选项
+  var _zenEngravingFontOptions = [
+    {
+      value: "TimesNewRoman",
+      label: "TimesNewRoman"
+    },
+    {
+      value: "NexaScript-Free",
+      label: "NexaScript"
+    },
+    {
+      value: "AppleChancery",
+      label: "AppleChancery"
+    },
+    {
+      value: "holyunion",
+      label: "Holyunion"
+    },
+    {
+      value: "AlluraRegular",
+      label: "AlluraRegular"
+    }
+  ];  
+  var baseurl = 'https://pic.stylelab.com/';
+  var _zenSku = formatSku("{{ product.selected_or_first_available_variant.sku }}");
+  {% assign customJson = '{}' %}
+  {% if product.metafields["global"]["cattribute"] %}
+    {% assign customJson = product.metafields["global"]["cattribute"] | replace: "'", "" %}
+  {% endif %}
+  var customJson = `{{customJson}}`?JSON.parse(`{{customJson}}`.replace(',,,,,,,,,,,', '')):{};
+  console.log(_zenSku);
+  var isAiLucid = 1;
+  var bgcolor = "rgb(255,255,255)";
+  var isAiColor = '';
+  var grayscale = false;
+  var coverPhoto = false;
+  var dpi = '';
+  var imgSuffix = '';
+  var flip = '';
+  
+  //如果产品包含标签custom-ai-black，则生成的ai图是四周黑底，图案铺不满填充透明像素（个别产品的需求）
+  {% if productTags contains 'custom-ai-black' %}
+  	isAiLucid = 0;
+  	bgcolor = "transparent";
+  	isAiColor = '#000000';
+  {% endif %}
+  
+  if(customJson.isAiLucid != undefined){
+  	isAiLucid = customJson.isAiLucid;
+  }
+  if(customJson.isAiColor != undefined){
+  	isAiColor = customJson.isAiColor;
+  }
+  if(customJson.bgcolor != undefined){
+  	bgcolor = customJson.bgcolor;
+  }
+  if(customJson.grayscale != undefined){
+    grayscale = customJson.grayscale?true:false;
+  }
+  if(customJson.coverPhoto != undefined){
+    coverPhoto = customJson.coverPhoto?true:false;
+  }  
+  if(customJson.dpi != undefined){
+  	dpi = customJson.dpi;
+  }
+  
+  if(customJson.imgSuffix != undefined){
+  	imgSuffix = customJson.imgSuffix;
+  }
+  if(customJson.flip != undefined){
+  	flip = customJson.flip;
+  }
+  
+  if(customJson.photo){
+    if(customJson.photo[0].isAiLucid != undefined){
+      isAiLucid = customJson.photo[0].isAiLucid;
+    }
+    if(customJson.photo[0].isAiColor != undefined){
+      isAiColor = customJson.photo[0].isAiColor;
+    }
+    if(customJson.photo[0].bgcolor != undefined){
+      bgcolor = customJson.photo[0].bgcolor;
+    }
+    if(customJson.photo[0].grayscale != undefined){
+      grayscale = customJson.photo[0].grayscale?true:false;
+    }
+    if(customJson.photo[0].coverPhoto != undefined){
+      coverPhoto = customJson.photo[0].coverPhoto?true:false;
+    }  
+    if(customJson.photo[0].dpi != undefined){
+      dpi = customJson.photo[0].dpi;
+    }
+    
+    if(customJson.photo[0].imgSuffix != undefined){
+      imgSuffix = customJson.photo[0].imgSuffix;
+    }
+    
+    if(customJson.photo[0].flip != undefined){
+      flip = customJson.photo[0].flip;
+    }
+  }
+  
+  console.log('coverPhoto', coverPhoto);  
+  //获取当前窗口的宽度，判断是否是移动端
+  var widowWidth = parseInt($(window).width());
+  var photoStyle = 1;
+  if(widowWidth <= 640 ){
+  	photoStyle = 0;
+  }  
+  var _zenConfig = {
+    photoObj: [],
+    carvingObj: [],
+    crystalObj: [],
+    curveCarvingObj: [],
+    nameObj: [],
+    carvingBigObj: [],
+    coverPhoto:coverPhoto,// 将图片自动铺满.
+    cropPrompt: "{{ 'zen.photo.ps_please_well' | t }}", //切图传图、遮罩图传图说明文案	不填则为空
+    requirePrompt: "{{ 'zen.photocarving.error' | t }}.",  //传图必填提示文案
+    uploadLabel: "{{ 'zen.photo.add_image' | t }}",  //传图描述标签
+    btnUploadText: "{{ 'zen.photocarving.upload' | t }}",  //上传按钮文字
+    photoCancelText: "{{ 'customer.recover_password.cancel' | t }}",  //传图层Cancel文案
+    photoConfirmText: "{{ 'zen.general.confirm' | t }}", //上传按钮文案
+    photoUrl: "https://pic.stylelab.com/img/photo/",
+    uploadLoadingImage: 'https://ik.imagekit.io/soufeel/en/skin/frontend/smartwave/default/images/soufeel-30.gif',
+    wrapperBackgroudColor: '#000000',
+    crop: [],
+    photo: [
+      {
+        require: true,//是否必传图片 不填默认是true
+        sku: _zenSku,//产品sku,注意此处填写的sku需要跟遮罩图、ai名称中的sku一致
+        basePhotoImg: baseurl + "img/photo/"+_zenSku+".png?456",
+        ainame: "",//后端生成图片时，使用的ai图片名	默认为空（一般不用设置）//后端生成的ai图边缘是否为透明	1:透明 0:不透明 不设置默认是0
+        isAiLucid: isAiLucid,//后端生成的ai图边缘是否为透明	1:透明 0:不透明 不设置默认是0
+        bgcolor: bgcolor,//效果图的背景颜色 一般填rgb(255,255,255) 为空则是黑色
+        isAiColor: isAiColor,//后端生成的ai图边缘颜色值，当该参数不为空时，isAiLucid需要设置为0
+        grayscale:grayscale,// 将图片显示为灰色.
+        dpi:dpi,
+        
+        style: photoStyle,//界面样式 0:单行展示 1：矩形上传表单 不设置默认是0
+        type: "multipic",//类型 在传数据给erp时可能会用到
+        checkFuzzy: false,//是否检测上传的图片模糊与否	不设置默认是false
+        currentLanguage: "en",//当前站点的语言（设置是否模糊提示信息的语言）
+    	flip:flip,//生成的图片是否翻转 y：上下翻转，x：左右翻转 '':不翻转
+    	imgSuffix:imgSuffix //生成的图片的格式，jpg png等等
+      }
+    ],
+    carving: [],
+    crystal:[],
+    crystalText:[],
+    curveCarving:[]
+  };
+</script>
+<div class="photo-select-carving">
+  <!--   传图+刻字的内容会添加到下面的div中，id必须是zen-photocarving -->
+  {% if product.metafields["global"]["Endproductattr"] %}
+<!--   成品刻字内容   -->
+  	<input type="text" id="engraving-text" name="properties[engravingText]" value="{{product.metafields["global"]["Endproductattr"]}}" style="display:none" />
+  {% endif %}
+  {% if product.metafields["global"]["Endproductimg"] %}
+<!--   成品刻字图片   -->
+  	<input type="text" id="engraving-crop" name="properties[engravingCrop]" value="{{product.metafields["global"]["Endproductimg"]}}" style="display:none" />
+  {% endif %}
+  <div id="zen-photocarving"></div>
+    
+  {% if productTags contains 'custom-data-new' %}
+  	<input type="text" id="customInfo" name="properties[customInfo]" value="" style="display:none">
+  {% else %}
+  	<!--   传图需要保存的信息，放在name为properties[...]的input中 -->
+    <input type="text" id="piccrop" name="properties[crop]"   value="" style="display:none" />
+    <input type="text" id="picai" name="properties[ai]"     value="" style="display:none" />
+    <input type="text" id="picorigin" name="properties[origin]" value="" style="display:none" /> 
+  {% endif %}
+  
+</div>
+<!-- 引用zen-photo-carving插件 -->
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.5.1/zen-photo-carving-chunk-vendors.css?202006231529" rel="stylesheet" />
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.5.1/zen-photo-carving-app.css?202006231529" rel="stylesheet" />
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.5.1/zen-photo-carving-chunk-vendors.js?202006231529"></script>
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.5.1/zen-photo-carving-app.js?202006231529"></script>
+
+<script>
+  var photoflag = true;
+  var photoHTML = [];
+  
+  $(function(){
+    //zen-photo-carving插件中包含一个name为properties[customInfo]的input，修改它的name，否则也会被保存到shopify cart的properties中，是不需要的
+  	$('.zen-require').attr('name','customInfo');
+    
+    $('.photo-container .photo-box .area-photo-upload-rect .el-upload--text').each(function (i, v){
+      photoHTML.push({"i":$(this).children('i')[0], "span":$(this).children('span')[0]});
+    });
+  })
+  //加车前校验是否传图,是则将传图的信息放到对应的input中否则传图边框设置为红色
+  Product.validators.push(async () => {
+    var customInfo = JSON.parse($('.zen-require').val());
+  	console.log('photoflag=========',photoflag);
+    if(photoflag==false){$('.area-photo-upload').css('border-color','red');return false;}
+  
+    var submit_flag = true;
+    if(!customInfo.photo[0].crop){
+      $('.area-photo-upload').css('border-color','red');
+      submit_flag = false;
+    }else{
+      console.log(customInfo.photo[0].ai);
+{% if productTags contains 'custom-data-new' %}$('#sunziCustomInfo').val(JSON.stringify({"_sunzi_source":customInfo.photo[0].origin,"_sunzi_ai":customInfo.photo[0].ai,"_sunzi_effect":customInfo.photo[0].crop}));
+{% else %}
+      $('#piccrop').val(customInfo.photo[0].crop);
+      $('#picai').val(customInfo.photo[0].ai);
+      $('#picorigin').val(customInfo.photo[0].origin);
+{% endif %}
+      
+    }
+
+    if(submit_flag){
+      $('.area-photo-upload').css('border-color','#e7e7e7');
+      return true;
+    }else{
+      return false;
+    }
+  })
+  
+  window.addEventListener('EVENT_PHOTO_SAVE_AFTER', function(event){ // 传图确认
+    $('.area-photo-upload-rect .area-photo-upload-rect-thumbnai').show();
+    photoflag = true;
+
+    let index = event.detail.index || 0;
+
+    $('.photo-container .photo-box .area-photo-upload-rect .el-upload--text').each(function (i, v){
+      if(index == i){
+        $(this).children('i').remove();
+        $(this).children('span').remove();
+      }
+
+    });
+  }) 
+  
+  Listener.on([ Listener.product.update.before ], function(event, variant, dom) {
+    console.log('listener');
+    changeColor(dom, variant);
+
+  });
+  
+  function changeColor(dom, variant){
+	console.log('$(dom)', $(dom));
+  	if($(dom).length > 0 && ( $(dom).data('name').toLowerCase().indexOf('{{ 'variant.title.Material' | t }}'.toLowerCase()) > -1 || $(dom).data('name').toLowerCase().indexOf('{{ 'variant.title.Color' | t }}'.toLowerCase()) > -1 )  ){ // 材质切换
+      var sku = formatSku(variant.sku);
+      window._zenConfig.photoUrl = "https://pic.stylelab.com/img/photo/";
+      changePhotoSku(sku); // 更换底图，插件自带
+      clearPhoto();
+      photoflag = false;
+    }
+  }
+  
+  function clearPhoto(){
+    var zenInfo = $('.zen-require').val();
+    if(!!zenInfo && $('.area-photo-upload-rect .area-photo-upload-rect-thumbnai').length>0){
+      $('.area-photo-upload-rect .area-photo-upload-rect-thumbnai').hide();
+      $('.photo-container .photo-box .area-photo-upload-rect .el-upload--text').each(function (i, v){
+        $(this).children('i').remove();
+        $(this).children('span').remove();
+        $(this).append(photoHTML[i].i);
+        $(this).append(photoHTML[i].span);
+      });
+    }
+  }
+  
+  if($(window).width() > 768){
+    {% unless product.type contains "ring"%}
+	    $(".photo-container .photo-box").after(`<a class="photocharms-warnfill" onclick="Dialog.open('#examples_hide')">{{ 'product.braceletsizeguide.examplesText' | t }}</a>`);    
+    {% endunless%}
+  }else{
+    {% unless product.type contains "ring"%}
+    	$(".area-photo-upload").after(`<a class="photocharms-warnfill" onclick="Dialog.open('#examples_hide')">{{ 'product.braceletsizeguide.examplesText' | t }}</a>`);
+    {% endunless%}
+  }
+  
+</script>

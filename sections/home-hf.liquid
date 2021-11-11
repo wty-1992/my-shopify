@@ -1,0 +1,32 @@
+{% if section.settings.enable %}  
+  {{ section.settings.css }}
+
+  {% unless section.settings.content == blank %}
+  <div class="content">{{ section.settings.content }}</div>
+  {% endunless %}
+  
+{% endif %}
+{% schema %}
+  {
+    "name": "首页头部 - 顶部销售条 - 设置",
+    "class": "header-top-sales-section",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable",
+        "label": "开启",
+        "default": false
+     },
+     {
+        "type": "html",
+        "id": "content",
+        "label": "内容HTML"
+      },
+      {
+        "type": "html",
+        "id": "css",
+        "label": "css样式代码位置"
+      }
+    ]
+  }
+{% endschema %}

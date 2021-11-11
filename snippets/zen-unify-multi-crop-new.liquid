@@ -1,0 +1,587 @@
+{%comment%}通过标签获取传图数量 {%endcomment%}
+{% assign photo_num = 4 %}
+{% for tag_item in product.tags %}
+  {% if tag_item contains "custom-unify-multi-crop-new-" %}
+    {% assign photo_num = tag_item | strip | replace: "custom-unify-multi-crop-new-", "" %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+{%comment%}通过标签获取当前产品对应图片(名称)模板号, 只有当前产品不传图的时候才使用这个模板号. {%endcomment%}
+{% assign template_num = '' %}
+{% for tag_item in product.tags %}
+  {% if tag_item contains "custom-template-number-" %}
+    {% assign template_num = tag_item | strip | replace: "custom-template-number-", "" %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+{% for tag in product.tags %}
+    {% if tag contains 'custom-unify-text-controlled-' %}
+		{% assign maxlength = tag | remove: "custom-unify-text-controlled-" | split:"-" %}{%comment%}输入框限制字符(同时可表示输入框数量){%endcomment%}
+    {% endif %}
+{% endfor %}
+
+<style>
+  .area-crop-upload {
+  	border: 1px solid #000;
+    padding: 5px 10px 5px 20px;
+    min-height: 52px;
+  }
+  .btn-upload-open {
+  	cursor: pointer;
+    background: #000;
+    color: #fff;
+    border-radius: 25px;
+    padding: 2px 15px;
+    width: 100px;
+    text-align: center;
+    text-transform: capitalize;
+    font-weight: bold;
+    border: none;
+    font-size: 16px;
+    line-height: 1.625;
+  }
+  .area-crop-upload-text {
+  	font-size: .8em;
+  }
+  @media (max-width: 768px) { 
+    .el-message-box {
+      width: 100% !important;
+      height: 100%;
+    }
+    .el-dialog {min-width: 100%;}
+  
+    .el-dialog__body > div:nth-child(2) > div:nth-child(1) {
+      height: calc(100% - 200px);
+    }
+    .el-dialog__body, .el-dialog__body > div:nth-child(2), .el-dialog__body > div:nth-child(2) > div:nth-child(1) > div:nth-child(1), .custom-cropper{
+      height: 100%;
+    }
+  }
+  {% if productTags contains 'custom-no-verification' %}
+    .zen-photo-carving {
+      display: none;
+    }
+  {% elsif  productTags contains 'custom-unify-text-controlled-' %}
+    .custom-index {
+      position: relative;
+    }
+    .custom-index input {
+      width: 100%;
+      min-height: 44px;
+      color: #999;
+      box-shadow: inset 0 -1.4em 1em 0 rgba(0,0,0,0.02);
+      margin: 5px auto;
+    }
+    .custom-text .custom-index:last-child {
+      margin: 0 auto 15px;
+    }
+    .custom-index span {
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      transform: translate(0%,-50%);
+    }
+    .custom-index span b {
+      font-weight: normal;
+      color: red;
+      vertical-align: middle;
+    }
+    .custom-index span i {
+      font-style: normal;
+      margin: 0 3px;
+    }
+  {% endif %}
+</style>
+
+<script>
+  
+  function formatSku(sku){
+    var sku_val = sku;
+  	if(sku_val.indexOf('-') > -1){
+      var zenSkuArr = sku_val.split('-');
+      var regPos = /^\d+(\.\d+)?$/;
+      zenSkuArr.forEach(function(item,i){
+          if(!regPos.test(item)){
+              sku_val = item;
+          }
+      });
+    }
+    
+    return sku_val;
+  }
+  
+  
+  
+  window.addEventListener('VARIANT_CHANGE', function(event){
+    for(key in  aspectRatioList){
+      if(event.detail.sku == key){
+          changeAspectRatio(aspectRatioList[key])
+      }
+    }
+  });
+
+  
+  
+  var aspectRatioList = {"CJJ041":4/5,"CJJ042":2/3,"CJJ043":3/4,"CJJ044":1/2,"CJJ057":4/5,"CJJ058":2/3,"CJJ059":3/4,"CJJ060":1/2};
+  
+  var template_num = '{{template_num}}';
+  var baseurl = 'https://pic.stylelab.com/';
+  var _zenSku = formatSku("{{ product.selected_or_first_available_variant.sku }}");
+  
+                          console.log(_zenSku,'_zenSku-----')
+                          
+  var cropNum = parseInt("{{photo_num}}");
+  
+              
+  var cropArray = [];
+	
+  for(var i = 0;i<cropNum;i++){
+    var cropNo = i + 1;
+    cropArray.push({
+        {% if photo_num > '1' %}
+        uploadLabel: "Upload Your Photo "+ cropNo,//传图描述标签
+        {% else %}
+        uploadLabel: "Upload Your Photo ",//传图描述标签
+        {% endif %}
+        btnUploadText: "Upload",  //上传按钮文案
+        require: true,//是否必传图片
+        hasCropOrigin: true,
+        sku: _zenSku,
+        style: 0, //设置上传样式，0:单行展示 1：矩形上传表单
+        type: '',
+      	aspectRatio: aspectRatioList[_zenSku]
+    });
+  }
+  
+  var _zenConfig = {
+    photoObj: [],
+    carvingObj: [],
+    crystalObj: [],
+    curveCarvingObj: [],
+    nameObj: [],
+    crop: cropArray,
+    photo: [],
+    carving: [],
+    crystal: [],
+    curveCarving: []
+  };
+</script>
+
+<div class="photo-select-carving">
+	<div id="zen-photocarving"></div>
+  
+  
+  	{% for max in maxlength %}
+      <div class="custom-index">
+        <input type="text" class="input-cusom-text" value="" maxlength="{{ max }}" placeholder="enter words here, eg: son" name="">
+        <span><b>*</b><i class="txtNum">{{ max }}</i>left</span>
+      </div>
+  	{% endfor %}
+  
+  
+  
+    <input type="text" id="customInfo" name="properties[customInfo]" value="" style="display:none">
+  
+<!-- 	<input type="hidden" id="properties_ai" name="properties[ai]" value="" style="display:none" required /> -->
+<!-- 	<input type="hidden" id="properties_origin" name="properties[origin]" value="" style="display:none" required /> -->
+<!-- 	<input type="hidden" id="properties_multi_images" name="properties[multi_images]" value="" style="display:none" required /> -->
+</div>
+
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.5.5/zen-photo-carving-chunk-vendors.css?202004111745" rel="stylesheet" />
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.5.5/zen-photo-carving-app.css?202004111745" rel="stylesheet" />
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.5.5/zen-photo-carving-chunk-vendors.js?202004111745"></script>
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.5.5/zen-photo-carving-app.js?202004111745"></script>
+
+<script>
+  $(function(){
+      $('.zen-require').attr('name','customVal');
+  });
+  
+  var __product = {{product|json}};
+  
+  var gdNum = [0];
+  
+  var color = {}
+  
+  
+  var mainImg = ''
+  var verification = true
+  var singleDouble = 1
+  {% if productTags contains 'custom-singleDouble' %}// 传图框数量1和2切换
+  window.addEventListener('EVENT_CROP_SAVE_AFTER',function(event) {
+    var eventKey = event.detail.index
+    var imgSelect = document.querySelectorAll('.area-crop-upload') 
+console.log('eventKey', eventKey);
+    
+    if(singleDouble==1){
+      gdNum[0] = 1
+    }else{
+      gdNum[eventKey] = 1;
+    }
+    
+    imgSelect.forEach((e, i) => {
+      if (i == eventKey) {
+        const cImg = e.firstChild.getElementsByTagName('img') 
+        const cSpan = e.firstChild.querySelector('span.area-crop-upload-text') 
+        if (cImg) {
+          e.firstChild.firstChild.style.cssText = "display: block;"
+          cSpan.style.cssText = "display: none;"
+        }
+      }
+    })
+  }) 
+  {% endif %}
+  
+//   window.addEventListener('VARIANT_CHANGE', function(event){
+  Listener.on([ Listener.product.update.before ], function(event, variant) { 
+    console.log('evet', event)
+    {% if productTags contains 'custom-no-verification' %}
+         var customDom = document.querySelector(".zen-photo-carving")
+         console.log(event.detail,'11-23-12-3asd-asd-asd-as-d')
+          if($(".input-field-title:contains('3.Style:')").length > 0 || $(".input-field-title:contains('2.Style:')").length > 0 || $('.input-field-title[data-name="Choose Style"]').length > 0){
+//               if(event.detail.option3 && event.detail.option3.indexOf('Use this image') != -1 || event.detail.option2 && event.detail.option2.indexOf('Use this image') != -1) {
+              if(event.detail.option3 && event.detail.option3.indexOf('Use this image') != -1 || event.detail.option2 && event.detail.option2.indexOf('Use this image') != -1 || $('.input-field-title[data-name="Choose Style"]').length>0 && ($('.input-field-title[data-name="Choose Style"]').parent().find('input:checked').val() == 'Use this image' || $('.input-field-title[data-name="Style"]').parent().find('input:checked').val() == 'Use this image')  ){
+                  customDom.style.cssText = "display: none;"
+                  verification = true
+              }else {
+                  customDom.style.cssText = "display: block;"
+                  verification = false
+                  
+                  let variantSku = event.detail.sku;
+                  
+                  if(variantSku.indexOf('-') > -1){
+                     let skuList =  variantSku.split('-');
+                     variantSku =  skuList[0]; 
+                  }
+                
+                  if(_zenSku != variantSku){
+                  	_zenSku = variantSku;
+                   }
+              }
+          }
+      {% endif %}
+    
+    {% if  productTags contains 'custom-unify-text-controlled-' %}
+    var txt = document.querySelectorAll(".input-cusom-text");
+    var txtNum = document.querySelectorAll(".txtNum");
+    var sw = false;
+    for (var i = 0; i < txt.length; i++) {
+      txt[i].addEventListener("input",function(e) {
+        if (sw == false) {
+          countTxt(e);
+        }
+      });
+      txt[i].addEventListener("cut",function(e) {
+        console.log('cut') 
+        if (sw == false) {
+          countTxt(e);
+        }
+      });
+      txt[i].addEventListener("compositionstart",function() {
+        sw = true;
+      });
+      txt[i].addEventListener("compositionend",function() {
+        sw = false;
+        countTxt();
+      });
+    }
+    function countTxt(e) {
+      if (sw == false) {
+        for (var o = 0; o < txtNum.length; o++) {
+          for (var i = 0; i < txt.length; i++) {
+            if (txt[o].value.length === 0) {
+              txtNum[o].textContent = txt[o].getAttribute('maxLength');
+            } else {
+              if (txt[o].value.replace(/(^\s*)|(\s*$)/g, "") != '') {
+                txtNum[o].textContent = txt[o].getAttribute('maxLength') - txt[o].value.length;
+              }
+            }
+          }
+        }
+      }
+    }
+    var customDom = document.querySelector(".zen-photo-carving")
+    var textDomList = document.querySelectorAll(".custom-index")
+    console.log('textDomList', textDomList)
+    if($(".input-field-title:contains('1.Choose The Style:')").length > 0){
+      if(event.detail.option1 && event.detail.option1.indexOf('Birthday Queen') != -1) {
+        customDom.style.cssText = "display: block;"
+        textDomList.forEach((e,i)=> e.style.cssText = "display: none;")
+        verification = true
+      }else {
+        customDom.style.cssText = "display: none;"
+        textDomList.forEach((e,i)=> e.style.cssText = "display: block;")
+        verification = false
+      }
+    }
+    {% endif %}
+    
+    if(variant.featured_image != null) {
+    	mainImg = variant.featured_image.src
+    }
+    
+    console.log($(".input-field-title:contains('1.Choose Your Color:')").length)
+    if($(".input-field-title:contains('1.Choose Your Color:')").length > 0) {
+        color['color'] = event.detail.option1
+    }
+        console.log(mainImg,'mainImg----1')
+
+    {% if productTags contains 'custom-singleDouble' %}
+      var uploadTitle = document.querySelectorAll(".area-crop-upload-text")
+      var zenCropDiv = document.querySelectorAll(".crop-container");
+      var imgSelect = document.querySelectorAll('.area-crop-upload span.area-crop-upload-text')
+
+      imgSelect.forEach((e,i)=> e.style.cssText = "display: block;")
+    
+      if(event.detail.sku == 'CJJ123' || event.detail.sku == 'CJJ124') {
+        uploadTitle.forEach((e,i)=> e.innerHTML = `Upload Your Sheet Photo<font color="red">*</font>`)
+        zenCropDiv[0].style.cssText = "display: none;"
+        singleDouble = 1
+        gdNum = [0]
+      }else {
+        uploadTitle.forEach((e,i)=> i == 0 ? e.innerHTML = `Upload Your Pillowcase Photo 1<font color="red">*</font>` : e.innerHTML = `Upload Your Duvet Cover Photo 2<font color="red">*</font>`)
+        zenCropDiv[0].style.cssText = "display: block;"
+        singleDouble = 2
+      	gdNum = [0,0]
+      }
+    
+    
+      var zenInfo = document.getElementsByClassName("zen-require")[0].value;
+      var InfoJson = JSON.parse(zenInfo);
+      console.log('InfoJson', InfoJson)
+      InfoJson.crop.forEach((e,i)=> {
+          e.crop = ''
+          e.cropOrigin = ''
+      })
+      
+	  $(".zen-require").val(JSON.stringify(InfoJson))
+
+      var selectAll = document.querySelectorAll('.area-crop-upload-flex img') 
+      selectAll.forEach((e, i) => {
+        e.style.cssText = "display: none;"
+      }) 
+      var allImageParent = document.querySelectorAll('.area-crop-upload') 
+      allImageParent.forEach((e, i) => {
+          const first = e.firstChild
+          if (first.querySelectorAll('span').length == 0) {
+              var span = document.createElement("span");
+              span.className = 'area-crop-upload-text'
+              span.innerHTML = `Upload Your Sheet Photo<font color="red">*</font>`;
+              first.appendChild(span)
+          }
+      }) 
+      
+      
+      
+      
+    {% endif %}
+        
+    
+  })
+  
+  {% if productTags contains 'custom-title-new' %}
+  //改变传图框提示文案
+  var uploadTitle = document.querySelectorAll(".area-crop-upload-text")
+  uploadTitle.forEach((e,i)=> i == 0 ? e.innerHTML = `Upload Your Pillowcase Photo 1<font color="red">*</font>` : e.innerHTML = `Upload Your Duvet Cover Photo 2<font color="red">*</font>`)
+  {% endif %}
+  
+  Product.validators.push(async () => {
+    var zenFlag = true; 
+    var zenInfo = document.getElementsByClassName("zen-require")[0].value;
+    var zenCrop = document.querySelectorAll(".area-crop-upload");
+
+	{% if productTags contains 'custom-no-verification' %}// 走标品
+      if(!verification) {
+          for(var i = 0; i < zenCrop.length; i++) {
+              if(zenInfo) {
+                  var InfoJson = JSON.parse(zenInfo);
+                  for(var o = 0; o < InfoJson.crop.length; o++) {
+                      if(InfoJson.crop[o].crop == '') {
+                        zenCrop[o].style.cssText = "border-color: red;"
+                        zenFlag = false;
+                      }else {
+                        zenCrop[o].style.cssText = "border-color: block;"
+                        zenFlag = true;
+                      }
+                  }
+              }
+          }
+      }
+    {% elsif productTags contains 'custom-unify-text-controlled-' %}// 文字和传图切换
+      if(verification) {
+        for(var i = 0; i < zenCrop.length; i++) {
+          if(zenInfo) {
+            var InfoJson = JSON.parse(zenInfo);
+            for(var o = 0; o < InfoJson.crop.length; o++) {
+              if(InfoJson.crop[o].crop == '') {
+                zenCrop[o].style.cssText = "border-color: red;"
+                zenFlag = false;
+              }else {
+                zenCrop[o].style.cssText = "border-color: block;"
+                zenFlag = true;
+              }
+            }
+          }
+        }
+      }else {
+        var textValue = document.querySelectorAll(".input-cusom-text")
+        textValue.forEach((e,i)=> {
+          if(e.value == '') {
+			textValue[i].style.cssText = "border-color: red;"
+          	zenFlag = false;
+          }else {
+			textValue[i].style.cssText = "border-color: block;"
+            zenFlag = true;
+          }
+        })
+      }
+    {% elsif productTags contains 'custom-singleDouble' %}// 传图框数量1和2切换
+        var InfoJson = JSON.parse(zenInfo);
+
+        InfoJson.crop.forEach((e,i)=> {
+          zenCrop[i].style.cssText = "border-color: red;"
+
+          if(singleDouble == 1 && i==0){return;} // 如果是一个上传按钮，  第一次循环跳过， 只走第二次循环。
+          if(singleDouble == 1){i=0;} // 如果是一个输入框 ，    那么gdNum变量的值之有一个。 
+
+          if(gdNum[i] == 0) {
+            console.log('ssss')
+            zenFlag = false;
+          }else {
+            console.log('wwwww')
+            zenCrop[i].style.cssText = "border-color: block;"
+          }
+
+        })
+
+    {% else %}
+      for(var i = 0; i < zenCrop.length; i++) {
+          if(zenInfo) {
+              var InfoJson = JSON.parse(zenInfo);
+              for(var o = 0; o < InfoJson.crop.length; o++) {
+                  if(InfoJson.crop[o].crop == '') {
+                    zenCrop[o].style.cssText = "border-color: red;"
+                    zenFlag = false;
+                  }else {
+                    zenCrop[o].style.cssText = "border-color: block;"
+                    zenFlag = true;
+                  }
+              }
+          }
+      }
+    {% endif %}
+    if(zenFlag) {
+      var customInfo = {};
+      var textInfo = {}
+      if(JSON.stringify(color) != "{}") {
+        customInfo['_sunzi_variant'] = color
+      }
+      
+      if(InfoJson != undefined) {
+        {% if product.tags contains "custom-data-type-1" %}// 此格式多图数组格式及单图对象格式，默认传主图
+          if(InfoJson.crop.length > 1) {
+            customInfo['_sunzi_sources'] = [];
+            InfoJson.crop.forEach((item,index)=> {
+                customInfo['_sunzi_sources'].push(item.cropOrigin);
+            })
+            customInfo['_sunzi_effect'] = "https:"+'{{product.images[0]|img_url: '600x600'}}'
+//             customInfo['_sunzi_effect'] = "https:"+'{{product.selected_variant.featured_image |img_url: '600x600'}}'
+          }else {
+             customInfo['_sunzi_source'] = InfoJson.crop[0].cropOrigin
+             customInfo['_sunzi_effect'] = "https:"+'{{product.images[0]|img_url: '600x600'}}'
+//              customInfo['_sunzi_effect'] = "https:"+'{{product.selected_variant.featured_image|img_url: '600x600'}}'
+          }
+        {% elsif product.tags contains "custom-singleDouble" %}// 此格式适配传图框数量1和2切换的数据格式
+        	if(singleDouble == 2) {
+              customInfo['_sunzi_sources'] = [];
+              InfoJson.crop.forEach((item,index)=> {
+                  customInfo['_sunzi_sources'].push(item.cropOrigin);
+              })
+              customInfo['_sunzi_effect'] = "https:"+'{{product.images[0]|img_url: '600x600'}}'
+            }else {
+            	customInfo['_sunzi_source'] = InfoJson.crop[zenCrop.length-1].cropOrigin
+             	customInfo['_sunzi_effect'] = "https:"+'{{product.images[0]|img_url: '600x600'}}'
+            }
+        {% else %}
+          var cropOrigin = {}
+          var crop = {}
+          var cropOriginData = {}
+          var cropData = {}
+          if(InfoJson.crop.length > 1) {
+
+            InfoJson.crop.forEach((item,index)=> {
+                console.log(item,'item--1')     
+                cropOrigin = item.cropOrigin
+                crop = item.crop
+                cropOriginData[index+1] = cropOrigin
+                cropData[index+1] = crop
+
+
+                console.log(cropOriginData,'cropOriginData')
+                console.log(cropData,'cropData')
+                customInfo['_sunzi_sources'] = cropOriginData
+                customInfo['_sunzi_effects'] = mainImg
+            })
+          }else {
+             customInfo['_sunzi_source'] = InfoJson.crop[0].cropOrigin
+             customInfo['_sunzi_effect'] = mainImg
+          }
+        {% endif %}
+      }else {
+      	{% if product.tags contains "custom-data-type-1" %}
+        	verification = false;
+            console.log('verification------1',verification)
+        	customInfo['_sunzi_effect'] = "https:"+'{{product.images[0]|img_url: '600x600'}}'
+        {% endif %}
+      }
+      
+      if(template_num!=''&& $('.input-field-title[data-name="Choose Style"]').length>0 && ($('.input-field-title[data-name="Choose Style"]').parent().find('input:checked').val() == 'Use this image' || $('.input-field-title[data-name="Style"]').parent().find('input:checked').val() == 'Use this image')   ){ // 模板号
+        customInfo['_sunzi_template_number'] = template_num;
+        if(customInfo['_sunzi_remark']==undefined){customInfo['_sunzi_remark'] = {};}
+        customInfo['_sunzi_remark']['_sunzi_template_number'] = template_num;
+      }
+      
+      {% if productTags contains 'custom-unify-text-controlled-' %}
+      if(!verification) {
+        console.log('textValue.length', textValue.length)
+        if(textValue.length > 1) {
+          textInfo._sunzi_texts = []
+          textValue.forEach((e,i)=> {
+            textInfo._sunzi_texts.push({
+              value: e.value,
+              number: i+1
+            })
+          })
+        }else {
+          textValue.forEach((e,i)=> {
+            textInfo['_sunzi_text'] = {
+              value: e.value
+            }
+          })
+        }
+        textInfo['_sunzi_effect'] = mainImg
+      }
+      {% endif %}
+      
+      {% if productTags contains 'custom-no-verification' %}// 不传图走标品
+        if(!verification) {
+            $('#customInfo').val(JSON.stringify(customInfo));
+        }else {
+            $('#customInfo').val('');
+        }
+      {% elsif productTags contains 'custom-unify-text-controlled-' %}// 文字和传图切换
+      	if(!verification) {
+          $('#customInfo').val(JSON.stringify(textInfo));
+        }else {
+          $('#customInfo').val(JSON.stringify(customInfo));
+        }
+      {% else %}
+        $('#customInfo').val(JSON.stringify(customInfo));
+      {% endif %}
+    }
+    return zenFlag;
+  })
+  
+</script>

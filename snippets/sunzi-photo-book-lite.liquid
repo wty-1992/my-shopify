@@ -1,0 +1,252 @@
+{% comment %}
+** @name 简版照片书 **
+** @author 劳紫恩 **
+** @integrate 王天宇 **
+{% endcomment %}
+
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign request_url = "https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/photo-book-soufeel.json" %}
+
+{% comment %} 变体名称 {% endcomment %}
+{% assign variant_name = 0 %}
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'sunzi.photo.book.lite.js' %}
+
+{% comment %} 定制按钮文案 {% endcomment %}
+{% assign sunzi_button_text = section.settings.sunzi_button_upload_text %}
+
+{% comment %} 站点语种 {% endcomment %}
+{% assign sunzi_shop_language = section.settings.sunzi_shop_language %}
+{% comment %} 货币符号 {% endcomment %}
+{% assign sunzi_shop_symbol = section.settings.sunzi_shop_symbol %}
+
+{% comment %} 定制初始化 {% endcomment %}
+{% include 'sunzi-solt-template' %}
+
+{% comment %} 引入文件 {% endcomment %}
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://sunzi7n.imaiyuan.com/assets/jquery/jquery.transit.min.js"></script>
+<script src="https://sunzi7n.imaiyuan.com/assets/jquery/modernizr.2.5.3.min.js"></script>
+
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+  .sunzi-form #sunzi-button {
+    position: relative;
+    background-color: #e60044;
+    border: 0;
+    border-radius: unset;
+    -webkit-appearance: none;
+    font-size: 14px;
+    font-family: inherit;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .product-quantity,
+  .product-form .common-standar_btn {
+  	display: none !important;
+  }
+  #sunzi-modal img {
+  	max-width: none;
+  }  
+  .product-page-add_to_cart-section .sunzi-select-option { 
+    width: 100%;
+    font-size: 14px;
+    
+  }
+  .product-page-add_to_cart-section .sunzi-select-option .selector-wrapper select {
+  	font-size: 12px;
+    font-weight: 500;
+  }
+  .product-page-add_to_cart-section .sunzi-select-option .selector-wrapper span.icon.photofont.photo-unfold {
+    position: absolute;
+    right: 12px;
+    top: 55%;
+  }
+  .dropdown-toggle::after {
+    display:none;
+  }
+  .selector-wrapper-position {
+    position: relative;
+  }
+
+  
+  @media only screen and (max-width: 1366px) {
+    .sunzi-modal-wrap .sunzi-modal {
+      height: 600px;
+    }
+  }
+</style>
+
+
+
+{% comment %} 多属性 {% endcomment %}
+<div class="spb-attr">
+  <!-- type -->
+  <div class="sunzi-select-option">
+    <div class="selector-wrapper product-form__item sunzi-type">
+      <label class="select-field-title" for="" ></label>        
+      <select class="single-option-selector product-form__input"></select>
+      <span class="icon photofont photo-unfold"></span>        
+    </div>
+  </div>
+  <!-- size -->
+  <div class="sunzi-select-option">
+    <div class="selector-wrapper product-form__item sunzi-size">
+      <label class="select-field-title" for="" ></label>        
+      <select class="single-option-selector product-form__input"></select>
+      <span class="icon photofont photo-unfold"></span>        
+    </div>
+  </div>
+</div>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="hidden" id="sunzi-input" name="properties[customInfo]" required="required"></input>
+
+  {% comment %} 定制按钮 {% endcomment %}
+  <button type="button" id="sunzi-button" disabled class="dots-loading">
+    <span class="dots">
+      <i></i>
+      <i></i>
+      <i></i>
+    </span>
+    <div class="sunzi-button-text">{{ sunzi_button_text }}</div>
+  </button>
+</div>
+
+
+<script src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{coreJs}}" defer="defer"></script>
+<script src="https://cdn.shopifycdn.net/s/files/1/0270/0315/8570/files/dom-to-image.min.js?v=1592294822"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ gtag }}" async="async"></script>
+<script async="async">
+  _sunzi_gtag('{{ gtag }}');
+</script>
+
+
+{% comment %} 1.隐藏掉变体，加车按钮等等 {% endcomment %}
+<script defer="defer">
+  _sunzi_variant_hide('{{variant_name}}');
+
+</script>
+
+{% comment %} 3.开始定制 {% endcomment %}
+<script defer>
+  var type = 0, size = 0, key = 0, response;
+  var productJson = {{product | json}};
+  _sunzi_request('{{request_url}}', function(data) {
+    response = data;
+    //  判断是否是4*4
+    {% if product.tags contains "sunzi-photo-book-4*4" %}
+      response.bookData = [response.bookData[0]];
+    {% endif %}
+  	initBookSizeIcon(data.bookData);
+  	$('.spb-attr').show();   
+  
+  	// 选择书类型
+    $('.sunzi-type select').on('change', function() {
+      var propIndex = $(this).prop('selectedIndex');
+      var index = propIndex < 0 ? 0 : propIndex;
+      type = index;
+      initBookSizeText(response.bookData[index]);
+    });
+
+    // 选择书尺码
+    $('.sunzi-size select').on('change', function() {
+      var propIndex = $(this).prop('selectedIndex');
+      var index = propIndex < 0 ? 0 : propIndex;
+      size = index;
+      // 改变变体
+      var curSku = productJson.variants.find(item => item.sku.indexOf(response.bookData[type].books[index].sku) > -1).sku;
+      _sunzi_variant_change('{{ variant_name }}', curSku);
+    });
+  });
+  $('#sunzi-button').click(function() {
+    key += 1;
+    _sunzi_response.key= key;
+    _sunzi_response.shop = {
+      language: '{{sunzi_shop_language}}',
+      currencySymbol: '{{sunzi_shop_symbol}}',
+      logo: 'https://assets.sunzi.cool/soufeel/soufeel-logo.png'
+    };
+    _sunzi_response.layoutWidth= 300;
+    _sunzi_response.layoutHeight= 300;
+    _sunzi_response.defaultBookValue= [ type, size ];
+    _sunzi_response.guideVideo = "https://sunzi7n.myuxc.com/asset/photo-book/guide.mp4";
+    _sunzi_response.confirmText = $('.product-form__cart-submit span').html().trim();
+
+    _sunzi_custom(
+      PhotoBookLite.default,
+      function(data, quantity){
+        _sunzi_loading();
+        
+        $('#sunzi-input').val(JSON.stringify({
+          '_sunzi_compose': [{
+            'rule': 7,
+            'type': 'photo_design',
+            'data': data
+          }],
+        }));
+        // 改变变体
+        var curSku = productJson.variants.find(item => item.sku.indexOf(data.sku) > -1).sku;
+        _sunzi_variant_change('{{ variant_name }}', curSku);
+        $('#Quantity').val(quantity);
+
+        //	加车事件触发
+      	$('.product-form__cart-submit').click();
+        
+        _sunzi_hide_loading();
+      }
+    );
+  });
+  
+  
+  /** 其他自定义函数 start **/    
+  // 初始化书选项
+  function initBookSizeIcon(data) {
+    // 为照片书改价
+    data.forEach(books => {
+      books.books.forEach(book => {
+        productJson.variants.find(variant => {
+          if(variant.sku.indexOf(book.sku) > -1) {
+            book.price = transPrice(variant.price);
+            book.originPrice = transPrice(variant.compare_at_price);
+          }
+        }); 
+      })
+    });
+    
+    var html = '';
+    $.each(data, function(index, item) {
+      var current = index === 0 ? "current" : "";
+      html += `<option value="${index}">${item.name}</option>`;
+    });
+    $('.sunzi-type select').html(html);
+    $('.sunzi-type .select-field-title').html('Book Type');
+    initBookSizeText(data[0]);
+  }
+
+  // 初始化书的尺码选项
+  function initBookSizeText(data) {
+    var html = '';
+
+    $.each(data.books, function(index, item) {
+      html += `<option value="${index}">${item.size}</option>`;
+    })
+    $('.sunzi-size select').html(html);
+    $('.sunzi-size .select-field-title').html('Book Size');
+    var curSku = productJson.variants.find(item => item.sku.indexOf(data.books[0].sku) > -1).sku;
+    // 改变变体
+    _sunzi_variant_change('{{ variant_name }}', curSku);
+  }
+                          
+  // 抓换价格
+  function transPrice(number) {
+   var price = number / 100;
+  	return Number(price.toFixed(2));
+  }
+  /** 其他自定义函数 end **/
+  
+</script>

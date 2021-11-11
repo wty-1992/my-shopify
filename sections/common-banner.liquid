@@ -1,0 +1,209 @@
+<style>
+.common-banner-section {
+  padding: 0px;
+  margin: 0px;
+}
+.common-banner-section .swiper-container picture {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.common-banner-section .swiper-container .prev, .common-banner-section .swiper-container .next {
+  position: absolute;
+  left: 4%;
+  width: 5%;
+  top: 50%;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  transform: translateY(-50%);
+  align-items: center;
+}
+.common-banner-section .swiper-container .prev i, .common-banner-section .swiper-container .next i {
+  font-size: 3.75rem;
+  color: #fff;
+  opacity: 0;
+  transition: all 0.3s;
+  font-weight: 600;
+  cursor: pointer;
+}
+.common-banner-section .swiper-container .next {
+  left: inherit;
+  right: 4%;
+}
+.common-banner-section .swiper-container:hover .prev i, .common-banner-section .swiper-container:hover .next i {
+  opacity: 0.7;
+}
+.common-banner-section .swiper-container:hover .prev i:hover, .common-banner-section .swiper-container:hover .next i:hover {
+  opacity: 1;
+}
+.common-banner-section .swiper-container .swiper-pagination-bullet {
+  background: transparent;
+  opacity: 1;
+  border: 1px solid #333;
+}
+.common-banner-section .swiper-container .swiper-pagination-bullet-active,
+.common-banner-section .swiper-container .swiper-pagination-bullet:hover {
+  background: #333;
+  border: 1px solid #333;
+}
+.common-banner-section .swiper-container .swiper-pagination-bullets, .common-banner-section .swiper-container .swiper-pagination-custom, .common-banner-section .swiper-container .swiper-pagination-fraction {
+  bottom: 20px;
+}
+.swiper-container.swiper-banner-top{
+  width: 100% !important;
+}
+.swiper-container.swiper-banner-top .swiper-slide{
+  overflow: hidden;
+}
+.swiper-container.swiper-banner-top img{
+  max-width: 100%;
+}
+@media(min-width:768px) and (max-width:1366px){
+  .swiper-container.swiper-banner-top img{
+    max-height: 400px;;
+  }
+}
+@media(max-width:768px){
+.swiper-container.swiper-banner-top img{
+  max-width: 100%;
+}
+.swiper-container.swiper-banner-top{
+  width: 100%;
+}
+}
+</style>
+{% assign swiperId = "swiper-" | append: section.id %}
+{% if section.settings.enable and section.blocks.size > 0 %}
+  <!-- Swiper -->
+  <div id="{{swiperId}}" class="swiper-container swiper-banner-top">
+    <div class="swiper-wrapper">
+      {% for block in section.blocks %}
+      <div class="swiper-slide">
+        <a {% if block.settings.link %} href="{{ block.settings.link }}" {% endif %}>
+          <picture>
+            <!-- default 500px --> 
+            {% assign pc_resize = block.settings.pc_image.width | append: "x" | append: block.settings.pc_image.height %}
+            {% assign mb_resize = block.settings.mb_image.width | append: "x" | append: block.settings.mb_image.height %}
+            <source
+                    data-srcset="{{ block.settings.mb_image | img_url: mb_resize }}"
+                    media="(max-width: 750px)" />
+            <source
+                    data-srcset="{{ block.settings.pc_image | img_url: pc_resize  }}"
+                    media="(max-width: 1024px)" />
+            <img
+                 data-src="{{ block.settings.pc_image | img_url: pc_resize }}"
+                 class="lazyload"
+                 alt="{{ block.settings.image.alt | escape }}" />
+          </picture>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    {% assign prev = swiperId | append: "-prev" %}
+    {% assign next = swiperId | append: "-next" %}
+    
+    {% assign pagination = swiperId | append: "-pagination" %}
+    
+    {% if section.blocks.size > 1%}
+      <!-- Add Pagination -->
+	    <div id="{{pagination}}" class="swiper-pagination"></div>
+      <!-- Add Arrows -->
+      <div id="{{prev}}" class="prev">
+        <i class="photofont icon photo-zuomian"></i>
+      </div>
+      <div id="{{next}}" class="next">
+        <i class="photofont icon photo-youmian"></i>
+      </div>
+    {% endif %}
+  </div> 
+  {% if section.blocks.size > 1 %}
+  <!-- Initialize Swiper -->
+  <script>
+    var swiper = new Swiper("#{{swiperId}}", {
+      observer: true,
+      observeParents: true,
+      slidesPerView: 1,
+      spaceBetween: 0,
+      loop: {{section.settings.loop}},
+      autoplay: {{section.settings.autoplay}}, 
+      keyboard: true,
+      pagination: {
+        el: '#{{pagination}}',
+        type: 'bullets', 
+        clickable :true 
+                            
+                           
+      },
+      navigation: {
+        nextEl: "#{{next}}",
+        prevEl: "#{{prev}}"
+      }
+    });
+  </script>
+  {% endif %}
+
+
+
+{% endif %}
+ 
+
+{% schema %}
+{
+  "name": "通用 - Banner轮播图 ( Swiper )",
+  "max_blocks": 200,
+  "class":"common-banner-section",
+  "settings": [{
+"type": "paragraph",
+"content":"common-banner"
+},
+    {
+      "type": "checkbox",
+      "id": "enable",
+      "label": "启用",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "是否自动轮播",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "是否循环播放",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "单个元素",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "pc_image",
+          "label": "PC图片"
+        },
+        {
+          "type": "image_picker",
+          "id": "mb_image",
+          "label": "MB图片"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "点击图片的链接"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "通用 - Banner轮播图 ( Swiper )",
+      "category": "通用"
+    }
+  ]
+}
+{% endschema %}

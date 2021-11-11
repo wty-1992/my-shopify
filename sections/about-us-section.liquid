@@ -1,0 +1,326 @@
+<style>
+  .mb30 {
+    margin-bottom: 30px;
+  }
+  .pr3 {
+    padding-right: 3px;
+  }
+  .pb10{padding-bottom:10px}  
+  .pt60{padding-top:60px}
+
+  .col-sm-4{padding:0}
+  .col-xs-12,.go-aboutus{display:flex}
+  a:hover{ color: #000}
+  p.j-j{text-align: justify;line-height:24px;}
+  .col-main.container,.main.container{width:100%;padding:0}
+  .container{padding: 0}
+  .cms-page-view .main-container{padding-top: 0}
+  .aboutus-page{ color: #000}
+  .fw700{ font-weight: 700}
+  h2.title{text-align: center; font-size: 30px; padding: 60px 0 40px 0;color: #000;}
+  ul li{    list-style-type: none;}
+  .lh30{line-height: 30px}
+  .mb20{margin-bottom:20px}  
+  .mb30{margin-bottom:30px}
+
+  .go-bottom{margin-top: 10px;
+    display: flex;}
+  .go-top h2{font-size: 28px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 12px}
+  .aboutus-page img{max-width: 100%}
+  .ptb5{padding:8px 0;}
+  .pb5{padding-bottom: 5px}
+  .prl0{padding:0}
+  .pr3{padding-right: 3px}
+  .pl3{padding-left: 3px}
+  .pl6{padding-left: 6px}
+  .container.length ul{  
+    padding-left: 0;  display:-webkit-flex;
+    -webkit-justify-content: center;
+    -webkit-align-items: center;  display: flex;
+    justify-content: center;
+    align-items: center; }
+  .container.length ul li{    padding: 2px 20px;
+    border-radius: 15px;
+    border: 1px solid #fff;    transition: all .2s;
+    cursor: pointer; margin: 0 15px;}
+  .container.length ul li.activeli,.container.length ul li:hover{border: 1px solid #000;transition: inner .2s;}
+  .container.length ul li a:hover{color: #000}
+  #content{margin-top: 40px; margin-bottom: 50px;}
+  .tab1 {
+    width: 100%;
+    height: auto;
+  }
+  .tab1 .swiper-slide,.tab2 .swiper-slide{
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+  }
+  .tab4 ul li{ margin: 25px 0}
+  .tab4 ul li a{color: #000; font-size: 14px; line-height: 14px}
+  .tab4 ul li a span{font-weight: 700; }
+  .tab4 ul li a:hover{opacity: .8;}
+  h2.title.lover{padding: 60px 0 0 0 }
+  .love-aboutus ul{
+    padding: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    text-align: center;
+  }
+  .love-aboutus ul li{    margin: 20px 20px 40px;}
+
+  @media(max-width: 1024px){
+    .show-aboutus .col-xs-12.mb30,.go-aboutus {
+      flex-wrap: wrap;} 
+    .show-aboutus .col-xs-12{width:100%;
+      margin-bottom: 10px;}
+    .show-aboutus .col-xs-6{width:50%}
+    .col-xs-12{width:100%;padding:0}
+    .go-aboutus .go-right{ padding-left: 10px;} }
+  .pc-aboutusimg{display:block}
+  .mb-aboutusimg{display:none}
+  @media(max-width: 640px){
+    .mb-aboutusimg{display:block}
+    .pc-aboutusimg{display:none}
+    .cms-about-us .nr{ height: 42vh}.love-aboutus{ width: 100%; overflow: hidden;}
+    body, html {
+      font: 12px/1 'Open Sans',Arial,Helvetica,sans-serif;
+      color: #777;
+    }
+    .go-bottom{    
+      margin: 0;
+      border: 1px solid #000;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      display: -webkit-flex;
+      -webkit-align-items: center;}
+    .go-bottom .mb-aboutusimg{
+      width: 30%;
+    } .go-bottom .col-sm-8{
+      width: 65%;
+      line-height: 12px;
+      padding-left: 10px;}
+    .go-bottom .col-sm-8 .lh30 {
+      line-height:12px;
+    }
+    .love-aboutus .swiper-slide {
+      width: 60%;}
+    .love-aboutus .swiper-slide a p{ line-height: 14px; color: #000}
+    .tab4 ul li {
+      margin: 15px 0;
+    }
+    .love-aboutus ul li {
+      margin: 20px 20px;
+    }
+    .tab4 ul li a{font-size: 12px;}
+    #content {
+      margin-top: 20px;
+    }
+    h2.title,h2.title.lover {
+      font-size: 16px;
+      padding: 25px 0 5px 0;}
+    .container.length ul li{    padding: 0px 12px;    border-radius: 12px;    margin: 0 12px;}
+    .go-left img{padding-left: 12px; padding-right: 12px}
+    .go-right{padding: 0 12px}
+    .go-top p{line-height: 18px;padding-top:20px}
+  }
+  @media (max-width: 320px){
+
+  }
+
+</style>
+<div class="about-us-page">
+   <img class="pc-aboutusimg" src="{{ section.settings.bannerus | img_url: 'master'}}">   
+  <img class="mb-aboutusimg" src="{{ section.settings.bannerusmb | img_url: 'master'}}">
+
+  <h2 class="title txt-u">LEARN ABOUT SOUFEEL</h2>
+  <div class="go-aboutus container">        
+      <div class="go-left col-xs-12 fl col-sm-6">
+      <img class="pc-aboutusimg" src="{{ section.settings.bannerus_01 | img_url: 'master'}}">
+        
+      <img class="mb-aboutusimg" src="{{ section.settings.bannerus_01_mb | img_url: 'master'}}">
+      </div> 
+      <div class="go-right fr col-sm-6">
+         <div class="go-top fl">
+           <h2 class="pc-aboutusimg" >About us</h2>
+           <p class="fs14 lh24 j-j" style="text-align: justify;">Soufeel comes from the capital of fashion - New York, since 2009, we have been delivering the best shopping experience for jewelry lovers around the world. SOUFEEL's direct-to-customer model enables Soufeel to create the most beautiful charms, beads, bracelets and other accessories, and to offer our customers at very competitive prices. For now, Soufeel Jewelry has over 2753K followers on Facebook. For more information visit <a href="https://www.facebook.com/soufeeljewelryshop">www.facebook.com/soufeeljewelryshop</a>.</p>
+         </div>
+          <div class="go-bottom fl"> 
+             <img class="pc-aboutusimg col-sm-4 fl" src="{{ section.settings.bannerus_02 | img_url: 'master'}}">    
+             <img class="mb-aboutusimg col-sm-4 fl" src="{{ section.settings.bannerus_02_mb | img_url: 'master'}}">
+
+              <div class="col-sm-8 fr ">
+                <div class="pl20 fs16 lh30">"love"is Soufeel’s core value: Treasure the Love, Feel the Love, then Love the Love.
+                </div>
+              </div>     
+         </div>   
+     </div>
+  </div>
+  <img class="pt60 pb10 pc-aboutusimg " src="{{ section.settings.bannerus_03 | img_url: 'master'}}"> 
+  <img class="pt60 pb10 mb-aboutusimg " src="{{ section.settings.bannerus_03_mb | img_url: 'master'}}">
+<h2 class="title lover  txt-u">LOVE SOUFEEL</h2>
+ <div class="love-aboutus container">
+   <ul>
+  {% for block in section.blocks %}
+  <li>
+    <a href="{{block.settings.product_url}}">
+      <img width="160" src="{{ block.settings.productimg | img_url: 'master'}}">  
+      <p> {{block.settings.product_title}}</p>
+    </a>
+  </li>
+{% endfor %}
+  </ul>
+  </div>
+<div class="show-aboutus container mb30">
+    <div class="col-xs-12 mb30 ">
+      <div class="col-xs-12 col-md-6 prl0 ">
+         <img src="https://cdn.shopifycdn.net/s/files/1/0552/3282/3445/files/about-us-04.jpg?v=1616556768">    
+      </div>  
+      <span class="col-xs-6 col-md-3 prl0">  
+        <img src="https://cdn.shopifycdn.net/s/files/1/0552/3282/3445/files/about-usamazon-05.jpg?v=1616556487"> 
+       </span>
+      <span class="col-xs-6 col-md-3 prl0">
+      <img class="pl3" src="https://cdn.shopifycdn.net/s/files/1/0513/9955/7272/files/about-us-06.jpg?v=1607915352"> 
+      </span> 
+    </div>
+
+    <div class="col-xs-12 mb30">
+      <div class="col-xs-12 col-md-6 prl0">
+         <a onclick="Dialog.open('#aboutus-view')" >
+         <img src="https://cdn.shopify.com/s/files/1/0550/8084/5480/files/about-us-07.jpg?v=1615874699">   
+        </a> 
+        <div id="aboutus-view"  class="simple--modal" style="display:none;">
+             <button type="button" class="close-new close" data-action="close">
+        <i class="photofont icon photo-close"></i>
+    </button>
+          <div class="nr" style="width: 100%; height:100%">
+         
+          <div style="position:relative; width: 100%; height:100%; "> 
+             <iframe src="https://www.youtube.com/embed/zzgNvIHorvs?ecver=2" width="100%" height="480" frameborder="0" allowfullscreen></iframe>
+          </div>
+          </div>
+        </div>
+      </div>        
+      <span class="col-xs-6 col-md-3 prl0">
+      <img src="https://cdn.shopify.com/s/files/1/0550/8084/5480/files/about-us-08.jpg?v=1615874698">
+       </span>
+      <span class="col-xs-6 col-md-3 prl0">
+      <img src="https://cdn.shopify.com/s/files/1/0550/8084/5480/files/about-us-09.jpg?v=1615874698"> 
+      </span> 
+    </div>
+    <div class="col-xs-12">
+    <span class="col-xs-6 col-md-6 prl0 "><img src="https://cdn.shopify.com/s/files/1/0550/8084/5480/files/about-us-10.jpg?v=1615874699">  
+     </span>
+    <span class="col-xs-6 col-md-6 prl0 "><img src="https://cdn.shopifycdn.net/s/files/1/0513/9955/7272/files/about-us-11.jpg?v=1607915352">  
+     </span>
+      
+      
+    </div> 
+ </div>
+  
+  
+</div>
+{% schema %}
+  {
+    "name": "about us page",
+    "settings": [
+     {
+      "type": "paragraph",
+      "content":"about-us-section"
+      },
+     {
+      "type": "image_picker",
+      "id": "bannerus",
+      "label": "banner Image pc"
+    },  {
+      "type": "image_picker",
+      "id": "bannerusmb",
+      "label": "banner Image mb"
+    }, 
+   { 
+   "type": "image_picker",
+      "id": "bannerus_01",
+      "label": "Image pc"
+    }, 
+   {
+      "type": "image_picker",
+      "id": "bannerus_01_mb",
+      "label": "bannerus 01 mb"
+    },
+     {
+      "type": "image_picker",
+      "id": "bannerus_02",
+      "label": "bannerus_02 pc"
+    },
+     {
+      "type": "image_picker",
+      "id": "bannerus_02_mb",
+      "label": "bannerus 02 mb"
+    },
+ {
+      "type": "image_picker",
+      "id": "bannerus_03",
+      "label": "bannerus_03 pc"
+    },
+     {
+      "type": "image_picker",
+      "id": "bannerus_03_mb",
+      "label": "bannerus 03 mb"
+    }
+  ],
+"blocks": [
+    {
+      "type": "product",
+      "name": "产品",
+      "settings": [
+        {
+          "type": "url",
+          "id": "product_url",
+          "label": "产品url"
+        },
+     
+        {
+          "type": "image_picker",
+          "id": "productimg",
+          "label": "产品图片"
+        },
+     
+        {
+          "type": "text",
+          "id": "product_title",
+          "label": "产品name"
+        }  
+      ]
+    }    
+  ] 
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

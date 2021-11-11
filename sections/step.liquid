@@ -1,0 +1,115 @@
+<style>
+  .mainguide{max-width:1200px;margin:0 auto;    padding-top:50px}
+  .guidetitle{font-family:Quentin;font-size:70px;color:#fefa99;text-align: center;margin-bottom:40px;}  
+  .row-image{display: flex;;justify-content: space-between;}
+  .one-detail{max-width:320px;text-align:center;z-index:1;}
+  .one-step{color:#fff;
+    font-size: 30px;
+    margin-top: 20px;
+    text-align: center;
+    margin-bottom:12px;
+    
+  }
+  .one-neirong{   
+    color: #fff;
+    font-size: 18px;
+    padding: 5px 40px;
+    line-height: 20px;}
+  @media ( max-width:768px ) {
+  .mainguide {
+        padding-top: 10px;
+  }
+    .one-detail {
+    max-width: 110px;
+    text-align: center;
+}
+    .guidetitle {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+    .row-image {
+    padding: 0 5px;
+    }
+    .one-step {
+    font-size:16px
+    }
+    .one-neirong {
+    color: #fff;
+    font-size: 9px;
+    padding: 5px 0px;
+    line-height: 15px;
+}
+    .one-step {
+    color: #fff;
+    font-size: 16px;
+    margin-top: 14px;
+    text-align: center;
+    margin-bottom: 0;
+}
+  }
+</style>
+<div class="stepall">
+<div class="mainguide">
+  <div class="guidetitle">{{section.settings.guidetitle}}</div>
+  <div class="row-image">
+    {% for block in section.blocks %}
+    <div class="one-detail">
+    <div class="one-image">
+     <img src="{{block.settings.guideimage  | img_url: 'master' }}"  class="image-size">
+    </div>	    
+    <div class="one-step">
+     {{block.settings.textguide}}
+    </div>     
+    <div class="one-neirong">
+     {{block.settings.textguide2}}
+    </div> 
+  </div> 
+    {% endfor %}
+  </div>
+</div>
+</div>
+{% schema %}
+  {
+    "name": "Section step",
+    "settings": [   {
+          "type": "text",
+          "id": "guidetitle",
+          "label": "how it work "
+    }],
+    "blocks": [
+    {
+      "type": "slide1",
+      "name": "guide",
+      "settings": [
+      {
+        "type": "image_picker",
+        "id": "guideimage",
+        "label": "guide图标"
+      }, 
+      {
+        "type": "text",
+        "id": "textguide",
+        "label": "标题 step "
+      },
+      {
+        "type": "text",
+        "id": "textguide2",
+        "label": "标题 guide  "
+      }
+      ]
+    }
+    ],
+  "presets": [
+    {
+      "category": "step",
+      "name": "step"
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

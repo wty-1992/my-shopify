@@ -1,0 +1,499 @@
+{% comment %}
+** @name sunzi-sketch **
+** @version 1.0.0**
+** @auther jzs0914@126.com**
+{% endcomment %}
+
+{% comment %}
+  调用参数
+{% endcomment %}
+
+{% comment %} 店铺CODE {% endcomment %}
+{% assign sunzi_shop_code = section.settings.sunzi_shop_code %}
+{% comment %} 定制按钮文案 {% endcomment %}
+{% assign sunzi_button_text = section.settings.add_cart_custom_button_text %}
+
+{% comment %} 样式库 {% endcomment %}
+<style>
+  @-webkit-keyframes sk-bouncedelay {
+    0%, 80%, 100% { -webkit-transform: scale(0) }
+    40% { -webkit-transform: scale(1.0) }
+  }
+
+  @keyframes sk-bouncedelay {
+    0%, 80%, 100% {
+      -webkit-transform: scale(0);
+      transform: scale(0);
+    } 40% {
+      -webkit-transform: scale(1.0);
+      transform: scale(1.0);
+    }
+  }
+  .button {
+    width: 100%;
+    height: 50px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+/*     justify-content: center; */
+    text-transform: uppercase;
+    line-height: 1;
+    position: relative;
+    color: #000000;
+  }
+  #sunzi-button {
+    background: #F9F9F9;
+    border: 1px solid #B8B8B8;
+    border-radius: 3px;
+  }
+  .mm-continue-custom-button {
+    display: none;
+    color: #717171;
+    border: 1px solid #A1A1A1;
+    margin-bottom: 20px !important;
+    background: none;
+  }
+  #sunzi-button #sunzi-button-input {
+/*     position: absolute;
+    left: 0;
+    top: 0; */
+    width: 100px;
+    height: 100%;
+    opacity: 0;
+    position: relative;
+    z-index: 2;
+  }
+  .sunzi-photo-upload{
+    cursor: pointer;
+    background: #bfa175;
+    color: #fff;
+    border-radius: 25px;
+    padding: 2px 15px;
+    width: 100px;
+    height: 30px;
+    text-align: center;
+    text-transform: capitalize;
+    font-weight: bold;
+    border: none;
+    font-size: 16px;
+    line-height: 1.625; 
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+  .dots{
+    font-size: 10px;
+    margin-left: 10px;
+  }
+  .dots__loading {
+    font-size: 0;
+    margin-bottom: 12px;
+  }
+  .dots__loading .dots {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+  }
+  .dots__loading .dots i {
+    width: 12px;
+    height: 12px;
+    margin: 0 2px;
+    background-color: #fff;
+    border-radius: 100%;
+    display: inline-block;
+    -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+    animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  }
+  .dots__loading .dots i:first-child {
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+  }
+  .dots__loading .dots i:nth-child(2) {
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+  }
+  .dots__loading i {
+    font-weight: normal;
+  }
+  .sunzi-product-wrap {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  .sunzi-result {
+    min-height: 80px;
+    display: none;
+    position: relative;
+    border-radius: 6px;
+    border: 1px solid rgb(0, 0, 0, 0.2);
+    background: #f2f2f2;
+    overflow: hidden;
+    padding: 10px;
+  }
+  .sunzi-result .sunzi-result-loading {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: center;
+  }
+  .sunzi-modal-mask {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 9999999999;
+    height: 100%;
+    background-color: rgba(0,0,0,0.65);
+    display: none;
+  }
+  .sunzi-modal-wrap {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 9999999999;
+    overflow: auto;
+    outline: 0;
+    display: none;
+  }
+  .sunzi-modal-wrap .sunzi-modal {
+    width: 100%;
+    max-width: 500px;
+    height: 600px;
+    background: #fff;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%);
+    margin-left: -240px;
+    opacity: 0;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+  }
+  .sunzi-modal-wrap .sunzi-modal .canvas-container {
+    margin: 0 !important;
+    transform: none !important;
+    border: 1px solid rgba(0, 0, 0, .15);
+  }
+  .sunzi-modal-wrap .sunzi-modal.animate {
+    opacity: 1;
+    transition: all 0.2s ease;
+  }
+  #sunzi-input {
+    display: none;
+  }
+  .select-wrapper {
+    display: none;
+    background: transparent;
+    border: 1px solid rgb(0, 0, 0, 0.2);
+  }
+  .select-wrapper.select-wrapper-disabled {
+    border-color: #d9d9d9;
+    color: rgba(0,0,0,0.25);
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+  }
+  .select-wrapper.select-wrapper-error {
+    border-color: #ed484e;
+    color: #ed484e;
+  }
+  .add-to-cart {
+    margin-top: 0 !important;
+  }
+  .product-quantity {
+    margin-top: -12px !important;
+  }
+  #sunzi-sketch {
+    height: 100%;
+  }
+  #sunzi-result-image{
+    width：60px;
+    height: 60px;
+    float: left;
+    border-radius: 100px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    border: 1px solid #C2C2C2;
+  }
+  .sunzi-right-content{
+    display: none;
+    float: left;
+    width: calc(100% - 70px);
+    min-height: 60px;
+    vertical-align: middle;
+    margin-left: 10px;
+  }
+  
+  .notEngraving{
+    display: none;
+  } 
+  
+  .addEngraving{
+    display: none;
+  } 
+  
+  .Engraving{
+    display: none;
+  }
+  
+  .sunzi-moon-title{
+    font-size: 14px;
+    font-weight: 900;
+    color: #000000;
+  }
+  
+  .uploadFile{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    height: 30px;
+  }
+  
+  .addEngraving{
+    font-size: 10px;
+    font-weight: 900;
+    margin-top: 10px;
+    color: #000000;
+  }
+  
+  .red{
+    font-size: 10px;
+    display: none;
+  }
+  
+  .notEngraving{
+    font-size: 10px;
+    font-weight: 900;
+    margin-top: 10px;
+    color: #000000;
+  }
+  
+  .Engraving{
+    font-size: 10px;
+    color: #797979;
+    margin-top: 10px;
+  }
+      
+/*   .addEngraving, .notEngraving, .Engraving{
+    display: none;
+  } */
+  @media (max-width: 768px) {
+    .sunzi-modal-wrap .sunzi-modal {
+      top: 0;
+      left: 0;
+      transform: translateX(0);
+      max-width: 100%;
+      height: 100%;
+      border-radius: 0;
+      margin-left: 0;
+    }
+    #sunzi-button {
+      border-radius: 0;
+      position: relative;
+    }
+    .sunzi-modal-mask {
+      position: fixed;
+      z-index: 9999999999;
+    }
+    .sunzi-modal-wrap {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 9999999999;
+      overflow: auto;
+      outline: 0;
+      display: none;
+    }
+    .sunzi-modal-wrap .sunzi-modal .canvas-container {
+      border: none;
+    }
+  }
+/*   .zen-customer-lr .zen-customers__right{
+    display: none !important;
+  } */
+</style>
+
+{% comment %} 调用按钮 {% endcomment %}
+<div class="sunzi-product-wrap">
+   {% comment %} 结果图 {% endcomment %}
+  <div class="sunzi-result dots__loading">
+    <img id="sunzi-result-image" onload="resultOnload();">
+    <div class="sunzi-right-content">
+      <div class="sunzi-moon-title">YOUR PHOTO MOON LAMP</div>
+      <div class="addEngraving">Add Engraving:</div>
+      <div class="notEngraving">Without Engraving:</div>
+      <div class="Engraving"></div>
+    </div>
+    <div class="sunzi-result-loading">
+      <span class="dots">
+        <i></i>
+        <i></i>
+        <i></i>
+      </span>
+    </div>
+  </div>
+  {% comment %} 定制按钮 {% endcomment %}
+  <input type="text" id="sunzi-input" name="properties[customInfo]" required="required"></input>
+  <button type="button" data-type="sketch" id="sunzi-button" class="button mm-input-button-submit mm-border-radius-4 dots__loading event-custom-now">
+    <span class="dots">
+      <i></i>
+      <i></i>
+      <i></i>
+    </span>
+    <font class="red" color="red">*</font>
+    <div class="sunzi-photo-upload"><input id="sunzi-button-input" disabled type="file" accept="image/*" /><div class="uploadFile">Upload</div></div>
+  </button>
+</div>
+
+{% comment %} 模态框 {% endcomment %}
+<div class="sunzi-modal-mask"></div>
+<div id="sunzi-modal" class="sunzi-modal-wrap">
+  <div class="sunzi-modal">
+    <div id="sunzi-sketch"></div>
+  </div>
+</div>
+
+{% comment %} javascript {% endcomment %}
+<script src="https://spic.qn.cdn.imaiyuan.com/sunzi/js/react.production.min.js" crossorigin></script>
+<script src="https://spic.qn.cdn.imaiyuan.com/sunzi/js/react-dom.production.min.js" crossorigin></script>
+<script src="https://spic.qn.cdn.imaiyuan.com/sunzi/js/three.min.js" crossorigin></script>
+<script src="https://sunzi7n.imaiyuan.com/core/sunzi.sketch.js?{{ "now" | date: "%Y%m%d%H%M%S" }}" crossorigin></script>
+
+<script defer>
+  $(document).ready(function() {
+    $('#sunzi-button').find('span').html('Upload your Photo');
+    $('#sunzi-button').find('.red').css("display", "block");
+    var sku = '{{ product.selected_or_first_available_variant.sku }}';
+    var sunzi_sku = sku.split("-")[0];
+    var $layout_mask = $('#layout-mask');
+    var isAnimate = false;
+    var response;
+    $.get('https://sunzi.stylelab.com/template/sketch?sku='+ sunzi_sku +'&storeCode={{ sunzi_shop_code }}', function(data) {
+      response = data;
+      if (response && response.error === 0) {
+        $('#sunzi-button-input').removeAttr("disabled");
+        $('#sunzi-button').removeClass("dots__loading");
+ 
+      }
+    });
+
+    $('#sunzi-button-input').change(function() {
+      var file = $("#sunzi-button-input").get(0).files[0];
+      Sketch.fileToBase64(file, function(base64) {
+        $('#sunzi-button-input').attr("type", "text");
+        $('#sunzi-modal').show(200, function() {
+          $('.sunzi-modal-mask').show();
+          $('.sunzi-modal').addClass('animate');
+//           $.mLockScreen();
+           $('html').addClass('mm-lock');
+          var timestamp = new Date().getTime();
+          // 渲染组件
+          ReactDOM.render(
+            React.createElement(Sketch.default, {
+              source: base64,
+              shop: response.shop,
+              sku: response.sku,
+              type: response.type,
+              gtag: gtag,
+              timestamp: timestamp,
+              price: '{{ product.price | money }}',
+              title: "{{ product.title }}",
+              addTextPrice: response.addTextPrice,
+              ruleBottomImage: response.ruleBottomImage,
+              bottomImage: response.bottomImage,
+              ruleAiImage: response.ruleAiImage,
+              aiImage: response.aiImage,
+              ruleLineText: response.ruleLineText,
+              onClose: modalClose,
+              onConfirm: function(data) {
+                var _sunzi_sketch_text = {};
+                if (data.lineText.value)
+            	    _sunzi_sketch_text = data.lineText;
+                $('#sunzi-input').val(JSON.stringify({
+                  '_sunzi_sketch_source': data.result[0],
+                  '_sunzi_sketch_ai': data.result[1],
+                  '_sunzi_sketch_text': _sunzi_sketch_text,
+                }));
+                $('.sunzi-modal-wrap').hide();
+                $('.sunzi-modal-mask').hide();
+          		$('#sunzi-button').css('border-color','#B8B8B8');
+                // show add modal
+                $('#sunzi-button-input').attr("type", "file");
+                
+                  $('.sunzi-result').show(0, function() {
+                  $('.sunzi-result-loading').show();
+                  $('#sunzi-result-image').attr("src", "");
+                  $('#sunzi-result-image').attr("src", data.result[0] + '-MeineFotoTassen?imageView2/0/w/600/h/600');
+                  $('#sunzi-button').find('span').html('Change Photo');
+                  $('#sunzi-button').find('.red').css("display", "none");
+                  if(data.lineText.value) {
+                    $(".addEngraving").show();
+                    $(".Engraving").show();
+                    $(".notEngraving").hide();
+                    $(".Engraving").html(data.lineText.value)
+                  } else {
+                    $(".notEngraving").show();
+                    $(".addEngraving").hide();
+                    $(".Engraving").hide();
+                    $(".Engraving").html("");
+                  }               
+                  modalClose(true);
+                });
+              }
+            }, null),
+            document.getElementById('sunzi-sketch')
+          );
+        });
+      });
+    });
+
+    function modalClose(confirm) {
+      $('#sunzi-modal').hide();
+      $('.sunzi-modal-mask').hide();
+      $('.sunzi-modal').removeClass('animate');
+      $('#sunzi-button-input').attr("type", "file");
+      if (confirm) {
+        $('html, body').animate({
+          scrollTop: $('.sunzi-result').offset().top - 50 + "px"
+        }, 200);
+      } else {
+        $('html, body').animate({
+          scrollTop: $('.product-form').offset().top - 50 + "px"
+        }, 200);
+      }
+    }
+  });
+
+   function resultOnload() {
+    $(".sunzi-result-loading").hide();
+    $("#sunzi-result-image").addClass("sunzi-result-image");
+     $('.sunzi-right-content').show();
+  }
+  
+  
+  Product.validators.push(
+    () => {
+      return validateFormData();
+    }
+  );
+  
+  function validateFormData(){
+    if(!$('#sunzi-input').val()){ 
+      $("#sunzi-button").css("border-color","red");
+      return 'input Error';
+    }
+    return true;
+  }
+
+</script>

@@ -1,0 +1,557 @@
+{% if product.metafields["global"]["cattributeUnify"] %}
+	{% assign cattribute = product.metafields["global"]["cattributeUnify"] | replace: "'", "" %}
+{% else %}
+{% comment %}
+	{% assign cattribute = '{"isRemarkData":"name","isPhotoAi":1,"isTextEffect":1,"photo":{"CBS540X01":[{"isAiLucid":1}],"CBS540X02":"","CBS541X01":[{"isAiLucid":1}],"CBS541X02":"","CBS542X01":[{"isAiLucid":1}],"CBS542X02":"","CBS543X01":[{"isAiLucid":1}],"CBS543X02":"","CBS544X01":[{"isAiLucid":1}],"CBS544X02":""},"coors":{"CBS540X01":[{"left":250,"top":105,"limit":"8","angle":"0","color":"black","limitArea":{"left":60,"top":45,"width":421,"height":115},"fontSize":28,"font":"ASAP","palceholder":"Add name here"},{"left":250,"top":308,"limit":"8","angle":"0","color":"black","limitArea":{"left":60,"top":259,"width":362,"height":184},"fontSize":28,"font":"ASAP","palceholder":"Add name here"}],"CBS540X02":[{"left":250,"top":105,"limit":"8","angle":"0","color":"black","limitArea":{"left":60,"top":45,"width":421,"height":115},"fontSize":28,"font":"ASAP","palceholder":"Add name here"},{"left":250,"top":308,"limit":"8","angle":"0","color":"black","limitArea":{"left":60,"top":259,"width":362,"height":184},"fontSize":28,"font":"ASAP","palceholder":"Add name here"}],"CBS541X01":[{"left":108,"top":160,"limit":"8","angle":"0","color":"black","limitArea":{"left":50,"top":20,"width":163,"height":258},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":250,"top":105,"limit":"8","angle":"0","color":"black","limitArea":{"left":200,"top":45,"width":115,"height":107},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":400,"top":160,"limit":"8","angle":"0","color":"black","limitArea":{"left":320,"top":20,"width":163,"height":258},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":250,"top":308,"limit":"8","angle":"0","color":"black","limitArea":{"left":60,"top":259,"width":362,"height":184},"fontSize":20,"font":"ASAP","palceholder":"Add name here"}],"CBS541X02":[{"left":108,"top":160,"limit":"8","angle":"0","color":"black","limitArea":{"left":50,"top":20,"width":163,"height":258},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":250,"top":105,"limit":"8","angle":"0","color":"black","limitArea":{"left":200,"top":45,"width":115,"height":107},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":400,"top":160,"limit":"8","angle":"0","color":"black","limitArea":{"left":320,"top":20,"width":163,"height":258},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":250,"top":308,"limit":"8","angle":"0","color":"black","limitArea":{"left":60,"top":259,"width":362,"height":184},"fontSize":20,"font":"ASAP","palceholder":"Add name here"}],"CBS542X01":[{"left":108,"top":95,"limit":"8","angle":"0","color":"black","limitArea":{"left":50,"top":25,"width":150,"height":120},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":250,"top":105,"limit":"8","angle":"0","color":"black","limitArea":{"left":200,"top":45,"width":115,"height":107},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":400,"top":95,"limit":"8","angle":"0","color":"black","limitArea":{"left":320,"top":25,"width":163,"height":129},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":350,"top":250,"limit":"8","angle":"0","color":"black","limitArea":{"left":278,"top":160,"width":207,"height":194},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":150,"top":250,"limit":"8","angle":"0","color":"black","limitArea":{"left":78,"top":160,"width":207,"height":194},"fontSize":20,"font":"ASAP","palceholder":"Add name here"}],"CBS542X02":[{"left":108,"top":95,"limit":"8","angle":"0","color":"black","limitArea":{"left":50,"top":25,"width":150,"height":120},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":250,"top":105,"limit":"8","angle":"0","color":"black","limitArea":{"left":200,"top":45,"width":115,"height":107},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":400,"top":95,"limit":"8","angle":"0","color":"black","limitArea":{"left":320,"top":25,"width":163,"height":129},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":350,"top":250,"limit":"8","angle":"0","color":"black","limitArea":{"left":278,"top":160,"width":207,"height":194},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":150,"top":250,"limit":"8","angle":"0","color":"black","limitArea":{"left":78,"top":160,"width":207,"height":194},"fontSize":20,"font":"ASAP","palceholder":"Add name here"}],"CBS543X01":[{"left":108,"top":95,"limit":"8","angle":"0","color":"black","limitArea":{"left":50,"top":25,"width":150,"height":120},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":250,"top":105,"limit":"8","angle":"0","color":"black","limitArea":{"left":200,"top":45,"width":115,"height":107},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":395,"top":95,"limit":"8","angle":"0","color":"black","limitArea":{"left":320,"top":25,"width":163,"height":129},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":395,"top":220,"limit":"8","angle":"0","color":"black","limitArea":{"left":320,"top":160,"width":207,"height":194},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":250,"top":308,"limit":"8","angle":"0","color":"black","limitArea":{"left":60,"top":259,"width":362,"height":184},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":108,"top":220,"limit":"8","angle":"0","color":"black","limitArea":{"left":78,"top":160,"width":207,"height":194},"fontSize":20,"font":"ASAP","palceholder":"Add name here"}],"CBS543X02":[{"left":108,"top":95,"limit":"8","angle":"0","color":"black","limitArea":{"left":50,"top":25,"width":150,"height":120},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":250,"top":105,"limit":"8","angle":"0","color":"black","limitArea":{"left":200,"top":45,"width":115,"height":107},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":395,"top":95,"limit":"8","angle":"0","color":"black","limitArea":{"left":320,"top":25,"width":163,"height":129},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":395,"top":220,"limit":"8","angle":"0","color":"black","limitArea":{"left":320,"top":160,"width":207,"height":194},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":250,"top":308,"limit":"8","angle":"0","color":"black","limitArea":{"left":60,"top":259,"width":362,"height":184},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":108,"top":220,"limit":"8","angle":"0","color":"black","limitArea":{"left":78,"top":160,"width":207,"height":194},"fontSize":20,"font":"ASAP","palceholder":"Add name here"}],"CBS544X01":[{"left":108,"top":95,"limit":"8","angle":"0","color":"black","limitArea":{"left":50,"top":25,"width":150,"height":120},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":250,"top":105,"limit":"8","angle":"0","color":"black","limitArea":{"left":200,"top":45,"width":115,"height":107},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":395,"top":95,"limit":"8","angle":"0","color":"black","limitArea":{"left":320,"top":25,"width":163,"height":129},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":395,"top":220,"limit":"8","angle":"0","color":"black","limitArea":{"left":320,"top":160,"width":207,"height":194},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":296,"top":288,"limit":"8","angle":"0","color":"black","limitArea":{"left":250,"top":200,"width":362,"height":184},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":196,"top":290,"limit":"8","angle":"0","color":"black","limitArea":{"left":150,"top":200,"width":362,"height":184},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":108,"top":220,"limit":"8","angle":"0","color":"black","limitArea":{"left":78,"top":160,"width":207,"height":194},"fontSize":20,"font":"ASAP","palceholder":"Add name here"}],"CBS544X02":[{"left":108,"top":95,"limit":"8","angle":"0","color":"black","limitArea":{"left":50,"top":25,"width":150,"height":120},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":250,"top":105,"limit":"8","angle":"0","color":"black","limitArea":{"left":200,"top":45,"width":115,"height":107},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":395,"top":95,"limit":"8","angle":"0","color":"black","limitArea":{"left":320,"top":25,"width":163,"height":129},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":395,"top":220,"limit":"8","angle":"0","color":"black","limitArea":{"left":320,"top":160,"width":207,"height":194},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":296,"top":288,"limit":"8","angle":"0","color":"black","limitArea":{"left":250,"top":200,"width":362,"height":184},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":196,"top":290,"limit":"8","angle":"0","color":"black","limitArea":{"left":150,"top":200,"width":362,"height":184},"fontSize":20,"font":"ASAP","palceholder":"Add name here"},{"left":108,"top":220,"limit":"8","angle":"0","color":"black","limitArea":{"left":78,"top":160,"width":207,"height":194},"fontSize":20,"font":"ASAP","palceholder":"Add name here"}]}}' %}
+
+	{% assign cattribute = '{"isRemarkData":"name","isTextEffect":1,"coors":{"CBSD535":[{"left":295,"top":125,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":260,"top":90,"width":96,"height":77},"fontSize":15,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":295,"top":205,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":260,"top":165,"width":76,"height":77},"fontSize":15,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":220,"top":280,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":190,"top":240,"width":80,"height":82},"fontSize":15,"font":"BackToBlackDemo","palceholder":"Add name here"}],"CBSU535":[{"left":295,"top":125,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":260,"top":90,"width":96,"height":77},"fontSize":15,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":295,"top":205,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":260,"top":165,"width":76,"height":77},"fontSize":15,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":220,"top":280,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":190,"top":240,"width":80,"height":82},"fontSize":15,"font":"BackToBlackDemo","palceholder":"Add name here"}],"CBSD536":[{"left":315,"top":130,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":280,"top":90,"width":96,"height":77},"fontSize":15,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":315,"top":200,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":280,"top":165,"width":76,"height":77},"fontSize":15,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":185,"top":270,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":150,"top":240,"width":80,"height":82},"fontSize":15,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":250,"top":270,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":220,"top":240,"width":80,"height":82},"fontSize":15,"font":"BackToBlackDemo","palceholder":"Add name here"}],"CBSU536":[{"left":315,"top":130,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":280,"top":90,"width":96,"height":77},"fontSize":15,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":315,"top":200,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":280,"top":165,"width":76,"height":77},"fontSize":15,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":185,"top":270,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":150,"top":240,"width":80,"height":82},"fontSize":15,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":250,"top":270,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":220,"top":240,"width":80,"height":82},"fontSize":15,"font":"BackToBlackDemo","palceholder":"Add name here"}],"CBSD537":[{"left":245,"top":135,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":204,"top":90,"width":76,"height":77},"fontSize":15,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":315,"top":130,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":280,"top":90,"width":96,"height":77},"fontSize":15,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":180,"top":200,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":150,"top":170,"width":76,"height":77},"fontSize":15,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":185,"top":270,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":150,"top":240,"width":80,"height":82},"fontSize":15,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":250,"top":270,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":220,"top":240,"width":80,"height":82},"fontSize":15,"font":"BackToBlackDemo","palceholder":"Add name here"}],"CBSU537":[{"left":245,"top":135,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":204,"top":90,"width":76,"height":77},"fontSize":15,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":315,"top":130,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":280,"top":90,"width":96,"height":77},"fontSize":15,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":180,"top":200,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":150,"top":170,"width":76,"height":77},"fontSize":15,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":185,"top":270,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":150,"top":240,"width":80,"height":82},"fontSize":15,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":250,"top":270,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":220,"top":240,"width":80,"height":82},"fontSize":15,"font":"BackToBlackDemo","palceholder":"Add name here"}],"CBSD538":[{"left":255,"top":135,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":204,"top":90,"width":76,"height":77},"fontSize":11,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":320,"top":130,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":280,"top":90,"width":96,"height":77},"fontSize":11,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":185,"top":200,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":150,"top":170,"width":76,"height":77},"fontSize":11,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":320,"top":200,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":280,"top":170,"width":76,"height":77},"fontSize":11,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":190,"top":270,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":150,"top":240,"width":80,"height":82},"fontSize":11,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":255,"top":270,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":220,"top":240,"width":80,"height":82},"fontSize":11,"font":"BackToBlackDemo","palceholder":"Add name here"}],"CBSU538":[{"left":255,"top":135,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":204,"top":90,"width":76,"height":77},"fontSize":11,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":320,"top":130,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":280,"top":90,"width":96,"height":77},"fontSize":11,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":185,"top":200,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":150,"top":170,"width":76,"height":77},"fontSize":11,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":320,"top":200,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":280,"top":170,"width":76,"height":77},"fontSize":11,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":190,"top":270,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":150,"top":240,"width":80,"height":82},"fontSize":11,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":255,"top":270,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":220,"top":240,"width":80,"height":82},"fontSize":11,"font":"BackToBlackDemo","palceholder":"Add name here"}],"CBSD539":[{"left":245,"top":135,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":204,"top":90,"width":76,"height":77},"fontSize":11,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":300,"top":120,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":280,"top":90,"width":96,"height":77},"fontSize":11,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":190,"top":180,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":150,"top":130,"width":76,"height":77},"fontSize":11,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":300,"top":180,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":260,"top":130,"width":76,"height":77},"fontSize":11,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":190,"top":235,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":150,"top":190,"width":80,"height":82},"fontSize":11,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":248,"top":235,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":220,"top":190,"width":80,"height":82},"fontSize":11,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":190,"top":290,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":150,"top":240,"width":80,"height":82},"fontSize":11,"font":"BackToBlackDemo","palceholder":"Add name here"}],"CBSU539":[{"left":245,"top":135,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":204,"top":90,"width":76,"height":77},"fontSize":11,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":300,"top":120,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":280,"top":90,"width":96,"height":77},"fontSize":11,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":190,"top":180,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":150,"top":130,"width":76,"height":77},"fontSize":11,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":300,"top":180,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":260,"top":130,"width":76,"height":77},"fontSize":11,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":190,"top":235,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":150,"top":190,"width":80,"height":82},"fontSize":11,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":248,"top":235,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":220,"top":190,"width":80,"height":82},"fontSize":11,"font":"BackToBlackDemo","palceholder":"Add name here"},{"left":190,"top":290,"limit":"8","angle":"0","color":"#ffffff","limitArea":{"left":150,"top":240,"width":80,"height":82},"fontSize":11,"font":"BackToBlackDemo","palceholder":"Add name here"}]}}' %}
+
+	{% assign cattribute = '{"cutSku":1,"isRemarkData":"name","isTextEffect":1,"coors":{"CBS531":[{"left":250,"top":204,"limit":"15","angle":"0","color":"black","limitArea":{"left":200,"top":192,"width":132,"height":24},"fontSize":11,"font":"Clarendon_Lt_BT","palceholder":"Military rank abbreviation","remarkKey":"wenan"},{"left":209,"top":282,"limit":"8","angle":"0","color":"black","limitArea":{"left":185,"top":259,"width":41,"height":41},"fontSize":9,"font":"ASAP","palceholder":"Add name here"},{"left":250,"top":297,"limit":"8","angle":"0","color":"black","limitArea":{"left":230,"top":259,"width":42,"height":42},"fontSize":9,"font":"ASAP","palceholder":"Add name here"},{"left":292,"top":282,"limit":"8","angle":"0","color":"black","limitArea":{"left":270,"top":259,"width":42,"height":42},"fontSize":9,"font":"ASAP","palceholder":"Add name here"}],"CBS532":[{"left":250,"top":204,"limit":"15","angle":"0","color":"black","limitArea":{"left":200,"top":192,"width":132,"height":24},"fontSize":12,"font":"Clarendon_Lt_BT","palceholder":"Military rank abbreviation","remarkKey":"wenan"},{"left":250,"top":272,"limit":"8","angle":"0","color":"black","limitArea":{"left":230,"top":249,"width":41,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"},{"left":206,"top":309,"limit":"8","angle":"0","color":"black","limitArea":{"left":184,"top":292,"width":42,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"},{"left":250,"top":336,"limit":"8","angle":"0","color":"black","limitArea":{"left":230,"top":304,"width":42,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"},{"left":296,"top":309,"limit":"8","angle":"0","color":"black","limitArea":{"left":274,"top":292,"width":42,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"}],"CBS533":[{"left":250,"top":204,"limit":"15","angle":"0","color":"black","limitArea":{"left":200,"top":192,"width":132,"height":24},"fontSize":12,"font":"Clarendon_Lt_BT","palceholder":"Military rank abbreviation","remarkKey":"wenan"},{"left":206,"top":286,"limit":"8","angle":"0","color":"black","limitArea":{"left":182,"top":263,"width":41,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"},{"left":296,"top":286,"limit":"8","angle":"0","color":"black","limitArea":{"left":274,"top":263,"width":42,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"},{"left":206,"top":309,"limit":"8","angle":"0","color":"black","limitArea":{"left":184,"top":292,"width":42,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"},{"left":250,"top":339,"limit":"8","angle":"0","color":"black","limitArea":{"left":230,"top":307,"width":42,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"},{"left":296,"top":309,"limit":"8","angle":"0","color":"black","limitArea":{"left":274,"top":292,"width":42,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"}],"CBS534":[{"left":250,"top":204,"limit":"15","angle":"0","color":"black","limitArea":{"left":200,"top":192,"width":132,"height":24},"fontSize":12,"font":"Clarendon_Lt_BT","palceholder":"Military rank abbreviation","remarkKey":"wenan"},{"left":206,"top":287,"limit":"8","angle":"0","color":"black","limitArea":{"left":182,"top":264,"width":41,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"},{"left":250,"top":274,"limit":"8","angle":"0","color":"black","limitArea":{"left":230,"top":251,"width":42,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"},{"left":293,"top":287,"limit":"8","angle":"0","color":"black","limitArea":{"left":271,"top":264,"width":42,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"},{"left":206,"top":310,"limit":"8","angle":"0","color":"black","limitArea":{"left":184,"top":293,"width":42,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"},{"left":250,"top":340,"limit":"8","angle":"0","color":"black","limitArea":{"left":230,"top":308,"width":42,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"},{"left":296,"top":310,"limit":"8","angle":"0","color":"black","limitArea":{"left":274,"top":293,"width":42,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"}]}}' %}
+
+	{% assign cattribute = '{"cutSku":1,"isRemarkData":"name","isTextEffect":1,"photo":[{"isAiLucid":1}],"oneSide":true,"oneSideCheckPhoto":true,"coors":{"CBS527":[{"left":250,"top":204,"limit":"15","angle":"0","color":"black","limitArea":{"left":200,"top":192,"width":132,"height":24},"fontSize":12,"font":"Century751_SeBd_BT","palceholder":"Military rank abbreviation","remarkKey":"wenan"},{"left":206,"top":277,"limit":"8","angle":"0","color":"black","limitArea":{"left":182,"top":254,"width":41,"height":41},"fontSize":10,"font":"ASAP","palceholder":"Add name here"},{"left":250,"top":292,"limit":"8","angle":"0","color":"black","limitArea":{"left":230,"top":254,"width":42,"height":42},"fontSize":10,"font":"ASAP","palceholder":"Add name here"},{"left":296,"top":277,"limit":"8","angle":"0","color":"black","limitArea":{"left":274,"top":254,"width":42,"height":42},"fontSize":10,"font":"ASAP","palceholder":"Add name here"}],"CBS528":[{"left":250,"top":204,"limit":"15","angle":"0","color":"black","limitArea":{"left":200,"top":192,"width":132,"height":24},"fontSize":12,"font":"Century751_SeBd_BT","palceholder":"Military rank abbreviation","remarkKey":"wenan"},{"left":250,"top":275,"limit":"8","angle":"0","color":"black","limitArea":{"left":230,"top":252,"width":41,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"},{"left":206,"top":312,"limit":"8","angle":"0","color":"black","limitArea":{"left":184,"top":295,"width":42,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"},{"left":250,"top":342,"limit":"8","angle":"0","color":"black","limitArea":{"left":230,"top":310,"width":42,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"},{"left":296,"top":312,"limit":"8","angle":"0","color":"black","limitArea":{"left":274,"top":295,"width":42,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"}],"CBS529":[{"left":250,"top":204,"limit":"15","angle":"0","color":"black","limitArea":{"left":200,"top":192,"width":132,"height":24},"fontSize":12,"font":"Century751_SeBd_BT","palceholder":"Military rank abbreviation","remarkKey":"wenan"},{"left":206,"top":297,"limit":"8","angle":"0","color":"black","limitArea":{"left":182,"top":274,"width":41,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"},{"left":296,"top":297,"limit":"8","angle":"0","color":"black","limitArea":{"left":274,"top":274,"width":42,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"},{"left":206,"top":320,"limit":"8","angle":"0","color":"black","limitArea":{"left":184,"top":303,"width":42,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"},{"left":250,"top":350,"limit":"8","angle":"0","color":"black","limitArea":{"left":230,"top":318,"width":42,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"},{"left":296,"top":320,"limit":"8","angle":"0","color":"black","limitArea":{"left":274,"top":303,"width":42,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"}],"CBS530":[{"left":250,"top":204,"limit":"15","angle":"0","color":"black","limitArea":{"left":200,"top":192,"width":132,"height":24},"fontSize":12,"font":"Century751_SeBd_BT","palceholder":"Military rank abbreviation","remarkKey":"wenan"},{"left":206,"top":303,"limit":"8","angle":"0","color":"black","limitArea":{"left":182,"top":280,"width":41,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"},{"left":250,"top":290,"limit":"8","angle":"0","color":"black","limitArea":{"left":230,"top":267,"width":42,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"},{"left":296,"top":303,"limit":"8","angle":"0","color":"black","limitArea":{"left":274,"top":280,"width":42,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"},{"left":206,"top":326,"limit":"8","angle":"0","color":"black","limitArea":{"left":184,"top":309,"width":42,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"},{"left":250,"top":356,"limit":"8","angle":"0","color":"black","limitArea":{"left":230,"top":324,"width":42,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"},{"left":296,"top":326,"limit":"8","angle":"0","color":"black","limitArea":{"left":274,"top":309,"width":42,"height":20},"fontSize":10,"font":"ASAP","palceholder":"Add name here"}]}}' %}
+{% endcomment %}
+{% endif %}
+
+<script>
+  window.addEventListener('EVENT_ENGRAVING_SAVE_AFTER', function(event){
+	var index = event.detail.index;
+    var data = event.detail.data;
+  });
+
+  var jsonCustom = '{{ cattribute }}';
+  //console.log('jsonCustom====',jsonCustom);
+  if(jsonCustom){
+    jsonCustom = JSON.parse('{{ cattribute }}');
+  }
+  
+  var baseurl = 'https://pic.stylelab.com/';
+  var _zenSku = "{{ product.selected_or_first_available_variant.sku }}";
+                            
+  var splitSku = typeof jsonCustom.splitSku != 'undefined' ? jsonCustom.splitSku : false;
+  var cutSku = typeof jsonCustom.cutSku != 'undefined' ? jsonCustom.cutSku : false;
+                            
+  if(splitSku){
+    if(_zenSku.indexOf('-') > -1){
+      let skuList =  _zenSku.split('-');
+      _zenSku =  skuList[0]; 
+    }
+  }
+    
+  if(cutSku){
+    _zenSku = _zenSku.substring(0,_zenSku.length-cutSku); 
+  }
+        
+  var photoArray = [];
+  var photoJson = ''; 
+    if(typeof jsonCustom.photo != 'undefined'){
+      photoJson = jsonCustom.photo; 
+      if(!Array.isArray(photoJson)){
+        photoJson = jsonCustom.photo[_zenSku];
+      }
+      if(photoJson){
+        photoJson.forEach(function(vv,ii){
+          console.log(vv.isAiLucid);
+          photoArray.push(
+            {
+              require: true,
+              sku: _zenSku,
+              basePhotoImg: baseurl + "img/photo/"+_zenSku+".png?456",
+              ainame: "",
+              isAiLucid: vv.isAiLucid ? vv.isAiLucid : 0,
+              bgcolor: vv.bgcolor ? vv.bgcolor : "rgb(255,255,255)",
+              style: 0,
+              type: "multipic"
+            }
+          );
+        });
+      }
+      
+    }
+        
+    var _zenEngravingSizeOptions = [{
+      value: "20",
+      label: "20"
+    }];
+
+    var _zenEngravingFontOptions = [{
+      value: "TimesNewRoman",
+      label: "TimesNewRoman"
+    }];
+    
+    
+    //如果配置信息中有font则使用font作为字体选项
+    if( typeof jsonCustom.font !== 'undefined' && jsonCustom.font ){
+      var json_font = jsonCustom.font;
+      _zenEngravingFontOptions = [];
+      for(var j = 0; j < json_font.length; j++) {
+        var font_arr = [];
+        font_arr['value'] = json_font[j];
+        font_arr['label'] = json_font[j];
+        _zenEngravingFontOptions.push(font_arr);
+      }
+    }
+
+    //如果配置信息中有size则使用size作为字号选项
+    if( typeof jsonCustom.size !== 'undefined' && jsonCustom.size ){
+      var json_size = jsonCustom.size;
+      _zenEngravingSizeOptions = [];
+      for(var k = 0; k< json_size.length; k++) {
+        var size_arr = [];
+        size_arr['value'] = json_size[k];
+        size_arr['label'] = json_size[k];
+        _zenEngravingSizeOptions.push(size_arr);
+      }
+    }
+    
+    var textUrl = "https://pic.stylelab.com/img/textdesign/";
+    var remarkArray = {};    
+    var coorsArray =[];
+    var fontArray = [];
+    if(typeof jsonCustom.coors != 'undefined'){
+      var coorsJson = jsonCustom.coors;
+      if( Array.isArray(coorsJson)){ // 仅当前sku对应coors(单coors)
+        coorsJson = coorsJson || [{}]; 	// 如果是空数据
+        $.each(coorsJson, function (i, v){
+          coorsArray.push({
+                left: v.left || 250, 	 	//输入文字left坐标
+                top: v.top || 200,   		//输入文字top坐标
+                limit: 250,  				//限制字符数
+                angle: 0,    				//文字角度
+                textColor: "black",  		//文字颜色
+                direction: "",   			//文字方向
+                isWrap: true,    			//是否自动换行
+                limitArea: v.limitArea,  	//限制区域坐标
+                banDrag: "0",
+                lineHeight: "1",
+                rows: "2",   				//输入框默认行数
+                resize: "none", 			//控制是否能被用户缩放
+                text: "",     			//绑定文字变量
+                size: _zenEngravingSizeOptions[0].value,   	//绑定字号变量，canvas渲染时使用，不同于vue的页面变量，必填
+                font: _zenEngravingFontOptions[0].value,     	//绑定字体变量，canvas渲染时使用，不同于vue的页面变量，必填
+                placeHolder: v.palceholder || '',
+                initialCarving:v.initialCarving
+          });
+          fontArray.push(_zenEngravingFontOptions[0].value);
+          if(typeof jsonCustom.isRemarkData != 'undefined'){
+            if(typeof v.remarkKey != 'undefined'){
+              remarkArray[i] = v.remarkKey;
+            }else{
+              remarkArray[i] = jsonCustom.isRemarkData;
+            }
+          }
+        });
+      }else{ // 包含其他sku对应coors(多coors)
+          coorsJson[_zenSku].forEach(function(vv,ii){
+            var placeHolder = '';
+            if(typeof vv.palceholder != 'undefined'){
+              placeHolder = vv.palceholder
+            }
+
+            var coorsLimit = 15;
+            if(typeof vv.limit != 'undefined'){
+                coorsLimit = vv.limit;
+            }
+
+            var initialCarving = '';
+            if(typeof vv.initialCarving != 'undefined'){
+                initialCarving = vv.initialCarving;
+            }
+
+            //loadCustomFonts(vv.font);
+
+            coorsArray.push({
+              left: vv.left,  //输入文字left坐标
+              top: vv.top,   //输入文字top坐标
+              limit: coorsLimit,  //限制字符数
+              angle: "0",    //文字角度
+              textColor: vv.color,  //文字颜色
+              direction: "",   //文字方向
+              isWrap: false,    //是否自动换行
+              limitArea: vv.limitArea,  //限制区域坐标
+              banDrag: "0",
+              lineHeight: "1",
+              rows: "2",   //输入框默认行数
+              resize: "none", //控制是否能被用户缩放
+              text: "",     //绑定文字变量
+              size: vv.fontSize,   //绑定字号变量，canvas渲染时使用，不同于vue的页面变量，必填
+              font: vv.font,     //绑定字体变量，canvas渲染时使用，不同于vue的页面变量，必填
+              isSinglelineInput: vv.isSinglelineInput === false ? false : true,
+              placeHolder: placeHolder,
+              initialCarving:vv.initialCarving
+            });
+			fontArray.push(vv.font);
+            if(typeof jsonCustom.isRemarkData != 'undefined'){
+              if(typeof vv.remarkKey != 'undefined'){
+                remarkArray[ii] = vv.remarkKey;
+              }else{
+                remarkArray[ii] = jsonCustom.isRemarkData;
+              }
+            }
+          });
+      }
+      loadCustomFonts(fontArray);
+    }
+
+    var _zenConfig = {
+      photoObj: [],
+      carvingObj: [],
+      crystalObj: [],
+      curveCarvingObj: [],
+      nameObj: [],
+      carvingBigObj: [],
+      cropPrompt: " ",   //刻字弹层提示文字, 可选, 默认无
+      requirePrompt: "This is a required field.",  //传图必填提示文案
+	  //uploadLoadingImage:"{{ 'sandglass.gif' | asset_img_url: '260x' }}",
+      actionInfo: "You can adjust the text position by dragging it.",
+      noteInfo: "Please note: No colors can be used. e.g. A red heart icon will show a heart in color black.",
+      handcraftInfo: "",
+      photoUrl: "https://pic.stylelab.com/img/photo/",
+      leftText: "Left",
+      fontRadioLabel: "Font:",
+      fontSizeSelectLabel: "Font Size:",
+      wrapperBackgroudColor: "#000000",
+      ifCarvingHorizontal:false,
+      isCloseOnClickModal:false,
+      textUrl: textUrl,
+      crop: [],
+      photo: photoArray,
+      carving: [
+        {
+              require: true,
+      		  showPhoto:typeof jsonCustom.showPhoto !== 'undefined' ? jsonCustom.showPhoto : false,
+      		  oneSide: typeof jsonCustom.oneSide !== 'undefined' ? jsonCustom.oneSide : true,
+      		  oneSideCheckPhoto: typeof jsonCustom.oneSideCheckPhoto !== 'undefined' ? jsonCustom.oneSideCheckPhoto : false,
+              loadingFullScreen:false,
+              previewText: "Add Engraving",  //左侧预览文字
+              btnText: "Add",     //按钮文案
+              confirmText: "Confirm Your Design",
+              type: "",
+              sku: _zenSku,
+              in:  _zenSku+"-IN.png",
+              out: _zenSku+"-OUT.png",
+              isBig: true,    //是否生成大图
+              bigParam: typeof jsonCustom.oneSide !== 'undefined' ? jsonCustom.oneSide : { width: 1200, height: 840, fontWeight: 'bold', fontSize: 60},  //刻字大图参数 是只有文字的大图
+              // bigParam: { width: 600, height: 450, fontWeight: 'bold', fontSize: 30},  //刻字大图参数test
+              showSize: false,  //是否显示字号选项
+              showFont: false,  //是否显示字体选项
+              checkLimitAreaNew: false,
+              engravingSizeOptions: _zenEngravingSizeOptions,
+              engravingFontOptions: _zenEngravingFontOptions,
+              textPlaceHolder:'Type words here...',
+              cropPrompt:' ',
+              cWidth: 500,
+              cHeight: 400,
+              baseWidth: 500,
+              showSize: _zenEngravingSizeOptions.length > 1?true:false,  //是否显示字号选项
+              showFont: _zenEngravingFontOptions.length > 1?true:false,  //是否显示字体选项
+              coors: coorsArray
+            }
+      ],
+      crystal:[],
+      crystalText:[],
+      curveCarving:[]
+    };
+</script>
+<div class="selector-step">
+  <div class="content photo-select-carving">
+    <div id="zen-photocarving"></div>
+  </div>
+</div>
+<input type="text" id="custom-info" name="properties[customInfo]" value="" style="display:none"/>
+
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.4.4/zen-photo-carving-chunk-vendors.css?202010291617" rel="stylesheet" />
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.4.4/zen-photo-carving-app.css?202010291617" rel="stylesheet" />
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.4.4/zen-photo-carving-chunk-vendors.js?202010291617"></script>
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.4.4/zen-photo-carving-app.js?202010291617"></script>
+
+<script>
+  var optionVal = '';
+
+  $(function(){  //检测表单
+    $('.zen-require').attr('name','customVal');
+  })
+  
+  Listener.on([ Listener.product.update.after ], function(event, variant, dom) { 
+    
+    let variantSku = variant.sku;
+    
+    if(splitSku){
+      if(variantSku.indexOf('-') > -1){
+        let skuList = variantSku.split('-');
+        variantSku = skuList[0]; 
+      }
+    }
+
+    if(cutSku){
+      variantSku = variantSku.substring(0,variantSku.length-cutSku); 
+    }
+    
+    var optionName = typeof jsonCustom.option !== 'undefined' ? jsonCustom.option : '';
+    
+    if(_zenSku != variantSku && optionName && optionVal != variant[optionName] || _zenSku != variantSku && !optionName){
+      
+        _zenSku = variantSku;
+
+        window._zenConfig.carving.splice(0, 1);
+        window._zenConfig.photo.splice(0, 1);
+
+        $('.zen-photo-carving .photo-container').remove();
+        $('.zen-photo-carving .carving-container').remove();
+
+        var photoArrayNew = {};
+    
+        if(typeof jsonCustom.photo != 'undefined'){
+          photoJson = jsonCustom.photo;
+          if(!Array.isArray(photoJson)){
+            photoJson = jsonCustom.photo[_zenSku];
+          }
+		  if(photoJson){
+            photoJson.forEach(function(vv,ii){
+              photoArrayNew = {
+                require: true,
+                sku: _zenSku,
+                basePhotoImg: baseurl + "img/photo/"+_zenSku+".png?456",
+                ainame: "",
+                isAiLucid: vv.isAiLucid ? vv.isAiLucid : 0,
+                bgcolor: vv.bgcolor ? vv.bgcolor : "rgb(255,255,255)",
+                style: 0,
+                type: "multipic"
+              };
+            });
+          }
+        }
+      
+	  var coorList = [];
+      
+      if(typeof jsonCustom.coors != 'undefined'){
+        if(Array.isArray(coorsJson) || !coorsJson){
+          $.each(coorsJson, function (i, v){
+            coorList.push({
+                  left: v.left || 250, 	 	//输入文字left坐标
+                  top: v.top || 200,   		//输入文字top坐标
+                  limit: 250,  				//限制字符数
+                  angle: 0,    				//文字角度
+                  textColor: "black",  		//文字颜色
+                  direction: "",   			//文字方向
+                  isWrap: true,    			//是否自动换行
+                  limitArea: v.limitArea,  	//限制区域坐标
+                  banDrag: "0",
+                  lineHeight: "1",
+                  rows: "2",   				//输入框默认行数
+                  resize: "none", 			//控制是否能被用户缩放
+                  text: "",     			//绑定文字变量
+                  size: _zenEngravingSizeOptions[0].value,   	//绑定字号变量，canvas渲染时使用，不同于vue的页面变量，必填
+                  font: _zenEngravingFontOptions[0].value,     	//绑定字体变量，canvas渲染时使用，不同于vue的页面变量，必填
+                  placeHolder: v.palceholder || '',
+                  initialCarving:v.initialCarving
+            });
+            fontArray.push(_zenEngravingFontOptions[0].value);
+            if(typeof jsonCustom.isRemarkData != 'undefined'){
+              if(typeof v.remarkKey != 'undefined'){
+                remarkArray[i] = v.remarkKey;
+              }else{
+                remarkArray[i] = jsonCustom.isRemarkData;
+              }
+            }
+          });
+        }else{
+          coorsJson[_zenSku].forEach(function(vv,ii){
+            var placeHolder = '';
+            if(typeof vv.palceholder != 'undefined'){
+              placeHolder = vv.palceholder
+            }
+
+            var coorsLimit = 15;
+            if(typeof vv.limit != 'undefined'){
+                coorsLimit = vv.limit;
+            }
+
+            var initialCarving = '';
+            if(typeof vv.initialCarving != 'undefined'){
+                initialCarving = vv.initialCarving;
+            }
+            //loadCustomFonts(vv.font);
+            coorList.push({
+              left: vv.left,  //输入文字left坐标
+              top: vv.top,   //输入文字top坐标
+              limit: coorsLimit,  //限制字符数
+              angle: "0",    //文字角度
+              textColor: vv.color,  //文字颜色
+              direction: "",   //文字方向
+              isWrap: false,    //是否自动换行
+              limitArea: vv.limitArea,  //限制区域坐标
+              banDrag: "0",
+              lineHeight: "1",
+              rows: "2",   //输入框默认行数
+              resize: "none", //控制是否能被用户缩放
+              text: "",     //绑定文字变量
+              size: vv.fontSize,   //绑定字号变量，canvas渲染时使用，不同于vue的页面变量，必填
+              font: vv.font,     //绑定字体变量，canvas渲染时使用，不同于vue的页面变量，必填
+              isSinglelineInput: vv.isSinglelineInput === false ? false : true,
+              placeHolder: placeHolder,
+              initialCarving:vv.initialCarving
+            });
+            fontArray.push(vv.font);
+            if(typeof jsonCustom.isRemarkData != 'undefined'){
+              if(typeof vv.remarkKey != 'undefined'){
+                remarkArray[ii] = vv.remarkKey;
+              }else{
+                remarkArray[ii] = jsonCustom.isRemarkData;
+              }
+            }
+          });
+        }
+        loadCustomFonts(fontArray);
+      }
+
+        let newCarving = {
+          require: true,
+          oneSide: typeof jsonCustom.oneSide !== 'undefined' ? jsonCustom.oneSide : true,
+      	  oneSideCheckPhoto:typeof jsonCustom.oneSideCheckPhoto !== 'undefined' ? jsonCustom.oneSideCheckPhoto : false,
+          loadingFullScreen:false,
+          previewText: "Add Engraving",  //左侧预览文字
+          btnText: "Add",     //按钮文案
+          confirmText: "Confirm Your Design",
+          type: "",
+          sku: _zenSku,
+          in:  _zenSku+"-IN.png",
+          out: _zenSku+"-OUT.png",
+          isBig: true,    //是否生成大图
+          bigParam: { width: 1200, height: 840, fontWeight: 'bold', fontSize: 60},  //刻字大图参数 是只有文字的大图
+          // bigParam: { width: 600, height: 450, fontWeight: 'bold', fontSize: 30},  //刻字大图参数test
+          showSize: false,  //是否显示字号选项
+          showFont: false,  //是否显示字体选项
+          checkLimitAreaNew: false,
+          engravingSizeOptions: _zenEngravingSizeOptions,
+          engravingFontOptions: _zenEngravingFontOptions,
+          textPlaceHolder:'Type words here...',
+          cropPrompt:' ',
+          cWidth: 500,
+          cHeight: 400,
+          baseWidth: 500,
+          showSize: _zenEngravingSizeOptions.length > 1?true:false,  //是否显示字号选项
+          showFont: _zenEngravingFontOptions.length > 1?true:false,  //是否显示字体选项
+          coors: coorList
+        };
+
+        setTimeout(function(){
+          window._zenConfig.carving.push(newCarving);console.log(photoJson);
+          if(typeof jsonCustom.photo != 'undefined' && JSON.stringify(photoArrayNew) !== "{}"){
+          	window._zenConfig.photo.push(photoArrayNew);
+          }
+
+        },100);
+
+        $('.preview-thumbnail').hide();
+      
+    }
+    
+    if(optionName && optionVal != variant[optionName]){
+    	optionVal = variant[optionName];
+    }
+  })
+  
+  Product.validators.push(async () => {
+    
+  	var zenInfo = $(".zen-require").val();
+    var zenFlag = true;
+    if(zenInfo){
+      var customInfo = JSON.parse(zenInfo);
+      var zenCustomJson = {};
+  
+      if(typeof customInfo.photo != 'undefined' && photoJson){
+        var v = customInfo.photo[0];
+        if(!v.crop) {
+          $('.area-photo-upload-0').css('border-color',"red");
+          zenFlag = false;
+        }else{
+          $('.area-photo-upload-0').css('border-color',"#f7f8fa");
+          zenCustomJson['_sunzi_effect'] = v.crop;
+          if(typeof jsonCustom.isPhotoAi != 'undefined' && jsonCustom.isPhotoAi == 1){
+          	zenCustomJson['_sunzi_ai'] = v.ai;
+          }
+          zenCustomJson['_sunzi_source'] = v.origin;
+        }
+      }
+      
+      if(typeof customInfo.engraving != 'undefined'){
+        var v = customInfo.engraving[0];
+        if(!v.engravingCrop) {
+          $('.area-carving-0').css('border-color',"red");
+          zenFlag = false;
+        }else{
+          $('.area-carving-0').css('border-color',"#f7f8fa");
+          if(typeof jsonCustom.isEngravingBig != 'undefined' && jsonCustom.isEngravingBig == 1){
+            zenCustomJson['_sunzi_text_ai'] = v.engravingBig;
+          }
+          if(typeof jsonCustom.isTextEffect != 'undefined' && jsonCustom.isTextEffect == 1){
+            if(photoJson){
+              zenCustomJson['_sunzi_effect'] = v.engravingCrop;
+            }else{
+              zenCustomJson['_sunzi_text_effect'] = v.engravingCrop;
+            }
+          }
+
+          if(typeof jsonCustom.isRemarkData != 'undefined'){
+          	var textAll = customInfo.engraving[0].engravingText.split('|');
+            var _sunzi = {};
+            textAll.forEach(function(item,index){
+              if(typeof _sunzi[remarkArray[index]] != 'undefined'){
+              	_sunzi[remarkArray[index]].push(_sunzi[remarkArray[index]].length+1 + ":" + item);
+              }else{
+              	_sunzi[remarkArray[index]] = [];
+                _sunzi[remarkArray[index]].push(_sunzi[remarkArray[index]].length+1 + ":" + item);
+              }
+            })
+            for(var i in _sunzi){
+              if(_sunzi[i].length == 1){
+                _sunzi[i] = _sunzi[i][0].replace('1:','');
+              }else{
+              	_sunzi[i] = _sunzi[i].join(' ');
+              }
+            }
+            zenCustomJson['_sunzi_remark'] = _sunzi;
+          }else{
+          	if(v.engravingText.indexOf('|') > -1){
+              zenCustomJson['_sunzi_texts'] = [];
+              var cArr = v.engravingText.split('|');
+              cArr.forEach(function(vv,ii){
+                zenCustomJson['_sunzi_texts'][ii] = {};
+                zenCustomJson['_sunzi_texts'][ii]['value'] = vv;
+                if(typeof jsonCustom.noSize == 'undefined' || jsonCustom.noSize == 0){
+                  let cSize  = coorsJson[_zenSku][ii].fontSize;
+                  cSize += '';
+                  zenCustomJson['_sunzi_texts'][ii]['fontSize'] = cSize;
+                }
+                if(typeof jsonCustom.noFont == 'undefined' || jsonCustom.noFont == 0){
+                  zenCustomJson['_sunzi_texts'][ii]['font'] = coorsJson[_zenSku][ii].font;
+                }
+                if(coorsJson[_zenSku][ii].dataLabel){
+                  zenCustomJson['_sunzi_texts'][ii]['number'] = coorsJson[_zenSku][ii].dataLabel;
+                }else{
+                  var no = ii+1;
+                  let nn = no + '';
+                  zenCustomJson['_sunzi_texts'][ii]['number'] = nn;
+                }
+              });
+            }else{
+              zenCustomJson['_sunzi_text'] = customInfo.engraving[0].engravingText;
+            }
+          }
+        }
+      }
+      
+      if(typeof jsonCustom.productImage != 'undefined' && jsonCustom.productImage == 1){
+        zenCustomJson['_sunzi_effect'] = 'https:'+'{{product.images[0]|img_url: '600x600'}}';
+      }
+      
+      $("#custom-info").val(JSON.stringify(zenCustomJson));
+    
+  }else{
+    zenFlag = false;
+    $('.area-carving').css("border-color","red");
+  }
+    return zenFlag;
+  })
+  
+</script>

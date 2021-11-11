@@ -1,0 +1,260 @@
+{%comment%}
+	购物车赠品规则 johnny 20201226
+	tag标签
+	买A赠B
+	CART_GIFT_Freegift_Jewelry 赠送C-BD05
+{%endcomment%}
+<script>
+//   Mask.show();
+  var JYMCARTS = [];//满足赠品条件的sku
+</script>
+{% for item in cart.items %}
+{% assign kitchen_products = item.product.tags | where: "CART_GIFT_" %}
+{% for tag in kitchen_products %}
+<script>
+  {
+    let item = {variant_id: '{{item.variant_id}}', tag: '{{tag}}',giveaway: 0, num: {{item.quantity}} };
+    items = JYMCARTS.find(v => v.variant_id == item.variant_id);
+    if(typeof items === 'object'){
+    	items.num = items.num + {{item.quantity}};
+    }else{
+    	JYMCARTS.push(item);         
+    }
+  }
+</script>
+{% endfor %}
+{% assign giveaway_products = item.product.tags | where: "CART_GIVEAWAY" %}
+{% for tag1 in giveaway_products %}
+<script>
+  {
+    let item = {variant_id: '{{item.variant_id}}', tag: '{{tag1}}', giveaway: 1, num: {{item.quantity}} };
+    items = JYMCARTS.find(v => v.variant_id == item.variant_id);
+    if(typeof items === 'object'){
+    	items.num++;
+    }else{
+    	JYMCARTS.push(item);         
+    }
+  }
+</script>
+{% endfor %}
+{% endfor %}
+
+{% assign cart_man_result = '[' %}
+{%- for block in section.blocks -%}
+{%- if block.type == 'cart_gift_rule' -%}
+{%- assign main_tag = block.settings.main_product -%}
+{%- assign main_product_num = block.settings.main_product_num -%}
+{%- assign giveaway_product = all_products[block.settings.giveaway] -%} 
+{%- assign giveaway_variant = giveaway_product.first_available_variant -%}
+{%- assign cart_man_result = cart_man_result | append: "{"-%}
+{%- assign cart_man_result = cart_man_result | append: "name:'"-%}
+{%- assign cart_man_result = cart_man_result | append: main_tag -%}
+{%- assign cart_man_result = cart_man_result | append: "', product_num:'"-%}
+{%- assign cart_man_result = cart_man_result | append: main_product_num -%}
+{%- assign cart_man_result = cart_man_result | append: "', variant:'"-%}
+{%- assign cart_man_result = cart_man_result | append: giveaway_variant.id -%}
+{%- unless forloop.last -%}
+{%- assign cart_man_result = cart_man_result | append: "'},"-%}
+{%- else -%}
+{%- assign cart_man_result = cart_man_result | append: "'}"-%}
+{%- endunless -%}
+{%- endif -%}
+{%- endfor -%}
+{%- assign cart_man_result = cart_man_result | append: ']' -%}
+
+<script>
+  
+  $(function(){
+    CART_RULE.changeCart();
+  })
+  function doChangeRule(data = {},variant = '') {
+    Cart.change(data, false).then(cart => {
+      Dialog.close();
+      CART_RULE.recalculate();
+    })
+  }
+
+  var CART_RULE = {
+    rule: {{cart_man_result}},
+    changeCart(){
+        var addItem = [];//加车item
+        var delItem = [];//删除item
+    
+        var ruleNumJson = {};
+  		
+    	JYMCARTS.forEach((ruleItem)=>{
+          if(ruleItem.tag.indexOf('CART_GIFT_') > -1){
+          	if(typeof ruleNumJson[ruleItem.tag] == 'undefined'){
+              ruleNumJson[ruleItem.tag] = parseInt(ruleItem.num);
+            }else{
+              ruleNumJson[ruleItem.tag] += parseInt(ruleItem.num);
+            }
+          }
+          
+        })
+    	
+        //判断购物车是否满足赠品条件
+        var JYMConformRuleSku = [];
+        JYMCARTS.forEach((item)=>{
+            let data = this.rule.find(v => v.name == item.tag);
+            
+            if(typeof data === 'object'){
+              let product_num = parseInt(data.product_num);
+              console.log('ruleNumJson[data.name]====',ruleNumJson[data.name]);
+              
+              if(ruleNumJson[data.name] >= product_num){
+              	JYMConformRuleSku.push(data);
+              }
+                
+            }
+        })
+		console.log('JYMCARTS满足赠品条件的主产品以及赠品============',JYMCARTS);
+  		console.log('JYMConformRuleSku==========',JYMConformRuleSku);
+  
+        //购物车赠品列表
+        var JYMGiveList = [];
+        JYMConformRuleSku.forEach((item)=>{
+            let giveawayList = JYMCARTS.find(v => v.variant_id == item.variant && v.giveaway == 1);
+            if(typeof giveawayList === 'object'){
+                JYMGiveList.push(giveawayList);
+            }
+        })
+        JYMNumItem = JYMGiveList.filter(item => item.num > 1);
+
+        var numVarinatIds = JYMNumItem.map(v => v.variant_id);
+        var abnormalData = {};
+        numVarinatIds.forEach((v) => {
+            abnormalData[v] = 1;
+        })
+
+        //赠品变体
+        var varinatIds = JYMGiveList.map(v => v.variant_id);
+        //需要加车赠品列表
+        var giveCartList = JYMConformRuleSku.filter(v => !varinatIds.includes(v.variant));
+        addItem = Array.from(new Set(giveCartList.map(v => v.variant)));
+
+        //需要删除的item
+        var delItems = JYMCARTS.filter(v => !varinatIds.includes(v.variant_id) && v.giveaway == 1)
+        delItem = delItems.map(v => v.variant_id);
+        //购物车有赠品 并且 没有满足条件的list时
+        if(JYMConformRuleSku.length == 0){
+            var delGiveItme = JYMCARTS.filter(v => v.giveaway == 1);
+        }
+
+        if(addItem.length>0){
+            var cart_items = [];
+            addItem.forEach((v)=>{
+                cart_items.push({
+                    id: v,
+                    quantity: 1,
+                    properties: {
+                        giveaway: true
+                    }
+                }); 
+            })
+            let carItem = {
+                items: cart_items
+            };
+            addItem.forEach((v)=>{
+                JYMCARTS.push({
+                    variant_id: v,
+                    tag: 'CART_GIVEAWAY',
+                    giveaway: 1,
+                    num: 1
+                })          
+            })
+            this.addToCart(carItem);
+        }
+        var cart_gift_delete_sku = abnormalData || {};
+        delItem.forEach((t)=>{
+            cart_gift_delete_sku[t] = 0; 
+            let index = JYMCARTS.findIndex(item => item.variant_id==t);
+            JYMCARTS.splice(index,1)
+        })
+        if(Object.keys(cart_gift_delete_sku).length > 0){
+            carupdate = {
+                updates: cart_gift_delete_sku
+            }
+            this.updateCart(carupdate);
+        }
+
+    },
+    addToCart(data) {
+      $.ajax({
+        type: "POST",
+        url: "/cart/add.js",
+        data,
+        dataType: "json",
+        async:false,
+        success:function(){
+          console.log('addstart222');
+          Cart.refresh(null);
+          //         location.reload();
+          //         return false;
+        }
+      })
+    },
+    updateCart(data) {
+      $.ajax({
+        type: "POST",
+        url: "/cart/update.js",
+        data,
+        dataType: "json",
+        async:false,
+        success:function(){
+          console.log('updatestart222');
+          Cart.refresh(null);
+          //         location.reload();
+          //         return false;
+        }
+      })
+    },
+      recalculate(){
+        $.ajax({
+          type: "GET",
+          url: "/cart.js",
+          dataType: "json",
+          async:false,
+          success: (cart) => {
+            var refreshCartList = [];
+            cart.items.forEach((item)=>{
+              let list = refreshCartList.find(v=>v.variant_id == item.variant_id);
+              if(typeof list === 'undefined'){
+                refreshCartList.push({variant_id:item.variant_id, quantity:item.quantity});
+              }else{
+                list.quantity = list.quantity+item.quantity;
+              }
+            })
+            if(refreshCartList.length > 0){
+              refreshCartList.forEach((v)=>{
+                let newcart = JYMCARTS.find(item=>item.variant_id==v.variant_id);
+                if(typeof newcart === 'object'){
+                  newcart.num = v.quantity;
+                }
+              })
+            }
+            JYMCARTS.forEach((item)=>{
+				let refreshData = refreshCartList.find(v=>v.variant_id == item.variant_id);
+              if(typeof refreshData === 'undefined'){
+              	let index = JYMCARTS.findIndex(items => items.variant_id == item.variant_id);
+                if(index>-1){
+                  JYMCARTS.splice(index,1);
+                }
+              }
+            })
+            CART_RULE.changeCart();
+          },
+          error: (request, status) => {
+            console.log(request, status);
+          }
+        })
+      }
+ }
+  
+ Listener.on([ Listener.cart.change.after ], function(event,cart) { 
+   CART_RULE.recalculate();
+ })
+</script>
+
+
+

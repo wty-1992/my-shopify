@@ -1,0 +1,139 @@
+ {% assign pc_resize = section.settings.pc_img.width | append: "x" | append: section.settings.pc_img.height %}
+
+ {% assign mb_resize = section.settings.mb_img.width | append: "x" | append: section.settings.mb_img.height %}
+<style >
+  .home-talk-sales{
+    width:100%;
+    background:#FFFFFF;  
+    padding:0 14.27%;
+  }
+  .talk-sales-box{
+    width:100%;
+    height:220px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    background-image:url({{section.settings.pc_img  | img_url: pc_resize }})
+
+  }
+  .talk-text-box{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin-left:22.70%;
+  }
+  .text-inquiry{
+    font-size: 32px;
+    line-height: 58px;
+    width: 62.32%;
+  }
+  .text-skip{
+    padding:14px 29px;
+    font-size: 20px;
+    line-height: 24px;
+    color:#F9423A;
+    border-radius: 4px;
+    background:#fff
+  }
+  @media screen and (max-width: 1120px){
+    .text-inquiry{
+      font-size: 24px;
+      line-height: 39px;
+    }
+  }
+
+  @media screen and (max-width: 1120px){
+    .text-inquiry{
+      width:68%;
+    }
+  }
+
+  @media screen and (max-width: 768px){
+    .text-inquiry{
+      font-size: 14px;
+      line-height: 24px;
+      width:100%;
+    }
+    .home-talk-sales{
+      padding:0 14px
+    }
+    .talk-sales-box{
+      height:134px;
+      background-image:url({{section.settings.mb_img  | img_url: mb_resize }})
+    }
+    .talk-text-box{
+      flex-direction: column;
+      align-items: baseline;
+      margin-left:33.33%;
+    }
+    .text-skip{
+      padding:5px 8px;
+      font-size: 12px;
+      line-height: 14px;
+      margin-top:8px;
+    }
+  }
+
+
+</style > 
+
+<div class="talk-sales-box" >
+  <div class="talk-text-box">
+    <div class="text-inquiry">
+      {{section.settings.inquiry}}
+    </div>
+    <div class="text-skip">
+      {{section.settings.skip-text}}
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+{
+  "name": "首页 联系客服",
+  "class": "home-talk-sales",
+  "settings": [
+    {
+      "type": "text",
+      "id": "private",
+      "label": "程序参考字段默认勿动",
+      "default": "home-talk-sales"
+    },
+    {
+      "type": "text",
+      "id": "inquiry",
+      "label": "询问内容"
+    },
+    {
+      "type": "text",
+      "id": "skip-text",
+      "label": "跳转文案"
+    },
+    {
+      "type": "text",
+      "id": "link",
+      "label": "跳转链接"
+    },
+    {
+      "type": "image_picker",
+      "id": "pc_img",
+      "label": "PC图片"
+    },
+    {
+      "type": "image_picker",
+      "id": "mb_img",
+      "label": "MB图片"
+    }
+  ],
+  "presets": [
+    {
+      "name": "首页 联系客服",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

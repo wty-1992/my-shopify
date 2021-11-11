@@ -1,0 +1,62 @@
+{% if section.settings.enable %}
+<style> 
+.free-notice{ 
+  padding-bottom: 1rem;
+  width: 100%;
+  clear:both; 
+} 
+.pc-li-top-banner{margin: 40px auto;width: 100%;}
+.notice-banner-pc{display:block;margin: auto;}
+.notice-banner-mb{display:none;margin: auto;}
+
+@media(max-width:768px){
+  .pc-li-top-banner{margin: 20px auto;}
+  .notice-banner-pc{display:none;}
+  .notice-banner-mb{display:block;}
+  .free-notice{border-bottom:none;} 
+}   
+</style> 
+  <div class="pc-li-top-banner">
+{% if section.settings.pc_image %}
+    <img data-src="{{section.settings.pc_image  | img_url: 'master' }}" class="notice-banner-pc lazyload">
+    {% endif %}
+    {% if section.settings.mb_image %}
+      <img data-src="{{section.settings.mb_image  | img_url: 'master' }}" class="notice-banner-mb lazyload">
+    {% endif %}
+  </div> 
+
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Home Page Notice",
+    "class": "free-notice",
+    "settings": [  
+	{
+      "type": "paragraph",
+      "content": "home-notice-section"
+    },
+	{
+      "type": "checkbox",
+      "id": "enable",
+      "label": "Enable"
+    }, 
+    {
+      "type": "image_picker",
+      "id": "pc_image",
+      "label": "PC 图片"
+    },
+    {
+      "type": "image_picker",
+      "id": "mb_image",
+      "label": "MB 图片"
+    }  
+  ], 
+  "presets": [
+    {
+      "category": "Collection",
+      "name": "Home page notice"
+    }
+  ]
+}
+{% endschema %}

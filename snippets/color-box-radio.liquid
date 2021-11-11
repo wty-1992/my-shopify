@@ -1,0 +1,183 @@
+<style>
+.inline-field-wrapper{
+  margin-bottom:10px;
+}
+.inline-field-wrapper input[type=radio]{
+  display:none;
+}
+.inline-field-wrapper p {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  margin-bottom: 0;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+.inline-field-wrapper label{
+  margin-right: 5px;
+  padding:0px 2px 0 10px;
+  border: 1px solid #999;
+  margin-bottom:10px;
+  font-size: 12px;
+  font-weight: 600;
+  width:31.5%;
+}
+.inline-field-wrapper label.color-selected{
+  border: 1px solid #e60044;
+  color: #e60044;
+}
+.inline-field-wrapper label .radio-box span{
+  text-transform: none;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  line-height: 1;
+  max-width: calc(100% - 25px);
+}
+
+.radio-box{
+  display: flex; 
+ justify-content: flex-start;
+  align-items: center;
+}
+div.namenecklace-photo .view-name span{
+  font-size: 1rem;
+  color:#999;
+}
+label.color-box-radio.Red-orange-yellow-green-cyan-blue-purple p{background: linear-gradient(to right, red , orange , yellow,green,cyan,blue,violet);}
+.color-box-radio.{{ 'variant.color.White' | t | replace: " ", "-" }} p{background: #EDF1F0;}  
+.color-box-radio.{{ 'variant.color.Black' | t | replace: " ", "-" }} p{background: #000;}
+.color-box-radio.{{ 'variant.color.Red' | t | replace: " ", "-" }} p{background: #8C1417;}
+.color-box-radio.{{ 'variant.color.Blue' | t | replace: " ", "-" }} p{background: #557ACA;}
+.color-box-radio.{{ 'variant.color.Grey' | t | replace: " ", "-" }} p{background: #7D7D75;}
+.color-box-radio.{{ 'variant.color.Green' | t | replace: " ", "-" }} p{background: #686B4E;}
+.color-box-radio.{{ 'variant.color.Light_Pink' | t | replace: " ", "-" }} p{background: #f5c1cc;}
+.color-box-radio.{{ 'variant.color.Turquoise' | t | replace: " ", "-" }} p{background: #66d8da;}
+.color-box-radio.{{ 'variant.color.Dark_Blue' | t | replace: " ", "-" }} p{background: #0F2A61;}
+.color-box-radio.{{ 'variant.color.Yellow' | t | replace: " ", "-" }} p{background: #FEEC96;}
+.color-box-radio.{{ 'variant.color.Orange' | t | replace: " ", "-" }} p{background: #e87c11;}
+.color-box-radio.{{ 'variant.color.Purple' | t | replace: " ", "-" }} p{background: #946AB4;}
+.color-box-radio.{{ 'variant.color.Pink' | t | replace: " ", "-" }} p{background: #FFD4E1;}
+.color-box-radio.{{ 'variant.color.Smoky_Blue' | t | replace: " ", "-" }} p{background: #33447c;}
+.color-box-radio.{{ 'variant.color.Volcano' | t | replace: " ", "-" }} p{background: #fbb99f;} 
+.color-box-radio.{{ 'variant.color.Teal' | t | replace: " ", "-" }} p{background: #42b3b5;}
+.color-box-radio.{{ 'variant.color.Lime_Green' | t | replace: " ", "-" }} p{background: #77b63c;}
+.color-box-radio.{{ 'variant.color.Light_Blue' | t | replace: " ", "-" }} p{background: #D0E3F1;}
+.color-box-radio.{{ 'variant.color.Silver' | t | replace: " ", "-" }} p{background: #808080;opacity: .3;filter: alpha(opacity=30);}
+.color-box-radio.{{ 'variant.color.Bronze' | t | replace: " ", "-" }} p{background: #E2DCAC;}
+.color-box-radio.{{ 'variant.color.Coffee' | t | replace: " ", "-" }} p{background: #57453d;}
+.color-box-radio.{{ 'variant.color.Gray' | t | replace: " ", "-" }} p{background: #5b5b5b;}
+.color-box-radio.{{ 'variant.color.Copper' | t | replace: " ", "-" }} p{background: #dedede;}
+.color-box-radio.{{ 'variant.color.Rose_Pink' | t | replace: " ", "-" }} p{background: #c03a77;}
+.color-box-radio.{{ 'variant.color.Aquamarine' | t | replace: " ", "-" }} p{background: #33a0a3;}
+.color-box-radio.{{ 'variant.color.Wooden' | t | replace: " ", "-" }} p{background: #F5D896;}
+.color-box-radio.{{ 'variant.color.Dark_Green' | t | replace: " ", "-" }} p{background: #686B4E;}
+.color-box-radio.{{ 'variant.color.Light_Brown' | t | replace: " ", "-" }} p{background: #BC7847;}
+.color-box-radio.{{ 'variant.color.Sapphire_Blue' | t | replace: " ", "-" }} p{background: #3c50cb;}
+.color-box-radio.{{ 'variant.color.Champagne_Gold' | t | replace: " ", "-" }} p{background: #c29667;}
+.color-box-radio.{{ 'variant.color.Bright_Gold' | t | replace: " ", "-" }} p{background: #a78e56;}
+.color-box-radio.{{ 'variant.color.Rose_Gold' | t | replace: " ", "-" }} p{background: #d8a88d;}
+.color-box-radio.{{ 'variant.color.Rose_Gold_Plated_Silver' | t | replace: " ", "-" }} p{background: #d8a88d;}
+.color-box-radio.{{ 'variant.color.Golden_Silver' | t | replace: " ", "-" }} p{background: #fad826;}
+.color-box-radio.{{ 'variant.color.Brown_Silver' | t | replace: " ", "-" }} p{background: #808080;opacity: .3;}
+.color-box-radio.{{ 'variant.color.Brown_Rose_Gold' | t | replace: " ", "-" }} p{background: #d8a88d;}
+.color-box-radio.{{ 'variant.color.Brown_Golden' | t | replace: " ", "-" }} p{background: #fad826;}
+.color-box-radio.{{ 'variant.color.Black_Silver' | t | replace: " ", "-" }} p{background: #808080;opacity: .3;}
+.color-box-radio.{{ 'variant.color.Black_Rose_Gold' | t | replace: " ", "-" }} p{background: #d8a88d;}
+.color-box-radio.{{ 'variant.color.Black_Golden' | t | replace: " ", "-" }} p{background: #fad826;}
+.color-box-radio.{{ 'variant.color.Pink_Silver' | t | replace: " ", "-" }} p{background: #808080;opacity: .3;}
+.color-box-radio.{{ 'variant.color.Pink_Rose_Gold' | t | replace: " ", "-" }} p{background: #d8a88d;}
+.color-box-radio.{{ 'variant.color.Golden_Pink' | t | replace: " ", "-" }} p{background: #fad826;}
+.color-box-radio.{{ 'variant.color.Light_Green' | t | replace: " ", "-" }} p{background: #E2EFB9;}
+.color-box-radio.{{ 'variant.color.Brown' | t | replace: " ", "-" }} p{background: #9C7E76;}
+.color-box-radio.{{ 'variant.color.Light_Purple' | t | replace: " ", "-" }} p{background: #CBBAE6;}
+.color-box-radio.{{ 'variant.color.Golden' | t | replace: " ", "-" }} p,.color-box-radio.{{ 'variant.color.Gold_Copper' | t | replace: " ", "-" }} p {background: #fad826;opacity: .8;filter: alpha(opacity=80);}
+.color-box-radio.{{ 'variant.color.Rose_Gold' | t | replace: " ", "-" }} p,.color-box-radio.{{ 'variant.color.rosegold_copper' | t | replace: " ", "-" }} p {background: #d8a88d;opacity: .5;filter: alpha(opacity=50);}
+.color-box-radio.{{ 'variant.color.Brown_Vintage' | t | replace: " ", "-" }} p{background: #632d04;}
+.color-box-radio.{{ 'variant.color.Brown_Rose_Gold' | t | replace: " ", "-" }} p{background: #d8a88d;}
+.color-box-radio.{{ 'variant.color.Brown_Golden' | t | replace: " ", "-" }} p{background: #fad826;}
+.color-box-radio.{{ 'variant.color.Black_Silver' | t | replace: " ", "-" }} p{background: #808080;opacity: .3;}
+.color-box-radio.{{ 'variant.color.Black_Rose_Gold' | t | replace: " ", "-" }} p{background: #d8a88d;}
+.color-box-radio.{{ 'variant.color.Black_Golden' | t | replace: " ", "-" }} p{background: #fad826;}
+.color-box-radio.{{ 'variant.color.Pink_Silver' | t | replace: " ", "-" }} p{background: #808080;opacity: .3;}
+.color-box-radio.{{ 'variant.color.Pink_Golden' | t | replace: " ", "-" }} p{background: #fad826;}
+.color-box-radio.{{ 'variant.color.Gold' | t | replace: " ", "-" }} p{background: #fad826;opacity: .8;filter: alpha(opacity=80);}
+.color-box-radio.{{ 'variant.color.Brown_Golden' | t | replace: " ", "-" }} p{background: #fad826;}
+.color-box-radio.{{ 'variant.color.Fluorescent_green' | t | replace: " ", "-" }} p{background: #bff754;}
+.color-box-radio.{{ 'variant.color.Dark_Pink' | t | replace: " ", "-" }} p{background: #fe4e7d;}
+.color-box-radio.{{ 'variant.color.Lemon_yellow' | t | replace: " ", "-" }} p{background: #fde239;}
+.color-box-radio.{{ 'variant.color.Lakeblue' | t | replace: " ", "-" }} p{background: #296d96;}
+.color-box-radio.{{ 'variant.color.Khaki' | t | replace: " ", "-" }} p{background: #8b7e61;}
+.color-box-radio.{{ 'variant.color.Olive_Drab' | t | replace: " ", "-" }} p{background: #3e382c;}
+.color-box-radio.{{ 'variant.color.Dark_Grey' | t | replace: " ", "-" }} p{background: #3e3e3f;}
+.color-box-radio.{{ 'variant.color.Peachpuff' | t | replace: " ", "-" }} p{background: #f1d5ce;}
+.color-box-radio.{{ 'variant.color.Dark_Gold' | t | replace: " ", "-" }} p{background: #CC9668;}
+.color-box-radio.{{ 'variant.color.Azure' | t | replace: " ", "-" }} p{background: #0AB6E2;}
+.color-box-radio.{{ 'variant.color.Multicolor' | t | replace: " ", "-" }} p{background: linear-gradient(to right, red , orange , yellow,green,cyan,blue,violet);}
+.color-box-radio.{{ 'variant.color.Navy_Blue' | t | replace: " ", "-" }} p{background: #283a5c;}
+.color-box-radio.{{ 'variant.color.Skin' | t | replace: " ", "-" }} p{background: #ddc1b0;}
+.color-box-radio.{{ 'variant.color.Kraft' | t | replace: " ", "-" }} p{background: #B69466;}
+.color-box-radio.{{ 'variant.color.Dark-gray' | t | replace: " ", "-" }} p{background: #666766;}
+.color-box-radio.{{ 'variant.color.dark_pink' | t | replace: " ", "-" }} p{background: #DE5285;}
+.color-box-radio.{{ 'variant.color.Dark_blue' | t | replace: " ", "-" }} p{background: #273347;}
+.color-box-radio.{{ 'variant.color.Light_Khaki' | t | replace: " ", "-" }} p{background: #DBCDB3;}
+.color-box-radio.{{ 'variant.color.Light_gray' | t | replace: " ", "-" }} p{background: #97999B;}
+
+  
+
+  
+@media(max-width:768px){ 
+  .inline-field-wrapper label{
+    font-weight: 500;
+    width: 32%;
+/*     min-width: 29%; */
+    margin-right: 1px;
+    padding: 0px 0px 0 2px;    
+    margin-bottom: 4px;
+    font-family: "ProximaNova-Regular";
+  }
+  .inline-field-wrapper p{
+    margin-right: 5px;
+    width: 18px;
+    height: 18px;
+  }
+  .inline-field-wrapper label .radio-box span{
+    height:34px;
+  }
+  .inline-field-wrapper div{
+    padding-left: 6px;
+  }
+}
+</style>
+
+<div class="inline-field-wrapper" id="color-box">
+  <span class="input-field-title">{{ option.name }}:</span>
+  <div>
+  {% for value in option.values %}
+    {% assign valued = value | downcase %}
+    {% assign option_color = value | replace:" ","-" %}
+    <label class="color-box-radio {{option_color}}">
+      <input type="radio" name="color-radio" value="{{ value | escape }}" {% if option.selected_value == value %}checked{% endif %}>
+      <div class="radio-box">
+        <p></p>
+        <span>{{ value }}</span>
+      </div>
+    </label>
+  {% endfor %}
+  </div>
+</div>
+<script>
+  $('#color-box input[type="radio"]:checked').parents('label').addClass('color-selected');
+  //$(".inline-field-wrapper").find("label").first().addClass("color-selected");
+  $('#color-box input[type="radio"]').click(function(){
+    if($(this).is(':checked')){
+      var val = $(this).val();
+      $(this).parents('label').addClass('color-selected').siblings().removeClass('color-selected');
+      $(".selector-wrapper label").each(function( index ) { 
+        if($.trim(jQuery(this).data('name'))=='{{"variant.title.Color" | t}}'){
+          $(this).next('select').val(val).trigger('change');
+        }
+      });
+    }
+  })                                                    
+</script>

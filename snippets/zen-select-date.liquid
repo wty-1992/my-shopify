@@ -1,0 +1,223 @@
+{%comment%}通过标签获取默认年份 {%endcomment%}
+{% assign defaultYear = '' %}
+{% for tag_item in product.tags %}
+  {% if tag_item contains "custom-default-year-" %}
+    {% assign defaultYear = tag_item | strip | replace: "custom-default-year-", "" %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+{%comment%}通过标签获取默认数字 {%endcomment%}
+{% for tag_item2 in product.tags %}
+  {% if tag_item2 contains "custom-default-number-" %}
+    {% assign defaultYear = tag_item2 | strip | replace: "custom-default-number-", "" %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+{% assign numberRange = '1-100' | split:'-' %}
+{% for tag_item3 in product.tags %}
+  {% if tag_item3 contains "custom-range-number-" %}
+    {% assign numberRange = tag_item3 | strip | replace: "custom-range-number-", "" | split:"-" %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+{% if product.tags contains 'custom-select-number' %}
+  {% assign noticeText = "zen.general.select_number_notice" | t %}
+  <div class="date-container">
+    <div>{{ "zen.general.select_number" | t }}:</div>
+      <div>
+        <input type="number" id="datepicker" placeholder="{{numberRange[0]}}~{{numberRange[1]}}" min="{{numberRange[0]}}" max="{{numberRange[1]}}" oninput="checkNumber(this)" />
+      </div>
+  </div>
+{% else %}
+  {% assign noticeText = "zen.general.select_year_notice" | t %}
+    <div class="date-container">
+  <div>{{ "zen.general.select_year" | t }}:</div>
+  <div><input type="text" id="datepicker" name="fonttext" readonly="readonly" value="{{defaultYear}}"></div>
+  </div>
+{% endif %}
+
+<input type="text" id="custom-info" name="properties[customInfo]" value="" style="display:none"/>
+
+<script>
+  var _zenFlag = 1;
+  $(function() {
+    {% unless product.tags contains 'custom-select-number' %}
+        $('#datepicker').datepicker({  
+          changeYear: true, 			// 年下拉菜单
+          showButtonPanel: true, 		// 显示按钮面板
+          currentText: "{{'zen.general.current_year' | t}}", // 当前日期按钮提示文字
+          dateFormat: "yy",		// 日期格式
+          yearRange: "1851:c",		//年份选择范围
+          defaultDate: new Date(parseInt('{{defaultYear}}'), 01, 01),
+          onClose: function(dateText, inst) {// 关闭事件
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();//获取用户选择的年份值
+          	var defaultDate = new Date(year, 01, 01);
+            $(this).datepicker( "option", "defaultDate", defaultDate );
+            $(this).datepicker('setDate', defaultDate);//月、日设置为12月25日，这里的月份数字要减一
+            
+          }
+        });
+    {% endunless %}
+    
+    {% if product.tags contains 'custom-select-number' %}
+    var jsonCustom = JSON.parse('{"variantName":"option3","option":[{"option":"1","flag":1},{"option":"2","flag":2}]}');//1:标品 2：自定义                            
+    {% else %}
+    var jsonCustom = JSON.parse('{"variantName":"option3","option":[{"option":"1","flag":1},{"option":"2","flag":2}]}');
+    {% endif %}
+    
+    {% if product.metafields["global"]["cattribute"] %}
+    var jsonCustom = JSON.parse('{{product.metafields["global"]["cattribute"]}}');//1:标品 2：自定义
+    {% endif %}
+    
+    var variantName = jsonCustom.variantName;
+    var isCustomJson = jsonCustom.option;
+                                
+    {% if product.tags contains 'custom-product-image' %}
+    var productImageUrl = "{{product.images[0] | product_img_url: '1000x1000' | prepend: 'https:'}}";
+    {% endif %}
+                                
+    {% if product.tags contains 'custom-template-image' %}
+    var productUrl = "http://pic.stylelab.com/img/photo/";
+    var templateImageUrl = productUrl + "{{product.selected_or_first_available_variant.sku}}" + "-B.png";
+    {% endif %}
+  
+    {% assign currentVariant = product.selected_or_first_available_variant.title %}
+    var currentVariant = '{{currentVariant}}';
+    console.log(currentVariant);
+
+    isCustomJson.forEach(function(item,index){
+      
+      let itemTitle = getVariantValueByNo(variantName,item.option);
+      if(currentVariant.indexOf(itemTitle) > -1){
+        selectFunction(item.flag);
+      }
+    });
+  
+    Listener.on([ Listener.product.update.before ], function(event, variant) {
+      if(typeof isCustomJson != "undefined"){
+        isCustomJson.forEach(function(item,index){
+          let itemTitle = getVariantValueByNo(variantName,item.option);
+          if(variant.title.indexOf(itemTitle) > -1){
+            selectFunction(item.flag)
+          }
+        });
+      }
+      
+      if(typeof productImageUrl != 'undefined' && variant.featured_image){
+    	productImageUrl = variant.featured_image.src;
+      }
+      
+      if(typeof templateImageUrl != 'undefined'){
+    	templateImageUrl = productUrl + variant.sku + "-B.png";
+      }
+    })
+    
+    var modal = new tingle.modal({
+      footer: true,
+      stickyFooter: false,
+      onOpen: function() {
+      },
+      onClose: function() {
+        //console.log('modal closed');
+      },
+      beforeClose: function() {
+        return true; // close the modal
+      }
+    });
+    modal.addFooterBtn("{{'zen.general.reselect' | t}}", 'tingle-btn tingle-btn--danger', function() {
+      if(_zenFlag == 1){
+        var val = '';
+        isCustomJson.forEach(function(item,index){
+          if(item.flag == 2){
+          	val = getVariantValueByNo(variantName,item.option);
+          }
+        });
+      	setShopifyVariant(variantName, val)
+      }
+      modal.close();
+    });
+    modal.addFooterBtn("{{'zen.general.confirm' | t}}", 'tingle-btn tingle-btn--primary c_photo', function() {
+      if($('.mpw-add-to-cart').length > 0){
+      	$('.mpw-add-to-cart').click();
+      }else{
+      	$(".product-form__item--submit button").click();
+      }
+	  
+      modal.close();
+    });
+    
+    $('.news-date-btn').click(function(){
+//       if(_zenFlag == 2){
+    	if($.trim($('#datepicker').val()) == ''){
+          $('#datepicker').css('border-color','#ff0000');
+        }else{
+          $('#datepicker').css('border-color','#e7e7e7');
+          var zenCustomInfo = {};
+          zenCustomInfo['_sunzi_text'] = {};
+          zenCustomInfo['_sunzi_text']['value'] = $('#datepicker').val();
+          
+          if(typeof productImageUrl != 'undefined'){
+            zenCustomInfo['_sunzi_effect'] = productImageUrl;
+          }
+          
+          if(typeof templateImageUrl != 'undefined'){
+            zenCustomInfo['_sunzi_ai'] = templateImageUrl;
+          }
+          $('#custom-info').val(JSON.stringify(zenCustomInfo));
+          modal.setContent('<div class="news-date-confirm-content"><p>{{ noticeText }}</p><p class="red">'+$( "#datepicker" ).val()+'</p></div>');
+          modal.open();
+        }
+//       }else{
+//       	myCustomAddToCart($('.shopify-product-form'),'date-text');
+//       }
+      
+    });
+    
+  })
+  
+  function getVariantValueByNo(name,no){
+  	var resultVal = '';
+    
+    $('.single-option-selector[data-option="'+name+'"] option').each(function(index){
+      let cNo = index + 1;
+      if(parseInt(cNo) == parseInt(no)){
+      	resultVal = $(this).attr('value');
+      }
+    });
+    
+    return resultVal;
+  }
+  
+  function selectFunction(flag){
+    _zenFlag = flag;
+    if(flag == 1){//标品
+      $('#datepicker').val('{{defaultYear}}');
+      $('.date-container').hide();
+    }else{
+      $('#datepicker').val('');
+      $('.date-container').show();
+    }
+  }
+  
+  function setShopifyVariant(name, val){
+    $('.single-option-selector[data-option="'+name+'"]').val(val).trigger('change');
+  }
+  
+  function checkNumber(obj){
+    var val = parseInt($(obj).val());
+    $(obj).val(val)
+    var minN = parseInt('{{numberRange[0]}}');
+    var maxN = parseInt('{{numberRange[1]}}');
+    
+    if(val < minN){
+      $(obj).val(minN);
+    }
+
+    if(val > maxN){
+      $(obj).val(maxN);
+    }
+    
+  }
+</script>

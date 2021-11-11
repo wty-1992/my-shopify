@@ -1,0 +1,60 @@
+<div class="item">
+  <a href="{{ item.url }}" class="product-card">
+    <div class="product-card__image-container">
+      <div class="product-card__image-wrapper">              
+        <div class="product-card__image js" data-image-id="6454102655040">
+          {% if item.images[1] %}
+          <img class="lazyload hoverImage" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ item.images[1] | img_url: '300x' }}" alt="{{item.title}}">
+          {% endif %}          
+          <img class="lazyload defaultImage" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ item.images[0] | img_url: '300x' }}" alt="{{item.title}}">
+        </div>
+        {% if firstVariant.compare_at_price > firstVariant.price %}
+        <div class="tag__label tag__custom-tag-discount" aria-hidden="true">
+          <div class="discount_box">
+            <div class="text">-{{ firstVariant.compare_at_price | minus: firstVariant.price | times: 100 | divided_by: firstVariant.compare_at_price }}%</div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </a>
+  <div class="product-card__info">          
+    <div class="product-card__price">
+      <span class="product-card__sale-price" data-money="{{firstVariant.price}}"></span>
+      {% if firstVariant.compare_at_price > 0 %}
+      <s class="product-card__regular-price"><span data-money="{{firstVariant.compare_at_price}}"></span></s> 
+      {% endif %}
+    </div>
+    <div class="product-card__name"><a href="{{ item.url }}">{{item.title}}</a></div>
+    <div class="hide_sku_tag" style="display:none;">{{item.variants[0].sku}}</div>
+    <div class="product-card__tag">            
+
+    </div>
+    <div class="my-review-goods-list" data-product-id="{{item.variants[0].sku}}"></div>
+    {% assign productTags = item.tags | join:',' %}
+    {% if item.metafields["global"]["cattribute"] or productTags contains 'custom-photo' or item.variants.size > 1 or productTags contains 'custom-sunzi' or productTags contains 'custom-date-crop' %}
+    {% assign cartText = 'page.active_collection.cart_text_design_your_own' | t %}
+    {% else %}  
+    {% assign cartText = 'page.active_collection.cart_text_add_to_cart' | t %}
+    {% endif %}
+    <button type="button" class="medium-up--btn btn" onclick='{% if item.metafields.global.cattribute or item.variants.size > 1 or productTags contains 'custom-sunzi'  %}location.href="{{ item.url | within: collection }}"{% else %}Cart.add({id:"{{firstVariant.id}}"}).then(item => { Dialog.open("#shopify-section-cart-success")}){% endif %}'>{{ cartText }}</button>
+    {% comment%} by jenny 2020年12月19日09:05:50 需求人不需要注释掉
+    <div class="ratings-fa-star">
+      <div class="wc_product_review_badge" data-handle="{{ item.handle }}"></div>
+    </div>
+    <div class="collection-label">
+      {% unless item.label.title == blank %}
+      <span 
+            class="product-label__icon" 
+            style="color:{{item.label.color | default: '#f0a635'}};border:1px solid {{item.label.color | default: '#f0a635' }}" >
+        {{item.label.title}}
+      </span>
+      {% endunless %} 
+    </div>	
+    <div class="product-cart__bottom"></div>
+    {% endcomment%}
+  </div>
+  <div class="product-card__overlay">
+    <span class="btn product-card__overlay-btn ">{{'collections.product_view' |t}}</span>
+  </div>
+</div>

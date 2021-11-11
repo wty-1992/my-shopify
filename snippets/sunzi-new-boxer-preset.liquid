@@ -1,0 +1,372 @@
+{% comment %}
+**@name 3D预览内裤 **
+**@author 黄创业 **
+**@integrate 王天宇 **
+{% endcomment %}
+
+{% comment %}初始化孙子插件{% endcomment %}
+  {% include 'sunzi-solt-template' %}
+
+{% comment %} 调用参数 {% endcomment %}
+
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'sunzi.newsock.test.js' %}
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/boxer-preset.json' %}
+
+{% comment %} 尺码变体数据 {% endcomment %}
+{% assign variantSize = 1 %}
+{% comment %} 颜色变体数据 {% endcomment %}
+{% assign variantColor = 0 %}
+
+{% comment %} 站点语种 {% endcomment %}
+{% assign sunzi_shop_language = section.settings.sunzi_shop_language %}
+{% comment %} 货币符号 {% endcomment %}
+{% assign sunzi_shop_symbol = section.settings.sunzi_shop_symbol %}
+
+{% comment %} 谷歌分析id {% endcomment %}
+{% assign gtag = 'UA-174675922-8' %}
+{% comment %} 定制按钮文案 {% endcomment %}
+{% assign buttonText = section.settings.sunzi_button_text %}
+
+{% comment %} 样式补充&修正 {% endcomment %}
+<style>
+  .options {
+    display: none;
+    margin-top: 20px;
+    max-width: 100%;
+  }
+  .options .option-title {
+    font-family: 'Roboto', sans-serif;
+  	font-weight: 400;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .options .options-color {
+    display: flex;
+    overflow-x: auto;
+    padding: 15px 0 15px 10px;
+    margin: 0 -10px;
+    flex-wrap: wrap;
+  }
+  .options .options-color .option-color-layout {
+    padding-right: 10px;
+    padding-bottom: 10px;
+  }
+  .options .options-color .option-color-layout .option-color {
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .options .options-color .option-color-layout .option-selected {
+    border-color: #fff;
+    box-shadow:
+      0px 0px 0px 1px #ff533a,
+      0px 6px 10px 0px rgba(255, 83, 58, 0.15),
+      0px 3px 5px -1px rgba(255, 83, 58, 0.1),
+      0px 1px 18px 0px rgba(255, 83, 58, 0.12);
+  }
+  .options .options-color .option-color-layout .option-color .selected-icon {
+    height: 20px;
+    width: 20px;
+    background-color: #fff;
+    border-radius: 50%;
+    display: none;
+  }
+  .options .options-color .option-color-layout .option-selected .selected-icon {
+    display: unset;
+  }
+  .options .options-color .option-color-layout .option-color .selected-icon .tick-circle {
+    width: 100%;
+    height: 100%;
+  }
+  @media (min-width: 768px) {
+    .sunzi-modal-content {
+      width: 550px !important;
+      height: 640px !important;
+    }
+  }
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 额外的表单参数 {% endcomment %}
+  <input id="_tempVip" type="hidden" name="properties[_tempVip]" />
+  <input id="_sunzi_add_avatar" type="hidden" name="properties[_sunzi_add_avatar]" />
+  <input id="_sunzi_add_text" type="hidden" name="properties[_sunzi_add_text]" />
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="text" id="sunzi-input" name="properties[customInfo]" required="required"></input>
+  <input type="text" id="sunzi-cart" name="properties[_sunzi_cart]"></input>
+
+  {% comment %} loading 所需图片预加载 {% endcomment %}
+  <link rel="preload" href="https://sunzi7n.myuxc.com/assets/img_0.png" as="image">
+  <link rel="preload" href="https://sunzi7n.myuxc.com/assets/img_1.png" as="image">
+  <link rel="preload" href="https://sunzi7n.myuxc.com/assets/img_2.png" as="image">
+  <link rel="preload" href="https://sunzi7n.myuxc.com/assets/img_3.png" as="image">
+  <link rel="preload" href="https://sunzi7n.myuxc.com/assets/img_4.jpg" as="image">
+  <link rel="preload" href="https://sunzi7n.imaiyuan.com/box/0123.jpg" as="image">
+
+  {% comment %} 颜色尺寸选择 {% endcomment %}
+  <div class="options">
+    <div class="option">
+      <div class="option-title"></div>
+      <div class="options-color"></div>
+    </div>
+  </div>
+  {% comment %} 定制按钮 {% endcomment %}
+  <button type="button" id="sunzi-button" disabled class="dots-loading">
+    <span class="dots">
+      <i></i>
+      <i></i>
+      <i></i>
+    </span>
+    <div class="sunzi-button-text">{{ buttonText }}</div>
+  </button>
+</div>
+
+<!-- sunzi core js -->
+<script src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{ coreJs }}" defer="defer"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ gtag }}" async="async"></script>
+<script async="async">
+  _sunzi_gtag('{{ gtag }}', 'newsock_share');
+</script>
+
+{% comment %} 1.隐藏掉变体，加车按钮等等 {% endcomment %}
+<script>
+  _sunzi_variant_hide({{variantColor}});
+</script>
+
+{% comment %}
+  2.请求定制化数据
+  3.开始定制
+{% endcomment %}
+<script defer="defer">
+  _sunzi_request('{{ requestURL }}', function(res) {
+    var shareURL = '{{ shop.url }}{{ product.url }}';
+    var sizeSelected = _sunzi_variant_value({{variantSize}}, 1);
+    var colorSelected;
+    var curLanguage = ["en", "uk", "au"].indexOf('{{sunzi_shop_language}}') > -1 ? "en": _sunzi_global_data.shop.language;
+                 
+	initData(res, curLanguage);
+    addOptionColor();
+    bindEvent();
+    $('.options').show();
+
+    $('#sunzi-button').on('click', function(event) {
+      sizeSelected = _sunzi_variant_value({{variantSize}}, 1);
+      // 定制之前的参数构建
+      _sunzi_response.selectedData = {
+        size: sizeSelected.toString(),
+        color: colorSelected.toString()
+      };
+      _sunzi_response.shop = {
+        language: '{{sunzi_shop_language}}',
+        currencySymbol: '{{sunzi_shop_symbol}}',
+      };
+      _sunzi_response.price = _sunzi_get_product_info('price');
+      _sunzi_response.originPrice = _sunzi_get_product_info('originPrice');
+      {% for tag_item in product.tags %}
+  	  {%comment%}设置默认主题 {%endcomment%}
+  	  {% if tag_item contains "custom-default-text-" %}
+  		{%- assign default_text = tag_item | strip | replace: "custom-default-text-", "" -%}
+      	_sunzi_response.defaultLineText = `{{default_text}}`;
+        _sunzi_response.prefixLineText = _sunzi_response.preTextList[curLanguage];
+      {% endif %}
+    {% endfor %}
+       
+      // 开始渲染
+      _sunzi_custom(
+        NewSock.default,
+        async function(images, data, product, share) {
+          _sunzi_loading();
+          var facuts = images.map(item => item.avatar);
+          var sources = images.map(item => item.origin);
+          var outout = {
+            '_sunzi_sources': sources,
+            '_sunzi_sock_aimade': false,
+            '_sunzi_sock_facut': facuts,
+            '_sunzi_compose': [
+              {
+                'rule': 8,
+                'images': facuts,
+                'type': 'photo_design',
+                'data': data
+              }, {
+                'rule': 1,
+                'images': sources,
+                'type': 'source'
+              }
+            ]
+          }
+
+
+          // 如果存在刻字的话
+          if (data.connects.lineTexts && data.connects.lineTexts[0]) {
+            var lineText = data.connects.lineTexts[0];
+            // debugger
+            outout['_sunzi_text'] = {
+              value: lineText.value,
+              fontColor: lineText.fontColor,
+              font: lineText.font.name
+            }
+          }
+
+          $('#sunzi-input').val(JSON.stringify(outout));
+
+          _sunzi_variant_change('{{variantSize}}', data.size.value);
+          _sunzi_variant_change('{{variantColor}}', data.bottomImage.value);
+
+          var promiseArr = [];
+          var tempvip = _create_uuid();
+          // 根据vip添加虚拟产品
+          if(product) {
+            promiseArr.push(_sunzi_add_to_cart({
+              id: product.virtualId,
+              quantity: 1,
+              "properties[_tempVip]": tempvip,
+              mask: 'body',
+              refresh: true,
+            }));
+            $('#_tempVip').val(tempvip);
+          }
+          // 根据facuts的数量 添加扣头虚拟产品
+          if(facuts.length > 1) {
+            var code = _create_uuid();
+            $('#_sunzi_add_avatar').val(code);
+            promiseArr.push(_sunzi_add_to_cart({
+              id: _sunzi_response.avatarIncrease.virtualId,
+              quantity: facuts.length - 1,
+              "properties[_sunzi_add_avatar]": code,
+              mask:'body',
+              refresh:true
+            }));
+          }
+          // 根据是否刻字添加刻字虚拟产品
+          if(data.connects.lineTexts && !_sunzi_response.prefixLineText) {
+            var code = _create_uuid();
+            $('#_sunzi_add_text').val(code);
+            promiseArr.push(_sunzi_add_to_cart({
+              id: _sunzi_response.lineTextsIncrease.virtualId,
+              quantity: 1,
+              "properties[_sunzi_add_text]": code,
+              mask:'body',
+              refresh:true
+            }));
+          }
+          await Promise.all(promiseArr);
+          //	加车事件触发
+      	  $('.product-form__cart-submit').click();
+          $('#sunzi-button-input').attr("type", "file");
+          _sunzi_hide_loading();
+        }
+      );
+
+    });
+
+    /** 其他自定义函数 start **/
+
+    /** 改变选中颜色的样式 */
+    function changeColorSelected() {
+      $('.options-color .option-color-layout').each(function() {
+        if ($(this).data('id') == colorSelected) {
+          $(this).children('.option-color').addClass('option-selected');
+          _sunzi_variant_change('{{variantColor}}', $(this).data('color'));
+        } else {
+          $(this).children('.option-color').removeClass('option-selected');
+        }
+      });
+    }
+
+    /** 颜色 html 模板 */
+    function templateOptionColor(id, url, value) {
+      return `
+        <div class="option-color-layout" data-id="${id}" data-color="${value}">
+          <div class="option-color" style="background-image: url(${url})">
+            <div class="selected-icon">
+              <svg class="tick-circle" viewBox="2 2 20 20" fill="#FF533A">
+                <path d="M12,3.2 C16.8601058,3.2 20.8,7.1398942 20.8,12 C20.8,16.8601058 16.8601058,20.8 12,20.8 C7.1398942,20.8 3.2,16.8601058 3.2,12 C3.2,7.1398942 7.1398942,3.2 12,3.2 Z M17.3656854,8.63431458 C17.053266,8.32189514 16.546734,8.32189514 16.2343146,8.63431458 L16.2343146,8.63431458 L10.8,14.068 L7.76568542,11.0343146 L7.69031955,10.9677637 C7.37648659,10.7237438 6.92270174,10.7459274 6.63431458,11.0343146 C6.32189514,11.346734 6.32189514,11.853266 6.63431458,12.1656854 L6.63431458,12.1656854 L10.2343146,15.7656854 L10.3096804,15.8322363 C10.6235134,16.0762562 11.0772983,16.0540726 11.3656854,15.7656854 L11.3656854,15.7656854 L17.3656854,9.76568542 L17.4322363,9.69031955 C17.6762562,9.37648659 17.6540726,8.92270174 17.3656854,8.63431458 Z"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    /** 添加颜色 dom */
+    function addOptionColor() {
+      // 填充title
+      $('.option-title').html(_sunzi_find_variant({{variantColor}}).find(_sunzi_global_data.domLabel.label).html().trim());
+      var colors = _sunzi_response.sockData.find(function(item) {
+        return item.id == sizeSelected;
+      }).bottomImages;
+      // 默认选中第一个颜色
+      colorSelected = colors[0].id;
+      $('.options-color').empty();
+      colors.forEach(function(item) {
+        var html = templateOptionColor(item.id,item.variantImage || item.image, item.value);
+        $('.options-color').append(html);
+      });
+      // 将选中的 color 加上选中的样式
+      changeColorSelected();
+    }
+
+    /** 事件绑定 */
+    function bindEvent() {
+      // 点击颜色事件
+      $('.options .option .options-color').click(function(event) {
+        const option = event.target.closest('.option-color-layout');
+        if (option) {
+          colorSelected = option.dataset.id;
+          changeColorSelected();
+        }
+      });
+    }
+  
+  	// 初始化定制数据
+  	function initData(data, curLanguage) {
+      var sizeList = data.sizeList[curLanguage];
+      var colorList = data.colorList[curLanguage];
+      var sockData = _sunzi_response.sockData;
+
+      // 重置颜色
+      var bottomImages = sockData[0].bottomImages.map(function(item, index) {
+        item.value = item.name = colorList[index];
+        return item;
+
+      });
+      // 重置尺码
+      _sunzi_response.sockData = sockData.map(function(item, index) {
+        item.value = item.size = sizeList[index];
+        item.bottomImages = bottomImages;
+		return item;
+      });
+
+      //vip
+//       _sunzi_response.increment = {
+//         vip: _sunzi_global_data.vip
+//       };            
+      {% for block in section.blocks %}
+      {% if block.type =='boxer_preset_product' %}
+  		{%comment%}扣头加价产品{%endcomment%}
+          {%- assign product_related = all_products[block.settings.product_add_avatar] -%}
+      	  relatedProductAll = {{product_related | json}};
+      	  _sunzi_response.avatarIncrease = {
+            "price": relatedProductAll.price / 100,
+            "virtualId": relatedProductAll.variants[0].id
+          }
+	    {% endif %}
+      {% endfor %}
+
+    }
+    /** 其他自定义函数 end **/
+  });
+</script>

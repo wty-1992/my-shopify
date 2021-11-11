@@ -1,0 +1,244 @@
+<style>
+.site-header__cart-indicator {
+  top: -.3rem;
+  transform: scale(0.65);
+  line-height: 1.3rem;
+  height: 1.3rem;
+  width: 1.3rem;
+  left: 10px;
+  background-color: #e60044;
+  color: #fff;
+  border-radius: 50%;
+  font-weight: bold;
+  text-align: center;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+}
+.no-login{
+  position: fixed;
+  bottom: 0vh;
+  left: 0vw;
+  z-index: 251;
+  transition: all 0.5s;
+  display:none;
+}
+@media(max-width:768px){
+.no-login{
+  display:block;
+}
+.no_show{
+  opacity: 0;
+  position: absolute;
+  z-index: 9;
+  left: 8px;
+  color: #fff;
+  font-size: 40px;
+  transform: rotate(45deg);
+  top: 16px;
+}
+.no-login a{
+  display: block;
+}
+.site-header>div:nth-child(2) {
+  flex: 0 1 50%;
+  margin: 0 44px;
+} 
+.site-header>div:nth-child(3){
+  flex: 0 1 33%;
+  justify-content: space-around;
+}
+.site-header>div:nth-child(1) {
+  flex: 0 1 31%;
+  justify-content: space-around;
+}
+.site-header__link.site-header__cart{
+  position: relative;
+}
+.site-header__link.site-header__cart .site-header__cart-indicator{
+  top: -7px;
+  left: 14px; 
+  background-color: #000000;
+}
+.messenger__bubble{
+  display:none;
+}
+.mb-silder{
+  margin-top:-3px
+}
+.site-header-sections .note_mb{
+  text-align: center;
+  background: #000;
+  color: #fff;
+  
+  line-height: 1;
+}
+.header-mb-top{
+  height:5rem;
+}
+
+}  
+</style>
+<div class="header-mb-top medium-up--hide">
+  <header class="site-header page-width medium-up--hide" role="banner">
+    <div class="header-mb-nav hamburger medium-up--hide">
+      <div onclick="SlideWindow.open('#menuSlider', {'direction': 'left'})" class="mb-silder" >
+      <i class="photofont icon photo-menu"></i>
+      </div>
+      {% if shop.customer_accounts_enabled %}
+        <div class="login medium-up--hide">
+          {% if customer %}
+            {%- assign accountUrl = "/account" -%}
+              <a href="{{ accountUrl }}" class="site-header__icon site-header__account">
+            <i class="photofont icon photo-yidenglu"></i>
+          </a>
+          {% else %}
+            {%- assign accountUrl = "/account/login" -%}
+              <a href="{{ accountUrl }}" class="site-header__icon site-header__account">
+            <i class="icon photofont photo-yonghu1"></i>
+          </a>
+          {% endif %} 
+        </div>
+      {% endif %}      
+      
+      {% comment %} <div class="currency">{{ 'currency-picker' | asset_url }}</div> {% endcomment %}
+    </div>
+    <div class="commonlogo" itemscope itemtype="http://schema.org/Organization">
+        {% if section.settings.logo != blank %}
+          {% capture image_size %}{{ section.settings.logo_max_width }}x{% endcapture %}
+          <a class="logo" href="/" itemprop="url" >
+            <img itemprop="logo" src="{{ section.settings.logo | img_url: image_size }}" alt="{{ section.settings.logo.alt | default: shop.name }}">
+          </a>
+        {% else %}
+          <a href="/" itemprop="url">{{ shop.name }}</a>
+        {% endif %}
+    </div>
+    <div class="header-cart-sections">
+      {% comment %}<div class="search" onclick="openSearch(this)">{% endcomment %}
+      <div class="search" onclick="SlideWindow.open('#search-slider-mb', {'direction': 'right'})">
+        <i class=" photofont icon photo-sousuo9"></i>
+        <span class="small--hide">{{ 'header.navigation_search' | t }}</span>
+      </div>
+
+      <div class="cart" {% unless template.name == 'cart' %}onclick="SlideWindow.open('#shopify-section-cart-mini', {'direction': 'right', 'size':'93%'})"{% endunless %}>
+        <a class="site-header__link site-header__cart">
+            <i class="photofont icon photo-gouwuche-copy"></i>
+            <span class="site-header__cart-indicator cart-item-count">{{ cart.item_count | default: 0 }}</span>
+            <span class="small--hide">{{ 'header.cart_title' | t }}</span>
+        </a>
+      </div>
+    </div>
+  </header> 
+</div>
+<div data-template="#HeaderMbNoteTemplate" class="note_mb medium-up--hide"></div>
+<template id="HeaderMbNoteTemplate">
+  {% if section.settings.note_mb_img != blank %}
+  <img src="{{ section.settings.note_mb_img | img_url:'master' }}" >
+  {% else %}
+  <style>@media(max-width:768px){.site-header-sections .note_mb{padding: 4px 0 3px;}}</style>
+  {{section.settings.note_mb}}
+  {% endif %}
+</template>
+{% comment %}
+{% if template contains 'index' %}
+  {% unless section.settings.app_img == blank %}
+  <div id="no_login" class="no-login"> 
+    <span id="no_show" class="no_show">+</span>
+    <a href="{{section.settings.app_link}}" id="jump_href">
+        <img width="100%" class="cart-img" src="{{section.settings.app_img | img_url:'master'}}"/>
+    </a>
+  </div>
+  {% endunless %}
+<script>
+jQuery('#no_show').click(function(){ 
+  jQuery('#no_login').hide();
+  // jQuery.cookie('no_show',1,{path:'/'});
+  var cookietime = new Date(); 
+  //coockie save on hour ,default is day;
+  cookietime.setTime(cookietime.getTime() + (2 * 60 * 60 * 1000));
+  //set time  if is null， brower cloese is expires set null;
+  jQuery.cookie('no_show','1',{path:'/', expires:cookietime});
+});
+var noShowTop=0;
+//防抖函数
+function debounce(method,delay) {
+  let timer = null;
+  return function () {
+      timer && clearTimeout(timer);
+      timer = setTimeout(function () {            
+          method.apply();            
+      },delay);
+  }
+}
+防抖函数套用
+jQuery(window).scroll(debounce(()=>{
+  let winScrollS = jQuery(window).scrollTop();			
+  if(winScrollS < 250){
+      jQuery('#no_login').css({"opacity":"1","bottom":"0vh"});				
+      noShowTop=winScrollS;
+  }else if(winScrollS >= noShowTop){
+      jQuery('#no_login').css({"opacity":"0","bottom":"-15vh"}); 
+      noShowTop=winScrollS;				
+  }else{			
+      jQuery('#no_login').css({"opacity":"1","bottom":"0vh"}); 
+      noShowTop=winScrollS;
+  }			
+  if(winScrollS > (jQuery(document).height() - jQuery(window).height() - 200)){
+      jQuery('#no_login img').css("display","none");
+      noShowTop=winScrollS;
+  }else{
+      jQuery('#no_login img').css("display","block");
+      noShowTop=winScrollS;
+  }    
+},30));
+var noshow = jQuery.cookie('no_show');
+if (noshow == 1){
+  if(jQuery("#no_login").length==1){
+    jQuery("#no_login").hide();
+  }
+}
+</script>
+{% endif %}
+{% endcomment %}
+<script>
+
+$(function(){
+  if($(window).width()<=992){
+      var scrollTop = 0;  
+      var sign = 100;
+      var scrollTopNum = 0;
+      var noticeDivTopNum = 0;
+      var getToFilterNav = 0;
+      var getToCmsNav = 0;
+      var headerTop = $('header').offset().top;
+      var headerNoticeDiv = $(".header-notice-tophf");
+      $(window).scroll(function(event) {          
+          var getToFilterNav = 0;
+          var getToCmsNav = 0;
+          noticeDivTopNum = scrollTopNum = scrollTop = $(this).scrollTop();            
+          var slideDown = 0;
+          var slideUp = 0;
+          if(scrollTop > sign){//slide down         
+              sign = scrollTop;           
+              slideDown = 1;
+              if(scrollTop>=headerTop){
+                $('header').css('position','fixed');
+                $('header').css('top',0);
+              }
+          }         
+          if(scrollTop < sign){//slide up 
+              slideUp = 1;
+              sign = scrollTop;
+              scrollTopNum = 0;// nav return top                
+              noticeDivTopNum = 0;
+              if(scrollTop<=headerTop){
+                $('header').css('position','');
+                $('header').css('top','');
+              }
+          } 
+          $('.template-index header').css({"transform":"translateY(-"+(noticeDivTopNum)+"px)"}); //notic div
+      });
+  }
+  })
+</script>

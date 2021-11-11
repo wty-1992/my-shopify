@@ -1,0 +1,109 @@
+<style type="text/css">
+.drawer_title{margin: 4rem 0 2rem;}
+.drawer_title h3 {color: #000;font-size: 2.4rem;}
+.drawer-dt{border-bottom: 1px solid #eaecef;margin-left: 38px;width: 90%;}
+.bold_title_drawer{width: 1200px;margin: 0 auto;padding-left: 4rem;color: #000;}
+.bold_title_drawer p{margin-bottom: 0;font-size: 1.1rem;font-weight: 900;}
+.drawer-text-title{display: flex;padding: 20px 0;cursor: pointer;transform: translateX(-38px);position: relative;}
+.drawer-text-title span{color: #dec18c;display: inline-block;margin-right: 30px;font-size: 1.2rem}
+.drawer-class-content{padding: 0 0 1.5rem;line-height: 1.5;}
+.drawer-text-title i.photo-unfold1{position: absolute;right: -72px;font-weight: 900;color: #dec18c;top: 35%;transform: rotate(0deg);}
+.drawer-dt.open .drawer-text-title i.photo-unfold1{transform: rotate(180deg);}
+.drawer-class-content{display: none;}
+.drawer-dt.open .drawer-class-content {display: block;}
+@media(max-width:768px){
+.drawer_title h3{font-size: 1.8rem;}
+.bold_title_drawer{width: 100%;padding-left: 10px;padding-right: 10px;}
+.drawer-dt{margin-left: 0;width: 100%}
+.drawer-text-title span{margin-right: 15px;}
+.drawer-text-title{transform: translateX(0px);}
+.drawer-text-title i.photo-unfold1{right: -5px;}
+.drawer-dt.open .drawer-class-content{margin-left: 23px;}
+}
+</style>
+{% if section.settings.enable %}
+	<div class="drawer_title" id="text-bold-title" style="display:none;">
+    	<h3>{{section.settings.bold_title}}</h3>
+	</div>
+	<div class="bold_title_drawer">
+      	{% assign i = 0 %}
+		{% for block in section.blocks %}
+      		{% include 'func-verify_rules', contain: block.settings.contain, detail: product %}
+    		{% unless verify__rules_result == false %}
+              {% assign i = i | plus: 1 %}
+              <div class="drawer-dt">
+                  {% if block.settings.title != blank %}
+                      <div class="drawer-text-title" data-id="content-{{i}}">
+                          <span>{{ i }}</span>
+                          <p>{{ block.settings.title }}</p>
+                        <i class="icon photofont photo-unfold1"></i>
+                      </div>
+                  {% endif %}
+                  {% if block.settings.content != blank %}
+                      <div class="drawer-class-content" id="content-{{i}}">{{ block.settings.content }}</div>
+                  {% endif %}
+              </div>
+      		{% endunless %}
+  		{% endfor %}
+	</div>
+
+	<script type="text/javascript">
+      $(function(){
+        var count = {{ i }};
+        if(count > 0){
+          $('#text-bold-title').show();
+        }
+        $("#content-1").parent().addClass("open");
+        $(".drawer-text-title").on('click', function(){
+          var showContent = $(this).attr('data-id');     
+          $('#'+showContent).parent().toggleClass("open");
+          $('#'+showContent).parent().siblings().removeClass("open");
+        })
+      })
+    </script>
+
+{% endif %}
+
+{% schema %}
+  {
+    "name": "产品页-文本设置",
+	"class": "product-page-text-section",
+    "settings": [
+		{
+          "type": "checkbox",
+          "id": "enable",
+          "label": "Enable"
+        },
+		{
+          "type": "text",
+          "id": "bold_title",
+          "label": "大标题"
+        }
+	],
+	"blocks": [
+		{
+          "type": "text",
+		  "name": "添加文本",
+		  "settings": [
+			{
+              "type": "text",
+              "id": "title",
+          	  "label": "标题"
+            },
+		    {
+              "type": "textarea",
+              "id": "content",
+              "label": "内容"
+            },
+			{
+              "type": "textarea",
+              "id": "contain",
+              "label": "显示规则",
+              "info": "{\"handle\": \"a,b,c...\", \"sku\": \"C021,C022...\"}"
+            }
+		  ]
+        }  
+		
+	]
+  }
+{% endschema %}

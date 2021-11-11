@@ -1,0 +1,120 @@
+
+
+<style>
+.list--no-bullets {
+  list-style: none;
+}
+.main-content .breadcrumb {
+    padding: 1.67rem 0;
+}
+.faq-h1{
+    font-size:1rem;
+    margin: 1rem 0;
+}
+.page-container {
+    padding: 1.67rem 0 4.17rem; 
+    background: #f7f8f9;
+}
+.faq-content-block{
+    padding-top: 1.67rem ;
+    background-color: #fafafa;
+    padding: 1.67rem 2.5rem 3.25rem;
+}
+.faq-content-block ul {
+display:flex; 
+flex-wrap: wrap;
+}
+.faq-content-block ul li{   
+    width: 100%;
+    color: #bebebe;
+    display: inline-block; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1rem;
+    margin: 0.625rem 0;
+    padding: 0 2.5rem 0 0;
+}
+.faq-content-block ul li a:hover{    text-decoration: underline;}
+.faq-content-block ul li a,.faq-content-block li i.photo-yuandian1{
+    color:#1a74b0;
+}
+.back-faq{
+        text-align: center;
+    margin: 2rem;
+    text-decoration: underline;
+}
+.visually-hidden, .icon__fallback-text {
+  position: absolute !important;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+}
+.no-svg .icon__fallback-text {
+  position: static !important;
+  overflow: inherit;
+  clip: none;
+  height: auto;
+  width: auto;
+  margin: 0;
+}
+.link-accent-color {
+	color: #333;
+	text-decoration: none;
+	transition: color 0.1s ease-in,background-color 0.1s ease-in
+}
+@media(min-width:1024px){
+    .faq-content-block ul li{    width: 49%;}
+}
+</style>
+<div class="faq page-width"> 
+  <h1 class="faq-h1">
+    {% if current_tags %}
+      {{ current_tags.first }}
+    {% else %}
+      {{ blog.title }}
+    {% endif %}
+    <a href="{{ shop.url }}{{ blog.url }}.atom" class="blog__rss-link link-accent-color">
+      <span class="icon__fallback-text">{{ 'blogs.rss' | t }}</span>
+    </a>
+  </h1> 
+  <div class="grid">
+    <div class="grid__item{% if blog.all_tags.size > 0 %} medium-up--three-quarters large-up--four-fifths{% endif %}">
+
+        <div class="faq-content-block">
+          <ul class="blog__title-link">
+            {% for article in blog.articles %}
+                <li>
+                    <i class="icon photofont photo-yuandian1"></i>
+                    <a href="{{ article.url }}">{{ article.title }}</a>
+                </li>
+            {% endfor %}
+
+           </ul>
+       </div>
+       <div class="back-faq"><a href="/pages/faq" > &lt;&lt; {{ 'blogs.back_to_previous_page' | t }}</a></div>
+    </div>
+    {% if blog.all_tags.size > 0 %}
+      <div class="grid__item medium-up--one-quarter large-up--one-fifth small--hide">
+        <div class="content-block content-block--small">
+          <h6 class="content-block__title">{{ 'blogs.article.tags' | t }}</h6>
+          <ul class="list--no-bullets list--bold">
+            <li>
+              <a href="{{ blog.url }}">{{ 'blogs.article.all_tags' | t }}</a>
+            </li>
+            {% for tag in blog.all_tags %}
+              {% if current_tags contains tag %}
+              <li>{{ tag }}</li>
+              {% else %}
+              <li>{{ tag | link_to_tag: tag }}</li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>

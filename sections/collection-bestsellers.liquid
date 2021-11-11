@@ -1,0 +1,622 @@
+<style>
+.bestsellers-banner-mb{display:none;}
+.best-sellers-page {
+  background: #f9f9f9;
+}  
+.bestsellers-container{
+  margin:15px auto 0; 
+  width:100%;
+  max-width:1100px;
+}
+.bestsells-one{
+  display: flex;
+  max-height: 385px;
+  overflow: hidden;
+}
+.bestsells-one .bestsells-one-left img{
+  width: 100%;
+}
+.bestsells-one .bestsells-one-left{
+  width: 50%;
+  padding-right: 15px;
+}
+.bestsells-one .bestsells-product-list {
+  width: 50%;
+}
+.bestsells-one .bestsells-product-list .bestsells-image{
+  position: relative;
+  text-align: center;
+}
+.bestsells-one .bestsells-product-url{
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  height: 100%;
+}
+.bestsells-one .bestsells-product-list .bestsells-image img{
+  width: 270px;
+}
+.bestsells-one .bestsells-product-list .bestsells-detail{
+  padding-left: 8%;
+  width: 90%;
+}
+
+.bestsells-product-list .top{
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #fb033c;
+  align-items: center;
+  justify-content: center;
+  line-height: 20px;
+  color: #fff;
+  font-size: 16px;
+  z-index: 1;
+  display: flex;
+  flex-flow: column;
+}
+.pcs-sold{
+  color: #fb033c;
+  font-size: 14px;
+  margin-bottom: 2px;
+  line-height: 1;
+}
+.pcs-sold span{
+  padding-right:5px;
+}
+.bestsells-product-list .top .fw{
+  font-weight: 600;
+}
+.bestsells-product-list .top div{
+  font-size: 24px;
+}
+.bestsells-one .topname{
+  margin-bottom: 2px;
+  width: 100%;
+}
+.topname{
+  font-size: 16px;
+  color: #000;
+  margin-bottom: 15px;
+  width: 90%;
+  display: block;
+}
+.bestsells-flex-between{
+  display: flex;
+  flex-flow: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+.product-card__tag span{
+  font-size: 12px;
+  border: 1px solid #000;
+  padding: 3px 4px;
+  line-height: 1;
+  display: inline-block;
+}
+.pro_button {
+  background: #fb033c;
+  padding: 4px 12px;
+  color: #fff;
+  text-transform: uppercase;
+  display: inline-block;
+  text-align: center;
+  line-height: 1;
+  font-size:12px;
+}
+.flex-between-topleft span.pro_price.price-item{
+  font-size: 18px;
+  color: #fb033c;
+  margin-right: 5px;
+  vertical-align: baseline;
+}
+.flex-between-topleft span.pro_price_old.price-item{
+  font-size: 14px;
+  text-decoration: line-through;
+  color: #000;
+}
+/*=====================================================*/
+.bestsells-layout{
+  position: relative;
+  overflow: hidden;
+  clear: both;
+  margin: 15px 0 0;
+}
+.bestsells-layout:after{
+  content:"";
+  display:block;
+  height:0px;
+  clear: both;
+}
+.bestsells-product-url{
+  position: relative;
+}
+  
+/*========================================*/
+.bestsells-item-layout{
+  display: flex;
+  flex-flow: wrap;
+  justify-content: space-between;
+}
+.bestsells-item-layout .bestsells-product-list{
+  width: calc(33.3% - 7.5px);
+  margin-bottom: 15px;
+  background: #fff;  
+}
+.bestsells-item-layout .bestsells-product-url{
+  padding: 0 6% 25px;
+  display: block;
+  position: relative;
+}
+.bestsells-item-layout .bestsells-image{
+  width: 100%;
+  margin: 0 auto 20px;
+}
+.bestsells-item-layout .bestsells-product-list:nth-child(-n+6) .bestsells-image{
+  width: 70%;
+}
+.bestsells-item-layout .bestsells-product-list .bestsells-flex-between{
+  justify-content: end;
+}
+.bestsells-item-layout .bestsells-product-list .product-card__tag span{
+  margin-right: 20px;
+}
+.bestsells-item-layout .topname{
+  margin: 8px 0 4px;
+  height: 42px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.bestsells-item-layout .pro_box{
+  margin-top: 5px;
+}
+@media(min-width:768px){
+  .bestsells-layout .bestsells-product-list {
+    float: left;
+  }
+  .bestsells-layout .bestsells-product-list{
+    width: 62%;
+    padding-left: 15px;
+    height:320px;
+    margin-bottom:15px;
+  }
+  .bestsells-layout .bestsells-product-list:nth-child(4),.bestsells-layout .bestsells-product-list:nth-child(5){
+    padding-left: 0px;
+    padding-right:15px;
+  }
+  .bestsells-layout .bestsells-product-list:last-child{
+    position: absolute;
+    bottom: 0;
+    right: 0;    
+  }  
+  .bestsells-layout .bestsells-product-list:first-child,.bestsells-layout .bestsells-product-list:last-child{
+    width: 38%;
+    padding-left: 0;
+    height:655px;
+  }  
+  .bestsells-layout .bestsells-product-list img,.bestsells-layout .bestsells-product-list img{
+    width: 97%;
+  }
+  .bestsells-layout .bestsells-product-list .bestsells-product-url,.bestsells-layout .bestsells-product-list .bestsells-product-url{
+    padding: 15px;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    background: #fff;
+    height:100%;
+  }
+  .bestsells-layout .bestsells-product-list .bestsells-image,.bestsells-layout .bestsells-product-list .bestsells-image{
+    width:50%;
+  }
+  .bestsells-layout .bestsells-detail{
+    padding-left:6%;
+    width: 50%;
+  }
+  .bestsells-layout .bestsells-flex-between{
+    justify-content: end;
+  }
+  .bestsells-layout .bestsells-product-list .product-card__tag, .bestsells-layout .bestsells-product-list .product-card__tag {
+    width: 100%;
+    margin: 0px 0 6px;
+  }
+  .bestsells-layout .bestsells-product-list:first-child img,.bestsells-layout .bestsells-product-list:last-child img{
+    width: 100%;
+    height:auto;
+  }
+  .bestsells-layout .bestsells-product-list:first-child .bestsells-detail,.bestsells-layout .bestsells-product-list:last-child .bestsells-detail{
+    margin-top: 10px; 
+    width:100%;
+    padding-right: 7%;
+  }  
+  .bestsells-layout .bestsells-product-list:first-child .bestsells-product-url,.bestsells-layout .bestsells-product-list:last-child .bestsells-product-url{
+    padding:0;
+    display: block;
+  }
+  .bestsells-layout .bestsells-product-list:first-child .bestsells-image,.bestsells-layout .bestsells-product-list:last-child .bestsells-image{
+    width:100%;
+  }
+  .bestsells-layout .bestsells-product-list:first-child .product-card__tag, .bestsells-layout .bestsells-product-list:last-child .product-card__tag{
+    width:auto;
+  }
+  .bestsells-layout .bestsells-product-list:first-child .product-card__tag span, .bestsells-layout .bestsells-product-list:last-child .product-card__tag span{
+    margin-right: 30px;
+  }
+  .bestsells-layout .topname{
+    margin: 6px 0;
+  }
+  .bestsells-layout .pro_box {
+    margin: 6px 0;
+  }
+  .bestsells-item-layout .bestsells-product-list:nth-child(-n+6) {
+    width: calc(50% - 7.5px);
+  }
+}
+@media(max-width:768px){
+  .bestsellers-banner-pc{display:none;}
+  .bestsellers-banner-mb{display:block;}
+  .topname{
+    height: 28px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    font-size: 12px;
+    line-height: 1.2;
+    margin-bottom: 2px;
+  }
+  .bestsells-one .bestsells-one-left{
+    display:none;
+  }
+  .bestsells-one .bestsells-product-list{
+    width:100%;
+  }
+  .bestsells-one .bestsells-product-list .bestsells-image{
+    width:50%;
+  }
+  .bestsells-one .bestsells-product-list .bestsells-image .top{
+    left: unset;
+    right: 7px;
+  }
+  .bestsells-one .bestsells-product-url{
+    flex-flow:row-reverse;
+    background: #fff;
+  }
+  .bestsells-one .bestsells-product-list .bestsells-detail{
+    padding-left: 5%;
+    width: 50%;
+    padding-top: 6%;
+  }
+  .pro_button{
+    background: #ea3323;
+    border-radius: 3px;
+    padding: 6px 12px;
+  }
+  .flex-between-topleft span.pro_price.price-item{
+    color: #b51e11;
+    font-weight: 600;
+  }
+  .bestsells-layout .bestsells-product-url{
+    display: flex;
+    background: #fff;
+    margin-bottom: 8px;
+    justify-content: space-between;
+  }
+  .bestsells-layout .bestsells-product-url .bestsells-image{
+    width:50%;
+    position: relative;
+  }
+  .bestsells-layout .bestsells-product-url .bestsells-detail{
+    width:46%;
+    padding-top: 5%;
+  }
+  .bestsells-layout{
+    margin: 8px 0 0;
+    flex-flow: wrap;
+    display: flex;
+    justify-content: space-between;
+  }
+  .bestsells-layout .bestsells-product-url .bestsells-detail .product-card__tag{
+    height: auto;
+  }
+  .bestsells-layout .bestsells-product-list:nth-child(2) .bestsells-product-url,.bestsells-layout .bestsells-product-list:nth-child(4) .bestsells-product-url{
+    flex-flow: row-reverse;
+  }
+  .bestsells-layout .bestsells-product-list:nth-child(2) .bestsells-detail, .bestsells-layout .bestsells-product-list:nth-child(4) .bestsells-detail{
+    padding-left: 4%;
+  }
+  .bestsells-layout .bestsells-product-list:nth-child(2) .top , .bestsells-layout .bestsells-product-list:nth-child(4) .top{
+    left: unset;
+    right: 7px;
+  }
+  .bestsells-layout:after{
+    display:none;
+  }
+  .bestsells-layout .bestsells-product-list:nth-child(n+5){
+    width: calc(50% - 4px);
+  }
+  .bestsells-layout .bestsells-product-list:nth-child(n+5) .bestsells-product-url{
+    flex-flow: column;
+  }
+  .bestsells-layout .bestsells-product-list:nth-child(n+5) .bestsells-image,.bestsells-layout .bestsells-product-list:nth-child(n+5) .bestsells-detail{
+    width: 100%;
+  }
+  .bestsells-layout .bestsells-product-list:nth-child(n+5) .bestsells-detail{
+    text-align: center;
+    padding: 5% 10px;
+  }
+  .bestsells-layout .bestsells-product-list:nth-child(n+5) .bestsells-flex-between{
+    justify-content: center;
+  }
+  .bestsells-layout .bestsells-product-list:nth-child(n+5) .pro_box{
+    display:none;
+  }
+  .bestsells-product-list .top div{
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .product-card__tag{
+    height: 24px;
+    width:100%;    
+  }
+  .bestsells-product-list .top{
+    width: 40px;
+    height: 40px;
+    background: #ea3323;
+    line-height: 14px;
+    color: #fff;
+    font-size: 12px;
+    top: 6px;
+    left: 7px;
+    font-family: 'ProximaNova-Regular';
+  }
+  .product-card__tag span{
+    margin: 4px 0;
+    padding: 2px 4px 0;
+    font-family: 'ProximaNova-Regular';
+  }
+  .bestsells-item-layout .bestsells-product-list .product-card__tag span{
+    margin-right: 0;
+  }
+  .bestsells-item-layout .bestsells-product-list:nth-child(-n+6) .bestsells-image{
+    width: 100%;
+  }
+  .bestsells-item-layout .bestsells-product-url{
+    padding: 0 0 15px;
+  }
+  .bestsells-item-layout .bestsells-detail{
+    padding: 0 10px;
+  }
+  .bestsells-item-layout .topname{
+    margin: 4px 0 2px;
+    height: 28px;
+    line-height: 1.2;
+    font-size: 12px;
+    color: #7e7e7e;
+  }
+  .bestsells-item-layout .pro_box{
+    display: none;
+  }
+  .bestsells-item-layout .bestsells-product-list{
+    width: calc(50% - 4px);
+    margin-bottom: 8px;
+  }
+  .flex-between-topleft{
+    font-family: 'ProximaNova-Regular';
+  }
+  .bestsells-item-layout .flex-between-topleft{
+    display: flex;
+    flex-flow: row-reverse;
+  }
+  .bestsells-item-layout .flex-between-topleft span.pro_price.price-item{
+    font-size: 13px;
+    color: #b51e11;
+    font-weight: 600;
+    padding-left:5px;
+  }
+  .bestsells-product-list .top .fw{
+    margin-top: 3px;
+  }
+  .bestsells-item-layout .flex-between-topleft span.pro_price_old.price-item{
+    font-size: 13px;
+  }
+}
+</style>
+{%- assign  product_list = collections[section.settings.collection].products -%}
+{%- assign  count_array = section.settings.sell_count | split:"," -%}
+<div class="best-sellers-page">
+  <div class="banner_bg">
+    <img data-src="{{ section.settings.pc_banner | img_url: 'master' }}" class="lazyload bestsellers-banner-pc" />
+    <img data-src="{{ section.settings.mb_banner | img_url: 'master' }}" class="lazyload bestsellers-banner-mb" />
+  </div>
+  <script>
+    let sadqwe ={{ product_list | json }}
+  </script>
+  <div class="bestsellers-container">
+    <div class="bestsells-one">
+      <div class="bestsells-one-left">
+        {% if section.settings.one_banner %}
+        <img data-src="{{ section.settings.one_banner | img_url: 'master' }}" class="lazyload" />
+        {% endif %}
+      </div>
+      <div class="bestsells-product-list ">
+        <a href="{{ product_list[0].url }}" class="bestsells-product-url">
+          <div class="bestsells-image">
+            <div class="top"><span class="fw">{{section.settings.top_text}}</span><div>01</div></div>
+            <img data-src="{{ product_list[0].images[1] | img_url: '400x400' }}" class="lazyload" />
+          </div>
+          <div class="bestsells-detail">
+            <div class="pcs-sold"><span>{{count_array[0]}}</span>{{section.settings.sell_text}}</div>
+            <div class="topname">{{ product_list[0].title }}</div>
+            <div class="bestsells-flex-between">
+              <div class="product-card__tag">
+                {% for tag in product_list[0].tags %}
+                {% if tag contains 'tag-product-' %}
+                  <span class="span-label-item">
+                    {{ tag | remove: 'tag-product-' }}
+                  </span>
+                {% endif %}
+              {% endfor %}
+              </div>
+              <div class="flex-between-topleft">
+                <span class="pro_price price-item" data-money="{{ product_list[0].price_min }}"></span>
+                <span class="pro_price_old price-item" data-money="{{ product_list[0].compare_at_price }}"></span>
+              </div>
+              <span class="pro_button">{{ section.settings.buy_text }}</span>
+              
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="bestsells-layout">
+	{% for item in (1..6) %}
+      {%- assign  topNum = item | plus:1 -%}
+      <div class="bestsells-product-list ">
+        <a href="{{ product_list[item].url }}" class="bestsells-product-url">
+          <div class="bestsells-image">
+            <div class="top"><span class="fw">{{section.settings.top_text}}</span><div>{{topNum | prepend: 0}}</div></div>
+            <img data-src="{{ product_list[item].featured_image | img_url: '400x400' }}" class="lazyload" />
+          </div>
+          <div class="bestsells-detail">
+            <div class="pcs-sold"><span>{{count_array[item]}}</span>{{section.settings.sell_text}}</div>
+            <div class="topname">{{ product_list[item].title }}</div>
+            <div class="bestsells-flex-between">
+              <div class="product-card__tag">
+                {% for tag in product_list[item].tags %}
+                {% if tag contains 'tag-product-' %}
+                  <span class="span-label-item">
+                    {{ tag | remove: 'tag-product-' }}
+                  </span>
+                {% endif %}
+              {% endfor %}
+              </div>
+              <div class="flex-between-topleft">
+                <span class="pro_price price-item"  data-money="{{ product_list[item].price_min }}"></span>
+                <span class="pro_price_old price-item"  data-money="{{ product_list[item].compare_at_price }}"></span>
+              </div>              
+            </div>
+            <div class="pro_box">
+              <span class="pro_button">{{ section.settings.buy_text }}</span>
+            </div>
+          </div>
+        </a>
+      </div>     
+    {% endfor %}
+    </div>
+    <div class="bestsells-item-layout">
+      {% for item in (7..24) %}
+      {%- assign topNum = item | plus:1 -%}
+      {%- assign topCount = topNum | split: "" | size -%}
+        <div class="bestsells-product-list ">
+          <a href="{{ product_list[item].url }}" class="bestsells-product-url">
+            <div class="bestsells-image">
+              <div class="top"><span class="fw">{{section.settings.top_text}}</span><div>{% if topCount<2 %}{{topNum | prepend: 0}}{% else %}{{topNum}}{% endif %}</div></div>
+              <img data-src="{{ product_list[item].featured_image | img_url: '400x400' }}" class="lazyload" />
+            </div>
+            <div class="bestsells-detail">
+              <div class="pcs-sold"><span>{{count_array[item]}}</span>{{section.settings.sell_text}}</div>
+              <div class="topname">{{ product_list[item].title }}</div>
+              <div class="bestsells-flex-between">
+                <div class="product-card__tag">
+                  {% for tag in product_list[item].tags %}
+                  {% if tag contains 'tag-product-' %}
+                    <span class="span-label-item">
+                      {{ tag | remove: 'tag-product-' }}
+                    </span>
+                  {% endif %}
+                {% endfor %}
+                </div>
+                <div class="flex-between-topleft">
+                  <span class="pro_price price-item"  data-money="{{ product_list[item].price_min }}"></span>
+                  <span class="pro_price_old price-item"  data-money="{{ product_list[item].compare_at_price }}"></span>
+                </div>
+              </div>
+              <div class="pro_box">
+                <span class="pro_button">{{ section.settings.buy_text }}</span>
+              </div>
+            </div>
+          </a>
+        </div>      
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<script>
+  var collectionLabels ='{{ settings.label_filtrate }}'.split(",");
+  $(".product-card__tag").each(function(){
+    if($(this).children().length > 0){
+      let dataArr =[];
+      $(this).children().map(function(i,item){
+        let items = $(this).html().trim();          
+        collectionLabels.map(function(item,index){
+          if(items == item){
+            dataArr.push(item);
+          }                        
+        });
+      });
+      dataArr.sort((a,b)=>{return collectionLabels.indexOf(a) - collectionLabels.indexOf(b);});
+      $(this).html(`<span>`+ dataArr[0] +`</span>`);
+    }
+  });
+  $('.pcs-sold span').each(function(){    
+    if($(this).html().length>3){
+      $(this).html(Number($(this).html()).toLocaleString());
+    }
+  });
+</script>
+{% schema %} 
+{
+  "name": "通用 - TOP5产品列表",
+  "class":"common-top5-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "pc_banner",
+      "label": "PC Banner"
+    },
+   {
+      "type": "image_picker",
+      "id": "mb_banner",
+      "label": "MB Banner"
+    },
+	{
+      "type": "image_picker",
+      "id": "one_banner",
+      "label": "产品列表第一张图"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "选择集合"
+    },
+    {
+      "type": "text",
+      "id": "top_text",
+      "label": "TOP 文案"
+    },
+    {
+      "type": "text",
+      "id": "sell_text",
+      "label": "售出文案"
+    },
+    {
+      "type": "text",
+      "id": "buy_text",
+      "label": "购买按钮文案"
+    },
+    {
+      "type": "textarea",
+      "id": "sell_count",
+      "label": "售出数量"
+    }
+  ]
+}
+{% endschema %}
+

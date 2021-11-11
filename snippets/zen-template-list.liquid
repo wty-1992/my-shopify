@@ -1,0 +1,196 @@
+{% assign defaultItem = product.selected_or_first_available_variant.sku %}
+
+{% if productTags contains "custom-template-list-" %}
+	 {% for item in product.tags %}
+		{% if item contains "custom-template-list-" %}
+          {% assign defaultItem = item | remove: "custom-template-list-"%}
+          {% break %}
+		{% endif %}
+    {% endfor %}
+{% endif %}
+
+{% assign templateNum = 18 %}
+
+{% if productTags contains "custom-template-num-" %}
+	 {% for item in product.tags %}
+		{% if item contains "custom-template-num-" %}
+          {% assign templateNum = item | remove: "custom-template-num-"%}
+          {% break %}
+		{% endif %}
+    {% endfor %}
+{% endif %}
+
+{% assign remarkNumber = "1" %}
+
+{% if productTags contains "custom-template-default-" %}
+	 {% for item in product.tags %}
+		{% if item contains "custom-template-default-" %}
+          {% assign remarkNumber = item | remove: "custom-template-default-"%}
+          {% break %}
+		{% endif %}
+    {% endfor %}
+{% endif %}
+
+<div class="template-container">
+  
+  {% if product.tags contains 'custom-template-text' %}
+  <div class="template-title">{{"zen.general.choose_a_dog"}}:</div>
+  {% else %}
+  <div class="template-title">{{"zen.general.choose_the_fc_logo"}}:</div>
+  {% endif %}
+  
+  <div class="template-list">
+  </div>
+</div>
+<div id="t_name"></div>
+<input type="hidden" id="customInfo" name="properties[customInfo]" value="">
+
+<script>
+  var _zenSku = "{{ defaultItem }}";
+  var remarkNumber = "{{remarkNumber}}";
+  console.log('remarkNumber' == remarkNumber);
+  var imgBaseUrl = "https://pic.stylelab.com/js/img/";
+  var productImageUrl = "{{product.images[0] |img_url: '1000x1000' | prepend: 'https:'}}";
+  
+  var jsonCustom = {};
+  {% if product.metafields["global"]["cattribute"] %}
+  	jsonCustom = '{{ product.metafields["global"]["cattribute"] }}';
+    if(jsonCustom){
+      jsonCustom = JSON.parse('{{ product.metafields["global"]["cattribute"] }}');
+    }
+  {% endif %}
+         
+  var productImage = typeof jsonCustom.productImage != 'undefined' ? jsonCustom.productImage : 0;                            
+  var tempTitle = typeof jsonCustom.templateTitle != 'undefined' ? jsonCustom.templateTitle : '';
+  var tempNum = typeof jsonCustom.templateNum != 'undefined' ? parseInt(jsonCustom.templateNum) : parseInt('{{templateNum}}');
+  var tempName = typeof jsonCustom.templateName != 'undefined' ? jsonCustom.templateName : _zenSku;
+  var textObj = typeof jsonCustom.coors != 'undefined' ? jsonCustom.coors : '';
+  var remarkTitle = typeof jsonCustom.remarkTitle != 'undefined' ? jsonCustom.remarkTitle : '';  
+                                                                                                  
+  $(function(){
+    var tempHtml = '';
+    for(var _i = 1;_i<=tempNum;_i++){
+      if(parseInt(remarkNumber) == _i){
+        tempHtml += '<label class="template-label label-active" data-val="'+_i+'">';
+      }else{
+        tempHtml += '<label class="template-label" data-val="'+_i+'">';
+      }
+    	
+      tempHtml += '<img src="'+imgBaseUrl+tempName+'-'+_i+'.png"/></label>';
+    }
+    
+    $('.template-list').html(tempHtml);
+        
+    $(".template-label").on("click",function(){
+    	remarkNumber = $(this).data('val');
+        $(".template-label").removeClass("label-active");
+      	$(this).addClass("label-active");
+    });
+    
+    if(tempTitle){
+      $('.template-title').html(tempTitle);
+    }
+    
+    if(textObj){
+      var textHtml = '';
+      textObj.forEach(function(v, i){
+        var limit = v.limit || 20;
+        var label = v.label || "";
+        var placeholderText = v.placeholder || '{{"zen.cropCarving.type_name" | t}}';
+        var title = v.title || "";
+
+        textHtml += '<div class="label-input-container">';
+        textHtml += '<h1>'+title+'</h1>'
+        if(label){
+          textHtml += '<label class="product-txt-label" for="fonttext">'+label+':</label>';
+        }
+        textHtml += '<div class="text-input-container"><input type="text" class="fonttext" name="fonttext" maxlength="'+limit+'" value="" oninput="changeText('+i+',this,'+limit+')" placeholder="'+placeholderText+'"/>';
+        textHtml += '<div class="leftnum" id="leftnumbox'+i+'"><span id="leftnum'+i+'">'+limit+'</span> Left</div></div></div>';
+      });
+
+      $('#t_name').html(textHtml);
+    }
+        
+  })
+  
+  function changeText(i,obj,limitv){
+    var objLenOld = $(obj).val().length;
+    var objVal = $(obj).val().replace(/[\r\n]/g,"");
+    var objLen = objVal.length;
+
+    if(objLen < objLenOld){
+      $(obj).attr('maxlength',limitv + objLenOld - objLen);
+    }else{
+      $(obj).attr('maxlength',limitv);
+    }
+
+    if(objLen > limitv){
+      var lenDiff = objLen - limitv;
+      $(obj).val($(obj).val().substr(-1,lenDiff));
+      $('#leftnum'+i).text(0);
+    }else{
+      $('#leftnum'+i).text(parseInt(limitv) - objLen);
+    }
+    
+    if(objLen > 0){
+      $(".text-input-container").eq(i).css("border-color","#e8eced");
+    }
+  }
+  
+  Listener.on([ Listener.product.update.after ], function(event, variant, dom) {  
+    if(productImage == 1 & variant.featured_image){
+      productImageUrl = variant.featured_image.src;
+    }
+
+  });
+  
+  Product.validators.push(
+    () => {
+      return zenValidate();
+    }
+  );
+  
+ function zenValidate() {
+    var submit_flag = true;
+    var zenCustomJson = {};
+   
+    zenCustomJson['_sunzi_remark'] = {};
+    zenCustomJson['_sunzi_effect'] = productImageUrl;
+    if(remarkTitle){
+		zenCustomJson['_sunzi_remark']['number'] = remarkTitle + '-' + remarkNumber + '';
+    }else{
+    	zenCustomJson['_sunzi_remark']['number'] = remarkNumber + '';
+    }
+   
+    if(textObj){
+      if($('.fonttext').length > 1){
+        zenCustomJson['_sunzi_texts'] = [];
+        
+      	$('.fonttext').each(function(i,value){
+          if($.trim($(this).val()) == ''){
+            submit_flag = false;
+            $(".text-input-container").eq(i).css("border-color","red");
+          }else{
+            zenCustomJson['_sunzi_texts'][i]['value'] = $(this).val();
+          }
+        });
+      }else{
+        zenCustomJson['_sunzi_text']  ={};
+      	$('.fonttext').each(function(i,value){
+          if($.trim($(this).val()) == ''){
+            submit_flag = false;
+            $(".text-input-container").eq(i).css("border-color","red");
+          }else{
+            zenCustomJson['_sunzi_text']['value'] = $(this).val();
+          }
+        });
+      }
+      
+    }
+    
+    $('#customInfo').val(JSON.stringify(zenCustomJson));
+   
+    return submit_flag;
+    
+  }
+</script>

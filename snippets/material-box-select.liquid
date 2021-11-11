@@ -1,0 +1,197 @@
+<style>
+.material-list-ul{
+  display: flex;
+  padding: 0 3%;
+  border: 1px solid #ddd;
+  color: #000;
+  align-items: center;
+  font-size: 14px;
+  height: 50px;
+  position: relative;
+  justify-content: left;
+  cursor: pointer;
+}
+.color-view{
+  display: block;
+  margin-right: 8px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background:#000;
+}
+.material-list-ul .photofont.photo-moreunfold{
+  position: absolute;
+  right: 14px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.material-list{
+  margin-bottom: 15px;
+}
+.material-option .control_panel_option{
+  align-items: center;
+  display: flex;
+  height: 34px;
+  cursor: pointer;
+  position: relative;
+}
+.material-list .dropdown-menu{
+  width: 100%;
+  border-radius: 0;
+  padding: 0 3%;
+}
+span.material_price {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+  
+  
+.color-view.color-{{ 'variant.color.Black' | t | downcase | replace: " ", "-" }}{background: #000;}
+.color-view.color-{{ 'variant.color.Silver' | t | downcase | replace: " ", "-" }}{background: #808080;opacity: .3;filter: alpha(opacity=30);}
+.color-view.color-{{ 'variant.color.Gold' | t | downcase | replace: " ", "-" }}{background: #fad826;opacity: .8;filter: alpha(opacity=80);}
+.color-view.color-{{ 'variant.color.Rose_Gold' | t | downcase | replace: " ", "-" }}{background: #d8a88d;}
+
+.color-view.color-{{ 'variant.material.Rose_Gold_Plated_Copper' | t | downcase | replace: " ", "-" }}{background: #d8a88d;}
+.color-view.color-{{ 'variant.material.14k_Gold_Plated_Copper' | t | downcase | replace: " ", "-" }}{background: #fad826;}
+.color-view.color-{{ 'variant.material.Plated_Platinum_Copper' | t | downcase | replace: " ", "-" }}{background: #808080;}
+.color-view.color-{{ 'variant.material.Rose_Gold_Plated_Colored_Silver' | t  | downcase| replace: " ", "-" }}{background: #d8a88d;}
+.color-view.color-{{ 'variant.material.14k_Gold_Plated_Colored_Silver' | t | downcase | replace: " ", "-" }}{background: #fad826;}
+.color-view.color-{{ 'variant.material.Rose_Gold_Plated_Silver' | t | downcase | replace: " ", "-" }}{background: #ecd4c6;}
+.color-view.color-{{ 'variant.material.14k_Gold_Plated_Silver' | t | downcase | replace: " ", "-" }}{background: #fad826;}
+.color-view.color-{{ 'variant.material.Anti_oxidation_Silver' | t | downcase | replace: " ", "-" }}{background: #d9d9d9;}
+  
+.color-view.color-{{ 'variant.material.Rose_Gold_Plated_Stainless_Steel' | t | downcase | replace: " ", "-" }}{background: #d8a88d;opacity: .5;filter: alpha(opacity=50);}
+.color-view.color-{{ 'variant.material.Rose_Gold_Plated_Stainless_Steel_' | t | downcase | replace: " ", "-" }}{background: #d8a88d;opacity: .5;filter: alpha(opacity=50);}
+.color-view.color-{{ 'variant.material.14k_Gold_Plated_Stainless_Steel' | t | downcase | replace: " ", "-" }}{background: #fad826;opacity: .8;filter: alpha(opacity=80);}
+.color-view.color-{{ 'variant.material.14k_Gold_Plated_Stainless_Steel_' | t | downcase | replace: " ", "-" }}{background: #fad826;opacity: .8;filter: alpha(opacity=80);}
+.color-view.color-{{ 'variant.material.Anti_Oxidation_Stainless_Steel' | t | downcase | replace: " ", "-" }}{background: #808080;opacity: .3;filter: alpha(opacity=30);}
+.color-view.color-{{ 'variant.material.Platinum_Plated_Colored_Silver' | t | downcase | replace: " ", "-" }}{background: #808080;opacity: .3;filter: alpha(opacity=30);}
+.color-view.color-{{ 'variant.material.Rose_Gold_Plated_Silver' | t | downcase | replace: " ", "-" }}{background: #d8a88d;opacity: .5;filter: alpha(opacity=50);}  
+.color-view.color-{{ 'variant.material.Rose_Gold_Plated_Colored_Silver' | t | downcase | replace: " ", "-" }}{background: #d8a88d;opacity: .5;filter: alpha(opacity=50);}  
+.color-view.color-{{ 'variant.material.14k_Gold_Plated_Colored_Silver' | t | downcase | replace: " ", "-" }}{background: #fad826;opacity: .8;filter: alpha(opacity=80);}
+.color-view.color-{{ 'variant.material.14k_Gold_Plated_Silver' | t | downcase | replace: " ", "-" }}{background: #fad826;opacity: .8;filter: alpha(opacity=80);}
+.color-view.color-{{ 'variant.material.Anti_Oxidation_Silver' | t | downcase | replace: " ", "-" }}{background: #808080;opacity: .3;filter: alpha(opacity=30);}
+.color-view.color-{{ 'variant.material.Rose_Gold_Plated_Copper' | t | downcase | replace: " ", "-" }}{background: #d8a88d;opacity: .5;filter: alpha(opacity=50);}
+.color-view.color-{{ 'variant.material.14k_Gold_Plated_Copper' | t | downcase | replace: " ", "-" }}{background: #fad826;opacity: .8;filter: alpha(opacity=80);}
+.color-view.color-{{ 'variant.material.Platinum_Plated_Copper' | t | downcase | replace: " ", "-" }}{background: #808080;opacity: .3;filter: alpha(opacity=30);}
+.color-view.color-{{ 'variant.material.Anti_oxidation_Stainless_Steel' | t | downcase | replace: " ", "-" }}{background: #808080;opacity: .3; filter: alpha(opacity=30);}
+.color-view.color-{{ 'variant.material.18k_Gold_Plated_Stainless_Steel' | t | downcase | replace: " ", "-" }}{background: #fad826;opacity: .8;filter: alpha(opacity=80);}
+.color-view.color-{{ 'variant.material.18k_Gold_Plated_Copper' | t | downcase | replace: " ", "-" }}{background: #fad826;opacity: .8;filter: alpha(opacity=80);}
+.color-view.color-{{ 'variant.material.Anti_oxidation_Plated_Copper' | t | downcase | replace: " ", "-" }}{background: #808080;opacity: .3;filter: alpha(opacity=30);}
+.color-view.color-{{ 'variant.material.silver' | t | downcase | replace: " ", "-" }},
+.color-view.color-{{ 'variant.material.Copper_in_Silver' | t | downcase | replace: " ", "-" }},
+.color-view.color-{{ 'variant.material.Silver_in_Silver' | t | downcase | replace: " ", "-" }}{background: #808080;opacity: .3;filter: alpha(opacity=30);}
+.color-view.color-{{ 'variant.material.gold' | t | downcase | replace: " ", "-" }}{background: #fad826;opacity: .8;filter: alpha(opacity=80);}
+.color-view.color-{{ 'variant.material.Silver_in_14k_Gold' | t | downcase | replace: " ", "-" }}{background: #fad826;opacity: .8;filter: alpha(opacity=80);} 
+.color-view.color-{{ 'variant.material.Copper_in_14k_Gold' | t | downcase | replace: " ", "-" }}{background: #fad826;opacity: .8;filter: alpha(opacity=80);}
+
+.color-view.color-{{ 'variant.material.Silver_in_Rose_Gold' | t | downcase | replace: " ", "-" }}{background: #d8a88d;}
+.color-view.color-{{ 'variant.material.Copper_in_Rose_Gold' | t | downcase | replace: " ", "-" }}{background: #d8a88d;}
+.color-view.color-{{ 'variant.material.rose_gold' | t | downcase | replace: " ", "-" }}{background: #d8a88d;}
+
+.color-view.color-{{ 'variant.material.Rose_Gold_Plated_Titanium_Steel' | t | downcase | replace: " ", "-" }}{background: #d8a88d;opacity: .5;}
+.color-view.color-{{ 'variant.material.18k_Gold_Plated_Titanium_Steel' | t | downcase | replace: " ", "-" }}{background: #fad826;opacity: .8;}
+.color-view.color-{{ 'variant.material.Anti_oxidation_Titanium_Steel' | t | downcase | replace: " ", "-" }}{background: #808080;opacity: .3;}
+.color-view.color-{{ 'variant.material.Black_Plated_Titanium_Steel' | t | downcase | replace: " ", "-" }}{background: #000;}
+.color-view.color-{{ 'variant.material.Rose_Gold_Plated_Alloy' | t | downcase | replace: " ", "-" }}{background: #d8a88d;opacity: .5;}
+.color-view.color-{{ 'variant.material.Gold_Plated_Alloy' | t | downcase | replace: " ", "-" }}{background: #fad826;opacity: .8;}
+.color-view.color-{{ 'variant.material.Platinum_Plated_Alloy' | t | downcase | replace: " ", "-" }}{background: #808080;opacity: .3;}  
+
+@media(max-width:768px){
+  .material-list-ul{
+    padding: 0 2%;
+  }
+}
+</style>
+<div class="material-list dropdown" id="material_block">
+  <span class="input-field-title">{{ option.name }}:</span>
+  <div class="material-list-ul dropdown-toggle" data-toggle="dropdown" id="material_view" dropdown-num="1" aria-expanded="false"></div>
+  <ul class="material-option dropdown-menu"></ul>
+</div>
+<script>
+  $(function(){
+    materialSelect({{ current_variant | json }});
+  })
+  
+  function materialSelect(currentVariant){
+    var reg = new RegExp(" ","g");
+  	var optionQuantity={{ product | json }};
+    var option = '';
+    var data = [];
+    var material = [];
+    var aoptions = [];
+    var clength = 0;
+    optionQuantity.options.forEach(function(o,i){
+      aoptions.push(o);
+      if(o == 'Choose Material' || o == '{{Choose_material_color}}' || o == '{{Choose_material}}' || o == '{{Choose_material_colortwo}}' || o == '{{Material}}'){
+        option = 'option'+(i+1);
+      }
+    });
+    var optionValue = [];
+    currentVariant.options.forEach(function(v,i){//console.log(v);console.log(currentVariant[option]);
+      if(v == currentVariant[option]){
+        var materialSelect = v; // .toLowerCase()
+        $('#material_view').html('<div class="color-view color-'+materialSelect.toLowerCase().replace(reg,"-")+'"></div><span class="material_title">'+materialSelect+'</span><i class="photofont photo-moreunfold"></i>');
+      }else{
+        //optionValue.push(v);
+        optionValue[i] = v;
+      }
+    })
+    /*
+    $(".selector-wrapper label").each(function( index ) {       
+      if($.trim(jQuery(this).data('name')) == 'Choose Material'){        
+        var materialSelect = $(this).next('select').val();
+        $('#material_view').html('<div class="color-view color-'+materialSelect.replace(reg,"-")+'"></div><span class="material_title">'+materialSelect+'</span><i class="photofont photo-moreunfold"></i>');
+      }else{
+        optionValue.push($(this).next('select').val());
+      }
+    });
+    */
+    optionQuantity.variants.forEach(function(t,i){
+      var isp = true;
+      t.options.forEach(function(v,j){
+        if(t[option] == v){
+          return true;
+        }
+        if(optionValue[j] != v){
+          isp = false;
+        }
+      })
+      if(isp == true){
+        data[t[option]] = t.price;
+        material[clength] = t[option];
+        clength++;
+      }
+    })
+    var materialHtml = '';
+    $.each(material,function(index,value){      
+      materialHtml += '<li class="control_panel_option" data-option="material_selection" data-value="'+value+'">';
+      materialHtml += '<div class="color-view color-'+value.toLowerCase().replace(reg,"-")+'"></div>'; // .toLowerCase()
+      materialHtml += '<span class="material_title">'+value+'</span>';
+      materialHtml += '<span class="material_price">';
+      materialHtml += '<span class="price" data-money="'+data[value]+'"></span>';
+      materialHtml += '</span>';
+      materialHtml += '</li>';
+    });      
+    $('.material-option').html(materialHtml);
+    var cur_currency = Shopify.urlParam('currency') ? Shopify.urlParam('currency') : Currency.cookie.read();
+    Currency.convertAll(cur_currency);
+    //Currency.convertAll();
+  }
+  $(".material-option").on("click",".control_panel_option",function(){
+    var val = $(this).data('value');
+    $(".selector-wrapper label").each(function( index ) { 
+      var variantName = $.trim(jQuery(this).data('name'));
+      if( variantName== '{{Choose_material_color}}' || variantName== '{{Choose_material}}' || variantName== '{{Choose_material_colortwo}}'|| variantName== '{{Material}}'){
+        $(this).next('select').val(val).trigger('change');
+      }
+    });
+  });
+  Listener.on([ Listener.product.update.before ], function(event, variant) {     
+    materialSelect(variant);
+  });
+</script>

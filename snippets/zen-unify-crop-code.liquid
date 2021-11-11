@@ -1,0 +1,306 @@
+<script src="{{ 'fontfaceobserver.js' | asset_url }}"></script>
+<script src="{{ 'qiniu.min.js' | asset_url }}" ></script>
+<script src="{{ 'zen-code-color-attr.js' | asset_url }}" ></script>
+
+{% assign customJson = '' %}
+
+{% if product.metafields["global"]["cattributeUnify"] %}
+	{% assign customJson = product.metafields["global"]["cattributeUnify"] %}
+{% endif %}
+
+<script>
+  //去掉sku的-部分
+  function formatSku(sku){
+    var sku_val = sku;
+  	if(sku_val.indexOf('-') > -1){
+      var zenSkuArr = sku_val.split('-');
+      sku_val = zenSkuArr[0];
+    }
+    return sku_val;
+  } 
+  
+  window.addEventListener('EVENT_CROP_SAVE_AFTER', function(event){
+    var data = JSON.parse(event.detail.data);
+    
+    if(data){
+      $("#crop_picture").val(data.crop[0].crop);
+      $('.product-addon').show();
+    }
+  });
+  
+  var customValue = `{{customJson}}`;
+  
+  var customJson = {};
+  if(customValue){
+  	customJson = JSON.parse(`{{customJson}}`);
+  }
+  
+  var _zenSku = formatSku("{{ product.selected_or_first_available_variant.sku }}");
+  
+  //定义插件的参数
+  var _zenConfig = {
+    photoObj: [],
+    carvingObj: [],
+    crystalObj: [],
+    curveCarvingObj: [],
+    nameObj: [],
+    uploadLoadingImage: 'https://ik.imagekit.io/soufeel/en/skin/frontend/smartwave/default/images/soufeel-30.gif',
+    wrapperBackgroudColor: '#000000',
+    crop: [
+    	{
+          uploadLabel: "{{'zen.general.photo' | t }}",  //传图描述标签
+          btnUploadText: "{{'zen.photo.upload' | t }}",  //上传按钮文案
+          require: true,//是否必传图片
+          hasCropOrigin: true,
+          sku: _zenSku,
+          style: 0, //设置上传样式，0:单行展示 1：矩形上传表单
+          type: '',
+          aspectRatio: 0
+        }
+    ],
+    photo: [],
+    carving: [],
+    crystal: [],
+    curveCarving: []
+  };
+                              
+</script>
+
+<div class="wrap-type-title">{{"zen.general.your_link_here" | t}}<span style="color: red;">*</span></div>
+
+<div class="video-type-text">
+  <input type="text" name="videoText" class="video-type-input videoText" maxlength="200" placeholder="{{'zen.general.enter_link_here' | t}}">
+</div>
+
+<input type="text" id="preview_code" name="properties[code]" value="" style="display:none" required/>
+
+<div id="qrcodeoutput" style="display:none;"></div>
+
+<div class="photo-crop-container">
+	<div id="zen-photocarving"></div>
+</div>
+
+<input type="hidden" id="crop_picture" name="properties[picture]" value="" style="display:none" required />
+
+
+<div class="product-addon product-addon-1-face-or-2" style="display: none;">
+<h3 class="addon-name">{{ 'zen.cropCarving.addon_title' | t }}</h3>
+  <div class="addon-description">
+    
+    <p>{{ 'zen.cropCarving.addon_desc' | t }}</p>
+    
+  </div>
+<div style="width:100%;margin-top: 16px;"><input type="checkbox" id="addon-checkbox" style="min-height: 10px;"> <span id="checkText" style="font-weight: bold;cursor:pointer;">{{ 'zen.cropCarving.addon_label' | t }}</span></div>
+</div>
+
+<!-- 引入插件文件 -->
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.5.7/zen-photo-carving-chunk-vendors.css?202108142021" rel="stylesheet" />
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.5.7/zen-photo-carving-app.css?202108142021" rel="stylesheet" />
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.5.7/zen-photo-carving-chunk-vendors.js?202108142021"></script>
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.5.7/zen-photo-carving-app.js?202108142021"></script>
+
+
+<script>
+  var sku = _zenSku;
+  var codeColorKey  = $('.single-option-selector-Color').val()?$('.single-option-selector-Color').val():'default';
+  var codeFileName  = '';
+  var codeBlob  = '';
+  var qnURL		= "https://spic.qn.cdn.imaiyuan.com/";
+  var textChange= 0;
+  var markupTitle = "{{ 'variant.title.Markup' | t }}";
+  
+  $(function(){
+    $('.zen-require').attr('name','customVal');
+    
+    setShopifyVariant(markupTitle, 0);
+    
+  	$('.videoText').on('input propertychange', function() {
+      textChange = 1;
+    });
+    
+    $('#addon-checkbox').change(function(){
+      if($(this).is(":checked")){
+      	setShopifyVariant(markupTitle, 1);
+      }else{
+      	setShopifyVariant(markupTitle, 0);
+      }
+    });
+    
+    $('.news-date-btn').click(function (){
+      
+      var src = $.trim( $('.videoText').val() );
+      if( src == '' ){
+        $('.videoText').css('border-color','red');
+        return false;
+      }
+      
+      $('.videoText').css('border-color','#f8f8f8');
+      
+      var reg=/[a-zA-z]+:\/\/[^\s]*/;
+
+      if(!reg.test(src)){
+        $('.videoText').css('border-color','red');
+        return false;
+      }
+
+      $('.videoText').css('border-color','#f8f8f8');
+      
+      if( textChange == 1 ){
+        
+        if($.trim($('#crop_picture').val()) == ''){
+          
+          $('.area-crop-upload').css('border-color','red');
+          
+          var flag_v = 0;
+          $('input[required]').each(function (){
+            if($(this).val() == '' && this.id != 'preview_code'){flag_v=1;}
+          });
+          if(flag_v == 1){return false;}
+          
+          $('.news-date-btn').attr("disabled","disabled");
+          
+          $('.product-form__item--submit button').click();//加车
+          $(".news-date-btn").removeAttr("disabled");
+          
+          return false;
+        }else{
+        	$('.area-crop-upload').css('border-color','#f8f8f8');
+        }
+        
+        var flag_v = 0;
+          $('input[required]').each(function (){
+            if($(this).val() == '' && this.id != 'preview_code'){flag_v=1;}
+          });
+          if(flag_v == 1){return false;}
+        $('.news-date-btn').attr("disabled","disabled");
+        
+        updateQrcode(src);
+        textChange = 0;
+        
+      }else{
+        var flag_v = 0;
+          $('input[required]').each(function (){
+            if($(this).val() == '' && this.id != 'preview_code'){flag_v=1;}
+          });
+          if(flag_v == 1){return false;}
+        $('.news-date-btn').attr("disabled","disabled");
+        $('.product-form__item--submit button').click();//加车
+        $(".news-date-btn").removeAttr("disabled");
+      }
+    });
+    
+  })
+  
+  function setShopifyVariant(markup, val){
+    $(".selector-wrapper label").each(function( index ) {
+      if($.trim($(this).text()).indexOf(markup) > -1){
+        $(this).next('select').val(val);
+        
+        let selectElementId = $(this).next('select').attr('id');
+        
+        var evt = document.createEvent('HTMLEvents');
+		evt.initEvent('change', true, true);
+        document.getElementById(selectElementId).dispatchEvent(evt); 
+
+      }
+    });
+  }
+  
+  function updateQrcode(src){
+    
+    $('#qrcodeoutput').html(''); // clear canvas
+    $.getScript('{{ "jquery-qrcode-0.17.0.js" | asset_url }}',function(){
+               
+      $('#qrcodeoutput').qrcode({
+        text: src,
+      	fill: codeJson[sku]?(codeJson[sku][codeColorKey]?codeJson[sku][codeColorKey]:'#A286BD'):'#A286BD',
+        minVersion:1,
+        radius:0.2,
+        ecLevel:'H',
+      	quiet:2,
+      	size: 400
+      });	
+    
+      codeBlob = convertBase64ToBlob(jQuery('#qrcodeoutput').children('canvas')[0].toDataURL('image/png'));
+      console.log('upload img...');
+    console.log(codeBlob);
+      uploadtoqiniu(codeBlob, setCodeSrc, 'png');
+    });
+  }
+  
+  function convertBase64ToBlob(base64){
+    var base64Arr = base64.split(',');
+    var imgtype = '';
+    var base64String = '';
+    if(base64Arr.length > 1){
+      base64String = base64Arr[1];
+      imgtype = base64Arr[0].substring(base64Arr[0].indexOf(':')+1,base64Arr[0].indexOf(';'));
+    }
+    var bytes = atob(base64String);
+    var bytesCode = new ArrayBuffer(bytes.length);
+    var byteArray = new Uint8Array(bytesCode);
+
+    for (var i = 0; i < bytes.length; i++) {
+      byteArray[i] = bytes.charCodeAt(i);
+    }
+    return new Blob( [bytesCode] , {type : imgtype});
+  }
+  
+  function randomString(len){
+    var len = len || 32;
+    var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
+    var maxPos = $chars.length;
+    var pwd = '';
+    for (i = 0; i < len; i++) {
+      pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+    }
+    return pwd;
+  }
+
+  function setCodeSrc(src){
+    
+    $("#preview_code").val(src);
+    
+    setTimeout(function (){$('.product-form__item--submit button').click();$(".news-date-btn").removeAttr("disabled");}, 500);
+  } 
+  
+  function uploadtoqiniu(blob, callback, suffix){
+    $.ajax({
+      type: "POST",
+      url: "https://pic.stylelab.com/assist/uptoken",
+      dataType: 'json',
+      beforeSend: function() {
+      },
+      success: function(data){
+        var observer = {                         
+          next(result){
+            
+          },
+          error(err){console.log(err.message);},
+          complete(res1){
+            var src = qnURL + res1.key;
+            callback(src);
+          }
+        };
+        var putExtra = {
+          fname: "",                          
+          params: {},                         
+          mimeType: null                      
+        };
+        var config = {
+          region:qiniu.region.na0,
+          concurrentRequestLimit:3
+        };
+        var filename = new Date().Format("yyyyMMddhhmmss") + randomString(6);
+        var key = 'getcustomvideocode_' + filename + '.' + suffix;
+        
+        if(suffix == 'png'){
+          codeFileName = key;
+        }
+        var observable = qiniu.upload(blob, key, data.token, putExtra, config);
+        observable.subscribe(observer);
+        
+      }
+  	}); 
+  }
+</script>

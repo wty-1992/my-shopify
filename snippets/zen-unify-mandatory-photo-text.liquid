@@ -1,0 +1,142 @@
+{% for tag in product.tags %}
+    {% if tag contains 'custom-unify-text-controlled-' %}
+		{% assign maxlength = tag | remove: "custom-unify-text-controlled-" | split:"-" %}{%comment%}输入框限制字符(同时可表示输入框数量){%endcomment%}
+    {% endif %}
+	{% if tag contains 'custom-text-tips-' %}
+		{% assign tips = tag | remove: "custom-text-tips-" | split:"-" %}{% comment %}输入框上提示{% endcomment %} 
+    {% endif %}
+	{% if tag contains 'custom-text-placeholder-' %}
+		{% assign placeholder = tag | remove: "custom-text-placeholder-" | split:"-" %}{% comment %}输入框内提示{% endcomment %} 
+    {% endif %}
+	{% if tag contains 'custom-text-value-' %}
+		{% assign values = tag | remove: "custom-text-value-" | split:"-" %}{% comment %}输入框默认值{% endcomment %} 
+	{% endif %}
+{% endfor %}
+<script>
+    var baseurl = 'https://pic.stylelab.com/';
+    var _zenSkuNew = "{{ product.selected_or_first_available_variant.sku }}";
+    
+    var dpi = 72;      
+    {% for item in product.tags %}
+      {% if item contains "custom-dpi-" %}
+        {% assign dpi = item | remove: "custom-dpi-"%}
+        {% if dpi != '' %}
+          dpi = '{{dpi}}';
+        {% endif %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+          console.log('dpi', dpi)
+    
+    
+    if(_zenSkuNew.indexOf("-") != -1) {
+      var _zenSku = _zenSkuNew.match(/(\S*)-/)[1]
+    }else {
+      var _zenSku = _zenSkuNew
+    }
+    
+    //vue-photocarving插件遮罩图传图+刻字配置
+    var _zenConfig = {
+      photoObj: [],
+      carvingObj: [],
+      crystalObj: [],
+      curveCarvingObj: [],
+      nameObj: [],
+      carvingBigObj: [],
+      cropPrompt: "Please make sure you're putting your picture in correct position, we'll make it exactly the same as shown in the preview above.",   //刻字弹层提示文字, 可选, 默认无
+      requirePrompt: "This is a required field.",  //传图必填提示文案
+      uploadLabel: "Upload Your Photo",  //传图描述标签
+      btnUploadText: "Upload",  //上传按钮文字
+      photoCancelText: "Cancel",  //传图层Cancel文案
+      photoConfirmText: "Confirm", //上传按钮文案
+      photoUrl: "https://pic.stylelab.com/img/photo/",//传图、刻字底图的存储位置
+      crop: [],
+      photo: [
+        {
+          require: true,//是否必填
+          sku: _zenSku,
+          basePhotoImg: baseurl+"img/photo/"+_zenSku+".png?123",//传图的遮罩图地址
+          ainame: "",//后端生成图片时，使用的ai图片名	默认为空（一般不用设置）
+          isAiLucid: 0,//后端生成的ai图边缘是否为透明	1:透明 0:不透明 不设置默认是0
+          bgcolor: "",//效果图的背景颜色 一般填rgb(255,255,255) 为空则是黑色
+          style: 0,//界面样式 0:单行展示 1：矩形上传表单 不设置默认是0
+          type: "multipic",//类型 在传数据给erp时可能会用到，该功能没用到
+          dpi: dpi
+        }
+      ],
+      carving: [],
+      crystal:[],
+      crystalText:[],
+      curveCarving:[]
+    };
+</script>
+<div class="photo-select-carving">
+	<div id="zen-photocarving"></div>
+  	<div class="mandatory">
+      	<p>*Please enter the words you would like to say to your lover</p>
+      
+      {% for max in maxlength %}
+        <div class="text-title">
+          <p>{{ tips[forloop.index0] }}</p>
+        </div>
+        <div class="custom-index">
+          <input type="text" class="input-cusom-text" value="{{ values[forloop.index0] | default: valiues }}" maxlength="{{ max }}" placeholder="{{ placeholder[forloop.index0] | default: placeholder  }}" name="{{ name[forloop.index0] | default: forloop }}">
+          <span><b>*</b><i class="txtNum">{{ max }}</i>left</span>
+        </div>
+      {% endfor %}
+      
+  	</div>
+  <input type="text" id="customInfo" name="properties[customInfo]"   value="" style="display:none" />
+</div>
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.5.5/zen-photo-carving-chunk-vendors.css?201912091454" rel="stylesheet" />
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.5.5/zen-photo-carving-app.css?201912091454" rel="stylesheet" />
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.5.5/zen-photo-carving-chunk-vendors.js?201912091454"></script>
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.5.5/zen-photo-carving-app.js?201912091454"></script>
+<script>
+	$(function(){
+    	$('.zen-require').attr('name','customVal');
+    })
+    function validators(){
+		let zenFlag = true; 
+      	let zenInfo = document.getElementsByClassName("zen-require")[0].value;
+        let input = $('.input-cusom-text');
+        let data = {}
+      	if(zenInfo){
+      		var zenInfo = JSON.parse(zenInfo);
+            zenInfo.photo.forEach(function(v,i) {
+              if(v.ai == '') {
+                  $('.area-photo-upload').css('border-color',"red");
+                  zenFlag = false;
+              }else {
+                $('.area-photo-upload').css('border-color',"black");
+                data['_sunzi_source'] = v.origin
+                data['_sunzi_effect'] = v.crop
+                data['_sunzi_ai'] = v.ai
+              }    
+            })
+            
+            if(input.length>0){
+              $.each(input, function (i, v){
+                if($.trim(v.value)==''){
+                  $(this).css('border-color', 'red');
+                }else{
+				  $(this).css('border-color', '#e7e7e7');
+                }
+              });
+              if(input.length>1){
+                customInfo['_sunzi_texts'] = [];
+                $.each(input, function (i, v){
+                  let vv = {"value":v.value,"number":(i+1)+''};
+                  customInfo['_sunzi_texts'].push(vv);
+                });
+              }else{
+                customInfo['_sunzi_text'] = {"value":input.val()};
+              }
+            }
+            $('#customInfo').val(JSON.stringify(customInfo));
+      	}else{
+          zenFlag = false;
+        }
+      	return zenFlag;
+    }
+</script>

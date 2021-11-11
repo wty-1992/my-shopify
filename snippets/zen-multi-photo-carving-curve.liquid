@@ -1,0 +1,549 @@
+
+{% assign sku = product.selected_or_first_available_variant.sku %}
+{% if product.selected_or_first_available_variant.sku contains "-" %}
+  {% assign skuArr = product.selected_or_first_available_variant.sku | split: "-"%}
+  {% assign sku = skuArr[0] %}
+{% endif %}
+{% if product.metafields["global"]["cattribute"] %}
+  {% assign customJson = product.metafields["global"]["cattribute"] | replace: "'", "" %}
+{% endif %}
+
+<script>
+  var _zenEngravingFontOptionsCurve,_zenEngravingSizeOptionsCarving; 
+  var _zenEngravingSizeOptions = [{
+    value: "20",
+    label: "20"
+  }, {
+    value: "30",
+    label: "30"
+  }, {
+    value: "40",
+    label: "40"
+  }, {
+    value: "50",
+    label: "50"
+  }];
+  var _zenEngravingFontOptions = [{
+    value: "TimesNewRoman",
+    label: "TimesNewRoman"
+  }, {
+    value: "NexaScript-Free",
+    label: "NexaScript"
+  }, {
+    value: "AppleChancery",
+    label: "AppleChancery"
+  }, {
+    value: "holyunion",
+    label: "Holyunion"
+  }, {
+    value: "AlluraRegular",
+    label: "AlluraRegular"
+  }];
+  
+    
+    var _zenSku = "{{sku}}";
+  	var customOpt = `{{ customJson }}`?JSON.parse(`{{ customJson }}`):{};
+    
+    
+    var baseurl = 'http://pic.stylelab.com/';
+    var photoArray = [];
+  	var coverPhoto = typeof customOpt.coverPhoto!='undefined'?customOpt.coverPhoto:'';
+    if(customOpt.coverPhoto != undefined){
+      coverPhoto = customOpt.coverPhoto?true:false;
+    }
+    var styleConfig = ($(window).width() > 768) ? 1 : 0;    
+  	if(typeof customOpt.photo == 'undefined'){customOpt.photo = {};}
+    if(typeof customOpt.photo != 'undefined'){
+      if(customOpt.photo[0] == undefined){customOpt.photo = [customOpt.photo];}
+      customOpt.photo.forEach(function(vv,ii){
+        coverPhoto = vv.coverPhoto?vv.coverPhoto:coverPhoto;
+		photoArray.push(
+          { 
+            require: true,
+            sku: _zenSku,
+            basePhotoImg: baseurl + "img/photo/"+_zenSku+".png?456", 
+            ainame: "",
+            isAiLucid: vv.isAiLucid ? vv.isAiLucid : 0,
+            isAiColor: vv.isAiColor ? vv.isAiColor : '',
+            bgcolor: vv.bgcolor ? vv.bgcolor : "rgb(255,255,255)",
+            grayscale: vv.grayscale ? true : false,
+            coverPhoto: vv.coverPhoto ? true : false,
+            style: styleConfig,
+            type: "multipic",
+            dpi: vv.dpi ? vv.dpi : ''
+          }
+        );
+      });
+    }
+    
+  	var leftText = typeof customOpt.leftText!='undefined'?customOpt.leftText:'';
+    var carvingArray = [];
+    if(typeof customOpt.carving != 'undefined'){
+      if(customOpt.carving[0] == undefined){customOpt.carving = [customOpt.carving];}
+	  customOpt.carving.forEach(function(v,i){
+        var oneSide = v.oneSide == 'true'?true:false;
+        var isBigCarving = v.isBigCarving || 0;
+        var hasPhoto = v.hasPhoto === true ? true : false;
+      	var isBig = v.isBig == 'true'?true:false;
+        var require = v.require === true ? true : false;
+        
+        var cWidth = v.cWidth || 300;
+        var cHeight = v.cHeight || 240;
+        var baseWidth = v.baseWidth || 300;
+        console.log(isBig);
+        leftText = v.leftText?v.leftText:leftText;
+        console.log(v);
+        console.log('=================');
+        _zenEngravingFontOptionsCarving = _zenEngravingFontOptions;
+        if(typeof v.font != 'undefined' && $.trim(v.font) != '' ){
+          
+          v.font.forEach(function(f,n){
+            let fontList = {};
+            fontList['label'] = f;
+            fontList['value'] = f;
+            _zenEngravingFontOptionsCarving.push(fontList);
+          });
+    	}
+        
+        var _zenEngravingSizeOptionsCarving = _zenEngravingSizeOptions;
+        if(typeof v.size != 'undefined' && $.trim(v.size) != ''){
+          v.size.forEach(function(s,m){
+            let sizeList = {};
+            sizeList['label'] = s;
+            sizeList['value'] = s;
+            _zenEngravingSizeOptionsCarving.push(sizeList);
+          });
+    	}
+        console.log('_zenEngravingFontOptionsCarving', _zenEngravingFontOptionsCarving);
+        carvingArray.push({
+            require: require,
+          	carvingNumoption: v.carvingNumoption==true||v.carvingNumoption=='true'?true:false,
+            oneSide: oneSide,
+            isBigCarving: isBigCarving,
+            hasPhoto:hasPhoto,
+            previewText: "{{ 'zen.curvecarving.add_engravings_back' | t }}",//左侧预览文字
+            btnText: "{{ 'zen.general.add' |t }}",//按钮文案
+            type: "",
+            sku: _zenSku,
+            in: _zenSku+"-IN.png",
+            out: _zenSku+"-OUT.png",
+            isBig: isBig,    //是否生成大图
+            showSize: _zenEngravingSizeOptionsCarving.length > 1 ? true : false,  //是否显示字号选项
+            showFont: _zenEngravingFontOptionsCarving.length > 1 ? true : false,  //是否显示字体选项
+            isSelectStyle: false,
+            engravingSizeOptions: _zenEngravingSizeOptionsCarving,
+            engravingFontOptions: _zenEngravingFontOptionsCarving,
+            bigParam: { width: 800, height: 640, fontWeight: 'bold', fontSize: 30},  //刻字大图参数 是只有文字的大图
+            originX: v.originX ? v.originX : "center",
+            fontFamilyLabel: "{{ 'zen.photocarving.font' |t }}:",
+            fontSizeLabel: "{{ 'zen.photocarving.size' |t }}:",
+            textPlaceHolder:"{{ 'zen.photocarving.matters_need_attention' |t }}",
+            errorWordShow:true,
+            emojiErrorField: "{{ 'zen.general.error_emoji' |t }}",
+            confirmText:"{{ 'zen.curvecarving.confirm_your_design' |t }}",
+            cancelText:"{{ 'zen.curvecarving.without_engraving' |t }}",
+            btnChangeText:"{{ 'zen.general.change' |t }}",
+//             cropPrompt:"P.D. Colores o emoticonos no admitidos. e.j. Un icono de un corazón rojo mostrará un corazón en negro.",
+            uploadLoadingImage: 'https://ik.imagekit.io/soufeel/en/skin/frontend/smartwave/default/images/soufeel-30.gif',
+          	cWidth: cWidth,//刻字画布的宽度
+            cHeight: cHeight,//刻字画布的高度
+            baseWidth: baseWidth,//画布的基准宽度，设置该值则画布会根据cWidth/baseWidth的比例缩放，不设置默认为500
+            loadingFullScreen:true,
+            coors:v.coors
+          });
+      });
+    }
+  var curveArray = [];
+    if(typeof customOpt.curveCarving != 'undefined'){
+      console.log(customOpt.curveCarving);
+      if(customOpt.curveCarving[0] == undefined){customOpt.curveCarving = [customOpt.curveCarving];}
+      
+	  customOpt.curveCarving.forEach(function(v,i){
+        var oneSide = v.oneSide == 'true'?true:false;
+        var isBigCarving = v.isBigCarving || 0;
+        var hasPhoto = v.hasPhoto === true ? true : false;
+      	var isBig = v.isBig == 'true'?true:false;
+        var require = v.require === true ? true : false;
+        
+        var cWidth = v.cWidth || 300;
+        var cHeight = v.cHeight || 240;
+        var baseWidth = v.baseWidth || 300;
+        
+//         leftText = v.leftText?v.leftText:leftText;
+        leftText = "{{ 'zen.general.left' | t }}";
+        _zenEngravingFontOptionsCurve = _zenEngravingFontOptions;
+        if(typeof v.font != 'undefined' && $.trim(v.font) != ''){
+          
+          v.font.forEach(function(f,n){
+            let fontList = {};
+            fontList['label'] = f;
+            fontList['value'] = f;
+            _zenEngravingFontOptionsCurve.push(fontList);
+          });
+    	}
+        var _zenEngravingSizeOptionsCurve = _zenEngravingSizeOptions;
+        if(typeof v.size != 'undefined' && $.trim(v.size) != ''){
+          v.size.forEach(function(s,m){
+            let sizeList = {};
+            sizeList['label'] = s;
+            sizeList['value'] = s;
+            _zenEngravingSizeOptionsCurve.push(sizeList);
+          });
+    	}
+        
+        
+        curveArray.push({
+                inputMark: "",
+                require: true,
+                imgRequire: false,
+                cWidth: 500,
+                cHeight: 400,
+                baseWidth: 400,
+                isBig:false,
+                // bigParam: { width: 3575, height: 3575, fontWeight: 'bold', fontSize: 225},  //刻字大图参数
+                // imgRequireNotice: 'Please upload an image first.',
+                dialogWidth: '55%',
+                previewText: "{{ 'zen.curvecarving.add_engravings_front' | t }}", //左侧预览文字
+                btnText: "{{ 'zen.general.add' |t }}", //按钮文案
+          		btnChangeText: "{{ 'zen.general.change' | t }}", //按钮修改文案
+                fontFamilyLabel: "{{ 'zen.photocarving.font' |t }}:",
+                textPlaceHolder: "{{ 'zen.curvecarving.textPlaceHolder' | t }}",
+                please_note:  " ",
+                inputTextLabel: "", //弹层输入框上文案
+                isSinglelineInput: false,
+                engravingFontOptions: _zenEngravingFontOptionsCurve,
+                engravingSizeOptions: _zenEngravingSizeOptionsCurve,
+                sku: _zenSku,
+                baseImg: baseurl + "img/textdesign/"+_zenSku+"-IN.png",
+                // bigBaseImg: "http://pic.stylelab.com/img/photo/CLT002ai.png",
+                type : 2,   //1:照片 2:刻字
+                // uploadLoadingImage: 'https://cdn.shopify.com/s/files/1/0019/7437/0353/files/sandglass.gif?v=1551318072',
+                leftText: "{{ 'zen.general.left' | t }}",
+//                 isMarkup:  zenCattributeCurveCarving.isMarkup,
+                addPrice: "",
+                markupId: "",
+                rows: "1",   //输入框默认行数
+                resize: "none", //控制是否能被用户缩放
+                showChooseFont: true,
+                confirmText: "{{ 'zen.curvecarving.confirmText' | t }}",
+          		cancelText: "{{ 'customer.recover_password.cancel' | t }}",
+                errorWordShow:true,
+                emojiErrorField: "{{ 'zen.curvecarving.emojiErrorField' | t }}",
+                coors:  v.coors
+          });
+      });
+    }
+  
+  let fontfacearr = Object.assign(_zenEngravingFontOptionsCurve, _zenEngravingFontOptionsCarving);
+  let fontface = '';
+  $.each(fontfacearr, function (i, v){
+    var f = '{{'f_ls.woff' | asset_url}}'.replace(/f_ls/g, v.value);
+    fontface += `@font-face{font-family:'${v.value}';src:url('${f}') format('woff');font-weight:normal;font-style:normal}`;
+  });
+  console.log('fontface', fontface);
+  $('body').append(`<style>${fontface}</style>`);   
+  	console.log(curveArray);
+     window._zenConfig = {
+        photoObj: [],
+        carvingObj: [],
+        crystalObj: [],
+        curveCarvingObj: [],
+        nameObj: [],
+        textUrl: "https://pic.stylelab.com/img/textdesign/",//刻字底图地址
+        photoUrl: "https://pic.stylelab.com/img/photo/",//传图底图地址
+        isCloseOnClickModal: false,
+        uploadLabel:"{{ 'zen.curvecarving.uploadLabel' | t }}",
+        btnUploadText:"{{ 'zen.photocarving.upload' | t }}",
+        changeText:"{{ 'zen.general.change' | t }}",
+        uploadLabel: "{{ 'zen.general.photo' | t }}",
+        leftText:leftText,
+       	coverPhoto:coverPhoto,
+        hasNo:true,//当传图的style为0时，文案是否展示序号
+       	actionInfo: "{{ 'zen.curvecarving.actionInfo' | t }}",//刻字弹窗下部的文案
+        noteInfo: "{{ 'zen.photocarving.noteInfo' | t }}",//刻字弹窗下部的文案
+        //handcraftInfo: "{{ 'zen.curvecarving.handcraftInfo' | t }}",//刻字弹窗下部的文案
+        loadingFullScreen: true,
+        wrapperBackgroudColor: "#000000",
+        uploadLoadingImage: 'https://ik.imagekit.io/soufeel/en/skin/frontend/smartwave/default/images/soufeel-30.gif',
+        ifCarvingHorizontal:true,
+        crop: [],
+        photo: photoArray,
+        carving: carvingArray,
+        crystal: [],
+        curveCarving: curveArray,
+        photoCancelText:"{{ 'customer.recover_password.cancel' | t }}",
+        photoConfirmText:"{{ 'zen.curvecarving.confirm_your_design' | t }}",
+        fontRadioLabel:"{{ 'zen.general.font' | t }} :",
+        fontSizeSelectLabel:"{{ 'zen.general.font_size' | t }} :",
+       {% unless product.type == 'photo necklace' %}
+        cropPrompt:"{{ 'zen.photo.ps_please_well' | t }}."
+       {% endunless %}
+    };
+</script>
+
+<input type="hidden" name="properties[customInfo]" required="required" class="zen-require-input">
+
+<div id="zen-photocarving"></div>
+
+
+<link class="photo-carving-js" href="https://pic.stylelab.com/js/zen-photo-carving-0.3.5/zen-photo-carving-chunk-vendors.css?202101121702" rel="stylesheet" />
+<link class="photo-carving-js" href="https://pic.stylelab.com/js/zen-photo-carving-0.3.5/zen-photo-carving-app.css?202101121702" rel="stylesheet" />
+<script class="photo-carving-js" src="https://pic.stylelab.com/js/zen-photo-carving-0.3.5/zen-photo-carving-chunk-vendors.js?202101121702"></script>
+<script class="photo-carving-js" src="https://pic.stylelab.com/js/zen-photo-carving-0.3.5/zen-photo-carving-app.js?202101121702"></script>
+
+<script>
+  
+  var isIcon = false;
+  if($('.avatar-uploader-icon').length > 0){
+  	isIcon = true;
+  }
+  
+  var flagPhoto = true;
+  var flagCarving = true;
+  var flagCurve = true;
+  Product.validators.push(async () => {  //验证定制化必填字段
+        
+        var customInfo = document.getElementsByClassName("zen-require")[0].value;
+        var flag = true;
+        if (customInfo) {
+            customInfo = JSON.parse(customInfo);
+            console.log("customInfo:", customInfo);
+            _zenConfig.photo.forEach(function (v, i) {
+              console.log("check:", (v.require == true && customInfo.photo[i]));
+             
+            if(flagPhoto == false || (v.require == true && customInfo.photo[i].crop == '') ){
+                flag = false;
+            }
+            });
+            if(jQuery.isArray(_zenConfig.curveCarving)){
+                _zenConfig.curveCarving.forEach(function (v, i) {
+                    if(flagCurve == false || ( (jQuery.trim(customInfo.curve_engraving[i].engravingCrop) == '' || jQuery.trim(customInfo.curve_engraving[i].engravingText) == '') && customInfo.curve_engraving[i].require==true ) ){
+                        flag = false;
+                        console.log('curveCarving---false');
+                        jQuery('.curve-area-carving-'+i).css('border', '1px solid #e60044');
+                        jQuery('.require-curve-text-'+i).css('display','block');
+                    }else{
+                        if(typeof customInfo.photo[i] != 'undefined'){
+                          customInfo.photo[i].crop = customInfo.curve_engraving[i].engravingCrop;
+                        }
+                        
+                        customInfo.curve_engraving[i].engravingText = '#$%:' + customInfo.curve_engraving[i].engravingText;
+                      	customInfo.curve_engraving[i].engravingSize = '#$%:' + customInfo.curve_engraving[i].engravingSize;
+                        customInfo.curve_engraving[i].engravingFont = '#$%:' + customInfo.curve_engraving[i].engravingFont;
+                        jQuery('.curve-area-carving-'+i).css('border', '');
+                        jQuery('.require-curve-text-'+i).css('display','none');
+                    }
+                });
+            }
+           if(jQuery.isArray(_zenConfig.carving)){
+                _zenConfig.carving.forEach(function (v, i) {
+                    console.log('carving-i', 'carving-'+i);
+                    if(flagCarving == false || ( (jQuery.trim(customInfo.engraving[i].engravingCrop) == '' || jQuery.trim(customInfo.engraving[i].engravingText) == '') && customInfo.engraving[i].require==true ) ){
+                        flag = false;
+                        jQuery('.carving-box').find('.area-carving-'+i).css('border', '1px solid #e60044');
+                        jQuery('.require-carving-text-'+i).css('display','block');
+                    }else{
+                      	customInfo.engraving[i].engravingText = ' #$*:' + customInfo.engraving[i].engravingText;
+                        customInfo.engraving[i].engravingSize = ' #$*:' + customInfo.engraving[i].engravingSize;
+                        customInfo.engraving[i].engravingFont = ' #$*:' + customInfo.engraving[i].engravingFont;
+                        jQuery('.carving-box').find('.area-carving-'+i).css('border', '');
+                        jQuery('.require-carving-text-'+i).css('display','none');
+                    }
+                });
+            }
+
+            if(typeof(customOpt['text']) != "undefined"){
+                customOpt.text.forEach(function(v, i){
+                    console.log('jQuery("#custom-text"+i).val()', jQuery("#custom-text"+i).val());
+                      if(jQuery.trim(jQuery("#custom-text"+i).val()) == '' || jQuery.trim(jQuery("#custom-text"+i).val()).length > v.maxlength){
+                        jQuery("#custom-text"+i).css("border", "1px solid #F00");
+                        // jQuery("#mul-message").show();
+                        console.log('text---false');
+                        flag = false;
+                      }else{
+                        jQuery("#custom-text"+i).css("border", "");
+                        // jQuery("#mul-message").hide();
+                      }
+                });
+            }
+        } else {
+          console.log('no data');
+          _zenConfig.photo.forEach(function (v, i) {
+            jQuery('.carving-box').find('.area-carving-'+i).css('border', '1px solid #e60044');
+            jQuery('.require-carving-text-'+i).css('display','block');
+          });
+          flag = false;
+        }
+  
+  		var inputcustomInfo = customInfo;
+  	
+        if(inputcustomInfo.curve_engraving){inputcustomInfo.sf_curve_engraving = inputcustomInfo.curve_engraving;delete inputcustomInfo.curve_engraving;}
+        if(inputcustomInfo.engraving){inputcustomInfo.sf_engraving = inputcustomInfo.engraving;delete inputcustomInfo.engraving;}
+  
+  		$('.zen-require-input').val(JSON.stringify(inputcustomInfo));
+        
+        console.log("flag:", flag);
+        return flag;
+  });
+  if($(window).width()>768){
+    $(".photo-container .photo-box").after(`<a class="photocharms-warnfill" onclick="Dialog.open('#examples_hide')">{{ 'product.braceletsizeguide.examplesText' | t }}</a>`);
+  }else{
+    $(".photo-container .area-photo-upload").after(`<a class="photocharms-warnfill" onclick="Dialog.open('#examples_hide')">{{ 'product.braceletsizeguide.examplesText' | t }}</a>`);
+  }
+  $(function (){
+    $('.zen-require').attr('name','customVal');
+    setShopifyVariant('Markup', 0);
+    
+    window.addEventListener('EVENT_PHOTO_SAVE_AFTER', function(event){ // photo 原图保存成功
+      $('.photo-container .avatar').css('opacity',1);
+      $('.photo-text').remove();
+      flagPhoto=true;
+      photoChangeMark();
+    });
+    
+    window.addEventListener('EVENT_CURVE_ENGRAVING_SAVE_AFTER', function(event){ // 弧形确认
+      $('.curve-container .preview-thumbnail').show();
+      $('.curve-text').remove();
+      flagCurve=true;
+      curveChangeMark();
+    });
+    
+    window.addEventListener('EVENT_ENGRAVING_CANCEL_AFTER', function(event){ // 不刻字
+      $("#engraving-crop, #engraving-big, #engraving-text, #engraving-size, #engraving-font").val('');
+      setShopifyVariant('Markup', 0);
+    });
+
+    window.addEventListener('EVENT_ENGRAVING_SAVE_AFTER', function(event){ // 刻字确认
+      $('.carving-container .preview-thumbnail').show();
+      $('.carving-pre-text').remove();
+      
+      flagCarving=true;
+      //$(".area-crop-upload-"+index).css('border-color', '#d0d0d0');
+      var n = 1; // 刻字默认 1
+      if(customOpt.carving[0].carvingPriceOptional=="true"){ // 变体加价---刻字框数量不同加价不同
+        n = 0;
+        $('.carving-textarea textarea').each(function (i, v){
+          if($.trim($(this).val())!=0){
+            n++; // 0 1 2 3 --  1 2 3 4 
+          }
+        });
+        n = n>0?(n-1):n; // 一个以上加价
+      }
+      setShopifyVariant('Markup', n);
+      carvingChangeMark();
+    });
+
+    
+    
+    Listener.on([ Listener.product.update.before ], function(event, variant, dom) {
+      changeColor(dom, variant);
+    })
+    
+  });
+  
+  
+  function materialChangeMark(){ // 字母打钩   
+    $('#material_block').parents('.step-module').prev('.step-count').find('.procedure-num').hide().end().find('.across').addClass("open");
+  }
+  function photoChangeMark(){// photo 打钩
+    $('.photo-container').parents('.step-module').prev('.step-count').find('.procedure-num').hide().end().find('.across').addClass("open");
+  }
+  function curveChangeMark(){ // 弧形打钩
+    $('.curve-container').parents('.step-module').prev('.step-count').find('.procedure-num').hide().end().find('.across').addClass("open");
+  }
+  function carvingChangeMark(){ // 拖动打钩
+    $('.carving-container').parents('.step-module').prev('.step-count').find('.procedure-num').hide().end().find('.across').addClass("open");
+  }
+  
+  function removeMark(){
+    $('.photo-container').parents('.step-module').prev('.step-count').find('.procedure-num').show().end().find('.across').removeClass("open");
+    $('.curve-container').parents('.step-module').prev('.step-count').find('.procedure-num').show().end().find('.across').removeClass("open");
+    $('.carving-container').parents('.step-module').prev('.step-count').find('.procedure-num').show().end().find('.across').removeClass("open");
+  }
+  
+  
+  function changeColor(dom, variant){
+  	if($(dom).length > 0 && $(dom).data('name').toLowerCase().indexOf('material') > -1){ // 材质切换
+      
+      var sku = variant.sku;
+      changeImg(sku);
+      materialChangeMark();
+      removeMark();
+    }
+  }
+  
+  function changeImg(sku){
+    changeCarvingSku(sku);
+    changePhotoSku(sku);
+    changeBaseImg("https://pic.stylelab.com/img/textdesign/"+sku+"-IN.png", sku);
+    $('#app .preview-thumbnail').hide();
+    if($('.curve-pre-text').length < 1){
+    	$('.curve-container .area-carving-preview-text').append('<span class="curve-text"><span class="curve-pre-text">{{'zen.curvecarving.add_engravings_front' | t}}</span><font color="red">*</font></span>');
+    }
+    
+    if($('.carving-pre-text').length < 1){
+    	$('.carving-container .area-carving-preview-text').append('<span class="carving-pre-text">{{'zen.curvecarving.add_engravings_back' | t}}</span>');
+    }
+    
+    $('.photo-container .avatar').css('opacity',0);
+    if(isIcon){
+      if($('.avatar-uploader-icon').length < 1){
+        $('.photo-container .el-upload').append('<span class="photo-text"><i class="el-icon-plus avatar-uploader-icon"></i><span class="upload-label">{{'zen.general.photo' | t}}<span>1</span></span></span>');
+      }
+    }else{
+      if($('.area-photo-upload-text').length < 1){
+        $('.area-photo-upload-flex').eq(0).append('<span class="photo-text">{{'zen.general.photo' | t}} 1<font color="red">*</font></span>');
+      }
+    }
+    
+    
+    if(curveArray && curveArray[0].require == true){flagurve=false;}
+    if(photoArray && photoArray[0].require == true){flagPhoto=false;}
+    if(carvingArray && carvingArray[0].require == true){flagCarving=false;}
+
+//     let curveCarving = window._zenConfig.curveCarving[0];
+//     let carving = window._zenConfig.carving[0];
+//     let photo = window._zenConfig.photo[0];
+    
+//         window._zenConfig.curveCarving.splice(0, 1);
+//         window._zenConfig.carving.splice(0, 1);
+//         window._zenConfig.photo.splice(0, 1);
+
+//         setTimeout(function(){
+//           window._zenConfig.curveCarving.push(curveCarving);
+//           window._zenConfig.carving.push(carving);
+//           window._zenConfig.photo.push(photo);
+//           setTimeout(function(){
+//               productStep = new Step.open([".photo-container",".curve-container",".carving-container",".select-option.show .selector-wrapper",".material-list.dropdown"],{
+//                 config: {
+//                   translatePC:"15px",
+//                   translateMB:"15px"
+//                 },
+//                 custom:[
+//                   {"name":".material-list.dropdown","translatePC":"32px","translateMB":"30px"},
+//                   {"name":".photo-container","translatePC":"25px","translateMB":"10px"}
+//                 ]
+//               });
+//           },500);
+//         },100);
+  }
+
+  
+  function setShopifyVariant(variantName, val){
+    $(".selector-wrapper label").each(function( index ) {
+      if($.trim($(this).text()).indexOf(variantName)!=-1){
+        $(this).next('select').val(val).trigger('change');
+      }
+    });
+  }
+  var productStep = new Step.open([".photo-container",".curve-container",".carving-container",".select-option.show .selector-wrapper",".material-list.dropdown"],{
+    config: {
+      translatePC:"15px",
+      translateMB:"15px"
+    },
+    custom:[
+      {"name":".material-list.dropdown","translatePC":"32px","translateMB":"30px"},
+      {"name":".photo-container","translatePC":"25px","translateMB":"10px"}
+    ]
+  });   
+</script>

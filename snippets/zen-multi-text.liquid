@@ -1,0 +1,101 @@
+
+{% assign t1 = 'zen.general.Position_1_Add_Your_Name' | t %}
+{% assign t2 = 'zen.general.Position_2_Add_Your_Name' | t %}
+{% assign t3 = 'zen.general.Position_3_Add_Date_Or_Name' | t %}
+
+{% assign cattribute = '{"type":"MultiText","lines":3,"class":"wood","coors":[{"label":"' | append: t1  | append: '","limit":"8","font":"BrushScriptStd"},{"label":"' | append: t2  | append: '","limit":"8","font":"BrushScriptStd"},{"label":"' | append: t3 | append: '","limit":"10","font":"Arial"}]}' %}
+{% capture lines %}{% include 'func-verify_rules_json', json: cattribute, key: "lines" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign lines = lines | strip %}
+
+<div class="name-light-container">
+  
+	<div class="view-name"> 
+      <span class="view-name-span">{{'zen.general.preview' | t}}:</span>
+      <div id="showtext" class="showtext">
+        {% for i in (1..lines) %} 
+          <span class="showtext-in" id="showtext_{{ forloop.index0 }}" style=""></span>&nbsp;&nbsp;&nbsp;&nbsp;
+        {% endfor %}
+      </div>
+    </div>
+  
+  <div id="name-box">
+  
+  </div>
+  
+  <input id="engraving-text" name="properties[engravingText]" value="" style="display:none" />
+  
+</div>
+
+<script>
+  var jsonCustom = '{{ cattribute }}'?JSON.parse('{{ cattribute }}'):{};
+  console.log(jsonCustom);
+
+  var coorsObj = jsonCustom.coors?jsonCustom.coors:[];
+  
+  $(function(){
+    
+    if(jsonCustom.class){
+      $(".showtext-in").addClass(jsonCustom.class);
+    }  
+    
+  	var t_name_str = '';
+    coorsObj.forEach(function(v, i){
+      var limit = v.limit || 20;
+      var label = v.label || "Your Name";
+
+      t_name_str += '<div class="name-inputs" id="name-input'+i+'">';
+      t_name_str += '<input type="text" data-index="'+i+'" class="fonttext" name="fonttext" maxlangth="'+limit+'" value="" oninput="changeText('+i+',this,'+v.limit+')" placeholder="'+label+'"required/>';
+      t_name_str += '<span class="leftnum" id="leftnumbox'+i+'"><span id="leftnum'+i+'">'+v.limit+'</span> {{ 'zen.general.left' | t}}</span></div>';
+		
+      $('#showtext_'+i).css("font-family",v.font);
+    });
+
+    $('#name-box').html(t_name_str);
+    
+  })
+  
+  function changeText(i,obj,limitv){
+    var objLenOld = $(obj).val().length;
+    var objVal = $(obj).val().replace(/[\r\n]/g,"");
+    var objLen = objVal.length;
+	
+    if(objLen < objLenOld){
+    	$(obj).attr('maxlength',limitv + objLenOld - objLen);
+    }else{
+    	$(obj).attr('maxlength',limitv);
+    }
+    
+    if(objLen > limitv){
+    	var lenDiff = objLen - limitv;
+        $(obj).val($(obj).val().substr(-1,lenDiff));
+        $('#leftnum'+i).text(0);
+    }else{
+    	$('#leftnum'+i).text(parseInt(limitv) - objLen);
+    }
+      
+    $('#showtext_'+i).html(objVal);
+  }
+  
+  Product.validators.push(async () => {
+    var _flag = true;
+    var nameArr = [];
+    coorsObj.forEach(function(v, i){
+      if( $.trim($('.fonttext').eq(i).val()) == ''){
+        $('#name-input'+i).css('border-color', 'red');
+        _flag = false;
+      }else{
+        let ii = i+1;
+        nameArr.push(ii + ':' + $.trim($('.fonttext').eq(i).val()));
+        $('#name-input'+i).css('border-color', '#ccc');
+      }
+    });
+  
+    if(_flag){
+      $("#engraving-text").val(nameArr.join(' '));
+    }    
+  
+  	return _flag;
+  })
+  
+  
+</script>

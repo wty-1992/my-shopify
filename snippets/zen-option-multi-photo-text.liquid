@@ -1,0 +1,1220 @@
+{% if product.metafields["global"]["cattribute"] %}
+	{% assign customJson = product.metafields["global"]["cattribute"] %}
+{% else %}
+	{% assign customJson = '{"photo":{"samePhoto":true,"productItem":"XHD436","optionName":"option1","type":"num","data":{"isAiLucid":1}},"carving":{"sameCarving":true,"productItem":"XHD436","data":[{"font":["SimpletonBold"],"coors":[{"left":251.5,"top":354.5,"limit":"10","angle":"0","textColor":"#DCCDB5","shadowColor":"","direction":"horizontal","isWrap":false,"banDrag":"0","lineHeight":"1","rows":1,"resize":"none","text":"","size":62,"font":"SimpletonBold"}]}]}}' %}
+{% endif %}
+
+<script>
+  window.addEventListener('EVENT_PHOTO_DIALOG', function(event){
+    $('html').css({height: "100%", overflow: "hidden"});
+    $('body').css({height: "100%", overflow: "hidden"});
+  });
+  
+  window.addEventListener('EVENT_PHOTO_DIALOG_CLOSE', function(event){
+    $('html').css({height: "", overflow: ""});
+    $('body').css({height: "", overflow: ""});
+  });
+  
+  var customValue = '{{customJson}}';
+  var customJson = JSON.parse('{{customJson}}');
+  var _zenSku = "{{ product.selected_or_first_available_variant.sku }}";
+     
+  console.log('customValue===',customValue);  
+  
+  var productImage = typeof customJson.productImage != 'undefined' ? customJson.productImage : 0;
+  var productImageUrl = "{{product.images[0] | img_url: '1000x1000' | prepend: "https:"}}";
+  console.log('productImageUrl0====0',productImageUrl);
+  var optionList = {};
+  if(customValue.indexOf('optionName') > -1){
+    var optionNum = 0;
+    {% for option in product.selected_or_first_available_variant.options %}
+    optionNum++;
+    optionList['option'+optionNum] = '{{option}}';
+    {% endfor %}
+  }
+  
+  var photoArray = [];
+  
+  if(typeof customJson.photo != 'undefined'){
+    
+    //多个传图的遮罩图、ai图命名是否都相同 true：是 false：否（sku_从1开始的数字序号）
+    var samePhoto = typeof customJson.photo.samePhoto != 'undefined' ? customJson.photo.samePhoto : false;
+    var productItem = typeof customJson.photo.productItem != 'undefined' ? customJson.photo.productItem : '';
+    
+    var styleConfig = 0;
+	
+    //PC端传图区展示位正方形块 移动端传图区单行展示
+    if($(window).width() > 768){
+      styleConfig = 1;
+    }else{
+      styleConfig = 0;
+    }
+    
+    var photoOptionName = '';
+    var photoOptionVal = '';
+    //如果传图配置受某一个变体控制
+    if(typeof customJson.photo.optionName != 'undefined'){
+      
+      photoOptionName = customJson.photo.optionName;
+      photoOptionVal = optionList[photoOptionName];//获取控制传图的变体的默认值
+    }
+    
+    var photoConfig = customJson.photo.data;
+    
+    //如果是变体值是数字，选择几就有几个传图
+    if(customJson.photo.type == 'num'){
+      var photoNum = parseInt(photoOptionVal);
+      
+      for(var i = 1;i<=photoNum;i++){
+        let photoItem = setPhotoArray(photoConfig,i);
+        
+        if(samePhoto){
+        	photoItem = setPhotoArray(photoConfig);
+        }
+      	
+        photoArray.push(photoItem);
+      }
+      
+    }else if(customJson.photo.type == 'value'){//如果变体值不同走不同的传图配置
+      photoConfig[photoOptionVal].forEach(function(item,index){
+        let photoNo = index+1;
+        let photoItem = setPhotoArray(item,photoNo);
+        
+        if(samePhoto){
+        	photoItem = setPhotoArray(item);
+        }
+      	
+        photoArray.push(photoItem);
+      });
+      
+    }else if(customJson.photo.type == 'sku'){//如果sku不同走不同的传图配置
+      photoConfig[_zenSku].forEach(function(item,index){
+        let photoNo = index+1;
+        let photoItem = setPhotoArray(item,photoNo);
+        
+        if(samePhoto){
+        	photoItem = setPhotoArray(item);
+        }
+      	
+        photoArray.push(photoItem);
+      });
+      
+    }else{//传图配置与变体无关
+      photoConfig.forEach(function(item,index){
+        let photoNo = index+1;
+        let photoItem = setPhotoArray(item,photoNo);
+        
+        if(samePhoto){
+        	photoItem = setPhotoArray(item);
+        }
+      	
+        photoArray.push(photoItem);
+      });
+    }
+    
+    //构造插件中遮罩图传图的参数
+    function setPhotoArray(item,photoNo=''){
+      let cSku = _zenSku;
+      if(productItem){
+      	cSku = productItem;
+      }
+      
+      let photoName = cSku;
+      
+      if(photoNo){
+      	photoName = cSku+"_"+photoNo;
+      }
+      
+      return {
+        "require": true,
+        "type": "multipic",
+        "sku": photoName,
+        "basePhotoImg": "https://pic.stylelab.com/img/photo/"+photoName+".png?33zKaQ",
+        "ainame": "",
+        "isAiLucid": typeof item.isAiLucid != 'undefined' ? item.isAiLucid : 1,//后端生成的ai图边缘是否为透明	1:透明 0:不透明 不设置默认是0
+        "bgcolor": typeof item.bgcolor != 'undefined' ? item.bgcolor : "rgb(255,255,255)",//效果图的背景颜色 一般填rgb(255,255,255) 为空则是黑色
+        "isAiColor": typeof item.isAiColor != 'undefined' ? item.isAiColor : '',//后端生成的ai图边缘颜色值，当该参数不为空时，isAiLucid需要设置为0
+        "grayscale":typeof item.grayscale != 'undefined' ? item.grayscale : false,// 将图片显示为灰色.
+        "style": styleConfig,
+        "dpi":typeof item.dpi != 'undefined' ? item.dpi : ''
+      };
+    }
+    
+  
+  }
+  
+  
+  var cropArray = [];
+  
+  if(typeof customJson.crop != 'undefined'){
+    
+    var cropOptionName = '';
+    var cropOptionVal = '';
+    
+    if(typeof customJson.crop.optionName != 'undefined'){
+      cropOptionName = customJson.crop.optionName;
+      cropOptionVal = optionList[cropOptionName];
+    }
+    
+    var cropConfig = customJson.crop.data;
+    //如果是变体值是数字，选择几就有几个切图传图
+    if(customJson.crop.type == 'num'){
+      var cropNum = parseInt(cropOptionVal);
+      
+      for(var i = 1;i<=cropNum;i++){
+        var uploadLabel = "{{'zen.general.photo' | t }}"+ " " +i;
+        
+        var aspectRatio = 0;
+        if(cropConfig.width > 0){
+          aspectRatio = cropConfig.width / cropConfig.height;
+        }
+        
+        let cropItem = setCropArray(uploadLabel,aspectRatio);
+        
+        cropArray.push(cropItem);
+      }
+      
+    }else if(customJson.crop.type == 'value'){//如果变体值不同走不同的传图配置
+      cropConfig[cropOptionVal].forEach(function(item,index){
+        let cropNo = index+1;
+        var uploadLabel = "{{'zen.general.photo' | t }}"+ " " +cropNo;
+        
+      	var aspectRatio = 0;
+        if(item.width > 0){
+          aspectRatio = item.width / item.height;
+        }
+        
+        let cropItem = setCropArray(uploadLabel,aspectRatio);
+        
+        cropArray.push(cropItem);
+      });
+      
+    }else if(customJson.crop.type == 'sku'){//如果sku不同走不同的传图配置
+      cropConfig[_zenSku].forEach(function(item,index){
+        let cropNo = index+1;
+        var uploadLabel = "{{'zen.general.photo' | t }}"+ " " +cropNo;
+        
+      	var aspectRatio = 0;
+        if(item.width > 0){
+          aspectRatio = item.width / item.height;
+        }
+        
+        let cropItem = setCropArray(uploadLabel,aspectRatio);
+        
+        cropArray.push(cropItem);
+      });
+      
+    }else{//切图传图配置与变体无关
+      cropConfig.forEach(function(item,index){
+        let cropNo = index+1;
+        {% if product.tags contains "custom-input-title" %}
+        var uploadLabel = "your logo"
+        {% else %}
+      	var uploadLabel = "{{'zen.general.photo' | t }}"+ " " +cropNo;
+        {% endif %}
+      	var aspectRatio = 0;
+        if(item.width > 0){
+          aspectRatio = item.width / item.height;
+        }
+        
+        let cropItem = setCropArray(uploadLabel,aspectRatio);
+        
+        cropArray.push(cropItem);
+        
+      });
+      
+    }
+    
+    //构造插件中切图传图的参数
+    function setCropArray(uploadLabel,aspectRatio){
+      return {
+        uploadLabel: uploadLabel,  //传图描述标签
+        btnUploadText: "{{'zen.photo.upload' | t }}",  //上传按钮文案
+        require: true,//是否必传图片
+        hasCropOrigin: true,
+        sku: _zenSku,
+        style: 0, //设置上传样式，0:单行展示 1：矩形上传表单
+        type: '',
+        aspectRatio: aspectRatio
+      };
+      
+    }
+    
+  
+  }
+  
+  if(typeof customJson.text != 'undefined'){
+        
+    var textHtml = '';
+
+    var textOptionName = '';
+    var textOptionVal = '';
+
+    if(typeof customJson.text.optionName != 'undefined'){
+
+      textOptionName = customJson.text.optionName;
+      textOptionVal = optionList[textOptionName];
+    }
+  }
+  
+  var carvingArray = [];
+  
+  if(typeof customJson.carving != 'undefined'){
+    
+    //多个传图的遮罩图、ai图命名是否都相同 true：是 false：否（sku_从1开始的数字序号）
+    var sameCarving = typeof customJson.carving.sameCarving != 'undefined' ? customJson.carving.sameCarving : false;
+    var carvingProductItem = typeof customJson.carving.productItem != 'undefined' ? customJson.carving.productItem : '';
+    
+    var carvingOptionName = '';
+    var carvingOptionVal = '';
+    //如果传图配置受某一个变体控制
+    if(typeof customJson.carving.optionName != 'undefined'){
+      
+      carvingOptionName = customJson.carving.optionName;
+      carvingOptionVal = optionList[carvingOptionName];//获取控制传图的变体的默认值
+    }
+    
+    var carvingConfig = customJson.carving.data;
+    
+    //如果是变体值是数字，选择几就有几个传图
+    if(customJson.carving.type == 'num'){
+      var carvingNum = parseInt(carvingOptionVal);
+      
+      for(var i = 1;i<=carvingNum;i++){
+        let carvingItem = setCarvingArray(carvingConfig,i);
+        
+        if(sameCarving){
+        	carvingItem = setCarvingArray(carvingConfig);
+        }
+      	
+        carvingArray.push(carvingItem);
+      }
+      
+    }else if(customJson.carving.type == 'value'){//如果变体值不同走不同的传图配置
+      carvingConfig[carvingOptionVal].forEach(function(item,index){
+        let carvingNo = index+1;
+        let carvingItem = setCarvingArray(item,carvingNo);
+        
+        if(sameCarving){
+        	carvingItem = setCarvingArray(item);
+        }
+      	
+        carvingArray.push(carvingItem);
+      });
+      
+    }else{//传图配置与变体无关
+      carvingConfig.forEach(function(item,index){
+        let carvingNo = index+1;
+        let carvingItem = setCarvingArray(item,carvingNo);
+        
+        if(sameCarving){
+        	carvingItem = setCarvingArray(item);
+        }
+      	
+        carvingArray.push(carvingItem);
+      });
+    }
+  	
+    function setCarvingArray(v,carvingNo = ''){
+		var _zenEngravingSizeOptions = [
+        {
+          value: "20",
+          label: "20"
+        }
+      ];
+
+      var _zenEngravingFontOptions = [
+        {
+          value: "TimesNewRoman",
+          label: "TimesNewRoman"
+        }
+      ];
+      
+      var oneSide = v.oneSide == 'true' || v.oneSide == true?true:false;
+      var isBigCarving = v.isBigCarving || 0;
+      var hasPhoto = v.hasPhoto === true ? true : false;
+      var isBig = v.isBig == 'true'||v.isBig == true?true:false;
+      var isBigBG = v.isBigBG== 'true'||v.isBigBG== true?true:false;
+      var require = v.require === true ? true : false;
+      var isOtherImg = v.isOtherImg ? true : false;
+      var bigParam = { width: 800, height: 640, fontWeight: 'bold', fontSize: 30};
+      var bigBackgroundColor = v.bigBackgroundColor ? v.bigBackgroundColor : '';
+
+      var cWidth = v.cWidth || 500;
+      var cHeight = v.cHeight || 400;
+      var baseWidth = v.baseWidth || 500;
+
+      var leftText = v.leftText?v.leftText:'';
+
+      if(typeof v.font != 'undefined'){
+        _zenEngravingFontOptions = [];
+        v.font.forEach(function(f,n){
+          let fontList = {};
+          fontList['label'] = f;
+          fontList['value'] = f;
+          _zenEngravingFontOptions.push(fontList);
+        });
+      }
+              
+      if(typeof v.size != 'undefined'){
+        _zenEngravingSizeOptions = [];
+        v.size.forEach(function(s,m){
+          let sizeList = {};
+          sizeList['label'] = s;
+          sizeList['value'] = s;
+          _zenEngravingSizeOptions.push(sizeList);
+        });
+      }
+      
+      $.each(v.coors, function (ci, cv){
+        loadCustomFonts(cv.font);
+      });
+      
+      let cSku = _zenSku;
+      if(carvingProductItem){
+      	cSku = carvingProductItem;
+      }
+      
+      let carvingName = cSku;
+      
+      if(carvingNo){
+      	carvingName = cSku+"_"+carvingNo;
+      }
+      
+      return {
+            require: require,
+          	carvingNumoption: v.carvingNumoption==true||v.carvingNumoption=='true'?true:false,
+            oneSide: oneSide,
+            isBigCarving: isBigCarving,
+            hasPhoto:hasPhoto,
+            previewText: "{{ 'zen.general.add_engravings' | t }}", //左侧预览文字
+            btnText: "{{ 'zen.general.add' | t }}", //按钮文案
+            type: "",
+            sku: v.baseSku?v.baseSku:carvingName,
+            in:  v.baseSku?v.baseSku+"-IN.png?"+Math.random():carvingName+"-IN.png?"+Math.random(),
+            out: v.baseSku?v.baseSku+"-OUT.png?"+Math.random():carvingName+"-OUT.png?"+Math.random(),
+            isBig: isBig, //是否生成大图
+            isOtherImg:isOtherImg,//是否将刻字大图剪裁到只剩文字部分
+            isBigBG: isBigBG, //是否生成大图背景图
+            bigBackgroundColor: bigBackgroundColor, //刻字大图背景颜色
+            showSize: _zenEngravingSizeOptions.length > 1 ? true : false, //是否显示字号选项
+            showFont: _zenEngravingFontOptions.length > 1 ? true : false, //是否显示字体选项
+            isSelectStyle: false,
+            engravingSizeOptions: _zenEngravingSizeOptions,
+            engravingFontOptions: _zenEngravingFontOptions,
+            bigParam: bigParam, //刻字大图参数 是只有文字的大图
+            originX: v.originX ? v.originX : "center",
+            fontFamilyLabel: "{{ 'zen.photocarving.font' | t }}:",
+            fontSizeLabel: "{{ 'zen.photocarving.size' | t }}:",
+			textPlaceHolder:translation("{{'zen.engrave.noteInfo' | t}}"),
+            errorWordShow:true,
+            emojiErrorField: "{{ 'zen.curvecarving.error_emoji' | t }}",
+            confirmText:"{{ 'zen.general.confirm' | t }}",
+            cancelText:"{{ 'zen.general.cancel' | t }}",
+            btnChangeText:"{{ 'zen.general.change' | t }}",
+            uploadLoadingImage: 'https://ik.imagekit.io/soufeel/en/skin/frontend/smartwave/default/images/soufeel-30.gif',
+            loadingFullScreen:true,
+          	cWidth: cWidth,//刻字画布的宽度
+            cHeight: cHeight,//刻字画布的高度
+            baseWidth: baseWidth,//画布的基准宽度，设置该值则画布会根据cWidth/baseWidth的比例缩放，不设置默认为500
+            coors:v.coors
+          }
+    }
+    
+  }
+  
+  //定义插件的参数
+  var _zenConfig = {
+    photoObj: [],
+    carvingObj: [],
+    crystalObj: [],
+    curveCarvingObj: [],
+    nameObj: [],
+    crop: cropArray,
+    photo: photoArray,
+    carving: carvingArray,
+    crystal: [],
+    btnUploadText:"{{ 'zen.general.add' | t }}",
+    uploadLabel:"{{ 'zen.general.photo' | t }}",
+    changeText:"{{ 'zen.general.change' | t }}",
+    photoCancelText:"{{ 'customer.recover_password.cancel' | t }}",
+    photoConfirmText:"{{ 'zen.general.confirm' | t }}",
+    uploadLoadingImage: 'https://ik.imagekit.io/soufeel/en/skin/frontend/smartwave/default/images/soufeel-30.gif',
+    wrapperBackgroudColor: '#000000',
+    curveCarving: []
+  };
+                              
+</script>
+
+<div class="photo-crop-container">
+	<div id="zen-photocarving"></div>
+  
+  	<input type="hidden" id="customInfo" name="properties[customInfo]" value="" style="display:none" required />
+</div>
+
+<div class="text-container" id="textContent"></div>
+
+<!-- 引入插件文件 -->
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.5.5/zen-photo-carving-chunk-vendors.css?202108142021" rel="stylesheet" />
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.5.5/zen-photo-carving-app.css?202108142021" rel="stylesheet" />
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.5.5/zen-photo-carving-chunk-vendors.js?202108142021"></script>
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.5.5/zen-photo-carving-app.js?202108142021"></script>
+
+<script>
+  var customInfo ={};
+  var textInfo = [];
+  
+	$(document).ready(function(){
+      $('.zen-require').attr('name','customVal');
+      
+      //根据配置构造文字输入框
+      if(typeof customJson.text != 'undefined'){
+        
+        var textConfig = customJson.text.data;
+        
+        var textType = customJson.text.type || '';
+        if(textType == 'num'){//变体值是数字，选择几就展示几个文字输入框
+          var textNum = parseInt(textOptionVal);
+
+          for(var i = 1;i<=textNum;i++){
+            textHtml += getTextHtml(textConfig,i);
+			
+          }
+          
+        }else if(textType == 'value'){//不同变体值对应不同的文字输入框配置
+          textConfig[textOptionVal].forEach(function(item,index){
+            textHtml += getTextHtml(item,index);
+          });
+
+        }else if(textType == 'sku'){//不同sku对应不同的文字输入框配置
+          textConfig[_zenSku].forEach(function(item,index){
+            textHtml += getTextHtml(item,index);
+          });
+
+        }else{//文字输入框配置与变体无关
+          
+          textConfig.forEach(function(item,index){
+			textHtml += getTextHtml(item,index);
+          });
+
+        }
+        
+        $('#textContent').html(textHtml);
+        
+        //初始化日期选择器（如果配置中有日期选择器的话）
+        if($('.dateInput').length > 0){
+          $('.dateInput').each(function(){
+            let dID = $(this).attr('id');
+            $( "#"+dID ).datepicker({
+              maxDate: 0,
+              dateFormat: $(this).attr('format'),
+              changeYear: true,
+              changeMonth: true,
+              yearRange: $(this).attr('range')
+
+            });
+          });
+
+        }
+        
+      }
+
+
+    });
+  
+  //构建文字输入框的html
+  function getTextHtml(coors,i){
+    textInfo.push(coors);
+    
+  	var t_name_str = '';
+
+    var limit = coors.limit || 20;
+    var label = coors.label || "";
+    var textType = coors.type || "";
+    var placeholderText = coors.placeholder || "{{ 'zen.engrave.placeholder' | t }}";
+    
+    if(typeof coors.placeholderType != 'undefined'){
+    	switch(coors.placeholderType) {
+           case "month":
+              placeholderText = "{{ 'zen.general.type_month_here' | t }}";
+              break;
+           default:
+              placeholderText = "{{ 'zen.engrave.placeholder' | t }}";
+        } 
+    }
+    
+    var defaultValue = coors.defaultValue || '';
+    var textOption = coors.option || "";
+
+    t_name_str += '<div class="label-input-container">';
+    if(label){
+      t_name_str += '<label class="product-txt-label" for="fonttext">'+label+':</label>';
+    }
+
+    t_name_str += '<div class="text-input-container">';
+    if(textType == 'textarea'){
+      t_name_str += '<textarea type="text" class="fonttext" name="fonttext" data-option="'+textOption+'" maxlength="'+limit+'" value=""  oninput="changeText('+i+',this,'+limit+')" placeholder="'+placeholderText+'"></textarea>';
+    }else if(textType == 'number'){
+      var numberRange = coors.numberRange || '1-100';
+      t_name_str += '<input type="number" class="fonttext" name="fonttext" maxlength="'+limit+'" value=""  oninput="checkNumber(this,\''+numberRange+'\')" placeholder="'+placeholderText+'"/>';
+    }else if(textType == 'date'){
+      var dateFormat = coors.dateFormat || 'yymmdd';
+      var yearRange = coors.yearRange || '1800:c';
+      t_name_str += '<input type="text" id="datepicker'+i+'"data-format="'+dateFormat+'" data-range="'+yearRange+'" class="fonttext dateInput" name="fonttext" readonly="readonly" value="">';
+    }else if(textType == 'select'){
+      
+      t_name_str += '<select class="fonttext">';
+      coors.options.forEach(function(vv,ii){
+      	t_name_str += '<option value="'+vv+'">'+vv+'</option>'
+      });
+      t_name_str += '</select>';
+      
+    }else{
+      t_name_str += '<input type="text" class="fonttext" data-option="'+textOption+'" name="fonttext" maxlength="'+limit+'" value="{{defaultName}}"  oninput="changeText('+i+',this,'+limit+')" placeholder="'+placeholderText+'"/>';
+      t_name_str += '<div class="leftnum" id="leftnumbox'+i+'"><span id="leftnum'+i+'">'+limit+'</span> Left</div>';
+    }
+
+    t_name_str += '</div></div>';
+	
+    return t_name_str;
+  }
+  
+  function createNumPhoto(goal_num){
+    let current_num = objCount(window._zenConfig.photo);
+    goal_num = parseInt(goal_num);
+    let diff_num = goal_num - current_num;
+    if(diff_num > 0){
+
+      for(var ii = 0;ii <diff_num;ii++ ){
+        var photoNum = current_num + ii + 1;
+        
+        let photoContent = setPhotoArray(customJson.photo.data,photoNum);
+        if(samePhoto){
+        	photoContent = setPhotoArray(customJson.photo.data);
+        }
+        
+        window._zenConfig.photo.push(photoContent);
+      }
+    }else if(diff_num < 0){
+      for(var j = current_num;j >goal_num;j-- ){
+        window._zenConfig.photo.splice(j-1, 1);
+      }
+
+    }
+  }
+  
+  function createNumCrop(goal_num){
+    let current_num = objCount(window._zenConfig.crop);
+    goal_num = parseInt(goal_num);
+    let diff_num = goal_num - current_num;
+    if(diff_num > 0){
+
+      for(var ii = 0;ii <diff_num;ii++ ){
+        var cropNum = current_num + ii + 1;
+        
+        let uploadLabel = "{{'zen.general.photo' | t }}"+ " " +cropNum;
+        
+      	let aspectRatio = 0;
+        let cropConfig = customJson.crop.data
+        if(cropConfig.width > 0){
+          aspectRatio = cropConfig.width / cropConfig.height;
+        }
+        
+        let cropContent = setCropArray(uploadLabel,aspectRatio);
+        
+        window._zenConfig.crop.push(cropContent);
+      }
+    }else if(diff_num < 0){
+      for(var j = current_num;j >goal_num;j-- ){
+        window._zenConfig.crop.splice(j-1, 1);
+      }
+
+    }
+  }
+  
+  function createNumText(goal_num, current_num){
+    let diff_num = goal_num - current_num;
+    if(diff_num > 0){
+
+      for(var ii = 0;ii <diff_num;ii++ ){
+        var textNum = current_num + ii;
+        
+        let textHTML = getTextHtml(customJson.text.data,textNum);
+        $('#textContent').append(textHTML);
+        
+      }
+    }else if(diff_num < 0){
+      for(var j = current_num;j >goal_num;j-- ){
+        $('.text-input-container').eq(j-1).remove();
+      }
+
+    }
+  }
+  
+  function createNumCarving(goal_num){
+    let current_num = objCount(window._zenConfig.carving);
+    goal_num = parseInt(goal_num);
+    let diff_num = goal_num - current_num;
+    if(diff_num > 0){
+
+      for(var ii = 0;ii <diff_num;ii++ ){
+        var carvingNum = current_num + ii + 1;
+        
+        let carvingContent = setCarvingArray(customJson.carving.data,carvingNum);
+        if(sameCarving){
+        	carvingContent = setCarvingArray(customJson.carving.data);
+        }
+        
+        window._zenConfig.carving.push(carvingContent);
+      }
+    }else if(diff_num < 0){
+      for(var j = current_num;j >goal_num;j-- ){
+        window._zenConfig.carving.splice(j-1, 1);
+      }
+
+    }
+  }
+  
+  //计算对象元素个数
+  function objCount(obj) {
+    var count = 0;
+    for(var i in obj) {
+      count++;
+    }
+    return count;
+  }
+  
+  function createConfig(data,type='photo'){
+    if(type == 'photo'){
+      let photoNum = objCount(window._zenConfig.photo)
+      window._zenConfig.photo.splice(0, photoNum);
+      
+      setTimeout(function(){
+        
+        data.forEach(function(item,i){
+          let photoNo = i + 1;
+          let dataValue = setPhotoArray(item,photoNo);
+          if(samePhoto){
+        	dataValue = setPhotoArray(item);
+          }
+          
+      	  window._zenConfig.photo.push(dataValue);
+        });
+
+      },100);
+    }else if(type == 'crop'){
+      let cropNum = objCount(window._zenConfig.crop)
+      window._zenConfig.crop.splice(0, cropNum);
+      
+      setTimeout(function(){
+        
+        data.forEach(function(item,i){
+          let cropNo = i + 1;
+          let uploadLabel = "{{'zen.general.photo' | t }}"+ " " +cropNo;
+        
+          let aspectRatio = 0;
+          if(item.width > 0){
+            aspectRatio = item.width / item.height;
+          }
+
+          let dataValue = setCropArray(uploadLabel,aspectRatio);
+          
+      	  window._zenConfig.crop.push(dataValue);
+        });
+
+      },100);
+    }else if(type == 'carving'){
+      let carvingNum = objCount(window._zenConfig.carving)
+      window._zenConfig.carving.splice(0, carvingNum);
+      
+      setTimeout(function(){
+        
+        data.forEach(function(item,i){
+          let carvingNo = i + 1;
+          let dataValue = setCarvingArray(item,carvingNo);
+          if(sameCarving){
+        	dataValue = setCarvingArray(item);
+          }
+          
+      	  window._zenConfig.carving.push(dataValue);
+        });
+
+      },100);
+    }else{
+      $('#textContent').html('');
+      let textHTML = '';
+      data.forEach(function(item,i){
+        textHTML += getTextHtml(item,i);
+      });
+      
+      $('#textContent').append(textHTML);
+      
+    }
+  }
+  
+  function changeText(i,obj,limitv){
+    var objLenOld = $(obj).val().length;
+    var objVal = $(obj).val().replace(/[\r\n]/g,"");
+    var objLen = objVal.length;
+
+    if(objLen < objLenOld){
+      $(obj).attr('maxlength',limitv + objLenOld - objLen);
+    }else{
+      $(obj).attr('maxlength',limitv);
+    }
+
+    if(objLen > limitv){
+      var lenDiff = objLen - limitv;
+      $(obj).val($(obj).val().substr(-1,lenDiff));
+      $('#leftnum'+i).text(0);
+    }else{
+      $('#leftnum'+i).text(parseInt(limitv) - objLen);
+    }
+    
+    let coorOption = $(obj).data('option');
+    
+    if(coorOption){
+      if($.trim($(obj).val()) != ''){
+        setShopifyVariant(coorOption, 1);
+      }else{
+        setShopifyVariant(coorOption, 0);
+      }
+    }
+  }
+  
+  Listener.on([ Listener.product.update.after ], function(event, variant, dom) {  
+    
+    //如果设置变体图则读取变体图作为主图
+    if(productImage == 1 && variant.featured_image){
+      productImageUrl = variant.featured_image.src;
+      console.log('productImageUrl1====1',productImageUrl);
+    }
+    
+    if(typeof customJson.photo != 'undefined' && photoOptionVal && photoOptionName && photoOptionVal != variant[photoOptionName]){
+      photoOptionVal = variant[photoOptionName];
+      _zenSku = variant.sku;
+      
+      if(customJson.photo.type == 'num'){
+      	createNumPhoto(photoOptionVal);
+      }else{
+      	createConfig(customJson.photo.data[photoOptionVal]);
+      }
+      
+    }
+    
+    if(typeof customJson.photo != 'undefined' && customJson.photo.type == 'sku' && _zenSku != variant.sku){
+      _zenSku = variant.sku;
+      createConfig(customJson.photo.data[_zenSku]);
+    }
+    
+    if(typeof customJson.crop != 'undefined' && cropOptionVal && cropOptionName && cropOptionVal != variant[cropOptionName]){
+      cropOptionVal = variant[cropOptionName];
+      _zenSku = variant.sku;
+      
+      if(customJson.crop.type == 'num'){
+      	createNumCrop(cropOptionVal);
+      }else{
+      	createConfig(customJson.crop.data[cropOptionVal],'crop');
+      }
+      
+    }
+    
+    if(typeof customJson.crop != 'undefined' && customJson.crop.type == 'sku' && _zenSku != variant.sku){
+      _zenSku = variant.sku;
+      createConfig(customJson.crop.data[_zenSku],'crop');
+    }
+    
+    if(typeof customJson.text != 'undefined' && textOptionVal && cropOptionName && textOptionVal != variant[textOptionName]){
+      textOptionVal = variant[textOptionName];
+      _zenSku = variant.sku;
+      
+      if(customJson.text.type == 'num'){
+      	createNumText(textOptionVal);
+      }else{
+      	createConfig(customJson.text.data[textOptionVal],'text');
+      }
+      
+    }
+    
+    if(typeof customJson.text != 'undefined' && customJson.text.type == 'sku' && _zenSku != variant.sku){
+      _zenSku = variant.sku;
+      createConfig(customJson.text.data[_zenSku],'text');
+    }
+    
+    if(typeof customJson.carving != 'undefined' && carvingOptionVal && carvingOptionName && carvingOptionVal != variant[carvingOptionName]){
+      carvingOptionVal = variant[carvingOptionName];
+      _zenSku = variant.sku;
+      
+      if(customJson.carving.type == 'num'){
+      	createNumCarving(carvingOptionVal);
+      }else{
+      	createConfig(customJson.carving.data[carvingOptionVal],'carving');
+      }
+      
+    }
+
+  });
+  
+  var convertBase64ToBlob = function(base64){
+    var base64Arr = base64.split(',');
+    var imgtype = '';
+    var base64String = '';
+    if(base64Arr.length > 1){
+      //如果是图片base64，去掉头信息
+      base64String = base64Arr[1];
+      imgtype = base64Arr[0].substring(base64Arr[0].indexOf(':')+1,base64Arr[0].indexOf(';'));
+    }
+    // 将base64解码
+    var bytes = atob(base64String);
+    //var bytes = base64;
+    var bytesCode = new ArrayBuffer(bytes.length);
+    // 转换为类型化数组
+    var byteArray = new Uint8Array(bytesCode);
+
+    // 将base64转换为ascii码
+    for (var i = 0; i < bytes.length; i++) {
+      byteArray[i] = bytes.charCodeAt(i);
+    }
+
+    // 生成Blob对象（文件对象）
+    return new Blob( [bytesCode] , {type : imgtype});
+  };
+  function randomString(len){
+    len = len || 32;
+    var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
+    var maxPos = $chars.length;
+    var pwd = '';
+    for (i = 0; i < len; i++) {
+      pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+    }
+    return pwd;
+  }
+  
+  function setShopifyVariant(markup, val){
+    $(".selector-wrapper label").each(function( index ) {
+      if($.trim($(this).text()).indexOf(markup) > -1){
+        $(this).next('select').val(val).trigger('change');
+      }
+    });
+  }
+  
+  function checkNumber(obj,numberRange){
+    var val = parseInt($(obj).val());
+    $(obj).val(val);
+    
+    var numberArr = numberRange.split('-');
+    var minN = parseInt(numberArr[0]);
+    var maxN = parseInt(numberArr[1]);
+    
+    if(val < minN){
+      $(obj).val(minN);
+    }
+
+    if(val > maxN){
+      $(obj).val(maxN);
+    }
+    
+  }
+  
+  Product.validators.push(async () => {
+    var _zenFlag = true;
+     customInfo = {};
+                          
+    if(productImage == 1){
+    	customInfo['_sunzi_effect'] = productImageUrl;
+    console.log('productImageUrl2====2',productImageUrl);
+    }  
+  
+    var photoCount = objCount(window._zenConfig.photo);
+    var customData = {};
+  
+    if(typeof customJson.photo != 'undefined' && photoCount > 0){
+	  customData = JSON.parse($(".zen-require").val());
+      
+      if(photoCount > 1){
+        
+        customInfo['_sunzi_sources'] = [];
+        customInfo['_sunzi_ais'] = [];
+        
+        for(var i=0;i<photoCount;i++){
+          if(!customData.photo[i].ai){
+          	_zenFlag = false;
+            $('.area-photo-upload-'+i).css('border-color','red');
+          }else{
+          	customInfo['_sunzi_sources'].push(customData.photo[i].origin);
+            customInfo['_sunzi_ais'].push(customData.photo[i].ai);
+            
+            $('.area-photo-upload-'+i).css('border-color','black');
+          }
+        }
+      }else if(photoCount > 0){
+        if(!customData.photo[0].ai){
+          _zenFlag = false;
+          $('.area-photo-upload-0').css('border-color','red');
+        }else{
+          customInfo['_sunzi_source'] = customData.photo[0].origin;
+          customInfo['_sunzi_ai'] = customData.photo[0].ai;
+          
+          $('.area-photo-upload-0').css('border-color','black');
+        }
+        
+      }else{
+      	_zenFlag = false;
+      }
+    }
+  
+  	let cropCount = objCount(window._zenConfig.crop);
+  
+  	if(typeof customJson.crop != 'undefined' && cropCount > 0){
+	  let cropCustomData = JSON.parse($(".zen-require").val());
+      
+      
+      
+      if(cropCount > 1){
+        if(customJson.crop.dataType == 'ai'){
+          customInfo['_sunzi_ais'] = [];
+          customInfo['_sunzi_sources'] = [];
+        }else{
+          customInfo['_sunzi_sources'] = [];
+        }
+        
+        for(var i=0;i<cropCount;i++){
+          if(!cropCustomData.crop[i].crop){
+          	_zenFlag = false;
+            $('.area-crop-upload-'+i).css('border-color','red');
+          }else{
+            if(customJson.crop.dataType == 'ai'){
+              customInfo['_sunzi_ais'].push(cropCustomData.crop[i].crop);
+              customInfo['_sunzi_sources'].push(cropCustomData.crop[i].cropOrigin);
+            }else{
+              customInfo['_sunzi_sources'].push(cropCustomData.crop[i].crop);
+            }
+            
+            $('.area-crop-upload-'+i).css('border-color','#e7e7e7');
+          }
+        }
+      }else if(cropCount > 0){
+        if(!cropCustomData.crop[0].crop){
+          _zenFlag = false;
+          $('.area-crop-upload-0').css('border-color','red');
+        }else{
+          if(customJson.crop.dataType == 'ai'){
+            customInfo['_sunzi_source'] = cropCustomData.crop[0].cropOrigin;
+            customInfo['_sunzi_ai'] = cropCustomData.crop[0].crop;
+          }else{
+          	customInfo['_sunzi_source'] = cropCustomData.crop[0].crop;
+          }
+          
+          $('.area-crop-upload-0').css('border-color','#e7e7e7');
+        }
+        
+      }else{
+      	_zenFlag = false;
+      }
+    }
+  
+    if(typeof customJson.text != 'undefined'){
+      console.log('textInfo====',textInfo);
+      if($('.fonttext').length > 1){
+        customInfo['_sunzi_texts'] = [];
+        
+        $('.fonttext').each(function(i,v){
+          if(!$.trim($(this).val()) && textInfo[i].isOption != 1){
+            _zenFlag = false;
+
+            $('.text-input-container').eq(i).css('border-color','red');
+          }else{
+            
+            if($.trim($(this).val())){
+              
+              customInfo['_sunzi_texts'][i] = {};
+              customInfo['_sunzi_texts'][i]['value'] = $(this).val();
+              if(textInfo[i].isNumber){
+              	customInfo['_sunzi_texts'][i]['number'] = i+1;
+              }
+              if(typeof textInfo[i].font != 'undefined'){
+                  customInfo['_sunzi_texts'][i]['font'] = textInfo[i].font;
+              }
+
+              if(typeof textInfo[i].fontSize != 'undefined'){
+                  customInfo['_sunzi_texts'][i]['fontSize'] = textInfo[i].fontSize;
+              }
+
+              $('.text-input-container').eq(i).css('border-color','#f8f8f8');
+            }
+          }
+        });
+        
+      }else if($('.fonttext').length > 0){
+      	if(!$.trim($('.fonttext').eq(0).val()) && textInfo[0].isOption != 1){
+            _zenFlag = false;
+
+            $('.text-input-container').eq(0).css('border-color','red');
+          }else{
+            
+            if($.trim($('.fonttext').eq(0).val())){
+              customInfo['_sunzi_text'] = {};
+              customInfo['_sunzi_text']['value'] = $('.fonttext').eq(0).val();
+
+              if(typeof textInfo[0].font != 'undefined'){
+                  customInfo['_sunzi_text']['font'] = textInfo[0].font;
+              }
+
+              if(typeof textInfo[0].fontSize != 'undefined'){
+                  customInfo['_sunzi_text']['fontSize'] = textInfo[0].fontSize;
+              }
+
+              $('.text-input-container').eq(0).css('border-color','#f8f8f8');
+            }
+            
+          }
+      }else{
+      	_zenFlag = false;
+      }
+    }
+  
+    if(typeof customJson.carving != 'undefined'){
+      let carvingCustomData = JSON.parse($(".zen-require").val());
+      
+      let carvingCount = objCount(window._zenConfig.carving);
+      
+      if(carvingCount > 1){
+        
+        customInfo['_sunzi_texts'] = [];
+        
+        for(var i=0;i<carvingCount;i++){
+          if(!carvingCustomData.engraving[i].engravingCrop){
+          	_zenFlag = false;
+            $('.area-carving-'+i).css('border-color','red');
+          }else{
+          	customInfo['_sunzi_texts'][i]['value'] = carvingCustomData.engraving[i].engravingText;
+            customInfo['_sunzi_texts'][i]['font'] = carvingCustomData.engraving[i].engravingFont;
+            
+            $('.area-carving-'+i).css('border-color','#e7e7e7');
+          }
+        }
+      
+      }else if(carvingCount > 0){
+        if(carvingCustomData.engraving[0].engravingCrop){
+          
+          customInfo['_sunzi_text_effect'] = carvingCustomData.engraving[0].engravingCrop;
+          
+          customInfo['_sunzi_text'] = {};
+          customInfo['_sunzi_text']['value'] = carvingCustomData.engraving[0].engravingText;
+          customInfo['_sunzi_text']['font'] = carvingCustomData.engraving[0].engravingFont;
+          
+          $('.area-carving-0').css('border-color','#e7e7e7');
+          
+        }else{
+          _zenFlag = false;
+          $('.area-carving-0').css('border-color','red');
+        
+        }
+        
+      }else{
+        
+        _zenFlag = false;
+      }
+		
+    }
+  
+    if(_zenFlag){
+      console.log('photoCount=============',photoCount);
+      if(photoCount > 1){
+  		
+        var obj = [];
+              
+        Mask.show();
+
+        var tmpCanvas = new fabric.Canvas(); // 展示效果图画布
+        var h = 400;
+        var w = 500;
+        var tHeight = photoCount * h;
+        
+        tmpCanvas.setWidth(w).setHeight(tHeight);
+        
+        
+        for(var i=0;i<photoCount;i++){
+          
+          let topNew =  h * i;
+          var p1 = new Promise(function (resolve, reject) {
+            fabric.Image.fromURL(customData.photo[i].crop + '?' + Math.random(), function(img) {
+              console.log();
+			  
+              img.set({left: 0, top:topNew});    
+
+              tmpCanvas.add(img);
+              tmpCanvas.renderAll();
+
+              resolve();//ok的位置执行这个函数
+            }, {crossOrigin: "Anonymous"});
+
+          });
+          obj.push(p1);
+          
+        }
+        
+        await Promise.all(obj).then(async function (results) {
+          console.log(results); // 获得一个Array: ['P1', 'P2']
+          var imgBase64 = tmpCanvas.toDataURL({format: 'png',multiplier: 1});
+          var blob = convertBase64ToBlob(imgBase64); 
+          await _ajax(blob);
+          
+          $("#customInfo").val(JSON.stringify(customInfo));
+          Mask.hide();
+          return _zenFlag;
+          
+
+        });
+      }
+      
+	  
+    }
+  
+    if(_zenFlag){
+      $("#customInfo").val(JSON.stringify(customInfo));
+    }
+
+    return _zenFlag;
+                          
+  });
+  
+    async function _ajax(blob){
+		console.log('ajax 1');
+        await $.ajax({
+            type: "POST",
+            async:false, 
+            url: "https://pic.stylelab.com/assist/uptoken",
+            dataType: 'json',
+            beforeSend: function() {},
+            success: function(data){
+				console.log('success 1');
+                var observer = {                         
+                    next(result){},
+                    error(err){console.log(err.message);},
+                    complete(res1){
+					console.log('complete 1');
+                      customInfo['_sunzi_effect'] = "https://spic.qn.cdn.imaiyuan.com/" + res1.key;
+                      
+                    }
+                };
+                var putExtra = {
+                    fname: "",                          
+                    params: {},                         
+                    mimeType: null                      
+                };
+                var config = {
+                    region:qiniu.region.na0,
+                    concurrentRequestLimit:3
+                };
+                var filename = new Date().Format("yyyyMMddhhmmss") + randomString(6);
+                var key = 'soufeelen_' + filename + '.png';
+                var observable = qiniu.upload(blob, key, data.token, putExtra, config);
+                observable.subscribe(observer);
+              	console.log('complete 2');
+                customInfo['_sunzi_effect'] = "https://spic.qn.cdn.imaiyuan.com/" + key;
+            }
+        }); 
+    } 
+  
+</script>

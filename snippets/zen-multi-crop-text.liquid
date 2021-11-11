@@ -1,0 +1,447 @@
+
+{% if product.metafields["global"]["cattribute"] %}
+	{% assign customOpt = product.metafields["global"]["cattribute"] %}
+{% else %}
+	{% assign customOpt = '{"crop":[{"width":0,"height":0}],"coors":[{"label":"Personalized Message Here","dataLabel":"Personalized Message Here","type":"textarea","limit":"36"},{"label":"Pet##s Name Here","dataLabel":"Pet##s Name Here","limit":"16"},{"label":"Year or Date Here","dataLabel":"Year or Date Here","limit":"20"}]}' %}
+
+{% endif %}
+
+<script>
+  var jsonCustom = '{{ customOpt }}'?JSON.parse('{{ customOpt | replace: "##","\\'" }}'):{};
+  console.log(jsonCustom);
+  
+  window.addEventListener('EVENT_CROP_SAVE_AFTER', function(event){
+    var data = JSON.parse(event.detail.data);
+    var index = event.detail.index;
+    
+    if(data.crop[index].crop){
+      $('.area-crop-upload-'+index).css('border-color',"#000000");
+    }
+    
+  });
+  
+  
+  var secondType = typeof jsonCustom.secondType != 'undefined' ? jsonCustom.secondType : '';
+  var optionList = {};
+  if(secondType == "changeVariant"){
+    var optionNum = 0;
+    {% for option in product.selected_or_first_available_variant.options %}
+      optionNum++;
+      optionList['option'+optionNum] = '{{option}}';
+    {% endfor %}
+  }
+  
+  
+  var _zenSku = "{{ product.selected_or_first_available_variant.sku }}";
+  
+  var cropList = [];
+  
+  if(typeof jsonCustom.crop != 'undefined'){
+    
+    var jsonCrop = jsonCustom.crop;
+    if(secondType == "changeVariant"){
+      var cropOptionName = jsonCustom.crop.optionName;
+      var cropOptionVal = optionList[cropOptionName];
+      
+      jsonCrop = jsonCustom.crop.data[cropOptionVal];
+      
+    }
+    
+    jsonCrop.forEach(function(_v,_i){
+      let no = _i+1;
+      var uploadLabel = "{{'zen.general.photo' | t }}"+ " " +no;
+      if(typeof _v.uploadLabel != 'undefined'){
+      	uploadLabel = _v.uploadLabel;
+      }
+      
+      var aspectRatio = 0;
+      if(_v.width > 0){
+        aspectRatio = _v.width / _v.height;
+      }
+      
+      cropList.push({
+        uploadLabel: uploadLabel,  //传图描述标签
+        btnUploadText: "{{'zen.photo.upload' | t }}",  //上传按钮文案
+        require: true,//是否必传图片
+        hasCropOrigin: true,
+        sku: _zenSku,
+        style: 0, //设置上传样式，0:单行展示 1：矩形上传表单
+        type: '',
+        aspectRatio: aspectRatio
+      });
+      
+    });
+  
+  }
+  
+  var photoList = [];
+  
+  if(typeof jsonCustom.photo != 'undefined'){
+    
+    jsonCustom.photo.forEach(function(_v,_i){
+      let no = _i+1;
+      var uploadLabel = "{{'zen.general.photo' | t }}"+ " " +no;
+      if(typeof _v.uploadLabel != 'undefined'){
+      	uploadLabel = _v.uploadLabel;
+      }
+      
+      let photoSku = _zenSku;
+      if(jsonCustom.photo.length > 1){
+      	photoSku = _zenSku+"_"+no;
+      }
+      
+      photoList.push({
+         "require": true,
+         "uploadLabel":uploadLabel,
+         "type": "multipic",
+         "sku": photoSku,
+         "basePhotoImg": "https://pic.stylelab.com/img/photo/"+photoSku+".png?33zKaQ",
+         "ainame": "",
+         "bgcolor": "rgb(255,255,255)",
+         "style": 0,
+         "isAiLucid": _v.isAiLucid
+      });
+      
+    });
+  
+  }
+  
+  var cropPrompt = "{{'zen.general.cropPrompt' | t | strip_newlines }}";
+  var _zenConfig = {
+    photoObj: [],
+    carvingObj: [],
+    crystalObj: [],
+    curveCarvingObj: [],
+    nameObj: [],
+    carvingBigObj: [],
+    cropPrompt: cropPrompt,
+    uploadLoadingImage: 'https://ik.imagekit.io/soufeel/en/skin/frontend/smartwave/default/images/soufeel-30.gif',
+    wrapperBackgroudColor: '#000000',
+    isCloseOnClickModal: false,
+//     isModalAppendToBody:false,
+    crop: cropList,
+    photo: photoList,
+    carving: [],
+    crystal:[],
+    crystalText:[],
+    curveCarving:[]
+  };
+  $(function() {
+    $('.zen-require').attr('name','customVal');
+  })
+</script>
+
+<div class="color-list-container" id="color-list-box">
+  
+</div>
+
+<div class="text-container">
+  <div id="t_name"></div>
+</div>
+
+<div class="photo-select-carving">
+  <div id="zen-photocarving"></div>
+</div>
+
+<input name="properties[custom_info]" type="hidden"  />
+<input name="properties[custom_info_title]" type="hidden" />
+
+<input id="picture" name="picture" type="hidden" />
+
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.4.6/zen-photo-carving-chunk-vendors.css?202004171143" rel="stylesheet" />
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.4.6/zen-photo-carving-app.css?202004171143" rel="stylesheet" />
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.4.6/zen-photo-carving-chunk-vendors.js?202004171143"></script>
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.4.6/zen-photo-carving-app.js?202004171143"></script>
+
+<script>
+  var coorsObj = jsonCustom.coors?jsonCustom.coors:[];
+  
+  if(secondType == "changeVariant"){
+    var coorsOptionName = jsonCustom.coors.optionName;
+    var coorsOptionVal = optionList[coorsOptionName];
+
+    coorsObj = jsonCustom.coors.data[coorsOptionVal];
+
+  }
+  
+  console.log('coorsObj', coorsObj);
+  
+  window.isTextCrop = true;
+  
+  $(function(){
+    
+    setCoors();
+   
+    if(typeof jsonCustom.colorList != 'undefined'){
+      var color_str = '';
+      var cLabel = jsonCustom.colorList.label || 'Choose Your Color';
+      
+      color_str += '<span class="color-title">'+cLabel+':</span>';
+      jsonCustom.colorList.colors.forEach(function(vv,ii){
+        if(ii == 0){
+          color_str += '<label class="color-box-radio color-selected">';
+        }else{
+          color_str += '<label class="color-box-radio">';
+        }
+      	
+        color_str += '<input type="radio" name="color-radio" value="'+vv.dataLabel+'" checked="">';
+        color_str += '<div class="radio-box"><p style="background:'+vv.color+'"></p><span>'+vv.label+'</span></div></label>';
+      });
+      
+      $('#color-list-box').html(color_str);
+      
+      $(".color-box-radio").on('click',function(){
+      	$(".color-box-radio").removeClass('color-selected');
+        $(this).addClass('color-selected');
+      });
+    }
+    
+  })
+  
+  function setShopifyVariant(markup, val){
+    $(".selector-wrapper label").each(function( index ) {
+      if($.trim($(this).text()).indexOf(markup) > -1){
+        $(this).next('select').val(val).trigger('change');
+      }
+    });
+  }
+  
+  function changeText(i,obj,limitv){
+    var objLenOld = $(obj).val().length;
+    var objVal = $(obj).val().replace(/[\r\n]/g,"");
+    var objLen = objVal.length;
+
+    if(objLen < objLenOld){
+      $(obj).attr('maxlength',limitv + objLenOld - objLen);
+    }else{
+      $(obj).attr('maxlength',limitv);
+    }
+
+    if(objLen > limitv){
+      var lenDiff = objLen - limitv;
+      $(obj).val($(obj).val().substr(-1,lenDiff));
+      $('#leftnum'+i).text(0);
+    }else{
+      $('#leftnum'+i).text(parseInt(limitv) - objLen);
+    }
+    
+    if(objLen > 0){
+    	$('.text-input-container').eq(i).css('border-color', '#000000');
+    }
+    
+    let coorOption = $(obj).data('option');
+    
+    if(coorOption){
+      if($.trim($(obj).val()) != ''){
+        setShopifyVariant(coorOption, 1);
+      }else{
+        setShopifyVariant(coorOption, 0);
+      }
+    }
+    
+  }
+  
+  function setCoors(){
+  	var t_name_str = '';
+    
+    coorsObj.forEach(function(v, i){
+      var limit = v.limit || 20;
+      var label = v.label || "";
+      var placeholderText = v.placeholder || "";
+      var textOption = v.option || "";
+      
+      t_name_str += '<div class="label-input-container">';
+      if(label){
+      	t_name_str += '<label class="product-txt-label" for="fonttext">'+label+':</label>';
+      }
+
+      if(typeof v.type != 'undefined' && v.type == 'textarea'){
+      	t_name_str += '<div class="text-input-container"><textarea class="fonttext" data-option="'+textOption+'" name="fonttext" maxlength="'+limit+'" value=""  oninput="changeText('+i+',this,'+limit+')" placeholder="'+placeholderText+'"></textarea>';
+      }else{
+      	t_name_str += '<div class="text-input-container"><input type="text" class="fonttext" data-option="'+textOption+'" name="fonttext" maxlength="'+limit+'" value=""  oninput="changeText('+i+',this,'+limit+')" placeholder="'+placeholderText+'"/>';
+      }
+      
+      t_name_str += '<div class="leftnum" id="leftnumbox'+i+'"><span id="leftnum'+i+'">'+limit+'</span> '+'{{"zen.general.left" | t }}'+'</div></div></div>';
+    });
+	
+    $('#t_name').html(t_name_str);
+  }
+ 
+  
+  Product.validators.push(async () => {
+    var zenFlag = true;
+    var custom_info_title = [];
+    var custom_json = {};
+    if(typeof (custom_json['properties']) == "undefined"){
+      custom_json['properties'] = {};
+    }
+  
+    if(typeof jsonCustom.colorList != 'undefined'){
+      
+      custom_json['properties'][jsonCustom.colorList.dataLabel] = $(".color-selected input[name='color-radio']").val();
+      custom_info_title.push($(".color-selected input[name='color-radio']").val());
+    }
+  
+    if(coorsObj.length > 0){
+      coorsObj.forEach(function(v, i){
+        let textVal = $.trim($('.fonttext').eq(i).val());
+        if( textVal == '' && v.isOption != 1 ){
+          $('.text-input-container').eq(i).css('border-color', 'red');
+          zenFlag = false;
+        }else if(typeof v.minLimit != 'undefined' && textVal.length < parseInt(v.minLimit) ){
+          $('.label-input-container').eq(i).append(`<div class="min-error-info">{{'zen.general.value' | t}} `+ v.minLimit +` {{'cart.gift_card.characters' | t}}. </div>`);
+          zenFlag = false;
+        }else{
+          if(textVal){
+          	custom_json['properties'][v.dataLabel] = textVal;
+            custom_info_title.push(textVal);
+
+            $('.text-input-container').eq(i).css('border-color', '#000000');
+            $(".min-error-info").eq(i).remove();
+          }
+          
+        }
+      });
+    }
+    
+    if(typeof jsonCustom.crop != 'undefined'){
+      
+      $("#picture").attr('name','properties[picture]');
+      
+	  var zenInfo = $(".zen-require").val();
+      if(zenInfo){
+      	zenInfo = JSON.parse(zenInfo);
+        
+        if(jsonCrop.length > 1){
+          var pictureJson = {};
+          
+          jsonCrop.forEach(function(cv,ci){
+          	if(!zenInfo.crop[ci].crop) {
+              $('.area-crop-upload-'+ci).css('border-color',"red");
+              zenFlag = false;
+            }else{
+              $('.area-crop-upload-'+ci).css('border-color',"#000000");
+			  
+              pictureJson[ci] = zenInfo.crop[ci].crop;
+              
+            }
+          });
+          
+          custom_json['properties']['picture'] = JSON.stringify(pictureJson);
+          custom_info_title.push(JSON.stringify(pictureJson));
+          $("#picture").val(JSON.stringify(pictureJson));
+        }else{
+          jsonCrop.forEach(function(v,i) {
+            if(!zenInfo.crop[i].crop) {
+              $('.area-crop-upload-'+i).css('border-color',"red");
+              zenFlag = false;
+            }else{
+              $('.area-crop-upload-'+i).css('border-color',"#000000");
+
+              custom_json['properties']['picture'] = zenInfo.crop[i].crop;
+              custom_info_title.push(zenInfo.crop[i].crop);
+              $("#picture").val(zenInfo.crop[i].crop);
+            }
+
+          });
+        }
+        
+      }else{
+      	zenFlag = false;
+      }
+    }
+  
+  	if(typeof jsonCustom.photo != 'undefined'){
+      $("#picture").attr('name','properties[picture]');
+      
+	  var zenInfo = $(".zen-require").val();
+      if(zenInfo){
+      	zenInfo = JSON.parse(zenInfo);
+        
+        zenInfo.photo.forEach(function(v,i) {
+          if(!v.crop) {
+            $('.area-photo-upload-'+i).css('border-color',"red");
+            zenFlag = false;
+          }else{
+            $('.area-photo-upload-'+i).css('border-color',"#000000");
+            
+            custom_json['properties']['picture'] = v.ai;
+            custom_info_title.push(v.ai);
+            
+            $("#picture").val(v.ai);
+          }
+
+        });
+      }else{
+      	zenFlag = false;
+      }
+    }
+  
+    $("input[name='properties[custom_info]']").val(JSON.stringify(custom_json));
+    $("input[name='properties[custom_info_title]']").val(custom_info_title.join(' / '));
+    
+    return zenFlag;
+  })
+  
+  Listener.on([ Listener.product.update.before ], function(event, variant, dom) { 
+    
+    if(secondType == "changeVariant"){
+    	_zenSku = variant.sku;
+      
+      if(typeof jsonCustom.crop != 'undefined'){
+        
+        if(cropOptionVal != variant[cropOptionName]){
+          cropOptionVal = variant[cropOptionName];
+          
+          window._zenConfig.crop.splice(0, jsonCrop.length);
+
+          jsonCrop = jsonCustom.crop.data[variant[cropOptionName]];
+		  
+          setTimeout(function(){
+            
+            jsonCrop.forEach(function(v, i){
+              let no = i+1;
+              var uploadLabel = "{{'zen.general.photo' | t }}"+ " " +no;
+              if(typeof v.uploadLabel != 'undefined'){
+                uploadLabel = v.uploadLabel;
+              }
+
+              let aspectRatio = 0;
+              if(v.width > 0){
+                aspectRatio = v.width / v.height;
+              }
+
+              window._zenConfig.crop.push({
+                uploadLabel: uploadLabel,  //传图描述标签
+                btnUploadText: "{{'zen.photo.upload' | t }}",  //上传按钮文案
+                require: true,//是否必传图片
+                hasCropOrigin: true,
+                sku: _zenSku,
+                style: 0, //设置上传样式，0:单行展示 1：矩形上传表单
+                type: '',
+                aspectRatio: aspectRatio
+              });
+              
+            })
+          
+          },100);
+             
+        }
+      }
+      
+      if(typeof jsonCustom.coors != 'undefined'){
+      	if(coorsOptionVal != variant[coorsOptionName]){
+          coorsOptionVal = variant[coorsOptionName];
+          
+          coorsObj = jsonCustom.coors.data[coorsOptionVal];
+          
+          setCoors();
+          
+        }
+      }
+      
+    }
+
+  });
+  
+</script>

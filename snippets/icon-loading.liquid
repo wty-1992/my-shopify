@@ -1,0 +1,60 @@
+<style type="text/css">
+  .svg-loading {
+    width: 100%;
+    height: 100%;
+    -webkit-animation: svg-loading-rotate 2s linear infinite;
+    animation: svg-loading-rotate 2s linear infinite;
+  }
+  .svg-loading > circle {
+    -webkit-animation: svg-loading-dash 1.5s ease-in-out infinite;
+    animation: svg-loading-dash 1.5s ease-in-out infinite;
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: 0;
+    stroke-width: 6;
+    stroke-linecap: round;
+  }
+  
+  @-webkit-keyframes svg-loading-rotate {
+    100% {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes svg-loading-rotate {
+    100% {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes svg-loading-dash {
+    0% {
+      stroke-dasharray: 1, 200;
+      stroke-dashoffset: 0;
+    }
+    50% {
+      stroke-dasharray: 90, 150;
+      stroke-dashoffset: -40px;
+    }
+    100% {
+      stroke-dasharray: 90, 150;
+      stroke-dashoffset: -120px;
+    }
+  }
+
+  @keyframes svg-loading-dash {
+    0% {
+      stroke-dasharray: 1, 200;
+      stroke-dashoffset: 0;
+    }
+    50% {
+      stroke-dasharray: 90, 150;
+      stroke-dashoffset: -40px;
+    }
+    100% {
+      stroke-dasharray: 90, 150;
+      stroke-dashoffset: -120px;
+    }
+  }
+</style>
+

@@ -1,0 +1,69 @@
+<style>
+.page-width.page-empty.text-center{
+  padding: 8% 0 100px 0;
+  background: #f7f8f9 url('{{ "404bg-pc.png" | asset_url }}') no-repeat center center;
+  width: 100%;
+  max-width: 100%;
+}
+.page-width.page-empty.text-center h1{
+  font-size: 160px;
+  margin: 0;
+  color: #777;
+  line-height:1;
+}
+.page-404-text{
+  margin-top: 20px;
+  font-size: 16px;
+  margin-bottom: 50px;
+}
+p.btn404{
+  display: flex;
+  justify-content: center;
+}
+p.btn404 .btn{
+  width: auto;
+  display: inline-block;
+  letter-spacing: 0;
+  padding: 7px 12px;
+  font-size: 12px;
+}
+p.btn404 .btn404-left{
+  background: transparent;
+  color: #000;
+  border: 1px solid #000;
+}
+p.btn404 .btn404-right{
+  margin-left: 1rem;
+}
+@media(max-width:768px){
+  .page-width.page-empty.text-center{
+    padding: 8% 0 100px 0;
+    padding-top: 28%;
+    height: 300px;
+    background: #f7f8f9 url('{{ "404bg-phone.png" | asset_url }}') no-repeat center center/cover;    
+  }
+  .page-404-text{
+    margin-top: 10px;
+    font-size: 16px;
+    margin-bottom: 90px;
+  }
+  .page-width.page-empty.text-center h1{
+    font-size: 74px;  
+  }
+  .template-404 .main-content{
+    background: #f7f8f9;
+    padding-bottom: 10rem;
+  }
+  .template-404 .site-footer{
+    margin-top: 0;
+  }
+}
+</style>
+<div class="page-width page-empty text-center">
+  <h1>404</h1>
+  <p class="page-404-text">{{ 'error.404.subtext_html' | t }}</p>
+  <p class="btn404">
+    <a href="javascript:;" onclick="Dialog.open('#submit-ticketpc',{'cssClass':['custom-class-contact-us']})" class="btn btn404-left">{{ 'error.404.404_ContactUs' | t }}</a>
+    <a href="/" class="btn btn404-right">{{ 'error.404.404_link' | t }}</a>
+  </p>
+</div>

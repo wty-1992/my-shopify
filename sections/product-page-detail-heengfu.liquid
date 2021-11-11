@@ -1,0 +1,57 @@
+{% if section.settings.product_hf_off %}
+<style>
+.pc-banner{display: block;}
+.mb-banner{display: none;}
+.product-hf{
+  margin:8px 0 0;
+}
+@media(max-width:768px){
+  .pc-banner{display:none;}
+  .mb-banner{display:block;}
+  .product-hf .mb-banner{
+    padding: 0 15px;
+  }
+}
+</style>
+<div>
+</div>
+{% endif %}
+ {% if section.settings.product_hf_off %}
+  <div class="product-hf">
+    {% if section.settings.hfBannerPc %}
+    <img src="{{ section.settings.hfBannerPc | img_url:'master' }}" class="pc-banner">
+    {% endif %}
+    {% if section.settings.hfBannerMb %}
+    <img src="{{ section.settings.hfBannerMb | img_url:'master' }}" class="mb-banner">
+    {% endif %}
+  </div>
+{% endif %}
+{% schema %}
+  {
+    "class": "product-page-detail-heengfu",
+    "name": "产品页 - 价格下方横幅",
+    "settings": [
+	  {
+        "type": "paragraph",
+        "content":"product-page-detail-heengfu"
+      },
+      {
+        "type": "checkbox",
+        "id": "product_hf_off",
+        "label": "横幅开关",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "hfBannerPc",
+        "label": "PC 横幅图片"
+      },
+      {
+        "type": "image_picker",
+        "id": "hfBannerMb",
+        "label": "MB 横幅图片"
+      }
+
+    ]
+  }
+{% endschema %}

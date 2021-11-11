@@ -1,0 +1,139 @@
+<!-- 站点自定义样式 -->
+<style>
+  .sunzi-form {
+  	font-family: 'Open Sans';
+    font-weight: 500;
+  }
+  .sunzi-form #sunzi-button,
+  .sunzi-form .sunzi-form-content [class^="sunzi__button-custom"] {
+    position: relative;
+    height: 56px;
+    background-color: #F9423A;
+    border: 0;
+    border-radius: 4px;
+    -webkit-appearance: none;
+    font-size: 16px;
+    font-family: inherit;
+    text-transform: uppercase;
+    font-weight: 500;
+    
+  }
+  .zen-customer-lr .common-standar_btn {
+  	display: none;
+  }
+  html.lock, html.lock body.lock {
+    overflow: auto!important;
+  }
+  .product-page-add_to_cart-section .select-option { 
+    width: 100%;
+    font-size: 14px;
+  }
+  .product-page-add_to_cart-section .select-option .selector-wrapper label {
+  	font-family: 'Open Sans';
+    font-weight: 500;
+  }
+  .product-page-add_to_cart-section .select-option .selector-wrapper span.icon.photofont.photo-unfold{
+    position: absolute;
+    right: 12px;
+    top: 55%;
+  }
+  .dropdown-toggle::after{
+    display:none;
+  }
+  .selector-wrapper-position{
+    position: relative;
+  }
+  @media (max-width: 768px) {
+    .custom-variants span,
+    .product-page-add_to_cart-section .select-option .selector-wrapper label {
+      padding-left: 10px;
+    }
+    .inline-field-wrapper {
+      margin: auto 8px;
+    }
+  }
+</style>
+<!-- 站点自定义全局变量，方法 -->
+<script>
+  // section数据
+  var buttonText = "{{section.settings.sunzi_button_upload_text}}" || "{{section.settings.sunzi_button_text}}";
+  var shopLanguage = "{{section.settings.sunzi_shop_language}}";
+  var shopSymbol = "{{section.settings.sunzi_shop_symbol}}";
+  
+  // 设置全局变量
+  /** 兼容逻辑 
+   *  最高优先级：设置thisPriority为true，使用本文件配置信息
+   *  次级优先级：section.settings配置，优先使用section.settings站点配置信息
+   *  其他情况，使用本文件配置信息
+  **/
+  var thisPriority = false;  // 本文件配置信息，默认不使用， 非soufeel模板一般需要更改为true
+  
+  var _sunzi_global_data = {
+    "shop-v1": {
+      language: "en",
+      currencySymbol: "$"
+    },
+    "shop-v2": {
+      language: 'en_US',
+      currency: 'USD',
+      matomoSiteid: 1
+    },
+    "domLabel": {
+      "form": ".product-form",
+      "select": ".select-option",
+      "label": ".select-field-title",
+      "type": "select"
+    },
+    "buttonText": {
+      "default": "Design your own",
+      "redesign": "redesign"
+    },
+    "vip": {
+      "price": 2.99,
+      "virtualId": 0
+    },
+    "avatarIncrease": {
+      "price": 2.99,
+      "virtualId": 39737911378106
+    },
+    "lineTextsIncrease": {
+      "price": 1.99,
+      "virtualId": 39737908101306
+    },
+    "priceShow": function(price) {
+      return `$${price}`;
+    }
+  };
+  
+  /** 设置可选项 **/
+  // 定制化主题颜色，默认无需配置
+  _sunzi_global_data["theme"] = {
+    r: 255,
+    g: 1,
+    b: 54
+  };
+  // 自定义加车函数
+  _sunzi_global_data["addToCart"] = function(data, callback) {
+    Product.addFormToCart(_sunzi_global_data.domLabel.form, callback);
+  };
+  // 自定义隐藏dom 部分站点存在多种变体dom形式，需要额外添加变体dom
+  _sunzi_global_data["hideDom"] = [".inline-field-wrapper", ".material-list", "sunzi-color-hidden"];
+                            
+	  
+  /** 根据条件设置默认值 **/
+  if(!thisPriority) {
+  	buttonText && (_sunzi_global_data.buttonText.default = buttonText);
+    shopLanguage && (_sunzi_global_data["shop-v1"].language = shopLanguage);
+    shopSymbol && (_sunzi_global_data["shop-v1"].currencySymbol = shopSymbol);
+  }
+  
+  /** 特殊产品变量设置 **/
+  _sunzi_global_data.variable = {};
+  // sunzi-spotify-color-light.liquid  磨砂变量文案
+  _sunzi_global_data.variable.matt = "MATE";
+  // sunzi-spotify-code-film.liquid  胶卷绿色文案
+  _sunzi_global_data.variable.filmGreen = "Green";
+  
+  
+  
+</script>

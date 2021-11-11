@@ -1,0 +1,274 @@
+{% comment %}
+** @name spotify-code胶卷 **
+** @author 劳紫恩 **
+** @integrate 王天宇 **
+{% endcomment %}
+
+{% comment %} 调用参数 {% endcomment %}
+
+{% comment %} 数量变体 {% endcomment %}
+{% assign numberIndex = 0 %}
+{% comment %} 颜色变体 {% endcomment %}
+{% assign colorIndex = 1 %}
+{% comment %} 加价变体 {% endcomment %}
+{% assign addIndex = 2 %}
+{% comment %} 胶卷-绿色 {% endcomment %}
+{% assign filmGreen = 'Green' %}
+
+{% comment %} 默认唱片图片 {% endcomment %}
+{% assign defaultCustomAlbum = section.settings.sunzi_param_spotify_default_custom_album %}
+{% comment %} 推荐唱片列表 {% endcomment %}
+{% assign recommendTracks = section.settings.sunzi_param_spotify_recommend_tracks %}
+{% comment %} 站点语种 {% endcomment %}
+{% assign sunzi_shop_language = section.settings.sunzi_shop_language %}
+{% comment %} 货币符号 {% endcomment %}
+{% assign sunzi_shop_symbol = section.settings.sunzi_shop_symbol %}
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'spotify.code.film.js' %}
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign requestURL = '' %}
+{% comment %} 谷歌分析id {% endcomment %}
+{% assign gtag = 'UA-174675922-8' %}
+{% comment %} 定制按钮文案 {% endcomment %}
+{% assign buttonText = section.settings.sunzi_button_text %}
+
+{% comment %} 孙子定制化模板 {% endcomment %}
+{% include 'sunzi-solt-template' %}
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+  
+  /*  根据站点调整  */
+  .product-quantity,
+  .product-form .common-standar_btn {
+  	display: none !important;
+  }
+  #sunzi-button-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+  /*  站点样式调整结束  */
+  @media screen and (min-width: 768px) {
+    .sunzi-modal-content {
+       width: 400px;
+       height: 700px;
+      
+    }
+    .cr-slider-wrap {
+      bottom: auto !important;
+    }
+    .cr-slider-wrap input {
+      border: 0;
+    }
+  }
+  @media only screen and (max-width: 749px) {
+    p {
+    	font-size: 1em;
+    }
+  }
+
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% comment %} 额外的表单参数 {% endcomment %}
+  <input type="text" hidden id="sunzi-cart" name="properties[_sunzi_cart]" required="required" >
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="text" id="sunzi-input" name="properties[customInfo]" required="required"></input>
+
+  {% comment %} 定制按钮 {% endcomment %}
+  <button type="button" id="sunzi-button" disabled class="dots-loading">
+    <span class="dots">
+      <i></i>
+      <i></i>
+      <i></i>
+    </span>
+    <input id="sunzi-button-input" disabled type="file" multiple  accept="image/*" />
+    <div class="sunzi-button-text">{{ buttonText }}</div>
+  </button>
+</div>
+
+<!-- sunzi core js -->
+<script src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{ coreJs }}" defer="defer"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ gtag }}" async="async"></script>
+<script async="async">
+  _sunzi_gtag('{{ gtag }}');
+</script>
+
+{% comment %} 1.隐藏掉变体，加车按钮等等 {% endcomment %}
+<script defer="defer">
+  //切换为不加价状态
+  _sunzi_variant_change({{addIndex}}, 0);
+  _sunzi_variant_hide({{addIndex}});
+</script>
+
+
+{% comment %} 2.请求定制化数据 {% endcomment %}
+<script defer="defer">
+  _sunzi_request('{{ requestURL }}', function(res) {});
+</script>
+
+{% comment %} 3.开始定制 {% endcomment %}
+<script defer="defer">
+	$("#sunzi-button-input").removeAttr("disabled"); 
+  
+  $('#sunzi-button-input').on("change", async function() {
+    // 根据判断条件确定胶卷个数限制
+    var photoList = getVariantValue({{numberIndex}}); 
+	var files = $("#sunzi-button-input").get(0).files;
+    var promiseArray = Array.from(files).map((item) => fileToBase64(item))
+    _sunzi_response.sources = await Promise.all(promiseArray);
+    _sunzi_response.handleType = "cropper";
+    _sunzi_response.imageList = photoList.photo;
+    _sunzi_response.minCount = photoList.minCount;
+    _sunzi_response.supportSort = true;
+    _sunzi_response.needCompose = true;
+    _sunzi_response.addPrice = getAddPrice();
+    _sunzi_response.filmStyle = transFilmColor();
+    _sunzi_response.shop = {
+      language: '{{sunzi_shop_language}}',
+      currencySymbol: '{{sunzi_shop_symbol}}'
+    };
+    
+    _sunzi_response.price = $(".product-single__price--special").first().html();
+    _sunzi_response.defaultCustomAlbum = '{{defaultCustomAlbum}}';
+    _sunzi_response.recommendTracks = {{recommendTracks}};
+    _sunzi_response.theme = {
+      r: 255,
+      g: 1,
+      b: 54
+    };
+    
+    _sunzi_response.shopURL = '{{ shop.url }}';
+    
+    // 开始渲染
+    _sunzi_custom(
+      SpotifyCodeFilm.SpotifyCodeFilm,
+      async function(images, compose,track, code) {
+      console.log("images",images)
+        _sunzi_loading();
+      
+        var output = {
+          '_sunzi_effect': compose,
+          '_sunzi_sources': images.map(item => item.handle),
+          '_sunzi_compose': [{
+            'rule': 20,
+            'data': {
+              images: images,
+              code: code,
+              spotifyTrack:track
+            }
+          }]
+        };
+      	if(track.uri) {
+          output._sunzi_text = {value: `white|${track.name}|${track.artists}|${track.uri}|${SpotifyCodeFilm.formatTime(track.duration_ms)}`};
+        }
+        $('#sunzi-input').val(JSON.stringify(output));
+      
+        // 根据是否添加spotify-code 切换变体
+        if(code) {
+          _sunzi_variant_change({{addIndex}}, 1);
+        }else{
+          _sunzi_variant_change({{addIndex}}, 0);
+
+        }
+        //加车事件触发
+        _sunzi_add_to_cart(function() {
+          _sunzi_variant_change({{addIndex}}, 0);
+        });
+        _sunzi_hide_loading();
+      },
+      function() {
+    	$("#sunzi-button-input").val("");
+      }
+    );
+  });
+  
+  /** 其他自定义函数 start **/
+  //加价加车
+    function addToCart(data, showModal) {
+      return new Promise((resolve, reject) => {
+        $.ajax({
+          type: "POST",
+          url: "/cart/add.js",
+          data,
+          async: false,
+          dataType: "json",
+          context: this,
+          success: (item) => {
+            resolve(item);
+          },
+          error: (request, status) => {
+            reject(request, status);
+          }
+        })
+      })
+    }
+  
+  // 文件转换为base64结构
+  function fileToBase64 (img) {
+    return new Promise(function (resolve, reject) {
+      const reader = new FileReader()
+      reader.addEventListener('load', () => resolve(reader.result))
+      reader.readAsDataURL(img)
+    })
+  }
+  
+  // 	获取变体值
+  function getVariantValue(index) {
+    var numberValue = _sunzi_variant_value(index);
+    var photoLength = getTagValue("{{product.tags | join:','}}");  // 获取标签内图片个数
+    //如果没有多变体使用默认值，如果有标签值，使用标签值
+    if(!numberValue || photoLength > 0) return getFilmParams(photoLength || 15,photoLength || 5);
+    var valueArr = numberValue.match(/\d+/g);
+    var _result = {
+      imageLength: Number(valueArr[0]) || 15
+    }
+    if(valueArr.length > 1) {
+      _result.imageLength = Number(valueArr[1]);
+      _result.minCount = Number(valueArr[0]);
+    }
+    
+    var _number = _result.imageLength;
+    return getFilmParams(_number, _result.minCount || _number);
+  }
+  
+  // 判断标签是否有个数控制
+  function getTagValue(tagString) {
+  	var _tag = tagString.match(/custom-length-photo-\d+/);
+    return _tag ? Number(_tag[0].match(/\d+/)[0]) : 0;
+  }
+  
+  // 生成胶卷配置参数
+  function getFilmParams(length, min) {
+    return {
+      photo: new Array(length).fill({width: 418, height: 281}),
+      minCount: min
+    }
+  }
+    
+  // 转换胶卷颜色参数
+  function transFilmColor() {
+    //获取颜色                                
+    var colorValue = _sunzi_variant_value({{colorIndex}});
+    return colorValue == '{{filmGreen}}' ? 'green' : 'yellow';
+  }
+  
+  // 获取加价
+  function getAddPrice() {
+    var numberValue = _sunzi_variant_value({{numberIndex}});
+    var colorValue = _sunzi_variant_value({{colorIndex}});
+    var productJson = {{product | json}};
+    var curVariants = productJson.variants.filter(function(item) {return item.option1 == numberValue && item.option2 == colorValue});
+    var addPrice = (curVariants[0].price - curVariants[1].price) / 100;
+    return Math.abs(addPrice.toFixed(2));
+  }
+    
+  /** 其他自定义函数 end **/
+</script>

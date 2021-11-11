@@ -1,0 +1,231 @@
+{% for block in section.blocks %}
+  {% if handle == block.settings.handle %}
+    <style>
+      .blackfriday-time,.direction-top-nav{
+        background: {{block.settings.nav_bg}};
+      }
+      .itext,.blackfriday-time .icon,.blackfriday-time ul li span.num,.blackfriday-time ul li span{
+        color: {{block.settings.nav_text}};
+      }
+      .swiper-slide.m-top-nav-slide.active,.swiper-slide.m-top-nav-slide:hover{
+      	background: {{block.settings.nav_hover_bg}};
+	  }
+      .swiper-slide.m-top-nav-slide.active .itext,.swiper-slide.m-top-nav-slide:hover .itext{
+        color: {{block.settings.nav_hover_text}};
+      }
+      main.main-content{
+        background:{{ block.settings.page_bg }};
+        {% if block.settings.pc_bg %}
+        background: url("{{ block.settings.pc_bg | img_url: 'master' }}") 0% 1%/contain;          
+        {% endif %}
+      }
+      {% if block.settings.title_icon %}
+      .block-collection .title span{
+        position: relative;
+      }      
+      .block-collection .title span:before,.block-collection .title span:after{
+        content: "";
+        display: block;
+        width: 32px;
+        height: 69px;
+        position: absolute;
+        background: url("{{ block.settings.title_icon | img_url: 'master' }}") no-repeat;
+        background-size: contain;
+        top: -24px;
+      }
+      .block-collection .title span:before{
+        left: -52px;
+        display:none;
+      }
+      .block-collection .title span:after{
+        right: -52px;
+      }
+      {% endif %}
+      @media(max-width:768px){
+        .direction-shade{
+          width: calc(100% - 38px);
+          border-right: 1px solid {{ block.settings.nav_countdown_mb_bg }};
+          border-left: 1px solid {{ block.settings.nav_countdown_mb_bg }};
+        }
+        .block-collection .title span:before, .block-collection .title span:after{
+          width: 22px;
+          top: -16px;
+          height: 48px;
+        }
+        .block-collection .title span:before{
+          left: -35px;
+        }
+        .block-collection .title span:after{
+          right: -35px;
+        }
+        main.main-content{
+          background:{{ block.settings.page_bg }};
+          {% if block.settings.mb_bg %}
+          background: url("{{ block.settings.mb_bg | img_url: 'master' }}") 0% 35px/contain;
+          {% endif %}
+        }
+        .view-place-top{
+          background: {{block.settings.nav_countdown_mb_bg}};
+        }
+      }
+      /*会场样式*/
+      .block-collection .uldiv{
+        background:{{ block.settings.color_bg }};
+      }
+      .block-collection .title{
+        color:{{block.settings.color_title}};
+      }
+      .block-collection .sub_title{
+        color:{{block.settings.color_titlesub}};
+      }
+      .block-collection .product-card__name,.block-collection .item a{
+        color:{{block.settings.color_text}};
+      }  
+      .block-collection .product-card__sale-price{
+        color:{{block.settings.color_price}};
+      }
+      .block-collection .product-card__regular-price{
+        color:{{block.settings.color_priceregular}};
+      }
+      .block-collection .collection-label span{
+        background:{{block.settings.color_label_bg}};
+        color:{{block.settings.color_label_color}};
+      }
+    </style>
+  {% endif%}
+{% endfor %}
+
+{% schema %}
+{
+  "name": "导航样式",  
+  "class":"collectioncommon-nav-style",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "collectioncommon-nav-style"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "nav_style",
+      "name": "活动页导航样式",
+      "settings": [
+    	{
+		  "type": "text",
+          "id": "title",
+          "label": "哪个活动"
+	    },
+		{
+		  "type": "text",
+          "id": "handle",
+          "label": "活动url"
+	    },
+        {
+          "type": "header",
+          "content": "导航部分样式"
+        },
+        {
+          "type": "color",
+          "id": "nav_bg",
+          "label": "导航背景颜色"
+        },
+        {
+          "type": "color",
+          "id": "nav_hover_bg",
+          "label": "导航划过背景颜色"
+        },
+        {
+          "type": "color",
+          "id": "nav_countdown_mb_bg",
+          "label": "手机端倒计时背景颜色"
+        },
+        {
+          "type": "color",
+          "id": "nav_text",
+          "label": "导航文字颜色"
+        },
+        {
+          "type": "color",
+          "id": "nav_hover_text",
+          "label": "导航划过文字颜色"
+        },
+        {
+          "type": "header",
+          "content": "会场部分样式"
+        },
+        {
+          "type": "color",
+          "id": "page_bg",
+          "label": "活动页背景颜色",
+          "info":"页面没有背景图的时候设置此项填充背景色"
+        },
+        {
+          "type": "image_picker",
+          "id": "pc_bg",
+          "label": "PC图片"
+        },
+        {
+          "type": "image_picker",
+          "id": "mb_bg",
+          "label": "MB图片"
+        },
+        {
+          "type": "image_picker",
+          "id": "title_icon",
+          "label": "会场标题两侧图标"
+        },
+        {
+          "type":"color",
+          "id":"color_bg",
+          "label":"背景颜色",
+          "default":"#3C3875"
+        },
+        {
+          "type":"color",
+          "id":"color_title",
+          "label":"标题颜色",
+          "default":" #fc6a2f"
+        },
+        {
+          "type":"color",
+          "id":"color_titlesub",
+          "label":"副标题颜色",
+          "default":"#000"
+        },
+        {
+          "type":"color",
+          "id":"color_text",
+          "label":"产品名字颜色",
+          "default":"#fff"
+        },
+        {
+          "type":"color",
+          "id":"color_price",
+          "label":"特价颜色",
+          "default":"#fff"
+        },
+        {
+          "type":"color",
+          "id":"color_priceregular",
+          "label":"原价颜色",
+          "default":"#8d8d8d"
+        },
+        {
+          "type":"color",
+          "id":"color_label_bg",
+          "label":"标签背景颜色",
+          "default":"#ee183b"
+        },
+        {
+          "type":"color",
+          "id":"color_label_color",
+          "label":"标签字体颜色",
+          "default":"#fff"
+        }
+		
+      ]
+    }    
+  ]
+}
+{% endschema %}
+

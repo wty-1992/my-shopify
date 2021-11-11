@@ -1,0 +1,117 @@
+{{ 'pop-cropper.min.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'pop-cropper.min.js' | asset_url }}"></script>
+<script src="{{ 'pop-jquery-cropper.min.js' | asset_url }}"></script>
+<script src="{{ 'zen-cropper-custom1.js' | asset_url }}"></script>
+<script src="{{ 'zen-cropper-custom2.js' | asset_url }}"></script>
+
+<style>
+
+  .operation-container{
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    border-radius: 3px;
+    background-color: #f7f8f9;
+  }
+  .operation-container label {
+    display: none;
+  }
+  #zcloading, #zcloading2 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 15000;
+  }
+
+  #zcloading img, #zcloading2 img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80px;
+    height: 80px;
+    margin-top: -15px;
+    margin-left: -15px;
+  }
+  .operation-container .set-selector{    min-height: 3rem;
+    align-items: center;
+    padding: 0 10px;
+    height: 3rem;
+    margin: 1rem 0;
+    border: 1px solid #000;  
+    font-size: .9rem;
+    border-radius: 4px;
+    color: #000;}
+  .operation-container .upload-images-box{min-height: 3rem;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    height: 3rem;
+    margin: 1rem 0;
+    border: 1px solid #000;
+    border-radius: 4px;
+    color: #000;
+    display: flex;
+    background: #fff;
+    position: relative;
+    overflow: hidden;}
+  .operation-container .upload-images input{
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    cursor: pointer;
+    padding: 0;
+    opacity: 0;}
+  .operation-container .upload-images .btn-color{   
+    cursor: pointer;
+    background: #000;
+    color: #fff;
+    border-radius: 25px;
+    padding: 3px .5rem;
+    width: auto;
+    text-align: center;
+    text-transform: capitalize;
+    display: inline-block;
+    font-size: .9rem;
+    letter-spacing: 0;
+
+  }
+  .operation-container .area-crop-upload-text{
+    font-size: .9rem;}
+  .tingle-modal__close {
+    display:none;
+  }
+  .popbox #popimage, .popbox #popimage2 {
+    max-width: 100%;
+  }
+  .uploadfont h4{
+    margin-bottom:10px;
+    margin-top:10px;
+  }
+  .uploadfont p{
+    color: #000;
+    line-height: 1.5em;
+    font-size: 0.95em;
+  }
+  .product-addon-1-face-or-2 {  
+    background-color: #f5f5f5;
+    padding: 15px !important;
+    margin-top: 18px;
+  }
+  .addon-name {
+    font-size: 18px;
+    color: #555;
+  } 
+  #previewpicture, #previewpicture2 {
+    max-height: 200px;
+    width: auto !important;
+  }
+  @media(max-width:768px){
+    .cropcontent{   
+      width: 100%;
+      bottom: inherit;}
+  }
+
+</style>

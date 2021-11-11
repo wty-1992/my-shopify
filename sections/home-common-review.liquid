@@ -1,0 +1,99 @@
+ 
+
+{% if section.settings.enable %} 
+<div  class="page-width">
+    {% unless section.settings.title == blank %}
+  <div class="title">{{section.settings.title}}</div>
+  {% endunless %}
+{% for block in section.blocks %}
+<picture class="small--hide">
+{%- assign image = block.settings.PCbanner2 -%}
+{% assign resize = image.width | append: 'x' | append: image.height %}
+<img data-src="{{ image.src | img_url:resize}}" class="lazyload" />
+</picture>
+<picture class="medium-up--hide">
+{%- assign image = block.settings.MBbanner2 -%}
+{% assign resize = image.width | append: 'x' | append: image.height %}
+<img data-src="{{ image.src | img_url:resize}}" class="lazyload" />
+</picture> 
+ {% endfor %}
+</div>
+<style>
+   .title {
+     text-align: center;
+     font-family:Quentin;
+     font-size:70px;
+     color:#fefa99;
+     padding: 6rem;
+     font-weight:400;
+     letter-spacing: 2px;
+     word-spacing: 2px;
+
+ }
+  @media ( max-width:768px ) {
+  .title {
+    text-align: center;
+    font-family: Quentin;
+    font-size: 30px;
+    color: #fefa99;
+    padding: 0;
+    font-weight: 400;
+    letter-spacing: 2px;
+    word-spacing: 2px;
+    margin-bottom: 26px;
+    margin-top: 20px;
+}
+ 
+  }
+  </style>
+{% endif %}
+{% schema %}
+  {
+    "name": "首页页面评论图片",
+    "class":"home-common-review",
+    "settings": [
+{
+        "type": "text",
+        "id": "private",
+        "label": "程序参考字段默认勿动",
+        "default": "home-common-review"
+        },
+      {
+      "type": "checkbox",
+      "id": "enable",
+      "label": "Enable"
+      },
+
+      {
+          "type": "text",
+          "id": "title",
+          "label": "评论块总标题"
+      }
+      ],
+      "blocks":[
+          {
+          "type": "image_picker",
+          "name": "图片",
+          "settings": [
+            {
+            "type": "image_picker",
+            "id": "PCbanner2",
+            "label":"平图片listpc"
+            },
+            {
+            "type": "image_picker",
+            "id": "MBbanner2",
+            "label":"MB 平图片list "
+            }  
+        ]
+      }
+      ],
+
+    "presets": [
+    {
+        "name":"首页 评论图片",
+        "category": "Image"
+    }
+    ]
+  }
+{% endschema %}

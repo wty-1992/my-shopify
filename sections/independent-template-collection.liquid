@@ -1,0 +1,290 @@
+<style>
+.pagination{
+  justify-content: center;
+  margin-bottom: 55px;
+  margin-top: 20px;
+}
+.search-result .pagination{
+  text-align: center;
+  justify-content: center;
+  margin: 30px 0;
+  align-items: center;
+}
+.pagination .page,.pagination .prev,.pagination .next,.pagination .deco{
+  font-size: 16px;
+  background: #eee;
+  margin: 0 5px;
+  line-height: 1;
+  color: #969696;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pagination .page.current{
+  background: #e60044;
+  color: #fff;
+}
+.pagination .next{
+  transform: rotate(180deg);
+  padding-bottom: 3px;
+}
+.pagination .prev, .pagination .next{
+  font-weight: 600;
+}
+.pagination .deco{
+  font-weight: 600;
+  padding-bottom: 6px;
+}
+@media(max-width:768px){
+  .pagination .page, .pagination .prev, .pagination .next, .pagination .deco{
+    margin: 0 3px;
+    font-size: 14px;
+    border-radius: 2px;
+  }
+}
+</style>
+{% if section.settings.topimg_enable %}
+<div class="pages-banner code">
+  {% if section.settings.pc_coupon_image %}
+	<img data-src="{{ section.settings.pc_coupon_image | img_url: 'master' }}" class="lazyload pages-coupon-banner-pc" />
+  {% endif %}
+  {% if section.settings.mb_coupon_image %}
+    <img data-src="{{ section.settings.mb_coupon_image | img_url: 'master' }}" class="lazyload pages-coupon-banner-mb" />
+  {% endif %}
+</div>
+{% endif %}
+{% paginate collection.products by 40 %}
+  {%- assign is_filter_by_available = false -%}
+  {%- if section.settings.tags_enable and collection.all_tags.size > 0 -%}
+    {%- assign is_filter_by_available = true -%}
+  {%- endif -%}
+  {% if is_filter_by_available or section.settings.sort_enable %}
+    <div class="filters-toolbar-wrapper{% if is_filter_by_available %} filters-toolbar--has-filter{% endif %}">
+        <div class="page-width">
+          <div class="filters-toolbar">
+            <div class="filters-toolbar__item-wrapper">
+              {% if section.settings.tags_enable %}
+                {% unless collection.all_tags.size == 0 %}
+                  <div class="filters-toolbar__item-child">
+                    <label class="filters-toolbar__label select-label" for="FilterTags">{{ 'collections.filters.title_tags' | t }}</label>
+                    <div class="filters-toolbar__input-wrapper select-group">
+                      <select class="filters-toolbar__input hidden" name="FilterTags" id="FilterTags" aria-describedby="a11y-refresh-page-message a11y-selection-message">
+                        <option value="{{ collection.url }}">{{ 'collections.filters.all_tags' | t }}</option>
+                        {% for tag in collection.all_tags %}
+                          {%- assign new_url = tag | link_to_tag: tag | split: 'href="' | last | split: '"' | first -%}
+                          <option value="{{ new_url }}"{% if current_tags contains tag %} selected="selected"{% endif %}>{{ tag }}</option>
+                        {% endfor %}
+                      </select> {% include 'icon-chevron-down' %}
+                    </div>
+                  </div>
+                {% endunless %}
+              {% endif %}
+
+              {% if section.settings.sort_enable %}
+                <div class="filters-toolbar__item-child">
+                  {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+                  <label class="filters-toolbar__label select-label" for="SortBy">{{ 'collections.sorting.title' | t }}</label>
+                  <div class="filters-toolbar__input-wrapper select-group">
+                    <select name="sort_by" id="SortBy"
+                      class="filters-toolbar__input hidden"
+                      aria-describedby="a11y-refresh-page-message a11y-selection-message"
+                      data-default-sortby="{{ collection.default_sort_by }}"
+                    >
+                      {%- for option in collection.sort_options -%}
+                        <option value="{{ option.value }}" {% if option.value == sort_by %}selected="selected"{% endif %}>{{ option.name }}</option>
+                      {%- endfor -%}
+                    </select> {% include 'icon-chevron-down' %}
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+            <div class="filters-toolbar__item filters-toolbar__item--count">
+              <span class="filters-toolbar__product-count">{{ 'collections.general.items_with_count' | t: count: collection.products_count }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+  {% endif %}
+
+  <div class="collection-list-grid" id="bc-sf-filter-products">
+    {% comment %} adp功能 by Anna 20210223 {%- endcomment -%}
+      {% if section.settings.is_enbal_adp %}
+        {% assign currentUrl = content_for_header | split:'"pageurl":"' | last | split:'"' | first | split:'.myshopify.com' | last | replace:'\/','/' | replace:'%20',' ' | replace:'\u0026','&' %}
+        {% assign adp_all = '' %}
+        {% if currentUrl contains '?adp=' %}
+          {% assign adp_str = currentUrl | split: '?adp=' %}
+    	  {% assign adp_all = adp_str | last | split: '&' | first %}
+    	  {% comment %}
+          {% assign adp_all = adp_str | last | split: '&' | first | replace:",","','" | replace:"%","','" | prepend: "'" | append: "'" %}
+          {% assign adp_products =section.settings.adp_products %}
+          {% assign adp_products_array = adp_products | split: '|' %}
+          {% for product in adp_products_array %}
+              {% assign product_array = product | split: ':' %}
+              {% assign adp_id = product_array | first | prepend: "'" | append: "'" %}
+              {% assign product_id = product_array | last %}
+              {% if adp_all contains adp_id %}
+                  {% assign adp_all = adp_all | replace:adp_id,product_id %}
+              {% endif %}
+          {% endfor %}
+    	  {%- endcomment -%}
+        {% endif %}
+      {% endif%}
+    
+    {% comment %} adp功能 by Anna 20210223 {%- endcomment -%}
+      {% if currentUrl contains '?adp=' %}
+        {% if section.settings.is_enbal_adp %}
+          {% assign adp_collection = collections[section.settings.adp_collection] %}
+    	  {% comment %}
+    	  {% paginate adp_collection.products by 1000 %}
+          {% for item in adp_collection.products %}
+            {% if adp_all contains item.id %}
+    		  {% assign firstVariant = item.first_available_variant %}
+              {% include 'product-list-item' %}
+            {% endif %}
+          {% endfor %}
+          {% endpaginate %}
+    	  {%- endcomment -%}
+    	  {% assign adp_all_loop = adp_all | split: "," %}
+    	  {% for adp in adp_all_loop %}
+    		{% assign adp_id = adp | times:1 %}
+    		{% paginate adp_collection.products by 1000 %}
+    		{% assign adp_products = adp_collection.products | where: "id", adp_id %}
+    		{% endpaginate %}
+    		{% if adp_products[0] %}
+    		  {% assign item = adp_products[0] %}
+              {% assign firstVariant = item.first_available_variant %}
+              {% include 'product-list-item' %}
+    		{% endif %}
+          {% endfor %}
+        {% endif%}
+      {% endif%}  
+     
+    {% for item in collection.products %}
+      {% if section.settings.is_enbal_adp %}
+        {% if adp_all contains item.id %}
+        	{% continue %}
+        {% endif %}
+      {% endif%}
+      {% assign firstVariant = item.first_available_variant %}
+      {% include 'product-list-item' %}
+    {% else %}
+      <p class="empty">{{ 'collections.general.no_matches' | t }}</p>
+    {% endfor %}
+  </div>
+  {% if paginate.pages > 1 %}
+    <div class="pagination">
+      {{ paginate | default_pagination | replace: 'Anterior', '<span class="icon photofont photo-back1"></span>' | replace: 'Siguiente', '<span class="icon photofont photo-back1"></span>'  |remove : "«" |remove : "»"}}
+    </div>
+  {% endif %}
+  {% comment%}
+  <div id="bc-sf-filter-bottom-pagination">
+  {% if paginate.pages > 1 %}
+      <ul class="pagination-custom">
+        {% unless paginate.previous.is_link %}
+          <li class="disabled"><span>  {% include 'icon-arrow-left' %} </span></li>
+        {% else %}
+          <li><a href="{{ paginate.previous.url }}"> {% include 'icon-arrow-left' %} </a></li>
+        {% endunless %}
+        <li class="pagination__text">
+          {{ 'general.pagination.current_page' | t: current: paginate.current_page, total: paginate.pages }}
+        </li>
+        {% unless paginate.next.is_link %}
+          <li class="disabled"><span> {% include 'icon-arrow-right' %}</span></li>
+        {% else %}
+          <li><a href="{{ paginate.next.url }}">{% include 'icon-arrow-right' %}</a></li>
+        {% endunless %}
+	  </ul>
+  {% endif %}
+  </div>
+  {% endcomment%}
+{% endpaginate %}
+<link rel="stylesheet" type="text/css" href="https://soufeel-commentpic.oss-us-east-1.aliyuncs.com/library/main/reviews.min.css" media="all" />
+<script type="text/javascript" src="https://soufeel-commentpic.oss-us-east-1.aliyuncs.com/library/main/reviews.min.js"></script>
+<script>
+  $('.pagination .prev a').html('<span class="icon photofont photo-back1"></span>');
+  $('.pagination .next a').html('<span class="icon photofont photo-back1"></span>');  
+  $(document).ready(function() {
+    var self = this;
+    self.queryParams = {};
+    if(location.search.length){
+      var aKeyValue;
+      var aCouples = location.search.substr(1).split('&');
+      for (var i = 0; i < aCouples.length; i++) {
+        aKeyValue = aCouples[i].split('=');
+        if (aKeyValue.length > 1) {
+          self.queryParams[
+            decodeURIComponent(aKeyValue[0])
+          ] = decodeURIComponent(aKeyValue[1]);
+        }
+      }
+    }
+    
+    $('#SortBy').change(function(){
+      self.queryParams.sort_by = $(this).val() || $(this).attr('data-default-sortby');
+      if(self.queryParams.page){
+        delete self.queryParams.page;
+      }
+      window.location.search = decodeURIComponent($.param(self.queryParams));
+    });
+    
+    var reviews = new MyReviews({
+      merchant_id: 'soufeel.com', // 必传
+      host: 'https://myreview.maiyuan.online' // 未必传
+      // host: 'http://127.0.0.1:8000' // 未必传
+    })
+    reviews.init();
+    
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Collection pages",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "template-collection"
+    },
+    {
+      "type": "checkbox",
+      "id": "sort_enable",
+      "label": "Enable sorting",
+      "default": true
+    },
+	{
+      "type":"header",
+      "content":"adp"
+    },
+    {
+      "type": "checkbox",
+      "id": "is_enbal_adp",
+      "label": "开启adp",
+      "default": true
+    },
+    {
+      "type": "collection",
+      "id": "adp_collection",
+      "label": "选择adp产品集合"
+    },
+    {
+      "type": "checkbox",
+      "id": "topimg_enable",
+      "label": "分类页banner下方优惠券"
+    },
+    {
+      "type": "image_picker",
+      "id": "pc_coupon_image",
+      "label": "顶部PC图片"
+    },
+    {
+      "type": "image_picker",
+      "id": "mb_coupon_image",
+      "label": "顶部MB图片"
+    }
+  ]
+}
+
+{% endschema %}

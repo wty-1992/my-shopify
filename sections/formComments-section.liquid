@@ -1,0 +1,307 @@
+<div class="collect-comments">
+  <div class="collect-comments-content">
+    <p>{{ section.settings.title-formComments}} </p> 
+ 	 <p>{{ section.settings.title-two}}</p>
+  
+  </div>    
+  <div class="collectcomments-huichang">
+    <div class="tittle_img">
+      <img src="{{section.settings.pc_banner | img_url: 'master' }}" class="lazyload banner-pc" />
+      <img src="{{section.settings.mb_banner | img_url: 'master' }}" class="lazyload banner-mb" />
+    </div>    
+  </div>  
+ {% assign blockId = block.id %} 
+  {% assign style = "block-collection-" | append: section.id | append: forloop.index %}
+   <div class="{{style}} block-collection {{block.settings.style}}" data-section-id="{{ section.id }}" >   
+     <div class="maodian" id="section-{{blockId}}"></div>
+     {% assign current_collection = collections[section.settings.collection] %}
+     {% if current_collection.products.size > 0%}
+     <div class="uldiv">
+       <ul class="block-collection-items page-width">
+         {% for item in current_collection.products limit: section.settings.limit %}
+         <li class="item">{% include 'product-card1', product:item %}</li>
+         {% endfor %}
+       </ul>
+     {% endif %} 
+     </div>
+   </div>
+<style> 
+.{{style}}.block-collection .block-collection-items .item {
+  border: 0.5rem solid transparent;z-index:2;
+}
+.{{style}}.block-collection .block-collection-items .item a{
+  color: {{block.settings.color_text}};
+}
+.{{style}}.block-collection .title { 
+  font-family:RembowOVAw4;
+  font-size: 65px;
+  margin-top: 60px;
+  margin-bottom: 15px;
+}
+.{{style}} .tittle_more a{
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 21%;
+  font-size: 18px;
+}
+.{{style}}.block-collection .block-collection-items{
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding:40px 20px 40px;
+  margin-bottom: 0;
+  margin-top:15px;
+  margin:0 auto;
+}
+.{{style}}.block-collection .uldiv{padding:60px auto;max-width:1360px;margin:0 auto;border-radius: 20px;position:relative}
+.{{style}}.block-collection .uldiv .bgtop{position:absolute;top:0;left:0}
+.{{style}}.block-collection .uldiv .bgbottom{position:absolute;bottom:0;right:0;border-bottom-right-radius: 20px;}
+.{{style}}.block-collection .uldiv .bgtopr{position:absolute;top:0;right:0}
+.{{style}}.block-collection .uldiv .bgbottomr{position:absolute;bottom:0;left:0;border-bottom-left-radius: 20px;}
+ @media(max-width:768px){
+  .{{style}}.block-collection .product-card__price{flex-wrap: wrap;}
+  .{{style}}.block-collection .uldiv .bgtop{position:absolute;top:0;left:0;width:50px}
+  .{{style}}.block-collection .uldiv .bgbottom{position:absolute;bottom:0;right:0;width:50%}
+  .{{style}}.block-collection .uldiv .bgtopr{position:absolute;top:0;right:0;width:50px}
+  .{{style}}.block-collection .uldiv .bgbottomr{position:absolute;bottom:0;left:0;width:50%}
+  .{{style}}.block-collection{padding:0 10px}
+  .{{style}}.block-collection .block-collection-items .item {
+    border-width: 0.2rem;
+    z-index:1; 
+  }
+  .{{style}}.block-collection .block-collection-items .product-card__sale-price{
+    margin-left:1px;
+    font-size:16px;
+  }
+  .{{style}}.block-collection .title { 
+    color: #fb6b2e;
+    padding-top: 20px;
+    font-family: RembowOVAw4;
+    font-size: 45px;
+    margin-top: 20px;
+    margin-bottom: 15px;
+  }
+  .{{style}}.block-collection .block-collection-items{ padding:30px 10px 15px;}
+  .{{style}}.block-collection .tittle_more {
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    background: url(//cdn.shopifycdn.net/s/files/1/0275/5254/6953/t/2/assets/more.png?v=1004997…) no-repeat;
+    max-width: 164px;
+    padding-bottom: 77px;
+    background-size: contain;
+  }
+  .{{style}} .tittle_more a{
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 13%;
+    font-size: 16px;
+  }
+}   
+</style>
+<style>
+  .tittle_img img{margin:0 auto;}
+  .block-collection-items .discount-off1{
+  	width: 50px;
+    height: 50px;
+  }
+  .block-collection-items .discount-off1:before{
+  	background:url("{{ '1.png' | asset_url }}") no-repeat 0 0/contain;
+	width: 70px;
+    height: 90px;
+    right: 7px;
+    top: -18px;
+  }
+  .huichang{text-align: center;   	    
+    position: relative;
+  }
+  .block-collection .sub_title{
+    text-align: center;    
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+  }
+  .block-collection .block-collection-items .item{
+    position: relative;
+    flex:0 1 50%;
+  }
+  .block-collection .block-collection-items .item a{
+    color: #fff;
+	  
+  }
+  .block-collection .block-collection-items .item img{
+    background: #fff;
+  }
+
+  .block-collection .block-collection-items .product-card__tag {
+      position: absolute;
+  }
+  .block-collection .block-collection-items .product-card__tag .tag__label.tag__custom-tag-discount {  
+    height: 1.9rem;
+    width: 3.5rem;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    justify-content: left;
+    z-index:2
+  }
+  .block-collection .block-collection-items .product-card__tag .tag__label.tag__custom-tag-discount .discount_box {
+    position: absolute;
+    font-size: .8rem;
+    left: -6px;
+    top: 12px;
+    line-height: .9rem;
+    font-weight: bold;
+    background: #e40809;
+    border-radius: 50%;
+    padding: 12px;
+  }
+  .block-collection .title{
+    text-align: center;
+    letter-spacing: 2px;
+    padding: 50px 0 0px 0;
+  }
+  .block-collection .block-collection-items .product-card__image-wrapper{
+    position: relative;
+  }
+  .block-collection .block-collection-items .product-card__name{
+font-size: 1rem;
+    color: #000;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    margin: 10px 0 10px;
+    line-height: 16px;
+    height: 2.5rem;
+    overflow: hidden;
+  }
+  .block-collection .block-collection-items .product-card__sale-price{ 
+ 
+    font-size: 14px;
+    font-weight: bold;
+    color: #d81e06;
+  }
+  .block-collection .block-collection-items .product-card__regular-price{
+  	font-size: 14px;
+    text-decoration: line-through;
+    margin-left:5px;
+  }
+  .shopify-section.section-block-collection {
+  	padding:0;
+    background:#190101;
+  }
+  .f-more{
+    display:none;
+  } 
+  @media (min-width:376px){
+	.block-collection .block-collection-items .item{
+      flex:0 1 50%;
+    }
+  }
+  
+  @media (min-width:768px){
+	.block-collection .block-collection-items .item{
+      flex:0 1 33.3%;
+    }
+  }
+  @media (min-width:1024px){
+	.block-collection .block-collection-items .item{
+      flex:0 1 25%;
+    }
+  } .banner-mb{display:none;}
+    .banner-pc{display:block;}
+  @media (max-width:640px){ 
+    .main-content div.block-collection{background-size: contain;}
+    .block-collection .title{padding-top:20px;}
+    .banner-pc{display:none;}
+    .banner-mb{display:block;}
+    .tittle_more{width:100%;}
+    .product-card__price{display: flex;}
+    .block-collection .block-collection-items .product-card__tag{
+      bottom: 30px;
+      left: 15px;
+      transform: scale(0.7);
+    }
+	.block-collection .title{
+      font-size: 1.5rem;
+    }
+    .block-collection .block-collection-items .product-card__name {
+      font-weight: normal;
+      line-height: 1.2rem;
+      font-size:12px;
+      
+    }
+    .block-collection .block-collection-items .product-card__regular-price{
+  	font-size: 16px;
+      }
+    .product-card__price span {
+      display:block;
+      text-align:center;
+    }
+    .block-collection .block-collection-items{
+      display: flex;
+      justify-content: left;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      padding:0 12px
+  }
+  } 
+</style> 
+  
+</div>
+{% schema %}
+  {
+    "name": "collect Comments",
+	"class":"collect-comments-page",
+    "settings": [
+		{
+          "type": "text",
+          "id": "title-formComments",
+          "label": "评论文案",
+		"default":"I am sorry you are not satisfied with our products or service."
+        },
+  		{"type": "url",
+          "id": "commenturl",
+          "label": "here" },
+		{
+          "type": "text",
+          "id": "title-two",
+          "label": "评论文案",
+		"default":" You can tell us your opinion to help us improve."
+        },
+		 {
+				"type": "collection",
+				"id": "collection",
+				"label": "选择集合"
+			},{
+				"type": "range",
+				"id": "limit",
+				"label": "产品limit总数量",
+				"min": 1,
+				"max": 16,
+				"step": 1,
+				"default": 4
+			},{
+				"type": "image_picker",
+				"id": "pc_banner",
+				"label":"PC会场标题图片"
+			},
+            {
+				"type": "image_picker",
+				"id": "mb_banner",
+				"label":"MB会场标题图片"
+			}
+  ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

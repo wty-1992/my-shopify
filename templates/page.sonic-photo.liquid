@@ -1,0 +1,295 @@
+<style>
+  .main-content {
+  	padding: 30px 0;
+  }
+  .sonic-view {
+    width: 100%;
+    position: relative;
+  }
+
+  @media only screen and (max-width: 551px) {
+    .sonic-view {
+    }
+  }
+
+  #sonic-photo-image {
+  	background: #f2f2f2;
+  }
+
+  .sonic-photo {
+   width: 80%;
+   max-width: 500px;
+   margin: 0 auto;  
+
+  }
+
+  .pic { 
+    width: 100%;
+    box-shadow: 1px 2px 4px #8C8C8C;
+  }
+
+  .sonic-box {
+    width: 100%;
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 66px;
+
+  }
+
+
+
+  .sonic-loader,
+  .sonic-paused {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    position: relative;
+  }
+
+  .sonic-play {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+  }
+
+  .sonic-icon {
+    width: 30px;
+    height: 30px;
+    margin: 15px auto;
+  }
+
+  .sonic-icon .svg-loading>circle {
+    stroke: #fff;
+  }
+
+  .sonic-play {
+    background: #FF533A;
+    opacity: 0;
+    box-shadow: 3px 3px 15px 0 #EBADA5;
+    position: relative;
+  }
+
+  .sonic-paused {
+    background: #fff;
+    box-shadow: 3px 3px 15px 0 #EBADA5;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+  }
+
+  .sonic-loader {
+    background: #CDCDCD;
+
+  }
+
+  .box-paused {
+    width: 64px;
+    height: 64px;
+    background-color: rgba(255, 255, 255, 0);
+    position: relative;
+    opacity: 0;
+  }
+
+  .left-wrapper {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    left: 0;
+  }
+
+  .right-wrapper {
+    right: 0;
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+
+  }
+
+  .left-circle {
+    width: 200%;
+    height: 100%;
+    border: solid 4px #F48574;
+    border-radius: 50%;
+    transform: rotate(45deg);
+    border-left: solid 4px transparent;
+    border-bottom: solid 4px transparent;
+  }
+
+  .right-circle {
+    width: 200%;
+    height: 100%;
+    border: solid 4px #F48574;
+    border-radius: 50%;
+    transform: rotate(45deg);
+    position: relative;
+    left: -100%;
+    border-top: solid 4px transparent;
+    border-right: solid 4px transparent;
+  }
+
+ 
+
+  @keyframes circle-am {
+    to {
+      transform: rotate(225deg);
+    }
+  }
+
+  .pause {
+    animation-play-state: paused;
+  }
+
+  .audio {
+    display: none;
+  }
+</style>
+<div class="sonic-view">
+  <div class="sonic-photo">
+    <img id="sonic-photo-image" class="pic" />
+    <audio id="sonic-photo-audio" class="audio" controls autoplay name="media"></audio>
+  </div>
+</div>
+
+<div class="sonic-box">
+  <!--  图片和音频加载中  -->
+  <div class="sonic-loader">
+    <div class="sonic-icon">
+      {% include 'icon-loading' %}
+    </div>
+  </div>
+  <!-- 音频暂停 -->
+  <div class="box-paused">
+    <div class="sonic-paused">
+      <div class="sonic-icon">
+        <svg width="30px" height="30px" viewBox="7 7 30 30" version="1.1"
+             xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <rect id="矩形" fill="#FF533A" x="13.2" y="10.2666667" width="5.86666667" height="23.4666667"
+                rx="1.5"></rect>
+          <rect id="矩形备份" fill="#FF533A" x="24.9333333" y="10.2666667" width="5.86666667"
+                height="23.4666667" rx="1.5"></rect>
+        </svg>
+      </div>
+    </div>
+    <div class="left-wrapper">
+      <div class="left-circle"></div>
+    </div>
+    <div class="right-wrapper">
+      <div class="right-circle"></div>
+    </div>
+  </div>
+
+  <!--  音频播放  -->
+  <div class="sonic-play">
+    <div class="sonic-icon">
+      <svg width="30px" height="30px" viewBox="-7 -3 30 30" version="1.1"
+           xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <defs>
+          <filter id="filter-1">
+            <feColorMatrix in="SourceGraphic" type="matrix"
+                           values="0 0 0 0 1.000000 0 0 0 0 1.000000 0 0 0 0 1.000000 0 0 0 1.000000 0">
+            </feColorMatrix>
+          </filter>
+        </defs>
+        <g id="Pages" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+          <g id="" transform="translate(-180.000000, -539.000000)">
+            <g id="icon_play" transform="translate(166.000000, 529.000000)" filter="url(#filter-1)">
+              <g>
+                <path
+                      d="M26.195101,13.6960831 L36.6476028,29.9555303 C37.0955811,30.6523853 36.8938265,31.5804561 36.1969715,32.0284344 C35.9550255,32.1839711 35.6734625,32.2666667 35.3858351,32.2666667 L14.4808316,32.2666667 C13.6524045,32.2666667 12.9808316,31.5950938 12.9808316,30.7666667 C12.9808316,30.4790392 13.0635272,30.1974763 13.2190639,29.9555303 L23.6715656,13.6960831 C24.1195439,12.999228 25.0476147,12.7974735 25.7444697,13.2454518 C25.9252237,13.3616508 26.0789021,13.5153291 26.195101,13.6960831 Z"
+                      id="三角形" fill="#000000"
+                      transform="translate(24.933333, 22.000000) rotate(-270.000000) translate(-24.933333, -22.000000) ">
+                </path>
+              </g>
+            </g>
+          </g>
+        </g>
+      </svg>
+    </div>
+  </div>
+</div>
+<script>
+
+  $(function () {
+    var url = "https://sunzi7n.imaiyuan.com/sunzi/waveformPainting/"
+    var windowUrl = window.location.href
+    var urlArr = windowUrl.split('?')
+    var textArr = urlArr[1].split('&')
+    var imgName = textArr[0].split('=')[1]
+    var audioType = textArr[1].split('=')[1]
+    var imgUrl = `https://sunzi7n.imaiyuan.com/sunzi/waveformPainting/${imgName}.png`
+    var audioUrl = `https://sunzi7n.imaiyuan.com/sunzi/waveformPainting/${imgName}.${audioType}`
+    var photoDom = $('.sonic-photo');
+    var isLoading = false;
+    
+    $('#sonic-photo-image').attr('src', imgUrl);
+    $('#sonic-photo-audio').attr('src', audioUrl);
+    
+    var audio = $('#sonic-photo-audio');
+
+    var playStyle = $(".sonic-play")[0].style
+    var pausedStyle = $(".sonic-paused")[0].style
+    var boxStyle = $(".box-paused")[0].style
+
+    //音频加载完成  
+    audio.on('loadeddata', function () {
+      console.log('123123')
+      isLoading = true
+      playStyle.opacity = "1"
+      $(".sonic-loader")[0].style.opacity = "0"
+      $(".sonic-box")[0].style.marginLeft = "-66px"
+
+      //播放
+      $(".sonic-play").click(function () {
+        boxStyle.opacity = "1"
+        playStyle.opacity = "0"
+        $(".sonic-box")[0].style.marginLeft = " 0"
+        //播放进度条
+        var time = audio[0].duration / 2
+        $('.left-circle').css("animation", `circle-am ${time}s linear ${time}s forwards`)
+        $('.right-circle').css("animation", `circle-am ${time}s linear forwards`)
+        audio[0].play()
+      })
+
+      //暂停
+      $(".box-paused").click(function () {
+        playStyle.opacity = "1"
+        boxStyle.opacity = "0"
+        $(".sonic-box")[0].style.marginLeft = "-66px"
+        audio[0].pause()
+
+      })
+      //播放结束后自动暂停
+      audio.on("ended", function () {
+        playStyle.opacity = "1"
+        boxStyle.opacity = "0"
+        $(".sonic-box")[0].style.marginLeft = "-66px"
+        audio[0].pause()
+        audio[0].currentTime = 0
+        $('.left-circle')[0].style.animation= ""
+        $('.right-circle')[0].style.animation= ""
+      })
+
+      //动画继续
+      audio.on("play", function () {
+        $('.right-circle')[0].style.animationPlayState = ""
+        $('.left-circle')[0].style.animationPlayState = ""
+
+      })
+      //动画暂停
+      audio.on("pause", function () {
+        $('.right-circle')[0].style.animationPlayState = "paused"
+        $('.left-circle')[0].style.animationPlayState = "paused"
+      })
+    });
+  });
+</script>

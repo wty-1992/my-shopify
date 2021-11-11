@@ -1,0 +1,320 @@
+{% comment %}
+** @name 产品页购物车弹窗 **
+** @author 王天宇 **
+** @integrate 王天宇 **
+{% endcomment %}
+<style>
+  .cart-popup {
+    display: none;
+  	position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 12;
+  }
+  .cart-shadow {  
+    width: 100%;
+    height: 100%;
+    background: #B8B8B8;
+    opacity: .3;
+  }
+  .cart-popup .cart-modal {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0 28px;
+    right: 0;
+    top: 0;
+    /* width: 31%; */
+    width: 595px;
+    height: 100%;
+    background: #fff;
+  }
+  .cart-popup .cart-modal .popup-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+  }
+  .cart-popup .cart-modal .popup-header .header-left {
+    font-size: 24px;
+    line-height: 1;
+  }
+  .cart-popup .cart-modal .popup-header .header-close,
+  .cart-popup .cart-modal .popup-container .container-item .item-content .content-top .top-delete img,
+  .button-prev,
+  .button-next {
+    cursor: pointer;
+  }
+  .cart-popup .cart-modal .popup-container {
+	height: calc(100% - 214px);
+    overflow: hidden;
+  }
+  .cart-popup .cart-modal .popup-container .container-area {
+    height: 100%;
+	overflow: scroll;
+  }
+  .cart-popup .cart-modal .popup-container .container-item {
+    display: flex;
+    padding: 28px 0;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+  }
+  .cart-popup .cart-modal .popup-container .container-item .item-image {
+    margin-right: 14px;
+    width: 122px;
+  }
+  .cart-popup .cart-modal .popup-container .container-item .item-content {
+    flex: 1;
+  }
+  .cart-popup .cart-modal .popup-container .container-item .item-content .content-top {
+    display: flex;
+  }
+  .cart-popup .cart-modal .popup-container .container-item .item-content .content-top .top-description {
+    width: 320px;
+  }
+  .cart-popup .cart-modal .popup-container .container-item .item-content .content-top .top-description .des-title {
+    margin-bottom: 8px;
+  }
+  .cart-popup .cart-modal .popup-container .container-item .item-content .content-top .top-description .des-attribute {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+  .cart-popup .cart-modal .popup-container .container-item .item-content .content-top .top-description .des-price {
+    font-size: 12px;
+  }
+  .cart-popup .cart-modal .popup-container .container-item .item-content .content-top .top-delete {
+    flex: 1;
+    text-align: right;
+    padding-top: 14px;
+  }
+  .cart-popup .cart-modal .popup-container .container-item .item-content .content-bottom {
+    display: flex;
+    justify-content: space-between;
+    height: 36px;
+  }
+  .cart-popup .cart-modal .popup-container .container-item .item-content .content-bottom .bottom-text {
+    font-size: 12px;
+    line-height: 36px;
+  }
+  .cart-popup .cart-modal .popup-container .container-item .item-content .content-bottom .bottom-button {
+    display: flex;
+    width: 120px;
+    height: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  .cart-popup .cart-modal .popup-container .container-item .item-content .content-bottom .bottom-button .button-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+  }
+  .cart-popup .cart-modal .popup-container .container-item .item-content .content-bottom .bottom-button .button-item img {
+    width: 12px;
+  }
+  .cart-popup .cart-modal .popup-container .container-item .item-content .content-bottom .bottom-button input {
+    text-align: center;
+    background: none;
+    border-top: none;
+    border-bottom: none;
+  }
+  .cart-popup .cart-modal .popup-container .container-item .item-content .content-bottom .button-disable {
+  	background: #f8f8f8;
+  }
+  .cart-popup .cart-modal .popup-container .container-item .item-content .content-bottom .bottom-button input:focus {
+    border: inherit;
+    background: #f8f8f8;
+  }
+  .cart-popup .cart-modal .popup-footer {
+    height: 144px;
+  }
+  .cart-popup .cart-modal .popup-footer .footer-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+  }
+  .cart-popup .cart-modal .popup-footer .footer-total .total-price {
+    color: #E43329;
+    font-size: 18px;
+  }
+  .cart-popup .cart-modal .popup-footer .footer-total .total-price span {
+    font-size: 14px;
+  }
+  .cart-popup .cart-modal .popup-footer .footer-button {
+    margin-bottom: 28px;
+    width: 100%;
+    height: 56px;
+    text-align: center;
+    line-height: 56px;
+    color: #fff;
+    font-size: 18px;
+    background: #E43329;
+    cursor: pointer;
+  }
+  .cart-popup .popup-empty {
+	display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+  }
+  .popup-empty img {
+    width: 168px;
+    margin-bottom: 14px;
+  }
+  .popup-empty p {
+    font-size: 24px;
+    margin: 0;
+    line-height: 1;
+    margin-bottom: 34px;
+  }
+  .popup-empty a {
+    display: flex;
+    width: 190px;
+    height: 56px;
+    background: #F9423A;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 20px;
+  }
+  @media (max-width: 768px) {
+    .cart-popup .cart-modal {
+      margin-top: 56px;
+      padding:0 20px;
+      width: 100%;
+    }
+    .cart-popup .cart-modal .popup-header .header-left {
+      font-size: 18px;
+    }
+    .cart-popup .cart-modal .popup-container .container-item .item-image {
+      width: 20%;
+    }
+    .cart-popup .cart-modal .popup-container .container-item .item-content .content-top .top-description {
+      width: 80%;
+    }
+    .cart-popup .cart-modal .popup-footer {
+      margin-bottom: 56px;
+    }
+  }
+</style>
+
+<div class="cart-popup">
+  <div class="cart-shadow"></div>
+  <div class="cart-modal">
+    <div class="popup-header">
+      <div class="header-left">My cart （<span></span>）</div>
+      <img class="header-close" src="{{ 'close.svg' | asset_url }}"/>
+    </div>
+    <div class="popup-container">
+      <div class="container-area">
+        
+      </div>
+    </div>
+    <div class="popup-footer">
+      <div class="footer-total">
+        <div class="total-text">SUBTOTAL</div>
+        <div class="total-price"></div>
+      </div>
+      <div class="footer-button">Continue to checkout</div>
+    </div>
+    <div class="popup-empty">
+      <img src="{{ 'cart-empty.svg' | asset_url }}" />
+      <p>Empty</p>
+      <a href="/" >Add products</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // 自执行渲染购物车内容
+  $(function() {
+	Listener.trigger(Listener.cart.refresh, [ {{cart | json}} ]);
+  });
+  // 更新购物车信息
+  Listener.on([ Listener.cart.refresh ], function(event, cart) {
+    var htmlText = ""; 
+    cart.items.forEach(function(item, index) {
+      htmlText += `
+		<div class="container-item">
+          <div class="item-image">
+			<img src="${item.featured_image.url}" alt="">
+          </div>
+          <div class="item-content">
+            <div class="content-top">
+              <div class="top-description">
+                <div class="des-title">${item.title}</div>
+                <div class="des-attribute">${item.variant_title}</div>
+                <div class="des-price">${item.price / 100}</div>
+              </div>
+              <div class="top-delete">
+				<img onclick="changeCartQty(0, ${index+1})" src="{{ 'delete.svg' | asset_url }}" alt="">
+              </div>
+            </div>
+            <div class="content-bottom">
+              <div class="bottom-text">Qty：</div>
+              <div class="bottom-button">
+				<div class="button-item button-prev ${item.quantity == 1 ? 'button-disable' : ''}" onclick="changeCartQty(1, ${index+1}, ${item.quantity - 1})">
+				  <img src="${ minusImg(item.quantity) }" alt="">
+                </div>
+                <input class="button-item" type="text" value="${item.quantity}" />
+                <div class="button-item button-next" onclick="changeCartQty(1, ${index+1}, ${item.quantity + 1})">
+                  <img src="{{ 'plus.svg' | asset_url }}" alt="">  
+                </div>  
+              </div>
+            </div>
+          </div>
+        </div>
+	    `;
+    });
+    $('.container-area').html(htmlText);
+    var priceText = `<span>${_sunzi_global_data.shop.currencySymbol}</span> ${cart.grandTotal / 100}`;
+    $('.total-price').html(priceText);
+    var cartCount = cart.item_count;
+    $('.header-left span').html(cart.item_count);
+    if(cartCount) {
+      $('.popup-empty').hide();
+      $('.popup-container').show();
+      $('.popup-footer').show();
+    } else {
+      $('.popup-empty').show();
+      $('.popup-container').hide();
+      $('.popup-footer').hide();
+    }
+    // 更新减号图片链接
+    function minusImg(quantity) {
+      return quantity == 1 ? '{{ 'minus-no.svg' | asset_url }}' : '{{ 'minus.svg' | asset_url }}';
+    }
+  });
+
+  // 事件绑定
+  $('.header-close').on('click', function() {closePopUp()});
+  $('.footer-button').on('click', function() {window.location.href = "/cart"});
+  // 关闭弹窗
+  function closePopUp() {
+  	$('.cart-popup').hide();
+    _sunzi_unlock();
+  }
+  // 开启弹窗
+  function openPopUp() {
+    $('.cart-popup').show();
+    _sunzi_lock();
+  }
+  // 更改加车数量type 0 删除 type 1 更改数量
+  function changeCartQty(type, line, quantity) {
+    // 更新数量
+    if(type == 1) {
+      quantity && Cart.change({line, quantity});
+    } 
+    // 删除产品
+    else {
+      Cart.change({line, quantity: 0});
+    }
+  }
+                
+</script>

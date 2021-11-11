@@ -1,0 +1,174 @@
+<style>
+    .account-orders .orders-table-columns i:before{
+        content: "\e768" !important;
+    }
+
+    .account-orders .orders-table-columns{
+        border-top: 1px solid #f4f4f4;
+    }
+
+    .account-orders .account_title{
+        background:#000000;
+        color:#FFFFFF;
+        margin:0;
+    }
+
+    .account-orders .payment-status-help{
+        text-decoration:underline !important;
+    }
+
+    .account-orders .order-link-container span{
+        display:flex;
+        flex-wrap:wrap;
+    }
+    .account-orders .order-link{
+        flex:1 1 100%;
+    }
+
+    .account-orders a{
+        text-decoration:underline;
+    }
+
+    .account-orders .orders-table-columns ul{
+        align-items:center;
+    }
+
+    .account-orders{
+        margin-bottom: 5rem;
+    }
+
+    @media(max-width:750px){
+
+        .account-orders .orders-table-header li{
+            font-weight:blod;
+            color:#000000;
+            font-size:1.3rem;
+            padding:0rem 1.0rem;
+        }
+
+        .account-orders .order-table{
+            width:100%;
+            display:flex;
+            flex-wrap:no-wrap;
+        }
+
+        .account-orders .orders-table-header{
+            display:none;
+        }
+
+        .account-orders .orders-table-columns ul{
+            background-color:transparent;
+            width:100%;
+            display:flex;
+            border:none;
+            flex-wrap:wrap;
+        }
+
+        .account-orders .orders-table-columns ul li{
+            line-height:3.0;
+            padding:0rem 1.0rem;
+        }
+
+        .account-orders .orders-table-header li,.account-orders .orders-table-columns,.account-orders .orders-table-columns ul li{
+            flex:1 1 33.33%;
+        }
+
+        .account-orders .content-block{
+            padding:0;background:#fff;
+        }
+    }
+
+    @media(min-width:750px){
+        .account-orders .orders-table-header li{
+            font-weight:blod;
+            color:#000000;
+            font-size:1.3rem;
+            padding:1.5rem 1.0rem;
+        }
+
+        .account-orders .order-table{
+            width:100%;
+            display:flex;
+            flex-wrap:no-wrap;
+        }
+
+        .account-orders .orders-table-header{
+            background-color:#f4f4f4;
+            border:1px solid #f4f4f4;
+            width:100%;
+            display:flex;
+        }
+
+        .account-orders .orders-table-columns ul{
+            background-color:transparent;
+            width:100%;
+            display:flex;
+            border:none;
+        }
+
+        .account-orders .orders-table-columns ul li{
+            line-height:3.0;
+            padding:1.5rem 1.0rem;
+        }
+
+        .account-orders .orders-table-header li,.account-orders .orders-table-columns,.account-orders .orders-table-columns ul li{
+            flex:1 1 100%;
+        }
+    }
+</style>
+<div class="account-orders page-width">
+    <div class="content-block">
+        <h3 class="account_title">{{ 'customer.orders_history.title' | t }}</h3>
+        <ul class="orders-table-header">
+            <li>{{ 'customer.orders.order_number' | t }}</li>
+            <li>{{ 'customer.orders.date' | t }}</li>
+            <li>{{ 'customer.orders_history.shipto' | t }}</li>
+            <li>{{ 'customer.orders.total' | t }}</li>
+            <li>{{ 'customer.orders_history.order_status' | t }}</li>
+            <li></li>
+        </ul>
+        <ul class="orders-table" id="orders-history-items"></ul>
+    </div>
+</div>
+<template id="orders-history-template">
+    {% raw %}
+    <li class="orders-table-columns">
+        <ul>
+            <li data-label="{% endraw %}{{ 'customer.orders.order_number' | t }}{% raw %}">{{increment_id}}</li>
+            <li data-label="{% endraw %}{{ 'customer.orders.date' | t }}{% raw %}">{{created_at}}</li>
+            <li data-label="{% endraw %}{{ 'customer.orders.shipping_to' | t }}{% raw %}">{{shipping.country_id}} {{shipping.city}} {{shipping.region}} {{shipping.street}}</li>
+            <li data-label="{% endraw %}{{ 'customer.orders.total' | t }}{% raw %}">{{base_grand_total}}</li>
+            <li data-label="{% endraw %}{{ 'customer.orders.order_status' | t }}{% raw %}">{{status}}</li>
+            <li>
+                <a href="/account?view=orders-history-view&id={{entity_id}}">{{ 'customer.orders_history.view_order' | t }}</a>
+            </li>
+        </ul>
+    </li>
+    {% endraw %}
+</template>
+
+<script type="text/javascript">
+    var ordersHistoryTemplate = Handlebars.compile($('#orders-history-template').html());
+    $(function(){
+        $.ajax({
+            type: 'GET',
+            url: "https://smdc.soufeel.com/bi/api/orders",
+            dataType: 'json',
+            data: {
+                email: '{{ customer.email }}'
+            },
+            success: function(res){
+                if (res.error == 0){
+                    $("#orders-history-items").empty();
+                    $.each(res.data.list, function(key){
+                        var data = res.data.list[key];
+                        $("#orders-history-items").append(ordersHistoryTemplate(data))
+                    })
+                    window.sessionStorage.setItem('account-order-history-data', JSON.stringify(res.data))
+                }
+            }
+        });
+        
+    })
+</script>
+

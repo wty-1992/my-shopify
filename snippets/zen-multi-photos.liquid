@@ -1,0 +1,250 @@
+{%comment%}通过标签获取传图数量 {%endcomment%}
+{% assign photo_num = 4 %}
+{% for tag_item in product.tags %}
+  {% if tag_item contains "custom-multi-photos-" %}
+    {% assign photo_num = tag_item | strip | replace: "custom-multi-photos-", "" %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+<script>
+  {% assign customJson = '{}' %}
+  {% if product.metafields["global"]["cattribute"] %}
+    {% assign customJson = product.metafields["global"]["cattribute"] | replace: "'", "" %}
+  {% endif %}
+  var customJson = {{customJson}};
+  window.addEventListener('EVENT_PHOTO_SAVE_AFTER', function(event){
+
+  });
+  
+  window.addEventListener('EVENT_PHOTO_DIALOG', function(event){
+    $('html').css({height: "100%", overflow: "hidden"});
+    $('body').css({height: "100%", overflow: "hidden"});
+  });
+  
+  window.addEventListener('EVENT_PHOTO_DIALOG_CLOSE', function(event){
+    $('html').css({height: "", overflow: ""});
+    $('body').css({height: "", overflow: ""});
+  });
+  
+  function formatSku(sku){
+    var sku_val = sku;
+  	if(sku_val.indexOf('-') > -1){
+      var zenSkuArr = sku_val.split('-');
+      var regPos = /^\d+(\.\d+)?$/;
+      zenSkuArr.forEach(function(item,i){
+          if(!regPos.test(item)){
+              sku_val = item;
+          }
+      });
+    }
+    
+    return sku_val;
+  } 
+  var baseurl = 'https://pic.stylelab.com/';
+  var _zenSku = formatSku("{{ product.selected_or_first_available_variant.sku }}");
+  var cropNum = parseInt("{{photo_num}}");
+                          console.log('------------------------'+cropNum);
+  var cropArray = [];
+//   var isAiLucid = 0;
+  var isAiLucid = customJson.isAiLucid != undefined?customJson.isAiLucid:1;
+  var isAiColor = customJson.isAiColor != undefined?customJson.isAiColor:'';
+  var bgcolor = customJson.bgcolor != undefined?customJson.bgcolor:"rgb(255,255,255)";
+  var grayscale = customJson.grayscale != undefined?true:false;
+  var dpi = customJson.dpi != undefined?customJson.dpi:'';
+  var styleConfig = 0;
+  if(_zenSku == 'DTH013'){
+  	isAiLucid = 1;
+  }
+  console.log(isAiLucid);  
+  if($(window).width() > 768){
+    styleConfig = 1;
+  }else{
+    styleConfig = 0;
+  }
+  for(var i = 0;i<cropNum;i++){
+    var cropNo = i+1;
+    cropArray.push({
+        "require": true,
+        "type": "multipic",
+        "sku": _zenSku+"_"+cropNo,
+        "basePhotoImg": "https://pic.stylelab.com/img/photo/"+_zenSku+"_"+cropNo+".png?33zKaQ",
+        "ainame": "",
+        "isAiLucid": isAiLucid,//后端生成的ai图边缘是否为透明	1:透明 0:不透明 不设置默认是0
+        "bgcolor": bgcolor,//效果图的背景颜色 一般填rgb(255,255,255) 为空则是黑色
+        "isAiColor": isAiColor,//后端生成的ai图边缘颜色值，当该参数不为空时，isAiLucid需要设置为0
+        "grayscale":grayscale,// 将图片显示为灰色.
+        "style": styleConfig,
+      	"dpi":dpi
+    });
+  }
+  
+  var _zenConfig = {
+    photoObj: [],
+    carvingObj: [],
+    crystalObj: [],
+    curveCarvingObj: [],
+    nameObj: [],
+    crop: [],
+    photo: cropArray,
+    carving: [],
+    crystal: [],
+    btnUploadText:"{{ 'zen.general.add' | t }}",
+    uploadLabel:"{{ 'zen.general.photo' | t }}",
+    hasNo: true,
+    changeText:"{{ 'zen.general.change' | t }}",
+    photoCancelText:"{{ 'customer.recover_password.cancel' | t }}",
+    photoConfirmText:"{{ 'zen.general.confirm' | t }}",
+    uploadLoadingImage: 'https://ik.imagekit.io/soufeel/en/skin/frontend/smartwave/default/images/soufeel-30.gif',
+    wrapperBackgroudColor: '#000000',
+    curveCarving: []
+  };
+</script>
+
+<div class="photo-select-carving">
+	<div id="zen-photocarving"></div>
+  
+  	<input type="hidden" id="photo_crop" name="properties[multi_crop]" value="" style="display:none" required />
+	<input type="hidden" id="photo_customInfo" name="properties[multi_images]" value="" style="display:none" required />
+</div>
+
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.3.5/zen-photo-carving-chunk-vendors.css?201912091454" rel="stylesheet" />
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.3.5/zen-photo-carving-app.css?201912091454" rel="stylesheet" />
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.3.5/zen-photo-carving-chunk-vendors.js?201912091454"></script>
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.3.5/zen-photo-carving-app.js?201912091454"></script>
+
+<script>
+  var ubase_ = new ubase();
+  $('.zen-require').attr('name','customInfo');
+  
+  function objCount(obj) {
+    var count = 0;
+    for(var i in obj) {
+      count++;
+    }
+    return count;
+  }
+  
+  Product.validators.push(async () => {
+    var customData = JSON.parse($(".zen-require").val());
+    var photoArr = [];
+  	var customJson = {};
+  	var photoNum = 0;
+    var photoCount = objCount(customData.photo);
+    if(typeof customData.photo !== 'undefined'){
+      if(typeof (custom_json) == "undefined"){
+        custom_json = {};
+      }               
+      
+      customData.photo.forEach(function (v, i) {
+        var originArr = {};
+        if (v.ai) {
+          if(typeof (custom_json[i]) == "undefined"){
+            custom_json[i] = {};
+          }
+          if(typeof (custom_json[i]['src']) == "undefined"){
+            custom_json[i]['src'] = {};
+          } 
+          custom_json[i]['src'] = v.ai;
+          console.log(_zenSku);
+          if(_zenSku == 'DTH013'){
+          	custom_json[i]['src'] = v.origin;
+          	//如果是多图闹钟需要传多个ai图和多个原图 2020-7-3 alice
+          	if(typeof (custom_json[i]['src']) == "undefined"){
+              custom_json[i]['ai'] = {};
+            } 
+            custom_json[i]['ai'] = v.ai;
+          }
+          
+          {% if product.tags contains 'custom-multi-photos-ai' %}
+            custom_json[i]['src'] = v.origin;
+          	//如果是多图雨伞需要传多个ai图和多个原图 2020-6-5 alice
+          	if(typeof (custom_json[i]['src']) == "undefined"){
+              custom_json[i]['ai'] = {};
+            } 
+            custom_json[i]['ai'] = v.ai;
+          {% endif %}
+          
+          $('.area-photo-upload-'+i).css('border-color','#e7e7e7');
+          photoNum++;
+        }else{
+          $('.area-photo-upload-'+i).css('border-color','red');
+        }
+      });
+      
+      if(photoNum < photoCount){
+      	return false;
+      }
+      
+      $("#photo_customInfo").val(JSON.stringify(custom_json));
+    }else{
+      return false;
+    }
+	
+  	Mask.show();
+      let customInfo = customData;
+      let tmpCanvas = new fabric.Canvas(); // 展示效果图画布
+      let previewHeight = 0;
+      let obj = [];
+      let top = 0;
+      let w = 500;
+      let h = 400;
+
+      $.each(customInfo.photo, function (i, v){
+        if( $.trim(v.crop) != '' ){
+          previewHeight += h;
+        }
+      });
+      tmpCanvas.setWidth(w).setHeight(previewHeight);  
+      $.each(customInfo.photo, function (i, v){
+        if( $.trim(v.crop) != ''){
+          var p1 = new Promise(function (resolve, reject) {
+            let src = $.trim(v.crop);
+            fabric.Image.fromURL(src, function (oImg) {
+              oImg.scaleToWidth(w);
+//               oImg.scaleToHeight(400);
+              tmpCanvas.add(oImg);
+              tmpCanvas.renderAll();
+              resolve();//ok的位置执行这个函数
+            }.bind(this),{crossOrigin: 'anonymous',top:top});
+          });
+          obj.push(p1);
+          top+=h;
+        }
+      });
+  
+      if(top > 0){
+        // 同时执行p1和p2，并在它们都完成后执行then:
+        await Promise.all(obj).then(async (results) => {
+          console.log(results); // 获得一个Array: ['P1', 'P2']
+          var base64 = tmpCanvas.toDataURL({format: 'png',quality: 0.8});
+          var blob = ubase_.convertBase64ToBlob(base64);
+          var filename = 'scrop/' + new Date().Format("yyyyMMdd") + '/' + ubase.util.randomString(6);//修改上传到七牛的图片路径 2019-11-11 Alice
+          await ubase_.cdnAsyncUpload((token, resolve) => {
+            var key = filename + '-'+_zenSku+'.png';
+            console.log(key);
+            var observer = {
+              next(result){
+//                 console.log('ok');
+              },
+              error(err){
+                console.log(err.message);
+              },
+              complete(res){
+                $("#photo_crop").val(ubase.util.cdnurl + res.key);
+                resolve();
+                return true;
+              }
+            };
+            var observable = qiniu.upload(blob, key, token, ubase.util.putExtra, ubase.util.config);
+            observable.subscribe(observer);
+          });
+          return true;
+        });
+      }else{
+        return false;
+      }
+  
+  	return true;
+  })
+</script>

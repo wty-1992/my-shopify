@@ -1,0 +1,371 @@
+<style>
+  .product-images {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    margin-right: 88px;
+    width: 100%;
+  }
+  .product-page-images-section .preview{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position:relative;
+    margin-right: 28px;
+    max-width: 97px;
+  }
+  .product-page-images-section .preview .swiper-slide {
+  	box-sizing: border-box;
+  }
+  .product-page-images-section .preview .photofont{
+    font-size:28px;
+  }
+  .product-page-images-section .preview .gallery-button-prev, 
+  .product-page-images-section .preview .gallery-button-next {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 24px;
+    background: #EEEEEE;
+  }
+  .product-page-images-section .preview .gallery-button-next{
+/*     position: absolute;
+    top:50%;
+    right:-8px;
+    margin-top:-18px;
+    cursor:pointer;   */
+  }
+  .gallery-button-next-primary, .gallery-button-prev-primary{
+    opacity: 0;
+    line-height: 1;
+    top: 48%;
+    position: absolute;
+    z-index: 1;
+    color: rgba(0,0,0,.4);
+    transition: all .3s;
+  }
+  .gallery-button-next-primary:hover, .gallery-button-prev-primary:hover{
+    color: rgba(0,0,0,.7);
+  }
+  .gallery-top:hover .gallery-button-next-primary,.gallery-top:hover  .gallery-button-prev-primary{
+    opacity: 1;
+    transform: translateX(0%);
+  }
+  .gallery-button-next-primary{
+    right:8px;
+    transform: translateX(-30px);
+  }
+  .gallery-button-prev-primary{
+    left:8px;
+    transform: translateX(30px);
+  }
+  .swiper-slide-video{
+    position:relative;
+  }
+  .hi-video-playIcon{
+    display: block;
+    position: absolute;
+    z-index: 10000;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    background:url("{{'play-big.png' | asset_url }}") no-repeat;
+      background-size: 50px 50px;
+      cursor: pointer;
+      }
+  .product-page-images-section .product-images-product-details-thumb-button-prev {
+    font-size:30px;
+  }
+
+  .product-page-images-section .product-images img{
+    cursor:pointer; 
+  }
+  .product-page-images-section .product-images .video-js{
+    width: 100%;
+    height:350px;
+  }
+  .product-page-images-section .product-images .vjs-control-bar{
+    font-size:1.2rem;
+  }
+  .product-page-images-section .product-images .vjs-big-play-button{
+    top: 45%;
+    left: 40%;
+  }
+  .product-page-images-section .swiper-pagination-fraction{
+    pointer-events: none;
+    display:none;
+  }
+  .product-page-images-section .swiper-wrapper{
+  }
+  .gallery-top {
+    flex: 1;
+    width:70%;
+    max-width: 612px;
+  }
+  .gallery-top .swiper-slide {
+  }
+  .gallery-top.swiper-container,
+  .gallery-top .swiper-contain {
+  	margin: 0;
+  }
+                                    
+  .product-page-images-section .gallery-thumbs {
+    height: 534px;
+  }
+  .product-page-images-section .gallery-thumbs .swiper-slide {
+    cursor:pointer;
+    opacity: 0.4;
+  }
+  .product-page-images-section .gallery-thumbs .swiper-slide:hover{
+    opacity: 1;
+  }
+  .product-page-images-section .gallery-thumbs{
+    margin-top:1rem;
+  }
+  .product-page-images-section .gallery-thumbs .swiper-slide-thumb-active {
+    opacity: 1;
+  }
+  .product-page-images-section .gallery-thumbs .swiper-slide-thumb-active img{
+    opacity: 1;
+  }
+  .product-page-images-section .product-info{
+    padding:1rem;
+  }
+  .product-page-images-section{
+    display: flex;
+    width: 100%;
+  }
+  .swiper-slide-video video{
+    width:100%;
+  }
+  @media(max-width:1240px) and (min-width:768px) {
+    .product-page-images-section.open{
+      width: 100%;
+      max-width: 43%;
+    }
+  }
+  @media(max-width:768px){
+    .hi-video-playIcon{display:none}
+    #video{width:100% }
+    .product-page-images-section .swiper-pagination-fraction{
+      display:block;
+    }
+    .product-page .product-page__mb{
+      width: 100%;
+      max-width: unset;
+    }
+    .product-page-images-section .preview,.gallery-button-next-primary, .gallery-button-prev-primary{
+      opacity: 0;
+      height: 0;
+      overflow: hidden;
+    }
+    .gallery-top .swiper-pagination{
+      width: 30px;
+      height: 30px;
+      background: #eee;
+      color: #000;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 30px;
+      position: absolute;
+      right: 3%;
+      bottom: 3%;
+      left: auto;
+      letter-spacing: -1px;
+      font-size: 14px;
+      display: flex;
+      justify-content: center;
+    }
+  }
+</style>
+
+{% assign sectionId = section.id %}
+{% assign galleryId = 'product-gallery-' | append: sectionId  %}
+{% assign thumbsId = 'product-thumbnail-' | append: sectionId %}
+{% assign videoId = 'product-video-' | append: sectionId %}
+{% assign prev = 'product-prev-' | append: sectionId %}
+{% assign next = 'product-next-' | append: sectionId %}
+{% assign prevList = 'product-prev-list-' | append: sectionId %}
+{% assign nextList = 'product-next-list-' | append: sectionId %}
+{% assign pagination = 'product-pagination-' | append: sectionId %}
+
+<div class="product-images">
+    <div id="{{ galleryId }}" class="swiper-container gallery-top">
+        <div class="swiper-wrapper">
+      {% assign productTags = product.tags | join:',' %}
+          <div class="swiper-slide swiper-slide-video" style="display:none;">
+            <div class="hi-video-playIcon"></div>
+          <video id="video" src="" controls  preload="auto" >
+          </video>
+          </div>
+        {% for media in product.media %}
+                  {% include 'media' %}
+        {% endfor %}
+        </div>
+        <!-- Add Pagination -->
+        <div id="{{ pagination }}" class="swiper-pagination"></div>           
+            <!-- Add Arrows -->
+        <div  class="{{ prev }} gallery-button-prev-primary">
+            <i class="icon photofont photo-xiangzuo"></i>
+        </div>
+        <div class="{{ next }} gallery-button-next-primary">
+            <i class="icon photofont photo-xiangyou"></i>
+        </div>
+    </div>
+    <div class="preview"{% if product.images.size <= 1 %} style="display:none;"{% endif %}>
+        <div  class="gallery-button-prev">
+            <img src="{{ 'prev-top.svg' | asset_url }}" />
+        </div>
+        <div id="{{ thumbsId }}" class="swiper-container gallery-thumbs">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide swiper-slide-video-image" style="display:none;">
+                   <img class="lazyload" data-src="{{ product.images[0] | img_url: '97x' }}" />
+                </div>                
+                {% for media in product.media %}
+                        {% assign  position = media.position | minus :1 %}
+                      <div class="swiper-slide">
+                          <img class="lazyload" data-src="{{ product.images[position] | img_url: '97x' }}" />
+                      </div>
+                {% endfor %}
+            </div>
+        </div>        
+        <div class="gallery-button-next">
+            <img src="{{ 'next-bottom.svg' | asset_url }}" />
+        </div>
+      
+    </div>
+</div>
+{% assign skujson ='[{"video":"https://scontent-lax3-1.cdninstagram.com/vp/6eac29db9ce57bf6af8fafa2068911c1/5BC28EE2/t50.2886-16/37344877_1739514186098528_8540424515409149952_n.mp4","sku":"S-WTC031A"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1121"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1141"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1145"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1134"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1122"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1138"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1120"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1143"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1132"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1131"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1140"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1128"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1130"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1127"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1142"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1124"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1147"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1144"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1135"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1119"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1129"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1133"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1126"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1125"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1118"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1139"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1123"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1136"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1146"},{"video":"https://scontent.cdninstagram.com/vp/4af84e98efbb4394844241397227595d/5CA1E8BD/t50.2886-16/56056402_885455918460293_124308650037608448_n.mp4?_nc_ht=sco","sku":"CSQR1137"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK026F"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/CGZNL32.mp4","sku":"CGZNL32"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/CR02.mp4","sku":"CR02"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK019"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/CQB07%2CCQB09%2CCQB10%2CCQB11.mp4","sku":"CQB07"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/CQB07%2CCQB09%2CCQB10%2CCQB11.mp4","sku":"CQB09"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/CQB07%2CCQB09%2CCQB10%2CCQB11.mp4","sku":"CQB10"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/CQB07%2CCQB09%2CCQB10%2CCQB11.mp4","sku":"CQB11"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/CR02.mp4","sku":"CR69"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/WTC042%2CWTC044.mp4","sku":"WTC042"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/WTC042%2CWTC044.mp4","sku":"WTC044"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/WTC031%2CWTC031A.mp4","sku":"WTC031"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/WTC031%2CWTC031A.mp4","sku":"WTC031A"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK014"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/S-WTC030C.mp4","sku":"S-WTC030C"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK016E"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK026G"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK027A"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/CGZNL32.mp4","sku":"TJZNL32"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK027D"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK023"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/CGZNL32.mp4","sku":"T-CJZNL32"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK026"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK016D"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK010.mp4","sku":"SJK010"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/S-WTC030C.mp4","sku":"WTC030"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/S-WTC030C.mp4","sku":"WTC030A"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/S-WTC030C.mp4","sku":"WTC030C"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK016F"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/CGZNL32.mp4","sku":"ZNL32"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/CWT022.mp4","sku":"CWT022"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK010.mp4","sku":"SJK007"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/CR02.mp4","sku":"CR77"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK010.mp4","sku":"SJK008"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/CGZNL32.mp4","sku":"JZNL32"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/C021%2CC021A%2CC021C%2CC027%2CC027X006%2CC027X007%2CC045%2CC046%2CC047%2CC048%2CC050%2CC051%2CC052%2CC053%2CC054%2CC055%2CC056%2CC087A%2CC172.mp4","sku":"C021"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/C021%2CC021A%2CC021C%2CC027%2CC027X006%2CC027X007%2CC045%2CC046%2CC047%2CC048%2CC050%2CC051%2CC052%2CC053%2CC054%2CC055%2CC056%2CC087A%2CC172.mp4","sku":"C021A"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/C021%2CC021A%2CC021C%2CC027%2CC027X006%2CC027X007%2CC045%2CC046%2CC047%2CC048%2CC050%2CC051%2CC052%2CC053%2CC054%2CC055%2CC056%2CC087A%2CC172.mp4","sku":"C021C"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/C021%2CC021A%2CC021C%2CC027%2CC027X006%2CC027X007%2CC045%2CC046%2CC047%2CC048%2CC050%2CC051%2CC052%2CC053%2CC054%2CC055%2CC056%2CC087A%2CC172.mp4","sku":"C027"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/C021%2CC021A%2CC021C%2CC027%2CC027X006%2CC027X007%2CC045%2CC046%2CC047%2CC048%2CC050%2CC051%2CC052%2CC053%2CC054%2CC055%2CC056%2CC087A%2CC172.mp4","sku":"C027X006"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/C021%2CC021A%2CC021C%2CC027%2CC027X006%2CC027X007%2CC045%2CC046%2CC047%2CC048%2CC050%2CC051%2CC052%2CC053%2CC054%2CC055%2CC056%2CC087A%2CC172.mp4","sku":"C027X007"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/C021%2CC021A%2CC021C%2CC027%2CC027X006%2CC027X007%2CC045%2CC046%2CC047%2CC048%2CC050%2CC051%2CC052%2CC053%2CC054%2CC055%2CC056%2CC087A%2CC172.mp4","sku":"C045"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/C021%2CC021A%2CC021C%2CC027%2CC027X006%2CC027X007%2CC045%2CC046%2CC047%2CC048%2CC050%2CC051%2CC052%2CC053%2CC054%2CC055%2CC056%2CC087A%2CC172.mp4","sku":"C046"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/C021%2CC021A%2CC021C%2CC027%2CC027X006%2CC027X007%2CC045%2CC046%2CC047%2CC048%2CC050%2CC051%2CC052%2CC053%2CC054%2CC055%2CC056%2CC087A%2CC172.mp4","sku":"C047"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/C021%2CC021A%2CC021C%2CC027%2CC027X006%2CC027X007%2CC045%2CC046%2CC047%2CC048%2CC050%2CC051%2CC052%2CC053%2CC054%2CC055%2CC056%2CC087A%2CC172.mp4","sku":"C048"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/C021%2CC021A%2CC021C%2CC027%2CC027X006%2CC027X007%2CC045%2CC046%2CC047%2CC048%2CC050%2CC051%2CC052%2CC053%2CC054%2CC055%2CC056%2CC087A%2CC172.mp4","sku":"C050"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/C021%2CC021A%2CC021C%2CC027%2CC027X006%2CC027X007%2CC045%2CC046%2CC047%2CC048%2CC050%2CC051%2CC052%2CC053%2CC054%2CC055%2CC056%2CC087A%2CC172.mp4","sku":"C051"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/C021%2CC021A%2CC021C%2CC027%2CC027X006%2CC027X007%2CC045%2CC046%2CC047%2CC048%2CC050%2CC051%2CC052%2CC053%2CC054%2CC055%2CC056%2CC087A%2CC172.mp4","sku":"C052"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/C021%2CC021A%2CC021C%2CC027%2CC027X006%2CC027X007%2CC045%2CC046%2CC047%2CC048%2CC050%2CC051%2CC052%2CC053%2CC054%2CC055%2CC056%2CC087A%2CC172.mp4","sku":"C053"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/C021%2CC021A%2CC021C%2CC027%2CC027X006%2CC027X007%2CC045%2CC046%2CC047%2CC048%2CC050%2CC051%2CC052%2CC053%2CC054%2CC055%2CC056%2CC087A%2CC172.mp4","sku":"C054"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/C021%2CC021A%2CC021C%2CC027%2CC027X006%2CC027X007%2CC045%2CC046%2CC047%2CC048%2CC050%2CC051%2CC052%2CC053%2CC054%2CC055%2CC056%2CC087A%2CC172.mp4","sku":"C055"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/C021%2CC021A%2CC021C%2CC027%2CC027X006%2CC027X007%2CC045%2CC046%2CC047%2CC048%2CC050%2CC051%2CC052%2CC053%2CC054%2CC055%2CC056%2CC087A%2CC172.mp4","sku":"C056"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/C021%2CC021A%2CC021C%2CC027%2CC027X006%2CC027X007%2CC045%2CC046%2CC047%2CC048%2CC050%2CC051%2CC052%2CC053%2CC054%2CC055%2CC056%2CC087A%2CC172.mp4","sku":"C087A"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/C021%2CC021A%2CC021C%2CC027%2CC027X006%2CC027X007%2CC045%2CC046%2CC047%2CC048%2CC050%2CC051%2CC052%2CC053%2CC054%2CC055%2CC056%2CC087A%2CC172.mp4","sku":"C172"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK025"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK027E"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK010.mp4","sku":"SJK020"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK010.mp4","sku":"SJK006"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK016"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK026D"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK016B"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK027H"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK017"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK016H"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK021"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK016A"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/WTC029%2CWTC029A%2CWTC029C.mp4","sku":"WTC029"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/WTC029%2CWTC029A%2CWTC029C.mp4","sku":"WTC029A"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/WTC029%2CWTC029A%2CWTC029C.mp4","sku":"WTC029C"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK026B"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK010.mp4","sku":"SJK012"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/CR02.mp4","sku":"CR41"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/CR02.mp4","sku":"CR57"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK029"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/WTC028%2CWTC028A%2CWTC028C.mp4","sku":"WTC028"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/WTC028%2CWTC028A%2CWTC028C.mp4","sku":"WTC028A"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/WTC028%2CWTC028A%2CWTC028C.mp4","sku":"WTC028C"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK013"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK016G"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/CGZNL32.mp4","sku":"TGZNL32"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK027G"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SCQB03.mp4","sku":"SCQB03"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK027B"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/WTC026%2CWTC026A%2CWTC026C.mp4","sku":"WTC026"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/WTC026%2CWTC026A%2CWTC026C.mp4","sku":"WTC026A"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/WTC026%2CWTC026A%2CWTC026C.mp4","sku":"WTC026C"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK028"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK026C"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK027F"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK027"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/CR02.mp4","sku":"CR78"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK026H"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK016C"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK026A"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK027C"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/CGZNL32.mp4","sku":"CJZNL32"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK010.mp4","sku":"SJK018"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/WTC025A%2CWTC025C.mp4","sku":"WTC025A"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/WTC025A%2CWTC025C.mp4","sku":"WTC025C"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/C0219B.mp4","sku":"C0219B"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/CGZNL32.mp4","sku":"TZNL32"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/CGZNL32.mp4","sku":"GZNL32"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/YKNL03.mp4","sku":"YKNL03"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK024"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK030"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK015"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK026E"},{"video":"https://spic.qn.cdn.imaiyuan.com/ins/SJK019.mp4","sku":"SJK022"},{"video": "https://spic.qn.cdn.imaiyuan.com/ins/CBS408.mp4","sku": "CBS408"}]' %}
+<script defer>  
+//   $(function() {
+    skujson = JSON.parse('{{ skujson }}');
+  	skujson.forEach(function(v,i){
+    if(v.sku=='{{product.variants[0].sku}}'){
+        console.log(v)
+      $('.swiper-slide-video').show();
+        $('.swiper-slide-video-image').show();
+        $('#video').attr('src',v.video)
+      }
+  	});
+    if($('#video').attr('src') == ''){
+      $('.swiper-slide-video').remove();
+      $('.swiper-slide-video-image').remove();    
+    }
+    var productThumbnail = new Swiper("#{{ thumbsId }}", {
+        direction: "vertical",
+    //     spaceBetween: 14,
+                                      calculateHeight: true,
+        slidesPerView: 5,
+        loop: {{section.settings.loop}},
+        freeMode: true,
+        //looped slides should be the same
+        loopedSlides: 1, 
+        watchSlidesVisibility: true,
+        watchSlidesProgress: true,
+        navigation: {
+          prevEl: ".gallery-button-prev",
+          nextEl: ".gallery-button-next"
+        }
+    });
+    var productGallery = new Swiper("#{{ galleryId }}", {
+        //spaceBetween: 10,。
+        loop: {{section.settings.loop}},
+        speed:500,
+        slidesPerView: 1,
+        //looped slides should be the same
+        loopedSlides: 1, 
+        zoom: {
+          maxRatio: 2,
+        },
+        navigation: {
+          prevEl: ".{{ prev }}",
+          nextEl: ".{{ next }}"
+        },
+        pagination: {
+          el: "#{{ pagination }}",
+          type: 'fraction'
+        },
+        thumbs: {
+          swiper: productThumbnail
+        }
+    });
+    if($(window).width()>768){
+      $(window).scroll(function(){
+        productImageFixed();
+      });
+
+      $(function(){
+        //Solve the confusion problem when clicking details johnny 20210203
+        $('.description-tabs dl').click(function(){
+          if(!$(this).hasClass('active')){
+            productImageFixed();
+          }
+        })
+      })
+    }
+    function productImageFixed(){
+      var scrollTop = jQuery(window).scrollTop();
+      if(($('.container.product-page').offset().top - scrollTop) < $(".menu-nav").height()){      
+        if(($('.container.product-page').offset().top + $('.container.product-page').height() - $(".product-page-images-section").height() - 60) < scrollTop ){    
+          $('.product-page-images-section').css({"position":"absolute","top":"unset","bottom":"0"});
+          $('.product-page-images-section').removeClass("open");
+        }else{
+          $('.product-page-images-section').css({"top":$(".menu-nav").height(),"bottom":"unset"});        
+          $('.product-page-images-section').addClass("open");
+        }
+      }else{
+        $('.product-page-images-section').css({"position":"unset"});
+        $('.product-page-images-section').removeClass("open");
+      } 
+    }
+//   });
+  
+  // select 更改image slider
+  Listener.on([ Listener.product.update.before ], function(event, variant) {  
+    if(variant.featured_image) {
+      var imageId = variant.featured_image.id;    
+      var swiperSlide = $('#{{galleryId}}').find("[data-image-id='" + imageId + "']").index();
+                          console.log(swiperSlide)
+      //切换到第X个slide，速度为500毫秒
+      productGallery.slideTo(swiperSlide, 500, false);
+    }
+  });
+  $('#video').click(function(){ 
+    console.log($(".hi-video-playIcon").css('display'))
+    if($(".hi-video-playIcon").css('display')=='block'){
+      $(".hi-video-playIcon").hide();
+    }else if($(".hi-video-playIcon").css('display')=='none'){
+      $(".hi-video-playIcon").show();
+    }
+  })
+  $(".hi-video-playIcon").click(function(){
+    video.play();
+    $(".hi-video-playIcon").hide();
+  })
+</script>
+
+{% schema %}
+{
+  "name": "产品页 - 产品主图",
+  "class": "product-page-images-section",
+  "settings": [
+      {
+      "type": "paragraph",
+      "content":"product-page-images"
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "是否循环",
+      "default": false
+    }
+  ]
+}
+{% endschema %}

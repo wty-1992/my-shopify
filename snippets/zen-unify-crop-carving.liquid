@@ -1,0 +1,490 @@
+{% assign customJson = '' %}
+
+{% if product.metafields["global"]["cattributeUnify"] %}
+	{% assign customJson = product.metafields["global"]["cattributeUnify"] %}
+{% endif %}
+
+{% assign productTags = product.tags | join:',' %}
+<script>
+  var _flag = true;
+  
+  var _zenEngravingSizeOptions = [];
+  var _zenEngravingFontOptions = [];
+  var cropImg = 'front-view.png';
+  {% if productTags contains 'custom-crop-style' %}
+  	cropImg = 'sock-crop-view.png';
+  {% endif %}
+  var _defautItem = { 
+    label: '', bgimg: cropImg, btnUploadText: 'Upload', hasCarving: false, noSelect: false, isRequire: false, 
+    crop: "", cropOrigin: "", engravingCrop: "", engravingText: [], engravingSize: "", engravingFont: "", hasCropOrigin: true
+  };
+  var zenCoors = [];
+  var inputDefault = true;
+  var _items = [];
+  
+  var hasCarving = true;
+  {% comment %} 如果包含标签custom-has-carving 则传图后弹出刻字弹层 {% endcomment %}
+  {% unless productTags contains 'custom-has-carving' %}
+  	hasCarving = false;
+  {% endunless %}
+  
+  {% if productTags contains 'custom-photo-two' %}
+    _items.push(Object.assign({}, _defautItem, {isRequire:"true"}));
+    _items.push(Object.assign({}, _defautItem, {isRequire:"true"}));
+  {% else %}
+    {% comment %} 如果包含标签custom-no-select 则传图后不弹出选择是否刻字弹层 {% endcomment %}
+    _items.push(Object.assign({}, _defautItem, {isRequire:"true", hasCarving: hasCarving{% if productTags contains 'custom-no-select' %},isCRequire: true, noSelect: true{% endif %} }));
+  {% endif %}
+  
+  {% if productTags contains 'custom-option-name' %}
+     zenCoors.push({
+          label: "{{ 'zen.cropCarving.name' | t }}",
+          placeholder: "{{ 'zen.cropCarving.type_name' | t }}",
+          left: 249,
+          top: 357,
+          rows: 1,
+          limit: "20",
+          angle: "0",
+          size: 20,
+          textColor: "black",
+          shadowColor: "white",
+          direction: "",
+          banDrag: "0",
+          lineHeight: "1",
+       	  isRequire: true,
+          textDanger: false
+        });
+ 	inputDefault = false; 
+  {% endif %}
+  {% if productTags contains 'custom-option-age' %}
+     zenCoors.push({
+          label: "{{ 'zen.cropCarving.age' | t }}",
+          placeholder: "{{ 'zen.cropCarving.type_age' | t }}",
+          left: 260,
+          top: 357,
+          rows: 1,
+          limit: "20",
+          angle: "0",
+          size: 20,
+          textColor: "black",
+          shadowColor: "white",
+          direction: "",
+          banDrag: "0",
+          lineHeight: "1",
+          isRequire: true,
+          textDanger: false
+        });
+  	inputDefault = false; 
+  {% endif %}
+  
+  if(inputDefault) {
+     zenCoors.push({
+     
+        placeholder: "{{ 'zen.cropCarving.enter_customized_text' | t }}",
+
+        left: 249,
+        top: 357,
+        limit: "30",
+        angle: "0",
+        size: 20,
+        textColor: "black",
+        shadowColor: "white",
+        direction: "",
+        banDrag: "0",
+        lineHeight: "1",
+        isRequire: true,
+        textDanger: false
+      });
+  }
+  var carvingExampleText = ""; //刻字示例文案
+  var carvingExampleImg = "";  //刻字示例图片
+  var carvingPrompt = "";  //刻字示例说明文案
+
+ 
+ {% for atag in product.tags %}
+   {% if atag contains 'custom-example' %}
+      {% assign arr_atag = atag | split: "-" %}
+  	  {% if atag contains 'CWZ049Y' or atag contains 'CWZ001Y' %}
+      	carvingExampleImg = 'https://spic.qn.cdn.imaiyuan.com/assets/images/{{atag}}.jpg';
+      {% else %}
+      	carvingExampleImg = 'https://spic.qn.cdn.imaiyuan.com/{{atag}}.jpg';
+      {% endif %}
+      carvingExampleText = '{{ 'zen.photocarving.example_of_adding_text' | t }}:';
+      carvingPrompt = '{{ 'zen.cropcarving.adding_text_info' | t }}';
+      {% break %}
+   {% endif %}
+ {% endfor %}
+      
+  var defaultFont = 'TimesNewRoman';
+  {% for atag in product.tags %}
+    {% if atag contains 'custom-font' %}
+      {% assign arr_atag = atag | split: "-" %}
+  		defaultFont = '{{arr_atag[2]}}';
+      {% break %}
+    {% endif %}
+  {% endfor %}
+        
+  var _zenSku = "{{ product.selected_or_first_available_variant.sku }}";
+  
+  var customJson = '{{customJson}}';
+  
+  var aspectRatio = 0;
+  if(customJson){
+  	customJson = JSON.parse(customJson);
+    console.log(customJson);
+    var aspectRatioJson = typeof customJson.aspectRatio != 'undefined' ? (typeof customJson.aspectRatio == 'object' ? customJson.aspectRatio[_zenSku] : customJson.aspectRatio ) : 0;
+    
+    aspectRatio = aspectRatioJson.width / aspectRatioJson.height;
+  }
+  console.log(aspectRatio);
+  var _zenConfig = {
+    sku: "{{ product.selected_or_first_available_variant.sku }}",
+    {% if productTags contains 'Kit' %}
+    selectBtnText: "{{'zen.general.add_text' | t}}",  //可以不传,默认 "Custom text on the bottom +$4.99"
+    {% elsif productTags contains 'child-wrap' %}
+        {% if productTags contains 'add-text-599' %}
+        selectBtnText: "{{'zen.general.add_text' | t}} + "+Currency.formatMoney(599),  //可以不传,默认 "Custom text on the bottom +$1.99"
+        {% endif %}
+        {% if productTags contains 'add-text-399' %}
+        selectBtnText: "{{'zen.general.add_text' | t}} + "++Currency.formatMoney(399),  //可以不传,默认 "Custom text on the bottom +$3.99"
+        {% endif %}
+        {% if productTags contains 'add-text-199' %}
+        selectBtnText: "{{'zen.general.add_text' | t}} + "+Currency.formatMoney(199),  //可以不传,默认 "Custom text on the bottom +$1.99"
+        {% endif %}
+    {% elsif productTags contains 'custom-add-text-price-' %}
+    
+        {% for item in product.tags %}
+          {% if item contains "custom-add-text-price-" %}
+            {% assign itemArr = item | split: "custom-add-text-price-"%}
+            {% assign aspect = itemArr[1] %}
+            {% if aspect != '' %}
+    			selectBtnText: "{{'zen.general.add_text' | t}} + " + Currency.formatMoney(parseInt('{{aspect}}')),
+            {% endif %}
+            {% break %}
+          {% endif %}
+        {% endfor %}
+    {% else %}
+    selectBtnText: "{{'zen.general.add_text' | t}}",
+    {% endif %}
+    carvingExampleText: carvingExampleText, //刻字示例文案
+    carvingExampleImg: carvingExampleImg,   //刻字示例图片
+    ifSelectExample: true,//true：在选择是否刻字时展示刻字示例图片 不设置该参数则示例图片展示在刻字弹窗
+    carvingPrompt: carvingPrompt,//刻字示例说明文案
+    in: "facegiftsgeneral-IN.png",
+    out: "facegiftsgeneral-OUT.png",
+    enableCanvas: false,  //是否显示刻字画布
+    engravingSizeOptions: _zenEngravingSizeOptions,
+    engravingFontOptions: _zenEngravingFontOptions,    
+    {% if productTags contains 'no-twoface' %}
+    enableAddon: false, //不显示附加信息
+    {% else %}
+    enableAddon: true, //显示附加信息
+    {% endif %}
+    cropPrompt: "",   //刻字弹层提示文字, 选填
+    defaultFont: defaultFont,  //默认字体
+    defaultSize: 20,  //默认字体
+    ethnicityOptions: typeof(_zenEthnicityOptions)=="undefined" ? [] : _zenEthnicityOptions,
+    maxLength: 90, //设置输入框最大值
+    isMarkup: true,
+    cropTextUploadButton: "{{'zen.photo.upload' | t}}",  //单行上传表单，上传按钮文字
+    cropConfirmText:"{{ 'zen.general.confirm' | t }}",//切图传图确认按钮文案
+    cropCancelText:"{{ 'zen.general.cancel' | t }}",//切图传图取消按钮文案
+    confirmText:"{{ 'zen.general.confirm' | t }}",
+    cancelText:"{{ 'zen.general.cancel' | t }}",
+    previewLabel:"{{ 'zen.cropcarving.preview_label' | t }}",
+    uploadPreviwLabel: "{{ 'zen.general.uploadLabel' | t }}",  //单行上传文件控件预览文字
+    cropTextUploadButton: "{{ 'zen.cropcarving.upload' | t }}",  //单行上传表单，上传按钮文字
+    {% if productTags contains 'custom-crop-style' %}
+    cropStyle: 1, //单行上传图片样式
+    {% else %}
+    cropStyle: 0, //单行上传图片样式
+    {% endif %}
+    addonTitle: "{{ 'zen.cropcarving.addon_title' | t }}",  //附加信息
+    addonDesc: "{{ 'zen.cropcarving.addon_desc' | t }}",
+    addonLabel: "{{ 'zen.cropcarving.addon_label' | t }}",
+    selectOrText:"{{ 'zen.cropcarving.select_or_text' | t }}",
+    withoutBtnText: "{{ 'zen.cropcarving.without_text' | t }}",
+    coors: zenCoors,
+    aspectRatio:aspectRatio,
+    items: [
+      {
+        label: '',
+        data: _items
+//         data: [{ label: '', bgimg: 'front-view.png', btnUploadText: 'Upload', hasCarving: true, isRequire: false,
+//           engravingCrop: "", engravingText: [], engravingSize: "", engravingFont: ""
+//   		}]
+      },
+    ]
+  };
+  
+  var markupTitle = "{{ 'variant.title.Markup' | t }}";
+  var twofaceTitle = "{{ 'variant.title.TwoFace' | t }}";
+  
+  function addOnCallback(value){  //附加选项回调
+    let addon = document.getElementsByClassName("el-checkbox__original")[0].checked;
+    
+    var _markup = getShopifyVariant(markupTitle);
+    
+    var _twoface = getShopifyVariant(twofaceTitle);
+    
+    let _markupVal = ''
+    
+    if(_twoface !== ''){
+      _markupVal = addon ? 1 : 0;
+      
+      setShopifyVariant(twofaceTitle, _markupVal);
+    
+    }else{
+    
+      if(_markup==1 || _markup==2){  //不刻字
+        _markupVal = addon ? 2 : 1;
+      }else{
+        _markupVal = addon ? 4 : 3;
+      }   
+
+      setShopifyVariant(markupTitle, _markupVal);
+    }
+    
+  }
+  
+  function carvingCallback(value=1){  //刻字回调
+    var _markup = getShopifyVariant(markupTitle);
+    let _markupVal = ''
+    
+    if(_markup){
+      
+      if(value==0){
+        if(_markup==1 || _markup==3){
+          _markupVal = 1;
+        }else{
+         _markupVal = 2;
+        }
+      }else{
+        if(_markup==1 || _markup==3){
+          _markupVal = 3;
+        }else{
+          _markupVal = 4;
+        }
+      }
+
+      setShopifyVariant(markupTitle, _markupVal);
+    }
+  }
+  
+  //有刻字信息的情况，纠正markup变体的值
+  function updateEngraving(value){
+    var _markup = getShopifyVariant(markupTitle);
+    
+    if(_markup){
+      let cValue = '';
+      if(value == 1){
+        if($('.product-addon .is-checked').length > 0){
+          cValue = 4;
+        }else{
+          cValue = 3;
+        }
+      }else{
+        if($('.product-addon .is-checked').length > 0){
+          cValue = 2;
+        }else{
+          cValue = 1;
+        }
+      }
+      
+      if(cValue != _markup){
+       setShopifyVariant(markupTitle, cValue);
+      }
+    }
+    
+  }
+  
+  Product.validators.push(async () => {
+    return zenValidateForm();
+  })
+  
+  function zenValidateForm(){  //验证定制化必填字段
+    var zenInfo = document.getElementsByClassName("zen-require")[0].value;
+    var zenFlag = true;
+    
+    if(!_flag){
+      $('.crop-rectangle-container').css("border-color","red");
+    	return false;
+    }else{
+      $('.crop-rectangle-container').css("border-color","black");
+    }
+  
+    if(zenInfo){
+      var zenInfo = JSON.parse(zenInfo);
+      console.log(zenInfo.crop);
+      zenInfo.crop.forEach(function(v,i) {
+        v.forEach(function(_v,_i) {
+          
+          if((_v.isRequire && !_v.picture) || (_v.isCRequire && hasCarving && (typeof _v.engravingText != 'string' || !_v.engravingText)) ) {
+            console.log(i, _i);
+            zenFlag = false;
+          }
+          
+          //如果有刻字信息，检验markup变体值是否正确，不正确则修改
+          if($.trim(_v.engravingText)){
+          	updateEngraving(1);
+          }
+        })
+        
+      });
+    
+    }else{
+      console.log('flag-flase');
+      zenFlag = false;
+    }
+    
+    if(!zenFlag){
+      $('.bobbleheads-one-carving .avatar-uploader .el-upload').css("border-color","red");
+    }else{
+      $('.bobbleheads-one-carving .avatar-uploader .el-upload').css("border-color","white");
+    }
+    
+    console.log("zenFlag:", zenFlag);
+    return zenFlag;
+  }
+  
+  $(function(){  //检测表单
+    $(".product-form__cart-submit").click(function(e){
+      e.preventDefault();
+      if(zenValidateForm()){
+        $("form.product-form").submit();
+      }
+    });
+    
+    //刚进入页面将markup的值改为1，即：不刻字 没有twoface
+    let markupValue = getShopifyVariant(markupTitle);
+    if(markupValue !== ''){
+      setShopifyVariant(markupTitle, 1);
+    }
+    
+    let twofaceValue = getShopifyVariant(twofaceTitle);
+    if(twofaceValue !== ''){
+      setShopifyVariant(twofaceTitle, 0);
+    }
+    
+  })
+  
+  window.addEventListener('EVENT_CROP_SAVE_AFTER', function(event){
+    
+  	$('.preview-thumbnail').show();
+    _flag = true;
+  })
+   
+  Listener.on([ Listener.product.update.before ], function(event, variant) {
+    if(variant.featured_image){
+      $('#piccrop').val(variant.featured_image.src);
+    }
+    
+    if(_zenSku != variant.sku && aspectRatio != 0 && typeof customJson.aspectRatio == 'object'){
+      _zenSku = variant.sku;
+      aspectRatioJson = customJson.aspectRatio[_zenSku];
+      let aspectRatioNew = aspectRatioJson.width / aspectRatioJson.height;
+      
+      if(aspectRatio != aspectRatioNew){
+        aspectRatio = aspectRatioNew;
+        changeAspectRatio(aspectRatioNew);
+
+        $('.preview-thumbnail').hide();
+
+        _flag = false;
+      }
+      
+    }
+  });
+  
+  function setShopifyVariant(markup, val){
+    $(".selector-wrapper label").each(function( index ) {
+      if($.trim($(this).text()).indexOf(markup) > -1){
+        $(this).next('select').val(val);
+        
+        let selectElementId = $(this).next('select').attr('id');
+        
+        var evt = document.createEvent('HTMLEvents');
+		evt.initEvent('change', true, true);
+        document.getElementById(selectElementId).dispatchEvent(evt); 
+
+      }
+    });
+  }
+  
+  function getShopifyVariant(markup){
+    var resultVal = ''
+    $(".selector-wrapper label").each(function( index ) {
+      if($.trim($(this).text()).indexOf(markup) > -1){
+        resultVal = $(this).next('select').val();
+      }
+    });
+    
+    return resultVal;
+  }
+  
+  window.addEventListener('EVENT_CROP_SAVE_AFTER', function(event){    
+    {% unless product.tags contains 'custom-crop-style' %}
+       jQuery('.el-upload.el-upload--text').html('Change');
+    {% endunless%}
+   $(".crop-rectangle-container").addClass("height_yellow");  
+  });
+
+</script>
+<div style="display:none;">{% include 'upload' %}</div>
+<div class="upload-image specel_box">
+  <div id="zen-custom-bobbleheads"></div>
+  
+  {% unless productTags contains 'custom-no-reminder' %}
+   <div class="reminder">
+    <u id="showimage3" class="showimage"><ly-as-13458733>{{ 'zen.showimage' | t }}</ly-as-13458733></u>
+    <span style="padding-left:10px;">Just upload your photo, our designers will take care of the rest.</span>
+  </div>
+  {% endunless %}
+  
+  <div class="fileup upload-images-box1 custom-crop-style">
+	
+    {% if productTags contains 'custom-crop-style' %}
+      <div class="product-single__description rte">
+        {% if section.settings.product_detail_enable %} 
+        	{{ product.description }}
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+ 
+</div>
+ {% comment %} 保存主图 {% endcomment %}
+<input type="text" id="piccrop" name="properties[crop]" value="{{product.images[0] | img_url: '1000x1000' | prepend: "https:"}}" style="display:none" required/>
+
+<link href="https://pic.stylelab.com/js/zen-crop-bobbleheads-1.2.2/zen-crop-bobbleheads-chunk-vendors.css?202108271001" rel="stylesheet" />
+<link href="https://pic.stylelab.com/js/zen-crop-bobbleheads-1.2.2/zen-crop-bobbleheads-app.css?202108271001" rel="stylesheet" />
+<script src="https://pic.stylelab.com/js/zen-crop-bobbleheads-1.2.2/zen-crop-bobbleheads-chunk-vendors.js?202108271001"></script>
+<script src="https://pic.stylelab.com/js/zen-crop-bobbleheads-1.2.2/zen-crop-bobbleheads-app.js?202108271001"></script>
+
+<script>
+  jQuery("#showimage3").click(function(){
+      var customModal = new tingle.modal({
+        footer: true,
+        stickyFooter: false,
+        //closeMethods: ['button'], 
+        //closeLabel: "Close11",
+        cssClass: ['product-example-box'],
+        onOpen: function() {
+          console.log('modal open');
+        },
+        onClose: function() {
+          console.log('modal closed');
+        },
+        beforeClose: function() {
+          // e.g. save content before closing the modal
+          return true; // close the modal
+          return false; // nothing happens
+        }
+      });
+      customModal.addFooterBtn('CLOSE', 'btn1', function() {
+        customModal.close();
+      });
+      customModal.setContent("<img src='{{ section.settings.example_image  | img_url: '600x660' | format: 'jpg'  }}'>");
+      customModal.open();             
+  });
+</script>

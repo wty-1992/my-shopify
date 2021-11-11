@@ -1,0 +1,139 @@
+{% if section.settings.enable %}
+<link href="https://foursixty.com/media/styles/embed/slider_v2.css" rel="stylesheet" type="text/css"  media="all">
+<style>
+.center.home-shop-instagram {
+    margin: 30px auto;
+    overflow: hidden;
+}
+.home-shop-instagram {
+    background: unset;
+}
+.home.main-center {
+    float: left;
+    width: 100%;
+}
+.a-center {
+    text-align: center!important;
+}
+.home-shop-instagram .home.main-center .no-margin {
+    font-size: 40px;
+    padding-bottom: 10px;
+    position: relative;
+    margin: 0 !important;
+}
+.home-shop-instagram .home.main-center .no-margin span {
+    z-index: 1;
+    position: relative;
+    display: inline-block;
+    background: #fff;
+    padding: 0 10px;
+    font-size: 42px;
+    font-family: 'OpenSans-Light';
+    line-height: 102px;
+}
+
+@media (min-width: 768px){ 
+.home-shop-instagram .home.main-center .no-margin img {
+    margin-top: 13px;
+    margin-right: 13px;
+}
+.pchome-title .fs18.c00.fw-200.ws1.lh24 {
+    margin-bottom: 32px;
+}
+.lh24 {
+    line-height: 24px;
+}
+.fw-200 {
+    font-weight: 200;
+}
+.ws1 {
+    word-spacing: 1px;
+}
+.fs18 {
+    font-size: 18px;
+}
+.home.main-center .soufeeljewelry {
+    padding-left: 80px;
+}
+.pchome-title a {
+    color: #444;
+    text-decoration: none;
+    transition: all .3s;
+}
+.home.main-center .shop-instagram {
+    text-decoration: underline;
+    margin-left: 20px;
+}
+.shop-instagram-botot.mt15 {
+    padding: 0;
+    clear: both;
+}
+}
+@media (max-width: 768px){
+  .home-shop-instagram .home.main-center .no-margin span {
+    font-size: 22px;
+    line-height: 75px;
+  }
+  .a-center h4.fs18.c00.fw-200.ws1.lh24{
+    font-weight: 100;
+    font-size: 16px;
+  }
+  .home-shop-instagram .home.main-center .no-margin{
+    padding-bottom: 0;
+  }
+  .fs-wrapper div.fs-entry-container {
+    width: 85vw !important;
+    height: 85vw !important;
+    margin: 0 10px;
+  }
+}
+</style>
+<div class="center home-shop-instagram" id="instagramBox">
+	<div class="home main-center">
+		<div class="home-title pchome-title col-md-12 a-center">
+			<h1 class="c00 no-margin fs28">
+              <span class="no-margin-img"><img src="{{ 'hone-png-new.png' | asset_img_url }}">{{'general.remedy.shop_instagram' | t}}</span>
+            </h1>
+			<h4 class="fs18 c00 fw-200 ws1 lh24">
+				<a href="https://www.instagram.com/soufeeljewelry/" class="soufeeljewelry">#{{'general.remedy.soufeeljewelry' | t}}</a>
+				<a  href="https://www.soufeel.com/shop-instagram/" class="shop-instagram">{{'general.remedy.view_gallery' | t}}</a> 
+			</h4>
+            <div class="shop-instagram-botot t-center mt15">                   
+            </div>
+		</div>
+        <script type="text/javascript">
+            var instagram_domain = "www.soufeel.com";
+        </script>
+        <script src="//foursixty.com/media/scripts/fs.slider.v2.5.js" data-feed-id="SoufeelJewelry" data-theme="slider_v2_5" data-cell-size="20%"></script>
+        <style>
+            .fs-has-links::after {  padding: 5px 7.5px; background-color: rgba(255, 255, 255, 0.99); color: rgba(0, 0, 0, 0.4); content: "SHOP IT";  }.fs-wrapper { height: auto } .fs-entry-container { height: 0 !important; width: 20% !important; padding-top: 20% !important; }.fs-wrapper div.fs-text-container .fs-entry-title, div.fs-detail-title{font-family:Times New Roman, serif;font-style:italic;font-weight:normal;}div.fs-text-container .fs-entry-date, div.fs-detail-container .fs-post-info, div.fs-wrapper div.fs-has-links::after, .fs-text-product, .fs-overlink-text{font-family:Helvetica Neue, Helvetica, Arial, sans-serif;font-style:normal;font-weight:bold;}.fs-slider-next-button, .fs-slider-prev-button { opacity: 1; }.fs-wrapper div.fs-text-container * {color:rgba(255, 255, 255, 0.99)}.fs-wrapper div.fs-text-container {background-color:rgba(0, 0, 0, 0.4); margin: 0px}div.fs-entry-date{display:none}div.fs-entry-title{display:none}.fs-wrapper div.fs-timeline-entry{ margin: 1px }
+        </style>
+    </div>
+    <div class="shop-instagram"></div>
+</div>
+{%endif%}
+{% schema %}
+  {
+    "name": "通用 - shopinstargram",
+    "class": "common-shopinstargram",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "home-shopinstagram"
+      },
+      {
+	    "type": "checkbox",
+        "id": "enable",
+        "label": "开启",
+        "default": true
+      }
+
+    ],
+    "presets": [
+      {
+        "name": "通用 - shopinstargram ( Swiper )",
+        "category": "通用"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,221 @@
+<style>
+  @font-face {
+    font-family: 'Brody';
+    src: url('{{ "brody.woff" | asset_url }}') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Century751 SeBd BT';
+    src: url('{{ "tt1182m_.ttf" | asset_url }}') format('woff');
+    font-weight: bold;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Century751 SeBd BT';
+    src: url('{{ "ARLRDBD.ttf" | asset_url }}') format('woff');
+    font-weight: bold;
+    font-style: normal;
+  }  
+  .option-carving-container {
+  	margin-bottom: 1rem;
+  }
+  .carving-box .area-carving {
+    height: 56px;
+    line-height: 56px;
+    background-color: #f8f8f8;
+    padding-left: 10px;
+    margin-bottom:0px!important;
+/*     display:none; */
+  }
+  .product-page-add_to_cart-section .select-option .selector-wrapper select{
+    font-size:12px;
+  }
+  .btn-carving-open {
+  	cursor: pointer;
+    background: #000;
+    border-radius: 20px;
+    color: #fff;
+    border: none;
+    line-height: 1;
+    font-size: 14px;
+    margin-right: 6px;
+    padding: 8px 20px;
+  }
+  .area-carving-preview-text {
+  	color: #333;
+    font-size: 1rem !important;
+  }
+  .btn-carving-confirm.is-disabled {
+  	background-color: #ee3e6b!important;
+  }
+  .custom-carving-container .el-textarea{
+    margin-top: 2px;
+  }
+  .carving-container .custom-carving-container {
+   display: flex;
+  }
+  .carving-textarea-box {
+    border: 1px solid #ddd!important;
+    border-radius: 0px!important;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+  }
+  .carving-textarea-box .el-textarea,.carving-textarea-box .carving-textarea {
+    width: 68%;
+  }
+  .carving-textarea-box .leftnum {
+    padding-right: 15px;
+    align-items: center;
+    display: flex;
+  }
+  .carving-textarea-box .leftnum span{
+    padding-right: 4px;
+  }
+  .carving-container .custom-carving-container .photo-design-body {
+    width:52%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .carving-container .custom-carving-container .operation-part {
+    width:48%;
+    padding: 20px;
+  }
+  .carving-container{
+    margin-bottom: 15px;
+  }
+  .el-dialog{
+    width: 60% !important;
+    min-width: 950px;
+  }
+  .el-dialog__footer {
+    padding: 1rem 2rem;
+    width: auto;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    background-color: #f5f5f5;
+    cursor: auto;
+    justify-content: center;
+  }
+  .upload-loading-container .crop-progerss {
+  	width: 260px;
+    margin: 0 auto;
+  }
+  .btn-carving{
+  	padding: 1rem 2rem!important;
+    border: none!important;
+    color: #fff!important;
+    border-radius: 0px!important;
+    width: 50%;
+    font-size: 16px!important;
+  }
+  .btn-carving.el-button--default {
+  	background-color: #000;
+  }
+  .btn-carving.el-button--primary {
+  	background-color: #e60044;
+  }
+  .dialog-footer-carving {
+    justify-content: center;
+  } 
+  .carving-prompt {
+  	color: red;
+    font-size: 16px;
+    text-align: center;
+  }
+  .carving-textarea-box {
+    border: 1px solid #ddd!important;
+    border-radius: 0px!important;
+  }
+  .el-button--primary.is-active, .el-button--primary:active,.el-button--primary:focus, .el-button--primary:hover {
+    background: #e60044 !important;
+  }
+  .btn-carving.el-button--default.is-active, .btn-carving.el-button--default:active,.btn-carving.el-button--default:focus, .btn-carving.el-button--default:hover {
+    background: #000!important;
+  }
+  .carving-textarea textarea {
+  	overflow: hidden;
+    height: 35px;
+  }
+  .templateBorder {
+  	border: 1px solid red;
+  }
+  .el-input__inner {
+  	border: none !important;
+  }
+  .leftnum {
+  	text-align: right;
+    padding-right: 15px;
+  }
+  .template-label {  	
+    display: none;
+  }
+  @media (max-width: 768px) { 
+  	.el-dialog {
+        width: 100%;
+        margin-top: 0;
+        margin-bottom: 0;
+        height: 100%;
+        overflow: auto;
+      min-width: 100%;
+    }
+/*     .el-dialog__body>div:nth-child(1)>div>div {
+    	height: 240px !important;
+    } */
+    .el-dialog__wrapper, .el-message-box__wrapper {
+    	z-index: 10001 !important;
+    }
+    .el-dialog--center .el-dialog__footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+    }
+    .el-message-box {
+    	width: 100%!important;
+        margin-top: 0;
+        margin-bottom: 0;
+        height: 100%;
+    }
+    .carving-container .custom-carving-container {
+      display: block !important;
+    }
+    .carving-container .custom-carving-container .photo-design-body, .carving-container .custom-carving-container .operation-part {
+      width: 100% !important;
+      padding: 0;
+    }
+    .loadingDialog .el-dialog {
+      width: 100% !important;
+      height: 100% !important;
+    }
+    .template-images-container ul li img {
+    	max-height: 75px;
+    }
+    .template-images-container ul li {
+    	width: 24% !important;
+    }
+    .template-label {
+      display: block;
+      font-size: 8px;
+      text-align: center;
+    }
+  }
+  
+  @media (max-width: 768px){
+    .canvas-container {
+        margin: 10% auto 0 auto !important;
+    }
+    .product-page-add_to_cart-section .select-option .selector-wrapper label{
+      padding-left: 10px;
+      margin-bottom: 4px;
+    }
+    .carving-box .area-carving{
+      height: 50px;
+      line-height: 50px;
+      
+    }
+  }
+  .carving-container .area-carving{display:none;}
+</style>

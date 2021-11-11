@@ -1,0 +1,1163 @@
+/*============================================================================
+  Venture by Shopify
+==============================================================================*/
+@font-face {
+  font-family: 'PlayfairDisplay-Regular';  
+  src: url('{{'PlayfairDisplay-Regular.eot' | asset_url}}');
+  src: url('{{'PlayfairDisplay-Regular.eot?#iefix' | asset_url}}') format('embedded-opentype'),
+       url('{{'PlayfairDisplay-Regular.woff2' | asset_url}}') format('woff2'),
+       url('{{'PlayfairDisplay-Regular.woff' | asset_url}}') format('woff'),
+       url('{{'PlayfairDisplay-Regular.ttf' | asset_url}}') format('truetype'),
+       url('{{'PlayfairDisplay-Regular.svg#PlayfairDisplay-Regular' | asset_url}}') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'RembowOVAw4';
+  src: url('{{'Rembow-OVAw4.otf' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Quentin';
+  src: url('{{'Quentin.ttf' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AppleChancery';
+  src: url('{{'AppleChancery.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'TimesNewRoman';
+  src: url('{{'TimesNewRoman.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AlluraRegular';
+  src: url('{{'AlluraRegular.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'holyunion';
+  src: url('{{'holyunion.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'NexaScript-Free';
+  src: url('{{'NexaScript-Free.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NexaScript-Free';
+  src: url('{{'TeluguMN.woff' | asset_url}}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'OpenSans';
+  src: url('{{'OpenSans.eot' | asset_url}}');
+  src: url('{{'OpenSans.eot' | asset_url}}?#iefix') format('embedded-opentype'),
+       url('{{'OpenSans.woff2' | asset_url}}') format('woff2'),
+       url('{{'OpenSans.woff' | asset_url}}') format('woff'),
+       url('{{'OpenSans.ttf' | asset_url}}') format('truetype'),
+       url('{{'OpenSans.svg' | asset_url}}#OpenSans') format('svg');    
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'OpenSans-Light';
+  src: url('{{'OpenSans-Light.eot' | asset_url}}');
+  src: url('{{'OpenSans-Light.eot' | asset_url}}?#iefix') format('embedded-opentype'),
+       url('{{'OpenSans-Light.woff2' | asset_url}}') format('woff2'),
+       url('{{'OpenSans-Light.woff' | asset_url}}') format('woff'),
+       url('{{'OpenSans-Light.ttf' | asset_url}}') format('truetype'),
+       url('{{'OpenSans-Light.svg' | asset_url}}#OpenSans') format('svg');    
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'ProximaNova-Regular';
+  src: url('{{'ProximaNova-Regular.eot' | asset_url}}');
+  src: url('{{'ProximaNova-Regular.eot' | asset_url}}?#iefix') format('embedded-opentype'),
+       url('{{'ProximaNova-Regular.woff2' | asset_url}}') format('woff2'),
+       url('{{'ProximaNova-Regular.woff' | asset_url}}') format('woff'),
+       url('{{'ProximaNova-Regular.ttf' | asset_url}}') format('truetype'),
+       url('{{'ProximaNova-Regular.svg' | asset_url}}#OpenSans') format('svg');    
+  font-weight: normal;
+  font-style: normal;
+}
+/*================ THEME SASS HELPERS ================*/
+@function adaptive-color($color, $percentage) {
+  @if (lightness($color) > 40) {
+    @return darken($color, $percentage);
+  } @else {
+    @return lighten($color, $percentage);
+  }
+}
+
+@mixin placeholder-text() {
+  color: $color-body-text;
+  opacity: 0.6;
+}
+
+@mixin error-placeholder-text() {
+  color: $color-error-input-text;
+  opacity: 0.6;
+}
+
+@mixin opacity-placeholder-text() {
+  opacity: 1;
+}
+ 
+ 
+$grid-medium: 750px;
+$grid-large: 990px;
+$grid-widescreen: 1400px;
+$grid-gutter: 20px;
+$grid-mini: 330px; 
+$grid-padwidth: 1024px;
+
+$padwidth: 'padwidth';
+$small-mini: 'small-mini';
+$small: 'small';
+$medium: 'medium';
+$medium-down: 'medium-down';
+$medium-up: 'medium-up';
+$large: 'large';
+$large-down: 'large-down';
+$large-up: 'large-up';
+$widescreen: 'widescreen';
+
+/*============================================================================
+  Generate breakpoint-specific column widths and push classes
+    - Default column widths: $grid-breakpoint-has-widths: ($small, $medium-up);
+    - Default is no push classes
+=====================================================#insertEmail=========================*/
+$grid-breakpoint-has-widths: ($small, $medium-up, $large-up, $small-mini);
+$grid-breakpoint-has-push: ($medium-up);
+
+/*================ Custom Theme Color Variables ================*/
+
+/*================ Typography Variables ================*/
+{% assign font_family1 = settings.font_family1 %}
+{{ font_family1 | font_face }}
+
+{%- assign font_family1_bold = font_family1 | font_modify: 'weight', 'bolder' -%}
+{%- assign font_family1_italic = font_family1 | font_modify: 'style', 'italic' -%}
+{%- assign font_family1_bold_italic = font_family1_bold | font_modify: 'style', 'italic' -%}
+
+{{ font_family1_bold | font_face }}
+{{ font_family1_italic | font_face }}
+{{ font_family1_bold_italic | font_face }}
+
+// font1
+$font-family1: 'Open Sans',Arial,{{ font_family1.family }}, {{ font_family1.fallback_families }};
+$font-family1-style: {{ font_family1.style }};
+$font-family1-weight: {{ font_family1.weight | default: 400 }};
+$font-family1-weight-bold: {{ font_family1_bold.weight | default: 700 }};
+
+$font-size-mb: {{ settings.font_size_mb }};
+$font-size-pad: {{ settings.font_size_pad }};
+$font-size-pad-pro: {{ settings.font_size_pad_pro }};
+$font-size-pc: {{ settings.font_size_pc }};
+
+.uppercase{
+  text-transform: uppercase;
+}
+.lowercase{
+  text-transform: lowercase;
+}
+
+
+
+/*================ Custom Theme Color Variables ================*/
+
+// global color
+$color-text: {{ settings.color_text }};
+
+// input, textarea color
+$color-input-bg: {{ settings.input_bg }};
+$color-input-text: {{ settings.input_border }};
+$color-input-border: {{ settings.input_border }};
+
+// button1 bg color
+$color-button1-bg: {{ settings.color_button1_bg }};
+// button1 text color 
+$color-button1-text: {{ settings.color_button1_text }};
+
+$color-button1-active: adaptive-color($color-button1-bg, 100%);
+
+$color-button1-border: $color-input-border;
+  
+// a color
+$color-a-active: $color-button1-active; 
+
+// body bg color
+$color-body-bg: {{ settings.color_body_bg }};
+// body text color
+$color-body-text: {{ settings.color_body_text }};
+
+/*================ Color Variables ================*/
+
+// Button colors
+$color-btn-primary: $color-button1-bg;
+$color-btn-primary-hover: adaptive-color($color-btn-primary, 10%);
+$color-btn-primary-active: adaptive-color($color-btn-primary-hover, 10%);
+$color-btn-primary-text: $color-button1-text;
+
+// Forms
+$color-form: #f4f4f4;
+$color-form-text: #333;
+$input-padding-top-bottom: 13px;
+$input-padding-left-right: 15px;
+$input-group-height: 48px;
+$width-qty-btn: 50px;
+
+// Collection card
+$color-collection-card-overlay: #000;
+$color-collection-card-text: #fff;
+
+// Helper colors for form error states
+$color-disabled: darken($color-form, 12%);
+$color-disabled-border: adaptive-color($color-form, 50%);
+$color-disabled-text: rgba(0, 0, 0, 0.4);
+$color-error: #ec523e;
+$color-error-bg: #ec523e;
+$color-error-input-text: #fff;
+$color-success: #fff;
+$color-success-bg: #59ac6c;
+
+/*================ Sizing Variables ================*/
+$width-site: 1372px;
+$gutter-site: 20px;
+
+/*================ Product Grid ================*/
+
+@mixin clearfix() {
+  &:after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+
+  *zoom: 1;
+} 
+@mixin prefix($property, $value, $prefixes) {
+  @each $prefix in $prefixes {
+    @if $prefix == webkit {
+      -webkit-#{$property}: $value;
+    } @else if $prefix == moz {
+      -moz-#{$property}: $value;
+    } @else if $prefix == ms {
+      -ms-#{$property}: $value;
+    } @else if $prefix == o {
+      -o-#{$property}: $value;
+    } @else if $prefix == spec {
+      #{$property}: $value;
+    } @else  {
+      @warn "Unrecognized prefix: #{$prefix}";
+    }
+  }
+}
+
+@mixin user-select($value: none) {
+  @include prefix('user-select', #{$value}, moz ms webkit spec);
+}
+
+/*================ Media Query Mixin ================*/
+@mixin media-query($media-query) {
+  $breakpoint-found: false;
+
+  @each $breakpoint in $grid-breakpoints {
+    $name: nth($breakpoint, 1);
+    $declaration: nth($breakpoint, 2);
+
+    @if $media-query == $name and $declaration {
+      $breakpoint-found: true;
+
+      @media only screen and #{$declaration} {
+        @content;
+      }
+    }
+  }
+
+  @if $breakpoint-found == false {
+    @warn "Breakpoint '#{$media-query}' does not exist";
+  }
+}
+
+/*================ Responsive Show/Hide Helper ================*/
+@mixin responsive-display-helper($grid-breakpoint-type:"") {
+  .#{$grid-breakpoint-type}show {
+    display: block !important;
+  }
+
+  .#{$grid-breakpoint-type}hide {
+    display: none !important;
+  }
+}
+
+
+$grid-breakpoints: (
+  $small-mini '(max-width: #{$grid-mini - 1})',
+  $small '(max-width: #{$grid-medium - 1})',
+  $medium '(min-width: #{$grid-medium}) and (max-width: #{$grid-large - 1})',
+  $medium-down '(max-width: #{$grid-large - 1})',
+  $medium-up '(min-width: #{$grid-medium})',
+  $large '(min-width: #{$grid-large}) and (max-width: #{$grid-widescreen - 1})',
+  $large-down '(max-width: #{$grid-widescreen - 1})',
+  $large-up '(min-width: #{$grid-large})',
+  $widescreen '(min-width: #{$grid-widescreen})',
+  $padwidth '(max-width:#{$grid-padwidth})'
+
+);
+
+/*================ Build Base Grid Classes ================*/
+@include responsive-display-helper();
+/*================ Build Responsive Grid Classes ================*/
+@each $breakpoint in $grid-breakpoint-has-widths {
+  @include media-query($breakpoint) {
+    @include responsive-display-helper('#{$breakpoint}--');
+  }
+}
+
+/*============================================================================
+  #Normalize
+  Based on normalize.css v3.0.2 | MIT License | git.io/normalize
+==============================================================================*/
+*, *:before, *:after {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color:transparent;
+  outline:0!important;
+}
+
+body, html {
+  margin: 0;
+  -webkit-text-size-adjust:none!important;
+  background-color:#fff;
+  font-family:'Open Sans',Arial,Helvetica,sans-serif;
+  color:#777;    line-height: 1.5;
+  overflow-x:hidden
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section,
+summary {
+  display: block;
+}
+
+body,
+input,
+textarea,
+button,
+select {
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+}
+
+a {
+  background-color: transparent;
+}
+a{
+  color:#444;
+  text-decoration:none;
+  transition:all .3s
+}
+a:focus,a:visited{
+  text-decoration:none
+}
+a:hover{
+  color:#e60044;
+  -webkit-transition:color .25s linear;
+  transition:color .25s linear;
+  text-decoration:none
+}
+:focus{outline:0}
+
+h1,h2,h3,h4,h5,h6{margin:0 0 5px;line-height:1.35;color:#777}
+h1{font-size:20px;font-weight:400;margin-bottom:20px}
+h2{font-size:18px;font-weight:400;margin-bottom:15px}
+h3{font-size:15px;font-weight:600}
+h4{font-size:14px;font-weight:600}
+h5{font-size:12px;font-weight:600}
+h6{font-size:11px;font-weight:600}
+
+b,
+strong {
+  font-weight: $font-family1-weight-bold;
+}
+
+em {
+  font-style: italic;
+}
+img{
+  border:0;
+  vertical-align:top; 
+}
+small {
+  font-size: 80%;
+}
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sup {
+  top: -0.5em;
+}
+sub {
+  bottom: -0.25em;
+}
+
+img {
+  max-width: 100%;
+  border: 0;
+}
+button,input,optgroup,select,textarea {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+button,optgroup,select,textarea{
+  font-size:1rem;
+}
+
+input{
+  font-size:1rem;
+}
+
+button[disabled],html input[disabled] {
+  cursor: default;
+}
+
+button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+
+button:-moz-focusring,
+[type="button"]:-moz-focusring,
+[type="reset"]:-moz-focusring,
+[type="submit"]:-moz-focusring {
+  outline: 1px dotted ButtonText;
+}
+
+input[type="search"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+td,
+th {
+  padding: 0;
+}
+
+textarea {
+  overflow: auto;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+// hide outline on focus for elements which are given focus by JS
+[tabindex='-1']:focus {
+  outline: none;
+}
+
+/*================ #Basic Styles ================*/
+html {
+  font-size:#{$font-size-mb}px;
+  font-family: $font-family1;
+  font-style: $font-family1-style;
+  font-weight: $font-family1-weight;
+  color: $color-text;
+  background-color: $color-body-bg;
+  @include media-query($medium-up) {
+    font-size:#{$font-size-pad}px;
+  }
+  @include media-query($large) {
+    font-size:#{$font-size-pad-pro}px;
+  }
+  
+  @include media-query($large-up) {
+    font-size:#{$font-size-pc}px;
+  }
+}
+
+.page-width {
+  max-width: $width-site;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/*================ #Icons ================*/
+.icon {
+  display: inline-block;
+  vertical-align: middle; 
+  fill: currentColor; 
+  .no-svg & {
+    display: none;
+  }
+}  
+svg.icon:not(.icon--full-color),
+symbol.icon:not(.icon--full-color) {
+  circle,
+  ellipse,
+  g,
+  line,
+  path,
+  polygon,
+  polyline,
+  rect {
+    fill: inherit;
+    stroke: inherit;
+  }
+}
+  
+/*================ #Lists ================*/
+ul, ol {
+  margin: 0;
+  padding: 0;
+  list-style:none;
+}
+
+ol {
+  list-style: decimal;
+}  
+/*================ select ============================*/
+.input1 {
+  background-color: $color-input-bg;
+  color: $color-input-text;
+  border:1px solid $color-input-border;
+  padding:0;
+  margin:0;
+  width:100%;
+  height:45px;
+  font-weight: bold;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  &:active,
+  &:focus {
+   box-shadow: 1px 1px 2px #000;
+   background-color: $color-button1-border;
+   color: #000;
+  }
+  &[disabled] {
+    cursor: default;
+    color: $color-disabled-border;
+    background-color: $color-disabled;
+  }
+}
+
+/*================ #Links and Buttons ================*/
+ 
+.btn-primary:hover{ 
+    background-color: #0069d9;
+    border-color: transparent;
+}
+.btn1 {
+  background-color: $color-button1-bg;
+  color: $color-button1-text;
+  border:1px solid $color-button1-border;
+  padding:0;
+  margin:0;
+  width:100%;
+  border:none;
+  height:50px;
+  font-weight: bold;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  &:active,
+  &:focus { 
+/*    background-color: $color-button1-active; */
+  }
+  &[disabled] {
+    cursor: default;
+    color: $color-disabled-border;
+    background-color: $color-disabled;
+  }
+}
+.btn-loading {
+    background: #F9F9F9;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    margin: 0;
+    padding: 0;
+} 
+
+.btn {
+  display: inline-block;
+  width: 100%;
+  text-decoration: none;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 1px solid transparent;
+  @include user-select();
+  @include prefix(appearance, none, webkit moz spec);
+
+  // Set primary button colors - can override later
+  background-color: $color-btn-primary;
+  color: $color-btn-primary-text;
+
+  &:hover {
+/*     background-color: $color-btn-primary-hover;*/
+    color: $color-btn-primary-text; 
+  }
+
+  &:active,
+  &:focus {
+/*    background-color: $color-btn-primary-active; */
+   color: $color-btn-primary-text;
+  }
+
+  &[disabled] {
+    cursor: default;
+    color: $color-disabled-border;
+    background-color: $color-disabled;
+  }
+
+  .icon {
+    fill: currentColor;
+    path: currentColor;
+  }
+} 
+
+/*================ #Tables ================*/
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+th {
+  font-weight: $font-family1-weight-bold;
+}
+
+th, td {
+  text-align: left;
+}
+
+/*============================================================================
+  Responsive tables, defined with .responsive-table on table element.
+==============================================================================*/
+@include media-query($small) {
+  .medium-down--hide{display:none} 
+} 
+/*================ #Images and Iframes ================*/
+svg:not(:root) {
+  overflow: hidden;
+} 
+/*================ Forms ================*/ 
+fieldset {
+  margin: 0 0 $gutter-site;
+  padding: $gutter-site / 2;
+}
+
+legend {
+  border: 0;
+  padding: 0;
+} 
+button,
+input[type="submit"] {
+  cursor: pointer;
+} 
+input,textarea,select {
+  width:100%;
+  background-color:$color-input-bg;
+  border: 1px solid $color-input-border;
+  border-radius: 0;
+  max-width: 100%;
+  
+  &:focus {
+    border-color: $color-button1-active;
+  }
+
+  &[disabled] {
+    cursor: default;
+    background-color: $color-disabled;
+    border-color: $color-disabled-border;
+  }
+  &.input--error {
+    border-color: $color-error;
+    background-color: $color-error-bg;
+    color: $color-error;
+  }
+}
+
+/*================ Error styles ================*/
+select {
+  @include prefix(appearance, none, webkit moz spec);
+  background-position: right center;
+  padding-right: 28px;
+  text-indent: 0.01px;
+  text-overflow: '';
+  cursor: pointer;
+}
+
+optgroup {
+  font-weight: $font-family1-weight-bold;
+}
+
+// Force option color (affects IE only)
+option {
+  color: #000;
+  background-color: #fff;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+/*================ Form labels ================*/
+.label--hidden {
+  position: absolute;
+  height: 0;
+  width: 0;
+  margin-bottom: 0;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+
+ 
+} 
+label[for] {
+  cursor: pointer;
+} 
+/*================ GLOBAL ================*/
+// Only show when JS is not supported
+.no-js:not(html) {
+  display: none;
+  .no-js & {
+    display: block;
+  }
+}
+
+// Only show when JS is supported
+.no-js .js {
+  display: none;
+} 
+.main-content {
+  display: block;
+  .breadcrumb{
+    padding: 20px 50px;
+    @include media-query($small) {
+      padding:10px;
+    }
+    * {
+      margin-right:10px;
+    } 
+  }
+  .template-index & {
+    padding-bottom: 0;
+  }
+}
+
+
+/*================ Headings ================*/
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 1rem;
+  a {
+    color: inherit;
+    text-decoration: none;
+    font-weight: inherit;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+  letter-spacing: inherit;
+  text-transform: inherit;
+  font-family: $font-family1;
+  font-weight: $font-family1-weight-bold;
+  font-style: $font-family1-style;
+  text-align: center;
+}
+
+
+h1 {
+  font-size: 3rem;
+}
+
+h2 {
+  font-size: 2.5rem;
+}
+
+h3 {
+  font-size: 2rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+ 
+}
+h5 {
+  font-size: 1.2rem;
+}
+.h1 {
+  @extend h1;
+}
+
+.h1--mini {
+  @extend h1;
+  
+}
+
+.h2 {
+  @extend h2;
+}
+
+.h3 {
+  @extend h3;
+}
+
+.h4 {
+  @extend h4;
+}
+
+.h5 {
+  @extend h5;
+}
+
+.h6 {
+  @extend h6;
+}
+ 
+/*================ Form elements ================*/
+label {
+  font-size: 1rem;
+  font-weight: $font-family1-weight-bold;
+  color: $color-body-text;
+  text-transform: uppercase;
+  margin-bottom: 13px;
+}   
+/*================ Tables ================*/
+
+td,
+th {
+  padding: 1rem;
+  border: 1px solid $color-body-bg;
+}
+
+/*================ Forms and inputs ================*/
+::-webkit-input-placeholder {
+  @include placeholder-text();
+}
+
+:-moz-placeholder {
+  @include placeholder-text();
+}
+
+:-ms-input-placeholder {
+  @include placeholder-text();
+}
+
+::-ms-input-placeholder {
+  @include placeholder-text();
+  @include opacity-placeholder-text();
+}
+
+input,textarea,select {
+  background-color: $color-input-bg;
+  color: $color-text;
+  max-width: 100%;
+
+  &[disabled] {
+    color: $color-disabled-text;
+  }
+
+  &.input--error {
+    color: $color-error-input-text;
+
+    &::-webkit-input-placeholder {
+      @include error-placeholder-text();
+    }
+
+    &:-moz-placeholder {
+      @include error-placeholder-text();
+    }
+
+    &:-ms-input-placeholder {
+      @include error-placeholder-text();
+    }
+
+    &::-ms-input-placeholder {
+      @include error-placeholder-text();
+      @include opacity-placeholder-text();
+    }
+  }
+} 
+input,textarea {
+  padding: 5px;
+}
+
+// Fix Safari close button position bug - http://codepen.io/cshold/pen/yNWoNo
+input[type="search"] {
+  padding-right: 0;
+}
+
+select {
+  padding:5px;
+} 
+.input--full {
+  width: 100%;
+} 
+/*================ Form feedback messages ================*/
+.note, 
+.errors {
+  padding: $input-padding-top-bottom;
+  margin: 0 0 ($gutter-site / 2);
+} 
+.note {
+} 
+.errors {
+  background-color: $color-error-bg;
+  color: $color-error-input-text;
+}
+
+.errors ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+} 
+/*================ Theme links and buttons ================*/
+.btn {
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 15px 45px;
+  transition: color 0.1s ease-in, background-color 0.1s ease-in;
+} 
+.btn--full {
+  display: block;
+  width: 100%;
+}
+
+/*================ Default link styles ================*/
+a {
+  color: $color-text;
+  text-decoration: none;
+  transition: color 0.1s ease-in, background-color 0.1s ease-in; 
+  &:hover,
+  &:focus,
+  &:active {
+    select{
+      color: $color-button1-active;
+    } 
+    color: $color-button1-active;
+  }
+}
+/*====================== image loading =======================*/
+.lazyloading:not(iframe) {
+  opacity: 1;
+  transition: 600ms opacity;
+  background-image:url({{settings.mask_loading_image | img_url: 'medium'}});
+  background-repeat:no-repeat;
+  background-position:center;
+  height: auto;
+} 
+input[type='search']::-webkit-search-cancel-button {
+  position: relative;
+  left: -$gutter-site / 2;
+}  
+
+/*======================= DIY =======================*/
+.shopify-challenge__container{
+  padding:50px;
+}
+/*.instagram .intagramlist{pointer-events: none;}*/
+
+.template-index main.main-content .index-home-container{
+  width:100%;
+  background: #fff;
+  @media(min-width:768px){
+    max-width:calc(100% - 120px);
+    margin: auto;
+  }
+}
+@media (max-width : 1440px) {
+
+}
+@media (max-width : 768px) {
+
+}
+
+/*评论插件样式*/
+#my-review-paging-left,#my-review-paging-right{
+  display: none;
+}
+.my-review-user-info .my-review-content{
+  margin-top: 10px;
+}
+.my-review-form .row{
+  flex-flow: column;
+}
+.my-review-layer-content .my-review-form input, .my-review-layer-content textarea{
+  background: #fefefe;
+}
+.my-review-layer-content .tip{
+  margin-bottom: 15px;
+}
+.my-review-list-con div.my-review-sum{
+  color: #3085c7;
+}
+@media(max-width:768px){
+.my-review-tabbar-con .my-review-sort ul.my-review-sort-ul>li{
+  padding: 0 14px;
+}
+.my-review-head .my-review-number-con .my-review-t .my-star-con div.my-star{
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+  font-size: 18px;
+  margin-right: 2px;
+}
+.my-review-head .my-review-number-con div.my-review-grade{
+  font-size: 30px;
+  margin-left: 10px;
+}  
+}
+
+button, input { line-height: normal; }
+
+{% comment %}
+*
+* write by lduo
+*
+{% endcomment %}
+$mm-color-brand: rgba(249,66,58,1);
+$mm-color-brand-dark: rgba(228, 51, 41, 1);
+$mm-color-gray-1: rgba(34,34,34,0.08);
+
+{% comment %}
+* alibaba sans font *
+{% endcomment %}
+.alifont {
+  font-family: alibaba-sans, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.alifont_bold {
+  font-family: alibaba-sans, sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+.alifont_heavy {
+  font-family: alibaba-sans, sans-serif;
+  font-weight: 800;
+  font-style: normal;
+}
+
+{% comment %}
+* global *
+{% endcomment %}
+.m_col_16 {
+  width: 100%;
+  max-width: 1372px;
+}
+
+.mm-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.mm-icon-small,
+.mm-icon-small svg {
+  width: 10px;
+  height: 10px;
+}
+
+.mm-btn {
+  border-radius: 4px;
+  border-width: 1px;
+  border-style: solid;
+  line-height: 1;
+  // transition: all 0.3s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.mm-btn-default,
+.mm-btn-default:visited,
+.mm-btn-default:focus{
+  border-color: $mm-color-gray-1;
+  background-color: transparent;
+  color: #222;
+  outline: none;
+}
+.mm-btn-default:hover {
+  color: $mm-color-brand;
+}
+.mm-btn-default:active {
+  outline: rgba(34,34,34,0.03) solid 3px;
+}
+
+.mm-btn-primary,
+.mm-btn-primary:visited,
+.mm-btn-primary:focus {
+  border-color: $mm-color-brand;
+  background-color: $mm-color-brand;
+  color: white;
+  outline: none;
+}
+.mm-btn-primary:hover
+{
+  border-color: $mm-color-brand-dark;
+  background-color: $mm-color-brand-dark;
+  color: white;
+}
+.mm-btn-primary:active {
+  border-color: $mm-color-brand;
+  background-color: $mm-color-brand;
+  outline: rgba(228, 51, 41, 0.24) solid 3px;
+}
+
+{% comment %}
+* global replace *
+{% endcomment %}
+.h_reset {
+  padding: 0;
+  margin: 0;
+}

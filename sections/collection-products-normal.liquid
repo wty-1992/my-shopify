@@ -1,0 +1,190 @@
+{% comment %}
+** @name 目录模块 **
+** @author 王天宇 **
+** @integrate 王天宇 **
+{% endcomment %}
+<style>
+  .products-normal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto 120px;
+    padding-top: 56px;
+    max-width: 1372px;
+    width: 100%;
+    color: #222;
+  }
+  .products-normal .normal-title {
+    margin-bottom: 14px;
+  	height: 80px;
+    font-size: 32px;
+    line-height: 80px;
+  }
+  .products-normal .normal-swiper {
+  	width: 100%;
+  }
+  .products-normal .swiper-slide {
+    padding: 14px 14px;
+    background: #F6F6F9;
+    box-shadow: 0 2 4;
+    border-radius: 4px;
+  }
+  .swiper-slide .slide-link {
+  	display: inline-block;
+    width: 100%;
+    height: 100%;
+  }
+  .swiper-slide img {
+    width: 100%;
+    margin-bottom: 14px;
+  }
+  .swiper-slide .slide-new {
+    font-size: 14px;
+    height: 32px;
+    line-height: 32px;
+    color: #0EBA9A;
+  }
+  .swiper-slide .slide-title {
+    margin-bottom: 14px;
+    height: 45px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  .swiper-slide .slide-price {
+    margin-bottom: 13px;
+  	height: 32px;
+    line-height: 32px;
+    font-size: 20px;
+  }
+  .normal-swiper .swiper-wrapper {
+  	margin-bottom: 60px;
+  }
+  .normal-swiper .swiper-pagination-bullet {
+    width: 14px;
+    height: 14px;
+  }
+  .normal-swiper .swiper-pagination-bullet-active {
+  	background: #F9423A;
+  }
+  .products-normal .normal-link {
+  	height: 20px;
+    line-height: 20px;
+    font-size: 16px;
+    color: #928FA5;
+  }
+  .products-normal .normal-link span {
+  	color: #222;
+  }
+  @media (max-width: 768px) {
+    .products-normal {
+      padding: 40px 20px 0;
+    }
+    .products-normal .normal-title {
+      color: #222;
+      height: 56px;
+      line-height: 56px;
+      font-size: 24px;
+    }
+    .swiper-slide .slide-new {
+      margin: 6px 0;
+      height: 20px;
+      line-height: 20px;
+    }
+    .swiper-slide .slide-title {
+      font-size: 13px;
+      line-height: 24px;
+    }
+    .products-normal .swiper-slide {
+      padding: 5px 5px 5px 0;
+      background: #F6F6F9;
+      box-shadow: 0 2 4;
+      border-radius: 4px;
+    }
+  }
+</style>
+<div class="main-container-collection alifont">
+  <div class="products-normal">
+    <div class="normal-title alifont_bold">{{section.settings.title_text}}</div>
+    <div class="normal-swiper swiper-container">
+      <div class="swiper-wrapper">
+        {% assign cur_collection = collections[section.settings.list_collection] %}
+        {% unless  cur_collection.error %}
+        {% for col_product in cur_collection.products %}
+        <div class="swiper-slide">
+          <a class="slide-link" href="{{col_product.url}}">
+            <img src="{{col_product.featured_image | img_url: '400x'}}" alt="">
+            <div class="slide-new alifont_bold">NEW</div>
+            <div class="slide-title">{{col_product.title}}</div>
+            <div class="slide-price alifont_bold">{{col_product.price | money}}</div>
+          </a>
+        </div>
+        {% endfor %}
+        {% endunless %}
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+    <div class="normal-link">Visit our <span class="alifont_bold">product catalog</span> to see the full list of products</div>
+  </div>
+</div>
+<script>
+  var swiper = new Swiper('.normal-swiper', {
+    observer: true,
+    observeParents: true,
+    slidesPerView: 2.2,
+    slidesPerGroup : 2,
+    spaceBetween: 10,
+    loop: true,
+    keyboard: true,
+    pagination: {
+      el: '.swiper-pagination',
+      dynamicBullets: true,
+      clickable: true
+    },
+    breakpoints: {
+      2048: {
+        // show 4.5 product
+        slidesPerView: 4,
+        slidesPerGroup: 4,
+        spaceBetween: 20,
+        slidesOffsetBefore:12
+      },
+      1024: {
+        // show 4.5 product
+        slidesPerView: 4,
+        slidesPerGroup: 4,
+        spaceBetween: 28
+      },
+      768: {
+        // show 3.5 product
+        slidesPerView: 2,
+        slidesPerGroup:2,
+        spaceBetween: 10
+      }
+    }
+  });
+</script>
+
+{% schema %} 
+{
+  "name": "产品-列表-轮播图",
+  "class":"common-products-swiper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title_text",
+      "label": "模块标题",
+      "default": "New products"
+    },
+    {
+      "type": "collection",
+      "id": "list_collection",
+      "label": "产品集合"
+    }
+  ]
+}
+{% endschema %}

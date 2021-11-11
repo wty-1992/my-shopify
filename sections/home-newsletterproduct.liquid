@@ -1,0 +1,565 @@
+{% if handle == blank and section.settings.enable %}
+
+<style>
+#newsletter-mask.shade-class {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 202;
+    background-color: rgba(0,0,0,0.5);
+    }
+.insert-email-class #js-bottom{transform: rotate(0deg); }
+.newsletter-policy .text-u{padding-left: 5px;padding-right: 5px;text-decoration: underline;}
+.newsletter-class {
+    position: fixed;
+    width: 620px;
+    height: 330px;
+    background: #f9f1e9;
+    right: -620px;
+    bottom:30%;
+    margin-top: -250px;
+    z-index: 198;
+    transition: all .6s;
+    border-radius:0;
+    text-transform: uppercase;
+}
+.js-text{     
+    font-size: 20px;
+    display: block;
+    transform: rotate(-90deg);
+    -webkit-transform-origin: 0 0;
+    -moz-transform-origin: 0 0;
+    -o-transform-origin: 0 0;
+    width: 330px;
+    top: 100%;
+    position: absolute;
+    text-transform: capitalize;
+    left: 7px;    
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align:center;
+}
+.cl:before { position:fixed;border-bottom: 1px solid #eee;}
+.newsletter-class .bookmark{
+    position: absolute;
+    width: 38px;
+    left: -38px;
+    top: 0;
+    margin-top: 0;
+    background: #000;
+    color: #fff;
+    height: 100%;
+    cursor: pointer;
+    font-family: 'Gilroy';
+}
+#insertEmail h3.insertEmail-title {
+    margin-bottom: 20px;
+    margin-top: 35px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    word-break: break-word;
+}
+.i-title-left,.i-title-right{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    line-height: 1;
+    height: 120px;
+    justify-content: space-between
+}
+.i-title-border{
+    height: 120px;
+    width: 1px;
+    background: #000;
+    margin: 0 22px;
+}
+#insertEmail{ 
+    text-align:center;
+    font-family: 'Gilroy';
+}
+.inside-txt{
+    margin-top: 37px;    
+    font-size: 18px;
+    color: #000;
+    text-transform: none;
+}
+.insertEmail-title .i-title-left .c0{
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 1px;
+  font-family: Open sans-serif;
+}
+.insertEmail-title .i-title-left .c1{
+    font-size: 64px;
+    font-weight: bold;
+  font-family: Open sans-serif;
+}
+.insertEmail-title .i-title-left .c2{    
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 2px;
+  font-family: Open sans-serif;
+}
+.insertEmail-title .i-title-right .c0{
+    font-size: 68px;    
+    line-height: .8;
+  font-family: Open sans-serif;
+}
+.insertEmail-title .i-title-right .c1{
+    font-size: 36px;
+    font-family: Open sans-serif;
+}
+.insertEmail-title .i-title-right .c2{
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-family: Open sans-serif;
+}
+.insertEmail-title .writer-title-one,.insertEmail-title .writer-title-fore { display:inline-block; width:100%; color:#000;}
+.insertEmail-title .writer-title-one { font-size:20px; text-transform:uppercase;}
+.writer-title-two,.writer-title-threen {text-transform:uppercase; font-size: 28px; color: #db385c; line-height:32px; font-weight:900;}
+#newsletter.sucess-email-class {transition:height 0s;}
+.newsletter-class.insert-email-class{ right:0;z-index: 251;}
+
+#newsletter button.close-new { 
+    border:none;
+    background: rgba(255,255,255,0);        
+}
+#newsletter .close-class .close-new .photofont {
+    font-size:20px;
+    }
+#newsletter .close-new { position:absolute;}
+.insertEmail-title {     font-weight: 500; color:#000
+}
+.insertEmail-content .insertEmail-image { width:200px; margin:0 auto;}
+.insertEmail-text {
+    padding-bottom:30px;
+    font-size: 12px;
+    text-align: center;
+    color: #000;
+    padding-left: 10%;
+    }
+.insertEmail-text span { display:inline-block; width:60%}
+.insertEmail-confirm  {
+    margin-top:14px;
+    }
+.insertEmail-text .textspan { display:inline-block; margin-top:26px;}
+#newsletter .cl { clear:both;    margin: 25px 0; position:relative}
+#newsletter .cl span{ display:inline-block; position:relative; z-index:99;    background: #fff;text-transform: uppercase;
+    padding: 0 10px;}
+#newsletter .cl:before{content: ""; position:absolute;border-bottom: 1px solid #eee;
+    width: 100%;
+    left: 0;
+    top: 5px;}
+.insertEmail-form { 
+    width:100%;
+    font-size: 14px;
+    color: #000;
+    text-align: left;
+    padding: 0;
+}
+
+#error_email {
+    font-size: 12px;
+    color: red;
+    width:100% ; 
+}
+    
+#newsletter .insertEmail-form .insertEmail-email{ 
+    padding-bottom:20px;
+    text-align:center;
+}
+.insertEmail-email .newsletter-policy{
+    padding-top: 12px;
+    text-align: left;
+    font-size: 12px;
+    color: #4c4c4c;
+    display: flex;
+    flex-flow: wrap;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    text-transform: capitalize;
+}
+.i-email-flex{
+    display: flex;
+    flex-flow: wrap;
+    justify-content: center;
+}
+#newsletter .insertEmail-form span#error_email {
+    display: inline-block;
+    width: 490px;
+    text-align: left;
+}
+#newsletter .insertEmail-form input.newsletter_email { 
+    width: 338px;
+    height: 35px;
+    border: 1px solid #000;
+    color: #737373;
+    background: transparent;
+    padding-left: 22px;
+}
+.i-email-flex .newsletter-policy a{font-weight: 900;color: #000;}
+#newsletter .insertEmail-form input::-webkit-input-placeholder{font-style: oblique;color: #e60044;text-align: center;font-weight: 600;opacity: 1;}
+#newsletter .insertEmail-form input::-moz-placeholder{font-style: oblique;color: #e60044;text-align: center;font-weight: 600;opacity: 1;}
+#newsletter .insertEmail-form input:-ms-input-placeholder{font-style: oblique;color: #e60044;text-align: center;font-weight: 600;opacity: 1;}
+#newsletter .newsletterBtn {
+    border:none;
+    background-color: #e60044;
+    width: 140px;
+    height: 35px;
+    color: #fff;    
+    text-transform: uppercase;
+    margin-left: 12px;
+    font-size: 12px;
+}
+#newsletter .insertEmail-form input[type="checkbox"]{
+    width:auto;
+    height:auto;
+    margin-right:10px;;
+    position: relative;
+}   
+#newsletter .insertEmail-form input[type="checkbox"]:before{
+    content: "";
+    width: 12px;
+    height: 12px;
+    border: 1px solid;
+    position: absolute; 
+    background: #f9f1e9;   
+}
+#newsletter .insertEmail-form input[type="checkbox"]:after{
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 10px;
+    border-color: #000;
+    border-style: solid;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    left: 3px;
+    opacity: 0;
+}
+#newsletter .insertEmail-form input[type="checkbox"]:checked::after{
+    opacity: 1;
+}
+#newsletter .insertEmail-form .insertEmail-confirm  input {margin-top:-26px;}
+#newsletter .placard {
+    text-align:center;
+    width: auto;
+    margin-left: 25px;  
+}
+#newsletter .placard span {
+    cursor:pointer;
+    display: inline-block;
+    line-height: 16px;
+}
+#newsletter .newsletterFBBtn {
+        border: 1px solid #4262a5;
+    background-color: #4262a5;
+    width: 444px;
+    height: 55px;
+    color: #fff;
+    border-radius: 5px;
+    text-transform: uppercase;
+    }
+#insertEmail .submiting-jack{
+    background-color: #e60044;
+    border: none;
+}
+#registerSucess span{ 
+    display:inline-block;
+    text-align:center;   
+     }
+#registerSucess{     
+    text-align: center;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    cursor: pointer;
+}
+.registerSucess-top-txt{
+    font-size: 40px;
+    font-weight: 900;
+    margin-bottom: 22px;
+    line-height: 1.2;
+    padding: 0 68px;
+}
+.registerSucess-center-txt{
+
+}
+.registerSucess-center-txt .text-two{
+    background: #e60044;
+    color: #fff;
+    font-size: 30px;
+    font-weight: 900;
+    padding: 10px 70px;
+    margin-bottom: 35px;
+}
+.registerSucess-bottom-txt{
+    font-size: 13px;
+    letter-spacing: 1px;
+    font-weight: 900;
+}
+#registerSucess span.text-oen { 
+    font-size: 32px;
+    color: #000;
+    padding: 20px 0 14px 0;
+}
+#registerSucess .registerSucess-image {
+    width: 200px;
+    text-align: center;
+    margin: 44px 0 44px;
+    }
+#registerSucess .registerSucess-image img { margin-left:77%;}
+#registerSucess a {
+    border: 1px solid #34c266;
+    background-color: #34c266;
+    width: 240px;
+    display: inline-block;
+    margin-top: 32px;
+    height: 50px;
+    line-height: 50px;
+    color: #fff;
+    border-radius: 5px;
+    }
+.photo-zhengque2{ display: block;padding-bottom: 0;}
+#registerSucess .text-two { width:100%;}
+#js-top {
+    width: 14px;
+    height: 1px;
+    background-color: #fff;
+    position: absolute;
+    left: 13px;
+    top: 13px;
+    transform: rotate(-45deg);
+    transition:transform 0.8s;
+    }
+#js-bottom {
+    transform: rotate(-180deg);
+    font-size: 16px;
+    display: inline-block;
+    position: relative;
+    left: 4px;
+    bottom: 1px;
+    transition:all .6s;
+    }
+.writer-title-fr { display:none;}
+.bookmark i.photo-close{display:none;}
+@media(max-width:768px){
+/*   .newsletter-class{
+    display:none;
+  } */
+  #newsletter-mask.shade-class,.js-text{
+    display: none;
+  }
+  .newsletter-class{
+    width: 100%;
+    bottom: 0vh;
+    right: 0;
+    height:250px;
+    z-index:300;
+  }
+  .newsletter-class.insert-email-class{
+    display: none;
+  }
+  .newsletter-class .bookmark{
+    width: 22px;
+    height: 22px;
+    left: unset;
+    top: 6px;
+    right: 6px;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+  }
+  .inside-txt{
+    margin-top: 19px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  #insertEmail h3.insertEmail-title{
+    margin-bottom: 15px;
+    margin-top: 20px;
+  }
+  .i-title-border{
+    height: 85px;
+    margin: 0 12px;
+  }
+  .insertEmail-title .i-title-left .c0{
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 0px;
+  }
+  .insertEmail-title .i-title-left .c1{
+    font-size: 35px;
+    font-weight: bold;
+    font-family: Open sans;
+  }
+  .insertEmail-title .i-title-left .c2{
+    font-size: 13px;
+    letter-spacing: 2px;
+    font-family: sans-serif;
+  }
+  .insertEmail-title .i-title-right .c0{
+    font-size: 38px;
+    font-weight: bold;
+    line-height: .8;
+    letter-spacing: 4px;
+  }
+  .insertEmail-title .i-title-right .c1{
+    font-size: 22px;
+    font-weight: bold;
+    font-family: Open sans;
+    letter-spacing: -1px;
+  }
+  .insertEmail-title .i-title-right .c2{
+    letter-spacing: 0px;
+    font-size: 12px;
+  }
+  .i-title-left, .i-title-right{
+    height:85px;
+  }
+  .i-email-flex{
+    justify-content: end;
+  }
+  .insertEmail-form{
+    padding: 0 13px;
+  }
+  #newsletter .insertEmail-form input.newsletter_email{
+    width: 60%; 
+    height: 28px;
+  }
+  #newsletter .newsletterBtn{
+    width: calc(39% - 4px);
+    height: 28px;
+    margin-left: 6px;
+    font-family: Open sans;
+    font-weight: 900;
+  }
+  #newsletter .insertEmail-form .insertEmail-email{
+    padding-bottom: 0;
+  }
+  .insertEmail-email .newsletter-policy{
+    font-weight: 600;
+    color: #000;
+    padding-top: 5px; 
+    font-family: 'Open Sans';
+    text-transform: initial;
+    justify-content: end;
+  }
+  .insertEmail-email .newsletter-policy a{
+    text-decoration: underline;
+  }
+  #newsletter .placard{
+    width: 100%;
+    margin-top: 8px;
+    margin-left: 0;
+  }
+  #newsletter .placard span{
+    text-decoration: underline;
+    color: #c8c8c8;
+    width: 100%;
+    text-align: center;
+  }  
+  .bookmark i.photo-close{
+    display:block;
+    width: auto;
+    height: auto;
+    text-align: center;
+    transform: scale(.8) translate(0px, -1px);
+  }
+  #newsletter .insertEmail-form input[type="checkbox"]{
+    margin-right: 2px;
+  }
+}
+</style>
+<div id="newsletter-mask"></div>
+
+{{section.settings.content}}
+<script>
+  if (localStorage.getItem("newsletterproductModal") != null && $(window).width()<768) {
+    $("#newsletter").hide();
+  }
+  $("#bookmark").on("click",function(){
+    localStorage.setItem("newsletterproductModal","true");
+  	jQuery("#newsletter").toggleClass('insert-email-class');
+    jQuery("#newsletter-mask").toggleClass('shade-class');
+  });
+  function closeCurrentLayer(){
+    jQuery("#newsletter").toggleClass('insert-email-class');
+    jQuery("#newsletter-mask").toggleClass('shade-class');
+    jQuery("#newsletter").addClass("slideDownJack");
+    if(isShowSucess == 1) {
+        jQuery("#newsletter").toggleClass('sucess-email-class');
+        jQuery("#newsletter").hide(2000);
+    }
+    jQuery.cookie('close_auto_register_layer', '1', {expires:30, path:'/'});
+  }
+  
+  //验证表单
+  var exclamation = '<i class="photofont icon photo-jingshi"></i>';
+  function checkForm() {
+    email = jQuery("#newsletter_email").val();
+    confirmEmail = jQuery("#NewsletterSubscribeForm_EmailConfirm").val();
+    var left_newsletter_policy_confirm = jQuery('#left_newsletter_policy_confirm').is(':checked') ? 1 : 0;
+    var checkForm = true;
+    if(email == '{{'general.remedy.email' | t}}') {
+        jQuery("#error_email").html(exclamation+"{{'general.remedy.error_email1' | t}}");
+        jQuery("#error_email").show();
+        checkForm = false;
+    } else if(!validateEmail(email)) {
+        jQuery("#error_email").html(exclamation+"{{'general.remedy.error_email2' | t}}");
+        jQuery("#error_email").show();
+        checkForm = false;
+    }
+    if(left_newsletter_policy_confirm!=1){
+        jQuery("#error_email").html(exclamation+"{{'general.remedy.error_email3' | t}}");
+        jQuery("#error_email").show();
+        checkForm = false;
+    }    
+    if(!checkForm) {
+        return false;
+    } else {
+        $('#contact_form').submit();
+    }
+  }
+  
+  function validateEmail(email){
+    var reg = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/ ;
+    return reg.test(email);
+  }
+
+</script>
+
+{% endif %}
+{% schema %}
+  {
+    "name": "订阅弹层",
+    "class": "home-newsletterproduct",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "home-newsletterproduct"
+      },
+	  {
+        "type": "checkbox",
+        "id": "enable",
+        "label": "开关",
+        "default": false
+      },
+      {
+	    "type": "html",
+        "id": "content",
+        "label": "内容"
+      }
+
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,331 @@
+
+{% assign pc_resize = section.settings.pc_img.width | append: "x" | append: section.settings.pc_img.height %}
+
+{% assign mb_resize = section.settings.mb_img.width | append: "x" | append: section.settings.mb_img.height %}
+<style >
+  .home-make-money{
+    width:100%;
+    background:#FFFFFF; 
+    padding-bottom:112px;
+  }
+  .make-money-box{
+    width:100%
+
+  }
+  .make-money-text{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding:117px 0;
+    width:100%;
+    background:#EC463E;
+  }
+  .money-boxtitle-text{
+    color:#ffff;
+  }
+
+  .calculation-money-box{
+    width:100%;
+    position: relative;
+    display:flex;
+    justify-content: center;
+    margin-top:-113px;
+  }
+  .money-box{
+    width:37.91%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius:12px;
+    box-shadow: 0 0 13px 0 rgba(0,0,0,0.1);
+    background:#FFFFFF;  
+    padding:28px 0;
+  }
+  .profit-outside-box{
+    width:73.07%; 
+    margin-top:27px;
+    border-radius:24px;
+    box-shadow: 0 2px 13px 0 rgba(0,0,0,0.1);
+    padding:14px;
+  }
+  .profit-inside-box{
+    width:100%; 
+    background:#f6f6f9; 
+    box-shadow:inset 8px 8px 9px 0 rgba(0,0,0,0.06);
+    border-radius:12px;
+    padding:32px;
+  }
+  .link-box{
+    margin-top:42px
+  }
+  .calculation-image{
+    width:40.65%;
+  }
+  .calculation-text{
+    width:100%; 
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom:14px;
+  }
+  .explain-box{
+    text-align: right;
+    flex:1;
+    margin-right:12px;
+    font-size:16px;
+    line-height:32px;
+  }
+  .price-box{
+    font-size:20px;
+    line-height:20px;
+    margin-right:5px;
+  }
+  .price-money-box{
+  font-size:28px;
+    line-height:28px;
+  }
+  .minus-sign{
+    border-top:1px solid #222;
+    width:17px;
+  }
+  .profit-text{
+    color:#F9423A;
+    justify-content: space-between;
+  }
+  .profit-box{
+    font-size:24px;
+    line-height:32px;
+    margin-right:5px;
+  }
+  .advantage-text{
+    width:100%;
+    margin-top:8px;
+    text-align: center;
+    font-size:16px;
+    line-height:32px;
+  }
+  .line{
+    border-top:1px solid rgba(146,143,165,0.2);
+    width:100%;
+    margin-top:14px;
+    margin-bottom:30px;
+  }
+  .money-box-text{
+    display:flex;
+    align-items: end;
+  }
+  .profit-money-box{
+    font-size: 64px;
+    line-height: 64px; 
+  }
+  .make-money-text-box{
+    min-height:185px;
+  }
+  @media screen and (max-width: 768px){
+    .home-make-money{
+      padding-bottom:80px;
+      padding-top:40px;
+    }
+    .make-money-text{
+      padding:28px 0;
+      width:100%;
+    }
+    .link-box{
+      margin-top:28px;
+    }
+    .calculation-money-box{
+      width:100%;
+      padding:0 14px;
+      margin-top:-71px;
+    }
+    .money-box{
+      width:100%;
+      padding: 15px 0 23px 0;
+    }
+    .advantage-text{
+      font-size:12px;
+      transform: scale(0.8);
+    }
+    .explain-box{
+      font-size:12px;
+      line-height:16px;
+    }
+    .profit-box{
+     font-size:14px;
+      line-height:16px;
+    }
+    .price-money-box{
+      font-size:18px;
+      line-height:16px;
+    }
+    .minus-sign{
+    width:12px;
+    }
+    .profit-outside-box{
+      width: 76.66%;
+      padding: 7px;
+      border-radius: 12px;
+    }
+    .price-box{
+     font-size:14px;
+      line-height: 16px;
+    }
+    .profit-money-box{
+      font-size:32px;
+      line-height: 32px; 
+    }
+    .profit-inside-box{
+      padding:16px;
+      border-radius:6px;
+    }
+    .calculation-text{
+      margin-bottom:7px;
+    }
+    .line{
+      margin-top:15px;
+      margin-bottom:10px;
+    }
+  }
+
+</style >
+<div class="make-money-box">
+  <div class=" make-money-text">
+    <div class="make-money-text-box recommend-text-box">
+      <div class="recommend-view-title money-boxtitle-text">{{section.settings.title}}</div>
+      <div class="recommend-view-text money-boxtitle-text">{{section.settings.explain}}</div>
+    </div>
+
+  </div>
+  <div class="calculation-money-box">
+    <div class="money-box">
+      <div class="calculation-image">
+        <img src="{{section.settings.pc_img  | img_url: pc_resize}}"/>
+      </div>
+      <div class="profit-outside-box">
+        <div class="profit-inside-box">
+          <div class="calculation-text theme-color">
+            <div class="explain-box"> {{section.settings.sell_text}}</div>
+            <div class="money-box-text">
+              <div class="price-box ">{{section.settings.currency_text}}</div>
+              <div class=" price-money-box">{{section.settings.sell_price}}</div>
+            </div>
+          </div>
+          <div class="calculation-text theme-color">
+            <div class="minus-sign"></div>
+            <div class="explain-box">{{section.settings.pay_text}}</div>
+            <div class="money-box-text">
+              <div class="price-box">{{section.settings.currency_text}}</div>
+              <div class=" price-money-box">{{section.settings.pay_price}}</div>
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="calculation-text profit-text">
+            <div class=" profit-box">{{section.settings.profit_text}}</div>
+            <div class="money-box-text">
+              <div class="profit-box">{{section.settings.currency_text}}</div>
+              <div class="profit-money-box">{{section.settings.profit_price}}</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="link-box">
+        <a class="link"  href="{{section.settings.link}}">
+          <span class="link-text">{{section.settings.skip_text}} </span>
+          {% include 'icon-arrow' %}
+        </a>
+      </div>
+      <div class="advantage-text theme-color">{{section.settings.advantage_text}}</div>
+    </div>
+
+
+  </div>
+
+</div>
+{% schema %}
+{
+  "name": "首页 盈利说明块",
+  "class":"home-make-money",
+  "settings": [
+     {
+        "type": "text",
+        "id": "private",
+        "label": "程序参考字段默认勿动",
+        "default": "home-make-money"
+     },
+
+     {
+       "type": "text",
+       "id": "skip_text",
+       "label": "跳转文案"
+     }, 
+	{
+      "type": "text",
+       "id": "link",
+       "label": "跳转链接"
+     } ,
+    {
+      "type": "text",
+      "id": "title",
+      "label": "标题"
+    },
+   {
+      "type": "textarea",
+      "id": "explain",
+      "label": "说明" 
+    },
+    {
+      "type": "image_picker",
+      "id": "pc_img",
+      "label": "展示图" 
+    },
+	{
+	 "type": "text",
+      "id": "currency_text",
+      "label": "币种"
+	},
+	{
+	 "type": "text",
+      "id": "sell_text",
+      "label": "卖出文本"
+	},
+	{
+	 "type": "text",
+      "id": "sell_price",
+      "label": "卖出价格"
+	},
+	{
+	 "type": "text",
+      "id": "pay_text",
+      "label": "消费文本"
+	},
+	{
+	 "type": "text",
+      "id": "pay_price",
+      "label": "消费价格"
+	},
+    {
+	 "type": "text",
+      "id": "profit_text",
+      "label": "盈利文本"
+	},
+	{
+	 "type": "text",
+      "id": "profit_price",
+      "label": "盈利价格"
+	},
+	{
+	 "type": "text",
+      "id": "advantage_text",
+      "label": "优点"
+	}
+
+  ],
+  "presets": [{
+    "name": "首页 盈利说明块",
+    "category": "Custom"
+  }]
+}
+{% endschema %}

@@ -1,0 +1,103 @@
+<style>
+
+.cart-page-templates.empty .cart-empty-section{
+  display:block;
+}
+.cart-page-templates.empty .cart-items-section,.cart-page-templates.empty .cart-gift-card-section,.cart-page-templates.empty .cart-coupons-section,.cart-page-templates.empty .cart-subtotal-section,.cart-page-templates.empty .cart-why-choose{
+  display:none;
+}
+.cart-page-templates{ 
+  background: #eff1f1;
+  padding: 1rem 0 0 0;
+} 
+footer{
+  display:none;
+}
+.cart-page-templates .container{
+  padding:0
+} 
+.footer{
+  display:none;
+}
+.template-cart.empty-body #shopify-section-footer ,.template-cart.empty-body .site-footer{
+  display: block;
+}
+</style>
+<div class="cart-page-templates">
+  {% section 'cart-items' %}
+  {% section 'cart-empty' %}
+  {% section 'cart-footer' %}
+</div>
+
+<script>
+fbq('track',  'AddToCart',{
+  	content_type: "product_group",
+    currency: "{{shop.currency}}",
+    content_ids: [1],
+    value: '1'
+  });
+</script>
+
+
+<!-- Event snippet for cart conversion page -->
+<script>
+  gtag('event', 'conversion', {
+      'send_to': 'AW-991805310/cddrCNq39HkQ_v722AM',
+      'value': {{ cart.total_price | money_without_currency }},
+      'currency': 'EUR'
+  });
+</script>
+
+<script>
+Listener.on([ Listener.cart.refresh ], function(event, cart) {
+  if(cart.items.length <= 0) {
+    console.log('购物车空了');
+    $('.cart-page-templates').addClass('empty')
+    $('body').addClass('empty-body')
+  }
+  
+  var vipItem = [];var iItem = [];var iItemQty = [];
+  var itemsAll = [];
+  if(cart.item_count >0 ){console.log(cart);
+    cart.items.forEach(function(item,index){
+      //带_tempVip的item
+      if(item.product_type != 'VIP PRODUCT' && item.tempVip != false){
+        vipItem.push(item.tempVip);
+      }
+      //带_tempInsurance的item
+      if(item.product_type != 'INSURANCE PRODUCT' && item.tempInsurance != false){
+        iItem.push(item.tempInsurance);
+        iItemQty[item.tempInsurance] = item.quantity*1;
+      }
+    })
+    console.log(vipItem);
+    var carFlag = false;
+    cart.items.forEach(function(item,index){
+      if(item.product_type == 'VIP PRODUCT' && vipItem.indexOf(item.tempVip)>-1){
+        itemsAll.push(item.quantity);
+      }else if(item.product_type == 'VIP PRODUCT'){
+        carFlag = true;
+        itemsAll.push(0);
+      }else if(item.product_type == 'INSURANCE PRODUCT' && iItem.indexOf(item.tempInsurance)>-1){
+        if(iItemQty[item.tempInsurance] !== item.quantity){
+          carFlag = true;
+        }
+        itemsAll.push(iItemQty[item.tempInsurance]);
+      }else if(item.product_type == 'INSURANCE PRODUCT'){
+        carFlag = true;
+        itemsAll.push(0);
+      }else{
+        itemsAll.push(item.quantity);
+      }
+    })
+    
+    if(carFlag===true){
+      var aaa = {updates:itemsAll};
+      jQuery.post('/cart/update.js', aaa ,function(){
+        Cart.refresh();
+      });
+    }
+  }
+});
+Cart.refresh( {{ cart | json }});
+</script>

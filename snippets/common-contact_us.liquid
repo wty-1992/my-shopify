@@ -1,0 +1,88 @@
+<style>
+#submit-ticketpc,#submit-ticketmb,#submit-ticketorder,#submit-order{
+  display:none;
+}
+.tingle-modal-box__content .nr h3{
+  font-size: 24px;
+  margin: 0;
+  line-height: 1.35;
+}
+  
+.submit－ticket{    
+  padding: 0 ; 
+  display: flex;
+  flex-direction: column;
+} 
+.tingle-modal-box__content .close-new{    
+  position: absolute;
+  right: 2rem;
+  top: 1rem;
+  border:none;
+  background:transparent;
+} 
+.tingle-modal-box__content .close-new i{
+  font-size: 3rem;
+  font-weight: normal;
+}
+.tingle-modal-box__content .nr{
+  text-align: center;
+  padding: 3rem; 
+  color: #000;
+}
+.tingle-modal-box__content  h3{ 
+  color: #000;
+  font-weight: normal;
+}
+.tingle-modal-box__content p{
+  font-size: 14px;
+  line-height: 24px;
+  margin-bottom: .6rem;
+}
+.nr-cancel-modify-button div{
+  margin-bottom: 12px;
+  margin-top: 30px;
+}
+.tingle-modal-box__content .nr button{
+  font-size: 13px;
+  color: #fff;
+  padding: 16px 50px;
+  border: 0;
+  border-radius: 4px;
+  text-transform: uppercase;
+  vertical-align: middle;
+  background-color: #e60044;
+}
+.tingle-modal-box__content .nr .nr-bottom{
+  padding-bottom: 2rem; 
+  margin-top: 1.5rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #f0f0f0;
+  border-top: 1px solid #f0f0f0;
+}
+</style>
+<div id="submit-ticket">
+    <button type="button" class="close-new close" data-action="close">
+        <i class="photofont icon photo-close"></i>
+    </button>
+    <div class="nr">
+        <div class="nr-top">
+            <h3>{{ 'header.contact_us.track_order_title' | t }}</h3>
+            <p>{{ 'header.contact_us.track_order_text' | t }}</p>
+            <a href="/pages/trackorder"><button>{{ 'header.contact_us.track_order_button' | t }}</button></a>
+        </div>
+        <div class="nr-bottom">
+            <div>
+                <h3>{{ 'header.Inquiry.Inquiry_title' | t }}</h3>
+                <p>{{ 'header.Inquiry.Inquiry_text' | t }}</p>
+            </div>
+           <a href="/pages/botchat" target="_blank"><button>{{ 'header.Inquiry.Inquiry_button' | t }}</button></a>
+        </div>
+      	<div class="nr-cancel-modify-button">
+            <div>
+                <h3>{{ 'header.modify_order.modify_order_title' | t }}</h3>                
+            </div>
+           <a href="/pages/cancel-modify-or-return-an-order"><button>{{ 'header.modify_order.modify_order_button' | t }}</button></a>
+        </div>
+    </div>
+</div>

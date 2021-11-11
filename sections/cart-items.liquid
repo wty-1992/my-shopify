@@ -1,0 +1,1236 @@
+<style>
+.cart-items-section .before_html{
+  display: flex;
+  align-items: center;
+  color: #000;
+  height: 140px;
+  justify-content: center;
+}
+.cart-items-section .before_html img {
+  width: 708px; 
+  height: 72px;
+}
+.cart-items-section .free-tip {
+  height: 56px;
+  background: #FEDD00;
+  font-size: 14px;
+  text-align: center;
+  line-height: 56px;
+  color: #222222;
+}
+.cart-items-section .free-tip span {
+  color: #F9423A;  
+}
+.cart-big-popimg img{
+  max-width:50%;
+}
+@media(max-width:640px){
+}
+{%- comment -%} cart progressbar css {%- endcomment -%}
+.cart-items-section{
+  padding:0px ;
+  margin-bottom:12px;
+}
+.cart-items-section .cart__content{
+  text-align: center;
+}
+{%- comment -%}pop remove {%- endcomment -%}
+.cart-remove {
+  display:none;
+}
+.cart-remove__remove{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  height:100%;
+}
+.cart-remove .removeitemcart{
+  padding: 5rem;
+  text-align: center;
+  font-size: 1.5rem;
+  margin:auto;
+}
+.cart-remove .removeitemcart p{    font-size: 1.8rem;
+  color: #000;
+  text-transform: uppercase;
+}
+.cart-remove .removeitemcart .no-yes{ 
+  display: flex;
+  justify-content: center;
+  padding-top: 1rem;
+}
+.cart-remove .removeitemcart .no-yes a{
+  color: #fff;
+  background: #a9a9a9;
+  padding: .6rem 2rem;
+  width: 28%;
+  display: inline-block; 
+  cursor: pointer;
+  margin: 0 1rem;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+.cart-remove .removeitemcart .no-yes a:nth-child(2n){
+  background: #df0046;
+}
+{%- comment -%}pop remove end {%- endcomment -%}
+
+.cart-items-section .cart-table {
+  background-color:#fff;
+  padding:1.7rem 1rem 1rem;
+  font-family: "OpenSans";
+}
+.cart-items-section .cart-table .cart__row {
+  list-style:none;
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  border-bottom:1px solid #eff1f1;
+  padding:1rem;
+  position:relative
+}
+.cart-items-section .cart-table .cart__row .cart__overlay {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  opacity:0.8;
+  height:100%;
+  width:100%;
+  background:#fff;
+  position:absolute;
+  z-index:1000
+}
+.cart-items-section .cart-table .cart__row .cart__overlay svg {
+  height:2.5rem;
+  width:2.5rem;
+  fill:#000
+} 
+.cart-items-section .cart-table .cart__row .cart__meta-info > div {
+  padding-bottom:.5rem;
+  font-size:12px;
+}
+.cart-items-section .cart-table .cart__row .cart-item__price {
+  font-size:13px;
+}
+.cart-items-section .cart-table .cart__row .cart__cell--total {
+  color:#D32C48
+}
+.cart-items-section .cart-table .cart__row .item_picture img {
+  height:10rem
+} 
+.cart-items-section .cart-table .cart__row .right {
+  flex:1
+}
+.cart-items-section .cart-table .cart__row .right .item_remove {
+  padding-left:1rem
+}
+.cart-items-section .cart-table .cart__row .right .top {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:1.2rem;
+  padding-bottom:1rem
+}
+.cart-items-section .cart-table .cart__row .right .middle {
+  padding-bottom:1rem
+}
+.cart-items-section .cart-table .cart__row .right .bottom {
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end
+}
+.cart-items-section .cart-table .cart__row .right .bottom .cart__cell--quantity {
+  flex:0 1 35%
+} 
+.cart-items-section .cart-table li.cart__row.cat_list--title.small--hide .left{
+  height: auto; 
+}
+.cart-items-section .cart-table .cart__row .left {
+  position:relative;
+  flex:0 1 12%;
+  height: 88px;
+  overflow: hidden;
+} 
+.cart-items-section .cart-table .cart__row .left .cart__image__box{    
+  width: 67%;
+  margin: auto;  
+}
+.cart-big-popimg{  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  margin:7rem 0;
+  background: #f7f8f9;
+  padding: 0 5rem;
+  
+}
+.cart-big-popimg.cart__engraving{
+  background:#f6f7f8; 
+  overflow: hidden;
+  margin: 7rem;
+}
+.cart-big-popimg.cart__engraving img.cart__image{     
+  width: 47%;
+}
+.cart-items-section .cart-table .cart__row .left .cart__image__box i {
+  position:absolute;
+  right:0rem;
+  top:0.5rem; 
+  cursor: pointer;
+}
+.cart-items-section .cart-table .cart__row .right {
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  flex:0 1 40%
+}
+.cart-items-section .cart-table li .middle {
+  font-size:12px;
+  flex:0 1 30%;
+  line-height:1.4rem;
+  padding-right:2rem
+}
+.cart-items-section .cart-table .cart__row .cart-item__original-price {
+  color:#000
+}
+.cart-items-section .cart-table .cart__row .js-qty {
+  height:2.5rem;
+  width:8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;  
+}
+.js-qty button {
+  width: 8rem;
+  min-width: 15%;
+  transition: background-color 0.03s ease-in;
+}
+.js-qty>* {fill: #000;
+  background: #EFEFEF;
+  border: none;
+  color: #000;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.js-qty input {
+  width: 100%;
+}
+.cart-items-section .cart-table .cart__row .cart__item-total {
+  color:#e60044;
+  font-size:16px; 
+  font-weight: bold;
+}
+.cart-items-section .cart-table .cart__row .remove{
+  cursor:pointer;
+}
+.cart-items-section .cart-table .cart__row.cat_list--title.small--hide .remove .photo-delete{
+  font-weight: 600;
+  font-size: 14px;
+}
+.cart-items-section .cart-table .cart__row .remove .photo-delete{
+  font-size: 16px;
+  font-weight: 400;
+  color: #000;
+}
+.cart-items-section .cart-table .cart__row .right .js-qty>*,
+.cart-items-section .cart-table .cart__row .right .js-qty button:hover, .cart-items-section .cart-table .cart__row .right .js-qty button:focus{
+  background-color: #f7f7f7;
+  transition-duration: 0.08s;
+  font-weight: 600;
+}  
+.cart-items-section .cart-table .cart__row.cat_list--title{ 
+  display: flex;
+  align-items: center;
+  background: #f8f8f8;
+  width: 100%;
+  border-bottom: none;
+  padding: 6px 14px;
+  margin-bottom: 1rem;
+  color: #333;
+  font-weight: 600;
+  text-transform: uppercase;
+} 
+.cart-items-section .cart-table .cart__row.cat_list--title .middle,.cart-items-section .cart-table .cart__row.cat_list--title .cart-item__price{
+  font-size: 12px;
+  color: #333;
+}
+.cart-items-section .cart-table li.cart__row.cat_list--title.small--hide .js-qty{
+  margin-bottom: 0;
+  font-size: 12px;
+  color: #333;
+  height:auto;
+  transform: translateX(-35px);
+}
+.cart-items-section .cart-table .cart__row.cat_list--title .cart__cell--total{
+  font-size: 12px;
+  color: #333;
+}
+.cart-items-section .cart-table .cart__row .cart__cell--total {
+  color: initial;
+}  
+.cart-items-section  .cart-table .cart__row.cat_list--title .right{ 
+  align-items: center;
+}
+/* .cart-items-section  .cart-table .cart__row .left .cart__image__box img {
+  max-height: 85px;
+} */
+@media(max-width:1024px){    
+  .cart-items-section{
+    padding:0 1rem 
+  }
+  .cart-items-section  .cart-table .cart__row .left .cart__image__box{
+    width:100%;
+  } 
+  .cart-remove{
+    height: 100%;
+    align-items: center;  
+  }
+  .cart-remove .removeitemcart {
+    padding: 2rem;
+  }
+  .cart-remove .removeitemcart .no-yes a{
+    padding: 1.3rem 0;
+    width: 48%;
+    margin: 0 .5rem;
+  }
+  .cart-remove .removeitemcart p{
+    font-size:1.6rem
+  }
+}
+
+  
+@media(max-width:640px){
+.cart-items-section .cart-table .cart__row .left .cart__image__box i{
+  right: 2rem;
+}
+.cart-items-section   .cart_progress__bar {
+  display:none;
+}
+.cart-items-section  .cart-top{
+  padding:0 1rem 1rem;
+}
+{%- comment -%} cart product list  css{%- endcomment -%}
+.cart-big-popimg{
+  margin:0 auto;
+  justify-content: start;
+  padding: 0 1rem;
+}
+.cart-big-popimg.cart__engraving{ 
+  flex-direction: column;
+  margin:0px 
+}
+.cart-big-popimg.cart__engraving img.cart__image{     
+  width: 100%;
+}
+.cart-items-section  .cart-table .cart__row {
+  justify-content:flex-start;
+  flex-wrap:wrap;
+}
+.cart-items-section .cart-table .cart__row .left {
+  flex:0 1 40%; 
+  padding-right: 4rem;
+}
+.cart-items-section  .cart-table li .middle {
+  flex:0 1 40%;
+  padding-right:0;
+}
+.cart-items-section .cart-table .cart__row .right {
+  flex:0 1 100%;
+  align-items:center;  
+  margin: 1rem 0 0 0;
+}
+.cart-items-section .cart-table .cart__row .js-qty{ 
+  width: 7rem;
+}
+.cart-table .cart__row .remove {
+  cursor:pointer;
+  position:absolute;
+  top:0;
+  padding:1rem;
+  right:.5rem;
+} 
+
+}
+.pc-li-top{
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  align-items: center;
+}
+.pc-li-top .j-left{
+  width: 33.3%;
+  text-align: center;
+  position: relative;
+  font-size: 16px;
+}
+.pc-li-top .j-left:after{
+  content: "";
+  width: 2px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  background: #000;
+  right: 0;
+  transform: rotate(23deg);
+}
+.pc-li-top .j-left:last-child::after{
+  display: none;
+}
+.pc-li-top .j-left .l-top{
+  color: #000;
+  font-weight: 600;
+}
+.pc-li-top .l-right{
+  color: #0a0a0a;
+}
+
+.scroll-box{
+  padding: 60px 30px 80px;
+}
+.Jtab.active .std{
+  color: #000;
+}
+.Jtab .std{
+  border-top: 1px solid #e9e9e9;
+  height: 50px;
+  line-height: 50px;
+  font-size: 12px;
+  color: #a2a2a2;
+  padding: 0 15px;
+  cursor: pointer;
+  font-weight: 600;
+  position: relative;
+  display: flex;
+}
+.Jtab .std .symbol{
+  position: absolute;
+  width: 40px;
+  height: 30px;
+  display: block;
+  top: 25%;
+  right: 0;
+}
+.Jtab:last-child .std {
+  border-bottom: 1px solid #e9e9e9;
+}
+.symbol:before{
+  content: "";
+  width: 12px;
+  height: 2px;
+  background-color: #a2a2a2;
+  position: absolute;
+  left: 10px;
+  top: 11px;
+  transform: rotate(90deg);
+  transition: transform 0.3s;
+}
+.symbol:after{
+  content: "";
+  width: 12px;
+  height: 2px;
+  background-color: #a2a2a2;
+  position: absolute;
+  right: 18px;
+  top: 11px;
+  transform: rotate(180deg);
+}
+.custom-cart-recommend .tingle-modal-box__content{
+  height: 550px;
+  overflow-y: scroll;
+}
+.Jtab.active .symbol:before {
+  transform: rotate(180deg);
+  background: #000;
+}
+.matchProduct{
+  height: 0;
+  overflow: hidden;
+}
+.Jtab.active .matchProduct {
+  height: auto;
+}
+.activity-product-list-simple{
+  display: flex;
+  width: 100%;
+  flex-flow: wrap;
+}
+.activity-product-list-simple .item{
+  width:calc(25% - 1% );
+  margin:0 0.5% 5px;
+}
+.product-card__image{
+  position: relative;
+}
+.product-card__image .defaultImage {
+  
+}
+.product-card__image .hoverImage {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.matchProduct .tag__label.tag__custom-tag-discount{
+  display: none;
+}
+.matchProduct .product-card__price{
+  text-align: center;
+}
+.matchProduct .product-card__sale-price{
+  color: #000;
+}
+.matchProduct .product-card__regular-price{
+  color: #e60044;
+  text-decoration: line-through;
+}
+.matchProduct .product-card__name {
+  height: 24px;
+  font-size: 12px;
+  line-height: 1;
+  color: #000;
+  text-align: center;
+  margin: 5px 0;
+  overflow: hidden;
+}
+.matchProduct .medium-up--btn{
+  padding: 6px 0;
+  border-radius: 0;
+  letter-spacing: 0;
+  font-size: 12px;
+  text-transform: capitalize;
+}
+.b-title {
+  position: absolute;
+  bottom: 0;
+  width: 98%;
+  height: 80px;
+  background: #fff;
+  line-height: 80px;
+  z-index: 1;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+}
+@media(max-width:768px){
+  .b-title{
+    width:100%;
+  }
+  .custom-cart-recommend .tingle-modal-box__content{
+    height:calc(100% - 80px);
+  }
+  .custom-cart-recommend .tingle-modal-box{
+    width: 98%;
+    margin: 20% 1% 0;
+    height: 70%;
+    padding-top: 35px;
+  }
+  .activity-product-list-simple .item{
+    width: calc(50% - 1% );
+  }
+  .scroll-box{
+    padding: 0px 10px 20px;
+  }
+  .tingle-modal.custom-cart-recommend .tingle-modal__close{
+    display: block;
+    top: 58px;
+    right: 4px;
+  }
+  .tingle-modal.custom-cart-recommend .tingle-modal__close .tingle-modal__closeIcon{
+    font-size: 2rem;
+  }
+  .pc-li-top .j-left{
+    font-size:12px;
+  }
+}
+</style>
+{%comment%} 孙子定制化产品-购物车样式 by zy 2020-9-18 {%endcomment%}
+{% include "sunzi-product-cart" %}
+{%comment%}购物车规则 by johnny 20201226{%endcomment%}
+{% include "cart_rule" %}
+{% if section.settings.show_notice %}
+<div class="pc-li-top" data-section-id="cart-template">    
+  <div class="j-left">
+    <div class="l-top">{{ section.settings.text1 }}</div>
+    <div class="l-right">{{ section.settings.code1 }}</div>
+  </div>  
+  <div class="j-left">
+    <div class="l-top">{{ section.settings.text2 }}</div>
+    <div class="l-right">{{ section.settings.code2 }}</div>
+  </div>  
+  <div class="j-left">
+    <div class="l-top">{{ section.settings.text3 }}</div>
+    <div class="l-right">{{ section.settings.code3 }}</div>
+  </div>    
+</div>
+{% endif %}
+<div id="CartItems"></div>
+
+<template id="CartItemsTemplate"> 
+  <div class="before_html">
+    <img src="{{ 'step.png' | asset_url }}" />
+  </div>
+  <div class="free-tip">
+    Spend $46.05 more to enjoy FREE SHIPPING! | Want to enjoy free shipping?  <span>Click here to make it!</span>
+  </div>
+  <div class="cart__content">{{section.settings.content}}</div>
+  {% raw %}
+  {{!--  cart item  area  --}}
+  <ul id="CartTable" class="cart-table">
+    <li class="cart__row cat_list--title small--hide"> 
+        <div class="left">
+          <div class="cart__image__box"> </div>
+        </div>
+        <div class="middle">{% endraw %}{{ 'cart.items.product_name' | t }}{% raw %}</div>
+        <div class="right">  
+          <div class="cart-item__price cart-item__original-price">{% endraw %}{{ 'cart.items.unit_price' | t }}{% raw %}</div>
+          <div class="js-qty">{% endraw %}{{ 'cart.items.qty' | t }}{% raw %}</div>
+          <div class="cart__cell--total">{% endraw %}{{ 'cart.items.subtotal' | t }}{% raw %}</div>
+        </div>  
+        <a class="remove" onclick="Dialog.open('#cart__clear')"><i class="photofont icon photo-delete"></i></a>
+        <div class="cart-remove" id="cart__clear"> 
+          <button type="button" class="close-new" data-action="close">
+            <i class="photofont icon photo-close"></i>
+          </button>
+          <div class="removeitemcart">
+            <p>{% endraw %}{{ 'cart.items.clear_shopping_cart' | t }}{% raw %}</p>
+            <div class="no-yes"> 
+                <a class="cursor-p" data-action="close">{% endraw %}{{ 'cart.items.no' | t }}{% raw %}</a>
+                <a class="cursor-p" onclick="Cart.clear().then(cart => {Dialog.close()})">{% endraw %}{{ 'cart.items.yes' | t }}{% raw %}</a> 
+            </div>
+          </div>
+        </div>
+    </li>
+
+
+    {{#items}}
+    <li class="cart__row"  data-line="{{ line }}">
+        <div class="left">
+          <div class="cart__image__box  cart__image-{{ line }}" onclick="alertImageBox(this)">
+            <i class="photofont icon photo-unie038 zoomimg"></i>            
+            {{#if cropImageUrl}} 
+              <img class="cart__image lazyloaded" src="{{cropImageUrl}}" data-engraving="{{engravingCrop}}" alt="{{ product_title }}"> 
+            {{else if diamondImage}}  
+              <img class="cart__image lazyloaded" src="{{diamondImage}}" alt="{{ product_title }}">
+            {{else if engravingCrop}}  
+              <img class="cart__image lazyloaded" src="{{engravingCrop}}" data-name="{{nameCrop}}" alt="{{ product_title }}">  
+            {{else if nameCrop}}  
+              <img class="cart__image lazyloaded" src="{{nameCrop}}" alt="{{ product_title }}" >
+            {{else if card_template}}  
+              <img class="cart__image lazyloaded" src="{{card_template}}" alt="{{ product_title }}">  
+            {{else}}
+              {{#if engravingImageUrl}}
+              <img class="cart__image lazyloaded" src="{{engravingImageUrl}}" alt="{{ product_title }}">
+              {{else}}
+              <img class="cart__image lazyloaded" src="{{productImg}}" alt="{{ product_title }}">
+              {{/if}}
+            {{/if}} 
+          </div>
+        </div>
+        <div class="middle">
+          {{#if card_message}}
+          	<a class="item_title">{{{ product_title }}}</a> 
+          {{else}}
+          	<a class="item_title" href="{{ url }}">{{{ product_title }}}</a> 
+          {{/if}}
+          <div class="cart__meta-info">
+              <div class="options_info">{{product_options_info}}</div>
+              {{#if alphaText}}
+                <div class="custom_text">({% endraw %}{{'cart.items.text' | t }}{% raw %}: {{alphaText}})</div>
+              {{/if}}
+              {{#if engravingText}}  
+                <div class="custom_text">({% endraw %}{{'cart.items.text' | t }}{% raw %}: {{engravingText}})</div>
+              {{/if}}
+              {{#if card_message}}
+                <div class="custom_text">({% endraw %}{{'cart.items.text' | t }}{% raw %}: {{card_message}})</div>
+              {{/if}}
+          </div>
+          {{#if discountsApplied}}
+            {{#each discounts}}
+            	<div class="cart-item__price cart-item__discount cart__item-total">{{ this.title }}</div>
+            {{/each}}
+          {{/if}}
+        </div>
+        <div class="right">  
+          <div class="cart-item__price cart-item__original-price"><span data-money="{{original_price}}"></span></div>
+          <div class="js-qty">
+              {{#if isvip}}
+              	<!--<button type="button" class="js-qty__adjust--minus" onclick="Cart.change({line:{{line}},quantity:{{ minus }} })"><i class="photofont icon photo-move"></i></button>-->
+              	<input class="js-qty__input" type="text" data-action="input" value="{{ quantity }}" min="1" pattern="[0-9]*" disabled>
+              	<!--<button type="button" class="js-qty__adjust--plus" onclick="Cart.change({line:{{line}},quantity:{{ plus }} })"><i class="photofont icon photo-add"></i></button>-->
+          	  {{else if isinsurance}}  
+            	<!--<button type="button" class="js-qty__adjust--minus" onclick="Cart.change({line:{{line}},quantity:{{ minus }} })"><i class="photofont icon photo-move"></i></button>-->
+              	<input class="js-qty__input" type="text" data-action="input" value="{{ quantity }}" min="1" pattern="[0-9]*" disabled>
+              	<!--<button type="button" class="js-qty__adjust--plus" onclick="Cart.change({line:{{line}},quantity:{{ plus }} })"><i class="photofont icon photo-add"></i></button>-->
+              {{else if giveaway}}
+            	<!--<button type="button" class="js-qty__adjust--minus" onclick="Cart.change({line:{{line}},quantity:{{ minus }} })" disabled="disabled"><i class="photofont icon photo-move"></i></button>-->
+              	<!--<input class="js-qty__input" type="text" data-action="input" value="{{ quantity }}" min="1" pattern="[0-9]*">-->
+            	<input class="js-qty__input" type="text" data-action="input" value="1 pcs" min="1" pattern="[0-9]*" disabled>
+              	<!--<button type="button" class="js-qty__adjust--plus" onclick="Cart.change({line:{{line}},quantity:{{ plus }} })" disabled="disabled"><i class="photofont icon photo-add"></i></button>-->
+              {{else if limitPurchase}}  
+            	<button type="button" class="js-qty__adjust--minus" onclick="Cart.change({line:{{line}},quantity:{{ minus }} })"><i class="photofont icon photo-move"></i></button>
+                <input class="js-qty__input" type="text" data-action="input" value="{{ quantity }}" readonly>
+                <button type="button" class="js-qty__adjust--plus" style="{{qtyPlusStyle}}" onclick="limitCartChange({line:{{line}},quantity:{{ plus }},mask:'#{{@root.sectionId}}' },{{product_id}})"><i class="photofont icon photo-add"></i></button>
+              {{else}}
+                <button type="button" class="js-qty__adjust--minus" onclick="Cart.change({line:{{line}},quantity:{{ minus }} })"><i class="photofont icon photo-move"></i></button>
+                <input class="js-qty__input" type="text" data-action="input" value="{{ quantity }}" min="0" pattern="[0-9]*" onblur="Cart.change({line:{{line}},quantity:this.value});">
+                <button type="button" class="js-qty__adjust--plus" onclick="Cart.change({line:{{line}},quantity:{{ plus }} })"><i class="photofont icon photo-add"></i></button>
+          	  {{/if}}
+          </div>
+          <div class="cart__cell--total">
+            {{#if discountsApplied}}
+              <div><s class="cart-item__price cart-item__original-price"><span data-money="{{original_line_price}}"></span></s></div>
+              <div class="cart-item__price cart__item-total"><span data-money="{{line_price}}"></span></div>
+            {{else}}
+              <div class="cart-item__price cart__item-total"><span data-money="{{line_price}}"></span></div>
+            {{/if}}
+          </div>
+        </div>
+        {{#if isvip}}
+          <a class="remove" style="width:16px"></a>
+          <div class="cart-remove" id="cart__remove_1"> 
+          <div class="cart-remove__remove" id="tempVip-{{ tempVip }}" data-line="{{line}}"></div>
+        {{else if isinsurance}}  
+          <a class="remove" style="width:16px"></a>
+          <div class="cart-remove" id="cart__remove_1"> 
+          <div class="cart-remove__remove" id="tempInsurance-{{ tempInsurance }}" data-line="{{line}}"></div>
+        {{else}}
+        <a class="remove" onclick="Dialog.open('#cart__remove_{{ line }}')"><i class="photofont icon photo-delete"></i></a>
+        <div class="cart-remove" id="cart__remove_{{ line }}"> 
+        <div class="cart-remove__remove">
+          <button type="button" class="close-new" data-action="close">
+            <i class="photofont icon photo-close"></i>
+          </button>
+          <div class="removeitemcart">
+            <p>{% endraw %}{{'cart.items.delete_the_item' | t }}{% raw %}</p>
+            <div class="no-yes"> 
+                <a class="cursor-p" data-action="close">{% endraw %}{{'cart.items.no' | t }}{% raw %}</a>
+                {{#if tempVip}}
+              	<a class="cursor-p" onclick="Cart.change({line:{{line}},tempvip:{{tempVip}},quantity:0}).then(cart => {Dialog.close()})">{% endraw %}{{'cart.items.yes' | t }}{% raw %}</a> 
+              	{{else if tempInsurance}}  
+                <a class="cursor-p" onclick="Cart.change({line:{{line}},tempinsurance:{{tempInsurance}},quantity:0}).then(cart => {Dialog.close()})">{% endraw %}{{'cart.items.yes' | t }}{% raw %}</a> 
+                {{else}}
+                <a class="cursor-p" onclick="doChangeRule({line:{{line}},quantity:0},{{variant_id}})">{% endraw %}{{'cart.items.yes' | t }}{% raw %}</a> 
+                {{/if}}
+            </div>
+          </div>
+        </div>
+        </div>
+        {{/if}}
+      </li>       
+    {{/items}}
+  </ul> 
+{% endraw %}
+</template>
+<div class="cart_add_on_item" style="display:none;">
+  <div class="scroll-box">
+{% for block in section.blocks %}
+{% if block.type == 'cart_add_on_item' %}
+    {% assign style = "cart_item" | append: forloop.index %}
+    <div class="Jtab">
+      <div class="std" onclick="Tabs.toggle('.{{style}}')">{{ block.settings.item_title}} <i class="symbol"></i><a href="#scroll_box" class="scroll-a johnny1"></a></div>
+      <div class="matchProduct {{style}}">
+        <div class="activity-product-list-simple standard-product-list">
+            {% assign current_collection = collections[block.settings.collection] %}
+            {% paginate current_collection.products by 1000 %}
+              {% for item in current_collection.products limit: block.settings.Alimit %}                
+				  <div class="item">{% include 'cart-product-list', product:item  %}</div>                
+              {% endfor %}
+            {% endpaginate %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endfor %}    
+  </div>
+  <div class="b-title">{{section.settings.cart_subscript}}</div>
+</div>
+<script>
+var customModalRecommend = new tingle.modal({
+    footer: false,
+    stickyFooter: false,
+    cssClass: ['custom-cart-recommend'],
+//     onOpen: function() {
+//         console.log('modal open');
+//     },
+//     onClose: function() {
+//         console.log('modal closed');
+//     }
+});
+  
+  var limitPurchaseString = '{{settings.limit_purchase_products}}';
+  var limitPurchaseResult = [];
+
+  let tempArray = limitPurchaseString.split(';');
+  
+  tempArray.forEach(function(item,i){
+    if(item){
+      let tempJson = {};
+      let tempArray1 = item.split(',');
+      tempJson['id'] = tempArray1[0];
+      tempJson['num'] = tempArray1[1];
+      limitPurchaseResult.push(tempJson);
+    }
+
+  });
+  
+  var purchaseObj = {};
+  
+  //限购产品如要添加数量，则先检查下数量是否已达上限
+  function limitCartChange(data,product_id){
+    
+    let itemsNum = parseInt(purchaseObj[product_id]['num']);
+    
+    let limitNum = parseInt(purchaseObj[product_id]['limitNum']);
+    
+    if(itemsNum < limitNum){
+    	Cart.change(data);
+    }else{
+    	return false;
+    }
+  }
+
+Listener.on([ Listener.cart.refresh ], function(event, cart) {
+  
+    purchaseObj = {};
+    if(limitPurchaseResult.length > 0){
+
+      limitPurchaseResult.forEach(function(pitem,pindex){
+
+        $.each(cart.items, function(index1, cartItem1) {
+          
+          if(cartItem1.product_id == pitem.id){
+            if(typeof purchaseObj[pitem.id] == 'undefined'){
+              purchaseObj[pitem.id] = {};
+              purchaseObj[pitem.id]['num'] = parseInt(cartItem1.quantity);
+              purchaseObj[pitem.id]['limitNum'] = parseInt(pitem.num);
+              purchaseObj[pitem.id]['variants'] = [];
+              let tempObj = {};
+              tempObj['id'] = cartItem1.key;
+              tempObj['num'] = parseInt(cartItem1.quantity);
+              purchaseObj[pitem.id]['variants'].push(tempObj);
+            }else{
+              purchaseObj[pitem.id]['num'] += parseInt(cartItem1.quantity);
+              
+              purchaseObj[pitem.id]['limitNum'] = parseInt(pitem.num);
+
+              let tempObj = {};
+              tempObj['id'] = cartItem1.key;
+              tempObj['num'] = parseInt(cartItem1.quantity);
+              purchaseObj[pitem.id]['variants'].push(tempObj);
+            }
+
+          }
+        });
+      });
+      
+	  console.log(JSON.stringify(purchaseObj));
+      //删除超出限购数的产品
+      if(JSON.stringify(purchaseObj) != '{}'){
+      	limitPurchaseResult.forEach(function(pitem2,pindex2){
+          if(typeof purchaseObj[pitem2.id] != 'undefined'){
+            let diffPnum = purchaseObj[pitem2.id]['num'] - pitem2.num;
+			console.log('diffPnum==============',diffPnum);
+            if(diffPnum > 0){
+              let vNo = 0;
+              for(var i=0;i<diffPnum;i++){
+
+                if( purchaseObj[pitem2.id]['variants'][vNo]['num'] <= 0){
+                  vNo++;          
+                }
+
+                purchaseObj[pitem2.id]['variants'][vNo]['num']--;
+                Cart.change({id:purchaseObj[pitem2.id]['variants'][vNo]['id'],quantity:purchaseObj[pitem2.id]['variants'][vNo]['num'],mask:'#{{sectionId}}'});
+
+              }
+                            
+            }
+          }
+
+        });  
+      }
+       
+    }
+  
+  var compileTemplate = Handlebars.compile($('#CartItemsTemplate').html());
+  var data = {};
+  var items = [];
+  var item = {};
+  
+  var productImg;
+  var cropImgUrl;      //照片图片
+  var engravingCrop;   //刻字图片
+  // var fonttext;
+  // var picture;
+  var nameCrop;       //字母图片
+  var diamondImage;   //换钻图片
+  var engravingText;  //刻字文字
+  var alphaText;      //字母文字
+  var card_template;   //礼物卡模板
+  var card_message;   //礼物卡文字
+  var tempVip = false;       //vip字f段
+  var tempInsurance = false;       //insurance字段
+  var giveaway = false;
+  var limitPurchase = false;//是否限购
+  var qtyPlusStyle = '';
+  
+  // Add each item to our handlebars.js data
+  $.each(cart.items, function(index, cartItem) {
+    cropImgUrl = false;
+    engravingCrop = false;
+    nameCrop = false;
+    diamondImage = false;
+    // fonttext = false;
+    // picture = false;
+    engravingText = false;
+    alphaText = false;
+    card_template = false;
+    card_message = false;
+    tempVip = false;
+    tempInsurance = false; 
+    giveaway = false;
+    limitPurchase = false;//是否限购
+    qtyPlusStyle = '';
+    if(JSON.stringify(purchaseObj) != '{}'){
+      if(typeof purchaseObj[cartItem.product_id] != 'undefined'){
+        limitPurchase = true;
+        if(purchaseObj[cartItem.product_id]['num'] >= purchaseObj[cartItem.product_id]['limitNum']){
+          qtyPlusStyle = 'color:#dddddd;';
+        }else{
+          qtyPlusStyle = 'color:#000000;';
+        }
+      }
+    }
+    console.log(qtyPlusStyle);
+    /* Hack to get product image thumbnail
+      *   - If image is not null
+      *     - Remove file extension, add 240x240, and re-add extension
+      *     - Create server relative link
+      *   - A hard-coded url of no-image
+    */
+
+    if (cartItem.image === null) {
+      productImg = '//cdn.shopify.com/s/assets/admin/no-image-medium-cc9732cb976dd349a0df1d39816fbcc7.gif';
+    } else {
+      productImg = cartItem.image
+        .replace(/(\.[^.]*)$/, '_240x240$1')
+        .replace('http:', '');
+    }
+
+    if (cartItem.properties !== null) {
+      if (Array.isArray(cartItem.properties) == false){
+        var properties = [];
+        for(var key in cartItem.properties){
+          properties.push({
+            name: key,
+            value: cartItem.properties[key]
+          })
+        }
+        cartItem.properties = properties;
+      }
+ 	  console.log(cartItem.properties);
+      console.log(cartItem);
+      $.each(cartItem.properties, function(index, item) {
+        var key = item.name;
+        var value = item.value; 
+        
+        if (key == 'crop' || key == 'multi_crop' || (key == 'picture' && value.indexOf(`{"0":`) < 0)  ){//add multi_crop 2020-1-15 alice 传四图月球灯          
+          if(value != ""){
+            cropImgUrl = value;
+          }                    
+        }else if (key == 'engravingCrop'){
+          engravingCrop = value;
+        // }else if (key == 'fonttext' & value != 'none'){
+        //   fonttext = value;
+        // }else if (key == 'picture' & value != ''){
+        //   picture = value;
+        }else if (key == 'nameCrop' & value != ''){
+          //KSL085产品要求不展示字母图，展示主图
+          if(cartItem.product_type.toLowerCase() == 'mens bracelets'){
+            if(nameCrop==""){
+          	  nameCrop = productImg;
+            }
+          }else{
+          	nameCrop = value;  // name necklace image
+          }
+          
+        }else if (key == 'diamondImage' & value != ''){
+          diamondImage = value;  // name necklace image
+        }
+        if (key == 'alphaText' & value != ''){
+          alphaText = value;
+        }
+        if (key == 'engravingText' & value != ''){
+          engravingText = value;
+        } 
+
+        if (key == 'customInfo' & value != ''){
+          if(JSON.parse(value)['_sunzi_effects'] && JSON.parse(value)['_sunzi_effects'] !=""){
+            cropImgUrl = JSON.parse(value)['_sunzi_effects'][0];
+          }
+          if(value.indexOf('{"photo":[{"type"') >= 0){
+            var cusinfo = JSON.parse(value);
+            console.log(cusinfo)
+          	if((cusinfo['photo'][0]['type'] == 'multiphotos' || cusinfo['photo'][0]['type'] == 'multipic') & cusinfo['photo'][0]['crop'] != ''){
+              cropImgUrl = cusinfo['photo'][0]['crop'];
+            }
+            if(value.indexOf('"engraving":[{"type"') >= 0 && cusinfo['engraving'][0]['engravingText'] != ''){
+              engravingText = cusinfo['engraving'][0]['engravingText'];
+            }
+            if(value.indexOf('"sf_curve_engraving":[{"engravingCrop"') >= 0 && cusinfo['sf_curve_engraving'][0]['engravingText'] != ''){
+              engravingText = cusinfo['sf_curve_engraving'][0]['engravingText'].replace('#$%:','');
+              if(value.indexOf('"sf_engraving":[{"type"') >= 0 && cusinfo['sf_engraving'][0]['engravingText'] != ''){
+                engravingText += '|' + cusinfo['sf_engraving'][0]['engravingText'].replace('#$*:','');;
+              }
+            }
+            if(cusinfo['sf_engraving'][0]['engravingCrop'] != ''){
+              engravingCrop = cusinfo['sf_engraving'][0]['engravingCrop'];
+            }            
+          }
+          
+        }
+        if (key.charAt(0) === '_' || !value) {
+          delete cartItem.properties[key];
+        }
+        if (key == 'cardTemplate' & value != ''){
+          card_template = value;
+        }
+        if (key == 'card_message' & value != ''){
+          card_message = value.replace("-###-",'\n');
+        }
+        if (key == '_tempVip' & value != ''){
+          tempVip = value;
+        }
+        if (key == '_tempInsurance' & value != ''){
+          tempInsurance = value;
+        }
+        if (key == 'giveaway'){
+          giveaway = value;
+        }
+      });
+    }
+    var optionsInfo = null;
+    $.each(cartItem.variant_options, function(key, value) {
+      //       if(key != 0) {
+//         if(optionsInfo) {
+//           optionsInfo = optionsInfo + ' | ' + value;
+//         }else{
+//           optionsInfo = value;
+//         }
+//       }
+      //update by Alice 2019-7-25
+      if(key != 0) {
+        optionsInfo = optionsInfo + ' | ' + value;
+      }else{
+      	optionsInfo = value;
+      }
+    });
+    if(optionsInfo == 'Default Title'){
+      optionsInfo = null;
+    }
+    // delete custom Engraving
+    delete cartItem.variant_options[0];
+    // Create item's data object and add to 'items' array
+    cartItem = Object.assign(cartItem, {
+      variant_id:cartItem.variant_id,
+      key: cartItem.key,
+      line: index + 1, // Shopify uses a 1+ index in the API
+      productImg: productImg,
+      properties: cartItem.properties,
+      minus: cartItem.quantity - 1 > 1 ? cartItem.quantity - 1 : 1,
+      plus: cartItem.quantity + 1 < 100 ? cartItem.quantity + 1 : 100, 
+      price: cartItem.price,
+      discountsApplied: cartItem.line_price === cartItem.original_line_price ? false : true,
+      cropImageUrl: cropImgUrl,
+      engravingCrop: engravingCrop,
+      nameCrop: nameCrop,
+      diamondImage: diamondImage,
+      engravingText: engravingText,
+      alphaText:alphaText,
+      card_template:card_template,
+      card_message:card_message,
+      isvip: cartItem.product_type == 'VIP PRODUCT' ? true : false,
+      tempVip: tempVip,
+      isinsurance: cartItem.product_type == 'INSURANCE PRODUCT' ? true : false,
+      tempInsurance: tempInsurance,
+      product_options_info:optionsInfo,
+      giveaway: giveaway,
+      limitPurchase:limitPurchase,
+      product_id:cartItem.product_id,
+      qtyPlusStyle:qtyPlusStyle
+    });
+    items.push(cartItem);
+  });
+
+  var data = {
+    //overage: cart.total_price - cart.total_discount - parseInt({{ settings.free_shipping_threshold }}),
+    overage: cart.total_price - parseInt({{ settings.free_shipping_threshold }}),
+    items: items
+  };
+  //修复弹层数据改变 refresh后数据不变问题 by johnny 20210101
+  $('.tingle-modal .tingle-modal-box .tingle-modal-box__content').html("");
+  $('#CartItems').empty().append(compileTemplate(data));
+});
+
+function alertImageBox(object) {
+  var $img = $(object).find('img');
+  if($img.data('engraving') || $img.data('name')){
+    $('.cart-big-popimg').addClass('cart__engraving');
+  }
+  //创建一个父div
+  var $div = $('<div class="cart-big-popimg"><span class="close-new close" data-action="close"> <i class="photofont icon photo-close"></i></span></div>');
+  //$div.append($img.clone());
+  if($img.data('engraving')){ 
+    
+    if($img[0].src != $img.data('engraving')){
+      $engravingImg1 = new Image();    
+      $engravingImg1.src = $img[0].src;
+      $div.append($engravingImg1);  
+      $engravingImg = new Image();
+      $engravingImg.src = $img.data('engraving');
+      $div.append($engravingImg);
+    }else{
+      $engravingImg = new Image();
+      $engravingImg.src = $img.data('engraving');
+      $div.append($engravingImg);
+    }
+
+  }else if($img.data('name')){
+    $nameImg = new Image();
+    $nameImg.src = $img.data('name');
+    $div.append($nameImg);
+  }else{
+  	$div.append($img.clone());
+  }
+  Dialog.open($div);
+}
+$(function(){
+      
+  $("#clickShowEnjoy").click(function(){
+    customModalRecommend.open();
+    customModalRecommend.setContent($(".cart_add_on_item").html());
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "购物车 - 列表设置",
+  "class": "cart-items-section page-width",
+  "settings": [
+    {
+      "type": "html",
+      "id": "content",
+      "label": "列表上方的HTML内容"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_notice",
+      "label": "Show notice",	  
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "TOP Text1",
+	  "info": "金额用 <span data-money='4900'></span> 代替"
+    },
+    {
+      "type": "text",
+      "id": "code1",
+      "label": "BOTTOM Code1"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "TOP Text2",
+	  "info": "金额用 <span data-money='4900'></span> 代替"
+    },
+    {
+      "type": "text",
+      "id": "code2",
+      "label": "BOTTOM Code2"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "TOP Text3",
+	  "info": "金额用 <span data-money='4900'></span> 代替"
+    },
+    {
+      "type": "text",
+      "id": "code3",
+      "label": "BOTTOM Code3"
+    },
+    {
+      "type": "text",
+      "id": "cart_subscript",
+      "label": "购物车凑单下标题",
+      "default":"ADD ONE PIECE, ENJOY FREE SHIPPING!"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "cart_gift_rule",
+      "name": "购物车赠品规则",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "规则名称"
+        },
+        {
+          "type": "text",
+          "id": "main_product",
+          "label": "主产品标签",
+          "info": "注意：产品需要添加CART_GIFT_开头的TAG"
+        },
+  		{
+          "type": "number",
+          "id": "main_product_num",
+          "label": "加购数量",
+  		  "default":1,
+          "info": "加购数大于等于该数字则添加赠品"
+        },
+        {
+          "type": "product",
+          "id": "giveaway",
+          "label": "请选择赠品",
+          "info": "注意：赠品需要添加CART_GIVEAWAY的TAG"
+        }
+      ]
+    },
+    {
+      "type": "cart_add_on_item",
+      "name": "购物车凑单",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "购物车凑单",
+          "default":"购物车凑单"
+        },
+        {
+          "type": "text",
+          "id": "item_title",
+          "label": "标题"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "选择集合"
+        },
+        {
+          "type": "text",
+          "id": "Alimit",
+          "label": "产品limit总数量",
+          "default":"4"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

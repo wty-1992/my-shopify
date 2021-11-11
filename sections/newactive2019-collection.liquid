@@ -1,0 +1,835 @@
+{{ 'newactive2019.scss.css' | asset_url | stylesheet_tag }}
+<style>
+  @media(max-width:768px){
+    .block-collection .others .block-collection-items{
+      padding: 50px 10px 20px;
+    }
+    .block-collection .tag_span_first{
+      transform: scale(.85) translate(-3px,-3px);
+    }
+  }
+  {%if page.handle=="2021-fathers-day-sale"%}
+  .block-collection div.title span:before{
+    top: -86px;
+    left: 50%;
+    height: 150px;
+    width: 240px;
+  }
+  {% endif %}
+  {%if page.handle=="back-to-school"%}
+  .block-collection div.title span:before{
+    width: 500px;
+    top: 0px;
+  }
+  @media(max-width:768px){
+    .block-collection div.title span:before{
+      transform: translateX(-50%) scale(1);
+      top: 0px;
+      height: 38px;
+      width: 318px;      
+      background-size: cover;
+    }
+  }
+  {% endif %}
+  
+    {%if page.handle=="daily-flash-sale"%}
+ .direction-top-nav.no-swiper .direction-shade .swiper-wrapper { 
+    justify-content: left;
+}.block-collection span { 
+    font-weight: 600;
+}
+  .block-collection div.title span:before{ 
+    height: 65px;
+    width: 580px;
+  }   @media(max-width:768px){
+    .swiper-slide.m-top-nav-slide{    width: 157px;}
+    .block-collection div.title span:before{
+    transform: translateX(-50%) scale(1);
+        top: -2px;
+    height: 32px;
+    width: 290px;
+    background-size: cover;
+    }
+  } {% endif %}
+</style>
+{% unless handle contains '2021-flash-sale' %}
+<div class="blackfriday-time-pc">
+  <div class="blackfriday-time" data-section-id="{{ section.id }}">
+    <div class="menutime">
+      <div class="time view-place-top">
+        <span class="icon photofont photo-daojishi1"></span>
+        <div id="remainTime" class="remainTime"></div>
+      </div>
+      <div class="direction-top-nav">
+        <div class="swiper-button-next1"><i class="icon photofont photo-more1"></i></div>
+        <div class="direction-shade">
+          <div class="swiper-wrapper">                  
+            {% for block in section.blocks %}
+            {% if block.type == 'additional_info' %}
+            {% if handle == block.settings.handle %}
+              <div class="swiper-slide m-top-nav-slide">
+                <a href="#section-{{block.id}}"><span class="itext">{{block.settings.text1}}</span></a>
+              </div>
+            {%endif%}
+            {%endif%}
+            {%endfor%}
+          </div>
+        </div>
+        <div class="swiper-button-next2"><i class="icon photofont photo-more1"></i></div>
+      </div>
+    </div>
+  </div>
+</div>
+{%endunless%}
+{% comment %} adp功能 by Anna 20210223 {%- endcomment -%}
+{% if section.settings.is_enbal_adp %}
+  {% assign currentUrl = content_for_header | split:'"pageurl":"' | last | split:'"' | first | split:'.myshopify.com' | last | replace:'\/','/' | replace:'%20',' ' | replace:'\u0026','&' %}
+  {% assign adp_all = '' %}
+  {% if currentUrl contains '?adp=' %}
+    {% assign adp_str = currentUrl | split: '?adp=' %}
+	{% assign adp_all = adp_str | last | split: '&' | first %}
+	{% comment %}
+    {% assign adp_all = adp_str | last | split: '&' | first | replace:",","','" | prepend: "'" | append: "'" %}
+    {% assign adp_products =section.settings.adp_products %}
+    {% assign adp_products_array = adp_products | split: '|' %}
+    {% for product in adp_products_array %}
+      {% assign product_array = product | split: ':' %}
+      {% assign adp_id = product_array | first | prepend: "'" | append: "'" %}
+      {% assign product_id = product_array | last %}
+      {% if adp_all contains adp_id %}
+      	{% assign adp_all = adp_all | replace:adp_id,product_id %}
+      {% endif %}
+    {% endfor %}
+	{%- endcomment -%}
+	{% assign has_adp = false %}
+  {% endif %}
+{% endif%}
+
+{% for block in section.blocks %}
+{% if block.type == 'banner' %}
+{% if handle == block.settings.handle %}
+<div class="pages-banner benefit-banner">
+  <img src="{{ block.settings.pc_image | img_url: 'master' }}" class="pages-banner-pc" />
+  <img src="{{ block.settings.mb_image | img_url: 'master' }}" class="pages-banner-mb" />
+</div>
+{% endif %}
+{% endif %}
+{% if block.type == 'additional_info' %}
+{% assign blockId = block.id %}
+{% if handle == block.settings.handle %}
+  {% assign style = "block-collection-" | append: section.id | append: forloop.index %}
+  {% assign current_collection = collections[block.settings.collection] %}
+   <div class="{{style}} block-collection {{block.settings.style}}" data-section-id="{{ section.id }}" >                   
+     {% if current_collection.products.size > 0%}
+     <div class="uldiv {%if forloop.index==3 %}first {%else%} others {%endif%}">
+       {%if block.settings.topsale_img %}
+       <div class="topsale"><img src="{{block.settings.topsale_img | img_url:'master'}}" /></div>
+       {% endif %}
+       <div class="maodian" id="section-{{blockId}}"></div>
+       {% if block.settings.banner_enable %}         
+         <div class="huichang">
+          <div class="tittle_img">
+            <img src="{{block.settings.pc_banner | img_url: 'master' }}" class="lazyload banner-pc" />
+            <img src="{{block.settings.mb_banner | img_url: 'master' }}" class="lazyload banner-mb" />
+          </div>    
+         </div>
+       {% else %} 
+       
+      
+       <div class="title title_{{forloop.index}}">
+         <div class="title-line"></div>
+         <span>{{block.settings.text1}}</span>
+       </div> 
+       {% endif %}
+       {% if block.settings.sub_title %}
+          <div class="sub_title">{{block.settings.sub_title}}</div>
+       {% endif %}   
+       <ul class="block-collection-items page-width">  
+          {% comment %} adp功能 by Anna 20210223 {%- endcomment -%}
+          {% if currentUrl contains '?adp=' %}
+            {% if section.settings.is_enbal_adp and has_adp == false %}
+              {% assign adp_collection = collections[section.settings.adp_collection] %}
+         	  {% comment %}
+         	  {% paginate adp_collection.products by 1000 %}
+                {% for item in adp_collection.products %}
+                  {% if adp_all contains item.id %}
+         			<li class="item">{% include 'product-list', product:item  %}</li>
+         			{% assign has_adp = true %} 
+                  {% endif %}
+                {% endfor %}
+              {% endpaginate %}
+         	  {% endcomment %}
+         	  
+         	  {% assign adp_all_loop = adp_all | split: "," %}
+         	  {% for adp in adp_all_loop %}
+                {% assign adp_id = adp | times:1 %}
+         		{% paginate adp_collection.products by 1000 %}
+                {% assign adp_products = adp_collection.products | where: "id", adp_id %}
+         		{% endpaginate %}
+                {% if adp_products[0] and adp_products[0].available == true %}
+                  {% assign item = adp_products[0] %}
+         		  <li class="item">{% include 'product-list', product:item  %}</li>
+         		  {% assign has_adp = true %} 
+         
+         		{% else %}
+    			
+    		      {% comment %} 如果第一个集合没有该产品则走第二个adp集合 alice 2021-8-9 {%- endcomment -%}
+         		  {% assign adp_collection2 = collections[section.settings.adp_collection2] %}
+         
+         		  {% paginate adp_collection2.products by 1000 %}
+                  {% assign adp_products2 = adp_collection2.products | where: "id", adp_id %}
+                  {% endpaginate %}
+                  {% if adp_products2[0] and adp_products2[0].available == true %}
+                    {% assign item = adp_products2[0] %}
+                    <li class="item">{% include 'product-list', product:item  %}</li>
+                    {% assign has_adp = true %} 
+         		  {% endif %}
+         
+                {% endif %}
+              {% endfor %}
+         	  
+            {% endif%}
+          {% endif%}       
+         {% paginate current_collection.products by block.settings.limit %}
+         {% for item in current_collection.products  %} 
+           {% if section.settings.is_enbal_adp and has_adp == true %}
+             {% if adp_all contains item.id %}
+                {% continue %}
+             {% endif %}
+           {% endif%}
+           {% if item.available == false %}
+              {% continue %}
+            {% endif %}
+           <li class="item">{% include 'product-list', product:item  %}</li>
+         {% endfor %}
+         {% endpaginate %}
+       </ul>      
+     {% endif %}
+     {% if block.settings.more_enable %}
+      <div class="tittle_more">
+        <a href="/collections/{{block.settings.collection}}" class="viewmore{{forloop.index}}">
+          <span>{{ block.settings.more_banner }}</span>
+        </a>
+      </div>
+      <script type="text/javascript">
+       //加载更多  
+       var LoadMoreCollection{{forloop.index}} = new LoadMore.toLoad(".{{style}} .block-collection-items",{
+         view:12,//一开始显示几个
+         count: 8,//每次加载的数量
+         btnHTML:".viewmore{{forloop.index}}",//触发加载的元素
+         moreText:"{%if block.settings.more_banner != blank %} {{ block.settings.more_banner }}{% else %}{{ "general.social.page_show_more_reviews" | t }} {%endif%}", //按钮文案
+		 moreEndText:"{{'page.contact.send' | t}}" //全部显示之后按钮的文案
+       })
+      </script>
+     {% endif %}
+       
+     </div>
+   </div>
+  <style>    
+
+    {% if block.settings.portion_style %}
+    .{{style}}.block-collection{
+      {% if block.settings.bgbanner_enable %}
+        background:url("{{block.settings.bgpc_banner | img_url: 'master' }}") repeat-y top center/cover;
+      {% endif %}  
+      {%if page.handle=="2021-mothers-day-gifts"%}
+        background-size: auto;
+        background-repeat: no-repeat;
+        background-position-y: 20%;
+      {% endif %}
+    }
+    .{{style}}.block-collection .product-card__name,.{{style}}.block-collection .block-collection-items .item a{
+      color: {{block.settings.color_text}};
+    }
+    .{{style}}.block-collection .title {
+      color: {{block.settings.color_title}};        
+    }
+    .{{style}}.block-collection .product-card__sale-price{
+      color:{{block.settings.color_price}};
+    }
+    .{{style}}.block-collection  .product-card__regular-price{
+      color:{{block.settings.color_priceregular}};
+    }
+    
+    .{{style}}.block-collection .sub_title{
+      color:{{block.settings.color_titlesub}};
+    }
+    .{{style}}.block-collection .uldiv{
+      background: {{block.settings.color_bg}};
+      border:10px solid #fff;
+    } 
+    .{{style}}.block-collection .collection-label span{
+      background:{{block.settings.color_label_bg}};
+      color:{{block.settings.color_label_color}};
+      border:1px solid {{block.settings.color_label_border}};
+    }
+    {%if page.handle=="2021-fathers-day-sale"%}
+     .{{style}}.block-collection .uldiv{
+       background: rgba(238,252,253,0.8);
+       border:10px solid #39b3da;
+       margin-top: 55px;
+       margin-bottom: 70px;
+    } 
+    .{{style}}.block-collection .collection-label span{
+       background:transparent;
+    }
+  
+    {% endif %}
+     {%if page.handle=="happy-easter-day-sale"%}     
+     .{{style}}.block-collection .title {
+          font-family: OpenSans;
+          position: relative;
+          display: block;
+          z-index: 0;
+          font-weight: bold;
+          width: 100%;       
+    }
+     .{{style}}.block-collection .others .title {
+          font-family: OpenSans;
+          position: relative;
+          display: block;
+          z-index: 0;
+          font-weight: bold;
+          width: 100%;   
+          padding-top:60px
+    }
+    .{{style}}.block-collection .uldiv.first{
+       background: #fff;
+       border:10px solid #fff;
+       margin-top: 55px;
+       margin-bottom: 70px;
+    } 
+     .{{style}}.block-collection .uldiv{
+       background: #fff1f4;
+       border:10px solid #fff;
+       margin-top: 55px;
+       margin-bottom: 70px;
+    } 
+    .{{style}}.block-collection .collection-label span{
+       background:transparent;
+    }
+  
+    {% endif %}
+    {% endif %}
+    .{{style}} .tittle_more a{
+      background:{{block.settings.more_bg}};
+      color:{{block.settings.more_color}};
+    }
+  {%if page.handle=="2021-fathers-day-sale"%}
+    
+    .{{style}} .tittle_more a{
+    font-size: 14px;
+    display: inline-block;
+    color: #fff;
+    padding: .6rem 3.5rem;
+    border-radius: 50px;
+    text-transform: capitalize;
+    cursor: pointer;
+    background-image: linear-gradient(to right, #3bb2dc , #308ad6);
+    font-weight: bold;
+    }
+  {%endif%}
+     {%if page.handle=="happy-easter-day-sale"%}
+    
+    .{{style}} .tittle_more a{
+       display: inline-block;
+        color: #fff;
+        padding: .6rem 4rem;
+        border-radius: 50px;
+        text-transform: capitalize;
+        cursor: pointer;
+        background-image: linear-gradient(to right, #f94642 , #f94642);
+        font-weight: bold;
+    }
+  {%endif%}
+    @media(max-width:768px){
+       .{{style}}.block-collection .others .title {
+          font-family: OpenSans;
+          position: relative;
+          display: block;
+          z-index: 0;
+          font-weight: bold;
+          width: 100%;   
+          padding-top:30px
+    }
+    {%if page.handle=="2021-fathers-day-sale"%}
+     .{{style}}.block-collection .collection-label span{
+        width: 110%;
+        text-align: center;
+        font-size: 14px;
+        padding: 2px 6px;
+        display: inline-block;
+     }
+     .{{style}}.block-collection .uldiv{
+       background: rgba(248,254,254, .8);
+       border: 6px solid #39b3da;
+       margin-top: 25px;
+       margin-bottom: 45px;
+      
+    } 
+  
+    {%endif%}
+     {%if page.handle=="happy-easter-day-sale"%}
+       {%if page.handle=="happy-easter-day-sale"%}
+    
+    .{{style}} .tittle_more a{
+       display: inline-block;
+        color: #fff;
+        padding: .3rem 2rem;
+        border-radius: 50px;
+        text-transform: capitalize;
+        cursor: pointer;
+        background-image: linear-gradient(to right, #f94642 , #f94642);
+        font-weight: bold;
+        margin-top:16px
+    }
+      {%endif%}
+      .{{style}}.block-collection .title {
+              font-size: 19px;
+   			  font-weight: 600;
+              position: relative
+      }
+     .{{style}}.block-collection .collection-label span{
+        width: 110%;
+        text-align: center;
+        font-size: 14px;
+        padding: 2px 6px;
+        display: inline-block;
+     }
+     .{{style}}.block-collection .uldiv.first{
+       background: #fff;
+       border: 6px solid #fff;
+       margin-top: 25px;
+       margin-bottom: 45px;
+    } 
+      .{{style}}.block-collection .uldiv{
+       background: #fff1f4;
+       border: 6px solid #fff;
+       margin-top: 25px;
+       margin-bottom: 45px;
+       box-shadow: 10px 10px 10px -10px #f3c1cc;
+    } 
+  
+    {%endif%}
+        }
+  </style>
+<script>
+  {% if block.settings.label_sort != blank %}
+  $(function(){    
+    let labelSort{{forloop.index}} =`{{ block.settings.label_sort }}`.split(",");
+    $(".{{style}} .collection-label").each(function(){
+      if($(this).children().length > 0){
+        let dataArr =[];
+        $(this).children(".tag_span").map(function(i,item){          
+          let items = $(this).html(); 
+          labelSort{{forloop.index}}.map(function(item,index){            
+            if(items == item){              
+              dataArr.push(item);
+            }
+          });
+        });
+        dataArr.sort((a,b)=>{return labelSort{{forloop.index}}.indexOf(a) - labelSort{{forloop.index}}.indexOf(b);});
+        if(dataArr[0] != undefined){
+          $(this).prepend(`<span class="tag_span_first">`+ dataArr[0].split(":")[0] +`</span>`);
+        }else{
+          $(this).html(``);
+        }
+      }
+    })
+  })  
+  {% endif %}
+</script>
+{% endif %}
+{% endif %} 
+{%endfor%}
+{% for block in section.blocks %}
+{% if block.type == 'image' %}
+{% if handle == block.settings.handle %}
+<style>  
+ .block-collection .title span:before {
+  content: ""; 
+  display: block;
+  margin: 0 auto;
+  background: url({{block.settings.onebg | img_url: 'master' }}) no-repeat;
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  height: 96px;
+  width: 145px;
+  transform: translateX(-50%);
+  z-index: -1;
+} 
+.activity-template-collection>div:nth-child(4) .title span:before {
+  position: absolute;
+  text-align: center;  
+  background: url("{{block.settings.iconbg | img_url: 'master' }}") no-repeat;   
+    background-size: cover;  
+}
+.block-collection  span{  
+  z-index:0;
+  position: relative; 
+}    
+.block-collection .uldiv:after{
+  position: absolute;
+  content: "";
+  width: calc(100% - 24px);
+  height: calc(100% - 20px);
+  display: block;
+  top: 10px;
+  left: 12px;
+  border-radius: 25px; 
+  pointer-events: none;
+}
+.block-collection .uldiv{ 
+  box-shadow: none;
+  z-index: 1;
+}  
+@media(max-width:768px){
+  .block-collection .title span:before{
+    transform: translateX(-50%) scale(0.7);
+    top: -29px;
+  }
+}
+</style>
+{% endif %}
+{% endif %} 
+{%endfor%}
+<script type="text/javascript">
+//加载更多  
+var happyCustomerSay = new LoadMore.toLoad(".customers-say-view",{
+  view:20,//一开始显示几个
+  count: 20,//每次加载的数量  
+  btnHTML:".viewmore",//触发加载的元素
+  moreText:"{{'general.social.Show_More_Reviews' | t}}", //按钮文案
+  moreEndText:"{{'page.contact.send' |t}}" //全部显示之后按钮的文案
+});    
+$(function(){
+  var now=new Date();
+  var end=new Date(2030,9,3,00,00,00);//结束的时间：年，月，日，分，秒（月的索引是0~11）
+  /*两个时间相减,得到的是毫秒ms,变成秒*/
+  var result=Math.floor(end-now)/1000; 
+  var interval=setInterval(sub,1000); //定时器 调度对象
+  /*封装减1秒的函数*/
+  function sub(){
+    if (result>1) {
+     result = result - 1; 
+     var second = buquan(Math.floor(result % 60),2);     // 计算秒 ，取余  
+     var minite = buquan(Math.floor((result / 60) % 60),2); //计算分 ，换算有多少分，取余，余出多少秒
+     var hour = buquan(Math.floor((result / 3600) % 24),2); //计算小时，换算有多少小时，取余，24小时制除以24，余出多少小时
+     //var day = buquan(Math.floor(result / (3600*24)),2);  //计算天 ，换算有多少天
+     $("#remainTime").html("<ul>" + "<li>"  + "<span class='num'>"+ hour + "</span>" + "<span class='txt' >{{ 'activity.countdown.hours' | t }}</span>" + " </li> " + "<li>"+"<span class='num'>"+ minite + "</span> " + "<span class='txt' >{{ 'activity.countdown.mins' | t }}</span>"+"</li>" + "<li>"+ "<span class='num'>"+ second + "</span>" + "<span class='txt' >{{ 'activity.countdown.sec' | t }}</span>"  +"</li>"+"</ul>");
+    }else{
+      window.clearInterval(interval);//这里可以添加倒计时结束后需要执行的事件 
+    }
+  };
+  
+  $(window).scroll(function(){
+    var scrollTop = jQuery(window).scrollTop();
+    if(($('.blackfriday-time-pc').offset().top - scrollTop) < $(".menu-nav").height()){
+      $('.blackfriday-time-pc').addClass('stick-sub');
+      if($(window).width() > 768){
+        $('.blackfriday-time-pc.stick-sub .blackfriday-time').css("top",$(".menu-nav").height());
+      }else{
+        $('.blackfriday-time-pc.stick-sub .direction-top-nav').css("top",$(".header-mb-top header").height());
+      };
+    }else{
+      $('.blackfriday-time-pc').removeClass('stick-sub');
+    }    
+    jQuery('.maodian').each(function(){
+      var juliheight =  jQuery(this).offset().top - scrollTop;
+      if(juliheight <= 1 && ( juliheight + jQuery(this).siblings('.block-collection-items').height()) >= 0 ){
+        var oid = "#" + jQuery(this).attr("id");
+        jQuery("a[href='"+oid+"']").parent().addClass("active");
+        jQuery("a[href='"+oid+"']").parent().siblings().removeClass("active");
+      }
+    });
+  });
+  if(jQuery(window).width() > 768 && jQuery('.m-top-nav-slide').length > 3 ){
+    jQuery(".direction-top-nav").addClass("y-swiper");
+    let PageNavSwiper = new Swiper(".direction-shade",{
+        slidesPerView: 'auto',
+        navigation: {
+          nextEl: '.swiper-button-next2',
+          prevEl: '.swiper-button-next1',
+        },
+    });
+    $(window).on('scroll', function () {
+      var index_num = $('.direction-shade .swiper-slide.active').index();
+      //console.log(index_num);
+      PageNavSwiper.slideTo(index_num, 1000);
+    });
+  }else if(jQuery(window).width() > 768 && jQuery('.m-top-nav-slide').length <= 3){
+    jQuery(".direction-top-nav").addClass("no-swiper");
+  }  
+  if(jQuery(window).width() < 768 && jQuery('.m-top-nav-slide').length > 1 ){
+    jQuery(".direction-top-nav").addClass("y-swiper");
+    let PageNavSwiper = new Swiper(".direction-shade",{
+        slidesPerView: 'auto',
+        navigation: {
+          nextEl: '.swiper-button-next2',
+          prevEl: '.swiper-button-next1',
+        },
+    });
+    $(window).on('scroll', function () {
+      var index_num = $('.direction-shade .swiper-slide.active').index();
+      //console.log(index_num);
+      PageNavSwiper.slideTo(index_num, 1000);
+    });
+  }else if(jQuery(window).width() < 768 && jQuery('.m-top-nav-slide').length <= 1){
+    jQuery(".direction-top-nav").addClass("no-swiper");
+  }   
+}); 
+function buquan(num,length){
+  var numstr = num.toString();
+  var l=numstr.length;
+  if (numstr.length>=length) {return numstr;}    
+  for(var  i = 0 ;i<length - l;i++){
+    numstr = "0" + numstr;
+  }
+  return numstr;
+}    
+</script> 
+{% schema %}
+{
+	"name": "Block 分会场集合块",
+	"max_blocks": 2000,
+	"class": "activity-template-collection",
+	"settings": [
+	   	{
+          "type": "paragraph",
+          "content": "newactive2019-collection"
+        },
+        {
+          "type":"header",
+          "content":"adp"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_enbal_adp",
+          "label": "开启adp",
+          "default": true
+        },
+        {
+          "type": "collection",
+          "id": "adp_collection",
+          "label": "选择adp产品集合"
+        },
+		{
+          "type": "collection",
+          "id": "adp_collection2",
+          "label": "选择adp产品第二个集合"
+        }
+	],
+    "blocks": [
+	  {
+		"type": "additional_info",
+		"name": "collection",
+		"settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "哪个活动"
+          },
+          {
+            "type": "text",
+            "id": "handle",
+            "label": "活动url"
+          },
+          {
+            "type": "text",
+            "id": "text1",
+            "label": "导航文案&&会场标题"
+          },
+          {
+            "type": "text",
+            "id": "sub_title",
+            "label": "会场副标题"
+          },
+          {
+            "type": "checkbox",
+            "id": "portion_style",
+            "label": "开启样式替换",
+            "default":false
+          },
+          {
+            "type":"color",
+            "id":"color_bg",
+            "label":"背景颜色",
+            "default":"#fff"
+          },
+          {
+            "type":"color",
+            "id":"color_title",
+            "label":"标题颜色",
+            "default":" #fc6a2f"
+          },
+          {
+            "type":"color",
+            "id":"color_titlesub",
+            "label":"副标题颜色",
+            "default":"#000"
+          },
+          {
+            "type":"color",
+            "id":"color_text",
+            "label":"产品名字颜色",
+            "default":"#fff"
+          },
+          {
+            "type":"color",
+            "id":"color_price",
+            "label":"特价颜色",
+            "default":"#fff"
+          },
+          {
+            "type":"color",
+            "id":"color_priceregular",
+            "label":"原价颜色",
+            "default":"#8d8d8d"
+          },
+          {
+            "type":"color",
+            "id":"color_label_bg",
+            "label":"标签背景颜色"
+          },
+          {
+            "type":"color",
+            "id":"color_label_color",
+            "label":"标签字体颜色",
+            "default":"#E81150"
+          },
+          {
+            "type":"color",
+            "id":"color_label_border",
+            "label":"标签边框颜色",
+            "default":"#E81150"
+          },
+          {
+            "type": "image_picker",
+            "id": "topsale_img",
+            "label":"会场背景顶部装饰图"
+          },
+          {
+            "type": "checkbox",
+            "id": "bgbanner_enable",
+            "label": "开启会场背景"
+          },
+          {
+            "type": "image_picker",
+            "id": "bgpc_banner",
+            "label":"会场背景"
+          },
+          {
+            "type": "checkbox",
+            "id": "banner_enable",
+            "label": "开启横幅"
+          },
+          {
+            "type": "image_picker",
+            "id": "pc_banner",
+            "label":"PC会场标题图片"
+          },
+          {
+            "type": "image_picker",
+            "id": "mb_banner",
+            "label":"MB会场标题图片"
+          },
+        
+          {
+            "type": "checkbox",
+            "id": "more_enable",
+            "label": "开启more"
+          },
+          {
+            "type": "color",
+            "id": "more_bg",
+            "label":"more 背景颜色",
+            "default":"#BC2531"
+          },
+          {
+            "type": "color",
+            "id": "more_color",
+            "label":"more 字体颜色",
+            "default":"#fff"
+          },
+          {
+            "type": "text",
+            "id": "more_banner",
+            "label":"more"
+          },
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "选择集合"
+          },
+          {
+            "type": "range",
+            "id": "limit",
+            "label": "产品limit总数量",
+            "min": 1,
+            "max": 80,
+            "step": 1,
+            "default": 4
+          },
+          {
+            "type": "textarea",
+            "id": "label_sort",
+            "label": "会场标签排序"
+          }
+		]
+      },
+	  {
+        "type": "banner",
+        "name": "会场banner",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "哪个活动"
+          },
+          {
+            "type": "text",
+            "id": "handle",
+            "label": "活动url"
+          },
+          {
+            "type": "image_picker",
+            "id": "pc_image",
+            "label": "PC图片"
+          },
+          {
+            "type": "image_picker",
+            "id": "mb_image",
+            "label": "MB图片"
+          }
+        ]
+      },
+	{
+        "type": "image",
+        "name": "第一会场的标签和背景",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "哪个活动"
+          },
+          {
+            "type": "text",
+            "id": "handle",
+            "label": "活动url"
+          },
+        {
+        "type": "image_picker",
+        "id": "iconbg",
+        "label":"第一会场标题图"
+        },
+        {
+        "type": "image_picker",
+        "id": "onebg",
+        "label":"会场标题图片"
+        }
+        ]
+      }   
+    ]
+}
+{% endschema %}

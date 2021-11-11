@@ -1,0 +1,61 @@
+<style>
+  video {
+    width: 100%;
+    height: auto;
+  }
+  .pxs-video-content-width{ 
+    width:100%;
+  }
+
+</style>
+<div class="pxs-video-content-width">
+  {% for block in section.blocks %}
+    {% if handle == block.settings.handle %}
+      {% assign video_url = block.settings.video_url %}
+      {% assign video_image = block.settings.video_image | img_url:'master' %}
+      <video src="{{video_url}}" poster="{{video_image}}" controls="controls"></video>
+    {% endif %}
+  {% endfor %}
+</div> 
+
+{% schema %}
+  {
+    "name":"分类页视频",
+    "class": "collection-independent-video",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "collection-independent-video"
+      }
+    ], 
+    "blocks": [
+      {
+        "type": "video",
+        "name": "video",
+        "settings": [
+		  {
+            "type": "text",
+            "id": "title",
+            "label": "哪个页面"
+          },
+          {
+            "type": "text",
+            "id": "handle",
+            "label": "页面url"
+          },
+          {
+            "type": "image_picker",
+            "id": "video_image",
+            "label": "video image"
+          },
+          {
+            "type": "text",
+            "id": "video_url",
+            "label": "video link",
+            "default": "https://cdn.shopify.com/s/files/1/0048/8829/7558/files/MLN_1.mp4?12396"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

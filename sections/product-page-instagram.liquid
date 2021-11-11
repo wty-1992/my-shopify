@@ -1,0 +1,916 @@
+{% if section.settings.style == 'style_two' %}
+  <style>
+    .bb-tab-two.active .ins-title,.description-tabs__details .ins-title{
+    	display: block;
+    }
+    .elements-item-videopage-width .buyshow-t2 {
+      padding:1rem 0;
+    }
+    .ins-title{
+      font-size: 2.4rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      color: #000;
+      text-align: center;
+      margin:4rem 0;
+      width:100%;
+    }
+    .ins-list{
+      display: flex;
+      flex-wrap: wrap;
+      width:1200px;
+      margin:0 auto;
+    }
+    .ins-list .elements-item-ins {
+      width: 25%;
+      padding: 0 .5%;
+
+      cursor: pointer;
+      position:relative;
+    }
+    .ins-text { 
+      position: absolute;
+      top: 0px;
+      color: #fff;
+      font-size:16px;
+      padding: 20px;
+      line-height:20px;
+      display:none;
+      transition: all .8s ease 0s;
+      -webkit-transition: all .8s ease 0s;
+      -moz-transition: all .8s ease 0s;
+      -o-transition: all .8s ease 0s;
+      -ms-transition: all .8s ease 0s;
+    }
+    .elements-item-ins:hover .ins-text {
+      display:block;
+    }
+    .ins-img {
+      position: relative;
+    }
+    .elements-item-ins:hover .img-hide {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      background: #000;
+      opacity: .4;
+    }
+    .img-hide {
+      transition: all .8s ease 0s;
+      -webkit-transition: all .8s ease 0s;
+      -moz-transition: all .8s ease 0s;
+      -o-transition: all .8s ease 0s;
+      -ms-transition: all .8s ease 0s;
+    }
+    .ins-list .elements-item-ins .likes {
+      position: relative;
+      top: -1px;
+      left: 22px;
+    }
+
+  .heart-shape{  
+      position: relative;  
+      width: 7px;  
+      height: 7px;  
+      -webkit-transform: rotate(45deg);  
+      -moz-transform: rotate(45deg);  
+      -ms-transform: rotate(45deg);  
+      -o-transform: rotate(45deg);  
+      transform: rotate(45deg);  
+      background-color: #444;
+      top: 9px;
+      left: 5px;
+  }  
+  .heart-shape:before,  
+  .heart-shape:after{  
+      position: absolute;  
+      width: 7px;  
+      height: 7px;  
+      content: '';  
+      -webkit-border-radius: 50%;  
+      -moz-border-radius: 50%;  
+      -o-border-radius: 50%;  
+      border-radius: 50%;  
+      background-color: #444;  
+  }  
+  .heart-shape:before{  
+      bottombottom: 0px;  
+      left: -4px;  
+  }  
+  .heart-shape:after{  
+      top: -4px;  
+      rightright: 0px;  
+  }
+  @media( max-width:750px ){
+.heart-shape {
+top:16px;
+}
+.ins-list{width:100%;}
+.ins-title{
+font-size:22px;
+margin-bottom: 25px;    
+margin-top: 20px;
+}
+.ins-list .elements-item-ins {
+width:49%;
+}
+.ins-img .small--hide {
+display:block !important;
+}
+.ins-text {
+padding:6px;
+}
+.ins-text p {
+line-height:16px !important;
+
+}
+/*.elements-item-ins:hover .img-hide {
+background: unset;
+opacity: unset;
+}
+.elements-item-ins:active .img-hide {
+background: #000;
+}*/
+
+.elements-item-ins .img-hide {
+position: absolute;
+width: 100%;
+height: 100%;
+top: 0;
+background: #000;
+opacity: 0;
+}
+
+}
+
+  </style>
+
+  <div class="ins-list"> 
+    {% if section.blocks.size > 0 %}
+    <div class="ins-title">{{ section.settings.InsTitlte }}</div>
+    {% endif %}
+  {%- for block in section.blocks -%}
+    
+      {%- include 'func-verify_rules', contain: block.settings.contain, detail: product -%}
+      {% unless verify__rules_result == false %}
+
+            <div class="elements-item-ins elements-item-{{block.type}}{%- unless block.settings.screen == true -%} page-width{% endunless %}">
+              <div class="ins-img">
+                <img class="lazyload small--hide" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ block.settings.image_ins | img_url:'master' }}" alt="{{ block.settings.image_ins.alt | escape }}">
+                <div class="img-hide"></div>
+              </div>  
+              <div class="ins-text">{{ block.settings.text }}</div>
+              <div class="heart-shape"></div>
+              <p class="likes">{{ block.settings.likes }} Likes</p>
+            </div>
+      {% endunless %}
+  {%- endfor -%}
+  </div> 
+
+  <script>
+    $(function (){
+      var i = 0;
+      var imgObj = $('#instagram_tab .img-hide');
+      var insObj = $('#instagram_tab .ins-text');
+      var interval = setInterval(function(){
+        if(i == insObj.length){
+          i = 0;
+        }
+        //imgObj.removeClass('rrr').eq(i).addClass('rrr');
+        imgObj.css("opacity","0").eq(i).css("opacity","0.4");
+        insObj.hide().eq(i).show();
+        i++;
+      },3000);
+
+      $("#instagram_tab .elements-item-ins").on('touchstart', function(){
+          clearInterval(interval);
+          //imgObj.removeClass('rrr');
+          imgObj.css("opacity","0");
+          insObj.hide();
+          //$(this).find('.img-hide').addClass('rrr');
+          $(this).find('.img-hide').css("opacity","0.4");
+          $(this).find('.ins-text').show();
+      })
+
+      $("#instagram_tab .elements-item-ins").on('touchend', function(){
+          var time = 1;
+          var touchtime = setInterval(function(){
+            if(time == 5){
+              clearInterval(touchtime);
+              start();
+            }else{
+              time++;
+            }
+          },1000)                                          
+      })
+
+      function start(){
+          i = 0;
+          interval = setInterval(function(){
+          if(i == insObj.length){
+            i = 0;
+          }
+          //imgObj.removeClass('rrr').eq(i).addClass('rrr');
+          imgObj.css("opacity","0").eq(i).css("opacity","0.4");
+          insObj.hide().eq(i).show();
+          i++;
+        },3000);
+      }
+    })
+  </script>
+{% else %}
+  {% assign current_variant = product.selected_or_first_available_variant %}
+  <style>
+  .product-page-instagram-section{
+      display: none;
+      clear:both;
+  }
+  .instagram a:hover{ color: initial}
+  .instagram {
+      width: 100%;
+  }
+  .instagram .title {
+      width: 100%;
+      font-size: 20px;
+      text-align: center;
+      padding: 10px;
+      font-weight: 400;
+      letter-spacing: 1.2px;
+      height: 100px;
+      line-height: 100px;
+  }
+  .instagram .title img{    vertical-align: middle;}
+  .instagram .intagramlist {
+      width: 100%;
+      padding: 0px;
+      margin: 0px;
+      position: relative;
+      overflow: hidden;
+  }
+  .instagram .intagramlist li {
+      position: relative;
+      color: #fff;
+      width: 25%;
+      padding: 10px;
+      list-style: none;
+      float: left;
+      text-align: left;
+  }
+  .instagram .intagramlist .headimg {
+      font-size: 12px;
+      line-height: 35px;
+      height: 35px;
+      color: #000000;
+      font-weight: bold;
+  }
+  .instagram .intagramlist .headimg img {
+      width: 25px;
+      height: 25px;
+      float: left;
+      -moz-border-radius: 25px;
+      -webkit-border-radius: 25px;
+      border-radius: 25px;
+      margin: 5px 10px 5px 0px;
+      border: 1px solid #e6e6e6;
+      background-color: #edeeee;
+  }
+  .instagram .intagramlist .headimg {
+      font-size: 12px;
+      line-height: 35px;
+      height: 35px;
+      color: #000000;
+      font-weight: bold;
+  }
+  .instagram .intagramlist .shareimg {
+      width: 100%;
+      height: 168px!important;
+      background-color: #eeeeee;
+      position:relative;
+  }
+  .instagram .intagramlist li:hover .bg,.instagram .intagramlist li:hover .count {
+      display: block;
+  }
+  .instagram .intagramlist .bg {
+      display: none;
+      width: 100%;
+      height: 100%;
+      background-color: #000000;
+      text-align: center;
+      filter: alpha(opacity=50);
+      -moz-opacity: 0.5;
+      -khtml-opacity: 0.5;
+      opacity: 0.5;
+      position:absolute;
+  }
+  .instagram .intagramlist .count {
+      display: none;
+      width: 100%;
+      height: 100px;
+      position: absolute;
+      z-index: 10;
+      top: 42%;
+      padding-left: 15%;
+      margin: 0px;
+  }
+  .instagram .intagramlist .count li {
+      display: inline-block;
+      float: left;
+      width: 100px;
+      text-align: center;
+      padding: 0px;
+      font-size: 15px; 
+      font-weight: 400;
+      cursor: pointer;
+  }
+  .instagram .intagramlist .count i {
+      margin-right: 5px;
+  }
+
+  .instagram .intagramlist .like {
+      color: #000000;
+      font-size: 14px;
+      font-weight: bold;
+      margin-left: 5px;
+      margin-top: 8px;
+       line-height: 1.75em
+  }
+  .instagram .intagramlist .like a{display: -webkit-flex;display: flex}
+  .instagram .intagramlist .like span{ 
+      line-height: 26px;
+      display: block;
+
+  }
+  .instagram .intagramlist .like i{
+          margin-right: 5px;
+          font-size: 14px;
+  }
+  .instagram .intagramlist .comment {
+      color: #b7b7b7;
+      font-size: 14px;
+      width: 100%;
+      overflow: hidden;
+      height: 30px;
+      margin-left: 5px; 
+      line-height: 1.75em
+  }
+  .instagram .intagramlist .comment a{color: #b7b7b7;}
+
+  #myModalInsagram.modal .modal-dialog1{
+      max-width: 960px;
+      width: 100%;
+      height: 600px;
+      margin: 0px auto;
+      margin-top: 2%;
+      padding: 0px;
+      text-align: left;
+      background: #fff
+  }
+  .instagram .intagram_morebtn {
+      font-size: 14px;
+      font-weight:600;
+      letter-spacing: 1px;
+      color: #5f5f5f;
+      height: 50px;
+      line-height: 50px;
+      text-align: center;
+      width: 100%;
+      text-transform: uppercase;
+      cursor: pointer;
+      margin: 20px 0;
+      clear:both;
+  }
+  .instagram .intagram_morebtn .viewmore{
+      border: 1px solid #000;
+      border-radius: 5px;
+      padding: 10px 35px;
+  }
+  .instagram .intagram_morebtn .glyphicon{
+      font-size: 12px;
+      padding-right:5px;
+  }
+
+  #myModalInsagram .modal-dialog{
+      width: 100%;
+  }
+  @media(min-width: 576px){
+      #myModalInsagram .modal-dialog{
+          width: 100%;
+          max-width: unset;
+      }
+  }
+  #myModalInsagram .modal-dialog1 {
+      display: block;
+  }
+  #myModalInsagram .modal-dialog2 {
+      display: none;
+  } 
+  #myModalInsagram .modal-dialog1 .i-msg {
+      width: 36%;
+      height: 600px;
+      overflow: hidden;
+      float: left;
+      margin-left: 17px;
+  }
+
+  .modal-content {
+      border: 0px;
+      border-radius: 0px;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+  }
+  #myModalInsagram .modal-dialog1 .close-modal {
+      position: absolute;
+      right: -60px;
+      top: 0px;
+      font-size: 22px; 
+      z-index: 999;
+      color: #fff;
+      filter: alpha(opacity=70);
+      opacity: 0.7;    background: transparent;
+      border: none;
+  }#myModalInsagram .modal-dialog1 .close-modal i{font-size: 22px;}
+  #myModalInsagram .modal-dialog1 .pre {
+      color: #fff;
+      position: absolute;
+      top: 250px;
+      left: -50px;
+      filter: alpha(opacity=70);
+      opacity: 0.7;
+  }
+  #myModalInsagram .modal-dialog1 .next {
+      color: #fff;
+      position: absolute;
+      top: 250px;
+      right: -70px;
+      filter: alpha(opacity=70);
+      opacity: 0.7;
+      -webkit-transform: rotate(180deg);
+      -moz-transform: rotate(180deg);
+      -ms-transform: rotate(180deg);
+      transform: rotate(180deg);
+  }
+  #myModalInsagram .modal-dialog1 .photo-back{font-size: 30px}
+  #myModalInsagram .modal-dialog1 .modal-body {
+      padding: 0px;
+      text-align: left;
+  }
+  #myModalInsagram .modal-body {
+      width: 100%;
+      margin: 0px auto;
+  }
+  #myModalInsagram .modal-dialog1 .i-img {
+      width: 62%;
+      height: 600px;
+      overflow: hidden;
+      float: left;
+      background-color: #eeeeee;
+  }
+  #myModalInsagram .modal-dialog1 .header {
+      width: 100%;
+      height: 76px;
+      padding: 20px 0px;
+      margin: 0px auto;
+      text-align: left;
+      border-bottom: 1px solid #efefef;
+      display: -webkit-flex;
+      -webkit-align-items: center;
+       display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: #000;
+  }
+  #myModalInsagram .modal-dialog1 .header img {
+      height: 35px;
+      width: 35px;
+      border-radius: 35px;
+      margin-right: 5px;
+      border: 1px solid #e6e6e6;
+      background-color: #eeeeee;
+  }
+  #myModalInsagram .modal-dialog1 .like {
+      text-align: left;
+      color: #000000;
+      height: 56px;
+      line-height: 56px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      font-size: 14px
+  }
+  #myModalInsagram .modal-dialog1 .time {
+      float: right;
+      text-align: right;
+      color: #999999;
+  }
+  #myModalInsagram .modal-dialog1 .content {
+      width: 100%;
+      height: 450px;
+      float: left;
+      overflow-x: hidden;
+      overflow-y: auto;
+      word-break: break-all;
+          color: #505050;
+  }
+  #myModalInsagram .modal-dialog1 .user {
+     line-height: 170%;
+      font-family: 'Open Sans',Arial,Helvetica,sans-serif;
+      font-size: 13px;
+  }
+  #myModalInsagram .modal-dialog1 .comment {
+      line-height: 170%;
+  }
+  #myModalInsagram .modal-dialog1 .comment a {
+      width: 100%;
+      height: 40px;
+      line-height: 40px;
+      color: #999999;
+  }
+  #myModalInsagram .modal-dialog1 .user strong {
+      margin-right: 4px;
+  }
+
+  #myModalInsagram .modal-dialog2 .close-modal {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      font-size: 22px;
+      font-weight: bold;
+      z-index: 999;
+      color: #000000;
+      filter: alpha(opacity=70);
+      opacity: 0.7;    background: transparent;
+      border: none;
+  }
+  #myModalInsagram .modal-dialog2 .close-modal i{font-size: 20px;}
+  #myModalInsagram .modal-dialog2 .next2 {
+        color: #000000;
+      filter: alpha(opacity=70);
+      opacity: 0.7;
+      font-size: 14px;
+      letter-spacing: 1px;
+      padding: 20px 20px 40px 20px;
+      font-weight: 600;
+      text-align: right;
+      width: 100%;
+      display: block;
+  }
+  #myModalInsagram .modal-dialog2 .next2 i{font-size: 12px;   -webkit-transform: scale(.85);transform: scale(.85);
+      display: inline-block; }
+  #myModalInsagram .modal-dialog2 .header {
+      width: 100%;
+      height: 50px;
+      line-height: 50px;
+      margin: 0px auto;
+      text-align: left;
+      float: left;
+      background-color: #fafafa;
+      top:0px;
+      left: 0;
+      right: 0;
+      position: fixed;  
+      z-index: 100; 
+  }
+
+  #myModalInsagram .modal-dialog2 .header img {
+      height: 35px;
+      width: 35px;
+      border-radius: 35px;
+      margin-right: 8px;
+      margin-left: 5px;
+      margin-top: 8px;
+      border: 1px solid #e6e6e6;
+      background-color: #eeeeee;
+  }
+  #myModalInsagram .modal-dialog2 .i-img {
+      float: left;
+      width: 100%;
+      height: 400px;
+      overflow: hidden;
+      background-color: #eeeeee;
+  }
+  #myModalInsagram .modal-dialog2 .like {
+      color: #000000;
+      font-size: 14px;
+      font-weight: bold;
+      margin-left: 5px;
+      margin-top: 5px;
+      width: 100%;
+      float: left;
+      text-align: left;
+      letter-spacing: 1px;
+  }
+  #myModalInsagram .modal-dialog2 .like i {
+      margin-right: 5px;
+  }
+  #myModalInsagram .modal-dialog2 .content {
+      width: 100%;
+      height: auto;
+      float: left;
+      text-align: left;
+      word-break: break-all;
+  }
+  #myModalInsagram .modal-dialog2 .user {
+      padding: 0px 10px;
+      text-align: left;
+      line-height: 160%;
+  }
+  #myModalInsagram .modal-dialog2 .user strong {
+      margin-right: 4px;
+  }
+  #myModalInsagram .modal-dialog2 .comment {
+      padding: 0px 10px;
+      line-height: 160%;
+      text-align: left;
+  }
+  #myModalInsagram .modal-dialog2 .comment a {
+      text-align: left;
+      width: 100%;
+      height: 40px;
+      line-height: 40px;
+      color: #999999;
+  }
+  @media(max-width: 1366px){
+  #myModalInsagram.modal .modal-dialog1{
+      height: 500px;
+      margin-top: 0;
+      position: relative;
+/*       top: 50%;
+      transform: translateY(-50%);     */
+  }
+  #myModalInsagram .modal-dialog1 .modal-body{
+      max-height: 500px;
+      overflow-y: hidden;
+  }
+  }
+  @media(max-width: 1024px){
+      #myModalInsagram .modal-dialog1 {
+      display: none;
+  }
+  #myModalInsagram .modal-dialog2 .fixed{position: fixed;}
+  #myModalInsagram .modal-dialog2 {
+      display: block;
+  }
+  #myModalInsagram .modal-dialog2 .center-content{       height: 100vh;
+      padding-top: 50px;
+      overflow-y: scroll;
+      padding-bottom: 100px;
+      overflow-x: hidden;}
+  #myModalInsagram.modal { 
+      width: 100%;
+      height: 100%;
+      margin: 0px auto;
+      margin-top: 0px;
+      padding: 0px;
+  }
+  .instagram .title img {
+      width: 120px;
+  }
+  .instagram .title {
+      font-size: 14px;
+      height: 100px;
+      line-height: 28px;
+      padding-top: 20px;
+  }
+  .instagram .intagramlist li{width: 50%; line-height: 1.75em}
+  .instagram .intagramlist .like {
+  font-size: 12px;
+  margin-left: 0px;
+  }
+  .instagram .intagramlist .like i{
+      font-size: 12px;
+  }
+  .instagram .intagramlist .like span {
+      line-height: 23px; 
+  }
+  .instagram .intagramlist .comment {
+      font-size: 12px;
+      margin-left: 0px;
+  }
+
+  }
+  @media(max-width: 320px){
+      .instagram .intagramlist .headimg img{
+             margin: 5px 5px 5px 0px;
+      }
+  }
+  </style>
+  <div class="container">
+      <div class="instagram">
+          <div class="title">{{ 'product.instagram.check_out_the_styles' | t }}         
+          <img src="https://ik.imagekit.io/soufeel/en/skin/frontend/smartwave/default/custom/static/product/view/instagram.gif" width="140"> 
+          </div>
+      </div>
+      <div class="instagram">
+          <ul class="intagramlist"></ul>
+      </div>
+  </div>
+  <div class="modal fade" id="myModalInsagram" tabindex="-1" role="dialog" aria-labelledby="myModalInsagram" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-dialog1" >
+              <div class="modal-content">
+                  <button type="button" class="close-modal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="photofont icon photo-close"></i> </span></button>
+                  <a href="javascript:void(0) " onclick="I_ChangePage(-1)" class="pre fa fa-angle-left fa-3x"><i class="icon photofont photo-back"></i></a>
+                  <a href="javascript:void(0)" onclick="I_ChangePage(1)" class="next fa fa-angle-right fa-3x"><i class="icon photofont photo-back"></i></a>
+                  <div class="modal-body"></div>
+              </div>
+          </div>
+          <div class="modal-dialog2" style="padding:0px;margin:0px;width:100%;">
+              <a name="topTag"></a>
+              <div class="modal-content">
+                  <button type="button" class="close-modal fixed" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="photofont icon photo-close"></i>  </span></button>
+                  <div class="modal-body" style="padding:0px;"></div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <script>
+      var intagram_data = [];
+      var totalpage = 8;
+      var current = 1;
+    
+//       if(totalpage > current){
+//           current++;
+//           var moreh = '<div class="intagram_morebtn" onclick="LoadIntagramPage('+ current +')"><span class="viewmore">view more <span class="glyphicon glyphicon-menu-down"></span></span></div>'
+//           jQuery('.intagramlist').append(moreh);
+//       }
+      jQuery('.shareimg').height(jQuery('.shareimg').width());
+
+      jQuery(function(){
+          LoadIntagramPage(1);
+          jQuery(window).resize(function(){
+              jQuery('.shareimg').height(jQuery('.shareimg').width());
+          });
+      })
+
+      function LoadIntagramPage(current_page){
+        
+          if (current_page > 1){
+              Mask.show();
+          }
+          jQuery('.intagram_morebtn').remove();
+          jQuery.ajax({
+              type : 'POST',
+              url : 'https://www.soufeel.com/mart/Instagram_ajax/list',
+              data : {productSku:'{{current_variant.sku}}', pageIndex: current_page, pageSize: 16},
+              dataType: "json",
+              success: function(data){                      
+                  if(data.success){
+                      jQuery.each(data.list, function(index, item){
+                          intagram_data.push(item);
+                          var num = (current_page - 1) * 16 + index;
+                          var h = '<li>';
+                              h += '<div class="shareimg" style="padding-bottom:100%;height:0;background-image:url(' + item.ImgUrl + ');background-repeat:no-repeat;background-size: cover;" onclick="ChangeModal(' + num+')" data-toggle="modal" data-target="#myModalInsagram"><div class="bg"></div><ul class="count"><li><i class="icon photofont photo-likefill" aria-hidden="true"></i><span>'+format_number(item.Likes)+'</span></li><li><i class="icon photofont photo-chat" aria-hidden="true"></i>'+format_number(item.Comments)+'</li></ul></div>';
+                              h += '<div class="like"><a href="javascript:void(0)" onclick="ChangeModal(' + num+')" data-toggle="modal" data-target="#myModalInsagram" title='+item.Url+'><i class="icon photofont photo-likefill" aria-hidden="true"></i><span>'+format_number(item.Likes)+' Likes</span></a></div>';
+                              h += '</li>';
+                              jQuery('.intagramlist').append(h);
+                      });
+                      if(totalpage > current_page){
+                          current_page++;
+                          var h = '<div class="intagram_morebtn" onclick="LoadIntagramPage(' + current_page+')"><span  class="viewmore">view more <span class="glyphicon glyphicon-menu-down"></span></span></div>'
+            			  if(data.list.length == 16){
+          					jQuery('.intagramlist').after(h);
+						  }
+                      }
+                      //jQuery('.shareimg').height(jQuery('.shareimg').width());
+                      Mask.hide();
+                      $("#shopify-section-{{section.id}}").show();
+                  }
+              }
+          });
+      }
+
+      function format_number(n){
+          var b=parseInt(n).toString();
+          var len=b.length;
+          if(len<=3){return b;}
+          var r=len%3;
+          return r>0?b.slice(0,r)+","+b.slice(r,len).match(/\d{3}/g).join(","):b.slice(r,len).match(/\d{3}/g).join(",");
+      }
+
+      function I_ChangePage(n){
+          if(n>0&&i_currentPage!=(intagram_data.length-1)){
+              i_currentPage=i_currentPage+1;
+              ChangeModal(i_currentPage);
+          }else if(n<0&&i_currentPage!=0){
+              i_currentPage=i_currentPage-1;
+              ChangeModal(i_currentPage);
+          }
+      }
+      function I_ChangePage2(){
+          if(i_currentPage!=(intagram_data.length-1)){
+              i_currentPage=i_currentPage+1;
+          }else{
+              i_currentPage=0;
+          }
+          ChangeModal(i_currentPage);
+      }
+
+      var i_currentPage;
+      function ChangeModal(n){
+          i_currentPage=n;
+          var json=intagram_data[n];
+          var h='<div class="i-img" style="background-image:url('+json.ImgUrl+');background-repeat:no-repeat;background-size: cover;background-position:top center"></div>';
+          h+='<div class="i-msg">';
+          h+='<div class="like">'+format_number(json.Likes)+' Likes </div>';
+          h+='<div class="content">';
+          h+='<div class="comment"><a href="'+json.Url+'" target="_blank">'+"view all %s comments".replace('%s',format_number(json.Comments))+'</a> </div>';
+          jQuery.each( json.CommentList,function(index,item){
+              h+='<div class="user"><strong>'+item.Username+'</strong>'+item.Text+'</div>';
+          });
+          h+='</div></div></div>';
+          jQuery('#myModalInsagram .modal-body').html(h);
+
+          if(i_currentPage==(intagram_data.length-1)){
+              jQuery('.next').addClass('gray');
+          }else if(i_currentPage==0){
+              jQuery('.pre').addClass('gray');
+          }else{
+              jQuery('.pre').removeClass('gray');
+              jQuery('.next').removeClass('gray');
+          }
+
+          var h2=' <div class="header"><img src="'+json.UserPicUrl+'" /> '+json.UserName+'</div>';
+          h2+='<div class="center-content"><div class="i-img" style="background-image:url('+json.ImgUrl+');background-repeat:no-repeat;background-size: cover;background-position:top center"></div>';
+          h2+='<div class="like"><i class="icon photofont photo-likefill" aria-hidden="true"></i> '+format_number(json.Likes)+' Likes </div>';
+          h2+='<div class="comment"><a href="'+json.Url+'" target="_blank">'+"view all %s comments".replace('%s',format_number(json.Comments))+'</a></div>';
+          jQuery.each( json.CommentList,function(index,item){
+              h2+='<div class="user"><strong>'+item.Username+'</strong>'+item.Text+'</div>';
+          });
+          h2+='<a href="#topTag" onclick="I_ChangePage2()" class="next2"><i class="icon photofont photo-jinru"></i>Next</a></div>';
+
+          jQuery('#myModalInsagram .modal-dialog2 .modal-body').html(h2);
+          jQuery('#myModalInsagram .modal-dialog2 .i-img').height(jQuery('#myModalInsagram').width());
+
+      }
+  </script>
+{% endif %}
+
+{% schema %}
+  {
+    "class": "product-page-instagram-section",
+	"name": "产品页 - Instagram 买家秀",
+	"settings": [
+      {
+        "type": "paragraph",
+        "content":"product-page-instagram"
+      },
+	  {
+        "type": "checkbox",
+        "id": "enable",
+        "label": "开启",
+        "default": true
+      },
+	  {
+        "type": "select",
+        "id": "style",
+        "label": "买家秀模板",
+        "options": [
+          {
+            "value": "style_one",
+            "label": "模板一"
+          },
+          {
+            "value": "style_two",
+            "label": "模板二"
+          }
+        ],
+        "default": "style_one"
+      },
+      {
+        "type": "text",
+        "id": "InsTitlte",
+		"label": "InsTitlte",
+        "default": "Ins Titlte"
+      }
+  	],
+  	"blocks": [
+      {
+        "type": "images",
+        "name": "images",
+        "settings": [
+		  {
+            "type": "text",
+            "id": "likes",
+            "label": "likes"
+          },
+		  {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_ins",
+            "label": "ins图片"
+          },
+          {
+            "type": "textarea",
+            "id": "contain",
+            "label": "显示规则",
+            "info": "{\"handle\": \"a,b,c...\", \"sku\": \"C021,C022...\"}"
+		  }
+        ]
+      }
+	]
+  }
+{% endschema %}

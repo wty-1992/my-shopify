@@ -1,0 +1,198 @@
+<style>
+   .edit-tpl-footer .el-button--primary:hover {
+    background: #e60044;
+    border-color: #e60044;
+}
+  .edit-tpl-footer .el-button--primary {
+    background-color: #e60044;
+    border-color: #e60044;
+}
+ .edit-tpl-footer .el-button--primary:active{
+  	background: #e60044;
+    border-color: #e60044;
+  }
+ .el-progress-bar__outer .el-progress-bar__inner{
+  background-color: #e60044;
+  }
+  #familyList,#colorList{
+  	display: flex;
+    flex-wrap: wrap;
+  }
+  .titleList {
+  	font-size: 1rem;
+    color: #000;
+  }
+  #familyList > div,#colorList > div {
+  	margin-right: 5px;
+    padding: 7px 0;
+    border: 1px solid #999;
+    margin-bottom: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    width: 24%;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 4px;
+  }
+  #familyList > div span,#colorList > div span {
+   	display: none; 
+  }
+  #colorList > div {
+  	height: 32px;
+  }
+  #colorList div.on {
+  	border: 1px solid red;
+  }
+    .shopify-payment-button {
+/*       display: none; */
+    }
+    .area-crop-upload {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: horizontal;
+      -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+      flex-direction: row;
+      -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+      justify-content: space-between;
+      background: #f8f8f8;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      height: 46px;
+      margin-bottom: 10px;
+      border: 1px solid #e7e7e7;
+      border-radius: 0 !important;
+    }
+  	.fonttext {
+      background: #f8f8f8;
+      border: 1px solid #e7e7e7;
+      border-radius: 0 !important;
+      width: 100%;
+  	  min-height: 46px;
+  	}
+  .mandatory {
+  	margin: 0 auto 20px;
+  }
+    .mandatory p {
+      margin: 10px auto 0;
+    }
+    .btn-upload-open {
+		cursor: pointer;
+      background: #e60044;
+      color: #fff;
+      border-radius: 25px;
+      padding: 2px 15px;
+      width: 100px;
+      text-align: center;
+      text-transform: capitalize;
+      font-weight: bold;
+      border: none;
+      font-size: 16px;
+      line-height: 1.625;
+    }
+  .photo-select-carving {
+  	width: 100%;
+  }
+  .photo-select-carving .mandatory p {
+  	color: red;
+  }
+  .custom-index {
+  	position: relative;
+  }
+  .custom-text .custom-index:last-child {
+  	margin: 0 auto 15px;
+  }
+  .custom-index span {
+  	position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translate(0%,-50%);
+  }
+  .custom-index span b {
+  	font-weight: normal;
+    color: red;
+    vertical-align: middle;
+  }
+  .custom-index span i {
+  	font-style: normal;
+    margin: 0 3px;
+  }
+  .product-quantity {
+  	display: block !important;
+  }
+  @media(max-width:768px){
+    #familyList,#colorList{
+    padding-left:6px;
+    }
+    #familyList > div,#colorList > div{
+    font-weight: 500;
+    width: 32%;
+    padding: 6px 2px 1px 8px;
+    margin-right: 4px;
+  	height:32px;
+    margin-bottom: 4px;
+    }
+  }
+  {% if productTags contains "custom-title" %}
+  .input-cusom-text {
+  	padding: 0 0 0 10px;
+    font-size: .8em;
+  }
+  .input-cusom-text::-webkit-input-placeholder{
+    color: #000;
+  }
+  .input-cusom-text::-moz-placeholder{  
+    color: #000;
+  }
+  .input-cusom-text:-moz-placeholder{  
+    color: #000;
+  }
+  .input-cusom-text:-ms-input-placeholder{
+    color: #000;
+  }
+  {% endif %}
+  @font-face {font-family: 'Minion Variable Concept'; src: url('{{'Minion_Variable_Concept.woff' | asset_url}}') format('woff'); font-weight: normal; font-style: normal; }
+  @font-face {font-family: 'Swiss 721 Heavy BT'; src: url('{{'Swiss_721_Heavy_BT.woff' | asset_url}}') format('woff'); font-weight: normal; font-style: normal; }
+  @font-face {font-family: 'Copperplate Gothic'; src: url('{{'Copperplate_Gothic.woff' | asset_url}}') format('woff'); font-weight: normal; font-style: normal; }
+  @font-face {font-family: 'MONOTON-REGULAR'; src: url('{{'MONOTON-REGULAR.woff' | asset_url}}') format('woff'); font-weight: normal; font-style: normal; }
+  @font-face {font-family: 'Academic M54'; src: url('{{'Academic M54.woff' | asset_url}}') format('woff'); font-weight: normal; font-style: normal; }
+  @font-face {font-family: 'SapirSans'; src: url('{{'SapirSans.woff' | asset_url}}') format('woff'); font-weight: normal; font-style: normal; }
+  @font-face {font-family: 'COPGOTHB'; src: url('{{'COPGOTHB.woff' | asset_url}}') format('woff'); font-weight: normal; font-style: normal; }
+  @font-face {font-family: 'Beau Normal'; src: url('{{'Beau_Normal.woff' | asset_url}}') format('woff'); font-weight: normal; font-style: normal; }
+  @font-face {font-family: 'CAI978'; src: url('{{'CAI978.woff' | asset_url}}') format('woff'); font-weight: normal; font-style: normal; }
+  @font-face {font-family: 'Berling-Italic'; src: url('{{'Berling-Italic.woff' | asset_url}}') format('woff'); font-weight: normal; font-style: normal; }
+  
+  #familyList > div.one {
+    font-family: "Minion Variable Concept";
+  }
+  #familyList > div.two {
+    font-family: "Swiss 721 Heavy BT";
+  }
+  #familyList > div.three {
+    font-family: "Copperplate Gothic";
+  }
+  #familyList > div.four {
+    font-family: "MONOTON-REGULAR";
+  }
+  #familyList > div.five {
+    font-family: "Academic M54";
+  }
+  #familyList > div.six {
+    font-family: "SapirSans";
+  }
+  #familyList > div.seven {
+    font-family: "COPGOTHB";
+  }
+  #familyList > div.eight {
+    font-family: "Beau Normal";
+  }
+  #familyList > div.nine {
+    font-family: "CAI978";
+  }
+  #familyList > div.ten {
+    font-family: "Berling-Italic";
+  }
+</style>

@@ -1,0 +1,90 @@
+{% if section.blocks.size > 0 %}
+<style type="text/css">
+.brand-interest-point{
+  border-top:1px solid #eaecef;
+  border-bottom:1px solid #eaecef;
+  padding:20px 0px;
+}
+.brand-interest-point .point-row {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.brand-interest-point .point-row .point-item {
+  display: flex;
+  justify-content: space-between;
+  justify-items: center;
+  align-items: center;
+}
+.brand-interest-point .point-row .point-item .icon {
+  font-size: 35px;
+  color: #e60044;
+  padding:0px 10px;
+}  
+.brand-interest-point .point-row .point-item .point-content {
+  line-height: 16px;
+}
+.brand-interest-point .point-row .point-item .point-content p{
+  margin-bottom: 0;
+  font-size: 12px;
+}
+.brand-interest-point .point-row .point-item .point-content span {
+  font-weight: bold;
+  color: #000;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+.brand-interest-point .point-row .point-item .point-content strong {
+  font-weight: normal;
+  font-size: 12px;
+}
+</style>
+{% endif %}
+<div class="brand-interest-point container small--hide">
+  <div class="point-row">
+    {%- for block in section.blocks -%}
+      <div class="point-item">
+        <i class="icon photofont {{ block.settings.icon | strip }}"></i>
+        <div class="point-content">
+          <span>{{ block.settings.title | strip }}</span><br>
+          {{ block.settings.infos | strip }}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+{% schema %}
+{
+  "name": "产品页 - 利益点",
+  "class": "brand-interest-point-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content":"product-page-brand_interest_point"
+    }
+  ],
+  "blocks": [
+      {
+        "type": "default",
+        "name": "项目",
+        "settings": [
+            {
+                "id": "title",
+                "type": "text",
+                "label": "标题"
+            },
+            {
+                "id": "infos",
+                "type": "richtext",
+                "label": "描述文字"
+            },
+            {
+                "id": "icon",
+                "type": "text",
+                "label": "图标名称"
+            }
+        ]
+      }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,57 @@
+<!-- /snippets/product-card.liquid -->
+
+{% comment %}
+  The product card snippet is passed a liquid object, used in this file
+  as "product". The object is either "product" or "item", the latter if
+  it is from search results.
+{% endcomment %}
+
+{% assign productTags = product.tags | join:',' %}
+{% assign firstVariant = product.first_available_variant %}
+{% assign pos1 = position | default: 0 %}
+{% assign pos2 = pos1 | plus: 1 %}
+{% assign image1 = product.images[pos1]%}
+{% assign image2 = product.images[pos2] | default: image1 %}
+<div class="product-card__image-container">
+  <a href="{{ product.url | within: collection }}" class="product-card">
+    <div class="product-card__image-wrapper">           
+      
+        <div class="tag__label tag__custom-tag-discount">
+          <!-- variant first compare price off -->
+          <div class="discount_box">
+            <div class="text discount_box_pc">{{ firstVariant.compare_at_price | minus: firstVariant.price | times: 100.0 | divided_by: firstVariant.compare_at_price | money_without_currency | times: 100 | replace: '.0', ''}}% {{'product.braceletsizeguide.off' | t}}</div>
+            <div class="text discount_box_mb">-{{ firstVariant.compare_at_price | minus: firstVariant.price | times: 100.0 | divided_by: firstVariant.compare_at_price | money_without_currency | times: 100 | replace: '.0', ''}}%</div>
+          </div>
+        </div>
+      {% if productTags contains "custom-tag-discount" %}
+      {% endif %}
+      <div class="product-card__image">
+        <img class="lazyload defaultImage"
+          src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+          data-src="{{ image1 | img_url: 'master' }}"
+          alt="{{ image1.alt | escape }}">
+          <img class="lazyload hoverImage" data-src="{{ image2 | img_url: 'master' }}"/>
+      </div>
+    </div>
+  </a>
+</div>
+<div class="product-card__info">
+  <div class="product-card__price">
+    <span class="product-card__sale-price" data-money="{{ firstVariant.price }}"></span> 
+    <span class="product-card__regular-price" data-money="{{ firstVariant.compare_at_price }}"></span>
+  </div>
+  <div class="product-card__name">{{ product.title }}</div>
+  <div class="ratings-fa-star">
+    <div class="yotpo bottomLine" data-product-id="{{ product.selected_or_first_available_variant.sku }}"></div>    
+  </div>
+  <div class="hide_sku_tag" style="display:none;">{{product.variants[0].sku}}</div>
+  <div class="collection-label">
+
+  </div>
+    {%- if product.metafields["global"]["cattribute"] or product.variants.size > 1 or productTags contains "custom" or productTags contains "Custom" -%}
+      {% assign cartText = 'zen.crystal.design_your_own'| t %}
+    {% else %}  
+      {% assign cartText = 'zen.crystal.add_to_cart' | t %}
+    {% endif %}
+    <button type="button" class="medium-up--btn btn" onclick='{% if product.metafields.global.cattribute or product.variants.size > 1 or productTags contains "custom" or productTags contains "Custom" %}location.href="{{ product.url | within: collection }}"{% else %}Cart.add({id:"{{firstVariant.id}}"}).then(item => { window.location.reload()}){% endif %}'>{{cartText}}</button>
+</div>

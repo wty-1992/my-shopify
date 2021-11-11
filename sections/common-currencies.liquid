@@ -1,0 +1,294 @@
+{% if section.settings.enable %} 
+
+<style>
+.currencies-section{
+  display:none;
+  height:100%;
+  width:100%;
+}
+.currencies-section .top-languages{
+    margin:auto;
+    background: #fafafa;
+     display: inline-block;
+    padding: 2em 2em;
+    color:#777; 
+    height: 100%;
+    position:relative;
+    width:100%
+}
+.currencies-section .top-languages .close-new{
+    position: absolute;
+    right: 1em;
+    top: 1em;
+    border: none;
+    background: transparent;
+} 
+.currencies-section .top-languages h4{
+    color: #777; 
+}
+.currencies-section .top-languages .select-languages-body{ 
+/*     background: #fff; */
+    float: left;
+    width: 100%;   
+    padding: 3rem 0;
+}
+.currencies-section .top-languages .select-languages{
+    display:flex;   
+    justify-content: space-between;
+    margin: 0 2em;
+    border-bottom: 1px solid #ddd;
+    padding:0;
+}
+.currencies-section .top-languages .select-languages .left-country{ 
+    padding-top: 1em;
+    width:18%;
+}
+.currencies-section .top-languages .select-languages ul{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap:wrap;
+    align-items: center;
+}
+.currencies-section .top-languages .select-languages ul li{
+    width: 33.33%;
+    padding: 1em 0em;
+    cursor: pointer;
+    display: flex; 
+    align-items: center;
+  font-size:.8rem
+}
+
+.flags {
+    background:url('{{ 'flagsimg.jpg' | asset_url }}') no-repeat top center;
+    width: 16px;
+    height: 11px;
+    background-position: -16px -11px;
+    margin-right:5px;
+}
+.AED{ background-position: 0px 0px;}
+.AUD{ background-position: -16px 0;}
+.BGN{ background-position: -32px 0;}
+.BND{ background-position: -48px 0;}
+.BRL{ background-position: -64px 0;}
+.CAD{ background-position: -80px 0;}
+.CHF{ background-position: -96px 0;}
+.CLP{ background-position: -112px 0;}
+.COP{ background-position: -128px 0;}
+.CZK{ background-position: -144px 0;}
+.EUR{ background-position: -144px -33px;}
+.GBP{ background-position: -16px -11px;}
+.HKD{ background-position: -32px -11px;}
+.HRK{ background-position: -48px -11px;}
+.HUF{ background-position: -64px -11px;}
+.IDR{ background-position: -80px -11px;}
+.ILS{ background-position: -96px -11px;}
+.JPY{ background-position: -112px -11px;}
+.KRW{ background-position: -128px -11px;}
+.LVL{ background-position: -144px -11px;}
+.SAR{ background-position: 0px -44px;}
+.MOP{ background-position: 0px -22px;}
+.MXN{ background-position: -16px -22px;}
+.MYR{ background-position: -32px -22px;}
+.NOK{ background-position: -48px -22px;}
+.NZD{ background-position: -64px -22px;}
+.QAR{ background-position: -80px -22px;}
+.RON{ background-position: -96px -22px;}
+.RUB{ background-position: -112px -22px;}
+.SEK{ background-position: -128px -22px;}
+.SGD{ background-position: -144px -22px;} 
+
+.THB{ background-position: 0px -33px;}
+.TRY{ background-position: -16px -33px;}
+.TWD{ background-position: -32px -33px;}
+.UAH{ background-position: -48px -33px;}
+.USD{ background-position: -64px -33px;}
+.VND{ background-position: -80px -33px;}
+.ZAR{ background-position: -96px -33px;}
+.PHP{ background-position: -112px -33px;}
+.INR{ background-position: -128px -33px;}
+
+.currencies-section .top-languages .select-languages ul li a{
+    font-weight:normal;
+}
+@media(max-width:768px){ 
+.currencies-section .top-languages .select-languages-body{
+    padding:1rem
+}
+.currencies-section .top-languages .select-languages{
+    margin: 0; 
+    flex-direction: column;
+}
+.currencies-section .top-languages .select-languages .left-country{
+    width:100%
+}
+.currencies-section .top-languages .select-languages ul li {
+    width: 50%;
+}
+.currencies-section .top-languages { 
+    display: flex; 
+    color: #777; 
+    position: absolute;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.top-bar__currency div{   
+    display: flex;
+    align-items: center;
+    margin-left: 1rem;
+}
+.top-bar__currency div .flags{    
+    margin-right: .2rem;
+}
+
+.top-bar__currency div span{    
+    font-size: 1.5rem;
+    color: #000;
+}
+
+.currencies-section{ 
+  height:440px; 
+}
+}
+</style>
+
+{% comment %} {{ "//cdn.shopify.com/s/javascripts/currencies.js" | script_tag }}
+{{ "jquery.currencies.min.js" | asset_url | script_tag }} {% endcomment %}
+
+<div class="top-languages">
+  <button type="button" class="close-new close" data-action="close" >
+    <i class="photofont icon photo-close"></i>
+  </button>
+  <h4>{{ 'common.currencies.choose_your_preferred_currency' | t }}</h4>
+  <div id="currencies" class="select-languages-body"></div>
+</div>
+<template id="CurrenciesCompileTemplate">
+{% raw %}
+  {{#each this}}
+    <div class="select-languages"> 
+        {{#if title}}
+        <div class="left-country">{{title}}</div>
+        {{/if}}
+        <ul>
+            {{#each codes}}
+            <li class="currency" data-action="close" data-currency="{{code}}">
+                <img class="{{code}} flags">
+                <span>{{label}}</span>
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+  {{/each}}
+{% endraw %}
+</template>
+<script>
+$(function(){
+  // Currency Format
+  Currency.format = '{{ section.settings.currency_format | default: "money_with_currency_format" }}';
+
+  /* Default currency */
+  Currency.default = '{{ shop.currency }}';
+
+  var currencies = [
+    {%- for block in section.blocks -%}
+    {
+      "title": "{{block.settings.title}}",
+      "codes": {{block.settings.currencies}}
+    },
+    {%- endfor -%}
+  ];
+  // Compile Template
+  var currenciesCompileTemplate = Handlebars.compile($('#CurrenciesCompileTemplate').html());
+  var $target = $('#currencies');
+  $target.empty().append(currenciesCompileTemplate(currencies));
+  $target.find('li.currency').click(function(){
+    var currency = $(this).data('currency');
+    if(currency) {
+      Currency.convertAll(currency);
+    }
+  });
+
+  $('#currencies-mb').change(function(){
+    var currency = $(this).val();console.log(currency);
+    if(currency) {
+      Currency.convertAll(currency);
+    }
+  });
+
+  // after ajax cart load
+  Listener.on([ Listener.cart.refresh, Listener.collection.build.after, Listener.product.update.after ], function() { 
+    console.log('cart after loaded cookie-currency=', Currency.cookie.read());
+    Currency.convertAll(Currency.cookie.read());
+  });
+
+  Listener.on([ Listener.currency.convert.after ], function(events, oldCurrency, newCurrency) {
+    var $div = $('<div><img class="flags ' + newCurrency + '"/><span>'+ newCurrency + '</span></div>');
+    $('div.current-currency').html($div);
+    $('.selected-currency').html(newCurrency);
+  });
+
+  var current_currency = Shopify.urlParam('currency') ? Shopify.urlParam('currency') : Currency.cookie.read();
+  /* Cookie currency */
+  Currency.convertAll(current_currency);
+});
+
+
+</script>
+
+{% endif %}
+{% schema %}
+{
+  "name": "通用 - 货币设置",
+  "class": "currencies-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content":"common-currencies"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable",
+      "label": "开启",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "currency_format",
+      "label": "Format",
+      "options": [
+        {
+          "value": "money_with_currency_format",
+          "label": "With currency ($10.00 USD)"
+        },
+        {
+          "value": "money_format",
+          "label": "Without currency ($10.00)"
+        }
+      ],
+      "default": "money_with_currency_format"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "area",
+      "name": "增加货币区域",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "区域名称",
+          "info": "如：America"
+        },
+        {
+          "type": "textarea",
+          "id": "currencies",
+          "label": "设置货币标签以及CODE, 格式JSON",
+          "info": "如：[{\"label\":\"US Dollar\",\"code\":\"USD\"},{\"label\":\"Canadian Dollar\",\"code\":\"CAD\"}]"
+        }
+	  ]
+	}
+  ]
+}
+{% endschema %}

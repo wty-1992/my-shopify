@@ -1,0 +1,738 @@
+{% unless template.name == 'cart' %}
+<style>
+.cart-mini-section{
+  display:none;
+}
+.cart-mini-section{
+  z-index:2147483001!important
+}
+.cart-mini-section .mini-cart-title{
+  height: 60px;
+  border-bottom: 1px solid #e5e5e5;
+  position: relative;
+  z-index: 2;
+  font-size: 14px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-transform: uppercase;
+}
+.cart-mini-section .mini-cart-title p{
+  color: #000;
+  margin-top: 0;
+  margin-bottom: 0;
+  text-transform: none;
+  font-size: 12px;/*update .8 to 1 2019-5-20 by Alice*/
+}
+.cart-mini-section .mini-cart-title .close{
+  padding: 0 25px;
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+  top: 16px;
+}
+.cart-mini-section .mini-cart-title .close i{
+  font-size:25px;
+} 
+.cart-mini-section ul{
+  max-height: calc(100vh - 267px);
+  overflow: auto;
+}
+.cart-mini-section .mini-cart__item,
+.cart-mini-section .mini-cart__minilist{
+  padding: 2.5rem 0 2rem 2rem;
+  height:auto;
+   display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  display: -webkit-flex;
+  -webkit-align-items: flex-start;
+  -webkit-justify-content: space-between; 
+  position: relative;
+  border-bottom: 1px solid #eee;
+}
+.cart-mini-section .mini-cart__minilist{
+  padding: .5rem 0 0rem 0;
+  box-shadow: 0px -7px 6px -8px #878787;
+}
+.cart-mini-section li .mini-cart__product-image,
+.cart-mini-section .mini-cart__minilist .mini-cart__product-image {
+  width: 100px;
+  height: 100px;
+  background: #fff;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  display: -webkit-flex;
+  -webkit-align-items: center;
+  -webkit-justify-content: center; 
+  overflow: hidden;
+  border: 1px solid #f9f9f9;
+}
+.cart-mini-section li .mini-cart__product-details,
+.cart-mini-section .mini-cart__minilist  .details-area{    flex: 0 1 70%;
+  padding: 0 2rem 0 2rem;
+}
+.cart-mini-section li .mini-cart__name{
+  line-height: 1.4rem;
+}
+.cart-mini-section li .mini-cart__sku{
+  margin: 0 0 .8rem 0;
+  color: #616161;
+}
+.cart-mini-section .mini-cart__text{
+  margin-bottom:1rem;
+}
+.cart-mini-section li .mini-cart__price{
+  color: #000;
+  font-size: 16px;
+}
+.cart-mini-section li .mini-cart__btn-remove{    
+  position: absolute;
+  top: .3rem;
+  right: 2rem; 
+  cursor: pointer;
+}
+
+.cart-mini-section  .mini-cart__bottom{
+  position: absolute;
+  bottom: 0;
+  width:100%
+}
+.cart-mini-section .mini-cart__minilist,
+.cart-mini-section .mini-cart__minilist .details-area{
+  align-items: center; 
+  padding: 0 8px 0 0;
+}
+.cart-mini-section .mini-cart__minilist .details-area{
+  display: flex;
+  justify-content: space-between;
+}
+.cart-mini-section .mini-cart__minilist .actions {
+  color: #000;
+  padding: 3px 7px;
+  line-height: initial;
+  margin: 0;
+  background: #ddd;
+  border-radius: 0;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  align-items: center;
+} 
+.cart-mini-section .mini-cart__minilist .mbagname{
+  color: #000;
+  text-align: center;
+  line-height: 1.4;
+  font-size: 12px;
+  font-weight: 600;
+}
+.mini-cart__bottom .mini-cart__price{
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0 5px;
+}
+.cart-mini-section .mini-cart__minilist .price-box{color: #e81150;
+  font-size: 1.4rem;
+}
+.cart-mini-section .mini-btn{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 100;
+  letter-spacing: 0;
+}
+.cart-mini-section .mini-btn span.price-total{
+  font-size: 16px;
+}
+.cart-mini-section .mini-btn:hover{
+  color:#fff;
+}
+.cart-mini-section li .mini-cart__product-details .js-qty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+  width: 8rem;
+  height:2rem;
+}
+.qty-price.flex-between{
+  display: flex;
+  justify-content: space-between;
+}
+.cart-mini-section .js-qty button {
+  width: 8rem;
+  min-width: 15%;
+  transition: background-color 0.03s ease-in;
+}
+.cart-mini-section .js-qty>* {fill: #000;
+  background: #EFEFEF;
+  border: none;
+  color: #000;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.cart-mini-section .js-qty input {
+  width: 100%;
+}
+
+.cart-mini-section .flex {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+}
+.cart-mini-section .js-qty button:hover, .cart-mini-section .js-qty button:focus {
+  background-color: #EFEFEF;
+  transition-duration: 0.08s;
+}
+.cart-empty{
+  height: calc(75vh - 60px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.mini-cart__bottom a:hover,.mini-cart__bottom a:focus,.mini-cart__bottom a:active{
+  color: #fff;
+}
+@media(max-width:1024px){
+  .cart-mini-section.fixed-container > .right.active {
+    width: 36%;
+  }  
+}
+@media(max-width:768px){
+  .cart-mini-section.fixed-container > .right.active {
+    width: 40%;
+  }
+  .cart-mini-section .mini-cart-title .close i{
+    font-size:18px;
+  } 
+  .cart-mini-section .mini-cart-title .close{
+    padding: 0;
+    left: 14px;
+    top: 12px;
+  }
+  .cart-mini-section .mini-cart__minilist .details-area{
+    flex-flow: column;
+  }
+  .cart-mini-section .mini-cart__minilist .mbagname{
+    margin-bottom: 15px;
+  }
+  .cart-mini-section .mini-btn span.price-total{
+    font-size:12px;
+  }
+  .cart-mini-section .mini-cart__bottom{
+    z-index: 1;
+    background: #fff;
+  }
+}
+@media(max-width:640px){
+  .cart-mini-section.fixed-container > .right.active {
+    width: 80%;
+  }
+}
+</style>
+{%comment%}购物车规则 by alice 20210805{%endcomment%}
+{% include "cart_rule" %}
+
+{% assign sectionId = 'shopify-section-' | append : section.id %}
+<div id="CartMini"></div>
+<template id="CartMiniTemplate">
+	{% raw %}
+    <div class="mini-cart-title">
+      <span class="close" data-slide-layer="close">
+        <i class="photofont icon photo-close"></i>
+      </span>
+      {% endraw %}
+        {% comment %}修复不显示购物车产品数量问题 2019-5-17 by Alice{% endcomment %}    
+        {{'cart.mini.cart_has_items' | t }}
+        <p>{{section.settings.content}}</p>
+      {% raw %}
+    </div>
+    <ul>
+      {{#items}}
+        <li class="mini-cart__item ">
+          <a href="javascript:void(0)" class="mini-cart__product-image">
+            {{#if cropImageUrl}} 
+              <img class="cart__image 1111" src="{{cropImageUrl}}" data-engraving="{{engravingCrop}}" alt="{{ name }}"> 
+            {{else if diamondImage}}  
+              <img class="cart__image 33333" src="{{diamondImage}}" alt="{{ name }}">
+            {{else if engravingCrop}}  
+              <img class="cart__image 4444" src="{{engravingCrop}}" data-name="{{nameCrop}}" alt="{{ name }}">  
+            {{else if nameCrop}}  
+              <img class="cart__image 2222" src="{{nameCrop}}" alt="{{ name }}">
+            {{else}}
+              {{#if engravingImageUrl}}
+              <img class="cart__image 5555" src="{{engravingImageUrl}}" alt="{{ name }}">
+              {{else}}
+              <img class="cart__image 6666" src="{{productImg}}" alt="{{ name }}">
+              {{/if}}
+            {{/if}} 
+          </a>
+          <div class="mini-cart__product-details">
+            <p class="mini-cart__name"><a href="{{url}}">{{product_title}}</a></p>
+            <div class="mini-cart__sku">{{sku}}</div>
+            <div class="mini-cart__text">
+              {{#if alphaText}}
+                <div class="custom_text">({% endraw %}{{'cart.mini.text' | t }}{% raw %}: {{alphaText}})</div>
+              {{else if engravingText}}  
+                <div class="custom_text">({% endraw %}{{'cart.mini.text' | t }}{% raw %}: {{engravingText}})</div>
+              {{/if}}
+            </div>
+            <div class="qty-price flex-between">
+              <div class="js-qty">
+                {{#if giveaway}}
+                  {{ quantity }} pcs
+                {{else if limitPurchase}}  
+                  <button type="button" class="js-qty__adjust--minus" onclick="Cart.change({line:{{line}},quantity:{{ minus }} })"><i class="photofont icon photo-move"></i></button>
+                  <input class="js-qty__input" type="text" data-action="input" value="{{ quantity }}" readonly>
+                  <button type="button" class="js-qty__adjust--plus" style="{{qtyPlusStyle}}" onclick="limitCartChange({line:{{line}},quantity:{{ plus }},mask:'#{{@root.sectionId}}' },{{product_id}})"><i class="photofont icon photo-add"></i></button>
+
+                {{else}}
+                  <button type="button" class="js-qty__adjust--minus" onclick="Cart.change({line:{{line}},quantity:{{ minus }},mask:'#{{@root.sectionId}}' })"><i class="photofont icon photo-move"></i></button>
+                  <input class="js-qty__input" type="text" data-action="input" value="{{ quantity }}" min="0" pattern="[0-9]*" onblur="Cart.change({line:{{line}},quantity:this.value,mask:'#{{@root.sectionId}}'});">
+                  <button type="button" class="js-qty__adjust--plus" onclick="Cart.change({line:{{line}},quantity:{{ plus }},mask:'#{{@root.sectionId}}' })"><i class="photofont icon photo-add"></i></button>
+                {{/if}}
+              </div>
+              <span class="mini-cart__price" data-money="{{ line_price }}"></span>
+            </div>
+            {{#if giveaway}}
+            {{else}}
+            <a class="mini-cart__btn-remove" onclick="Cart.change({line:{{line}},quantity:0,mask:'#{{@root.sectionId}}'})" title="{% endraw %}{{'cart.mini.remove_this_item' | t }}{% raw %}">
+              <i class="photofont icon photo-delete"></i>
+            </a>
+            {{/if}}
+          </div>
+        </li>
+      {{/items}}      
+    </ul>
+	{{#if_eq itemCount 0}}
+  	  <div class="cart-empty">{% endraw %}{{'cart.mini.no_product' | t }}{% raw %}</div>
+    {{/if_eq}}  	  
+  	
+    {{#if_gt itemCount 0}}  	
+    <div class="mini-cart__bottom">
+	  {% endraw %}{% if section.settings.gift_card_enable %}
+        <style>
+          .cart-mini-section div ul{
+            max-height: calc(100vh - 333px);
+          }
+          .cart-mini-gift_card_box {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 15px 0 10px;
+            align-items: center;
+            height: 90px;
+            box-shadow: 0px -7px 6px -8px #878787;
+          }
+          .cart-mini-gift_card_box img{
+            width: 30px;
+            margin-left: 30px;
+          }
+          .cart-mini-gift_card_box span{
+            color: #000;
+            text-align: center;
+            line-height: 1.4;
+            font-size: 12px;
+            font-weight: 600;
+          }
+          .cart-mini-gift_card_box  a{
+            background: #ddd;
+            padding: 2px 10px;
+            color: #000;
+          }
+          .cart-mini-gift_card_box a:hover{
+            color: #000;
+          }
+        </style>
+        <div class="cart-mini-gift_card_box">
+           {% if section.settings.gift_card_icon %}
+              <img width="100%" class="gift_card_icon" src="{{section.settings.gift_card_icon | img_url: 'master'}}"/>
+            {% endif %}
+            <span>{{section.settings.gift_card_text}}</span>
+            <a href="{% if section.settings.gift_card_link == blank %}javascript:;{%else%}{{section.settings.gift_card_link}}{%endif%}">{{section.settings.gift_card_btn}}</a>
+        </div>
+      {% endif %}{% raw %}      
+      {{#products}}
+      {{products}}
+      <div class="mini-cart__minilist">
+        <a href="{{ url }}" class="mini-cart__product-image">
+          <img class="lazyloaded" src="{{ featured_image }}" alt="">
+        </a>
+        <div class="details-area flex">
+          <div class="mbagname">{{ title }}</div>
+          <div class="actions" onclick="Cart.add({id: {{id}},mask:'#{{@root.sectionId}}'})">
+            <div class="fl">+{% endraw %}{{'cart.mini.add_for' | t }}{% raw %}</div>
+            <div class="price-box">
+              <span class="mini-cart__price" data-money="{{ price }}"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{/products}}
+      <a href="/cart" onclick="Mask.show('#{{sectionId}}')" class="btn1 mini-btn">
+        {% endraw %}{{'cart.mini.view_cart_checkout' | t }}{% raw %}
+        <span class="price-total" data-money="{{ grandTotal }}"></span>
+      </a>
+    </div>
+    {{/if_gt}}
+{% endraw %}
+</template>
+<script>  
+  
+  var limitPurchaseString = '{{settings.limit_purchase_products}}';
+  var limitPurchaseResult = [];
+
+  let cartTempArray = limitPurchaseString.split(';');
+  
+  cartTempArray.forEach(function(item,i){
+    if(item){
+      let cartTempJson = {};
+      let cartTempArray1 = item.split(',');
+      cartTempJson['id'] = cartTempArray1[0];
+      cartTempJson['num'] = cartTempArray1[1];
+      limitPurchaseResult.push(cartTempJson);
+    }
+
+  });
+  
+  console.log(limitPurchaseResult);
+  var purchaseObj = {};
+  
+  //限购产品如要添加数量，则先检查下数量是否已达上限
+  function limitCartChange(data,product_id){
+    
+    let itemsNum = parseInt(purchaseObj[product_id]['num']);
+    
+    let limitNum = parseInt(purchaseObj[product_id]['limitNum']);
+    
+    if(itemsNum < limitNum){
+    	Cart.change(data);
+    }else{
+    	return false;
+    }
+  }
+  
+  Listener.on(Listener.cart.refresh, function(event, cart) {
+    console.log('cart object is ===== ', cart);
+    var compileTemplate = Handlebars.compile($('#CartMiniTemplate').html());
+    var items = [];
+    
+    purchaseObj = {};
+    if(limitPurchaseResult.length > 0){
+
+      limitPurchaseResult.forEach(function(pitem,pindex){
+
+        $.each(cart.items, function(index1, cartItem1) {
+          
+          if(cartItem1.product_id == pitem.id){
+            if(typeof purchaseObj[pitem.id] == 'undefined'){
+              purchaseObj[pitem.id] = {};
+              purchaseObj[pitem.id]['num'] = parseInt(cartItem1.quantity);
+              purchaseObj[pitem.id]['limitNum'] = parseInt(pitem.num);
+              purchaseObj[pitem.id]['variants'] = [];
+              let tempObj = {};
+              tempObj['id'] = cartItem1.key;
+              tempObj['num'] = parseInt(cartItem1.quantity);
+              purchaseObj[pitem.id]['variants'].push(tempObj);
+            }else{
+              purchaseObj[pitem.id]['num'] += parseInt(cartItem1.quantity);
+              
+              purchaseObj[pitem.id]['limitNum'] = parseInt(pitem.num);
+
+              let tempObj = {};
+              tempObj['id'] = cartItem1.key;
+              tempObj['num'] = parseInt(cartItem1.quantity);
+              purchaseObj[pitem.id]['variants'].push(tempObj);
+            }
+
+          }
+        });
+      });
+      
+	  console.log(JSON.stringify(purchaseObj));
+      //删除超出限购数的产品
+      if(JSON.stringify(purchaseObj) != '{}'){
+      	limitPurchaseResult.forEach(function(pitem2,pindex2){
+          if(typeof purchaseObj[pitem2.id] != 'undefined'){
+            let diffPnum = purchaseObj[pitem2.id]['num'] - pitem2.num;
+
+            if(diffPnum > 0){
+              let vNo = 0;
+              for(var i=0;i<diffPnum;i++){
+
+                if( purchaseObj[pitem2.id]['variants'][vNo]['num'] <= 0){
+                  vNo++;          
+                }
+
+                purchaseObj[pitem2.id]['variants'][vNo]['num']--;
+                Cart.change({id:purchaseObj[pitem2.id]['variants'][vNo]['id'],quantity:purchaseObj[pitem2.id]['variants'][vNo]['num'],mask:'#{{sectionId}}'});
+
+              }
+            }
+          }
+
+        });  
+      }
+       
+    }
+
+    
+    $.each(cart.items, function(index, cartItem) {
+
+      // 产品原图
+      var productImg;
+      //照片图片
+      var cropImgUrl = false;
+      //刻字图片
+      var engravingCrop = false;
+      //字母图片
+      var nameCrop = false;
+      //换钻图片
+      var diamondImage = false;
+      //刻字文字
+      var engravingText = false;
+      //字母文字
+      var alphaText = false;
+	  var giveaway = false;
+      var limitPurchase = false;//是否限购
+      var qtyPlusStyle = '';
+      
+      if(JSON.stringify(purchaseObj) != '{}'){
+        if(typeof purchaseObj[cartItem.product_id] != 'undefined'){
+          limitPurchase = true;
+          if(purchaseObj[cartItem.product_id]['num'] >= purchaseObj[cartItem.product_id]['limitNum']){
+            qtyPlusStyle = 'color:#dddddd;';
+          }else{
+            qtyPlusStyle = 'color:#000000;';
+          }
+        }
+      }
+      
+      if (cartItem.image === null) {
+        productImg = '//cdn.shopify.com/s/assets/admin/no-image-medium-cc9732cb976dd349a0df1d39816fbcc7.gif';
+      } else {
+        productImg = cartItem.image
+          .replace(/(\.[^.]*)$/, '_240x240$1')
+          .replace('http:', '');
+      }
+
+      if (cartItem.properties !== null) {
+        if (Array.isArray(cartItem.properties) == false){
+          var properties = [];
+          for(var key in cartItem.properties){
+            properties.push({
+              name: key,
+              value: cartItem.properties[key]
+            })
+          }
+          cartItem.properties = properties;
+        }
+
+        $.each(cartItem.properties, function(index, item) {
+          var key = item.name;
+          var value = item.value;
+          if (key == 'crop' || key == 'multi_crop'){//add multi_crop 2020-1-15 alice 传四图月球灯
+            cropImgUrl = value;
+          }else if (key == 'engravingCrop'){
+            engravingCrop = value;
+          // }else if (key == 'fonttext' & value != 'none'){
+          //   fonttext = value;
+          // }else if (key == 'picture' & value != ''){
+          //   picture = value;
+          }else if (key == 'nameCrop' & value != ''){
+            nameCrop = value;  // name necklace image
+          }else if (key == 'diamondImage' & value != ''){
+            diamondImage = value;  // name necklace image
+          }
+          if (key == 'alphaText' & value != ''){
+            alphaText = value;
+          }
+          if (key == 'engravingText' & value != ''){
+            engravingText = value;
+          }
+          if (key == 'customInfo' & value != ''){
+            if(value.indexOf('{"photo":[{"type"') >= 0){
+              var cusinfo = JSON.parse(value);
+              if((cusinfo['photo'][0]['type'] == 'multiphotos' || cusinfo['photo'][0]['type'] == 'multipic') & cusinfo['photo'][0]['crop'] != ''){
+                cropImgUrl = cusinfo['photo'][0]['crop'];
+              }
+              if(value.indexOf('"engraving":[{"type"') >= 0 && cusinfo['engraving'][0]['engravingText'] != ''){
+                engravingText = cusinfo['engraving'][0]['engravingText'];
+              }
+              if(value.indexOf('"sf_curve_engraving":[{"engravingCrop"') >= 0 && cusinfo['sf_curve_engraving'][0]['engravingText'] != ''){
+                engravingText = cusinfo['sf_curve_engraving'][0]['engravingText'].replace('#$%:','');
+                if(value.indexOf('"sf_engraving":[{"type"') >= 0 && cusinfo['sf_engraving'][0]['engravingText'] != ''){
+                  engravingText += '|' + cusinfo['sf_engraving'][0]['engravingText'].replace('#$*:','');;
+                }
+              }
+            }
+          }
+          if (key.charAt(0) === '_' || !value) {
+            delete cartItem.properties[key];
+          }
+          if (key == 'giveaway'){
+            giveaway = value;
+          }
+        });
+      }
+
+      cartItem = Object.assign(cartItem, {
+        // Shopify uses a 1+ index in the API
+        line: index + 1,
+        minus: cartItem.quantity - 1 > 1 ? cartItem.quantity - 1 : 1,
+        plus: cartItem.quantity + 1 < 100 ? cartItem.quantity + 1 : 100, 
+        discounts: cartItem.discounts,
+        discountsApplied: cartItem.line_price === cartItem.original_line_price ? false : true,
+        productImg: productImg,
+        cropImageUrl: cropImgUrl,
+        engravingCrop: engravingCrop,
+        nameCrop: nameCrop,
+        diamondImage: diamondImage,
+        engravingText: engravingText,
+        alphaText:alphaText,
+        giveaway:giveaway,
+        limitPurchase:limitPurchase,
+        product_id:cartItem.product_id,
+        qtyPlusStyle:qtyPlusStyle
+      });
+      items.push(cartItem);
+    });
+    var miniCartProducts = [
+      {%- for block in section.blocks -%}
+        {% if block.settings.product %}
+          {%- assign product = all_products[block.settings.product] -%} 
+
+          {%- assign firstVariant = product.first_available_variant -%}
+          {
+            id: "{{firstVariant.id}}",
+            url: "{{ product.url }}",
+            title: "{{ block.settings.title | escape }}",
+            price: "{{ product.price }}",
+            featured_image:"{{ product.featured_image | img_url: 'medium' }}"
+          },
+        {% endif %}
+      {%- endfor -%}
+    ];
+    cart = Object.assign(cart, {
+      sectionId: '{{sectionId}}',
+      items: items,
+      itemCount: items.length,
+      totalDiscount: cart.total_discount > 0 ? cart.total_discount : 0 ,
+      subtotal: cart.total_price,
+      grandTotal: cart.total_price - cart.total_discount,
+      products: miniCartProducts,
+      overage: cart.total_price - cart.total_discount - parseInt({{ settings.free_shipping_threshold }})//添加免邮门槛 2019-5-17 by Alice
+    });
+    $('#CartMini').empty().append(compileTemplate(cart));
+  });
+  Cart.refresh( {{ cart | json }});
+</script>
+
+{% endunless %}
+
+{% schema %}
+{
+  "name": "购物车 - 迷你购物车",
+  "class": "cart-mini-section",
+  "settings": [
+	{
+      "type": "paragraph",
+      "content":"cart-mini"
+    },
+    {
+      "type": "html",
+      "id": "content",
+      "label": "上部利益点"
+    },
+    {
+      "type": "header",
+      "content": "礼品卡部分"
+    },
+    {
+      "type": "checkbox",
+      "id": "gift_card_enable",
+      "label": "开启礼品卡",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "gift_card_icon",
+      "label": "礼品卡功能图标"
+    },
+    {
+      "type": "text",
+      "id": "gift_card_text",
+      "label": "礼品卡描述"
+    },
+    {
+      "type": "text",
+      "id": "gift_card_btn",
+      "label": "礼品卡按钮文案"
+    },
+    {
+      "type": "url",
+      "id": "gift_card_link",
+      "label": "礼品卡跳转链接"
+    }
+  ],
+  "blocks": [
+	{
+      "type": "product",
+      "name": "底部销售产品",
+      "settings": [
+        {
+          "type": "html",
+          "id": "title",
+          "label": "显示的名字",
+          "info": "支持HTML"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "选择产品"
+        }
+      ]
+    },
+	{
+      "type": "cart_gift_rule",
+      "name": "购物车赠品规则",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "规则名称"
+        },
+        {
+          "type": "text",
+          "id": "main_product",
+          "label": "主产品标签",
+          "info": "注意：产品需要添加CART_GIFT_开头的TAG"
+        },
+  		{
+          "type": "number",
+          "id": "main_product_num",
+          "label": "加购数量",
+  		  "default":1,
+          "info": "加购数大于等于该数字则添加赠品"
+        },
+        {
+          "type": "product",
+          "id": "giveaway",
+          "label": "请选择赠品",
+          "info": "注意：赠品需要添加CART_GIVEAWAY的TAG"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

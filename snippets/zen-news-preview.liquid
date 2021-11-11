@@ -1,0 +1,95 @@
+{{ 'lazyload.min.js' | asset_url | script_tag }}
+<style>
+  .news-preview-box button {
+  	width: 100%;
+    background-color: #d95e9a;
+  }
+  .news-preview-box button:hover {
+    background-color: #d95e9a;
+  }
+  .preview-image-box {
+  	text-align: center;
+  }
+  .preview-image-box img {
+  	max-width: 60%;
+  }
+  .preview-title{
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .extra-news-date-confirm-content {
+    margin-top: 10px;
+  	text-align: center;
+  }
+  .extra-news-date-confirm-content p {
+  	font-weight: 600;
+  }
+  @media (max-width: 768px) { 
+    .preview-title{
+    	margin-top: 60px;
+    }
+  }
+</style>
+
+<script>
+  $(function(){
+  	//用户填写产品需求信息的弹窗
+    var previewModal = new tingle.modal({
+      footer: true,
+      stickyFooter: false,
+      cssClass: ['require-tingle-modal'],
+      onOpen: function() {
+      },
+      onClose: function() {
+        //console.log('modal closed');
+      },
+      beforeClose: function() {
+        return true; // close the modal
+      }
+    });
+    
+    //加车
+    previewModal.addFooterBtn('Add To Cart', 'tingle-btn tingle-btn--primary', function() {
+     
+      myCustomAddToCart($('.shopify-product-form'),3);
+      previewModal.close();
+      
+    });
+    
+    $('#preview-news-open').click(function(){
+      if($.trim($('#datepicker').val()) == ''){
+        $('#datepicker').css('border-color','#ff0000');
+      }else{
+        $('#preview-image').attr('src','');
+        
+        $('#datepicker').css('border-color','#e7e7e7');
+        let soure = $.trim($('#datepicker').val());
+        soure = insertStr(soure, 6, '/');
+        soure = insertStr(soure, 4, '/');
+        
+        let previewSrc = 'https://static01.nyt.com/images/'+soure+'/nytfrontpage/scan.jpg';
+        let previewHtml = '<div class="preview-title">Preview Thumbnail:</div><div class="preview-image-box"><img class="lazyload" id="preview-image" src="{{ 'img_loading.gif' | asset_img_url: '16x' }}" data-src="'+previewSrc+'" onerror="javascript:this.parentNode.innerHTML=\'No Preview Thumbnail Is Available For This Date.\';this.onerror=null"></div><div class="extra-news-date-confirm-content"><p>{{ "products.product.news_date_notice" | t }}</p><p class="red">'+$( "#datepicker" ).val()+'</p></div>';
+          
+        previewModal.setContent(previewHtml);
+        previewModal.open();
+        $("img.lazyload").lazyload();
+      }
+    });
+  
+  })
+  
+  function insertStr(soure, start, newStr){   
+     return soure.slice(0, start) + newStr + soure.slice(start);
+  }
+  
+  window.addEventListener('VARIANT_CHANGE', function(event){
+    if(event.detail.title.indexOf('THE NEW YORK TIMES') > -1){
+      $('.product-quantity').hide();
+      $('.news-preview-box').show();
+    }else{
+      $('.news-preview-box').hide();
+      $('.product-quantity').show();
+    }
+  })
+</script>

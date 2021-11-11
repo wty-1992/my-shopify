@@ -1,0 +1,199 @@
+{{ 'zen-custom.scss.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'qiniu.min.js' | asset_url }}" ></script>
+<script src="{{ 'zen-base.js' | asset_url }}"></script>
+<script src="{{ 'zen-namenecklace.js' | asset_url }}"></script>
+
+{% comment %} 
+  页面说明:
+  变量:
+  secondType: 用来判断输入框个数的类型
+
+{% capture lines %}{% include 'func-jd' with 'echo|customopt.lines' %}{% endcapture %}
+{% capture code %}{% include 'func-jd' with 'echo|customopt.code' %}{% endcapture %}
+{% capture style %}{% include 'func-jd' with 'echo|customopt.style' %}{% endcapture %}
+{% endcomment %}
+{% capture lines %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "lines" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign lines = lines | strip %}
+
+{% capture code %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "code" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign code = code | strip %}
+
+{% capture fontfamily %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "fontfamily" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign fontfamily = fontfamily | strip %}
+
+{% capture style %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "style" %}{{ verify__rules_json_result }}{% endcapture %}
+{% assign style = style | strip %}
+<div class="namenecklace-photo">
+  <div class="view-name"> 
+    <span>Preview:</span>
+    <div id="showtext" class="showtext" style="font-family:{{fontfamily}};" >
+      {% for i in (1..lines) %} 
+        <span class="showtext-in" id="showtext_{{ forloop.index0 }}" style=""></span>&nbsp;&nbsp;&nbsp;&nbsp;
+      {% endfor %}
+    </div>
+    <div id="hideShowText" style="display:none;"></div>
+  </div>
+
+  <div class="carvingcanvas-content {% if lines == '1' %} first {% endif %}">
+  {% for i in (1..lines) %}  
+      <div class="curve-textarea">
+      <input class="alpha_text" data-leftnum='leftnum{{ forloop.index0 }}' type="text" data-prefix='ctext' data-index="{{ forloop.index0 }}" id="ctext{{ forloop.index0 }}" readonly maxlength="" placeholder="{{ 'zen.namenecklace.enter_name_or_text_here' | t }}..."/>
+      <div class="validation-advice" id="advice-validate-select-carving{{ forloop.index0 }}" style="display:none;border:0px solid #eb340a;">{{ 'zen.general.required_field' | t }}.</div>
+      <div class="leftnum"><span id="leftnum{{ forloop.index0 }}"></span> Left</div>
+      </div>
+  {% endfor %} 
+  </div>
+</div>
+<div style="display: none;">
+<canvas id="myCanvas" width="3000" height="150" style="border:1px solid #d3d3d3;"></canvas>
+<canvas id="myCanvas2" style="border:1px solid #d3d3d3;"></canvas>
+</div>
+<input type="text" id="engraving-text" name="properties[fontCode]" value="{{code}}" style="display:none" />
+<input type="text" id="name-crop" name="properties[nameCrop]" value="" style="display:none" />
+<input type="text" id="alpha-text" name="properties[alphaText]" value="" style="display:none" />
+<input type="text" id="name-flag" value="0" style="display:none" />
+<script>
+  var jsonCustom = JSON.parse('{{ product.metafields["global"]["cattribute"] }}');
+  var Uqname = new Uqname({ json:jsonCustom });
+  if(jsonCustom.class){
+    $(".showtext-in").addClass(jsonCustom.class);
+	  $(".showtext-in").css("font-size","36px");
+  }                            
+  function getCtx(){
+    var str = '';
+    $(".showtext-in").each(function(){
+      str += ' |'+ $(this).text();
+    });
+    str = str.substring(2);
+    var c=document.getElementById("myCanvas");
+    var ctx=c.getContext("2d");
+    ctx.fillStyle = 'rgba(255,255,255,1)';
+    ctx.fillRect(0,0,3000,100);
+    if($.trim(jsonCustom.class)=='silver'){
+      ctx.fillStyle = '#808080';
+    }else if($.trim(jsonCustom.class)=='gold'){
+      ctx.fillStyle = '#eac855';
+    }else if($.trim(jsonCustom.class)=='rosegold'){
+      ctx.fillStyle = '#c8977b';
+    }else if($.trim(jsonCustom.class)=='black'){
+      ctx.fillStyle = '#000';
+    }else if($.trim(jsonCustom.class)=='white'){
+      ctx.fillStyle = '#dee3e3';
+    }
+    ctx.font="80px " + jsonCustom.fontfamily;
+    var txtWidth = ctx.measureText(str).width;
+    var w = txtWidth+40;
+    ctx.fillText(str,10,80);
+
+    var c2=document.getElementById("myCanvas2");
+    c2.width = w;
+    c2.height = 100;
+    var ctx2=c2.getContext("2d");
+    
+    ctx2.drawImage(c, 0, 0, w, 150, 0, 0, w, 150);
+    var blob = Uqname.convertBase64ToBlob(c2.toDataURL('image/png', 0.8 ));
+    var filename = ubase.util.getFilename();
+    return {
+      ctx,
+      blob,
+      filename
+    }
+  }  
+  $(function() {
+    $('.alpha_text').bind('keyup change', function (){
+      var i = $(this).data('index');
+      Uqname.process(this.value, i); // 过滤 
+      console.log('i:', i);
+      console.log(Uqname.text[i].text);
+      $(this).val(Uqname.text[i].text);
+      $('#showtext_'+i).html(Uqname.text[i].showText.indexOf("<") == 0?Uqname.text[i].showText.replace(/</, "&lt;"):Uqname.text[i].showText);
+      $('#leftnum'+i).html( ( $(this).attr('maxlength') - Uqname.text[i].text.length )<0?0:( $(this).attr('maxlength') - Uqname.text[i].text.length ) );
+    });
+    $.each(jsonCustom.text, function(i, v){/* 属性动态赋值 */
+      $('#leftnum'+i).html(v.limit.split('-')[1]);
+      $('#ctext'+i).attr('maxlength', v.limit.split('-')[1]);
+      jsonCustom.style?$('#showtext_'+i).attr('style', $('#showtext_'+i).attr('style')+jsonCustom.style.replace(/[#]/g, ":")):'';//
+    });
+    $('.alpha_text').removeAttr("readonly");
+
+    Product.validators.push(async () => {
+      if($("#name-flag").val()==1){
+        $("#name-flag").val(0);
+      }else{
+        var nameText = checkNametoBase64();
+        if(!nameText){
+          return 'Validate Namenecklace Error1';
+        }else{
+          $(".curve-textarea").removeClass('validation-warning');
+          console.log('HR-1')
+          await Uqname.cdnAsyncUpload((token, resolve) => {
+            console.log('HR-Token')
+            var ctx = getCtx();
+            var key = ctx.filename + '.png';
+            var observer = {
+              next(result){
+                console.log('next - ', result.total.percent)
+                $(".sbar").css({'width':parseInt(result.total.percent)+'%'});
+                $(".sbar").html(parseInt(result.total.percent)+'%'); 
+              },
+              error(err){
+                console.log('qiniu error - ', err)
+              },
+              complete(res){
+                console.log('qiniu complete - ', res)
+                $("#name-crop").val(ubase.util.cdnurl + res.key);
+                $("#alpha-text").val(nameText);
+                $("#name-flag").val(1);
+                $(".sbar").css({'width':'0%'});
+                $(".sbar").html('0%');
+                resolve();
+                return true;
+                console.log('HR-Upload')
+              }
+            };
+            var observable = qiniu.upload(ctx.blob, key, token, ubase.util.putExtra, ubase.util.config);
+            observable.subscribe(observer);
+          });
+          return true;
+          console.log('HR-Over')
+        }
+      }
+      
+    })
+  });
+  
+  function remainingWords(val, maxlength){ // 剩余字符
+    if(maxlength - val.length < 0){
+      return 0;
+    }
+    return maxlength - val.length;
+  }
+  function checkNametoBase64(){
+    var on_off = 0;
+    $.each(jsonCustom.text, function(i, v){
+      on_off=Uqname.checkQuantity($('#ctext'+i).val(), v.limit.split('-')[0], v.limit.split('-')[1]);
+      if(on_off==1){return;} //* 检查合法性
+    });
+    if(on_off == 1){
+      $(".curve-textarea").addClass('validation-warning');
+      return false;
+    }
+    var alphaTextVal = Uqname.setInputVal(jsonCustom.lines);
+    return alphaTextVal;
+  }
+  /* Select Finish / change color */
+  Listener.on([ Listener.product.update.before ], function(event, variant) {  
+    if($.trim(variant.options[0]).indexOf("Rose Gold") != -1){
+      var classname = 'rosegold';
+    }else if($.trim(variant.options[0]).indexOf("14k Gold") != -1){
+      var classname = 'gold';
+    }else{
+      var classname = 'silver';
+    }
+    $('.showtext-in').removeClass('gold rosegold silver').addClass(classname);
+    jsonCustom.class = classname;
+  });
+$(document).ready(function(){ 
+  $(document).trigger("hide-qty",1);
+});
+</script>

@@ -1,0 +1,135 @@
+  {% for block in section.blocks %} 
+{% if handle == block.settings.handle %}
+{% if block.settings.discount_step1_enableimg %}
+<div class="notice-banner">
+  {% if block.settings.pc_bg %}
+  <img src="{{ block.settings.pc_bg | img_url: 'master' }}" class="pages-banner-pc" />
+  {% endif %}
+  {% if block.settings.mb_bg %}
+  <img src="{{ block.settings.mb_bg | img_url: 'master' }}" class="pages-banner-mb" />
+  {% endif %}
+</div>
+  {% endif %} 
+  {% if block.settings.jr_enable %}
+<style>
+  .newactive2021-box{    
+    text-align: center; 
+    margin:0.5rem auto;
+    display: flex;
+    justify-content: center;
+    max-width: 1200px;}
+  .active-notice-content{
+    width: 100%;border-radius: 5px;
+    color:{{block.settings.color_text }};    
+    font-size:{{block.settings.font_size }}px;    
+    font-weight:{{block.settings.column_richtext }}; 
+    background:{{block.settings.noticecolor_bg }};
+    height: 50PX;
+    display: FLEX;
+    justify-content: center;
+    align-items: center;
+}
+  @media(max-width:768px){
+    .newactive2021-box {
+    margin: .5rem;
+    width: calc(100% - 1rem);
+    font-size: 1rem;
+}
+    .shopify-section.home-notice-section{
+    margin-top: 0;}
+  .active-notice-content
+    {    height: 40px;}
+  }
+</style>
+<div class="newactive2021-box">
+  <div class="active-notice-content"> 
+    {{ block.settings.text_content }}
+  </div>
+</div> 
+  {% endif %} 
+
+
+{% endif%}
+{% endfor %}
+{% schema %}
+  {
+    "name": "首页banner下的提示信息",
+    "class": "home-notice-section",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "collection-new-in-notice"
+      } 
+    ],  
+"blocks": [
+    {
+      "type": "notice",
+      "name": "活动页 提示文案",
+      "settings": [
+        {
+		  "type": "text",
+          "id": "title",
+          "label": "哪个活动"
+	    },
+		{
+		  "type": "text",
+          "id": "handle",
+          "label": "活动url"
+	    },
+        {
+          "type":"checkbox",
+          "id": "discount_step1_enableimg",
+          "label":"banner 下方图片 开关"
+        },
+        {
+          "type": "image_picker",
+          "id": "pc_bg",
+          "label": "PC 背景"
+        },
+        {
+          "type": "image_picker",
+          "id": "mb_bg",
+          "label": "MB 背景"
+        },
+	 	{
+          "type":"checkbox",
+          "id": "jr_enable",
+          "label":"banner 下方文案 开关"
+        },
+        {
+          "type": "text",
+          "id": "text_content",
+          "label": "文本内容"
+        }, 
+        {
+          "type":"color",
+          "id":"noticecolor_bg",
+          "label":"背景颜色",
+          "default":"#000"
+        },
+        {
+          "type":"color",
+          "id":"color_text",
+          "label":"文字颜色",
+          "default":"#fff" 
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "min": 12,
+          "max": 36,
+          "step": 1,
+          "unit": "px",
+          "label": "Font size",
+          "default": 16
+        },
+        {
+          "type":"richtext",
+          "id":"column_richtext",
+          "label":"文字加粗" 
+        }
+      ]
+    }    
+  ]
+}
+{% endschema %}

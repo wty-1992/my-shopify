@@ -1,0 +1,306 @@
+<div id="menuSlider" class="menu-slider fixed-container">
+    <div class="overlay"></div>
+    <div class="content left"> 
+        <ul class="tack-call">
+            <li class="track-order">
+                <div class="close-new">
+                <i class="photofont icon photo-close" onclick="closeFixedContainer('#menuSlider', 'menu')"></i>
+                </div>
+            </li>
+            <li class="track-order">
+                <a href="http://34.205.1.111:9009/index.html?store=photowatch.com">
+                    <i class="photofont icon photo-plane12"></i>
+                    <span>{{'header.menu.track_order' | t}}</span>
+                </a>
+            </li>
+            <li class="track-order">
+                <a onclick="Dialog.open('#submit-ticketmb')">
+                    <i class="photofont icon photo-kefu2"></i>
+                    <span>{{'header.menu.contact_us' | t}}</span>
+                </a>
+                <div id="submit-ticketmb">{% include 'contact-us' %} </div>
+            </li>
+        </ul>
+      
+        <div class="content__box"> 
+                <ul class="drawer__nav nav">
+                    {% for block in section.blocks %}
+                    <li class="drawer__nav-item {% if forloop.first == true %}left-active{% endif %}">
+                      <a data-toggle="tab" href="#{{block.id}}" class="active show">{{block.settings.title}}</a>
+                    </li>
+                    {% endfor %}
+                    {% for link in linklists[section.settings.main_linklist].links %}
+                    {% assign child_list_handle = link.title | handleize %}
+                    <li class="drawer__nav-item">
+                      <a data-toggle="tab" href="#{{link.title | downcase}}" {% if link.active %} aria-current="page" {% endif %}>
+                          {{ link.title }}
+                      </a>
+                    </li>
+                    {% if shop.customer_accounts_enabled %}
+                    {% if customer %}
+                    <li class="drawer__nav-item">
+                        <a href="/account/logout" class="drawer__nav-link drawer__nav-link--top-level">
+                            {{ 'layout.customer.log_out' | t }}
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% endif %}
+                    
+                    {% endfor %} 
+                </ul>
+                  
+                <div class="tab-content drawer__nav__list-right">
+                  {% for block in section.blocks %}
+                    <div class="tab-pane active show" id="{{block.id}}">{{block.settings.content}}</div>
+                  {% endfor %}
+                 
+                  {% for link in linklists[section.settings.main_linklist].links %}
+                  <div class="tab-pane" id="{{link.title | downcase}}"> 
+                    <h2>{{'general.remedy.whats_hot' | t}}</h2>
+                  <ul>
+                  {% for childlink in link.links limit:2%}
+                      <li>
+                          <div><img data-src="{{childlink.object.image | img_url: '300x'}}" class="lazyload"></div>
+                          <a href="{{ childlink.url }}" {% if childlink.active %} aria-current="page"{% endif %}>
+                          {{ childlink.title | escape }}
+                          </a>
+                      </li>
+                      {% endfor %}
+                  </ul>  
+                    <h2>{{'general.remedy.recommended' | t}}</h2>  
+                  <ul> 
+                  {% for childlink in link.links offset:2%}
+                      <li>
+                        <div><img data-src="{{childlink.object.image | img_url: '300x'}}" class="lazyload"></div>
+                          <a href="{{ childlink.url }}" {% if childlink.active %} aria-current="page"{% endif %}>
+                          {{ childlink.title | escape }}
+                          </a>
+                      </li>
+                      {% endfor %}
+                  </ul>
+                  <div class="bt-viewall"><a href="{{link.url}} "> {{ link.title }}  > </a></div>
+                  </div>
+                  {%endfor%}
+                </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('.menu-slider [data-toggle="tab"]').click(function(e) {
+        console.log(this)
+        e.preventDefault();
+        $(this).tab('show');
+    });
+    $('.drawer__nav-item').click(function()
+    {    
+        $('.drawer__nav-item').removeClass('left-active'); 
+        $(this).addClass('left-active'); 
+         
+    }) 
+</script>
+
+<style> 
+.fixed-container>.content.left.menu {    
+    width: 100%; 
+} 
+.menu-slider .tack-call{
+display: flex;
+justify-content: space-between;
+height: 4.2rem;
+align-items: center;
+}
+.menu-slider .tack-call li{
+    flex:0 1 42%; 
+        display: flex;
+    justify-content: center;
+    position:relative;
+    height:100%;
+    align-items: center;
+}
+.menu-slider .tack-call li:first-child{flex:0 1 16%}
+.menu-slider .tack-call li:after{
+    position: absolute;
+    height: 2.4rem;
+    width: 0.1rem;
+    top: auto;
+    left: 0;
+    background: #ddd;
+    content: '';
+}
+.menu-slider .tack-call li:first-child:after{
+    display:none;
+}
+.menu-slider .tack-call .close-new i{
+    font-size: 4rem;
+    margin-top: -.7rem;
+}
+.fixed-container>.content.left.menu .content__box {
+    padding: 0;
+    display: flex;
+    background: #f3f4f8;
+    height: calc(100% - 4.2rem);
+    padding: .5rem 0 0;
+}.menu-slider .tack-call li .photo-plane12{
+    margin-top: -.3rem;
+    font-size: 1.8rem;
+}.menu-slider .tack-call li .photo-kefu2{
+    margin-top: -.4rem; 
+    margin-right: .5rem;
+}
+.fixed-container>.content.left.menu  .drawer__nav {  
+    border-right: 1px solid #e2e2e2;
+    width: 30%;
+    overflow: scroll;
+    height: 100%;  
+    display: initial;
+    flex-direction: column;
+} 
+.menu-slider .drawer__nav .drawer__nav-item { 
+    background: #fff;
+    width: 100%;
+    height: 4.5rem;
+    align-items: center;
+    display: flex;
+    padding: 0 1rem;
+}
+ .menu-slider .drawer__nav .drawer__nav-item a{
+     font-size:1rem;
+ }
+.menu-slider .drawer__nav .drawer__nav-item:last-child{
+    border-bottom: 1px solid #e2e2e2;
+}
+.menu-slider .drawer__nav .drawer__nav-item.left-active{
+    background: #f3f4f8;
+    position:relative;
+}
+.menu-slider .drawer__nav .drawer__nav-item.left-active a{ 
+    color: #e14750;
+    font-weight:600;
+}
+.menu-slider .drawer__nav .drawer__nav-item.left-active:after{
+    position: absolute;
+    height: 1.8rem;
+    background: #e14750;
+    width: .5rem;
+    content: '';
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+}
+.fixed-container>.content.left.menu .drawer__nav__list-right{    
+    height: 94vh;
+    overflow: auto;
+    width: 70%; 
+    padding: 0.6rem;
+}
+.menu-slider .drawer__nav__list-right ul{
+    flex-wrap: wrap;
+    display:flex
+}
+.menu-slider .drawer__nav__list-right ul li{
+    position: relative;
+    width: 50%;
+    background: #fff;
+    text-align: center;
+    padding:1rem .3rem;
+}
+.menu-slider .drawer__nav__list-right ul li div{ 
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+.menu-slider .drawer__nav__list-right .drawer__nav-item-Featured  ul li{
+    position: relative;
+    margin-right: 3px;
+    width: -webkit-calc(50% - 3px);
+    width: calc(50% - 3px);
+    padding:0px; 
+}
+.menu-slider .drawer__nav-item-Featured ul li:last-child{
+    margin-left:3px;
+    margin-right:0px
+}
+.menu-slider .drawer__nav__list-right h2{ 
+    color: #333;
+    font-size: 1em;
+    padding: 0;
+    display: block;
+    text-align: left;
+    margin:.9rem 0 0.6rem 0;
+}
+.menu-slider .drawer__nav-item-Featured ul li span{font-weight:normal}
+.menu-slider .drawer__nav__list-right span.nav-label{position: absolute;
+    top: 4px;
+    background-color: #f33;
+    color: #fff;
+    font-style: italic;
+    font-size: 1.2rem;
+    -webkit-transform: scale(.75);
+    border-radius: 4rem;
+    min-width: 4.4rem;
+    text-align: center;
+    margin-top: 0;
+    text-transform: capitalize;
+    padding: 0 1.4rem;
+    left: 0;    
+} 
+.menu-slider .track-order{
+    background: #fff;
+}
+.menu-slider .track-order > a{
+    color: #000;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size:1rem; 
+    padding: 0;
+    text-transform: uppercase;
+}
+.menu-slider .track-order > a span{
+    padding:0 
+}
+.menu-slider .drawer__nav__list-right .tack-call{
+    background: #fff;   
+    position: absolute;
+    bottom: 0;
+    width: 65%;
+    left: 35%;
+} 
+.menu-slider .drawer__nav__list-right  .bt-viewall{
+margin: 1rem 0 3rem;
+    text-align: center;
+    background: #fff;
+    padding: 1rem;
+    font-weight: 600;
+}
+</style>
+{% schema %}
+{
+  "name": "手机导航设置",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "main_linklist",
+      "label": "选择menu",
+      "default": "main-menu"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "menu_block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "标题"
+        },
+        {
+          "type": "html",
+          "id": "content",
+          "label": "自定义图片文案内容"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

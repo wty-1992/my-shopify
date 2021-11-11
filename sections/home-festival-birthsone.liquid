@@ -1,0 +1,238 @@
+<style>
+  .home-festival-birthsone{
+      background: #f8f8f8;
+  }
+   .home-festival-birthsone .swiper-slide{    
+    list-style: none;
+      width:calc( 25% - 10px );
+        margin-bottom: 2rem;
+  }
+   .home-festival-birthsone .product-card__name{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+        margin: 14px 0 5px 0;
+  }
+ .home-festival-birthsone .product-card__price{
+      text-align: left;
+  }
+   .home-festival-birthsone .product-card__price .product-card__sale-price{
+          color: #000;
+    font-size: 17px;
+  }
+  .home-festival-birthsone .product-card__price .product-card__regular-price{
+    text-decoration: line-through;
+  }
+ .home-festival-birthsone .hot_text{
+      margin: 46px 0 66px 0;
+  }
+   .home-festival-birthsone .swiper-container-horizontal>.swiper-pagination-bullets,  .home-festival-birthsone .swiper-pagination-custom,  .home-festival-birthsone .swiper-pagination-fraction{
+       bottom: 30px;
+   }
+   .home-festival-birthsone .swiper-container-hot{    overflow: hidden;}
+  .home-festival-birthsone .swiper-button-next, .home-festival-collection .swiper-button-prev{    height: 15px;}
+  .home-festival-birthsone .home-daohangqi{
+    position: relative;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    width: 55%;
+    margin: 0 auto;
+    margin-top: 50px;
+  }
+   .home-festival-birthsone .swiper-pagination-clickable .swiper-pagination-bullet {
+    cursor: pointer;
+    margin-right: 5px;
+}
+ .home-festival-birthsone .swiper-button-next,.home-festival-collection .swiper-button-prev{
+      margin-top: -8px;
+  }
+   .home-festival-birthsone .swiper-button-next,  .home-festival-birthsone .swiper-container-rtl .swiper-button-prev{    
+     right: 0px;
+    left: auto;
+   }
+   .home-festival-birthsone .swiper-button-prev,.home-festival-collection .swiper-container-rtl .swiper-button-next{    
+         left: 0;
+    right: auto
+   }
+  .home-festival-birthsone .swiper-pagination-bullet{
+  }
+  .home-festival-birthsone .swiper-pagination-bullet-active{
+      opacity: 1;
+    background: #fff;
+    border: 1px solid #999;
+    transform: scale(1.5);
+  }
+  .home-festival-birthsone .hot_swiper{
+  width:1200px;
+    margin:0 auto;
+        display: flex;
+        justify-content: space-between;
+    flex-wrap: wrap;
+  }
+   .home-festival-birthsone .swiper_text{
+    background: #fff;
+    text-align: center;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding:100px 100px 60px 100px;
+    transform: translateY(-190px);
+  }
+  .home-festival-birthsone .title-description{
+    width: 100%;
+    padding: 0;
+    text-align: left;
+    color: #202020;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .home-festival-birthsone .free-time-shopping{    position: relative;}
+  .home-festival-birthsone .right-b {
+    width: 50%;
+    z-index: 1;
+    position: absolute;
+    left: 12%;
+    top: 53%;
+    text-align: left;
+    transform: translateY(-90%);
+    max-width: 650px;
+}
+  .home-festival-birthsone .right-b .title{
+    text-align: left;
+    font-size: 4rem;
+    color: #000;
+    font-weight: lighter;
+    margin-top: 6rem;
+    margin-left: 0;
+  }
+  .home-festival-birthsone .right-b hr{
+    margin: 2.3rem 0;
+    border: none;
+    width: 130px;
+    height: 2px;
+    background: #000;
+  }
+  .home-festival-birthsone .right-b h3{
+    margin-left: 0;
+    color: #000;
+    font-size: 18px;
+    text-align: left;
+  }
+  .pc_img.position{
+    width: auto;
+    max-width: initial;
+    transform: translateX(-50vw);
+    margin-left: 50vw;
+  }
+  .pc_img{display:block;}
+  .mb_img{display:none;}
+  @media(max-width:768px){
+    .mb_img{display:block;}
+    .pc_img{display:none;}
+    .home-festival-birthsone .swiper_text{
+      padding: 16px;
+      transform: translateY(0px);
+    }
+    .home-festival-birthsone .title-description{
+      width: 91%;
+    }
+    .home-festival-birthsone .hot_swiper{
+      width:100%;
+    }
+    .home-festival-birthsone .swiper-slide {
+      list-style: none;
+      width: calc( 50% - 6px );
+      margin-bottom: 1rem;
+    }
+    .home-festival-birthsone .right-b .title{
+      font-size: 2.2rem;
+      margin-top: 3rem;
+    }
+    .home-festival-birthsone .right-b{
+      width:100%;
+      left: 6%;
+      top: 0;
+      transform: unset;
+    }
+    .home-festival-birthsone .right-b hr{
+      margin: 2.3rem 0 1rem;
+    }
+  }
+
+</style>
+
+<div class="home-free-shopping-box">
+  <div class="free-time-shopping">
+    <img src="{{section.settings.iconimage  | img_url: '1920x' }}  " class="pc_img position">
+    <img src="{{section.settings.mbiconimage  | img_url: '1920x' }}  " class="mb_img">
+    <div class="right-b"> 
+      <h2 class="title">{{section.settings.hot_tittle}}</h2>
+      <hr>
+      <h3>{{section.settings.copyhot_tittle}}</h3>
+      <p class="title-description">
+         {{section.settings.hot_text}}
+    </div>
+  </div>
+  <div class="swiper_text">
+    <div class="hot_swiper">
+      {% assign current_collection = collections[section.settings.collection] %}
+      {% for item in current_collection.products limit: section.settings.limit %}         
+      <li class="item swiper-slide">{% include 'home-product-list', product:item %}</li>
+      {% endfor %}
+    </div>     
+  </div>
+  
+</div>
+{% schema %}
+{
+  "name": "首页 诞生石产品",
+  "class": "home-festival-birthsone",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content":"home-festival-birthsone"
+    },
+    {
+      "type": "image_picker",
+      "id": "iconimage",
+      "label": "背景图"
+    },
+	{
+      "type": "image_picker",
+      "id": "mbiconimage",
+      "label": "MB背景图"
+    },
+	{
+      "type": "text",
+      "id": "hot_tittle",
+      "label": "产品标题"
+    },
+{
+      "type": "text",
+      "id": "copyhot_tittle",
+      "label": "产品副标题"
+    },
+	{
+      "type": "text",
+      "id": "hot_text",
+      "label": "产品介绍"
+    },
+	{
+      "type": "collection",
+      "id": "collection",
+      "label": "产品集合"
+    },
+{
+          "type": "range",
+          "id": "limit",
+          "label": "产品limit总数量",
+          "min": 1,
+          "max": 80,
+          "step": 1,
+          "default": 4
+        }
+  ]
+}
+{% endschema %}

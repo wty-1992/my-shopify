@@ -1,0 +1,272 @@
+{% if productTags contains 'custom-default-name' %}
+	{% assign cattributeValue = '{"productImage":1,"coors":[{"placeholder":"Enter name here...","limit":"12"}]}' %}
+{% elsif product.metafields["global"]["cattribute"] %}
+	{% assign cattributeValue = product.metafields["global"]["cattribute"] %}
+{% else %}
+	{% assign cattributeValue = '{"coors":[{"limit":20,"font":"TimesNewRoman"}],"fontList":["TimesNewRoman","AlluraRegular","AppleChancery","holyunion","NexaScript-Free"]}' %}
+
+{% endif %}
+
+{%comment%}通过标签获取默认年份 {%endcomment%}
+{% assign defaultName = '' %}
+{% for tag_item in product.tags %}
+  {% if tag_item contains "custom-default-name-" %}
+    {% assign defaultName = tag_item | strip | replace: "custom-default-name-", "" %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+<div class="option-text-container">
+  <div id="t_font"></div>
+  <div id="t_color"></div>
+  <div id="t_name"></div>
+  
+  <input type="hidden" id="customInfo" name="properties[customInfo]" />
+</div>
+<!-- {{product.metafields["global"]}} -->
+<script>
+  var jsonCustom = '{{ cattributeValue }}'?JSON.parse('{{ cattributeValue }}'):{};
+  
+  var defaultName = '{{defaultName}}';
+  var productImage = typeof jsonCustom.productImage != 'undefined' ? jsonCustom.productImage : 0;
+  var productImageUrl = "{{product.images[0] |img_url: '1000x1000' | prepend: 'https:'}}";
+    console.log(productImageUrl);
+  
+  //拼接名字的方法
+  Product.validators.push(async () => {
+    var zenFlag = true;
+    
+    var nameNum = $('.fonttext').length;
+    
+    $('#customInfo').val('');
+    
+    if(nameNum > 0){
+       var zenCustomJson = {};
+    
+      if(productImage == 1){
+          zenCustomJson['_sunzi_effect'] = productImageUrl;
+      }
+    	
+      for(var i=0;i<nameNum;i++){
+        console.log($('#font-text'+i).val());
+        if( $.trim($('#font-text'+i).val()) == '' && jsonCustom.coors[i].isOption != 1 ){
+          $('#fonttext'+i).css('border-color', 'red');
+          zenFlag = false;
+        }else{
+          $('#fonttext'+i).css('border-color', '#f8f8f8');
+        }
+      }
+      
+
+      var textArr = [];
+      $("[name='fonttext']").each(function(i, v){
+        if(nameNum > 1){
+          var label = i+1;
+          {% if productTags contains "custom-data-new" %}
+          textArr.push($(this).val());
+          {% else %}
+          textArr.push(label +':'+ $(this).val());
+          {% endif %}
+        }else{
+          textArr.push($(this).val());
+        }
+
+      });
+
+      
+      {% if productTags contains "custom-data-new" %}
+      zenCustomJson._sunzi_texts = []
+      textArr.forEach((e,i)=> {
+        zenCustomJson._sunzi_texts.push({
+          value: e,
+          font: $(".font-select").val(),
+          number: i+1
+        })
+      })
+      {% else %}
+      zenCustomJson['_sunzi_text'] = {};
+
+      zenCustomJson['_sunzi_text']['value'] = textArr.join(' ');
+      if($(".font-select").length > 0){
+      	zenCustomJson['_sunzi_text']['font'] = $(".font-select").val();
+      }else if(jsonCustom.coors[0].font && zenCustomJson['_sunzi_text']['value']){
+      	zenCustomJson['_sunzi_text']['font'] = jsonCustom.coors[0].font;
+      }
+      
+      if($(".color-select").length > 0){
+      	zenCustomJson['_sunzi_text']['fontColor'] = $(".color-select").val();
+      }
+      {% endif %}
+      
+    }
+    
+    $('#customInfo').val(JSON.stringify(zenCustomJson));
+
+    return zenFlag;
+  })
+  
+  function changeText(i,obj,limitv){
+    var objLenOld = $(obj).val().length;
+    var objVal = $(obj).val().replace(/[\r\n]/g,"");
+    var objLen = objVal.length;
+
+    if(objLen < objLenOld){
+      $(obj).attr('maxlength',limitv + objLenOld - objLen);
+    }else{
+      $(obj).attr('maxlength',limitv);
+    }
+
+    if(objLen > limitv){
+      var lenDiff = objLen - limitv;
+      $(obj).val($(obj).val().substr(-1,lenDiff));
+      $('#leftnum'+i).text(0);
+    }else{
+      $('#leftnum'+i).text(parseInt(limitv) - objLen);
+    }
+    
+    let coorOption = $(obj).data('option');
+    
+    if(coorOption){
+      if($.trim($(obj).val()) != ''){
+        setShopifyVariant(coorOption, jsonCustom.coors[i].optionValue[0]);
+      }else{
+        setShopifyVariant(coorOption, jsonCustom.coors[i].optionValue[1]);
+      }
+    }
+  }
+  
+  function setShopifyVariant(markup, val){
+    $(".selector-wrapper label").each(function( index ) {
+      if($.trim($(this).text()).indexOf(markup) > -1){
+        $(this).next('select').val(val).trigger('change');
+      }
+    });
+  }
+  
+  Listener.on([ Listener.product.update.after ], function(event, variant, dom) {  
+    if(productImage && variant.featured_image){
+      productImageUrl = variant.featured_image.src;
+    }
+
+  });
+  
+  
+  $(document).ready(function(){
+    
+    var _zenSku = "{{product.selected_or_first_available_variant.sku}}";
+    
+    getOptionText();
+    
+    $('.fonttext').each(function(i,v){
+      if($(this).val()){
+        let limitNum = parseInt($(this).attr('maxlength'));
+        changeText(i,$(this),limitNum);
+      }
+    });
+    
+    jsonCustom.coors.forEach(function(cc,ii){
+      if(cc.option){
+      	$(".selector-wrapper").each(function( index ) {
+          if($.trim($(this).find('label').text()).indexOf(cc.option) > -1){
+            $(this).hide();
+          }
+        });
+      }
+    })
+    
+  });
+  
+  
+    function getOptionText() {
+      
+        $('#t_name').html('');
+
+        var currentCoors = jsonCustom.coors;
+
+        var html = '';
+        currentCoors.forEach(function(item,m){
+          var inputVal = typeof item.value != 'undefined' ? item.value : '';
+          var placeHolder = typeof item.placeholer != 'undefined' ? item.placeholer : "{{'zen.cropCarving.type_name' | t}}";
+          var textOption = item.option || "";
+
+          if(inputVal){
+            html += '<div class="fonttext-container" id="fonttext'+m+'" style="display:none;">';
+          }else{
+            html += '<div class="fonttext-container" id="fonttext'+m+'">';
+          }
+          
+          inputVal = defaultName ? defaultName : inputVal;
+          
+          var fontStyle = '';
+          
+          if(item.font){
+            fontStyle = 'style="font-family:'+item.font+'"';
+          }
+          if(item.label){
+          	html += '<label class="fonttext-label">'+item.label+'</label>';
+          }
+          html += '<input type="text" class="fonttext option-fonttext" data-option="'+textOption+'" data-font="'+item.font+'" '+fontStyle+' id="font-text'+m+'" name="fonttext" maxlength="'+item.limit+'" value="'+inputVal+'" oninput="changeText('+m+',this,'+item.limit+')" placeholder="'+placeHolder+'" required/>';
+          html += '<div class="leftnum" id="leftnumbox'+m+'"><span id="leftnum'+m+'">'+item.limit+'</span> Left</div></div>';
+        });
+
+        $('#t_name').html(html);
+      	
+        $('#t_color').html('');
+        if(typeof jsonCustom.colorList != 'undefined'){
+          
+          var colorHtml = '' ;
+          var colorList = jsonCustom.colorList;
+          console.log(colorList.length);
+
+          colorHtml += '<div class="color-container"><label>{{'variant.title.Color' | t}}:</label><select class="color-select">';
+
+          colorList.forEach(function(item,index){
+            colorHtml += '<option value="'+item.color+'" style="color:'+item.color+'">'+item.label+'</option>'
+          });
+          colorHtml += '</select></div>';
+
+          console.log(colorHtml);
+          
+		  $('#t_color').html(colorHtml);
+          
+          $(".fonttext").css("color",$('.color-select').val());
+
+          $('.color-select').on("change",function(){
+            $(".fonttext").css("color",$(this).val());
+          });
+        }
+        
+        $('#t_font').html('');
+        if(typeof jsonCustom.fontList != 'undefined'){
+          var fontHtml = '' ;
+          var fontList = jsonCustom.fontList;
+
+          fontHtml += '<div class="font-container"><label>{{'zen.general.font' | t}}:</label><select class="font-select">';
+
+          fontList.forEach(function(item,index){
+            fontHtml += '<option value="'+item+'" style="font-family:\''+item+'\'">'+item+'</option>';
+          });
+          fontHtml += '</select></div>';
+
+          $('#t_font').html(fontHtml);
+          
+          $(".fonttext").css("font-family","'"+$(".font-select").val()+"'");
+      
+          $(".font-select").on("change",function(){
+            $("#fontfamily").val($(this).val());
+            console.log($('.color-select').val());
+            if($('.color-select').length > 0){
+              $(".fonttext").attr("style","font-family:'"+$(this).val()+"';color:"+$('.color-select').val()+";");
+            }else{
+              $(".fonttext").attr("style","font-family:'"+$(this).val()+"'");
+            }
+
+          });
+          
+        }
+        
+    }
+  
+  
+  
+</script>

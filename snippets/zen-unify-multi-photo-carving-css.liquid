@@ -1,0 +1,87 @@
+<style>
+  .area-photo-upload,.area-carving{
+    background: #f7f8fa;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    height: 3rem;
+    margin: 1rem 0;
+    border-radius: 4px;
+    border: 1px solid transparent;}
+  .area-photo-upload-flex .avatar-uploader,.btn-carving-open{    cursor: pointer;
+    background: #000;
+    border-radius: 25px;
+    padding: 3px 1rem;
+    width: auto;
+    color: #fff;
+    border: none;}
+  .el-upload button{background: transparent;
+    border: none;
+    color: #fff;
+    text-align: center;
+    text-transform: capitalize;
+    display: inline-block;}
+  .textarea-text{width: 100%;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #000;
+    border-radius: 4px;
+    height: 3rem;}
+  .carving-textarea input{
+    border: none;
+    border-radius: 0; 
+    width: calc(100% - 16px); 
+    padding: 0 8px;
+    color: #000;}
+  .textarea-text .leftnum{    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);}
+  .operation-part{padding:0 2rem}
+  .dialog-footer-carving{
+    padding: 15px 2rem;}
+  .carving-info{padding:0 2rem}
+  .el-button--primary,.el-button--primary.is-active, .el-button--primary:active{
+    background-color: #e74c3c!important;
+    border-color: #e74c3c!important;}
+  .dialog-footer .el-button {
+    padding: 1rem 2rem;
+    font-size: 14px;
+    border-radius: 3px;
+    margin-left: 10px;
+  } .el-dialog{min-width:543px} 
+  .el-dialog__headerbtn .el-dialog__close{font-size:28px}
+  .zen-photo-carving{margin-bottom:1rem}
+  .el-dialog--center {
+    width: 60% !important;
+  }.carving-container .custom-carving-container {
+    display: flex;
+  }.carving-container .custom-carving-container .operation-part {
+    width: 48%;
+    padding: 20px;
+  }.carving-info .note-info {
+    color: #ed484e;
+    margin: 10px 0;
+  }.carving-notice{font-size:13px;}
+  @media(max-width:768px){.carving-container .custom-carving-container {
+    display: flex;
+    flex-direction: column;
+  }
+    .el-dialog--center .el-dialog__body {
+      text-align: initial;
+      padding: 25px 15px 30px;
+    }
+    .el-dialog{min-width:100%}
+    .canvas-container{margin:10% auto 0 auto}
+    .carving-container .custom-carving-container .operation-part {
+      width: 100%;
+      padding: 0; }
+    .el-button.btn-carving {
+      width: 50%;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+    }
+  }
+</style>

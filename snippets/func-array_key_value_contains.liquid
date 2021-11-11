@@ -1,0 +1,16 @@
+{% comment %} 
+    数组对象元素值匹配
+    [array] 验证数组
+    [key] 对象键
+    [value] 比对值
+    @return true|false
+{% endcomment %}
+{%- assign func__array_key_value_contains_result = false -%}
+{%- if array -%}
+    {%- for item in array -%}
+        {%- if item[key] == value -%}
+            {%- assign func__array_key_value_contains_result = item -%}
+            {% break %}
+        {%- endif -%}
+    {%- endfor -%}
+{%- endif -%}

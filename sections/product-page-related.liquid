@@ -1,0 +1,311 @@
+ 
+<style type="text/css">
+.product-related .product-card {
+  position: relative;
+  display: block;
+  z-index: 1;
+}
+#shopify-section-product-page-related{
+  margin: 15px 0px;
+}
+#shopify-section-product-page-related .old-price .price,.special-price .price{font-size: 12px;}
+#shopify-section-product-page-related .old-price .price{color:#717171}
+#shopify-section-product-page-related .ViewGoods {display: flex;align-items:center;background:#fbfbfb;color: #000;width: 100%;margin-bottom: 20px;cursor: pointer;}
+#shopify-section-product-page-related .assoclate{display: flex;align-items: center;justify-content: space-between;width: 100%;}
+#shopify-section-product-page-related .ViewGoods:hover{color: #000;}
+#shopify-section-product-page-related .ViewGoods .recommend-l .name {letter-spacing: -0.1px;width: 210px;overflow: hidden;text-overflow: ellipsis;display: block; color: #bbb;font-size: 12px;line-height: 1;}
+#shopify-section-product-page-related .ViewGoods .recommend-r {width:45px;margin: 5px 2px;background: #fff;}
+#shopify-section-product-page-related .ViewGoods .recommend-r img {width: 100%;}
+#shopify-section-product-page-related .recommend-list {display: flex;align-items: center;}
+#shopify-section-product-page-related .recommend-l{padding-left:15px;}
+#shopify-section-product-page-related .recommend-l .fw{font-size: 12px;color:#555;}
+#shopify-section-product-page-related .assoclate .recommend-r.element-r {height: 45px;display: inline-block;line-height: 40px;font-size: 20px;background: #fbfbfb;width: 45px;text-align: center;}
+.product-related .product-card__image-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}.product-card__image-wrapper .product-card__tag {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.product-related .associatedGoods-title {text-align: center;width: 100%;font-size: 2.1rem;;color: #292929;text-transform:uppercase;margin-bottom: 2rem;font-family: "Microsoft YaHei";}
+.product-related{width:100%;text-align:center;padding: 3.6rem 2.5rem 1.83rem;flex-direction: column;overflow: hidden;} 
+.product-related .view-associatedGoods li .product-card__info .medium-up--btn{display:none;}
+.product-related .view-associatedGoods li .product-card__info .product-card__name{height: 2rem;color:#bbbbbb;}
+.product-related .view-associatedGoods li:hover .product-card__info .product-card__name{/*white-space: unset;*/color: #000;}
+.product-related .view-associatedGoods li .product-card__image{padding:0 15px;}
+.product-related .view-associatedGoods li .product-card__info .product-card__sale-price{color:#e81150;font-size: 12px;}
+.product-related .view-associatedGoods li .product-card__info .product-card__regular-price{text-decoration: line-through;}
+.product-related .product-card__price {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+}
+.product-related .product-card__regular-price {
+  opacity: 1;
+  color: #000;
+  font-size: 12px;
+  padding-left: 5px;
+}
+.product-related .product-card__info .product-card__name {
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-align: left;
+  color: #333;
+  line-height: 1.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 1.8rem;
+  margin-top: 5px;
+}
+.product-related .product-card__info {
+  margin-bottom: 1rem;
+  width: 100%;
+  text-align: center; 
+}
+.view-associatedGoods-grid .swiper-slide{
+  height: auto;
+}
+@media(min-width:768px){
+  .product-related .view-associatedGoods{height: 450px;overflow-y: auto;display: flex;flex-wrap: wrap;padding:2rem 0;align-items:inherit;}
+  .product-related .view-associatedGoods li{width: calc(20% - 10px);margin: 0 5px 10px;cursor: pointer;}
+}
+@media(max-width:640px){
+.view-associatedGoods-grid{
+  width: 100%;
+  overflow: hidden;
+}
+.custom-product-related.tingle-modal--visible .tingle-modal-box{
+  overflow: visible;
+}
+.tingle-modal-box__content .product-related .close-new{
+  right: 0;
+  top: -2px;
+  color: #fff;
+}
+#shopify-section-product-page-related{margin: 15px 20px 0;}
+#shopify-section-product-page-related .ViewGoods{margin-bottom: 0;}
+.product-related{padding: 0;height:100%;overflow: visible;}
+.tingle-modal-box__content .close-new i{line-height:1;}
+.product-related .view-associatedGoods li .product-card__image{padding:0;}
+.product-related .view-associatedGoods li .product-card__info .product-card__price{flex-direction: unset;justify-content: center;}
+#shopify-section-product-page-related .recommend-list{width:68%;position: relative;justify-content: center;padding-right: 15px;}
+#shopify-section-product-page-related .recommend-list:before ,#shopify-section-product-page-related .recommend-list:after {display:none;content:'';width:8px;height:2px;background:#444;position: absolute;}
+#shopify-section-product-page-related .recommend-list:before {transform: translate(62px,0px) rotate(32deg);}
+#shopify-section-product-page-related .recommend-list:after {transform:translate(62px,4px) rotate(-32deg);}
+#shopify-section-product-page-related .recommend-list .recommend-r:nth-child(n + 5){display:none;} 
+#shopify-section-product-page-related .assoclate .recommend-r.element-r{display:block}
+#shopify-section-product-page-related .ViewGoods .recommend-r{width: 50px;margin: 2px 2px;}
+#shopify-section-product-page-related .ViewGoods .recommend-r:nth-child(n+2),#shopify-section-product-page-related .assoclate .recommend-r.element-r{display: none;}
+#shopify-section-product-page-related .ViewGoods .recommend-r:nth-child(1){
+  display: flex;
+  align-items: center;
+}
+#shopify-section-product-page-related .ViewGoods .recommend-r:nth-child(1)::after{
+  content: "\e72c";
+  font-family: "photofont";
+  padding-left: 10px;
+  color: #555;
+}
+.product-related .view-associatedGoods li .product-card__info .product-card__name{
+  height: auto;
+  color: #000;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0;
+}
+.product-related .associatedGoods-title{
+  font-size: 12px;
+  font-weight: 600;
+  color: #555;
+  text-align: left;
+  margin: 15px 0 12px;
+  line-height: 1;
+  font-family: "ProximaNova-Regular";
+}
+.view-associatedGoods-grid .swiper-slide{
+  border: 1px solid #f3f3f3;
+}
+.product-related .product-card__info {
+  margin-bottom: 0;
+  padding: 20px 5px ;
+  width: 100%;
+  text-align: center;
+}
+
+.product-related .product-card__sale-price {
+  font-size: 1.3rem;
+}
+.tingle-modal.custom-product-related .tingle-modal-box{
+  position: absolute;
+  bottom: 0;
+  top: unset;
+  height: 310px;
+}
+.product-page-related-section #product-related{
+  display: block !important;
+  height:0;
+  overflow: hidden;
+}
+
+}
+</style> 
+
+<div id="product-related" class="product-related simple--modal" style="display: none;">
+  <button type="button" class="close-new" data-action="close"><i class="photofont icon photo-close"></i></button>
+  <p class="associatedGoods-title"> {{section.settings.text_title}}</p>
+  <div class="view-associatedGoods-grid">
+    <ul class="view-associatedGoods swiper-wrapper"> 
+      {% assign images = '' | split: '' %}
+      {% assign name = '' %}
+      {% assign counter = 0 %}
+      {% assign productTags = product.tags | join:',' | append: ',' %}
+      {% assign limit = 10 %}
+
+      {% for block in section.blocks %}
+        {% if block.type =='collection' %}
+          {% include 'func-verify_rules', contain: block.settings.contain, detail: product %}
+          {% unless verify__rules_result == false %}
+		  {% assign counter = counter | plus:1 %}
+      	  {% assign jsonTurn = block.settings.contain2 | replace: "},", "}&"  %}
+          {% assign dataArr = jsonTurn | split: '&' %}
+          {% for item in dataArr %}
+          {% assign dataStr = item | remove: "{" | remove: "}" | remove: '"' | split: ',' %}
+          {%- assign dataItem = dataStr.last | remove: "handle:"| lstrip -%}      	  
+              {% assign pro = all_products[dataItem] %}      
+      		  {% assign image = pro.featured_image | img_url: '90x' | split: '@SHOPIFY@' %}
+              {% assign images = images | concat: image %}
+      			<script>
+                var ade{{forloop.index}} = {{pro | json}};
+              </script>
+              <li class="swiper-slide"> 
+              <a href="{{ pro.url }}" class="product-card">
+                  <picture>
+                      <img
+                      data-src="{{ pro.featured_image | img_url: '300x' }}"
+                      class="scrollable-01-div-img lazyload"
+                      alt="{{ pro.featured_image.alt | escape }}" />
+                  </picture>
+                  <div class="product-card__info">
+                      {% if pro.available %}
+                      <div class="product-card__price">
+                          <span class="product-card__sale-price" data-money="{{ pro.price }}"></span>
+                          <span class="product-card__regular-price" data-money="{{ pro.compare_at_price }}"></span>
+                      </div>
+                      {% else %}
+                      <div class="product-card__availability">{{ 'search.product.sold_out' | t }}</div>
+                      {% endif %} 
+                      <div class="product-card__name">{{ pro.title }}</div>
+                  </div>
+              </a>
+              </li>
+          {% endfor %}
+          {%endunless%}
+        {%endif%}
+      {%endfor%}
+    </ul>
+  </div>
+</div>
+
+{% if counter > 0 %}
+<a class="ViewGoods" onclick="Dialog.open('#product-related',{'cssClass':['custom-product-related'],onOpen:ModalOpen()})">
+    <div class="fl c55 assoclate">
+        <div class="recommend-l t-left lh16">
+            <span class="fw">
+                <b>{{limit}}{{ 'product.related.similar_products' | t }}:</b>
+            </span>            
+            <span class="name"><nobr>{{ 'product.related.similar_describe_products' | t }}</nobr></span>           
+        </div>
+        <div class="recommend-list">
+          {% assign i = 0 %}
+          {% for image in images %}
+            {% assign i = i | plus:1 %}
+            {% if i > 5 %}
+            {% break %}
+            {% endif %}
+            <div class="recommend-r"><img class="lazyload" data-src="{{ image }}"/></div>
+          {% endfor %}
+          <div class="recommend-r element-r">...</div>
+        </div>
+    </div>
+</a>
+<script> 
+  
+function ModalOpen(){
+if($(window).width()<768){
+  var swiperRelated = new Swiper('.view-associatedGoods-grid', {
+    slidesPerView: 2.3,
+    spaceBetween: 8, 
+    slidesOffsetBefore : 15,
+  });
+}
+
+}
+
+</script>
+{% endif %}
+<script>
+  let asdqweasdasd = {{all_products[""]|json }};
+  </script>
+{% schema %}
+{
+    "name": "产品页 - 关联商品",
+    "class": "product-page-related-section",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "product-page-related"
+      },
+      {
+        "type": "text",
+        "id": "related_tag",
+        "label": "符合关联商品的标签形式",
+        "default":"related-1-",
+        "info":"如： 包含 related-1- 前缀的就代表是关联商品"
+      },
+      {
+        "type": "text",
+        "id": "text_title",
+        "label": "标题",
+		"default":"SIMILAR PRODUCTS"
+      }
+    ],
+	"blocks": [
+    {
+      "type": "collection",
+      "name": "related_products",
+       "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "哪个类型"
+          },
+          {
+           "type": "collection",
+           "id": "related_collection",
+           "label": "Collection"
+          },
+          {
+            "type": "textarea",
+            "id": "contain",
+            "label": "显示规则",
+            "info": "{\"handle\": \"a,b,c...\", \"sku\": \"C021,C022...\"}"
+          },
+          {
+            "type": "textarea",
+            "id": "contain2",
+            "label": "产品"
+          }
+
+        ]
+      }
+    ]
+}
+{% endschema %}

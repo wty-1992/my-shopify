@@ -1,0 +1,104 @@
+{% comment %} 增加insurance勾选功能 2020.07.29 by anna{% endcomment %}
+{% assign insuranceButton = false %}
+{% assign insuranceTitle = 'Do-Lt-Yourself Gift Kit' %}
+{% for block in section.blocks %}
+  {% if block.type =='warranty_group' %}
+    {% if productTags contains block.settings.box_tag %}
+      {%- assign product_insurance = all_products[block.settings.product] -%} 
+      {%- assign insurancefirstVariant = product_insurance.first_available_variant -%}
+      {% assign insuranceButton = true %}
+      {% assign insuranceTitle = block.settings.title1%}
+	  {% assign insuranceDesc = block.settings.desc%}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+{% if insuranceButton == true %}
+<style>
+.insurance-info{
+  padding: 10px 10px;
+  background: #e5e5e5;
+  margin-bottom:15px;
+  font-size: 14px;
+  color: #6d6d6d;
+  display: block;
+  align-items: center;
+  justify-content: end;
+  margin-top: 15px;
+}
+.insurance-info input{
+  width: 15px;
+  transform: translateY(2px);
+}
+.insurance-info label{
+  margin-bottom: 0;
+  margin-left: 5px;
+  font-weight: 500;
+  color: #000;
+  text-transform: capitalize;
+}
+.extended-insurance-tip{
+  line-height: 1;
+  padding-left: 26px;
+  color: red;
+  width: 100%;
+  margin-top: 10px;
+  display: none;
+}
+.insurance-info input:checked ~ .extended-insurance-tip{
+  display: block;
+}
+@media(max-width:768px){
+  .insurance-info{
+    padding: 6px 10px;
+  }
+}
+</style>
+<div class="insurance-info">
+  <input type="checkbox" id="insuranceBox" value="{{insurancefirstVariant.id}}">
+  <input type="text" id="insuranceService" name="properties[insuranceService]" value="" style="display:none" />
+  <label>{{insuranceTitle}}</label> 
+  <div class="extended-insurance-tip">{{insuranceDesc}}</div>
+</div>
+<script>
+  $('#insuranceBox').change(function(){
+    if($(this).is(':checked')){
+      $('.copyshopify-payment-button__button').hide();
+      $('#insuranceService').val('insurance Service');
+    }else{
+      $('.copyshopify-payment-button__button').show();
+      $('#insuranceService').val("");
+      if($('.temp-insurance').length>0){
+        $('.temp-insurance').remove();
+      }
+    }
+  })
+  
+  function cateTempInsurance(){
+    var t = jQuery('[name="id"]').val();
+    document.querySelectorAll("[name^='properties[']").forEach(function(e,item){
+      var n = "radio" !== e.type || e.checked;
+      //"properties[_tempVip]" != e.name && "" != e.value && n && (t += e.name + ":" + e.value + ",")
+      ("properties[_tempId]" != e.name && "properties[_tempVip]" != e.name  && "properties[_tempInsurance]" != e.name) && "" != e.value && n && (t += e.name + ":" + e.value + ",")
+    })
+    var e, n, r, i = 0;                
+    for (e = 0, r = t.length; e < r; e++){
+      n = t.charCodeAt(e),
+        i = (i << 5) - i + n,
+        i |= 0;  
+    }
+    return i;
+  }
+  
+  function cateTempInsuranceHtml(){
+    if($('.temp-insurance').length>0){
+      $('.temp-insurance').remove();
+    }
+    var catetempinsurance = cateTempInsurance();
+    var html = "<div class='temp-insurance'>";
+    html += "<input name='properties[_tempInsurance]' type='hidden' value="+ catetempinsurance +">";
+    html += "</div>";
+    $('#insuranceService').after(html);
+  }
+</script>
+{% endif %}

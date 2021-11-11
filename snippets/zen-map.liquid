@@ -1,0 +1,288 @@
+{% if productTags contains 'custom-pillowcase-mapus' %}
+{% assign citys = 'Alabama,Alaska,Arizona,Arkansas,California,Colorado,Connecticut,Delaware,Florida,Georgia,Hawaii,Idaho,Illinois,Indiana,Iowa,Kansas,Kentucky,Louisiana,Maine,Maryland,Massachusetts,Michigan,Minnesota,Mississippi,Missouri,Montana,Nebraska,Nevada,New Hampshire,New Jersey,New Mexico,New York,North Carolina,North Dakota,Ohio,Oklahoma,Oregon,Pennsylvania,Rhode Island,South Carolina,South Dakota,Tennessee,Texas,Utah,Vermont,Virginia,Washington,Washington D.C.,West Virginia,Wisconsin,Wyoming' | split: ","%}
+{% elsif productTags contains 'custom-pillowcase-mapuk' %}
+{% assign citys = 'Highland,Moray,Aberdeenshire,Aberdeen,Angus,Perth and Kinross,Stirling,Argyll and Bute,Fife,Clackmannanshire,Falkirk,North Lanarkshire,East Dunbartonshire,Glasgow,West Dunbartonshire,Inverclyde,Renfrewshire,East Renfrewshire,North Ayrshire,South Ayrshire,East Ayrshire,South Lanarkshire,West Lothian,Edinburgh,Midlothian,East Lothian,Scottish Borders,Dumfries and Galloway,Cumbria,Northumberland,Tyne and Wear,Durham,Hartlepool,Darlington,Stockton-on-Tees,Middlesborough,Redcar and Cleveland,North Yorkshire,Lancashire,Blackpool,Blackburn with Darwen,West Yorkshire,York,East Riding of Yorkshire,Kingston upon Hull,North Lincolnshire,South Yorkshire,Greater Manchester,Merseyside,Halton,Warrington,Cheshire West and chester,Cheshire East,Derbyshire,Derby,Nottinghamshire,Nottingham,Lincolnshire,Rutland,Leicestershire,Leicester,Staffordshire,Stoke-on-Trent,Shropshire,Telford and Wrekin,Herefordshire,Worcestershire,West Midlands,Warwickshire,Northamptonshire,Peterborough,Cambridgeshire,Norfolk,Suffolk,Essex,Hertfordshire,Central Bedfordshire Luton,Bedfordshire,Bedford,Milton Keynes,Buckinghamshire,Oxfordshire,Gloucestershire,South Gloucestershire,Bristol,North Somerset,Bath and North East Somerset,Wiltshire,Swindon,West Berkshire,London,Thurrock,Southend-on-Sea,Kent,Medway,East Sussex,Brighton and Hove,West Sussex,Surrey,Hampshire,Southampton,Portsmouth,Isle of Wight,Dorset,Poole,Bournemouth,Somerset,Devon,Torbay,Plymouth,Cornwall & the Isles of Scilly,Swansea,Neath Port Talbot,Bridgend,The Vale of Glamorgan,Cardiff,Newport,Monmouthshire,Torfaen,Caerphilly,Rhondda Cynon Taff,Merthyr Tydfil,Blaenau Gwent,Powys,Carmarthenshire,pembrokeshire,Ceredigion,Gwynedd,Isle of Anglesey,Conwy,Denbighshire,Wrexham,Flintshire,Isle of Man' | split: ","%}
+{% elsif productTags contains 'custom-pillowcase-mapde' %}
+{% assign citys = 'Schleswig-Holstein,Mecklenburg-Vorpommern,Hamburg,Niedersachsen,Bremen,Berlin,Brandenburg,Sachsen-Anhalt,Sachsen,Nordrhein-Westfalen,Hessen,Thüringen,Rheinland-Pfalz,Saarland,Baden-Württemberg,Bayern' | split: ","%}
+{% elsif productTags contains 'custom-pillowcase-mapau' %}
+{% assign citys = 'Western Australia,Northern Territory,Queensland,South Australia,New South Wales,Australian Capital Territory,Victoria,Tasmania' | split: ","%}
+{% endif %} 
+{% for tag in product.tags %}
+  {% if tag contains 'custom-map-select-' %}
+      {% assign select = tag | remove: "custom-map-select-" | split:"-" %}
+  {% endif %}
+  {% if tag contains 'custom-map-input-' %}
+      {% assign input = tag | remove: "custom-map-input-" | split:"-" %}
+  {% endif %}
+  {% if tag contains 'custom-map-selectTitle-' %}
+      {% assign selectTitle = tag | remove: "custom-map-selectTitle-" | split:"-" %}
+  {% endif %}
+  {% if tag contains 'custom-map-selectPlaceholder-' %}
+      {% assign selectPlaceholder = tag | remove: "custom-map-selectPlaceholder-" | split:"-" %}
+  {% endif %}
+  {% if tag contains 'custom-map-inputTitle-' %}
+      {% assign inputTitle = tag | remove: "custom-map-inputTitle-" | split:"-" %}
+  {% endif %}
+  {% if tag contains 'custom-map-inputPlaceholder-' %}
+      {% assign inputPlaceholder = tag | remove: "custom-map-inputPlaceholder-" | split:"-" %}
+  {% endif %}
+  {% if tag contains 'custom-map-inputLimit-' %}
+      {% assign inputLimit = tag | remove: "custom-map-inputLimit-" | split:"-" %}
+  {% endif %}
+{% endfor %}
+
+{% assign cattrSKU = product.first_available_variant.sku %}
+
+{% for item in select %}
+	<div class="selector-step searchDiv">
+        <div class="serial correct">{{ item }}</div>
+        <div class="content">
+          <div class="label"><span>*</span> {{ selectTitle[forloop.index0] }}</div>
+          <input type="text" id="index{{ item }}" class="indexInput inputV" placeholder="{{ selectPlaceholder[forloop.index0] }}" AUTOCOMPLETE="OFF"/>
+          <div id="selectBox{{ item }}" class="selectSearch">
+              <ul id="select{{ item }}" class="select"></ul>
+          </div>
+        </div>
+    </div>
+{% endfor %}
+{% assign i = 0 %}
+{% for item in input %}
+	{% assign i = i | plus: 1 %}
+	<div class="selector-step searchDiv">
+      <div class="serial correct">{{ item }}</div>
+      <div class="content text_info">
+        <div class="label"><span>*</span> {{ inputTitle[forloop.index0] }}</div>
+        <div class="custom-index">
+          <input type="text" class="input-cusom-text inputText inputV" value="" maxlength="{{ inputLimit[forloop.index0] }}" placeholder="{{ inputPlaceholder[forloop.index0] }}" AUTOCOMPLETE="OFF">
+          <span><b>*</b><i class="txtNum">{{ inputLimit[forloop.index0] }}</i>left</span>
+        </div>
+      </div>
+    </div>
+{% endfor %}
+	<input type="hidden" name="properties[custom_info]"  id="custom_info"/>
+
+<div class="selectListNone">
+{% for city in citys %}
+	<div>{{city}}</div>
+{% endfor %}
+</div>
+<script>
+    $(function(){
+      	// 限制字符
+        var txt = document.querySelectorAll(".input-cusom-text");
+        var txtNum = document.querySelectorAll(".txtNum");
+        var sw = false;
+        for (var i = 0; i < txt.length; i++) {
+            txt[i].addEventListener("input",
+            function(e) {
+                if (sw == false) {
+                    countTxt(e);
+                }
+            });
+            txt[i].addEventListener("cut",
+            function(e) {
+                console.log('cut')
+                if (sw == false) {
+                    countTxt(e);
+                }
+            });
+            txt[i].addEventListener("compositionstart",
+            function() {
+                sw = true;
+            });
+            txt[i].addEventListener("compositionend",
+            function() {
+                sw = false;
+                countTxt();
+            });
+        }
+        function countTxt(e) {
+            if (sw == false) {
+                for (var o = 0; o < txtNum.length; o++) {
+                    for (var i = 0; i < txt.length; i++) {
+                        if (txt[o].value.length === 0) {
+                            txtNum[o].textContent = txt[o].getAttribute('maxLength');
+                        } else {
+                            if (txt[o].value.replace(/(^\s*)|(\s*$)/g, "") != '') {
+                                txtNum[o].textContent = txt[o].getAttribute('maxLength') - txt[o].value.length;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+      
+      	// 获取所有选项转数组
+    	var listNone = document.querySelectorAll('.selectListNone div');
+        var selectData = []
+        listNone.forEach((item,index)=> {
+            selectData.push(item.innerHTML);
+        })
+        // options
+        // options.dataStr     数据字符串
+        // options.selectBox   下拉框的选择器
+        // options.inputId     输入框选择器
+
+        class Search{
+            constructor(options) {
+                this.data=this.initData(options.selectData);
+                this.input=$(options.inputId);
+                this.selectBox=$(options.selectBox);
+                this.select=this.selectBox.find('ul');
+                this.selectData={},
+                this.events();
+            }
+            querySearch(queryString) {
+                var restaurants =this.data;
+                var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
+
+                // 搜索结果是否为空，不为空显示下拉框，空就隐藏
+                if(results.length){
+                    $(this.select).show();
+                }else{
+                    $(this.select).hide();
+                }
+                // 调用 callback 返回建议列表的数据
+                this.setSelectContent(results);
+            }
+            createFilter(queryString) {
+                return (restaurant) => {
+                    return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                };
+            }
+          	initData(str){
+                // var data=str.split(","),arr=[];
+                var data=str,arr=[];
+                data.forEach(function(item,index) {
+                    arr.push({
+                        indexVal:index+1+'-'+item,
+                        value:item
+                    })
+                })
+                return arr;
+            }
+            // 回调
+            setSelectContent(data){
+                var _this=this;
+                this.select.html('');
+
+                data.forEach(function (item,index) {
+                    $('<li data-value="'+item.indexVal+'">'+item.value+'</li>').appendTo(_this.select)
+                });
+            }
+            getSelectData(){
+                return this.selectData;
+            }
+            events(){
+                var _this=this;
+                $(this.input,this.select).on('click',function (e) {
+                    e.stopPropagation()
+                })
+                $(this.input).on('click',function() {
+                    $('.selectSearch').hide();
+                    var inputVal = $.trim($(_this.input).val().toString());
+                    _this.querySearch(inputVal, _this.result);
+                    $(_this.selectBox).show();
+                })
+                $(this.input).on('keyup',function(e) {
+                    var inputVal = $.trim($(_this.input).val().toString());
+                    _this.querySearch(inputVal, _this.result);
+                    e.stopPropagation()
+                })
+                $(document).on('click',function(e){
+                    $(_this.selectBox).hide();
+                });
+
+                $(this.select).on('click','li',function() {
+                    _this.selectData={
+                        indexVal:$(this).data('value'),
+                        value:$(this).text()
+                    }
+                    $(_this.input).val($(this).text());
+                    $(_this.selectBox).hide();
+                })
+
+            }
+        }
+		
+      
+	  {% for item in select %}
+      	window.select{{ item }} = new Search({
+            selectData: selectData,
+            selectBox: '#selectBox{{ item }}',
+            inputId: '#index{{ item }}'
+        })
+      {% endfor %}
+    });
+</script>
+
+
+<script>
+  {% if productTags contains 'custom-map-iphone' %}
+  let checkedInputValue = null
+  var onLabel = document.querySelectorAll(".inline-field-wrapper")[0].getElementsByClassName('input-checkbox')
+  Array.prototype.forEach.call(onLabel, item=> {
+    if(item.checked) {
+    	checkedInputValue = item.value
+    }
+    item.addEventListener('click', e => {
+    	checkedInputValue = e.target.value
+    })
+  })
+  {% endif %}
+	// 加车验证
+  Product.validators.push(async () => {
+  	var inputV = document.querySelectorAll('.inputV')
+  	var inputT = document.querySelectorAll('.inputText')
+    var indexI = document.querySelectorAll('.indexInput')
+    var listNone = document.querySelectorAll('.selectListNone div');
+   	var zenFlag = true
+    let custom_info = {}
+    let properties = {}
+    var selectData = []
+    listNone.forEach((itemx,indexx)=> {
+        selectData.push(itemx.innerHTML);
+    })
+    console.log(selectData,'selectData-----1')
+    inputV.forEach((item,index)=> {
+      if(item.value == "") {
+        item.style.cssText = "border: 1px solid red;"
+        zenFlag = false
+      }else {
+        item.style.cssText = "border: 1px solid #000;"
+        indexI.forEach((items,indexs)=> {
+            if(selectData.indexOf(items.value) == -1) {
+              items.value = ''
+              items.style.cssText = "border: 1px solid red;"
+              zenFlag = false
+            }else {
+              items.style.cssText = "border: 1px solid #000;"
+            }
+        })
+      }
+    })
+    if(zenFlag) {
+      {% for item in select %}
+      	var key = 'land'+{{item}}
+        {% if productTags contains 'custom-map-iphone' %}    
+        	custom_info[key] = window.select{{ item }}.getSelectData().indexVal + '-' + checkedInputValue
+        {% else %}
+         	custom_info[key] = window.select{{ item }}.getSelectData().indexVal
+        {% endif %}
+      {% endfor %}
+        inputT.forEach((el,index) => {
+		  {% if cattrSKU contains "CZTP192X03" %}
+          	let key = index === 0 ? "Men's name" : "Women's name"
+          {% else %}
+          	let key = index === 0 ? "name" : "name"+ index
+          {% endif %}
+          custom_info[key] = el.value
+        })
+        properties.properties = custom_info
+       	$('#custom_info').val(JSON.stringify(properties))
+	  return true
+    }
+  })
+  
+  
+</script>

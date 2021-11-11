@@ -1,0 +1,84 @@
+
+
+<style>
+  .selectListNone {
+  	display: none;
+  }
+  .indexInput {
+  	width: 100%;
+    min-height: 44px;
+    color: transparent;
+    text-shadow: 0 0 0 #000;
+    cursor: default;
+    outline: none;
+  }
+  .selectSearch {
+    display: none;
+/*   	position: absolute; */
+    width: 100%;
+    background: #fff;
+    z-index: 8;
+  }
+  .selectSearch ul {
+    margin: 0 auto;
+    border:1px solid #000;
+  }
+  .selectSearch ul li {
+  	font-size: 12px;
+    margin: 0 auto;
+  }
+  .select {
+    max-height: 320px;
+    overflow-y: auto;
+    list-style: none;
+    cursor: default;
+  }
+  /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  
+  .selectSearch ul::-webkit-scrollbar{  
+      width: 6px;    
+      background-color: #fff;  
+  }
+  /*定义滚动条轨道 内阴影+圆角*/ 
+  .selectSearch ul::-webkit-scrollbar-track{  
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.2);  
+      border-radius: 6px;  
+      background-color: #ccc;  
+  }
+  /*定义滑块 内阴影+圆角*/ 
+  .selectSearch ul::-webkit-scrollbar-thumb{  
+      border-radius: 6px;  
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.2);  
+      background-color: #fff;  
+  }
+  .custom-index {
+  	position: relative;
+  }
+  .custom-index input {
+    width: 100%;
+  	min-height: 44px;
+    color: #999;
+    box-shadow: inset 0 -1.4em 1em 0 rgba(0,0,0,0.02);
+    margin: 5px auto;
+  }
+  .custom-text .custom-index:last-child {
+  	margin: 0 auto 15px;
+  }
+  .custom-index span {
+  	position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translate(0%,-50%);
+  }
+  .custom-index span b {
+  	font-weight: normal;
+    color: red;
+    vertical-align: middle;
+  }
+  .custom-index span i {
+  	font-style: normal;
+    margin: 0 3px;
+  }
+  .serial {
+  	display: none;
+  }
+</style>

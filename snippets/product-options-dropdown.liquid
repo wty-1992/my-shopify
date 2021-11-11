@@ -1,0 +1,103 @@
+<style>
+.product-page-add_to_cart-section .select-option { 
+  width: 100%;
+} 
+.product-page-add_to_cart-section .select-option .selector-wrapper span.icon.photofont.photo-unfold{
+  position: absolute;
+  right: 12px;
+  top: 55%;
+  pointer-events: none;
+}
+.dropdown-toggle::after{
+  display:none;
+}
+.selector-wrapper-position{
+  position: relative;
+}
+.ringsize-font {
+  margin-top:10px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.photocharms-warnfill, a.photocharms-warnfill:not([href]):not([tabindex]) {
+  color: #00f;
+  text-decoration: underline;
+  cursor: pointer;
+}
+#examples_hide {
+  max-height: 580px;
+}
+@media(max-width:768px){
+  #examples_hide {
+    max-height: 100vh;
+  }
+
+}
+</style>
+{% for option in product.options_with_values %}
+{% assign Choose_material = "variant.title.Choose_material" | t %}
+{% assign Choose_material_color = "variant.title.Choose_material_color" | t | replace: "&amp;", "&"  %}
+{% assign Choose_material_colortwo = "variant.title.Choose_material_colortwo" | t %}
+{% assign Markup = "variant.title.Markup" | t %}
+{% assign Printing = "variant.title.Printing" | t %}
+{% assign Frame = "variant.title.Frame" | t %}
+{% assign Color = "variant.title.Color" | t %}
+{% assign Size = "variant.title.Size" | t %}
+{% assign How_Many_Pictures = "variant.title.How_Many_Pictures" | t %}
+{% assign Choose_your_style = "variant.title.Choose_your_style" | t %}
+{% assign Product_Status = "variant.title.Product_Status" | t %}
+{% assign Choose_more_stickers_to_avoid_pasting_mistakes = "variant.title.Choose_more_stickers_to_avoid_pasting_mistakes" | t %}
+{% assign Number_of_photos = "variant.title.Number_of_photos" | t %}
+{% assign Number_Of_Best_Friends = "variant.title.Number_Of_Best_Friends" | t %}  
+{% assign Photo1 = "variant.title.Photo1" | t %} 
+{% assign Engraving = "variant.title.Engraving" | t %} 
+{% assign TwoFace = "variant.title.TwoFace" | t %}
+{% comment %}颜色变体以单选显示 2019-08-30 by Anna or option.name == Frame{% endcomment %}
+<div data-select class="select-option {% if option.name == Photo1 or option.name == TwoFace or option.name == Engraving or option.name == Printing or option.name == Markup or option.name == Frame or option.name == Color or option.name == Choose_material_color or option.name == Choose_material or option.name == Material or option.name == Choose_material_colortwo or checkout_title contains option.name %} hide{% else%}show{% endif %}" >
+    <div class="selector-wrapper product-form__item">
+        <label class="{% if option.name == 'default'%}hide{% endif %} select-field-title" for="OptionSelector-{{ forloop.index }}" data-name="{{ option.name }}">{{ option.name }} :</label>        
+          <select 
+            onchange="Product.changeOption(this)" 
+            class="single-option-selector product-form__input {% if option.name == Markup %}single-option-selector-markup{% endif %}" 
+            id="OptionSelector-{{ forloop.index }}" 
+            data-index="{{forloop.index0}}" 
+            data-option="option{{ forloop.index }}" 
+            data-name="{{option.name}}" >
+            {% comment %}颜色变体以单选显示 2019-08-30 by Anna or option.name != Frame{% endcomment %}
+            {% unless option.name == Markup  or option.name == Color or option.name == Size or option.name == Choose_material or option.name == Choose_material_colortwo or option.name == Choose_material_color or option.name == How_Many_Pictures or option.name == Number_Of_Best_Friends or option.name == Product_Status or option.name == Choose_more_stickers_to_avoid_pasting_mistakes or option.name == Number_of_photos or option.name == Choose_your_style %}
+<!--             <option value="">{{option.name}}</option> -->
+            {% endunless %}
+            {% for value in option.values %}
+              <option value="{{ value | escape }}">{{ value }}</option>
+            {% endfor %}
+          </select>
+          <span class="icon photofont photo-unfold"></span>        
+    </div>
+  {% assign variantOptionName =  'variant.title.Choose_Your_Size' | t %}
+  {% comment %}
+    {% if option.name contains Size %}
+      <div class="product-size" onclick="Dialog.open('#size-guide-contents')">{{ 'product.cart.size_guide' | t }}</div>
+      <div id="size-guide-contents" class=" simple--modal" style="display:none;"> 
+        <img src="{{ 'sizeguide.jpg' | asset_img_url: '700x' }}" />
+        <button type="button" class="close-new" data-action="close"><i class="photofont icon photo-close"></i></button>
+        {% if product.type == 'Lamp' %}
+          {% include 'product-necklace_size_guide' %} 
+        {% endif %}      
+      </div>
+    {% endif %}
+  {% endcomment %}
+</div>
+{% comment %}颜色变体以单选显示 2019-08-30 by Anna{% endcomment %}
+<!-- 非标品1 -->
+{% if option.name == Color %}
+	{% if product.tags contains "custom-variant-color-image" %}
+		{% include 'color-box-image' %}
+	{% else %}
+    	{% include 'color-box-radio' %}
+	{% endif %}
+{% endif %}
+ <!-- 非标品2 -->
+{% if option.name == Choose_material or option.name == Choose_material_color or option.name == Choose_material_colortwo  %}
+    {% include 'material-box-select' %}
+{% endif %}
+{% endfor %}

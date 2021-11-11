@@ -1,0 +1,199 @@
+<script>
+/* 
+ * Others: 加载字体 
+ * Date:   2021.06.16
+ * Author: Coman 420500235@qq.com
+ * Parame: ["AIV1","AIV2","AIV3"...](array) or "AIV1"(string)
+*/
+function loadCustomFonts(fontArr){ 
+    let css = ``;
+    fontArr = $.isArray(fontArr)?fontArr:[fontArr];
+    $.each(fontArr, function(i, v){css+=`@font-face{font-family:'${v}';src:url('https://pic.stylelab.com/fonts/${v}.woff?${new Date().getTime()}') format('woff');font-weight:normal;font-style:normal}`;});
+    $('#customFontStyle').length>0?$('#customFontStyle').append(css):$('<style>',{id:'customFontStyle'}).css({}).text(css).appendTo('body');
+}
+</script>
+{% comment %}
+{{product.tags}} 使用这个标签判断的是包含(全等). {{productTags}}使用这个标签判断的是包含(即可).
+{% endcomment %} 
+
+{% if product.tags contains "custom-multi-photo-carving-curve" %} 
+	{% comment %}photo+carving+curve 类型 -- 李响 {% endcomment %}
+    {% include 'zen-multi-photo-carving-curve-css' %}
+	{% include 'zen-multi-photo-carving-curve' %}
+{% elsif product.tags contains 'custom-engraved' %}
+	{% comment %}拖动刻字 :BXLK023 -- 韩剑桥 {% endcomment %}
+	{% include 'zen-engrave-css' %}
+    {% include 'zen-engrave' %}
+{% elsif product.tags contains 'custom-engraved-color' %}
+	{% comment %}拖动刻字 :CYQ046 -- 韩剑桥 {% endcomment %}
+    {% include 'zen-engrave-color-css' %}
+    {% include 'zen-engrave-color' %}
+{% elsif product.tags contains 'custom-curveengraved' %}
+	{% comment %}弧形刻字:GKSZ01 -- 韩剑桥{% endcomment %}
+	{% include 'zen-curveevgraved-css' %}
+	{% include 'zen-curveevgraved' %}
+{% elsif product.tags contains 'custom-multiple' %}
+	{% comment %}crop切图+刻字(多图手机壳模板方式):CBS087X01 -- 苍老师 {% endcomment %}
+	{% include 'zen-multiohotocarving-css' %}
+	{% include 'zen-multiohotocarving' %}
+{% elsif productTags contains 'custom-multi-photos' %}
+	{% comment %}photo有ai图方式 多图 : TPSQ06A;custom-multi-photos- 决定传图数量. -- 李立夫{% endcomment %}
+	{% include 'zen-multi-photos-css' %}
+	{% include 'zen-multi-photos' %}
+{% elsif product.tags contains 'custom-photo' %}
+	{% comment %}photo有ai图方式单图 :APK001AX01 -- 李立夫 {% endcomment %}
+	{% include 'zen-single-photo-css' %}
+	{% include 'zen-single-photo' %}
+{% elsif product.tags contains 'custom-multi-photocarving' %} 
+	{% comment %}photo有ai图方式+拖动刻字 :AX003 . 可配置数量(传图+刻字) 2020-12-5 alice. -- 苍老师 {% endcomment %}
+	{% include 'zen-multi-photocarving-css' %}
+	{% include 'zen-multi-photocarving' %}
+{% elsif product.tags contains "custom-alphabet" %} 
+	{% comment %}字母类型-- 苍老师 {% endcomment %}
+	{% include 'zen-alphabet-css' %}
+    {% include 'zen-alphabet' %}
+{% elsif product.tags contains "custom-names-curveengraved" %} 
+	{% comment %}字母弧形刻字类型 -- 李响 {% endcomment %}
+	{% include 'zen-alphabet-curveengraved-css' %}
+     {% include 'zen-alphabet-curveengraved' %}
+{% elsif product.tags contains "custom-crystal" %} 
+	{% comment %}换钻类型 -- 李响{%endcomment %}
+	{% include 'zen-packaging-crystal-css' %}
+{% include 'zen-packaging-crystal' %}
+{% elsif product.tags contains "custom-guitar-carving" %} 
+	{% comment %}吉他拨片类型 -- 李立夫 {% endcomment %}
+    {% include 'zen-guitar-carving-css' %}
+    {% include 'zen-guitar-carving' %}
+{% elsif product.tags contains "custom-calendar-crop" %} 
+	{% comment %}传图+日历钥匙扣  切图传图 -- 李响 {% endcomment %}
+	{% include 'zen-calendar-crop-css' %}
+	{% include 'zen-calendar-crop' %}
+{% elsif product.tags contains "custom-calendar-photoai" %} 
+	{% comment %}传图+日历钥匙扣  ai图传图-- 苍老师 {% endcomment %}
+	{% include 'zen-calendar-photo-css' %}
+	{% include 'zen-calendar-photo' %}
+{% elsif product.tags contains "custom-calendar-photo-carving" %} 
+	{% comment %}传图+日历+刻字可选钥匙扣 -- 李响 {% endcomment %}
+	{% include 'zen-calendar-photo-carving-css' %}
+	{% include 'zen-calendar-photo-carving' %}
+{% elsif productTags contains 'custom-multi-option-carving' %} 
+{% comment %} 投影木灯功能 alice 2020-12-17 {% endcomment %}
+	{% include 'zen-multi-option-carving-css' %} 
+	{% include 'zen-multi-option-carving' %}
+{% elsif productTags contains "custom-more-text" %}
+	{% include "zen-more-text-css" %} 
+	{% include "zen-more-text" %} 
+{% elsif product.tags contains 'custom-config-carving' %}
+{% comment %}刻字（狗牌） alice 2020-10-28 {% endcomment %}
+    {% include 'zen-config-carving-css' %} 
+    {% include 'zen-config-carving' %} 
+{% elsif productTags contains "custom-text-controlled" %}
+{% comment %}可控制刻字 2021-1-20{% endcomment %}
+	{% include 'zen-text-controlled-css' %}
+	{% include 'zen-text-controlled' %}
+{% elsif product.tags contains "custom-news-date" %}
+{% comment %}报纸拼图功能 2021-4-14 alice{% endcomment %}
+	{% include 'zen-news-date-css'%}
+	{% include 'zen-news-date',productTags:productTags %}
+{% elsif product.tags contains 'custom-multi-photo-carving' %} 
+	{% comment %}母研风铃 2021-5-12 alice {% endcomment %}
+	{% include 'zen-custom-multi-photo-carving-css' %}
+	{% include 'zen-custom-multi-photo-carving' %}
+{% elsif product.tags contains 'custom-names-text' %} 
+	{% comment %} 无限符号灯 2020-11-4 alice (类似字母类型. 只有输入框) -- 李立夫 {% endcomment %}
+	{% include 'zen-multi-text-css' %} 
+	{% include 'zen-multi-text' %} 
+
+{% elsif productTags contains "custom-text-number" %}
+	{% comment %}字母灯文字提示 lile 2021-4-8{% endcomment %}
+    {% include 'zen-text-number-css'%}
+  {% include 'zen-text-number'%}
+{% elsif product.tags contains 'custom-photo-carving' %}
+    {% comment %}遮罩图+刻字预览{% endcomment %}
+    {% include 'zen-photo-carving-css' %}
+    {% include 'zen-photo-carving' %}
+
+{% comment %}
+      {% elsif product.tags contains 'engravedPhoto' %}
+                  {% comment %}???{% endcomment %}
+                  {% include 'zen-engrave-photo-css' %}
+                  {% include 'zen-engrave-photo' %}
+      {% elsif product.tags contains 'custom-crop' %}
+                  {% comment %}???{% endcomment %}
+                  {% include 'zen-single-crop-css' %}
+                  {% include 'zen-single-crop' %}
+      {% elsif product.tags contains "custom-spotifysong" %} 
+                  {% comment %}亚克力装饰摆件 alice 2020-11-25 ??? {% endcomment %}
+                  {% include 'zen-multi-text-crop-new-css' %}
+					{% include 'zen-multi-text-crop-new' %}
+      {% elsif product.tags contains "custom-crop-text" %} 
+                  {% comment %}单个crop + 单独text ??? {% endcomment %}
+                  {% include 'zen-crop-text-css' %}
+				  {% include 'zen-crop-text' %}
+{% endcomment %}
+            
+          
+{% elsif productTags contains 'custom-pillowcase-map' %} {% comment %}州定制 2021-4-26{% endcomment %}
+	 {% include 'zen-map-css'%}
+	 {% include 'zen-map'%}
+{% elsif product.tags contains 'custom-multi-crop-text' %} {% comment %} 多个crop传图+文字输入框（父亲节魔方）2021-5-14 {% endcomment %}
+	{% include 'zen-multi-crop-text-css'%}
+	{% include 'zen-multi-crop-text' %}
+{% elsif product.tags contains 'custom-select-date' or product.tags contains 'custom-select-number' %} {% comment %} 是否选择年份(百年油画) 2021-5-18 alice {% endcomment %}
+	{% include 'zen-select-date-css' %}
+	{% include 'zen-select-date' %}
+{% elsif product.tags contains 'custom-date-crop' %} {% comment %} 选择年份+切图传图 2021-6-8 alice {% endcomment %}
+    {% include 'zen-date-crop-css' %}
+ 	{% include 'zen-date-crop' %}
+{% elsif productTags contains 'custom-option-date-number' %} {% comment %} 是否选择年份或者数字(计算纪念日时分秒) 2021-6-17 alice {% endcomment %}
+	{% include 'zen-option-date-number-css' %}
+    {% include 'zen-option-date-number' %}
+{% elsif productTags contains 'custom-multi-texts' %} {% comment %} 根据变体切换文字输入框数量 2021-6-17 alice {% endcomment %}
+	{% include 'zen-option-multi-text-css' %}
+    {% include 'zen-option-multi-text' %}
+{% elsif productTags contains 'custom-croppic' %}
+	{% include 'zen-croppic-css' %}
+    {% include 'zen-croppic' %}
+{% elsif product.tags contains 'custom-changeable-carving' %}{% comment %}刻字变体不同切换刻字配置 lile 2021-7-6 {% endcomment %}
+	{% include 'zen-changeable-carving-css' %}
+    {% include 'zen-changeable-carving' %}
+{% elsif product.tags contains "custom-sketch-carving-new" %} {% comment %}人物剪影+正面刻字-新字段 2021-4-27{% endcomment %}
+  	{% include 'zen-sketch-carving-new-css' %}
+  	{% include 'zen-sketch-carving-new' %}
+{% elsif product.tags contains "custom-crop-carving" %} {% comment %}切图传图+可选刻字（袜子） 2021-7-16 alice{% endcomment %}
+  	{% include 'zen-crop-css' %}
+  	{% include 'zen-crop' %}
+{% elsif product.tags contains "custom-date-carving" %} {% comment %}选择年份+拖动刻字 2021-7-22 alice{% endcomment %}
+  	{% include 'zen-date-carving-css' %}
+  	{% include 'zen-date-carving' %}
+{% elsif productTags contains "custom-text" or productTags contains "custom-new-text" %}
+	{% comment %}可以设置颜色、文字体的文字输入框 alice 2021-7-28{% endcomment %}
+    {% include 'zen-custom-text-css'%}
+    {% include 'zen-custom-text'%}
+{% elsif productTags contains "custom-option-multi-photo-text" %}
+	{% comment %}可以配置的遮罩图传图、切图传图，文字输入框组合，并可以根据变体数值切换数量 alice 2021-8-16{% endcomment %}
+    {% include 'zen-option-multi-photo-text-css'%}
+    {% include 'zen-option-multi-photo-text'%}
+{% elsif productTags contains "custom-message-board" %}
+	{% comment %}留言功能（一个文字输入框） alice 2021-9-3{% endcomment %}
+    {% include 'zen-message-board-css'%}
+    {% include 'zen-message-board'%}
+{% elsif productTags contains "custom-template-list" or productTags contains 'custom-template-text' %}
+	{% comment %}选择图片功能 alice 2021-9-3{% endcomment %}
+    {% include 'zen-template-list-css'%}
+    {% include 'zen-template-list'%}
+{% elsif productTags contains 'custom-img-choose-text' %} {% comment %} 选择放大图片+文字输入框 alice 2021-9-8 {% endcomment %}
+    {% include 'zen-img-choose-text-css' %} 
+    {% include 'zen-img-choose-text' %}
+{% elsif productTags contains "custom-mandatory-crop-carving" %}{% comment %}切图刻字(可选字体、颜色) lile 2021-9-9{% endcomment %}
+	{% include 'zen-mandatory-crop-carving-css' %} 
+    {% include 'zen-mandatory-crop-carving'%}
+{% elsif productTags contains "custom-multi-photo-new" %}{% comment %}可控制遮罩图数量-新字段 lile 2021-3-30{% endcomment %}
+	{% include 'zen-multi-photo-new' %}
+{% elsif productTags contains 'custom-multi-crop-new'%}{% comment %}可控制切图数量-新字段 2021-4-26 lile{% endcomment %}
+	{% include 'zen-multi-crop-new' %}
+{% endif %}
+{% if product.tags contains "custom-crystal" %} 
+{% else %} 
+		{% include 'zen-output-custom-tpl' %}
+{% endif %}

@@ -1,0 +1,96 @@
+{% layout none %}
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0;" />
+  <title>Customer Service</title>
+  <!--
+    [查看文档]
+    https://botchat.imaiyuan.com/manual/BotChat.html
+  -->
+
+  <script>
+    
+  var ChatConfig = {
+    // botchat服务地址 必须提供
+    datasource: "https://botchatservice.imaiyuan.com/graphql",
+    // frontend access token 必须提供
+    accessToken: "$2a$06$TZToYyeHpluRAh1ij0dCWuvXfgMY0IMv6Aaj8xBEmxLoAzNYOsdAe",
+    
+    userMail: '{{customer.email}}', //必须，如果不提供将触发[匿名问询]由客户填写mail,体验差
+    userName: '{{customer.name}}', //非必须，会作为BotHub的变量，#userName#方式引用
+    variable: {  //此处设置 将覆盖 site表相关字段， 并作为BotHub的变量，例如：可通过#brandName#的方式引用
+      //每个变量均会替换UI相关内容，具体请[查看文档]中[Bot Chat 配置]一节
+      brandName: "Soufeel",
+      logo: "{{ 'botchat_logo.png' | asset_url }}",
+      chatLogo: "{{ 'botchat_chat-logo.png' | asset_url }}",
+      robotIcon: "{{ 'botchat_roboticon_new.gif' | asset_url }}",
+      userIcon: "{{ 'botchat_usericon_new.png' | asset_url }}",
+      //linkFaq: "https://www.baidu.com?t=11111",
+    },
+    messageCallback: function(event){
+      // 回调处理
+      /*
+      ontype代表回调类型包裹：
+      ontype={ evaluate, contact-us, user_say, user_postback, typing_on, typing_off, response }
+      以此为：用户点击评价时，用户点击联系我们时，用户说话时，用户点击postback时，接收用户发送消息开始时，发送回复后，发送回复
+      */
+      console.log("\x1B[41m%s\x1B[0m", "messageCallback", event.ontype, event);
+
+      //本示例kayako的默认实现
+      if(event.ontype == "contact-us" && kayako){
+        if (kayako.visibility() === 'minimized' || kayako.visibility() === 'hidden') {
+          console.log("Target Contact Us")
+          kayako.show();
+          kayako.maximize();
+          //pc下强制显示kayako live chat的关闭按钮
+          document.getElementById('kayako-messenger-frame')
+            .contentWindow.document.getElementsByClassName('icon__close__container')[0]
+            .setAttribute('style','display:block');
+        }else{
+          kayako.hide()
+          kayako.minimize();
+        }
+      }
+    }
+  }</script>
+  <script>
+    // kayako live chat 相关文档参考kayako官方文档
+    (function(d,a){function c(){var b=d.createElement("script");b.async=!0;b.type="text/javascript";b.src=a._settings.messengerUrl;b.crossOrigin="anonymous";var c=d.getElementsByTagName("script")[0];c.parentNode.insertBefore(b,c)}window.kayako=a;a.readyQueue=[];a.newEmbedCode=!0;a.ready=function(b){a.readyQueue.push(b)};a._settings={apiUrl:"https://soufeel.kayako.com/api/v1",messengerUrl:"https://soufeel.kayakocdn.com/messenger",realtimeUrl:"wss://kre.kayako.net/socket"};window.attachEvent?window.attachEvent("onload",c):window.addEventListener("load",c,!1)})(document,window.kayako||{});
+    // 默认隐藏
+    kayako.ready(function () {
+      kayako.config = {
+        hideLauncher: true
+      }
+      kayako.hide()
+      kayako.on('chat_window_minimized', function () {
+        console.log("chat_window_minimized")
+        kayako.hide()
+      })
+    })
+  </script>
+    <!--
+      引用botchat: 
+      1.本地引用：
+        在下面链接位置下载最新版botchat库进行本地引用
+        https://botchat.imaiyuan.com/manual/releases.html
+      2.在线引用：
+        注意这里每个引用文件后面的hash值，每次botchat版本更新时均会变化
+        最新版本引用示例请参考：https://botchat.imaiyuan.com/ ， 查看源码中引用的版本为最新版本
+        举例：app.js文件当前版本文件：js/app.001719aa.js
+          如果botchat此时再次更新后js/app.001719aa.js版本将被删除
+    -->
+  {{ 'app.css'    | asset_url | stylesheet_tag }}
+ </head>
+ <body class="main">
+  <noscript>
+   <strong>We're sorry but frontend doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+  </noscript>
+  <div id="app"></div>
+  <!--引用botchat-->
+   {{ 'chunk-vendors.js'   | asset_url | script_tag }}
+   {{ 'app.js'   | asset_url | script_tag }}
+ </body>
+</html>

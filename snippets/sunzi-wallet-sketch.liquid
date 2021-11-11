@@ -1,0 +1,434 @@
+{% comment %}
+* 钱包影刻预览
+{% endcomment %}
+
+{% assign tip_wallet_process_1 = 'mm.custom.wallet_process_1' | t %}
+{% assign tip_wallet_process_2 = 'mm.custom.wallet_process_2' | t %}
+{% assign tip_wallet_process_3 = 'mm.custom.wallet_process_3' | t %}
+{% assign tip_wallet_success = 'mm.custom.wallet_success' | t %}
+
+<style>
+ .selector-wrapper{
+   display:none;
+  }
+.sunzi-wallet-sketch {
+  background-color: #fff;
+  padding: 20px;
+  margin: 0 auto 15px;
+  display: none;
+  opacity: 0;
+  overflow: hidden;
+  max-width: 400px;
+}
+.sunzi-wallet-sketch .bg {
+  width: 100%;
+  display: block;
+}
+.sunzi-wallet-box {
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, .2);
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, .15);
+}
+.sunzi-wallet-photo {
+  position: absolute;
+  z-index: 2;
+  overflow: hidden;
+}
+.sunzi-wallet-photo img {
+  opacity: 0;
+  width: 100%;
+}
+.sunzi-wallet-photo-loading {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .3);
+  border: 1px dashed rgba(255, 255, 255, .4);
+  border-radius: 4px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 4;
+  opacity: 0;
+  overflow: hidden;
+}
+.sunzi-wallet-photo-loading .s-w-loading {
+  width: 0;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, .3));
+  animation: sunzi-loading 5s cubic-bezier(0.645, 0.045, 0.355, 1) infinite;
+  -webkit-animation: sunzi-loading 5s cubic-bezier(0.645, 0.045, 0.355, 1) infinite;
+}
+.sunzi-wallet-photo-loading .s-w-loading span {
+  width: 1px;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 2;
+  background-image: linear-gradient(to bottom, rgba(255, 1, 54, 0), rgba(255, 1, 54, 1), rgba(255, 1, 54, 0));
+}
+@keyframes sunzi-loading {
+  0% {
+    width: 0;
+    left: 0;
+  }
+  50% {
+    width: 105%;
+    left: 0;
+  }
+  100% {
+    width: 5%;
+    left: 105%;
+  }
+}
+@-webkit-keyframes sunzi-loading {
+  0% {
+    width: 0;
+    left: 0;
+  }
+  50% {
+    width: 105%;
+    left: 0;
+  }
+  100% {
+    width: 5%;
+    left: 105%;
+  }
+}
+.sunzi-wallet-process {
+  width: 100%;
+  margin: 15px auto 0;
+}
+.sunzi-wallet-process-text {
+  width: 100%;
+  height: 30px;
+  overflow: hidden;
+  position: relative;
+  z-index: 0;
+}
+.sunzi-wallet-process-label {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+}
+.sunzi-wallet-process-label p {
+  margin: 0;
+  line-height: 30px;
+  font-size: 12px;
+  color: #717171;
+  text-align: center;
+}
+.sunzi-wallet-process-loading {
+  width: 100%;
+  height: 3px;
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: 6px;
+  background-color: #f2f2f2;
+}
+.sunzi-wallet-process-loading span {
+  width: 0;
+  height: 100%;
+  background-color: #5B7EFE;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+}
+.sunzi-wallet-process-loading span.load {
+  animation: sunzi-status-loading 4s cubic-bezier(0.645, 0.045, 0.355, 1) infinite;
+  -webkit-animation: sunzi-status-loading 4s cubic-bezier(0.645, 0.045, 0.355, 1) infinite;
+}
+@keyframes sunzi-status-loading {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+@-webkit-keyframes sunzi-status-loading {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+.sunzi-wallet-error {
+  background-color: #FFE5EB;
+  border: 1px solid #FFCCD7;
+  border-radius: 4px;
+  text-align: center;
+  padding: 10px 15px;
+  font-size: 15px;
+  color: #ff0136;
+  font-weight: 700;
+  display: none;
+  margin: 10px auto;
+}
+.sunzi-wallet-success {
+  display: none;
+  border-radius: 4px;
+  background-color: #FFF6B8;
+  display: block;
+  padding: 10px;
+  margin: 10px auto 0;
+  font-size: 13px;
+  color: #313131;
+  border: 1px solid #FFE94E;
+}
+</style>
+<div class="sunzi-wallet-sketch">
+  <div class="sunzi-wallet-box">
+
+    {% comment %} 效果图层 {% endcomment %}
+    <div id="sunzi-wallet-photo" class="sunzi-wallet-photo">
+      <div class="sunzi-wallet-photo-loading">
+        <div class="s-w-loading">
+          <span></span>
+        </div>
+      </div>
+      <img id="sunzi-wallet-photo-image" src=""/>
+    </div>
+
+    {% comment %} 底图层 {% endcomment %}
+    <img id="sunzi-wallet-bg" class="bg" src="https://pic.stylelab.com/img/photo/{{ product.first_available_variant.sku }}-bg.png">
+
+  </div>
+
+  <div class="sunzi-wallet-process">
+    <div class="sunzi-wallet-process-loading">
+      <span></span>
+    </div>
+    <div class="sunzi-wallet-process-text">
+      <div class="sunzi-wallet-process-label">
+        <p>{{ tip_wallet_process_1 }}</p>
+        <p>{{ tip_wallet_process_2 }}</p>
+        <p>{{ tip_wallet_process_3 }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sunzi-wallet-success">
+    {{ tip_wallet_success }}
+  </div>
+  
+</div>
+
+<div class="sunzi-wallet-error"></div>
+
+<script src="https://sunzi7n.myuxc.com/sunzi/js/sunzi.plugin.sketch.js"></script>
+<script defer="defer">
+  {% assign skuArr = product.selected_or_first_available_variant.sku | split: "-"%}
+  {% assign sku = skuArr[0] %}
+  // 公共
+  var thisSku = '{{sku}}';
+  var $sketch = $('.sunzi-wallet-sketch');
+  var $preview = $('.sunzi-wallet-photo');
+  var $wallet_box = $('.sunzi-wallet-box');
+  var $preview_loading = $('.sunzi-wallet-photo-loading');
+  var position = '{{ product.metafields["global"]["Sunzi-Wallet"] }}';
+  var position_data = {"left":"33","top":"30","width":"345","height":"337"};
+  var post_url = 'https://ai.soufeel.com';
+  var $sunzi_wallet_image = $('#sunzi-wallet-photo-image');
+
+  // 影刻底图宽度
+  var IMAGE_WIDTH = 500;
+  var process_color_array = [
+    {
+      bgColor: '#5B7EFE',
+      color: '#FF6786',
+      top: '-30px'
+    }, {
+      bgColor: '#FF6786',
+      color: '#FFCF73',
+      top: '-60px'
+    }, {
+      bgColor: '#FFCF73',
+      color: '#E37B35',
+      top: '-60px'
+    }];
+  var t;
+
+
+  // 调用方法
+  $.extend({
+    
+    // 显示钱包预览
+    sunziPostWallet: function ( base64, type ) {
+
+      $.sunziRequire(base64, type);
+
+      $sketch.show(0, function () {
+        $sketch.animate({
+          opacity: 1
+        }, 1000, function () {
+          $.sunziWalletPosition(position_data);
+        });
+      });
+
+    },
+
+    // 计算钱包预览层坐标
+    sunziWalletPosition ( local ) {
+
+      // 换算宽度比例
+      var current_image_width = $wallet_box.width();
+      var image_radio = current_image_width / IMAGE_WIDTH;
+
+      $preview.css({
+        left: parseInt(local.left) * image_radio + 'px',
+        top: parseInt(local.top) * image_radio + 'px',
+        width: parseInt(local.width) * image_radio + 'px',
+        height: parseInt(local.height) * image_radio + 'px'
+      });
+
+      $preview_loading.animate({
+        opacity: 1
+      }, 500, function () {
+        
+        $('.sunzi-wallet-process-loading span').addClass('load');
+        clearInterval(t);
+        var count = 0;
+        t = setInterval(function () {
+          if (count < process_color_array.length - 1) {
+            $('.sunzi-wallet-process-loading').css('background-color', process_color_array[count].bgColor);
+            $('.sunzi-wallet-process-loading span').css('background-color', process_color_array[count].color);
+            $('.sunzi-wallet-process-label').animate({
+              top: process_color_array[count].top
+            }, 200);
+            count++;
+          } else {
+            clearInterval(t);
+            $('.sunzi-wallet-process-loading').css('background-color', process_color_array[count].bgColor);
+            $('.sunzi-wallet-process-loading span').removeClass('load');
+          }
+        }, 4000);
+        
+      });
+
+      console.log(current_image_width,image_radio, local);
+    },
+
+    // 销毁
+    sunziDestroyWallet: function () {
+
+      // 样式初始化
+      $sketch.hide();
+      $sketch.css('opacity', 0);
+      $preview_loading.show();
+      $preview_loading.css('opacity', 0);
+      $('.sunzi-wallet-process').show();
+      $('.sunzi-wallet-process-loading').css('background-color', '#f2f2f2');
+      $('.sunzi-wallet-process-loading span').css('background-color', '#5B7EFE');
+      $('.sunzi-wallet-process-label').css('top', '0');
+      $('.sunzi-wallet-error').empty();
+      $('.sunzi-wallet-error').hide();
+      $('#sunzi-wallet-photo-image').css('opacity', 0);
+      $('.sunzi-wallet-success').hide();
+
+    },
+
+    // 请求
+    sunziRequire: function ( base64, type ) {
+      
+      console.log(base64.length)
+
+      var stime = new Date().getTime();
+
+      var params = {
+        url: post_url + '/wxhj/effectCarve',
+        data: {
+          imageType: type,
+          imageBase64: base64,
+          rspType: 'url'
+        },
+        dataType: 'json'
+      };
+
+      $.post(params)
+        .done(
+          function(item) {
+            
+            if (item.error == 0) {
+
+              $.sunziLoadPic(item.outputUrl);
+
+            } else {
+
+              $('.sunzi-wallet-sketch').hide();
+              $('.sunzi-wallet-error').html(item.message);
+              $('.sunzi-wallet-error').show();
+
+            }
+
+            gtag('event', 'timing_complete', {
+              'event_category': 'wallet',
+              'name': 'request_complete',
+              'value': new Date().getTime() - stime,
+            });
+
+            console.log('carve', item);
+          }.bind(this)
+        )
+        .fail(
+          function(response) {
+
+            $('.sunzi-wallet-sketch').hide();
+            $('.sunzi-wallet-error').html(response.message);
+            $('.sunzi-wallet-error').show();
+
+            gtag('event', 'timing_complete', {
+              'event_category': 'wallet',
+              'name': 'request_error',
+              'value': new Date().getTime() - stime,
+            });
+
+            console.log('carve error', response);
+          }.bind(this)
+        );
+    },
+
+    // 贴图赋值
+    sunziLoadPic: function (url) {
+
+      Sketch(url, 5).then(function( base64 ) {
+        $sunzi_wallet_image.attr('src', base64);
+//         $.sunziShowLoadPicComplete();
+        $sunzi_wallet_image[0].onload = function (){
+          $.sunziShowLoadPicComplete();
+        }
+        $sunzi_wallet_image[0].onerror = function (){
+          $.sunziShowLoadPicComplete();
+        }
+        $('.sunzi-wallet-process').hide();
+      });
+    },
+
+    // 显示样式
+    sunziShowLoadPicComplete: function () {
+      $sunzi_wallet_image.animate({
+        opacity: 1
+      }, 200);
+      $preview_loading.animate({
+        opacity: 0
+      }, 200, function () {
+        $preview_loading.hide();
+      });
+      $('.sunzi-wallet-success').show();
+    }
+
+  });
+
+</script>

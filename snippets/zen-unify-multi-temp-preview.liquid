@@ -1,0 +1,499 @@
+{%- include 'more-temp' -%}
+<div class="page-temp">
+  <span class="input-field-title">{{ 'zen.multicustom.choose_template' | t }}</span>
+  <div class="page-temp-img"><span class="icon photofont photo-xiangxia"></span></div>
+</div>
+<div data-temp="SelectImages" class="select-images open">
+  <ul id="moreTemp">
+    
+  </ul>
+  <div class="customgift">  
+    <span class="input-field-title hide">{{ 'zen.multicustom.text_photos' | t }}</span>
+    <div class="text-area" id="textArea">
+
+    </div> 
+    <div id="ceshi"></div>
+    <input type="text" id="custom_json" name="properties[custom_json]" value="" style="display:none">
+    <input type="text" id="preview_picture" name="properties[crop]" value="" style="display:none"/>
+    <input type="hidden" name="jiajia" value="0"/>
+  </div>
+</div>
+{% comment %} 弹层预览图部分html {% endcomment %}
+<div id="preview-div">
+  <div>
+    <div class="tingle-img-preview cropImagemerge">
+      <img id="imagemerge" src="{{ 'sandglass.gif' | asset_img_url: '260x' }}"/>
+    </div>
+    <div class="tingle-btn-box">
+      <div class="tingle-quantiy">
+        <label class="product-quantity-label" for="quantity">{{ 'zen.multicustom.quantity' | t }}</label>
+      <input class="input-field product-quantity-input" type="text" name="tingle_quantity" value="1">
+      </div>
+      <button id="sp-add-to-cart" class="tingle-btn button" onclick="myCustomAddToCart()">{{ 'zen.multicustom.add_to_cart' | t }}</button>
+    </div>
+  </div>
+</div>
+
+{{ 'pop-cropper.min.css' | asset_url | stylesheet_tag }}  
+<script src="{{ 'pop-cropper.min.js' | asset_url }}" defer></script>
+<script src="{{ 'pop-jquery-cropper.min.js' | asset_url }}" defer></script>
+<script src="{{ 'fabric.min.js' | asset_url }}"></script>
+<script src="{{ 'qiniu.min.js' | asset_url }}"></script>
+<script src="{{ 'zen-custom-gift.js' | asset_url }}"></script>
+
+<script>
+  //定义变量
+  var arrayImg = new Array(0);
+  var jsonCustom={}, arrayConfig=[], custom_json = {};
+  var tmpCanvas, imgBase64;
+  
+  var optVal = getColor('{{ product.selected_or_first_available_variant.option2 }}');
+  
+  //弹层实例化
+  var customModal3 = new tingle.modal({
+    footer: true,
+    stickyFooter: false,
+    onClose:function(){
+		$("#imagemerge").attr("src", "{{ 'sandglass.gif' | asset_img_url: '260x' }}");
+    }
+  });
+      
+  //添加弹层底部信息    
+  customModal3.addFooterBtn('{{ 'zen.general.cancel' | t }}', 'tingle-btn tingle-btn--danger', function() {
+    customModal3.close();
+  });
+    
+  //添加弹层内容    
+  var previewHtml = $('#preview-div').html();
+  customModal3.setContent(previewHtml);  
+    
+  //模板选择功能显示隐藏切换    
+  $(".page-temp").click(function(){
+    //$(".select-images").toggleClass('open');
+  	$(".select-images").slideToggle("slow");
+    $(".page-temp-img").toggleClass('close')
+  })
+  
+  //点击模板切换
+  $("[data-temp='SelectImages']").on('click','li',function(){
+    custom_json = {};
+    arrayConfig=[];
+    
+    //清空原有modal
+    $('.popbox').parents('.tingle-modal').remove();
+    
+    //当前选中模板配置数据
+    $(this).addClass('on').siblings().removeClass('on');
+    var id = $(this).data('id');
+    jsonCustom = tempSetting['temp'][id];
+    arrayImg = new Array(tempSetting.temp[id].setting.photo.length);
+    window.moreTemp.Shopify.sku();
+    
+    //加价信息
+    var tempPrice = tempSetting.temp[id].gift.price ? tempSetting.temp[id].gift.price : '';
+    var variantId = tempSetting.temp[id].gift._itempVariantIds ? tempSetting.temp[id].gift._itempVariantIds : '';
+    
+    //清空加价相关数据结构
+    $('[name="jiajia"]').val(0);
+    if($('[data-temp="SelectImages"] .totalExtras').length>0){
+      $('[data-temp="SelectImages"] .totalExtras').remove();
+    }
+    if($("[name='properties[_tempVariantId]']").length > 0){
+      $("[name='properties[_tempVariantId]']").remove();
+    }
+    if($('.temp').length>0){
+      $('.temp').remove();
+    }
+    
+    //添加加价信息
+    if(tempPrice > 0){
+      cateTempHtml();
+      $('[name="jiajia"]').val(1);
+      $('.customgift').append("<input name='properties[_tempVariantId]' type='hidden' value="+ variantId +">");
+      from = window.moreTemp.Shopify.shop.currency
+      to = $('#currencies').val();
+      if(from == to){
+        reate = tempPrice;
+  		//console.log('tempPrice', tempPrice);
+      }else{
+        reate = window.Currency.convert(tempPrice,from,to);
+  		//console.log('reate', reate);
+      }
+      format = window.Currency.moneyFormats[to]['money_format'];
+      var photoNum = tempSetting.temp[id].setting.photo.length;
+      $('#moreTemp').after('<div class="totalExtras">'+ photoNum +' Photos Template: + ' + window.moreTemp.Shopify.formatMoney(reate,"<span class=money>"+format+"</span>"));
+    }
+    
+    //刻字文本框区域
+    $('#textArea').empty();
+    if(typeof jsonCustom.setting.text != 'undefined'){
+      var textHtml = '';
+      jsonCustom.setting.text.forEach(function(opt,i){
+        textHtml += '<div class="text-section">';
+        textHtml += '<div class="text-length-view" style="display:none"><span class="num">'+opt.limit+'</span> {{ 'zen.general.left' | t }}</div>';
+        textHtml += '<input type="text" class="custom-text" id="custom-text'+i+'" maxlength="'+opt.limit+'" required placeholder="{{ 'zen.multicustom.type_words_here' | t }}">';
+        textHtml += '</div>';
+      });
+      $('#textArea').empty().append(textHtml);
+    }
+    
+    //传图区域
+    $('#ceshi').empty();
+    if(typeof jsonCustom.setting.photo != 'undefined'){
+      var photoHtml = '';
+      jsonCustom.setting.photo.forEach(function(opt,i){
+        var x = i+1;
+        photoHtml += '<div class="inputImage-area">';
+        photoHtml += '<div class="uploadimg uploadafterimg'+i+'" >';
+        photoHtml += '<img id="previewpicture'+i+'" width="50" src="{{ 'default.png' | asset_img_url: '1x' }}" style="display:none;" />';
+        photoHtml += '<span class="span-text-upload">{{ 'zen.general.photo' | t }} '+x+'</span>';
+        photoHtml += '</div>';
+        photoHtml += '<div class="upload-images">';
+        photoHtml += '<div class="add" id="add-photo'+i+'">{{ 'zen.multicustom.upload' | t }}</div>';
+        photoHtml += '<input type="file" id="inputImage'+i+'" accept="*" />';
+        photoHtml += '</div>';
+        photoHtml += '<input type="text" class="crop_picture" id="crop_picture'+i+'" value="" style="display:none" required/>';
+        photoHtml += '</div>';
+        arrayConfig.push({width:opt.width, left: opt.left, top: opt.top, aspectRatio: opt.width/opt.height});
+      });
+      $('#ceshi').empty().append(photoHtml);
+      //crop实例化
+      jsonCustom.setting.photo.forEach(function(opt,i){
+        var cropper = new start({id:'#inputImage'+i, preview:'#previewpicture'+i, popImg:'popimage'+i, idx: i, cropPicture:'#crop_picture'+i, cropperOpt: arrayConfig});
+        cropper.initCropper(cropper);
+      });
+    }
+    
+    //传图刻字提示文案显示
+    if($('#textArea').length > 0 || $('#ceshi').length > 0){
+      $('.customgift .input-field-title').removeClass('hide');
+    }else{
+      $('.customgift .input-field-title').addClass('hide');
+    }
+    
+    //画布初始化
+    document.createElement("canvas").id = "tmpcanvas";
+    tmpCanvas = new fabric.Canvas("tmpcanvas");
+    tmpCanvas.setWidth(jsonCustom.setting.size.width);
+    tmpCanvas.setHeight(jsonCustom.setting.size.height);
+    var remoteBackImg = 'https://pic.stylelab.com/img/blanket/' + parseInt(jsonCustom.setting.size.width) + 'x' + parseInt(jsonCustom.setting.size.height) + '_' + optVal + '.png';
+	tmpCanvas.setBackgroundImage(remoteBackImg, tmpCanvas.renderAll.bind(tmpCanvas), {
+      opacity: 1,
+      angle: 0,
+      left: 0,
+      top: 0,
+      originX: 'left',
+      originY: 'top',
+      crossOrigin: 'anonymous'
+    });
+  })
+  
+  //切图 rotation and reset
+  $(".template-product").on('click','.docs-buttons .btn',function(event){console.log(12345);
+    var crop_method = $(this).data('method');
+    var rowId = $(this).parents('.popbox').find('.cropper-hidden');
+    if(crop_method == 'rotate'){
+      event.stopPropagation();
+      var dataRotate = $(this).data('option');
+      $(rowId).cropper('rotate', dataRotate);
+    }
+    if(crop_method == 'reset'){
+      $(rowId).cropper('reset');
+    }
+  })
+  
+  //画布初始化
+  if(!tmpCanvas){
+    document.createElement("canvas").id = "tmpcanvas";
+    tmpCanvas = new fabric.Canvas("tmpcanvas");
+    tmpCanvas.setWidth(750);
+    tmpCanvas.setHeight(900);  
+    var remoteBackImg = 'https://pic.stylelab.com/img/blanket/750x900' + '_' + optVal + '.png';
+	tmpCanvas.setBackgroundImage(remoteBackImg, tmpCanvas.renderAll.bind(tmpCanvas), {
+      opacity: 1,
+      angle: 0,
+      left: 0,
+      top: 0,
+      originX: 'left',
+      originY: 'top',
+      crossOrigin: 'anonymous'
+    });  
+  }
+  
+  //切换变体
+  Listener.on([ Listener.product.update.after ], function(event, variant, dom) { 
+  	jQuery("#merge").html('Wait...');
+    jQuery("#merge").attr('disabled','disabled');
+    
+    optVal = getColor(variant.option2);
+    window.moreTemp.Shopify.sku();
+    Jwidth = parseInt(jsonCustom.setting ? jsonCustom.setting.size.width : 750);
+    Jheight = parseInt(jsonCustom.setting ? jsonCustom.setting.size.height : 900);
+    var remoteBackImg = 'https://pic.stylelab.com/img/blanket/' + Jwidth + 'x' + Jheight + '_' + optVal + '.png';
+	tmpCanvas.setBackgroundImage(remoteBackImg, function(e){
+      if(e){
+        tmpCanvas.renderAll();
+        jQuery("#merge").removeAttr('disabled');
+        jQuery("#merge").html(jQuery("#merge").attr('default-value'));
+      }
+    }, {
+      opacity: 1,
+      angle: 0,
+      left: 0,
+      top: 0,
+      originX: 'left',
+      originY: 'top',
+      crossOrigin: 'anonymous'
+    });
+  })
+  
+  //触发图片合成
+  $(function(){
+  	$("#merge").click(function(){  
+      if(tmpCanvas.getObjects().length > 0){ 
+        jQuery.each(tmpCanvas.getObjects(), function (i, v){
+          tmpCanvas.remove(tmpCanvas.item(i));
+        });
+      }
+      mergeImage(arrayImg, arrayConfig, 0);
+    });
+  })
+  
+  //qn图片上传
+  function uploadtoqiniu(callback){
+    var crop_picture = '', text_picture = '';
+    imgBase64 = tmpCanvas.toDataURL({
+      format: 'png',
+      multiplier: 0.5
+    });                                                       
+    var blob = convertBase64ToBlob(imgBase64);                           
+    $.ajax({
+      type: "POST",
+      url: "https://pic.stylelab.com/assist/uptoken",
+      dataType: 'json',
+      beforeSend: function() {
+      },
+      success: function(data){
+        var observer = {                         
+          next(result){
+          },
+          error(err){
+            console.log(err.message);
+          },
+          complete(res1){
+            //console.log("https://spic.qn.cdn.imaiyuan.com/" + res1.key);
+            $(".custom-text").each(function(v){
+              text_picture += '@|||@'+$(this).val();
+              $("#text_picture").val(text_picture.substring(2));              
+            });
+            
+            $(".crop_picture").each(function(v){
+              crop_picture += '@|||@'+$(this).val();
+              $("#crop_picture").val(crop_picture.substring(2));              
+            });
+            
+            $("#preview_picture").val("https://spic.qn.cdn.imaiyuan.com/" + res1.key);
+            callback();
+          }
+        };
+        var putExtra = {
+          fname: "",                          
+          params: {},                         
+          mimeType: null                      
+        };
+        var config = {
+          region:qiniu.region.na0,
+          concurrentRequestLimit:3
+        };
+        var filename = new Date().Format("yyyyMMddhhmmss") + randomString(6);
+        var key = 'mycustomgifts_' + filename + '.png';
+        var observable = qiniu.upload(blob, key, data.token, putExtra, config);
+        observable.subscribe(observer);
+      }
+    });                  
+  }
+  
+  //更新字符限制数量
+  function checkLength(obj){  
+    var count_length = $(obj).attr('maxlength')  
+    var current_length = $(obj).val().length;
+    var num = 0;
+    if( current_length <= count_length){    
+      num = count_length - current_length
+      $(obj).parent().find('.text-length-view .num').html(num);
+    }  
+  } 
+  
+  //颜色转换
+  function getColor(optVal){
+    $color = ['Black','Purple','Pink','Teal','Light Blue','Red','Orange','Lime Green','Blue','Grey'];
+    var language = {{ localization.language | json }};
+    if(language.shop_locale.locale == 'fr'){
+      $color = ['Noir','Violet','Rose','Turquoise','Bleu Clai','Rouge','Orange','Vert citron','Bleu','Gris'];
+    }
+    if(language.shop_locale.locale == 'de'){
+      $color = ['Schwarz','Lila','Rosa','Blaugrün','Hellblau','Rot','Orange','Limette Grün','Blau','Blau'];
+    }
+    if(language.shop_locale.locale == 'jp'){
+      $color = ['ブラック','パープル','ピンク','ティール','ライトブルー','レッド','オレンジ','ライムグリーン','ブルー','グレー'];
+    }
+    var pos = $.inArray(optVal, $color);
+    $colorArr = ['Black','Purple','Pink','Teal','Light_Blue','Red','Orange','Lime_Green','Blue','Gray'];
+    return colorVal = $colorArr[pos];
+  }
+  
+  //图片合成
+  function mergeImage(imgdata, target, i){
+    //clear text cache crop image cache in canvas by.poison  
+    if(tmpCanvas.getObjects().length > 0){
+      tmpCanvas.getObjects().forEach(function(v,k){
+        if(v && v.type=='text'){
+          tmpCanvas.remove(tmpCanvas.item(k));  
+        }  
+      });
+    }
+    //验证开关
+    var flag = true;
+    //刻字验证
+    var isHasText = false;
+    if(typeof(jsonCustom.setting.text) != "undefined"){
+      isHasText = true;
+    }
+    if(isHasText){
+      $('.custom-text').each(function(){
+        if(!$(this).val()){
+          $(this).parents('.text-section').addClass("check-error");
+          flag = false;
+        }else{
+          $(this).parents('.text-section').removeClass("check-error");
+        }
+      })
+    }
+    //传图验证
+    var isHasPhoto = false;
+    if(typeof(jsonCustom.setting.photo) != "undefined"){
+      isHasPhoto = true;
+    }
+    if(isHasText){
+      $('.crop_picture').each(function(){
+        if(!$(this).val()){
+          $(this).parents('.inputImage-area').addClass("check-error");
+          flag = false;
+        }else{
+          $(this).parents('.inputImage-area').removeClass("check-error");
+        }
+      })
+    }
+    if(flag == false){
+      //alert("{{ 'zen.multicustom.error_tip' | t }}");
+      return false;
+    }
+    //图片及数据拼接
+    fabric.Image.fromURL(imgdata[i], function(img) {            
+      var scale = target[i].width/img.width;    
+      img.set({left: target[i].left, top: target[i].top, scaleX: scale, scaleY:scale});    
+      tmpCanvas.add(img);
+      tmpCanvas.renderAll();
+      if(++i < imgdata.length){      
+        mergeImage(imgdata, target, i);
+      }else{
+        if(isHasText){
+          jsonCustom.setting.text.forEach(function(v,i){              
+            if(v.type==1){   //直接设置坐标 
+              tmpCanvas.add(new fabric.Text($("#custom-text"+i).val().toUpperCase(), { 
+                fontSize: v.fontsize, 
+                fill: '#FFF',
+                left: v.left,
+                top: v.top
+              }));
+            }else if(v.type==2){
+              var texts = new fabric.Text($("#custom-text"+i).val().toUpperCase(), { 
+                fontSize: v.fontsize,
+                fill: '#FFF'
+              })
+              var coox = v.left-texts.width;            
+              texts.set({left:coox, top:v.top});
+              tmpCanvas.add(texts);  
+            }
+          })
+        }
+        imgBase64 = tmpCanvas.toDataURL({
+          format: 'png',
+          multiplier: 1
+        });
+        $("#imagemerge").attr("src", imgBase64);
+        jQuery("#custom_json").val('');          
+        if(jsonCustom.setting.photo.length > 0){        
+          if(typeof (custom_json['image']) == "undefined"){
+            custom_json['image'] = {};
+          }               
+          for(x = 0;x < jsonCustom.setting.photo.length;x++){ 
+            crop_picture = jQuery("#crop_picture"+x);       
+            if(crop_picture.length >0){
+              imgSrc = crop_picture.val();
+              if(typeof (custom_json['image'][x]) == "undefined"){
+                custom_json['image'][x] = {};
+              }
+              if(typeof (custom_json['image'][x]['src']) == "undefined"){
+                custom_json['image'][x]['src'] = {};
+              } 
+              custom_json['image'][x]['src'] = imgSrc;
+            }
+          }
+        }  
+        if(isHasText && jsonCustom.setting.text.length > 0){        
+          if(typeof (custom_json['font']) == "undefined"){
+            custom_json['font'] = {};
+          }               
+          for(x = 0;x < jsonCustom.setting.text.length;x++){ 
+            textObj = jQuery("#custom-text"+x);       
+            if(textObj.length >0){
+              text_str = textObj.val().toUpperCase();
+              if(typeof (custom_json['font'][x]) == "undefined"){
+                custom_json['font'][x] = {};
+              }
+              if(typeof (custom_json['font'][x]['font_family']) == "undefined"){
+                custom_json['font'][x]['font_family'] = {};
+              } 
+              if(typeof (custom_json['font'][x]['font_size']) == "undefined"){
+                custom_json['font'][x]['font_size'] = {};
+              } 
+              if(typeof (custom_json['font'][x]['text_str']) == "undefined"){
+                custom_json['font'][x]['text_str'] = {};
+              }                         
+              custom_json['font'][x]['font_family'] = jsonCustom.setting['text'][x]['fontfamily'];
+              custom_json['font'][x]['font_size'] = jsonCustom.setting['text'][x]['fontsize'];
+              custom_json['font'][x]['text_str'] = text_str;
+            }
+          }
+        }    
+        jQuery("#custom_json").val(JSON.stringify(custom_json))
+        customModal3.open();
+      }
+    });
+  } 
+  
+  Product.validators.push(async () => {
+    return true;
+  })
+    
+  function myCustomAddToCart(){
+    //更新驾车数量
+    var quantity = jQuery('input[name="tingle_quantity"]').val() ? jQuery('input[name="tingle_quantity"]').val() : 1;  
+    if(quantity < 10){
+      jQuery(".quantity-val span").html(`0`+ (parseInt(quantity)));
+    }else{
+      jQuery(".quantity-val span").html(parseInt(quantity));
+    }  
+    $('input[name="quantity"]').val(parseInt(quantity)).trigger('change');
+    $("#sp-add-to-cart").attr("disabled","disabled");
+    //上传合成图点击真正的加车按钮
+    uploadtoqiniu(function(){  
+      $('.product-form__cart-submit').click();
+      customModal3.close();
+      $("#sp-add-to-cart").removeAttr("disabled");
+    })
+  }
+  
+  console.log({{ product | json }});
+</script>

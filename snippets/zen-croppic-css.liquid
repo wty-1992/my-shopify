@@ -1,0 +1,195 @@
+
+<style>
+  .min-error-info {color: red;}
+  .fonttext {
+    width: 100%;
+    border: none;
+    height: 52px;
+    padding-left: 10px;
+    font-size: 1rem !important;
+    background: #fff;
+    box-shadow: none !important;
+    border-radius: 5px;
+  }
+  .product-txt-label{
+    text-transform: none;
+    color: #000;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  .text-container {
+  	padding: 0 5px;
+  }
+  .text-input-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #000000;
+    margin-bottom: 10px;
+  }
+  .leftnum {
+  	min-width: 64px;
+  }
+ .photo-select-carving {
+  	width: 100%;
+    margin: 20px 0;
+    padding: 0 5px;
+  }
+  .photo-select-carving .area-crop-upload {
+    background: #ffffff !important;
+    align-items: center;
+    padding: 0 10px;
+    height: 52px;
+    border: 1px solid #000000;
+  }
+  .photo-select-carving .btn-upload-open {
+    cursor: pointer;
+    background: #000000;
+    color: #fff;
+    border-radius: 25px;
+    padding: 2px 15px;
+    width: 100px;
+    text-align: center;
+    text-transform: capitalize;
+    font-weight: bold;
+    border: none;
+    font-size: 16px;
+    line-height: 1.625;
+  }
+  .photo-select-carving {
+  	font-size: 1rem !important;
+    color: #000;
+  }
+
+  .area-crop-upload-text {
+  	font-size: 1rem !important;
+    color: #000;
+  }
+
+  .photo-select-carving .edit-tpl-footer button {
+  	padding: 1rem 2rem!important;
+    border: none!important;
+    color: #fff!important;
+    border-radius: 0px!important;
+    width: auto!important;
+    font-size: 16px!important;
+  }
+  .photo-select-carving .el-button--primary {
+  	background-color: #e60044!important;
+    border-color: #e60044!important;
+  }
+  
+  .photo-select-carving .el-button--default {
+  	background-color: grey!important;
+    border-color: grey!important;
+  }
+  
+  .photo-select-carving .el-dialog__wrapper .el-button {
+  	border-radius: 0px!important;
+  }
+  
+  .preview-thumbnail {
+  	margin-right: 10px;
+  }
+  .photo-design-tool-bar, .carving-prompt {
+  	margin-top: 10px;
+  }
+  .crop-prompt {
+  	margin: 10px 0;
+  }
+  .photo-design-body {
+  	margin-bottom: 10px;
+  }
+  .dialog-footer-carving {
+  	padding-top: 0 !important;
+  }
+  .crop-progerss {
+  	margin-bottom: 1rem;
+  }
+  
+  .preview-title {
+  	margin-bottom: 0.2rem;
+  }
+  .shopify-payment-button{
+  	display: none;
+  }
+  .page-container {
+    -ms-transform: none;
+    -webkit-transform: none;
+    transform: none;
+  }
+  .uploadfont p {
+  	margin-bottom: 0.5rem;
+  }
+  .text-container {width: 100%;}
+  .el-dialog {min-width: 550px;}
+  .color-title{
+  	display: block;
+    text-transform: none;
+    color: #000;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 13px;
+  }
+  .radio-box {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+  }
+  .color-list-container{
+  	padding: 0 5px;
+  }
+  .color-list-container p {
+      width: 20px;
+      height: 20px;
+      margin: 0;
+      margin-bottom: 0;
+      border-radius: 50%;
+      margin-right: 5px;
+  }
+  .color-list-container label .radio-box span {
+    text-transform: none;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    line-height: 1;
+    max-width: calc(100% - 25px);
+  }
+  .color-list-container label {
+    margin-right: 5px;
+    padding: 0px 2px 0 10px;
+    border: 1px solid #999;
+    margin-bottom: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    width: 31.5%;
+    cursor: pointer;
+  }
+  .color-list-container label.color-selected {
+    border: 1px solid #e60044;
+    color: #e60044;
+  }
+  .color-list-container input[type=radio] {
+    display: none;
+  }
+  
+  @media (max-width: 768px) { 
+      .el-message-box {
+      width: 100% !important;
+      height: 100%;
+    }
+    .el-dialog {min-width: 100%;}
+    
+    .el-dialog__body > div:nth-child(2) > div:nth-child(1) {
+    	height: calc(100% - 200px);
+    }
+    .el-dialog__body, .el-dialog__body > div:nth-child(2), .el-dialog__body > div:nth-child(2) > div:nth-child(1) > div:nth-child(1), .custom-cropper{
+      height: 100%;
+    }
+    .el-dialog__wrapper{
+    	z-index: 1000001;
+    }
+    .tingle-modal__close{
+      display: none !important;
+    }
+  }
+</style>

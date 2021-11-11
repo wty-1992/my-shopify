@@ -1,0 +1,124 @@
+<style>
+   @media screen and (max-width: 768px){
+    .footer-mb-section{
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .footer-middle-block{
+      border-width:0px;
+      
+    }
+    .links{
+      font-size:16px;
+      line-height:48px; 
+      display:none;
+    }
+    .list-item{
+     font-size:12px;
+     line-height:48px;
+     margin-left:10px;
+    
+    }
+    .footer-logo-image{
+     margin-top:40px;
+     margin-left:0px;
+    }
+    .footer-logo-image{
+      width:180px;
+    }
+    .block-box{
+      width:100%;
+      display:flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+     .icon-dowm{
+       display:flex;
+       align-items: center;
+       justify-content: center;
+     }
+     .icon-up{
+       display:none;
+       align-items: center;
+       justify-content: center;
+     }
+    .list-item-active{
+     display:flex;
+    }
+     .footer-middle-block{
+       width:100%;
+     }
+     .footer-middle-block-box{
+       width:100%;
+       flex-direction: column;
+     }
+     .icon-block{
+       display:flex;
+     }
+     .icon-none{
+       display:none;
+     }
+     .active-block{
+       display:block;
+     }
+  }
+</style>
+<div class="footer-mb-section"> 
+  {%- comment -%}footer pionter{%- endcomment -%} 
+  {%- comment -%}footer pionter end{%- endcomment -%} 
+  {%- comment -%}
+  footer cms page  start by laozien 2021-10-28
+  {%- endcomment -%}
+  {% assign logo_resize = section.settings.footer-logo.width| append: "x" | append: section.settings.footer-logo.height %}
+  <div class="footer-middle-block-box">
+    <div class="footer-middle-block flex">
+      {% for block in section.blocks %}
+      <div class="footer-content">
+        <div class="block-box">
+          <div class="block-title">{{ block.settings.list_title }}</div>
+          <div class="icon-dowm ">
+            {%include 'icon-arrow-down' %}
+          </div>
+           <div class="icon-up">
+             {%include 'icon-arrow-up' %}
+          </div>
+        </div>
+        <ul class="links "> 
+          {% assign lists = block.settings.list_text| split: "," %}
+          {% for item in lists %}
+          <li class="list-item"><a href="/pages/trackorder" title="{{ item }}">{{ item }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+       {% endfor %}
+  </div>
+  <div class="footer-logo-image">
+    <img src="{{section.settings.footer-logo| img_url: logo_resize}}"/>
+  </div>
+</div>
+</div>
+
+<script>
+    $('.footer-content').each(function(index,item){
+      $(item).find('.block-box').click(function(){
+        if($(item).find('.block-box .icon-dowm').hasClass('icon-none')||
+           $(item).find('.block-box .icon-up').hasClass('icon-block')||
+           $(item).find('.links').hasClass('active-block')
+          ){
+            $(item).find('.block-box .icon-dowm').removeClass('icon-none') 
+            $(item).find('.block-box .icon-up').removeClass('icon-block')
+            $(item).find('.links').removeClass('active-block')
+            return
+        }
+        $('.footer-content').each(function(index,item){
+         $(item).find('.block-box .icon-dowm').removeClass('icon-none')
+         $(item).find('.block-box .icon-up').removeClass('icon-block')
+         $(item).find('.links').removeClass('active-block')
+        })
+       $(item).find('.block-box .icon-dowm').addClass('icon-none')
+       $(item).find('.block-box .icon-up').addClass('icon-block')
+       $(item).find('.links').addClass('active-block')
+      })
+    })
+</script>

@@ -1,0 +1,738 @@
+<style>
+  .collection-banner-pc{display:block;margin: auto;}
+  .collection-banner-mb{display:none;margin: auto;}
+  .collection-banner{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0;
+    flex-flow: wrap;
+  }
+  .collection-special-picture .collection-banner{
+    padding: 0 0 10px;
+  }
+  .collection-banner.collection-banner-one,.collection-banner.collection-banner-three,.collection-banner.collection-banner-four{
+    width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .collection-special-picture .shopby_title {
+    text-align: center;  
+    color: #000;
+    margin:0;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .collection-special-picture .shopby_title span{
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1;
+    display: block;
+  }
+  .collection-special-picture .shopby_title p{
+    font-size: 16px;
+    margin-bottom: 0;
+  }
+  .collection-banner.collection-banner-one .collection-banner-row{width:calc(50% - 5px);}
+  .collection-banner.collection-banner-three .collection-banner-row{width:calc(33% - 5px);}
+  .collection-banner.collection-banner-four .collection-banner-row{width:calc(25% - 5px);}
+  .collection-banner .collection-banner-row{
+    overflow: hidden;
+    position: relative;
+    transition: all .3s;
+  }
+  .collection-banner .collection-banner-row img{width:100%;transition: all .3s;}
+  .collection-banner a{
+    display: block;   
+    position: relative;
+  }
+  @media(max-width:1200px){
+    .collection-banner.collection-banner-one,.collection-banner.collection-banner-three,.collection-banner.collection-banner-four{width:100%;}
+    .collection-banner.collection-banner-four .collection-banner-row{width:calc(50% - 5px);}
+    .collection-banner-pc{display:none;}
+    .collection-banner-mb{display:block;}
+  }
+  {% if handle == 'necklaces' or  handle == 'bracelets' %}
+    .collection-special-picture .shopby_title {
+      height: 70px;
+      background: rgba(255,255,255,.4);
+    }
+    @media(max-width:768px){
+      .collection-special-picture .shopby_title {
+        height: 45px;       
+      }
+      .collection-special-picture .collection-banner{
+        padding: 0 6px 6px;
+      }
+      .collection-special-picture .shopby_title span{
+        font-size: 12px;
+      }
+      .collection-special-picture .shopby_title p{
+        font-size: 12px;
+      }
+      .collection-banner-three .shopby_title p{
+        display: none;
+      }
+      .collection-banner.collection-banner-one .collection-banner-row{width:calc(50% - 3px);}
+      .collection-banner.collection-banner-three .collection-banner-row{width:calc(33% - 3px);}
+    }      
+  {% endif %}  
+  {% if handle == 'apparel' or handle == 'occasions' or handle == 'recipients' %}
+  	.collection-special-picture .shopby_title span{
+      font-size: 40px;
+      color: #fff;
+      text-shadow: 0 0 15px rgb(0 0 0 / 90%);
+      padding: 0 40px;
+      line-height: 1.3;
+      font-family: OpenSans-Light;
+    }
+    @media(max-width:768px){
+ 	  .collection-banner-row{
+        width: 100% !important;
+      }
+      .collection-special-picture .shopby_title{
+        position: unset;
+      }
+      .collection-special-picture .shopby_title span{
+        font-size: 18px;
+        color: #000;
+        display: flex;
+    	flex-flow: column;
+        margin-bottom: 25px;
+        margin-top: 15px;
+        text-shadow: none;
+        align-items: center;
+      }
+      .collection-special-picture .shopby_title span:after{
+        content:"{{'common.top5.buy_now' | t }}";
+        background: #da004e;
+        padding: 8px 38px;
+        color: #fff;
+        text-transform: uppercase;
+        display: inline-block;
+        font-size: 12px;
+    	margin-top: 12px;
+      }
+      .collection-banner-swiper{
+        margin-bottom:0;
+      }
+    }    
+    {% if handle == 'recipients' %}
+      .collection-special-picture .shopby_title span {
+        font-weight: 100;
+      }
+    {% endif %}
+  {% endif %}
+  {% if handle == 'charms' or handle == 'rings' or handle == 'watches' %}
+    .collection-special-picture .shopby_title{
+ 	  height: 35%;
+    }
+  	.collection-special-picture .shopby_title span{
+      font-size: 16px;
+      font-weight: 100;
+    }
+    .collection-banner-swiper{
+      margin-bottom:0;
+    }
+    @media(max-width:768px){
+      .collection-special-picture .collection-banner{
+        padding: 0 5px 0;
+      }
+      .collection-banner-row{
+        width: calc(50% - 2.5px) !important;
+        margin-bottom: 5px;
+      }
+      .collection-special-picture .shopby_title span {
+        font-size: 13px;       
+      }
+    }
+    {% if handle == 'watches' %}
+  	  .picture_box{
+        background-image: linear-gradient(#f5e76c, #fff);
+      }   
+      @media(max-width:768px){
+        .collection-banner-row{
+          width: 50% !important;
+        }
+        .collection-banner:first-child .collection-banner-row:first-child{
+          width: 100% !important;
+        }        
+        .collection-banner-row{
+          margin-bottom: 0;
+        }
+        .collection-special-picture .collection-banner{
+          padding: 0;
+        }
+        .collection-banner .collection-banner-row img{
+          max-height:172px;
+        }
+      }
+    {% endif %}
+  {% endif %}
+</style>
+<div class="picture_box">
+{% for block in section.blocks %}
+{% case block.type %}
+
+{% when 'A_pictures' %}
+{% if handle == block.settings.handle %}
+{% if block.settings.box_shadow %}
+<style>
+  @media(min-width:768px){.collection-banner .collection-banner-row:hover .collection-banner-pc{transform: scale(1.2);}}
+</style>
+{% endif %}
+  {% if block.settings.shopby_title != blank %}
+  <div class="shopby_title">
+      <span>{{ block.settings.shopby_title }}</span>
+  </div>
+  {% endif %}
+  <div class="collection-banner">
+    {% if block.settings.link %}
+    <a href="{{ block.settings.link }}">
+    {% endif %}
+      <img src="{{ block.settings.pc_image | img_url: 'master' }}" class="collection-banner-pc" />
+      <img src="{{ block.settings.mb_image | img_url: 'master' }}" class="collection-banner-mb" />
+    {% if block.settings.link %}
+    </a>
+    {% endif %}
+  </div>
+{% endif%}
+
+{% when 'tow_pictures' %}
+{% if handle == block.settings.handle %}
+{% if block.settings.box_shadow %}
+<style>
+  @media(min-width:768px){.collection-banner .collection-banner-row:hover .collection-banner-pc{transform: scale(1.2);}}
+</style>
+{% endif %}
+
+  <div class="collection-banner collection-banner-one">
+    <div class="collection-banner-row">
+      {% if block.settings.link1 %}
+      <a href="{{ block.settings.link1 }}">
+      {% endif %}
+        <img src="{{ block.settings.pc_image1 | img_url: 'master' }}" class="collection-banner-pc" />
+        <img src="{{ block.settings.mb_image1 | img_url: 'master' }}" class="collection-banner-mb" />
+        {% if block.settings.shopby_title1 != blank %}
+        <div class="shopby_title" >
+            <span>{{ block.settings.shopby_title1 }}</span>
+          	<p>{{ block.settings.shopby_text1 }}</p>
+        </div>
+        {% endif %}
+      {% if block.settings.link1 %}
+      </a>
+      {% endif %}
+    </div>
+    <div class="collection-banner-row">
+      {% if block.settings.link2 %}
+      <a href="{{ block.settings.link2 }}">
+      {% endif %}      
+        <img src="{{ block.settings.pc_image2 | img_url: 'master' }}" class="collection-banner-pc" />
+        <img src="{{ block.settings.mb_image2 | img_url: 'master' }}" class="collection-banner-mb" />
+        {% if block.settings.shopby_title2 != blank %}
+        <div class="shopby_title" >
+            <span>{{ block.settings.shopby_title2 }}</span>
+          	<p>{{ block.settings.shopby_text2 }}</p>
+        </div>
+        {% endif %}        
+      {% if block.settings.link2 %}
+      </a>
+      {% endif %}        
+    </div>  
+  </div>
+{% endif%}
+
+{% when 'three_pictures' %}
+{% if handle == block.settings.handle %}
+{% if block.settings.box_shadow %}
+<style>
+  @media(min-width:768px){.collection-banner .collection-banner-row:hover .collection-banner-pc{transform: scale(1.2);}}
+</style>
+{% endif %}
+  {% if block.settings.shopby_title != blank %}
+  <div class="shopby_title">
+      <span>{{ block.settings.shopby_title }}</span>
+  </div>
+  {% endif %}
+  <div class="collection-banner collection-banner-three">
+    <div class="collection-banner-row">
+      {% if block.settings.link1 %}
+      <a href="{{ block.settings.link1 }}">
+      {% endif %}      
+        <img src="{{ block.settings.pc_image1 | img_url: 'master' }}" class="collection-banner-pc" />
+        <img src="{{ block.settings.mb_image1 | img_url: 'master' }}" class="collection-banner-mb" />
+        {% if block.settings.shopby_title1 != blank %}
+        <div class="shopby_title" >
+            <span>{{ block.settings.shopby_title1 }}</span>
+          	<p>{{ block.settings.shopby_text1 }}</p>
+        </div>
+        {% endif %}
+      {% if block.settings.link1 %}
+      </a>
+      {% endif %}        
+    </div>
+    <div class="collection-banner-row">
+      {% if block.settings.link2 %}
+      <a href="{{ block.settings.link2 }}">
+      {% endif %}      
+        <img src="{{ block.settings.pc_image2 | img_url: 'master' }}" class="collection-banner-pc" />
+        <img src="{{ block.settings.mb_image2 | img_url: 'master' }}" class="collection-banner-mb" />
+        {% if block.settings.shopby_title2 != blank %}
+        <div class="shopby_title" >
+            <span>{{ block.settings.shopby_title2 }}</span>
+          	<p>{{ block.settings.shopby_text2 }}</p>
+        </div>
+        {% endif %}
+      {% if block.settings.link2 %}
+      </a>
+      {% endif %}        
+    </div>
+    <div class="collection-banner-row">
+      {% if block.settings.link3 %}
+      <a href="{{ block.settings.link3 }}">
+      {% endif %}      
+        <img src="{{ block.settings.pc_image3 | img_url: 'master' }}" class="collection-banner-pc" />
+        <img src="{{ block.settings.mb_image3 | img_url: 'master' }}" class="collection-banner-mb" />
+        {% if block.settings.shopby_title3 != blank %}
+        <div class="shopby_title" >
+            <span>{{ block.settings.shopby_title3 }}</span>
+            <p>{{ block.settings.shopby_text3 }}</p>
+        </div>
+        {% endif %}
+      {% if block.settings.link3 %}
+      </a>
+      {% endif %}        
+    </div>  
+  </div>
+{% endif%}
+
+{% when 'four_pictures' %}
+{% if handle == block.settings.handle %}
+{% if block.settings.box_shadow %}
+<style>
+  @media(min-width:768px){.collection-banner .collection-banner-row:hover .collection-banner-pc{transform: scale(1.2);}}
+</style>
+{% endif %}
+  {% if block.settings.shopby_title != blank %}
+  <div class="shopby_title">
+      <span>{{ block.settings.shopby_title }}</span>
+  </div>
+  {% endif %}
+  <div class="collection-banner collection-banner-four">
+    <div class="collection-banner-row">
+      {% if block.settings.link1 %}
+      <a href="{{ block.settings.link1 }}">
+      {% endif %}      
+        <img src="{{ block.settings.pc_image1 | img_url: 'master' }}" class="collection-banner-pc" />
+        <img src="{{ block.settings.mb_image1 | img_url: 'master' }}" class="collection-banner-mb" />
+        {% if block.settings.shopby_title1 != blank %}
+        <div class="shopby_title" >
+            <span>{{ block.settings.shopby_title1 }}</span>
+            <p>{{ block.settings.shopby_text1 }}</p>
+        </div>
+        {% endif %}
+      {% if block.settings.link1 %}
+      </a>
+      {% endif %}        
+    </div>
+    <div class="collection-banner-row">
+      {% if block.settings.link2 %}
+      <a href="{{ block.settings.link2 }}">
+      {% endif %}      
+        <img src="{{ block.settings.pc_image2 | img_url: 'master' }}" class="collection-banner-pc" />
+        <img src="{{ block.settings.mb_image2 | img_url: 'master' }}" class="collection-banner-mb" />
+        {% if block.settings.shopby_title2 != blank %}
+        <div class="shopby_title" >
+            <span>{{ block.settings.shopby_title2 }}</span>
+            <p>{{ block.settings.shopby_text2 }}</p>
+        </div>
+        {% endif %}
+      {% if block.settings.link2 %}
+      </a>
+      {% endif %}        
+    </div>
+    <div class="collection-banner-row">
+      {% if block.settings.link3 %}
+      <a href="{{ block.settings.link3 }}">
+      {% endif %}
+        <img src="{{ block.settings.pc_image3 | img_url: 'master' }}" class="collection-banner-pc" />
+        <img src="{{ block.settings.mb_image3 | img_url: 'master' }}" class="collection-banner-mb" />
+        {% if block.settings.shopby_title3 != blank %}
+        <div class="shopby_title" >
+            <span>{{ block.settings.shopby_title3 }}</span>
+            <p>{{ block.settings.shopby_text3 }}</p>
+        </div>
+        {% endif %}
+      {% if block.settings.link3 %}
+      </a>
+      {% endif %}        
+    </div>
+    <div class="collection-banner-row">
+      {% if block.settings.link4 %}
+      <a href="{{ block.settings.link4 }}">
+      {% endif %}
+        <img src="{{ block.settings.pc_image4 | img_url: 'master' }}" class="collection-banner-pc" />
+        <img src="{{ block.settings.mb_image4 | img_url: 'master' }}" class="collection-banner-mb" />
+        {% if block.settings.shopby_title4 != blank %}
+        <div class="shopby_title" >
+            <span>{{ block.settings.shopby_title4 }}</span>
+            <p>{{ block.settings.shopby_text4 }}</p>
+        </div>
+        {% endif %}
+      {% if block.settings.link4 %}
+      </a>
+      {% endif %}        
+    </div>  
+  </div>
+{% endif%}
+
+{% when 'bg_style' %}
+  {% if handle == block.settings.handle %}
+  {% assign imgWidth =block.settings.pc_image.width | divided_by: 100 %}
+  {% assign imgHeight =block.settings.pc_image.height %}	
+  {% assign imgWidthMB =block.settings.mb_image.width | divided_by: 100 %}
+  {% assign imgHeightMB =block.settings.mb_image.height %}	
+    <style>
+      html{
+        scroll-behavior: smooth;
+      }
+      .collection-banner-row{
+        display: inline-flex;
+        background: linear-gradient(#d9ddf3,#feeced);
+        align-items: center;
+      }
+      .collection-special-picture{
+        background: url({{ block.settings.pc_image | img_url:'master' }}) no-repeat top left;
+    	background-size: contain;
+        padding-top:{{imgHeight | divided_by: imgWidth | minus: 6 }}vw;
+        position: relative;
+      }
+      .bg_style_link{
+        position: absolute;
+        width: 100%;
+        height: {{imgHeight | divided_by: imgWidth | minus: 6 }}vw;
+        display: block;
+        top: 0;
+        left: 0;  
+        z-index:2;
+      }
+      @media(max-width:768px){
+        .collection-special-picture{
+          background: url({{ block.settings.mb_image | img_url:'master' }}) no-repeat top left;     
+          background-size: contain;
+          padding-top:{{imgHeightMB | divided_by: imgWidthMB | divided_by: 1.3 }}vw;
+        }
+        .bg_style_link{
+          height: {{imgHeightMB | divided_by: imgWidthMB | divided_by: 1.3 }}vw;
+        }
+      }
+      {% if handle == 'watches' %}
+      	.collection-special-picture{
+          padding-top: {{imgHeight | divided_by: imgWidth }}vw !important;
+        }
+        .bg_style_link{
+          height: {{imgHeight | divided_by: imgWidth }}vw !important;
+        }
+        @media(max-width:768px){
+          .collection-special-picture{
+            padding-top: {{imgHeightMB | divided_by: imgWidthMB | divided_by: 1.15 }}vw !important;
+          }
+          .bg_style_link{
+            height: {{imgHeightMB | divided_by: imgWidthMB | divided_by: 1.15 }}vw !important;
+          }
+        }
+      {% endif %}      
+    </style>
+	<a class="bg_style_link" href="#shopify-section-template-collection"></a>
+  {% endif %}
+  
+  {% when 'special_sort' %}
+  {% if handle == block.settings.handle %}
+    <style>
+    @media(min-width:768px){
+   	  .banner-img { height:810px;margin: 0 auto;}
+      .banner-img img { max-width:100%}
+      .banner-left {display:inline-block; vertical-align: top;}
+      .banner-right {display:inline-block; vertical-align: top; padding-left: 18px;}
+      .banner-left .l-top01  {display:inline-block; position: relative; top: -100px; right: 15px;z-index: 1;}
+      .banner-left .l-top01 .banner  { box-shadow: 2px 10px 30px #ced5d8;}
+      .right-bottom .banner  { box-shadow: 2px 10px 30px #ced5d8;}
+      .banner-left .l-top02  {display:inline-block; position:relative;z-index: 1;}
+      .banner-left .l-top02 a { color:#fff !important; font-size: 24px;}
+      .banner-left .l-top02 a:hover { color:#fff !important;}
+      .banner-left .l-top02 .big-off { font-size: 60px; display: block; margin-top: 8px;line-height: 1;}
+      .banner-left .l-top02 .text-off { font-size: 36px; display: inline-block; margin-top: 5px;}
+      .left-top { position: relative; top: 0; z-index: 2;}
+      .left-bottom { text-align:left; position: relative; top: -161px; right:118px;}
+      .left-bottom .content { width:85%; background:#f7f7f7}
+      .title-border { width:80%; border-bottom:1px solid #ccc;}
+      .top-title.container { margin-top: 80px; text-align: center; font-size: 60px; font-family: OpenSans-Light; color: #0e1014;     text-transform: capitalize;}
+      .top-title .title-border { width: 80%; border-bottom: 1px solid #eff2f7; margin: 0 auto; margin-top: 35px; margin-bottom: 55px;}
+      .l-top01 .text {  position: absolute; bottom: 56px; z-index: 1; font-size: 18px; text-align: left; width: 100%;padding-left: 33px; right:0;}
+      .left-bottom .text {  position: absolute; bottom: 40px; z-index: 1; font-size: 18px; text-align: left; padding-left: 18px; right:18px;}
+      .left-bottom .text .right-arrow  { margin: 5px 0 0 20px;}
+      .text .right-arrow  { margin: 5px 0 0 20px;}
+      .right-bottom .text {  position: absolute; bottom: 46px; z-index: 1; font-size: 18px; text-align: left; width: 100%;padding-left: 35px; right:0;}
+      .right-bottom .text .tag-off { display: block; margin-top: 8px;}
+      .right-bottom .text .right-arrow {     margin: 5px 0 0 180px;}
+      .right-top .text {  position: absolute; bottom: 50px; z-index: 1; font-size: 18px; text-align: left; width: 100%;padding-left: 35px; right:0;}
+      .l-top02 .text { position: absolute; bottom: 30px; z-index: 1; font-size: 18px; text-align: left; padding-right: 18px; right: 0; color: #444; width:42%; }
+      .l-top02 .text .right-arrow { margin: 18px 0 0 20px; }
+      .right-top { position:relative;}
+      .right-bottom { position:relative;}
+      .content .banner  {  transition: all 0.6s;}
+      .content .text  {  transition: all 0.6s;}
+      .content:hover .text { right:-20px;}
+      .content:hover .banner { transform: translateX(-30px); transition: all 0.5s cubic-bezier(0.23, 1, 0.38, 1) 0s;}
+      .left-bottom .content:hover .text {right:-18px;}
+      .banner-img a:hover {color:#000 !important;}
+      .photo-move1 { font-size:24px;}
+      .banner-img ul li { padding: 2px 0;line-height: 1.2;}
+      .left-bottom .product-image img{margin: 0;}
+      .right-arrow-new{display:none;}
+    }
+    .collection-banner-swiper{margin:0;}
+    @media(max-width:768px){
+      .defaultImage.right-arrow.lazyloaded{display: none;}
+      .collection-banner .top-title{display: none;}
+      .banner-img .text{position: absolute;z-index: 1;bottom: 12px;width: 100%;padding-left: 10px;}
+      .l-top01.content{width:100%;}
+      .l-top02.content,.left-bottom,.banner-right>div{width:50%;}
+      .banner-left, .banner-right {display: flex;flex-flow: wrap;}
+      i.icon.photofont.photo-move1 {font-size: 24px;line-height: 1;}
+      .banner-img .text li{font-size: 13px;color: #000;position: relative;}
+      .right-arrow-new {width: 20px;height: 20px;display: flex;justify-content: center;align-items: center;border-radius: 50%;background: #e60044;color: #fff;margin-left: 6px;position: absolute;bottom: 0;right: 7px;}
+      .l-top01.content .text .right-arrow-new{background: #000;position: unset;}
+      .l-top01.content .text li{display: flex;}
+    }
+    
+    </style>
+  <div class="collection-banner">
+    <div class="top-title container">
+      <div>{{block.settings.shopby_title }}</div>
+      <div class="title-border"></div>
+    </div>
+    <div class="banner-img">
+    <div class="banner-left">
+      <div class="l-top01 content">
+        <a href="{% if block.settings.link1 != blank %}{{block.settings.link1 }}{% else %}javascript:;{% endif %}" class="">
+          <img class="defaultImage lazyload banner banner_01 collection-banner-pc" src="{{block.settings.pc_image1 | img_url:'master'}}"  alt="" />
+          <img class="defaultImage lazyload banner banner_01 collection-banner-mb" src="{{block.settings.mb_image1 | img_url:'master'}}"  alt="" />
+          <div class="text">
+            <ul>
+              <li><i class="icon photofont photo-move1"></i></li>
+              <li >{{block.settings.shopby_text1 }}<div class="right-arrow-new">&gt;</div><img class="defaultImage lazyload right-arrow" src="https://cdn.shopifycdn.net/s/files/1/0552/3282/3445/files/right.png?v=1618901333"  alt="" /></li>
+            </ul>
+          </div>
+        </a>
+      </div>
+      <div class="l-top02 content">
+        <a href="{% if block.settings.link2 != blank %}{{block.settings.link2 }}{% else %}javascript:;{% endif %}" class="product-image">
+          <img class="defaultImage lazyload banner banner_02 collection-banner-pc" src="{{block.settings.pc_image2 | img_url:'master'}}"  alt="" />
+          <img class="defaultImage lazyload banner banner_02 collection-banner-mb" src="{{block.settings.mb_image2 | img_url:'master'}}"  alt="" />
+          <div class="text">
+            <ul>
+              <li><i class="icon photofont photo-move1"></i></li>                            
+              <li>{{block.settings.shopby_text2 }}<div class="right-arrow-new">&gt;</div><img class="defaultImage lazyload right-arrow" src="https://cdn.shopifycdn.net/s/files/1/0552/3282/3445/files/right.png?v=1618901333"  alt="" /></li>
+            </ul>
+          </div>
+        </a>
+      </div>
+      <div class="left-bottom">
+        <div class="content">
+          <a href="{% if block.settings.link3 != blank %}{{block.settings.link3 }}{% else %}javascript:;{% endif %}" class="product-image">
+            <img class="defaultImage lazyload banner banner_03 collection-banner-pc" src="{{block.settings.pc_image3 | img_url:'master'}}"  alt="" />
+            <img class="defaultImage lazyload banner banner_03 collection-banner-mb" src="{{block.settings.mb_image3 | img_url:'master'}}"  alt="" />
+            <div class="text">
+              <ul>
+                <li><i class="icon photofont photo-move1"></i></li>                
+                <li>{{block.settings.shopby_text3 }}<div class="right-arrow-new">&gt;</div><img class="defaultImage lazyload right-arrow" src="https://cdn.shopifycdn.net/s/files/1/0552/3282/3445/files/right.png?v=1618901333"  alt="" /></li>
+              </ul>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+      <div class="banner-right">
+        <div class="right-top">
+          <div class="content">
+            <a href="{% if block.settings.link4 != blank %}{{block.settings.link4 }}{% else %}javascript:;{% endif %}" class="product-image">
+              <img class="defaultImage lazyload banner banner_04 collection-banner-pc" src="{{block.settings.pc_image4 | img_url:'master'}}"  alt="" />
+              <img class="defaultImage lazyload banner banner_04 collection-banner-mb" src="{{block.settings.mb_image4 | img_url:'master'}}"  alt="" />
+              <div class="text">
+                <ul>
+                  <li><i class="icon photofont photo-move1"></i></li>                                    
+                  <li>{{block.settings.shopby_text4 }}<div class="right-arrow-new">&gt;</div><img class="defaultImage lazyload right-arrow" src="https://cdn.shopifycdn.net/s/files/1/0552/3282/3445/files/right.png?v=1618901333"  alt="" /></li>
+                </ul>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="right-bottom">
+          <div class="content">
+            <a href="{% if block.settings.link5 != blank %}{{block.settings.link5 }}{% else %}javascript:;{% endif %}" class="product-image">
+              <img class="defaultImage lazyload banner banner_05 collection-banner-pc" src="{{block.settings.pc_image5 | img_url:'master'}}"  alt="" />
+              <img class="defaultImage lazyload banner banner_05 collection-banner-mb" src="{{block.settings.mb_image5 | img_url:'master'}}"  alt="" />
+              <div class="text">
+                <ul>
+                  <li class="product-image"><i class="icon photofont photo-move1"></i></li>                  
+                  <li>{{block.settings.shopby_text5 }}<div class="right-arrow-new">&gt;</div><img class="defaultImage lazyload right-arrow" src="https://cdn.shopifycdn.net/s/files/1/0552/3282/3445/files/right.png?v=1618901333"  alt="" /></li>
+                </ul>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div id="soufeel_jewelry"></div>
+    </div>
+  </div>
+
+  {% endif %}
+{% endcase %}
+{% endfor %}
+</div>
+{% schema %}
+{
+  "name": "分类页特殊banner",
+  "class":"collection-special-picture",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "collection-special-picture"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "A_pictures",
+      "name": "一张图片",
+      "settings": [
+        {"type": "text","id": "title","label": "哪个活动"},
+        {"type": "text","id": "handle","label": "活动url"},
+		{"type": "checkbox","id": "box_shadow","label": "开启鼠标滑过放大效果","default": false},
+		{"type": "text","id": "shopby_title","label": "标题"},
+		{"type": "url","id": "link","label": "链接"},
+        {"type": "image_picker","id": "pc_image","label": "PC 图片"},
+        {"type": "image_picker","id": "mb_image","label": "MB 图片"}
+      ]
+    },
+    {
+      "type": "tow_pictures",
+      "name": "两张图片",
+      "settings": [
+        {"type": "text","id": "title","label": "哪个活动"},
+        {"type": "text","id": "handle","label": "活动url"},
+		{"type": "checkbox","id": "box_shadow","label": "开启鼠标滑过放大效果","default": false},
+		{"type": "text","id": "shopby_title1","label": "标题1"},
+		{"type": "text","id": "shopby_text1","label": "描述1"},
+		{"type": "url","id": "link1","label": "链接1"},
+        {"type": "image_picker","id": "pc_image1","label": "PC1 图片"},
+        {"type": "image_picker","id": "mb_image1","label": "MB1 图片"},
+		{"type": "text","id": "shopby_title2","label": "标题2"},
+		{"type": "text","id": "shopby_text2","label": "描述2"},
+		{"type": "url","id": "link2","label": "链接2"},
+		{"type": "image_picker","id": "pc_image2","label": "PC2 图片"},
+        {"type": "image_picker","id": "mb_image2","label": "MB2 图片"}
+      ]
+    },
+    {
+      "type": "three_pictures",
+      "name": "三张图片",
+      "settings": [
+        {"type": "text","id": "title","label": "哪个活动"},
+        {"type": "text","id": "handle","label": "活动url"},
+		{"type": "checkbox","id": "box_shadow","label": "开启鼠标滑过放大效果","default": false},
+		{"type": "text","id": "shopby_title1","label": "标题1"},
+		{"type": "text","id": "shopby_text1","label": "描述1"},
+		{"type": "url","id": "link1","label": "链接1"},
+        {"type": "image_picker","id": "pc_image1","label": "PC1 图片"},
+        {"type": "image_picker","id": "mb_image1","label": "MB1 图片"},
+		{"type": "text","id": "shopby_title2","label": "标题2"},
+		{"type": "text","id": "shopby_text2","label": "描述2"},
+		{"type": "url","id": "link2","label": "链接2"},
+		{"type": "image_picker","id": "pc_image2","label": "PC2 图片"},
+        {"type": "image_picker","id": "mb_image2","label": "MB2 图片"},
+		{"type": "text","id": "shopby_title3","label": "标题3"},
+		{"type": "text","id": "shopby_text3","label": "描述3"},
+		{"type": "url","id": "link3","label": "链接3"},
+		{"type": "image_picker","id": "pc_image3","label": "PC3 图片"},
+        {"type": "image_picker","id": "mb_image3","label": "MB3 图片"}
+      ]
+    },
+    {
+      "type": "four_pictures",
+      "name": "四张图片",
+      "settings": [
+        {"type": "text","id": "title","label": "哪个活动"},
+        {"type": "text","id": "handle","label": "活动url"},
+		{"type": "checkbox","id": "box_shadow","label": "开启鼠标滑过放大效果","default": false},
+		{"type": "text","id": "shopby_title1","label": "标题1"},
+		{"type": "text","id": "shopby_text1","label": "描述1"},
+		{"type": "url","id": "link1","label": "链接1"},
+        {"type": "image_picker","id": "pc_image1","label": "PC1 图片"},
+        {"type": "image_picker","id": "mb_image1","label": "MB1 图片"},
+		{"type": "text","id": "shopby_title2","label": "标题2"},
+		{"type": "text","id": "shopby_text2","label": "描述2"},
+		{"type": "url","id": "link2","label": "链接2"},
+		{"type": "image_picker","id": "pc_image2","label": "PC2 图片"},
+        {"type": "image_picker","id": "mb_image2","label": "MB2 图片"},
+		{"type": "text","id": "shopby_title3","label": "标题3"},
+		{"type": "text","id": "shopby_text3","label": "描述3"},
+		{"type": "url","id": "link3","label": "链接3"},
+		{"type": "image_picker","id": "pc_image3","label": "PC3 图片"},
+        {"type": "image_picker","id": "mb_image3","label": "MB3 图片"},
+		{"type": "text","id": "shopby_title4","label": "标题4"},
+		{"type": "text","id": "shopby_text4","label": "描述4"},
+		{"type": "url","id": "link4","label": "链接4"},
+		{"type": "image_picker","id": "pc_image4","label": "PC4 图片"},
+        {"type": "image_picker","id": "mb_image4","label": "MB4 图片"}
+      ]
+    },
+    {
+      "type": "special_sort",
+      "name": "特殊样式",
+      "settings": [
+        {"type": "text","id": "title","label": "哪个活动"},
+        {"type": "text","id": "handle","label": "活动url"},
+		{"type": "text","id": "shopby_title","label": "标题"},
+		{"type": "text","id": "shopby_text1","label": "描述1"},
+		{"type": "url","id": "link1","label": "链接1"},
+        {"type": "image_picker","id": "pc_image1","label": "PC1 图片"},
+        {"type": "image_picker","id": "mb_image1","label": "MB1 图片"},
+		{"type": "text","id": "shopby_text2","label": "描述2"},
+		{"type": "url","id": "link2","label": "链接2"},
+        {"type": "image_picker","id": "pc_image2","label": "PC2 图片"},
+        {"type": "image_picker","id": "mb_image2","label": "MB2 图片"},
+		{"type": "text","id": "shopby_text3","label": "描述3"},
+		{"type": "url","id": "link3","label": "链接3"},
+        {"type": "image_picker","id": "pc_image3","label": "PC3 图片"},
+        {"type": "image_picker","id": "mb_image3","label": "MB3 图片"},
+		{"type": "text","id": "shopby_text4","label": "描述4"},
+		{"type": "url","id": "link4","label": "链接4"},
+        {"type": "image_picker","id": "pc_image4","label": "PC4 图片"},
+        {"type": "image_picker","id": "mb_image4","label": "MB4 图片"},
+		{"type": "text","id": "shopby_text5","label": "描述5"},
+		{"type": "url","id": "link5","label": "链接5"},
+        {"type": "image_picker","id": "pc_image5","label": "PC5 图片"},
+        {"type": "image_picker","id": "mb_image5","label": "MB5 图片"}
+      ]
+    },
+    {
+      "type": "bg_style",
+      "name": "背景图",
+      "settings": [
+        {"type": "text","id": "title","label": "哪个活动"},
+        {"type": "text","id": "handle","label": "活动url"},
+		{"type": "image_picker","id": "pc_image","label": "PC 背景图片"},
+        {"type": "image_picker","id": "mb_image","label": "MB 背景图片"}
+      ]
+    }
+
+  ]
+}
+{% endschema %}

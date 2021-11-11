@@ -1,0 +1,530 @@
+{% comment %} 增加祝福卡功能 2020.03.31 by anna{% endcomment %}
+{% assign cardFlag = false %}
+{% assign cardTitle = '' %}
+{% if template.name == 'cart' %}
+  {% if section.settings.enable == true %}
+    {% assign card_type = section.settings.card_type%}
+	{% if card_type == 'product_write' %}
+		{%- assign product_card = all_products[section.settings.product_write] -%} 
+	{% else %}
+		{%- assign product_card = all_products[section.settings.product_print] -%} 
+	{% endif %}
+    {%- assign cardFirstVariant = product_card.first_available_variant -%}
+    {% assign cardFlag = true %}
+    {% assign cardTitle = section.settings.card_title%}
+    {% assign cardDesc = section.settings.desc%}
+    {% assign isLink = section.settings.is_link%}
+    {% assign isTemplate = section.settings.is_template%}
+    {% assign isFontfamily = section.settings.is_fontfamily%}
+  {% endif %}
+{% else %}
+  {% for block in section.blocks %}
+    {% if block.type =='card_product' %}
+      {% if productTags contains block.settings.card_tag %}
+        {% assign card_type = block.settings.card_type %}
+        {% if card_type == 'product_write' %}
+            {%- assign product_card = all_products[block.settings.product_write] -%} 
+        {% else %}
+            {%- assign product_card = all_products[block.settings.product_print] -%} 
+        {% endif %} 
+        {%- assign cardFirstVariant = product_card.first_available_variant -%}
+        {% assign cardFlag = true %}
+        {% assign cardTitle = block.settings.title%}
+        {% assign cardDesc = block.settings.desc%}
+        {% assign isLink = block.settings.is_link%}
+        {% assign isTemplate = block.settings.is_template%}
+        {% assign isFontfamily = block.settings.is_fontfamily%}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% if cardFlag == true %}
+<style>
+  .product-card-div{
+  	margin-top: 10px;
+    margin-bottom: 0px;
+  }
+  .product-card-box{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: left;
+  }
+  .product-card-box .mini-cart__product-image {
+    width: 100px;
+    display: block;
+    margin-right: 16px;
+  }
+  .product-card-button{
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+  }
+  .product-card-button img{
+  	width: 100px;
+    margin-right: 16px;
+  }
+  .product-card-desc{
+    line-height: 1;
+    font-size: 12px;
+    font-style: italic;
+    color: #848484;
+    display: inline-block;
+    font-weight: bold;
+  }
+  
+  .frame-option span.frame-box{
+    display: inline-block;
+    width: calc(33.3% - 7px);
+    transform: translateX(-7px);
+    margin-left: 7px;
+    margin-top: 5px;
+    font-size: 0;
+    position: relative;
+  }
+  .font-option span.font-box{
+    display: inline-block;
+    width: 31%;
+    margin-left: 7px;
+    margin-top: 5px;
+    font-size: 0;
+    position: relative;
+  }
+  .append_html span.txt-option{
+    position: absolute;
+    width: 100%;
+    color: #fff;
+    background: #000;
+    height: 34px;
+    line-height: 1;
+    padding: 0;
+    text-align: center;
+    opacity: 0;
+    border-radius: 4px;
+    transition: all 0.4s;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: auto;
+    bottom: 50%;
+  }
+  .append_html span.txt-option-value{
+    font-size: 12px;
+    display: block;
+  }
+  .append_html span.txt-option:after{
+    content: "";
+    display: block;
+    top: 100%;
+    bottom: auto;
+    border-top: 4px solid #000;
+    border-bottom: 4px solid transparent;
+    position: absolute;
+    left: 50%;
+    margin-left: -4px;
+    width: 0;
+    height: 0;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+  }
+  .append_html span.frame-box:hover span.txt-option{
+    opacity: 0.8;
+    bottom: 104%;
+  }
+  .frame-title{
+    padding-bottom: 5px;
+    font-weight: 600;
+  }
+  .append_html span.font-box:hover span.txt-option{
+    opacity: 0.8;
+    bottom: 106%;
+  }
+  .frame-option span label{
+    font-size: 0;
+    margin-bottom: 0;
+  }
+  .font-option span label{
+    font-size: 0;
+  }
+  .frame-option input[type="radio"]{
+    display:none;
+  }
+  .font-option input[type="radio"]{
+    display:none;
+  }
+  .frame-selected{
+    border: 3px #4fca47 solid
+  }
+   .cart-page-templates .product-card-button{
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    background: #f5f5f5;
+    padding: 10px;
+    position: relative;
+    cursor: pointer;
+    width: 100%;
+  }
+  .product-card-button img{
+  	width: 100px;
+    margin-right: 16px;
+  }
+  .add_toCart{display:none;}
+  .product-card-desc-div{
+    /*display: none;*/
+    width: 100%;
+  }
+  .product-flex-step .product-card-box{
+    background-color: #f7f8f9;
+    padding: 15px;
+  }
+  .cart-page-templates .card_none{display: none;}
+  .cart-page-templates .product-card-desc-div{
+    display: inline-block;
+    width: 40%;
+  }
+ .cart-page-templates .add_toCart{
+   display:block;
+    position: absolute;
+    right: 10px;
+    display: inline-block;
+    color: #fff;
+    width: auto;
+    padding: 0 10px;
+    text-align: center;
+    font-size: 10px;
+    height: 34px;
+    background: #e60044;
+    line-height: 34px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .append_html{
+    padding: 2rem;
+    padding-bottom: 0;
+  }
+  .append_html textarea{
+  	max-width: 100%;
+    min-width: 100%;
+    min-height: 80px;
+    width: 100%;
+    height: 135px;
+  }
+  .product-card-title{
+    font-size: 14px;
+    font-weight: 600;
+  }
+  @media(max-width:768px){
+    .cart-page-templates .product-card-desc-div{
+      width:100%;
+    }
+    .cart-page-templates .add_toCart{
+      width: 94%;
+      right: 0;
+      margin: 10px;
+      bottom: 0;
+    }
+    .cart-page-templates .product-card-button{
+      padding-bottom: 55px;
+      margin-bottom: 15px;
+    }
+    .template-cart .tingle-modal__close{
+      display: none;
+    }
+    .append_html .frame-option span{
+      margin-left: 3px;
+      margin-top: 2px;
+    }
+
+    .append_html .font-option span{
+      margin-left: 3px;
+      margin-top: 2px;
+    }
+    .append_html .font-option span.frame-box{
+      margin-left: 3px;
+    }
+  }
+  
+  
+</style>
+<div id="card_box" class="product-card-div">
+  <div class="product-card-box">
+    <div class="product-card-input">
+      {% if template.name == 'cart' %}
+      	<input type="text" id="card_id" value="{{cardFirstVariant.id}}" style="display:none">
+      {% else %}
+      	<input type="checkbox" id="card_id" value="{{cardFirstVariant.id}}" style="margin-right:10px">
+      {% endif %}
+      {% if card_type == 'product_write' %}
+      	<input type="text" id="card_fontname" name="cardFontname" value="" style="display:none" />
+        <input type="text" id="card_fontfamily" name="cardFontfamily" value="" style="display:none" />
+        <input type="text" id="card_name" name="cardName" value="" style="display:none" />
+        <input type="text" id="card_template" name="cardTemplate" value="" style="display:none" />
+        <textarea type="text" id="card_text" name="cardText" value="" style="display:none" ></textarea>
+      {% else %}
+      	<input type="text" id="card_fontname" name="cardFontname" value="" style="display:none" />
+        <input type="text" id="card_name" name="cardName" value="" style="display:none" />
+        <input type="text" id="card_template" name="cardTemplate" value="" style="display:none" />
+        <textarea type="text" id="card_text" name="card_message" value="" style="display:none" ></textarea>
+      {% endif %}
+    </div>
+    {% if isLink == true %}
+      <div class="product-card-button">
+        <a href="{{ product_card.url }}" class="mini-cart__product-image">
+          <img class="lazyloaded" src="{{ product_card.featured_image | img_url: 'medium' }}" alt="">
+        </a>
+        <span class="product-card-desc-div">
+          <span style="font-size:14px;">{{cardTitle}}</span>
+          <span class="product-card-desc">{{cardDesc}}</span>
+        </span>
+      </div>
+    {% else %}
+      <div class="product-card-button" onclick="cardDeginShow();">
+        <img class="lazyloaded" src="{{ product_card.featured_image | img_url: 'medium' }}" alt="">
+        {% comment %}<span style="font-size:14px;" class="card_none">{{cardTitle}}</span>{% endcomment %}
+        <span class="product-card-desc-div">
+          <span class="product-card-title">{{cardTitle}}</span>
+          <span class="product-card-desc">{{cardDesc}}</span>
+        </span>
+        <p class="add_toCart">{{'cart.gift_card.add_to_cart' | t}}</p>
+      </div>
+    {% endif %}
+  </div>
+  {% comment %}<div class="product-card-desc card_none">{{cardDesc}}</div>{% endcomment %}
+  
+  <div id="card_html" style="display:none;">
+    <div class="append_html">
+      {% if isTemplate == true %}
+        <div class="frame-option">
+          <div class="frame-title">{{section.settings.card_style}}</div>
+        </div>
+      {% endif %}
+      {% if isFontfamily == true %}
+        <div class="font-option">
+          <div class="frame-title">{{section.settings.card_style}}</div>
+        </div>
+      {% endif %}
+      <div>
+        <div class="frame-title">{{section.settings.card_message}}</div>
+        <textarea name="card_text" value="" maxlength="350" placeholder="{{section.settings.card_message_text}}"></textarea>
+        <div class="frame-title">{{section.settings.card_signature}}</div>
+        <textarea name="card_sign" maxlength="80" placeholder="{{section.settings.card_signature_text}}"></textarea>
+      </div>
+    </div>
+  </div>
+  <script>
+    var cardSetting = {
+      "template":[
+         {"name":"Christmas01","img":"{{ 'photomoonlamp.com_Christmas01.png' | file_url }}","altname":"Christmas01","textlength":150},
+         {"name":"Christmas02","img":"{{ 'photomoonlamp.com_Christmas02.png' | file_url }}","altname":"Christmas02","textlength":150},
+         {"name":"Christmas03","img":"{{ 'photomoonlamp.com_Christmas03.png' | file_url }}","altname":"Christmas03","textlength":150},
+         {"name":"Christmas04","img":"{{ 'photomoonlamp.com_Christmas04.png' | file_url }}","altname":"Christmas04","textlength":150},
+         {"name":"Christmas05","img":"{{ 'photomoonlamp.com_Christmas05.png' | file_url }}","altname":"Christmas05","textlength":150},
+         {"name":"Christmas06","img":"{{ 'photomoonlamp.com_Christmas06.png' | file_url }}","altname":"Christmas06","textlength":150}
+      ],
+      "fontfamily":[
+        {"name":"font1","img":"{{ 'font1.jpg' | file_url }}"},
+        {"name":"font2","img":"{{ 'font2.jpg' | file_url }}"},
+        {"name":"font3","img":"{{ 'font3.jpg' | file_url }}"}
+      ]
+    };
+    
+    $(function(){
+      var templateHtml = '';
+      $(cardSetting.template).each(function(index,item){
+        templateHtml += '<span class="frame-box">';
+        templateHtml += '  <span class="txt-option">';
+        templateHtml += '    <span class="txt-option-value">'+item.altname+'</span>';
+        templateHtml += '  </span>';
+        templateHtml += '  <label>';
+        templateHtml += '    <input type="radio" name="card_template" value="'+item.name+'" data-length="'+item.textlength+'" onclick="tplSelect(this)" />';
+        templateHtml += '    <img src="'+item.img+'" alt="'+item.altname+'">';
+        templateHtml += '  </label>';
+        templateHtml += '</span>';
+      })
+      $('.append_html .frame-option').append(templateHtml);
+        
+      var fontHtml = '';
+      $(cardSetting.fontfamily).each(function(index,item){
+        fontHtml += '<span class="font-box">';
+        fontHtml += '  <span class="txt-option">';
+        fontHtml += '    <span class="txt-option-value">'+item.name+'</span>';
+        fontHtml += '  </span>';
+        fontHtml += '  <label>';
+        fontHtml += '    <input type="radio" name="card_fontfamily" value="'+item.name+'" onclick="fontSelect(this)" />';
+        fontHtml += '    <img src="'+item.img+'" alt="'+item.name+'">';
+        fontHtml += '  </label>';
+        fontHtml += '</span>';
+      })
+      $('.append_html .font-option').append(fontHtml);
+    })
+    
+    var customModalCard = new tingle.modal({
+      footer: true,
+      stickyFooter: false,
+      onOpen: function() {
+        console.log('modal open');
+      },
+      onClose: function(){
+        console.log('modal closed');
+      },
+      beforeClose: function() {
+        // e.g. save content before closing the modal
+        return true; // close the modal
+        return false; // nothing happens
+      }
+    });
+
+    customModalCard.addFooterBtn('{{"customer.recover_password.cancel" | t }}', 'tingle-btn tingle-btn--danger', function() {
+      customModalCard.close();
+    });
+
+        customModalCard.addFooterBtn('{{"zen.general.confirm" | t }}', 'tingle-btn tingle-btn--primary', function() {
+      var checkObj = $(".tingle-modal-box__content input[name='card_template']:checked");
+      if(checkObj.length > 0){
+        $('#card_name').val(checkObj.val());
+        $('#card_template').val('https:'+checkObj.next().attr('src'));
+      }
+      var text = $.trim($(".tingle-modal-box__content textarea[name='card_text']").val())
+      var sign = $.trim($(".tingle-modal-box__content textarea[name='card_sign']").val());
+      if(text !='' && sign != ''){
+        $('#card_text').val($(".tingle-modal-box__content textarea[name='card_text']").val()+'-###-'+sign);
+      }else{
+        $('#card_text').val($(".tingle-modal-box__content textarea[name='card_text']").val());
+      }
+      var fontObj = $(".tingle-modal-box__content input[name='card_fontfamily']:checked");
+      if(fontObj.length > 0){
+        $('#card_fontname').val(fontObj.val());
+        $('#card_fontfamily').val('https:'+fontObj.next().attr('src'));
+      }
+      $('#card_html').html($('.tingle-modal--visible .tingle-modal-box__content').html());
+      $("#card_id").prop("checked", "checked");
+      {% if template.name == 'cart' %}
+      	cardAddToCart();
+      {% else %}
+      	customModalCard.close();
+      {% endif %}
+    });
+        
+    $(".tingle-modal-box__content").on("keyup", "textarea[name='card_sign']",function(){
+      var sign = $(this).val();
+      sign = sign.replace(/[\r\n]/g,"\n");
+      var signof = sign.indexOf("\n");
+      if(signof >= 0){
+        var signLeft = sign.substr(0,signof+1);
+        var signRight = sign.substr((signof+1),sign.length);
+        sign = signLeft + signRight.replace("\n","");
+        $(this).val(sign);
+      }
+    });
+
+    $('#card_id').click(function(){
+      if($(this).is(':checked')){
+        cardDeginShow();
+      }else{
+        $('#card_name').val('');
+        $('#card_template').val('');
+        $('#card_text').val('');
+        $('#card_fontname').val('');
+        $('#card_fontfamily').val('');
+        $("input[name='card_template'").each(function(index) { 
+          $(this).prop("checked",false);
+          $(this).parents('span').removeClass('frame-selected') ;
+        });
+        $("input[name='card_fontfamily'").each(function(index) { 
+          $(this).prop("checked",false);
+          $(this).parents('span').removeClass('frame-selected') ;
+        });
+      }
+    })
+        
+    function cardDeginShow(){
+      var cardHtml = $('#card_html').html();
+      customModalCard.setContent(cardHtml);
+      var textArr = $("#card_text").val().split('-###-');
+      $("textarea[name='card_text']").val(textArr[0]);
+      $("textarea[name='card_sign']").val(textArr[1]);
+      var template = $('#card_name').val();
+      //$("input[name='card_template'][value='"+checked+"']").prop("checked", "checked");
+      $("input[name='card_template'][value='"+template+"']").click();
+      var fontFamily = $('#card_fontname').val();
+      $("input[name='card_fontfamily'][value='"+fontFamily+"']").click();
+      //$("#cardFontFamily").val(fontFamily);
+      customModalCard.open(); 
+    }
+
+    function tplSelect(thisObj){
+      if($(thisObj).is(':checked')){
+        $(thisObj).parents('span').addClass('frame-selected').siblings().removeClass('frame-selected');
+        var maxLength= $(thisObj).data('length');
+        var textVal = $(".tingle-modal-box__content textarea[name='card_text']").val();
+        var textHolder = $(".tingle-modal-box__content textarea[name='card_text']").attr('placeholder');
+        textHolder = textHolder.replace(textHolder, "Text here...(up to "+maxLength+" characters)");
+        $(".tingle-modal-box__content textarea[name='card_text']").attr('maxlength', maxLength).val(textVal.substr(0, maxLength)).attr('placeholder', textHolder);
+      }        
+    }
+        
+    function fontSelect(thisObj){
+      if($(thisObj).is(':checked')){
+        $(thisObj).parents('span').addClass('frame-selected').siblings().removeClass('frame-selected');
+      }        
+    }   
+    
+    function cardAddToCart(){
+      var id = $('#card_id').val();
+      if(id > 0){
+        {% if template.name == 'cart' %}
+          var cardText = $.trim($("#card_text").val());
+          if(cardText == undefined || cardText == ''){
+            alert("{{'general.remedy.design_card' |t}}");
+            return false;
+          }
+          if($(".append_html .frame-option").length > 0){
+            var cardName = $("#card_name").val();
+            var cardTemplate = $("#card_template").val();
+            if(cardName == '' || cardTemplate == ''){
+              alert("{{'general.remedy.design_card' |t}}");
+              return false;
+            }
+          }
+          if($(".append_html .font-option").length > 0){
+            var cardFont = $("#card_fontname").val();
+            var cardFontfamily = $("#card_fontfamily").val();
+            if(cardFont == '' || cardFontfamily == ''){
+              alert("{{'general.remedy.design_card' |t}}");
+              return false;
+            }
+          }
+        {% endif %}
+        {% if card_type == 'product_write' %}
+            var data = {id: $('#card_id').val(), quantity: 1,"properties[cardFontname]":$('#card_fontname').val(), "properties[cardFontfamily]":$('#card_fontfamily').val(), "properties[cardName]":$('#card_name').val(), "properties[cardTemplate]":$('#card_template').val(), "properties[cardText]":$('#card_text').val(), mask:'body', refresh:true};
+        {% else %}
+            var data = {id: $('#card_id').val(), quantity: 1,"properties[cardFontname]":$('#card_fontname').val(), "properties[cardFontfamily]":$('#card_fontfamily').val(), "properties[cardName]":$('#card_name').val(), "properties[cardTemplate]":$('#card_template').val(), "properties[card_message]":$('#card_text').val(), mask:'body', refresh:true};
+        {% endif %}
+        $.ajax({
+          type: 'POST',
+          async: false,  
+          url: '/cart/add.js',
+          data,
+          dataType: 'json',
+          context: this,
+          beforeSend: function(xhr) {
+            $('.tingle-modal--visible .tingle-btn--primary').html('{{'zen.general.loading' | t}}...').attr("disabled","disabled");
+          },
+          success: function(boxItem) {
+            {% if template.name == 'cart' %}
+        	  location.reload();
+        	{% endif %}
+          },
+          error: function(XMLHttpRequest, textStatus){
+            console.log("{{'general.remedy.cart_error' |t}}");
+          }
+        });
+      }
+    }
+  </script>
+</div>
+{% endif %}

@@ -1,0 +1,326 @@
+<style type="text/css">
+ul li{
+    list-style: none;
+}
+.page_loading_box {
+  width: 100%;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.mjn_search_view ul{
+  margin-top: 3rem;
+  display: flex;
+  flex-wrap: wrap;
+}
+.mjn_search_view ul li{       
+  width: -webkit-calc(20% - 10px);
+  width: -moz-calc(20% - 10px);
+  width: calc(20% - 10px);
+  margin: 0 5px 2rem;
+}
+.mjn_search_view ul li .price{  
+  display: flex;
+  align-items: baseline;
+  justify-content: end;
+  letter-spacing: 1px;
+  margin-bottom: 5PX;
+}
+.mjn_search_view ul li .price p{
+  margin-bottom:0;
+}
+.mjn_search_view ul li .special-price{ 
+  color: #e81150;
+  font-weight: 600;
+  margin-right: 5px;
+}
+.mjn_search_view ul li .old-price{
+  font-weight: 600;
+  font-size: 12px;
+  text-decoration: line-through;
+  color: #717171;
+}
+.mjn_search_view ul li .product-name{   
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #000;
+  font-size: 12px;
+  margin-left: 0;
+  text-align: left;
+  margin-top: 0px;
+}
+.mjn_search_view ul li img{max-width:100%}
+.lds-dual-ring {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid #FF533A;
+  border-color: #FF533A transparent #FF533A transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@media(max-width:768px){
+  .mjn_search_view ul li .product-name{
+    display: block;
+    font-weight: 400;
+  }
+  .mjn_search_view ul li{       
+    width: calc(50% - 1px);
+    width: -moz-calc(50% - 1px);
+    width: -webkit-calc(50% - 1px);
+    width: calc(50% - 1px);
+    margin: 0;
+    padding: 3px;
+  }
+  .mjn_search_view ul{
+    padding: 0;
+  }
+}
+.mjn_search_view .mjn__loading {
+  font-size: 0;  
+}
+.mjn_search_view .mjn__loading_bottom{	
+  padding-top: 2rem;
+  height:5rem
+}
+.mjn_search_view .mjn__loading .circle {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+}
+.mjn_search_view .mjn__loading .circle i {
+  width:10px;
+  height: 10px;
+  margin: 0 2px;
+  background-color: #a5a5a5;
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: big-and-small 1.4s infinite ease-in-out both;
+  animation: big-and-small 1.4s infinite ease-in-out both;
+}
+.mjn_search_view .mjn__loading .circle i:first-child {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+.mjn_search_view .mjn__loading .circle i:nth-child(2) {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+.mjn_search_view .mjn__loading  i {
+  font-weight: normal;
+}
+.mjn__loading{
+  display: flex;
+  justify-content: center;
+}
+</style>
+<div class="page-width">
+	<div class="mjn_search_view">
+	<ul>
+	</ul>
+	<div class="mjn__loading_bottom"> 
+	<label class="mjn__loading hide">
+    <span class="circle">
+        <i></i>
+        <i></i>
+        <i></i>
+      </span>
+	</label>
+
+	</div>
+	</div>
+
+	<div id="mjn_page_num" data-num="1" data-flag='1'></div>
+	<!-- <div id="next-page">下一页</div> -->
+</div>
+<script>
+	function _initSearch(){
+		let q = GetQueryString('q');
+		let mjn_page_num  = jQuery('#mjn_page_num').data('num');
+		let params = {
+			query: q,
+			source: 'drop_down',
+			size: 20,
+			page: mjn_page_num
+		}
+		return params;
+	}
+	jQuery(document).ready(function(){
+		jQuery("#loading-mask").show();
+		listSearch(_initSearch(), function(item){
+			setTimeout(() => {
+				Echo.init({
+					offset: 500,
+					throttle: 1
+				});	
+				console.log(item.page, item.pgcnt);
+				if(item.page == item.pgcnt){
+					jQuery('#mjn_page_num').data('flag',1);
+					jQuery('.page-width .mjn__loading').addClass('hide');
+				}else{
+					jQuery('#mjn_page_num').data('flag',0);
+				}
+				jQuery("#loading-mask").hide();
+			}, 300);
+		});
+
+	})
+
+	jQuery(function(){
+		var nextFlag = false;
+		var footerHeight = parseInt(jQuery('#shopify-section-footer').height());
+		jQuery(window).scroll(function(){
+			if( (jQuery(document).height() <= parseFloat(jQuery(window).height()) + parseFloat(jQuery(window).scrollTop() + footerHeight)) && !nextFlag && jQuery('#mjn_page_num').data('flag') == 0){
+				jQuery('.page-width .mjn__loading').removeClass('hide');
+				nextFlag = true;
+				listSearch(_initSearch(),function(item){
+					jQuery('.page-width .mjn__loading').addClass('hide');
+					setTimeout(() => {
+						Echo.init({
+							offset: 500,
+							throttle: 1
+						});	
+						nextFlag = false;
+						if(item.page == item.pgcnt){
+							jQuery('#mjn_page_num').data('flag',1);
+							jQuery('.page-width .mjn__loading').addClass('hide');
+						}
+					}, 300);
+
+				});
+			}
+		})
+	})
+	
+    function GetQueryString(name)
+    {
+         var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+         var r = window.location.search.substr(1).match(reg);
+         if(r!=null)return  unescape(r[2]); return null;
+    }
+
+	function listSearch(lists, callback){
+		getSearchViewApi({query:lists.query, source:lists.source, size:lists.size, page:lists.page},function(item){
+			if(item){
+				//var pageId = '<?php echo "cms-".Mage::app()->getRequest()->getParam('page_id', Mage::app()->getRequest()->getParam('id', false));?>';
+				//var productImpressionsList = [];
+				var str = '';
+				jQuery.each(item.items,function(i,n){				
+					str += '<li>';
+					str += '<a href="/products/'+ n._source.URL +'?pos=17&eid=1" data-sku="'+ n._source.sku +'" data-sid="'+ item.sid +'">';
+					str += '<img data-echo="'+n._source.LargeImageUrl+'" src="{{ 'loading.gif' | asset_img_url: '300x' }}">';
+					str += '<div class="price">';
+					str += '<p class="special-price">'+n._source.salePriceCurrency[0]+'</p>';
+					str += '<p class="old-price">'+n._source.retailPriceCurrency[0]+'</p>';
+                    //str += '<p class="special-price">$'+n._source.salePrice[0]+'</p>';
+					//str += '<p class="old-price">$'+n._source.retailPrice[0]+'</p>';
+					str += '</div>';
+					str += '<h2 class="product-name">'+n._source.name_fr+'</h2>';
+					str += '</a>';
+					str += '</li>';
+
+					//productImpressionsList.push({"name":n._source.sku,"id":n._source.sku,"price":n._source.salePrice,"position":i,"currency_code":"USD","GA-type":pageId,"quantity":1});
+
+				})
+				jQuery('.mjn_search_view ul').append(str);
+				jQuery('#mjn_page_num').data('num',lists.page+1);
+				//__mjn_search_ga('search_lists', 'keyword:'+ lists.query + '|' + item.page + '_page');
+				callback(item);
+
+				/*if(productImpressionsList.length > 0) {
+				    var dataImpressions = {
+				        'ecommerce': {
+				            'currencyCode': 'USD',
+				            'impressions': productImpressionsList            
+				        }
+				    }
+				    dataLayer.push(dataImpressions);
+				}*/
+
+			}else{
+				jQuery('#mjn_page_num').data('flag',1);
+				jQuery('.page-width .mjn__loading').addClass('hide');
+			}
+		});
+	}
+    function getSearchViewApi(params,callback){
+		{% unless customer.id == blank %}
+      		let uid = '{{ customer.id }}';
+        {% else %}
+        	let uid = '0';
+        {% endunless %}
+		jQuery.ajax({
+			type : "POST",
+			url : "https://soufeel.server.bytecon.com/search",
+			data : {
+				"query":params.query,
+				"version":"v1",
+				"apikey":"84fbdc7ffe6e413695141649aa983b7f",
+				"index":"soufeel_fr_shopify",
+				"uid":uid,
+				"source":params.source,
+				"page":params.page,
+				"size":params.size,
+				"sortby":"best"
+			},
+			cache: true,
+			dataType: 'json',
+			success : callback,
+			//请求失败，包含具体的错误信息
+			error : function(e){
+				jQuery('#mjn_page_num').data('flag',1);
+				jQuery('.page-width .mjn__loading').addClass('hide');
+				console.log(e.status);
+				console.log(e.responseText);
+			}
+			// complete: function(){
+			// 	
+			// }
+		});
+	}
+	jQuery(document).on('click', '.mjn_search_view li a', function() {
+		__mjn_search_ga('list_search_view', jQuery(this).data('sku'));
+		jQuery.ajax({
+			type : "POST",
+			url : "https://soufeel.server.bytecon.com/callback",
+			data : {
+				"apikey":"84fbdc7ffe6e413695141649aa983b7f",
+				"index":"soufeel_fr_shopify",
+				"pid": jQuery(this).data('sku'),
+				"sid": jQuery(this).data('sid'),
+				"action": 0
+			},
+			cache: true,
+			dataType: 'json',
+			success : function(e){
+				console.log(e);
+			},
+			//请求失败，包含具体的错误信息
+			error : function(e){
+				console.log(e.status);
+				console.log(e.responseText);
+			}
+			// complete: function(){
+			// 	$('.grid').remove();
+			// }
+		});
+	})
+</script>

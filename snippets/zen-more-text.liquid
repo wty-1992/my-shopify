@@ -1,0 +1,99 @@
+{% assign textFont = 'TimesNewRoman' %}
+{% for tag in product.tags %}
+	{% if tag contains 'custom-font-' %}
+		{% assign textFont = tag | remove: "custom-font-" %}
+	{% endif %}
+{% endfor %}
+
+{% assign limitNum = 10 %}
+{% for tag in product.tags %}
+	{% if tag contains 'custom-limit-' %}
+		{% assign limitNum = tag | remove: "custom-limit-" %}
+	{% endif %}
+{% endfor %}
+
+
+<div class="custom-text-container">
+  {% if product.first_available_variant.sku == 'CBS236X02' or product.first_available_variant.sku == 'CBS237X02' or product.first_available_variant.sku == 'CBS238X02'%}
+  <input type="text" value="" id="keziW" class="name-input-center" placeholder="{{'zen.general.prompt_value' | t}}" maxlength="20">
+  {% endif%}
+  <div id="t_name"></div>
+  <input type="hidden" value="" name=""  id="fonttext"/>
+  <input type="hidden" value=""  id="font_customInfo">
+</div>
+  <input type="hidden" id="number_customInfo">
+<input type="hidden" name="properties[custom_info]">
+
+<script>
+    //监听变体变化事件，该事件是在theme.js的_variantChange方法中新增的
+//   window.addEventListener('VARIANT_CHANGE', function(event){
+   Listener.on([ Listener.product.update.before ], function(event, variant, dom) {
+    var goal_num = variant.option1;
+    var t_name_str = '';
+    if(goal_num > 0){
+      for (var i=1;i <= goal_num;i++)
+		{
+         
+       	 t_name_str +='<input type="text" value="" name="fonttext" class="name-input" data-id="'+i+'" placeholder="{{'zen.engrave.placeholder' | t}}" maxlength="20"/>';		
+		}
+      };
+    $('#t_name').html(t_name_str);
+    $('#number_customInfo').val(variant.sku+'-'+variant.option1)
+  })
+                          
+   Product.validators.push(async () => { 
+//   function validators() {
+    var zenFlag = true;
+
+
+    $('.name-input').each(function(){
+      console.log($.trim($(this).val()));
+      if($.trim($(this).val()) == ''){
+        $(this).css('border-color','red');
+        zenFlag = false;
+      }
+    });
+
+    if(zenFlag){
+      if($('.name-input').length > 1){
+        let textArr = [];
+        $('.name-input').each(function(){
+          textArr.push($(this).data('id') + ':' +$(this).val());
+        });
+
+        $('#fonttext').val(textArr.join(' '));
+        
+        {% if productTags contains 'custom-font-' %}
+          let fontArr = [];
+          $('.name-input').each(function(){
+            fontArr.push($(this).data('id') + ':' +'{{textFont}}');
+          });
+		
+          $('#engravingFont').val(fontArr.join(' '));
+        {% endif %}
+      }else{
+        $('#fonttext').val($('.name-input').val());
+      }
+
+      $('.name-input').css('border-color','rgba(0,0,0,0.1)');
+      var custom_json = {};
+      var number_customInfo =$('#number_customInfo').val();
+      var sku ='{{product.first_available_variant.sku}}';
+      var resultJson = {};
+      resultJson["properties"] = {};
+      resultJson["properties"]['number']=number_customInfo;
+      if(sku=='CBS236X02'|| sku=='CBS237X02' || sku=='CBS238X02'){      
+       resultJson["properties"]['keziW']=$('#fonttext').val();
+       resultJson["properties"]['keziN']=$('#keziW').val();        
+      }else{        
+       resultJson["properties"]['kezi']=$('#fonttext').val();  
+      }  
+      var obj ={};
+      $("input[name='properties[custom_info]']").val(JSON.stringify(resultJson))
+    }
+
+    return zenFlag;
+  }
+  )
+  
+</script>

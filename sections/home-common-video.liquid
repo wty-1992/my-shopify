@@ -1,0 +1,72 @@
+<style>
+video {
+width: 100%;
+height: 600px;
+}
+.pxs-video-content-width{ max-width: 1200px; 
+padding: 0 10px 20px;    margin-top: -30px;}
+@media screen and (max-width: 768px){   .pxs-video-content-width{ max-width: 1200px; 
+padding: 0 10px 20px;    margin-top: -40px;}
+video {
+width: 100%;
+height: 227px;
+}}
+
+</style>
+
+<div class="pxs-video-content-width">
+{% if section.settings.enable  %}
+      {% for block in section.blocks %}  
+                  {% assign video_url = block.settings.video_url %}
+                  {% assign video_image = block.settings.video_image | img_url:'master' %}
+                  <video src="{{video_url}}" poster="{{video_image}}" controls="controls"></video>  
+      {% endfor %}
+{% endif %} 
+</div> 
+
+{% schema %}
+  {
+    "name":"首页视频 home video",
+    "class": "index-section-homevideo",
+   
+      "settings": [{
+        "type": "text",
+        "id": "private",
+        "label": "程序参考字段默认勿动",
+        "default": "home-common-video"
+        },
+        {
+        "type": "checkbox",
+        "id": "enable",
+        "label": "首页视频打开按钮"
+        } 
+      ], 
+"blocks": [
+  {
+    "type": "video",
+    "name": "video",
+      "settings": [
+        {
+        "type": "image_picker",
+        "id": "video_image",
+        "label": "video image"
+        },
+        {
+        "type": "text",
+        "id": "video_url",
+        "label": "video link",
+        "default": "https://cdn.shopify.com/s/files/1/0048/8829/7558/files/MLN_1.mp4?12396"
+        } 
+         
+      ]
+    }
+],
+    
+    "presets": [
+      {
+        "name":"首页视频 home video"
+        
+      }
+    ]
+  }
+{% endschema %}

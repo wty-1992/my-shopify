@@ -1,0 +1,315 @@
+{{ 'zen-fonts.scss.css'       | asset_url | stylesheet_tag }}
+
+<style>
+
+#app .crystal-container .area-carving{
+  padding:11px 10px 10px 15px;
+  margin-bottom: 15px;
+  background-color: #f8f8f8;
+}
+#app .crystal-container .crystal-preview-box{
+  background-color: transparent;
+}
+#app .crystal-container .crystal-preview-box .btn-carving-open{
+  border: none;
+  background: #000;
+  color: #fff;
+  border-radius: 20px;
+  font-size: 12px;
+  padding: 3px 12px;
+}
+#app .crystal-preview-flex{
+  font-size: 14px;
+  color: #000;
+}
+#app .el-dialog__headerbtn{
+  top: 0;
+  right: 0;
+}
+#app .el-dialog__headerbtn .el-dialog__close{
+  font-size: 45px;
+}
+#app .diamond-default-img{
+  width: 2.143rem;
+  height: 2.143rem;
+  margin: 0 1rem 0 0;
+}
+#app .el-collapse-item__header i{
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+#app .el-collapse-item__header{
+  background-color: rgba(0,0,0,.03) ;
+  border-bottom: .2rem solid #fff ;
+  justify-content: space-between;
+  padding: 0 0rem 0 1rem;
+  position: relative;
+  height: auto ;
+  font-size: 1rem ;
+}
+#app .el-collapse-item__content .el-collapse-item__header{
+  background-color: transparent;
+  border-bottom: 1px solid #ebeef5;
+}
+#app .el-collapse{
+  border-top: none;
+  border-bottom: none;
+}
+#app .el-collapse-item__content{
+  padding: 0px 20px 20px 20px
+}
+#app .card-body{
+  padding: 0;
+}
+#app .crystal-list{
+  padding: 10px;
+  flex: 0 1 16.5%
+}
+#app .crystal-list .img{
+  width: 33px;
+  height: 33px;
+}
+#app .el-collapse-item__wrap{
+  border-bottom: none;
+}
+#app .btn-crystal-confirm{
+  background: #e9034d;
+  height: 3.45rem;
+  color: #fff;
+  font-size: 14px;
+  overflow: visible;
+  border: 0;
+  padding: 0;
+  margin: 1rem 0 0 0;
+  border-radius: 0;
+  letter-spacing: 1px;
+}
+.ringsize-font{
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.photocharms-warnfill,a.photocharms-warnfill:not([href]):not([tabindex]){
+  color: #00f;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.el-dialog__body .crystal-free{
+  text-transform: uppercase;
+  padding-right: .5rem;
+  color: #69bb67;
+  font-size: 12px;
+}
+.namenecklace-photo .view-name{
+  display: flex;
+  line-height: 3rem;
+}
+.namenecklace-photo .view-name .showtext span{
+  font-size: 30px;
+} 
+.namenecklace-photo .view-name>span{
+ white-space: nowrap; 
+}
+.namenecklace-photo .view-name .showtext {
+  max-width: 380px;
+}
+.carvingcanvas-content .curve-textarea{
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1.3rem;
+  border: 1px solid #ddd;
+  margin-bottom: 1rem;
+  height: 3.5rem;
+  align-items: center;
+  position: relative;
+}
+.carvingcanvas-content .curve-textarea .alpha_text{
+  width: 60%;
+  border: none;
+  height: 3rem;
+  z-index: 1;
+  background: transparent;
+}
+.el-dialog--center .el-dialog__body{
+  height: 480px;
+}
+section.el-container,main.el-main{
+  height: 100%;
+}
+#app .engravings{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee;
+  height: 50px;
+}
+#app .engravings input{
+  width: 60%;
+  background: transparent;
+  border: none;
+}
+#app .el-radio.is-bordered.is-checked{
+  border-color: #e60044;
+  border-radius: 0;
+}
+#app .el-radio__input.is-checked+.el-radio__label{
+  color: #e60044;
+}
+#app .rad-font .el-radio.is-bordered{
+  padding: 11px 14px 0 1px;
+  border-radius: 0;
+  height: 36px;
+}
+#app .el-radio-group.font-radio-group>.el-col.el-col-24{
+  display: flex;
+  align-items: center;
+  flex-flow: wrap;
+}
+#app .el-container main.el-main{
+  padding: 0 20px;
+}
+#app .engraving-title-box i.header-icon.el-icon-edit{
+  width: 2.8rem;
+  margin: 0 .5rem 0 0;
+}
+.engraving-title span,.crystal-header-title span{
+  font-size:12px;
+}
+.panel-sizetnull-span, .errorWord{
+  color: rgb(235, 52, 10);
+  font-size: 12px;
+}
+.nameErrorWord{
+  font-size: 12px;
+  color: red;
+  transform: translateY(-12px);
+  display: inline-block;
+}
+.product-page-add_to_cart-section .select-option .selector-wrapper select{
+  height:50px;
+}
+  .crystal-number-select {
+    border: 1px solid #ddd;
+    color: #000;
+    font-size: 14px;
+    height: 50px;
+    background: #ffffff;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .crystal-num-select {
+  	background: #fff;
+    border: none;
+    width: 100%;
+    padding: 0 3%;
+    height: 100%;
+  }
+  .crystal-number-select i {
+  	position: absolute;
+    right: 3%;
+    top: 13px;
+  }
+  .el-collapse-item__wrap .card-body .engravings span{
+    white-space: nowrap;
+  }
+  .el-collapse-item__wrap .card-body .engravings textarea{
+    background: transparent;
+    border: none;
+    resize: none;
+    height: 50px;
+    padding: 13px 10px;
+  }
+  .el-collapse-item__wrap .card-body .engravings {}
+@media(max-width:768px){
+  #app .crystal-preview-flex{
+    font-size:12px;
+  }
+  #app .zen-photo-carving{
+    background: #f8f8f8;
+    padding: 0px 10px 0px 5%;
+  }
+  #app .crystal-container .crystal-preview-box{
+    margin-bottom: 0;
+  }
+  .el-container aside, .el-container main{
+    width: 100% !important;
+    height: auto !important;
+    margin-left: 0;
+    padding:0;
+  }
+  .el-dialog__body section.el-container{
+    display: block;
+  }
+  #app .el-collapse-item__content{
+    padding:0 5px;
+  }
+  #app .crystal-list .img,#app .diamond-default-img{
+    width:30px;
+    height:30px;
+  }
+  #app .crystal-list{
+    padding: 6px;
+    flex: 0 1 16%;
+  }
+  #app .crystal-container .area-carving{
+    padding: 0px 10px 0px 0px;
+    height: 50px;
+  }
+  #app .el-dialog--center .el-dialog__body{
+    padding: 0;
+  }
+  #app .canvas-container{
+    margin: 8.5% auto 0 auto;
+    transform: translateY(0);
+  }
+  #app .namenecklace-photo .view-name span{
+    color: #606266;    
+  }
+  #app .namenecklace-photo .view-name .showtext span{
+    font-size: 20px;
+  }
+  #app .engravings>span{
+    font-size: 12px;
+  }
+  .crystal-preview-img{
+    display: flex;
+    align-items: center;
+  }
+  
+  .namenecklace-photo .view-name .showtext-in.rosegold {
+    color: #c8977b !important;
+  }
+  
+  .namenecklace-photo .view-name .showtext-in.gold {
+    color: #eac855 !important;
+  }
+  .material-list-ul{
+    padding: 0 5%;
+  }
+}
+  
+  .showtext-in{ padding: 0px 20px 0px 10px; }
+  .namenecklace-photo .view-name .showtext-in.silver {
+    color: #808080;
+/*     background: -webkit-linear-gradient(transparent, transparent),-webkit-linear-gradient(top, #e0e1e1 0%, #e3e2e8 26%, #ddd 35%, #d7d7d7 45%, #e1e2e1 61%, #a4a4a4 100%);
+    background: -o-linear-gradient(transparent, transparent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; */
+  }
+  .namenecklace-photo .view-name .showtext-in.rosegold {
+    color: #c8977b;
+    /*be7d86*/
+/*     background: -webkit-linear-gradient(transparent, transparent),-webkit-linear-gradient(top, #cea997 0%, #e8d5cb 26%, #e5d1c6 35%, #e8d6cf 45%, #cfaa99 61%, #b77d5f 100%);
+    background: -o-linear-gradient(transparent, transparent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; */
+  }
+  .namenecklace-photo .view-name .showtext-in.gold {
+    color: #eac855;
+   /*D5AD6D*/
+/*     background: -webkit-linear-gradient(transparent, transparent),-webkit-linear-gradient(transparent, transparent),-webkit-linear-gradient(top, #ede097 0%, #eee39e 26%, #e7d685 35%, #d3b33a 45%, #eadb8e 61%, #e3ce74 100%);
+    background: -o-linear-gradient(transparent, transparent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; */
+  }
+</style>

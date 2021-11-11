@@ -1,0 +1,19 @@
+{% assign jsplit = json | replace: '},{', '@@' %}
+{% assign jsplit = jsplit | replace: '{' %}
+{% assign jsplit = jsplit | replace: '}' %}
+{% assign jsplit = jsplit | split: '@@' %}
+{% assign verify__rules_json_result = false %}
+
+{% for json in jsplit %}
+  {% assign newJson = json | replace: '","', '"|"' %}
+  {% assign splitByComma = newJson | split: '|' %}
+  {% for comma in splitByComma %}
+    {% assign splitByDots = comma | split: ':' %}
+    {% assign jsplit_key = splitByDots[0] | strip | remove: '"' | strip | downcase %}
+    {% assign key = key | strip | downcase %}
+    {% if jsplit_key == key %}
+        {% assign verify__rules_json_result = splitByDots[1] | remove: '"' | strip %}
+        {% break %}
+    {% endif %}
+  {% endfor %}
+{% endfor %}

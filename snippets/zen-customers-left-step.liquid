@@ -1,0 +1,57 @@
+{%- capture ptype | strip -%}{%- include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "type" -%}{{- verify__rules_json_result | strip -}}{%- endcapture -%}
+{% assign ptype = ptype | strip %}
+{% capture addprice %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "ismarkup" %}{{ verify__rules_json_result }}{% endcapture %}
+{% if addprice contains '.' %}
+  {% assign addprice = "599" %}
+{% endif %}
+
+{% if ptype == 'PhotoCarving' %}
+<div class="zen-customers__left">
+  <div class="step-num"><span class="procedure-num">1</span><span class="across"><span class="across-shade"></span></span></div>
+  <div class="step-middle"></div>
+  <div class="step-num"><span class="procedure-num">2</span><span class="across"><span class="across-shade"></span></span></div>
+  <div class="step-middle"></div>
+  <div class="step-num"><span class="procedure-num">3</span><span class="across"><span class="across-shade"></span></span></div>
+</div>
+<style>
+.zen-customer-lr{
+    display:flex;
+    justify-content: space-between;
+    width:100%;
+}
+.zen-customer-lr .zen-customers__left{
+    flex:0 1 6%;
+    padding-top:1.3rem;
+    align-items: center; 
+    display: flex;
+    flex-direction: column;
+}
+.zen-customer-lr .zen-customers__left .step-num {     
+	width: 24px;
+    height: 24px;
+    background-color: #fff;
+    border-radius: 12px;
+    border:1px solid #bcbcbc;
+}
+.zen-customer-lr .zen-customers__left .step-middle{
+    border-right: 1px dashed #AFAFAF;
+    width: 1px;
+    margin: 3px auto;
+    height:2.2rem
+}
+.zen-customer-lr .zen-customers__left .step-num span { 
+	height: 24px;
+    line-height: 24px;
+    display: block;
+    font-size: 14px;
+    color: #000;
+    text-align: center;
+} 
+.zen-customer-lr .zen-customers__right{
+flex:0 1 92%
+}
+.lettering-box-carving{
+    border:1px solid #e7e7e7
+}
+</style>
+{% endif %}

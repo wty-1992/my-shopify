@@ -1,0 +1,27 @@
+{% comment %}
+  The contents of the product.liquid template can be found in /sections/product-template.liquid
+{% endcomment %}
+{% layout 'theme.empty' %}
+
+{{product | json}}
+
+
+{% section 'product-page-bullet_points' %}
+
+
+{% comment %} {% capture jsonData %}
+    {"handle": "","tags":"","sku+type+tags": "CJZNL32+Necklace+name,JKSZ03X20+Bracelet"}
+{% endcapture %}
+{%- include 'func-verify_rules', contain: jsonData detail: product, relation: 'and' -%}
+<p>RESULT:{{verify__rules_result}}</p> {% endcomment %}
+
+<script>
+  // Override default values of shop.strings for each template.
+  // Alternate product templates can change values of
+  // add to cart button, sold out, and unavailable states here.
+  window.productStrings = {
+    addToCart: {{ 'products.product.add_to_cart' | t | json }},
+    soldOut: {{ 'search.product.sold_out' | t | json }},
+    unavailable: {{ 'products.product.unavailable' | t | json }}
+  }
+</script>

@@ -1,0 +1,261 @@
+
+{% if product.metafields["global"]["cattribute"] %}
+	{% assign customOpt = product.metafields["global"]["cattribute"] %}
+{% else %}
+	{% assign customOpt = '{"crop":[{"width":0,"height":0}],"coors":[{"label":"Personalized Message Here","dataLabel":"Personalized Message Here","type":"textarea","limit":"36"},{"label":"Pet##s Name Here","dataLabel":"Pet##s Name Here","limit":"16"},{"label":"Year or Date Here","dataLabel":"Year or Date Here","limit":"20"}]}' %}
+
+{% endif %}
+
+<script>
+  var jsonCustom = '{{ customOpt }}'?JSON.parse('{{ customOpt | replace: "##","\\'" }}'):{};
+  console.log(jsonCustom);
+  
+  window.addEventListener('EVENT_CROP_SAVE_AFTER', function(event){
+    var data = JSON.parse(event.detail.data);
+    var index = event.detail.index;
+    
+    if(data.crop[index].crop){
+      $('.area-crop-upload-'+index).css('border-color',"#000000");
+    }
+    
+  });
+  
+  
+  var _zenSku = "{{ product.selected_or_first_available_variant.sku }}";
+  
+  var cropList = [];
+  
+  if(typeof jsonCustom.crop != 'undefined'){
+    
+    jsonCustom.crop.forEach(function(_v,_i){
+      let no = _i+1;
+      var uploadLabel = "{{'zen.general.photo' | t }}"+ " " +no;
+      if(typeof _v.uploadLabel != 'undefined'){
+      	uploadLabel = _v.uploadLabel;
+      }
+      
+      var aspectRatio = 0;
+      if(_v.width > 0){
+        aspectRatio = _v.width / _v.height;
+      }
+      
+      cropList.push({
+        uploadLabel: uploadLabel,  //传图描述标签
+        btnUploadText: "{{'zen.photo.upload' | t }}",  //上传按钮文案
+        require: true,//是否必传图片
+        hasCropOrigin: true,
+        sku: _zenSku,
+        style: 0, //设置上传样式，0:单行展示 1：矩形上传表单
+        type: '',
+        aspectRatio: aspectRatio
+      });
+      
+    });
+  
+  }
+  var cropPrompt = "{{'zen.general.cropPrompt' | t | strip_newlines }}";
+  var _zenConfig = {
+    photoObj: [],
+    carvingObj: [],
+    crystalObj: [],
+    curveCarvingObj: [],
+    nameObj: [],
+    carvingBigObj: [],
+    cropPrompt: cropPrompt,
+    uploadLoadingImage: 'https://ik.imagekit.io/soufeel/en/skin/frontend/smartwave/default/images/soufeel-30.gif',
+    wrapperBackgroudColor: '#000000',
+    isCloseOnClickModal: false,
+//     isModalAppendToBody:false,
+    crop: cropList,
+    photo: [],
+    carving: [],
+    crystal:[],
+    crystalText:[],
+    curveCarving:[]
+  };
+  $(function() {
+    $('.zen-require').attr('name','customVal');
+  })
+</script>
+
+<div class="color-list-container hide" id="color-list-box">
+  <span class="color-title">Choose Your Color:</span>
+  <label class="color-box-radio color-selected">
+    <input type="radio" name="color-radio" value="Grey" checked=""><div class="radio-box"><p style="background:#A4A4A4"></p><span>Grey</span></div>
+  </label>
+  <label class="color-box-radio">
+    <input type="radio" name="color-radio" value="Blue" checked=""><div class="radio-box"><p style="background:#A9F5F2"></p><span>Blue</span></div>
+  </label>
+  <label class="color-box-radio">
+    <input type="radio" name="color-radio" value="Green" checked=""><div class="radio-box"><p style="background:#86B404"></p><span>Green</span></div>
+  </label>
+  <label class="color-box-radio">
+    <input type="radio" name="color-radio" value="Pink" checked=""><div class="radio-box"><p style="background:#F5A9A9"></p><span>Pink</span></div>
+  </label>
+</div>
+<div class="text-container">
+  <div id="t_name"></div>
+</div>
+<div class="photo-select-carving">
+  <div id="zen-photocarving"></div>
+</div>
+<input id="picture" name="properties[picture]" type="hidden"  />
+<input name="properties[custom_info]" type="hidden"  />
+<input name="properties[custom_info_title]" type="hidden" />
+
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.4.6/zen-photo-carving-chunk-vendors.css?202004171143" rel="stylesheet" />
+<link href="https://pic.stylelab.com/js/zen-photo-carving-0.4.6/zen-photo-carving-app.css?202004171143" rel="stylesheet" />
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.4.6/zen-photo-carving-chunk-vendors.js?202004171143"></script>
+<script src="https://pic.stylelab.com/js/zen-photo-carving-0.4.6/zen-photo-carving-app.js?202004171143"></script>
+
+<script>
+    $(".color-box-radio").on('click',function(){
+      	$(".color-box-radio").removeClass('color-selected');
+//       	console.log($(this),$('.color-selected input').val())
+        $(this).addClass('color-selected');
+      });
+  var coorsObj = jsonCustom.coors?jsonCustom.coors:[];
+  console.log('coorsObj', coorsObj);
+  window.isTextCrop = true;
+  
+  $(function(){
+   
+    var t_name_str = '';
+	var coloropen = false;
+    coorsObj.forEach(function(v, i){
+      var limit = v.limit || 20;
+      var label = v.label || "";
+      var placeholderText = v.placeholder || "";
+      var type = v.type || "";
+      var dataLabel = v.dataLabel || "";
+      
+      t_name_str += '<div class="label-input-container">';
+      if(label && v.type != 'color'){
+      	t_name_str += '<label class="product-txt-label" for="fonttext">'+label+':</label>';
+      }
+
+      if(typeof v.type != 'undefined' && type == 'textarea'){
+      	t_name_str += '<div class="text-input-container"><textarea class="fonttext"  maxlength="'+limit+'" value=""  name="properties['+dataLabel+']" oninput="changeText('+i+',this,'+limit+')" placeholder="'+placeholderText+'"></textarea>';
+        t_name_str += '<div class="leftnum" id="leftnumbox'+i+'"><span id="leftnum'+i+'">'+limit+'</span> '+'{{"zen.general.left" | t }}'+'</div></div></div>';
+      }else if(typeof v.type != 'undefined' && type == 'color'){
+        coloropen =true;
+        t_name_str += '<input type="hidden" class="fonttext '+type+'"  maxlength="'+limit+'" value="" name="properties['+dataLabel+']"  placeholder="'+placeholderText+'"/>';
+      }else if(typeof v.type != 'undefined' && type == 'date'){
+      	t_name_str += '<div class="text-input-container"><input type="'+type+'" class="fonttext"  maxlength="'+limit+'" value="" name="properties['+dataLabel+']" placeholder="'+placeholderText+'"/></div>';
+      }else{
+      	t_name_str += '<div class="text-input-container"><input type="text" class="fonttext"  maxlength="'+limit+'" value="" name="properties['+dataLabel+']"  oninput="changeText('+i+',this,'+limit+')" placeholder="'+placeholderText+'"/>';
+      	t_name_str += '<div class="leftnum" id="leftnumbox'+i+'"><span id="leftnum'+i+'">'+limit+'</span> '+'{{"zen.general.left" | t }}'+'</div></div></div>';
+      }
+      
+      
+    });
+    if(coloropen==true){
+    	$('.color-list-container').removeClass("hide")
+    }
+    $('#t_name').html(t_name_str);
+    
+    if(typeof jsonCustom.colorList != 'undefined'){
+      var color_str = '';
+      var cLabel = jsonCustom.colorList.label || 'Choose Your Color';
+      
+      color_str += '<span class="color-title">'+cLabel+':</span>';
+      jsonCustom.colorList.colors.forEach(function(vv,ii){
+        if(ii == 0){
+          color_str += '<label class="color-box-radio color-selected">';
+        }else{
+          color_str += '<label class="color-box-radio">';
+        }
+      	
+        color_str += '<input type="radio" name="color-radio" value="'+vv.dataLabel+'" checked="">';
+        color_str += '<div class="radio-box"><p style="background:'+vv.color+'"></p><span>'+vv.label+'</span></div></label>';
+      });
+      
+      $('#color-list-box').html(color_str);
+      
+    }
+    
+  })
+  
+  function changeText(i,obj,limitv){
+    var objLenOld = $(obj).val().length;
+    var objVal = $(obj).val().replace(/[\r\n]/g,"");
+    var objLen = objVal.length;
+
+    if(objLen < objLenOld){
+      $(obj).attr('maxlength',limitv + objLenOld - objLen);
+    }else{
+      $(obj).attr('maxlength',limitv);
+    }
+
+    if(objLen > limitv){
+      var lenDiff = objLen - limitv;
+      $(obj).val($(obj).val().substr(-1,lenDiff));
+      $('#leftnum'+i).text(0);
+    }else{
+      $('#leftnum'+i).text(parseInt(limitv) - objLen);
+    }
+    
+    if(objLen > 0){
+    	$('.text-input-container').eq(i).css('border-color', '#000000');
+    }
+  }
+ 
+  
+  Product.validators.push(async () => {
+    var zenFlag = true;
+    var custom_info_title = [];
+    var custom_json = {};
+    if(typeof (custom_json['properties']) == "undefined"){
+      custom_json['properties'] = {};
+    }
+    $('.color').val($('.color-selected input').val())
+    if(typeof jsonCustom.colorList != 'undefined'){
+      
+      custom_json['properties'][jsonCustom.colorList.dataLabel] = $(".color-selected input[name='color-radio']").val();
+      custom_info_title.push($(".color-selected input[name='color-radio']").val());
+    }
+
+    coorsObj.forEach(function(v, i){
+      let textVal = $.trim($('.fonttext').eq(i).val());
+      if( textVal == '' && v.isOption != 1 ){
+        $('.text-input-container').eq(i).css('border-color', 'red');
+        zenFlag = false;
+      }else if(typeof v.minLimit != 'undefined' && textVal.length < parseInt(v.minLimit) ){
+        $('.label-input-container').eq(i).append(`<div class="min-error-info">{{'zen.general.value' | t}} `+ v.minLimit +` {{'cart.gift_card.characters' | t}}. </div>`);
+        zenFlag = false;
+      }else{
+
+        custom_json['properties'][v.dataLabel] = textVal;
+        custom_info_title.push(textVal);
+
+        $('.text-input-container').eq(i).css('border-color', '#000000');
+        $(".min-error-info").eq(i).remove();
+      }
+    });
+    
+    if(typeof jsonCustom.crop != 'undefined'){
+	  var zenInfo = $(".zen-require").val();
+      if(zenInfo){
+      	zenInfo = JSON.parse(zenInfo);
+        
+        zenInfo.crop.forEach(function(v,i) {
+          if(!v.crop) {
+            $('.area-crop-upload-'+i).css('border-color',"red");
+            zenFlag = false;
+          }else{
+            custom_json['properties']['picture'] = v.crop;
+            $('#picture').val(v.crop)
+            custom_info_title.push(v.crop);
+          }
+
+        });
+      }else{
+      	zenFlag = false;
+      }
+    }
+    $("input[name='properties[custom_info]']").val(JSON.stringify(custom_json));
+    $("input[name='properties[custom_info_title]']").val(custom_info_title.join(' / '));
+    
+    return zenFlag;
+  })
+</script>

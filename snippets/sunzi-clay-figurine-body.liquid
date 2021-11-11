@@ -1,0 +1,223 @@
+	{% comment %}
+** @name 全身泥人**
+** @author laozien **
+** @integrate laozien wangtianyu **
+
+    2021-09-07
+    更新为最新代码
+{% endcomment %}
+
+{% comment %} 引用公共插槽 {% endcomment %}
+{% include 'sunzi-slot-template-2' %}
+
+{% comment %} 调用参数 {% endcomment %}
+
+{% comment %} 核心库版本 {% endcomment %}
+{% assign coreJs = 'clay-figurine-v1.0.1-beta.js' %}
+{% comment %} 定制化数据地址 {% endcomment %}
+{% assign requestURL = 'https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/clay-figurine-body.json' %}
+{% comment %} 变体名称 {% endcomment %}
+{% comment %} 尺码 {% endcomment %}
+{% assign variantSize = 0 %}
+{% comment %} 加价 {% endcomment %}
+{% assign variantAdd = 1 %}
+{% comment %} 是否可摇晃 {% endcomment %}
+{% assign variantConnection = 2 %}
+ 
+{% comment %} 样式补充&修正 {% endcomment %}
+<style type="text/css">
+  @media screen and (min-width: 768px) {
+    .sunzi-modal-content {
+       width: 400px;
+       height: 660px;
+    }
+  }
+  .cr-slider{
+    border-width:0px;
+  }
+  .cr-slider-wrap{
+   bottom:38px !important;
+  }
+</style>
+
+{% comment %} 定制化表单 {% endcomment %}
+<div class="sunzi-form">
+  {% assign from = coreJs | split: '-v' %}
+  <input type="hidden" name="properties[_from]" value="sunzi-{{ from[0] }}" />
+  {% comment %} 额外表单参数 {% endcomment %}
+  <input type="hidden" id="sunzi-related-products" name="properties[_sunzi_related_products]"></input>
+  {% comment %} 默认表单参数 {% endcomment %}
+  <input type="text" id="sunzi-input" name="properties[customInfo]" required="required"></input>
+  <input type="hidden" id="sunzi-cart" name="properties[_sunzi_cart]" />
+  {% comment %} 定制按钮 {% endcomment %}
+  <div class="sunzi-form-content">
+    <div id="sunzi-node">
+      <div class="sunzi-node-loading">
+        <span class="dots">
+          <i></i>
+          <i></i>
+          <i></i>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- sunzi core js -->
+<script crossorigin src="https://wuxian-chanpin.oss-accelerate.aliyuncs.com/sunzi/{{coreJs}}" defer="defer"></script>
+
+{% comment %}  2.请求定制化数据& 渲染 {% endcomment %}
+<script defer="defer"> 
+  var _shakeHead = false;
+  var ornament;
+  _sunzi_request('{{ requestURL }}', function(data){
+    initSizeData(data);
+  
+    data.decorates = [];
+    data.bases = [];
+    data.giftBoxs = [];
+  	data.addPrice = getAddPrice({{variantAdd}}); // 刻字加价
+    data.addBobblePrice = getAddPrice({{variantConnection}});	  //  头部可摇晃加价
+    {%comment%}关联产品配置{%endcomment%}
+    {% for block in section.blocks %}
+      {% if block.type =='clay_figurine_products' %}
+    	{% comment %}装饰品关联产品{% endcomment %}
+        {%- assign products_decorates = collections[block.settings.products_decorates] -%}
+    	{% for decorate in products_decorates.products %}
+          data.decorates.push({
+            id: "{{decorate.variants[0].id}}",
+            name: `{{decorate.title}}`,
+            price: {{decorate.price}} / 100,
+            url: `{{decorate.images[0] | img_url: 'large' }}`
+          });
+    	{% endfor %}
+    	{% comment %}底座关联产品{% endcomment %}
+        {%- assign products_bases = collections[block.settings.products_bases] -%}
+    	{% for base in products_bases.products %}
+          data.bases.push({
+            id: "{{base.variants[0].id}}",
+            name: `{{base.title}}`,
+            price: {{base.price}} / 100,
+            url: `{{base.images[0] | img_url: 'large' }}`
+          });
+    	{% endfor %}
+    	{% comment %}礼盒关联产品{% endcomment %}
+        {%- assign products_gift_boxs = collections[block.settings.products_gift_boxs] -%}
+    	{% for giftBox in products_gift_boxs.products %}
+          data.giftBoxs.push({
+            id: "{{giftBox.variants[0].id}}",
+            name: `{{giftBox.title}}`,
+            price: {{giftBox.price}} / 100,
+            url: `{{giftBox.images[0] | img_url: 'large' }}`
+          });
+    	{% endfor %}
+      {% endif %}
+    {% endfor %}
+    ClayFigurine.render(
+      ClayFigurine.Body,
+      {
+        ...data,
+        shop: _sunzi_global_data.shop,
+        //选择头事件
+        onSelectShakeHead(shakeHead){
+          _shakeHead = shakeHead;
+          var variantHead = _sunzi_find_variants().eq({{variantConnection}});
+          var variantValue = variantHead.find('option').eq(shakeHead ? 1 : 0).val();
+          _sunzi_variant_change({{variantConnection}}, variantValue); 
+        },
+      	onSelectSize(sizeData){
+          data.size.forEach(function(item, index) {
+      	    if (item) _sunzi_variant_change({{variantSize}}, sizeData.value); 
+          });
+        },
+        async onConfirm(output) {
+          // 唤醒loading
+          _sunzi_loading();
+          var relatedProducts = [];
+          var { result, decorate, base, giftBox, baseValue, effectBaseImage, fontCroppie, sideCroppie } = output;
+          if(decorate){
+            ornament = decorate.name;
+          }
+          // 组装加车参数
+          var param = {
+            '_sunzi_sources':result,
+            '_sunzi_effects': [fontCroppie,sideCroppie],
+            '_sunzi_clay_figurine': {
+              'shake_head': _shakeHead,
+              'stand':base.name,
+              'ornament': ornament,
+              'stand_text':baseValue,
+              'stand_text_image':effectBaseImage,
+              'featured_image': getCurProduct('featuredImage'),
+              'is_full_custom':true
+            }
+          };
+          $('#sunzi-input').val(JSON.stringify(param));
+          
+          // 删除站点自带的主图信息
+          $("input[name='properties[featured_image]']").attr("disabled","disabled");
+
+          // 加车队列
+          var promiseArr = [];
+          // 根据底座添加虚拟产品
+          if(base){
+            var virtualID = _create_uuid();
+            relatedProducts.push(virtualID); 
+            promiseArr.push(_sunzi_add_cart({ id:base.id , quantity: 1, "properties[_sunzi_main_product]": virtualID }));
+          }
+          // 根据饰品添加虚拟产品
+          if(decorate){
+            var virtualID = _create_uuid();
+            relatedProducts.push(virtualID); 
+            promiseArr.push(_sunzi_add_cart({ id: decorate.id , quantity: 1, "properties[_sunzi_main_product]": virtualID }));
+          }
+          // 根据是否选择礼物盒添加虚拟产品
+          if(giftBox){
+            var virtualID = _create_uuid();
+            relatedProducts.push(virtualID); 
+            promiseArr.push(_sunzi_add_cart({ id: giftBox.id , quantity: 1, "properties[_sunzi_main_product]": virtualID }));
+          }
+          // 根据是否刻字添加虚拟产品
+          _sunzi_variant_change({{variantAdd}}, baseValue.length ? 1 : 0);
+          // 关联产品关系绑定
+          $('#sunzi-related-products').val(JSON.stringify(relatedProducts));
+          // 加车事件触发
+          await Promise.all(promiseArr);
+          // 由于主产品涉及vip/质保产品等额外加车事件的判断，因此沿用站点加车方法
+          Product.addFormToCart($('.product-form'), function() {
+            // 重置变体
+            _sunzi_variant_change({{variantAdd}}, 0);
+          })
+          $('#sunzi-loading').hide();
+
+        }  
+  	  },
+      _matomoId,
+      document.getElementById("sunzi-node")
+    )                 
+  });
+
+  /** 其他自定义函数 start **/	
+  function initSizeData(data) {
+    var productJSON = {{product | json}};
+    var sizeList = [];
+    var result;
+    // 初始化尺码信息
+    // 这个站点react初始化在变体select 标签生成之前，只能从product信息里面拿
+    data.size.forEach(function(item, index) {
+      item.title = productJSON.options[0] + ':';
+      item.values = [];
+      productJSON.variants.forEach(function(variant) {
+        var option = variant.options[0];
+        if(sizeList.indexOf(option) < 0) {
+          sizeList.push(option);
+          item.values.push({
+            id: sizeList.length - 1,
+            value: option
+          });
+        }
+      });
+    });
+  }
+  /** 其他自定义函数 end **/
+</script>

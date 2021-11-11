@@ -1,0 +1,252 @@
+{% if product.tags contains 'custom-unify-new-data-calenda' %}
+   <input type="text" id="custom_info" name="properties[customInfo]" value="" style="display:none"/>
+{% else %}
+<input type="text" id="piccrop" name="properties[crop]"   value="" style="display:none" />
+<input type="text" id="picai" name="properties[ai]"     value="" style="display:none" />
+<input type="text" id="picorigin" name="properties[origin]" value="" style="display:none" />
+<input type="text" id="engraving-crop" name="properties[engraving]" value="" style="display:none" />
+<input type="text" id="fonttext" name="properties[fonttext]"     value="" style="display:none" />
+{% endif %}
+
+{% assign customJson = '' %}
+{% if product.metafields["global"]["cattribute"] %}
+	{% assign customJson = product.metafields["global"]["cattribute"] | replace: "'", "" %}
+{% else %}
+	{%- assign current_variant = product.selected_or_first_available_variant -%}
+	{% if current_variant.sku contains 'CHK215'%}
+		{% assign customJson = '{"isLoadingFullScreen":"false","enablePhoto":true,"enableCarving":true,"enableCrop":false,"markMoveX":3,"markMoveY":3,"markScale":"h","photoJson":[{"width":254,"height":207,"top":78,"left":123,"baseImg":"https://pic.stylelab.com/img/photo/CHK215.png","sku":"CHK215"}],"week_header":["SUN","MON","TUE","WED","THU","FRI","SAT"],"markImg":"https://pic.stylelab.com/js/img/CHK215-heart_red.png","title_top":346,"title_left":233,"tmp_week_x":190,"unit_len":26,"unit_len_y":15,"month_x":142,"year_x":144,"month_y":358,"year_y":336,"week_y":290,"font":"Adobe","yearFontsize":14,"weekFontsize":10,"monthFontsize":11,"fontWeight":"bold","yearFontWeight":"bold","monthFontWeight":"bold","coors":[{"left":160,"top":320,"rows":1,"limit":"7","angle":"0","size":17,"textColor":"black","direction":"","banDrag":"0","font":"yg","text":""}]}' %}
+	{% endif %}
+{% endif %}
+<script>
+  window.addEventListener('EVENT_CALENDAR_SAVE_AFTER', function(event){
+    var index = event.detail.index;
+    var data = event.detail.data;
+    if(jQuery('.calendar-button-box').length > 0){
+      jQuery('.calendar-button-box').css('border-color', '#f7f7f7'); 
+    }
+  });
+  var cattribute_json = `{{customJson}}`;
+  var _zenSku = "{{ product.selected_or_first_available_variant.sku }}";
+  var jsonCustom= {};
+  if(cattribute_json){
+    jsonCustom = JSON.parse(cattribute_json);
+  }
+  var _defautItem = { 
+    label: '', bgimg: 'front-view.png', btnUploadText: 'Upload', hasCarving: false, isCRequire: false, noSelect: false, isRequire: false, 
+    crop: "", cropOrigin: "", engravingCrop: "", engravingText: [], engravingSize: "", engravingFont: "", hasCropOrigin: false,
+    hasEngravingSize: true, hasEngravingFont: true
+  };
+  
+  var _zenConfig = {
+    photoObj: [],
+    carvingObj: [],
+    calendarNewObj: [],
+    sku: _zenSku,
+    require:true,
+    hasArrow: true,
+    lang: 'en',
+    loadingFullScreen: typeof jsonCustom.isLoadingFullScreen != 'undefined' ? jsonCustom.isLoadingFullScreen : true,
+    uploadLoadingImage: typeof jsonCustom.uploadLoadingImage != 'undefined' ? jsonCustom.uploadLoadingImage : 'https://ik.imagekit.io/soufeel/en/skin/frontend/smartwave/default/images/soufeel-30.gif',
+    wrapperBackgroudColor: '#fff',
+    bgOpacity: 0.5,
+    dateBgColor: 'rgba(0,0,0,0)',//选择日期输入框背景色
+    cropConfirmText: "{{ 'zen.general.confirm' | t }}",
+    cropCancelText: "{{ 'zen.general.cancel' | t }}",
+    canvasPreviewText: ' ',
+    cropPrompt: "",   //刻字弹层提示文字, 可选, 默认无
+    previewLabel: "", //预览文字前置文案, 可选, Your Design
+    enableCanvas: false,  //是否显示刻字画布
+    enableAddon: false,  //显示附加信息
+    enableImg: false,
+    btnText: "{{ 'zen.general.design' | t }}",
+    changeBtnText: "{{ 'zen.general.change' | t }}",
+    calendarCanvasId: 'calendar-canvas',
+    coors:typeof jsonCustom.coors != 'undefined' ? jsonCustom.coors : [],
+    dateFormat: 'yyyy/MM/dd',//日期格式
+    markImg: typeof jsonCustom.markImg != 'undefined' ? jsonCustom.markImg : "https://pic.stylelab.com/js/img/heart.png",
+    calendarCanvasWidth: 500,
+    calendarCanvasHeight: 400,
+    baseWidth: jsonCustom.baseWidth ? jsonCustom.baseWidth : 500,
+    unit_len: jsonCustom.unit_len ? jsonCustom.unit_len : 23,
+    unit_len_y: jsonCustom.unit_len_y ? jsonCustom.unit_len_y : '',
+    fontFamily: jsonCustom.font ? jsonCustom.font : "TimesNewRoman",
+    monthFontsize: jsonCustom.monthFontsize ? jsonCustom.monthFontsize : 20,
+    weekFontsize: jsonCustom.weekFontsize ? jsonCustom.weekFontsize : 11,
+    yearFontsize: jsonCustom.yearFontsize ? jsonCustom.yearFontsize : 20,
+    dayFontsize: jsonCustom.dayFontsize ? jsonCustom.dayFontsize : 11,
+    yearMargin: jsonCustom.yearMargin ? jsonCustom.yearMargin : 100,
+    tmp_week_x: jsonCustom.tmp_week_x ? jsonCustom.tmp_week_x : 175,
+    title_top: jsonCustom.title_top ? jsonCustom.title_top : 208,
+    title_left: jsonCustom.title_left ? jsonCustom.title_left : 190,
+    weekMargin: jsonCustom.weekMargin ? jsonCustom.weekMargin : 5,
+    weekFontWeight: jsonCustom.weekFontWeight ? jsonCustom.weekFontWeight : "normal",
+    yearFontWeight: jsonCustom.yearFontWeight ? jsonCustom.yearFontWeight : "normal",
+    fontWeight: jsonCustom.fontWeight ? jsonCustom.fontWeight : "normal",
+    month_x: jsonCustom.month_x ? jsonCustom.month_x : "",
+    year_x: jsonCustom.year_x ? jsonCustom.year_x : "",
+    month_y: jsonCustom.month_y ? jsonCustom.month_y : "",
+    year_y: jsonCustom.year_y ? jsonCustom.year_y : "",
+    week_y: jsonCustom.week_y ? jsonCustom.week_y : "",
+    markMoveY: typeof jsonCustom.markMoveY != 'undefined' ? jsonCustom.markMoveY : 0,//月份是否居中显示
+    markMoveX: typeof jsonCustom.markMoveX != 'undefined' ? jsonCustom.markMoveX : 0,//月份是否居中显示
+    isTipMark: typeof jsonCustom.isTipMark != 'undefined' ? jsonCustom.isTipMark : false,//true:不缩放markimg
+    items: [
+      {
+        label: '',
+        data: [
+          Object.assign({}, _defautItem, {label: "", isRequire:false, hasCarving: false, isCRequire: false})
+        ],
+      }
+    ],
+    photo: [],
+    carving: [],
+    calendar:[{
+      dateLabelText: "{{ 'zen.general.choose_your_anniversary' | t}}",//选择日期标题文案
+      uploadLabel: "{{ 'zen.photo.upload_photo' | t }}",
+      cropUploadLabel: "{{ 'zen.photo.upload_photo' | t }}",
+      cropLabelText:  "{{ 'zen.photo.upload_photo' | t }}",
+      btnUploadText:  "{{ 'zen.photo.upload' | t }}",
+      btnCropUploadText: "{{ 'zen.photo.upload' | t }}",
+      dateLabelText:'{{ 'zen.general.select_date' | t}}',
+      canvasPreviewText:'{{ 'zen.general.Preview' | t}}',
+      "previewText": "{{ 'zen.general.choose_your_anniversary' | t}}",
+      baseImg: "https://pic.stylelab.com/img/photo/"+_zenSku+".png",//效果图背景图
+      sku:_zenSku,
+      "calendarCanvasHeight":400,
+      "btnText": "{{ 'zen.general.design' | t }}",
+      "cropPrompt":"",
+      "monthNames": ["January", "February ", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"],
+      "week_header":typeof jsonCustom.week_header != 'undefined' ? jsonCustom.week_header : ['S','M','T','W','T','F','S'],
+      markScale:typeof jsonCustom.markScale != 'undefined' ? jsonCustom.markScale : '',
+      photoJson:jsonCustom.photoJson ? jsonCustom.photoJson : [],
+      enableCarving: typeof jsonCustom.enableCarving != 'undefined' ? jsonCustom.enableCarving : false,//日历画布是否有拖动刻字功能
+      enablePhoto: typeof jsonCustom.enablePhoto != 'undefined' ? jsonCustom.enablePhoto : false,//日历画布是否有遮罩图传图功能
+      enableCrop: typeof jsonCustom.enableCrop != 'undefined' ? jsonCustom.enableCrop : true,//日历画布是否有切图传图功能
+      cropImageJson: jsonCustom.cropImageJson ? jsonCustom.cropImageJson : {width: 198,height: 144,top:56,left:157},//图片在日历画布上的坐标
+      aspectRatio:  jsonCustom.aspectRatio ? jsonCustom.aspectRatio : 198/144
+
+    }]
+  };
+  Product.validators.push(async () => {
+  	var customInfo = JSON.parse(jQuery('.zen-require').val());
+    var submit_flag = true;
+    if(typeof customInfo.calendar != 'undefined'){
+      var _v = customInfo.calendar[0];
+      if(_v.require && !_v.crop) {
+        submit_flag = false;
+        jQuery('.calendar-button-box').css('border-color','red');
+      }else{
+        //将日历图链接拼到刻字图后面
+        {% unless product.tags contains 'custom-unify-new-data-calenda' %}
+        $('#piccrop').val(_v.crop);
+        $('#engraving-crop').val(_v.crop);
+        $('#fonttext').val(_v.date);
+        {% endunless %}
+        jQuery('.calendar-button-box').css('border-color','#f7f7f7');
+      }
+    }
+    
+    if(typeof customInfo.crop != 'undefined' && _zenConfig.calendar[0].enableCrop){
+      if(!customInfo.crop[0].cropOrigin){
+        submit_flag = false;
+      }else{
+        $('#picai').val(customInfo.crop[0].crop);
+        $('#picorigin').val(customInfo.crop[0].cropOrigin);
+        jQuery('.calendar-button-box').css('border-color','#f7f7f7');
+      }
+    }
+  
+    {% if product.tags contains 'custom-unify-new-data-calenda' %}
+      var zenCustomJson ={};
+      var year =customInfo.calendar[0].date.split('/')[0];
+      var month =month_english(customInfo.calendar[0].date.split('/')[1]);
+      var data =customInfo.calendar[0].date.split('/')[2];
+
+      zenCustomJson['_sunzi_effect'] = customInfo.calendar[0].crop;
+      console.log(customInfo.calendarPhoto);
+      if(typeof customInfo.calendarPhoto != 'undefined'){
+        zenCustomJson['_sunzi_ais'] = [customInfo.calendarPhoto[0][0].ai,"https://pic.stylelab.com/img/photo/"+_zenSku+"_back.png?789791"];
+        zenCustomJson['_sunzi_source'] = customInfo.calendarPhoto[0][0].origin;
+      }
+      if(typeof customInfo.calendarCarving != 'undefined'){
+        zenCustomJson['_sunzi_remark']={"name":customInfo.calendarCarving[0].engravingText,"year":year,"month":month,"data":data};
+      }
+
+      $("#custom_info").val(JSON.stringify(zenCustomJson));
+  
+    {% endif %}
+    return submit_flag;                 
+  })
+  
+  Listener.on([ Listener.product.update.before ], function(event, variant) {
+    if(_zenSku != variant.sku){
+      _zenSku = variant.sku;
+      window._zenConfig.calendar.splice(0, 1);
+      
+      setTimeout(function(){
+        window._zenConfig.calendar.push({
+          "previewText": "{{ 'zen.general.choose_your_anniversary' | t}}",
+          baseImg: typeof jsonCustom.baseImg != 'undefined' ? jsonCustom.baseImg :"https://pic.stylelab.com/img/photo/"+_zenSku+".png",//效果图背景图
+          sku:_zenSku,
+          "btnText": "{{ 'zen.general.design' | t }}",
+          "cropPrompt":"",
+          "calendarCanvasHeight":400,
+          "monthNames": ["January", "February ", "March", "April", "May", "June",
+          "July", "August", "September", "October", "November", "December"
+          ],
+          "week_header":typeof jsonCustom.week_header != 'undefined' ? jsonCustom.week_header : ['S','M','T','W','T','F','S'],
+          markScale:typeof jsonCustom.markScale != 'undefined' ? jsonCustom.markScale : '',
+          photoJson:jsonCustom.photoJson ? jsonCustom.photoJson : [],
+          enableCarving: typeof jsonCustom.enableCarving != 'undefined' ? jsonCustom.enableCarving : false,//日历画布是否有拖动刻字功能
+          enablePhoto: typeof jsonCustom.enablePhoto != 'undefined' ? jsonCustom.enablePhoto : false,//日历画布是否有遮罩图传图功能
+          enableCrop: typeof jsonCustom.enableCrop != 'undefined' ? jsonCustom.enableCrop : true,//日历画布是否有切图传图功能
+          cropImageJson: jsonCustom.cropImageJson ? jsonCustom.cropImageJson : {width: 198,height: 144,top:56,left:157},//图片在日历画布上的坐标
+          aspectRatio:  jsonCustom.aspectRatio ? jsonCustom.aspectRatio : 198/144
+        });
+      },100);
+    }
+
+  })
+    
+</script>
+
+<div id="zen-custom-calendar"></div>
+<link href="https://pic.stylelab.com/js/zen-crop-calendar0.2.2/zen-crop-calendar-chunk-vendors.css?202001051623" rel="stylesheet" />
+<link href="https://pic.stylelab.com/js/zen-crop-calendar0.2.2/zen-crop-calendar-app.css?202001051623" rel="stylesheet" />
+<script src="https://pic.stylelab.com/js/zen-crop-calendar0.2.2/zen-crop-calendar-chunk-vendors.js?202001051623"></script>
+<script src="https://pic.stylelab.com/js/zen-crop-calendar0.2.2/zen-crop-calendar-app.js?202001051623"></script>
+
+<script>
+  $(function(){
+  	$('.zen-require').attr('name','customInfo');
+  })
+  function month_english(num){
+    var month_es ={}
+    if(num=='01'){
+    	 month_es='January';
+    }else if(num=='02'){
+    	 month_es='February';
+    }else if(num=='03'){
+    	 month_es='March';
+    }else if(num=='04'){
+    	 month_es='April';
+    }else if(num=='05'){
+    	 month_es='May'
+    }else if(num=='06'){
+    	 month_es='June';
+    }else if(num=='07'){
+    	 month_es='July';
+    }else if(num=='08'){
+    	 month_es='August';
+    }else if(num=='09'){
+    	 month_es='September';
+    }else if(num=='10'){
+    	 month_es='October';
+    }else if(num=='11'){
+    	 month_es='November';
+    }else if(num=='12'){
+    	 month_es='December';
+    }
+    return month_es;
+  }
+</script>
