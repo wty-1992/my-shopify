@@ -1,0 +1,106 @@
+{% comment %} 
+** @name  文章详情页面**
+** @author 陈健辉 **
+** @integrate 陈健辉 **
+** @remarks 暂无作者头像信息 **
+{% endcomment %}
+
+<style>
+.search-container{
+  display: none;
+}
+
+.detail_module{
+  background: #F6F6F9;
+}
+.detail_title_author{
+  padding: 20px;
+  padding-bottom: 80px;
+  color: #222;
+}
+.article_detail_title{
+  margin-top: 40px;
+  font-size: 24px;
+  line-height: 32px;
+  text-align: center;
+}
+.article_author_time{
+  margin: 26px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 24px;
+}
+.article_time{
+  color: #928FA5;
+}
+
+.detail_ima_module{
+  padding: 0 20px;
+  position: relative;
+  top: -80px;
+}
+.detail_img{
+  border-radius: 4px;
+  overflow: hidden;
+}
+.detail_ima_module img{
+  width: 100%;
+}
+
+.detail_content{
+  margin-top: -20px;
+  margin-bottom: 80px;
+  padding: 0 20px;
+  font-size: 16px;
+  line-height: 36px;
+  color: #222;
+}
+
+@media screen and (max-width: 749px){
+  .detail_img{
+    max-height: 160px;
+  }
+}
+
+/* PC端样式 */
+@media screen and (min-width: 750px){
+  .detail_title_author,
+  .detail_ima_module,
+  .detail_content{
+    max-width: 1022px;
+    margin: 0 auto;
+  }
+
+  .detail_img{
+    max-height: 320px;
+  }
+
+  .detail_content{
+    margin-top: -20px;
+    margin-bottom: 80px;
+  }
+}
+</style>
+
+{% comment %} 文章标题/作者 {% endcomment %}
+<div class="detail_module">
+  <div class="detail_title_author">
+    <div class="article_detail_title">Enjoy Mademine services in 4 easy steps</div>
+    <div class="article_author_time">
+        <span class="article_author">Liz Ortner, </span>
+        <span class="article_time">Updated yesterday</span>
+      </div>
+  </div>
+</div>
+
+{% comment %} 文章图片 {% endcomment %}
+<div class="detail_ima_module">
+  <div class="detail_img">
+    <img src="https://cdn.shopify.com/s/files/1/0372/6897/9848/products/B_400x.jpg?v=1588056625" alt="">
+  </div>
+</div>
+
+{% comment %} 文字内容模块 {% endcomment %}
+<div class="detail_content">
+  With green living on the rise, the idea may have already crossed your mind - should you be offering eco-friendly products to your customers, or switch your existing products to more sustainable options?With green living on the rise, the idea may have already crossed your mind - should you be offering eco-friendly products to your customers, or switch your existing products to more sustainable options?With green living on the rise, the idea may have already crossed your mind - should you be offering eco-friendly products to your customers, or switch your existing products to more sustainable options?With green living on the rise, the idea may have already crossed your mind - should you be offering eco-friendly products to your customers, or switch your existing products to more sustainable options?With green living on the rise, the idea may have already crossed your mind - should you be offering eco-friendly products to your customers, or switch your existing products to more sustainable options?
+</div>

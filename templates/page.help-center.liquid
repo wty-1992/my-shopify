@@ -2,7 +2,7 @@
 ** @name  文章列表页面**
 ** @author 陈健辉 **
 ** @integrate 陈健辉 **
-** @describe 文章列表暂无作者头像信息 **
+** @remarks 暂无作者头像信息 **
 {% endcomment %}
 
 <style>
@@ -50,6 +50,18 @@
   border-radius: 4px;
   color: #222222;
   line-height: 24px;
+  position: relative;
+}
+.article_item::after {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: #ccc;
+    position: absolute;
+    content: '';
+    top: 0;
+    left: 0;
+    opacity: 0;
 }
 .article_img{
   padding: 5px;
@@ -135,6 +147,7 @@
   .article_item{
     width: 380px;
   }
+  .article_item,
   .article_load_btn{
     cursor: pointer;
   }
@@ -160,7 +173,7 @@
 
 {% comment %} 文字列表模块 {% endcomment %}
 <div id="article_list_module" class="article_list_module">
-  {% comment %}
+  {% comment %} 文章列表数据通过JS动态渲染
   <div class="article_item">
     // 文章图片
     <div class="article_img">
@@ -205,7 +218,7 @@ const MockItem = {
   detail: 'Mademine currently offers more than 200 unique products for your e-commerce store — from t-shirts to puzzles to pet beds — all of which can be custom-printed with your chosen designs'
 };
 for(var i = 0; i < 50; i++){
-  articleList.push(MockItem);
+  articleList.push({...MockItem, index: i});
 }
 // Mock数据 End
 
@@ -243,7 +256,7 @@ function loadMore(listData){
   let articleTemplate = "";
   listData.forEach(item => {
     articleTemplate += `
-      <div class="article_item">
+      <div class="article_item" data-index="${item.index}">
         <div class="article_img">
           <img src="${item.imgUrl}" alt="">
         </div>
@@ -260,4 +273,9 @@ function loadMore(listData){
   });
   $('#article_list_module').append(articleTemplate);
 }
+/* 绑定列表数据模块点击事件 通过事件委托获取事件源 */
+$('#article_list_module').on('click', (event) => {
+  console.log(event.target.dataset.index);
+  location.href = '/pages/help-center-detail';
+})
 </script>
