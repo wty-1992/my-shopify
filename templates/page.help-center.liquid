@@ -273,7 +273,6 @@ function loadMore(listData){
   });
   $('#article_list_module').append(articleTemplate);
 }
-
 /* 绑定列表数据模块点击事件 通过事件委托获取事件源 */
 $('#article_list_module').on('click', (event) => {
   console.log(event.target.dataset.index);
