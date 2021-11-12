@@ -1,3 +1,9 @@
+{% comment %} 
+** @name  工作流程页面**
+** @author 陈健辉 **
+** @integrate 陈健辉 **
+{% endcomment %}
+
 <style>
 .search-container{
   display: none;
@@ -280,16 +286,16 @@
   let moduleTemplate = '';
   moduleList.forEach((item, index) => {
     const template = `
-    <div class="how_module_item">
-      <div class="how_module_left">
-        <img src="${item.imgUrl}" alt="${item.title}">
+      <div class="how_module_item">
+        <div class="how_module_left">
+          <img src="${item.imgUrl}" alt="${item.title}">
+        </div>
+        <div class="how_module_right">
+          <div class="how_index_number">${index + 1}</div>
+          <div class="how_right_title">${item.title}</div>
+          <div class="how_right_content">${item.content}</div>
+        </div>
       </div>
-      <div class="how_module_right">
-        <div class="how_index_number">${index + 1}</div>
-        <div class="how_right_title">${item.title}</div>
-        <div class="how_right_content">${item.content}</div>
-      </div>
-    </div>
     `
     moduleTemplate+=template;
   });
