@@ -2,112 +2,117 @@
 
  {% assign mb_resize = section.settings.mb_img.width | append: "x" | append: section.settings.mb_img.height %}
 <style >
-  .home-talk-sales{
-    width:100%;
-    background:#FFFFFF;
-    padding: 0 28px;
-  }
-  .talk-sales-box{
-    max-width: 1372px;
-    margin: 0 auto;
-    height:220px;
-    border-radius: 12px;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    display:flex;
-    justify-content: center;
+.home-talk-sales{
+  width:100%;
+  background:#FFFFFF;
+  padding: 0 28px;
+}
+.talk-sales-box{
+  max-width: 1372px;
+  margin: 0 auto;
+  padding: 0 150px;
+  height:220px;
+  border-radius: 12px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url({{ 'talk-sale-banner.png' | asset_img_url: 'master' }});
+  box-shadow: 0 12px 24px rgba(255, 260, 0, 0.08),
+      0 1px 1px rgba(212, 196, 137, 0.8),
+      0 4px 16px rgba(255, 172, 0, 0.36);
+}
+.talk-text-box{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+.talk-text-box-image {
+  width: 250px;
+  background-image: url({{ 'puzzle.png' | asset_img_url: 'master' }});
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: right;
+}
+.talk-text-box-image::before {
+    display: block;
+    padding-top: 70%;
+    content: '';
+}
+.talk-inquiry-skip-module {
+    display: flex;
     align-items: center;
-    background-image: url({{ 'talk-sale-banner.png' | asset_url }});
-    box-shadow: 0 12px 24px rgba(255, 260, 0, 0.08),
-        0 1px 1px rgba(212, 196, 137, 0.8),
-        0 4px 16px rgba(255, 172, 0, 0.36);
+}
+.text-inquiry{
+  font-size: 32px;
+  line-height: 58px;
+  padding: 0 40px 0 40px;
+  color: #222;
+}
+.text-skip{
+  padding: 14px 29px;
+  font-size: 20px;
+  line-height: 24px;
+  color:#F9423A;
+  border-radius: 4px;
+  background:#fff;
+  cursor: pointer;
+  white-space: nowrap;
+  margin-left: 40px;
+}
+@media screen and (max-width: 1120px){
+  .text-inquiry{
+    font-size: 24px;
+    line-height: 39px;
+    width:68%;
   }
-  .talk-text-box{
-    display:flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .talk-text-box-image {
-    width: 200px;
-    background-image: url({{ 'puzzle.png' | asset_url }});
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: right;
-  }
-  .talk-text-box-image::before {
-      display: block;
-      padding-top: 70%;
-      content: '';
+}
+
+@media screen and (max-width: 768px){
+  .talk-inquiry-skip-module {
+    margin-left: 40px;
+    align-items: flex-start;
+    flex-direction: column;
   }
   .text-inquiry{
-    width: 50%;
-    font-size: 32px;
-    line-height: 58px;
-    padding: 0 40px 0 40px;
-    color: #222;
+    font-size: 14px;
+    line-height: 24px;
+    width:100%;
+    padding: 0 20px 0 0;
+  }
+  .home-talk-sales{
+    padding:0 14px
+  }
+  .talk-sales-box{
+    height:134px;
+    padding: 0;
+  }
+  .talk-text-box{
+    flex-direction: column;
+    align-items: baseline;
+    margin-left:33.33%;
   }
   .text-skip{
-    padding: 14px 29px;
-    font-size: 20px;
-    line-height: 24px;
-    color:#F9423A;
-    border-radius: 4px;
-    background:#fff;
-    cursor: pointer;
+    padding:5px 8px;
+    font-size: 12px;
+    line-height: 14px;
+    margin: 8px 0 0;
   }
-  @media screen and (max-width: 1120px){
-    .text-inquiry{
-      font-size: 24px;
-      line-height: 39px;
-    }
-  }
-
-  @media screen and (max-width: 1120px){
-    .text-inquiry{
-      width:68%;
-    }
-  }
-
-  @media screen and (max-width: 768px){
-    .text-inquiry{
-      font-size: 14px;
-      line-height: 24px;
-      width:100%;
-    }
-    .home-talk-sales{
-      padding:0 14px
-    }
-    .talk-sales-box{
-      height:134px;
-      background-image:url({{section.settings.mb_img  | img_url: mb_resize }})
-    }
-    .talk-text-box{
-      flex-direction: column;
-      align-items: baseline;
-      margin-left:33.33%;
-    }
-    .text-skip{
-      padding:5px 8px;
-      font-size: 12px;
-      line-height: 14px;
-      margin-top:8px;
-    }
-  }
-
-
+}
 </style > 
 
 <div class="talk-sales-box" >
   <div class="talk-text-box-image"></div>
-  <div class="text-inquiry alifont_bold">
+  <div class="talk-inquiry-skip-module">
+    <div class="text-inquiry alifont_bold">
     {{section.settings.inquiry}}
     </div>
     <div class="text-skip alifont_bold">
-        {{section.settings.skip-text}}
+      {{section.settings.skip-text}}
     </div>
 </div>
-
 
 {% schema %}
 {

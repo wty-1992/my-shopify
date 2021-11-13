@@ -75,7 +75,6 @@
 }
 .article_title{
   font-size: 16px;
-  font-weight: bold;
 }
 .article_author_time{
   font-size: 12px;
@@ -110,7 +109,6 @@
   margin-top: 10px;
   border: 1px solid rgba(34,34,34,0.08);
   background: #fff;
-  font-weight: bold;
   font-size: 16px;
   padding: 4px 4px 4px 16px;
 }
@@ -158,13 +156,14 @@
 {% comment %} 顶部搜索模块 {% endcomment %}
 <div class="article_module_search mm-header-height">
   {% comment %} 模块标题 {% endcomment %}
-  <div class="article_search_title">
+  <div class="article_search_title alifont_heavy">
     Advice and answers from the Mademine Team
   </div>
   {% comment %} 模块搜索框 {% endcomment %}
   <div class="article_search">
     <img src="{{ 'search.svg' | asset_url }}" alt="serach">
     <input
+      class="alifont"
       type="text"
       placeholder="Search for articles"
       id="searchInput"
@@ -198,10 +197,10 @@
 {% comment %} 加载更多模块 {% endcomment %}
 <div class="article_load_more">
   {% comment %} 当前显示数据/总数量 {% endcomment %}
-  <div class="article_current">Show <span id="current_show">3/50</span> tarticles</div>
+  <div class="article_current alifont">Show <span id="current_show" class="alifont_bold">0/0</span> tarticles</div>
   {% comment %} 加载按钮 {% endcomment %}
   <div id="article_load_btn" class="article_load_btn">
-    <span>Show more</span>
+    <span class="alifont_bold">Show more</span>
     <img src="{{'next-bottom.svg' | asset_url}}" />
   </div>
 </div>
@@ -262,12 +261,12 @@ function loadMore(listData){
           <img src="${item.imgUrl}" alt="">
         </div>
         <div class="article_detail_module">
-          <div class="article_title">${item.title}</div>
+          <div class="article_title alifont_bold">${item.title}</div>
           <div class="article_author_time">
-            <span class="article_author">${item.author}, </span>
-            <span class="article_time">${item.time}</span>
+            <span class="article_author alifont_bold">${item.author}, </span>
+            <span class="article_time alifont">${item.time}</span>
           </div>
-          <div class="article_detail">${item.detail}</div>
+          <div class="article_detail alifont">${item.detail}</div>
         </div>
       </div>
     `;
