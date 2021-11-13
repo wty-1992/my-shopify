@@ -26,8 +26,7 @@ p=e.getElementsByTagName(a)[0];p.parentNode.insertBefore(m,p);
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
   <meta name="theme-color" content="{{ settings.color_header_bg }}">
-  {% comment %}添加字体样式{% endcomment %}
-  <link rel="stylesheet" href="https://use.typekit.net/clg1kqv.css">
+
   {% unless settings.favicon == blank %}
     <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
   {% endunless %}
@@ -39,6 +38,11 @@ p=e.getElementsByTagName(a)[0];p.parentNode.insertBefore(m,p);
   {% if page_description %}
     <meta name="description" content="{{ page_description | escape }}">
   {% endif %}
+  
+  {% comment %}
+  * alibaba sans font *
+  {% endcomment %}
+  <link rel="stylesheet" href="https://use.typekit.net/clg1kqv.css">
 
   
   <script>(function(w,d,t,r,u){var f,n,i;w[u]=w[u]||[],f=function(){var o={ti:"16013368"};o.q=w[u],w[u]=new UET(o),w[u].push("pageLoad")},n=d.createElement(t),n.src=r,n.async=1,n.onload=n.onreadystatechange=function(){var s=this.readyState;s&&s!=="loaded"&&s!=="complete"||(f(),n.onload=n.onreadystatechange=null)},i=d.getElementsByTagName(t)[0],i.parentNode.insertBefore(n,i)})(window,document,"script","//bat.bing.com/bat.js","uetq");</script>
@@ -163,14 +167,13 @@ src="https://www.facebook.com/tr?id=980259282060068&ev=PageView&noscript=1"
   
 </head>
 <body class="template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}">
+  {% include 'sunzi-solt-template' %}
   {% include "common-loading_mask" %}
   {% section 'account-magento' %}
   {% section 'common-currencies' %}
-  {% section 'cart-success' %}
-  {% section 'cart-mini' %}
   {% unless template contains 'page.activity-template' or handle contains '2020-christmas-clearance' %}
   {% endunless %}
-  {% section 'header-main' %}
+  {% section 'header-mm' %}
   {% section 'search-personalise' %}
   {% if template contains 'page' or template contains 'product' or template contains 'collection' %}
   {% section 'common-tag-label' %}

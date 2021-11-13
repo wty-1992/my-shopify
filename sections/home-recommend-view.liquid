@@ -2,9 +2,11 @@
   .home-recommend-view{
     width:100%;
     background: #fff;
-    padding-top: 151px;
+    padding: 0 28px;
   }
   .recommend-view{
+    max-width: 1372px;
+    margin: 0 auto;
     display:flex;
     align-items: center;
     justify-content: center;
@@ -18,27 +20,21 @@
     padding:0 28px;
     text-align:center;
   }
-  .recommend-view-text{
+  .recommend-view-text1 {
     font-size:20px;
     line-height:24px;
     color:#222;
-    margin-top:44px;
     text-align:center;
     width:100%;
   }
   .recommend-view-image{
     width:100%;
     margin-top:56px;
-    padding:0 14.16%;
   }
   .bottom-box-item{
     width:31.5%;
     margin-left:28px;
     height:500px;
-  }
-
-  .recommend-text-box{
-    width:53.22%;
   }
   .recommend-top{
     display:flex;
@@ -128,14 +124,13 @@
   }
   .recommend-top-box-four{
     display:flex;
-    align-items: flex-start;
     justify-content: center;
     flex-direction: column;
     padding:53px 48px 16px 48px;
     flex:1;
-    height:500px;
-
+    height: 500px;
   }
+  
   .image_pc{
     display:block;
   }
@@ -159,17 +154,160 @@
     margin-top:28px
   }
   .image-box-item{
-    width:28%;
+    width: 100%;
+    height: 100%;
+    padding: 14px;
     display:flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
   }
+  .image-box-item img{
+      max-width: 100%;
+      max-height: 100%;
+  }
   .flex-wrap{
     flex-wrap: wrap;
   }
-  .top-box-four{
-    margin-top:31px;
+  .top-box-four {
+    margin-top: 30px;
+    height: 100%;
+    padding-bottom: 20px;
+  }
+  .top-box-four .image_pc {
+      height: 100%;
+  }
+  .products-link .link {
+      height: 56px;
+      padding: 0 20px 0 30px;
+  }
+  .main-text {
+      width: 100%;
+      text-align: center;
+  }
+  .line1 {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 28px;
+  }
+  .line1-items {
+      position: relative;
+      width: calc((100% - 28px * 2) * (292 / 1372));
+      background: #F6F6F9;
+      border-radius: 12px;
+      margin-right: 28px;
+      cursor: pointer;
+  }
+  .line1-items-content {
+      position: absolute;
+      left: 32px;
+      right: 32px;
+      bottom: 32px;
+      top: 32px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+  }
+  .line1-items:before {
+      display: block;
+      padding-top: 100%;
+      content: '';
+  }
+  .line1-items-2x {
+      flex: 1;
+      background-color: #F6F6F9;
+      border-radius: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+  }
+  .line1-items-2x .image-content {
+    display: flex;
+    height: 100%;
+  }
+  .line1-items-2x .image-content {
+    width: calc(100% * 295 / 728);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .line1-items-2x .line1-text-content {
+    width: calc(100% * 300 / 728);
+    padding: 0 40px;
+  }
+  .content-title {
+      font-size: 20px;
+      color: #222;
+      line-height: 32px;
+      text-align: center;
+  }
+  .content-description {
+      font-size: 16px;
+      color: #222;
+      line-height: 32px;
+      text-align: center;
+  }
+  .line2 {
+    display: flex;
+    margin-bottom: 28px;
+  }
+  .line2-items-2x {
+    width: calc(100% * 907 / 1372);
+    margin-right: 28px; 
+    background: #F6F6F9;
+    border-radius: 12px;
+  }
+  .line2-items-2x::before {
+    display: block;
+    padding-top: 55%;
+    content: '';
+  }
+  .line2-items-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+  }
+  .line2-items {
+      flex: 1;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-color: #F6F6F9;
+      border-radius: 12px;
+      cursor: pointer;
+  }
+  .line2-items:first-child {
+      margin-bottom: 28px;
+  }
+  .line2-items-2x {
+      position: relative;
+      cursor: pointer;
+  }
+  .line2-items-2x-content {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 50px 20px 45px;
+  }
+  .line2-text-content {
+      padding-bottom: 30px;
+  }
+  .line2-image-content {
+      flex: 1;
+      display: flex; 
+      justify-content: space-around;
+  }
+  .line2-image-content .image-content {
+      width: 30%;
+      height: 100%;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
   }
   @media screen and (max-width: 768px){
     .home-recommend-view{
@@ -184,7 +322,7 @@
       width:100%;
       padding: 0 12px;
     }
-    .recommend-view-title{
+    .recommend-view-title {
       font-size:20px;
       line-height:29px;
     }
@@ -273,8 +411,8 @@
 
 <div class="recommend-view">
   <div class="recommend-text-box">
-    <div class="recommend-view-title">{{section.settings.title}}</div>
-    <div class="recommend-view-text">{{section.settings.text}}</div>
+    <div class="recommend-view-title alifont_bold">{{section.settings.title}}</div>
+    <div class="recommend-view-text1 alifont">{{section.settings.text}}</div>
   </div>
   <div class="products-link">
     <a class="link"  href="{{section.settings.link}}">
@@ -283,6 +421,62 @@
     </a>
   </div>
   <div class="recommend-view-image">
+    <div class="line1">
+        <div class="line1-items">
+            <div
+                class="line1-items-content"
+                style="background-image: url({{ 'home-list-1.png' | asset_url }})"
+            ></div>
+        </div>
+        <div class="line1-items">
+            <div
+                class="line1-items-content"
+                style="background-image: url({{ 'home-list-2.png' | asset_url }})"
+            ></div>
+        </div>
+        <div class="line1-items-2x">
+            <div
+                class="image-content"
+                style="background-image: url({{ 'home-list-3.png' | asset_url }})"
+            >
+            </div>
+            <div class="line1-text-content">
+                <div class="content-title alifont_bold">Sell on your terms</div>
+                <div class="content-description alifont">You choose the products，sale price，and where to sell</div>
+            </div>
+        </div>
+    </div>
+    <div class="line2">
+        <div class="line2-items-2x">
+            <div class="line2-items-2x-content">
+                <div class="line2-text-content">
+                    <div class="content-title alifont_bold">Sell on your terms</div>
+                    <div class="content-description alifont">You choose the products，sale price，and where to sell</div>
+                </div>
+                <div class="line2-image-content">
+                    <div
+                        class="image-content"
+                        style="background-image: url({{ 'home-list-6.png' | asset_url }})"
+                    ></div>
+                    <div
+                        class="image-content"
+                        style="background-image: url({{ 'home-list-7.png' | asset_url }})"
+                    ></div>
+                </div>
+            </div>
+        </div>
+        <div class="line2-items-wrapper">
+            <div
+                class="line2-items"
+                style="background-image: url({{ 'home-list-4.png' | asset_url }})"
+            ></div>
+            <div
+                class="line2-items"
+                style="background-image: url({{ 'home-list-5.png' | asset_url }})"
+            ></div>
+        </div>
+    </div>
+    {% comment %}
     <div class="recommend-view-box flex-wrap">
       {% for block in section.blocks %}
       {% assign pc_resize = block.settings.product_image_pc.width | append: "x" | append: block.settings.product_image_pc.height %}
@@ -292,7 +486,7 @@
           <img src="{{block.settings.product_image_pc | img_url: pc_resize }}"/>
         </div>
       </div>
-      {%elsif block.settings.image_index =="3"  %}
+      {% elsif block.settings.image_index =="3"  %}
       <div class="recommend-top-box-three theme-bg radius" >
         <div class="recommend-img ">
           <img src="{{block.settings.product_image_pc | img_url: pc_resize }}"/>
@@ -305,7 +499,9 @@
       {% endif %}
       {% endfor%}
     </div>
-    <div class="recommend-view-box flex-column">
+    {% endcomment %}
+    {% comment %}
+    <div class="recommend-view-box">
       <div class="recommend-top-box-four theme-bg radius">
         {% for block in section.blocks %}
         {% if block.settings.image_index =="4" %}
@@ -333,6 +529,7 @@
         {% endfor%}
       </div>
     </div>
+    {% endcomment %}
   </div>
 </div>
 

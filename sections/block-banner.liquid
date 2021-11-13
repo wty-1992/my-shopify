@@ -10,14 +10,14 @@
   <div id="{{swiperContainerId}}" class="swiper-container" data-section-id="{{ section.id }}">
      <!-- text -->
     <div class="text-box">
-      <div class="text-title">
+      <div class="text-title alifont_heavy">
         {%for text-item in title-texts%}
           <span class="text-title-item">{{text-item}}</span>
         {% endfor %}
       </div>
       <div class="advantage-details-box">
         {%for advantage-item in advantages%}
-        <div class="advantage-details-item">
+        <div class="advantage-details-item alifont">
           {% include 'icon-hook' %}
           <div class="details-text-box">
             {% assign items = advantage-item | split: "-"  %}
@@ -29,8 +29,8 @@
         {% endfor %}
       </div>
       <div class="botton-box-pc">
-        <a class="botton botton-sell" href="{{section.settings.skip_sell}}"> {{section.settings.sell_text}}</a> 
-        <a class="botton botton-work"  href="{{section.settings.skip_work}}">{{section.settings.work_text}}</a>
+        <a class="botton botton-sell alifont_bold" href="{{section.settings.skip_sell}}"> {{section.settings.sell_text}}</a> 
+        <a class="botton botton-work alifont_bold"  href="{{section.settings.skip_work}}">{{section.settings.work_text}}</a>
       </div>
     </div>
      <!-- banner -->
@@ -122,22 +122,36 @@
 
 <style>
   .template-index main.main-content .index-home-container{
-	max-width:100%;
    }
   .block-banner{
     padding:0px;
     margin:0px;
     margin-top: 2rem;
+    min-height: 300px;
   }
   .template-index .block-banner{margin-top:0;}
   .swiper-container{
    background: #F6F6F9;
+  }
+  .swiper-container::before {
+      positon: relative;
+      display: block;
+      padding-top: 42.7%;
+      content: '';
   }
   .swiper-container .picture{
     display: flex;
     justify-content: center;
     align-items: center;
   }
+  .swiper-wrapper {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      top: 0;
+      right: 0;
+  }
+  
   .template-index  {
     padding-top: 0;
     background:url("{{'vbg.jpg' | asset_url }}") repeat-y center center;  
@@ -158,7 +172,7 @@
     left:15.72%;
     z-index: 10;
   }
-  .text-title{
+  .text-title {
     width:686px;
     font-size:60px;
     line-height:78px;
@@ -179,7 +193,7 @@
    margin-top:40px;
   }
   .botton{
-    padding:14px 60px 15px 60px;
+    padding: 14px 60px;
     border-radius: 4px;
     font-size:20px;
     line-height:24px;
@@ -266,7 +280,7 @@
     }
     .advantage-box{
       width:100%;
-      padding:29px 27px 26px 40px;
+      padding: 30px 26px 26px 40px;
     }
     .advantage-list{
       width:100%;

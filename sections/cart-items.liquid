@@ -1,4 +1,7 @@
 <style>
+  #CartItems {
+  	margin-bottom: 83px;
+  }
 .cart-items-section .before_html{
   display: flex;
   align-items: center;
@@ -10,16 +13,17 @@
   width: 708px; 
   height: 72px;
 }
-.cart-items-section .free-tip {
+.cart-items-section .free_tip {
   height: 56px;
   background: #FEDD00;
-  font-size: 14px;
+  font-size: 16px;
   text-align: center;
   line-height: 56px;
   color: #222222;
 }
-.cart-items-section .free-tip span {
-  color: #F9423A;  
+  
+.cart-items-section .tip_link {
+  color: #F9423A;
 }
 .cart-big-popimg img{
   max-width:50%;
@@ -27,10 +31,6 @@
 @media(max-width:640px){
 }
 {%- comment -%} cart progressbar css {%- endcomment -%}
-.cart-items-section{
-  padding:0px ;
-  margin-bottom:12px;
-}
 .cart-items-section .cart__content{
   text-align: center;
 }
@@ -67,7 +67,6 @@
   display: inline-block; 
   cursor: pointer;
   margin: 0 1rem;
-  font-size: 12px;
   text-transform: uppercase;
 }
 .cart-remove .removeitemcart .no-yes a:nth-child(2n){
@@ -77,16 +76,16 @@
 
 .cart-items-section .cart-table {
   background-color:#fff;
-  padding:1.7rem 1rem 1rem;
   font-family: "OpenSans";
 }
 .cart-items-section .cart-table .cart__row {
+  padding: 28px 50px;
   list-style:none;
   width:100%;
+  height: 178px;
   display:flex;
   justify-content:space-between;
   border-bottom:1px solid #eff1f1;
-  padding:1rem;
   position:relative
 }
 .cart-items-section .cart-table .cart__row .cart__overlay {
@@ -107,13 +106,9 @@
 } 
 .cart-items-section .cart-table .cart__row .cart__meta-info > div {
   padding-bottom:.5rem;
-  font-size:12px;
 }
 .cart-items-section .cart-table .cart__row .cart-item__price {
   font-size:13px;
-}
-.cart-items-section .cart-table .cart__row .cart__cell--total {
-  color:#D32C48
 }
 .cart-items-section .cart-table .cart__row .item_picture img {
   height:10rem
@@ -147,12 +142,11 @@
 }
 .cart-items-section .cart-table .cart__row .left {
   position:relative;
-  flex:0 1 12%;
-  height: 88px;
+  flex:0 1 52%;
   overflow: hidden;
 } 
-.cart-items-section .cart-table .cart__row .left .cart__image__box{    
-  width: 67%;
+.cart-items-section .cart-table .cart__row .left .cart__image__box{
+  max-width: 100%;
   margin: auto;  
 }
 .cart-big-popimg{  
@@ -182,33 +176,44 @@
 .cart-items-section .cart-table .cart__row .right {
   display:flex;
   justify-content:space-between;
-  align-items:flex-start;
-  flex:0 1 40%
+  align-items:center;
+  flex:0 1 32%
 }
 .cart-items-section .cart-table li .middle {
-  font-size:12px;
-  flex:0 1 30%;
-  line-height:1.4rem;
-  padding-right:2rem
+  flex:0 1 16%;
+}
+.cart-items-section .cart-table li .middle .cart__image__box_middle,
+.cart-items-section .cart-table li .middle .cart__image__box_middle img {
+  height: 100%;
 }
 .cart-items-section .cart-table .cart__row .cart-item__original-price {
   color:#000
 }
+.cart-items-section .cart-table .cart__row .qty-content {
+  width: 30%;
+}
 .cart-items-section .cart-table .cart__row .js-qty {
-  height:2.5rem;
-  width:8rem;
   display: flex;
+  max-width: 120px;
+  height: 36px;
   justify-content: center;
   align-items: center;
-  margin-bottom: 1rem;  
+  border: 1px solid #eee;
+  border-radius: 4px;
 }
 .js-qty button {
   width: 8rem;
   min-width: 15%;
   transition: background-color 0.03s ease-in;
+  background: #fff;
+}
+.js-qty button.button-disable {
+  background: #F6F6F9;
+}
+.js-qty button img {
+  width: 12px;
 }
 .js-qty>* {fill: #000;
-  background: #EFEFEF;
   border: none;
   color: #000;
   text-align: center;
@@ -219,17 +224,19 @@
 }
 .js-qty input {
   width: 100%;
+  background: #fff;
+  border-left: 1px solid #eee;
+  border-right: 1px solid #eee;
 }
 .cart-items-section .cart-table .cart__row .cart__item-total {
-  color:#e60044;
   font-size:16px; 
-  font-weight: bold;
 }
 .cart-items-section .cart-table .cart__row .remove{
+  width: 30%;
+  text-align: center;
   cursor:pointer;
 }
 .cart-items-section .cart-table .cart__row.cat_list--title.small--hide .remove .photo-delete{
-  font-weight: 600;
   font-size: 14px;
 }
 .cart-items-section .cart-table .cart__row .remove .photo-delete{
@@ -239,39 +246,25 @@
 }
 .cart-items-section .cart-table .cart__row .right .js-qty>*,
 .cart-items-section .cart-table .cart__row .right .js-qty button:hover, .cart-items-section .cart-table .cart__row .right .js-qty button:focus{
-  background-color: #f7f7f7;
   transition-duration: 0.08s;
-  font-weight: 600;
 }  
 .cart-items-section .cart-table .cart__row.cat_list--title{ 
   display: flex;
   align-items: center;
-  background: #f8f8f8;
+  background: #F6F6F9;
   width: 100%;
+  height: 56px;
   border-bottom: none;
-  padding: 6px 14px;
-  margin-bottom: 1rem;
-  color: #333;
-  font-weight: 600;
   text-transform: uppercase;
-} 
-.cart-items-section .cart-table .cart__row.cat_list--title .middle,.cart-items-section .cart-table .cart__row.cat_list--title .cart-item__price{
-  font-size: 12px;
-  color: #333;
 }
 .cart-items-section .cart-table li.cart__row.cat_list--title.small--hide .js-qty{
   margin-bottom: 0;
-  font-size: 12px;
-  color: #333;
   height:auto;
   transform: translateX(-35px);
 }
-.cart-items-section .cart-table .cart__row.cat_list--title .cart__cell--total{
-  font-size: 12px;
-  color: #333;
-}
 .cart-items-section .cart-table .cart__row .cart__cell--total {
-  color: initial;
+  width: 30%;
+  text-align: center;
 }  
 .cart-items-section  .cart-table .cart__row.cat_list--title .right{ 
   align-items: center;
@@ -279,6 +272,98 @@
 /* .cart-items-section  .cart-table .cart__row .left .cart__image__box img {
   max-height: 85px;
 } */
+
+  .cart__row .row_product_content {
+  	display: flex;
+  }
+  .cart__row .row_product_content .left_image {
+    margin-right: 14px;
+  	height: 100%;
+  }
+  .cart__row .row_product_content .left_image img {
+  	height: 100%;
+  }
+  .cart__row .row_product_content .left_des {
+  	width: 50%;
+  }
+  .cart__row .row_product_content .left_des .des_title {
+    height: 48px;
+  	font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 7px;
+    display: -webkit-box;
+    overflow: hidden;  
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  .cart__row .row_product_content .left_des .des_options {
+    height:24x;
+    font-size: 14px;
+    line-height: 24px;
+    margin-bottom: 5px;
+  }
+  .cart__row .row_product_content .left_des .des_price {
+    height:24x;
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .cart_title {
+  	display: flex;
+    align-items: center;
+    height: 56px;
+    margin: 56px auto 36px;
+  }
+  .cart_title .title_left {
+    width: 50%;
+    height: 48px;
+    line-height: 48px;
+  	font-size: 32px;
+  }
+  .cart_title .title_right {
+    display: flex;
+    align-items: center;
+    padding-left: 14px;
+  	width: 50%;
+    height: 100%;
+    font-size: 16px;
+  }
+  .cart_title .title_right .right_subtotal {
+  	width: 31.7%;
+  }
+  .cart_title .title_right .right_subtotal .price_red {
+  	font-size: 24px;
+    color: #F9423A;
+  }
+  .cart_title .title_right a,
+  .cart_title .title_right button {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+  }
+  .cart_title .title_right .right_button_product {
+    margin-right: 15px;
+  	width: 27.7%;
+    color: #F9423A;
+   	border: 2px solid #F9423A;
+    border-radius: 4px;
+  }
+  .cart_title .title_right form {
+    display: flex;
+    flex: 1;
+    margin-right: 1.5px;
+  	height: 100%;
+  }
+  .cart_title .title_right .right_button_checkout {
+    width: 100%;
+    background: #F9423A;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+  }
+ 
 @media(max-width:1024px){    
   .cart-items-section{
     padding:0 1rem 
@@ -353,7 +438,7 @@
   top:0;
   padding:1rem;
   right:.5rem;
-} 
+}
 
 }
 .pc-li-top{
@@ -383,7 +468,6 @@
 }
 .pc-li-top .j-left .l-top{
   color: #000;
-  font-weight: 600;
 }
 .pc-li-top .l-right{
   color: #0a0a0a;
@@ -399,11 +483,9 @@
   border-top: 1px solid #e9e9e9;
   height: 50px;
   line-height: 50px;
-  font-size: 12px;
   color: #a2a2a2;
   padding: 0 15px;
   cursor: pointer;
-  font-weight: 600;
   position: relative;
   display: flex;
 }
@@ -489,7 +571,6 @@
 }
 .matchProduct .product-card__name {
   height: 24px;
-  font-size: 12px;
   line-height: 1;
   color: #000;
   text-align: center;
@@ -500,7 +581,6 @@
   padding: 6px 0;
   border-radius: 0;
   letter-spacing: 0;
-  font-size: 12px;
   text-transform: capitalize;
 }
 .b-title {
@@ -512,7 +592,6 @@
   line-height: 80px;
   z-index: 1;
   font-size: 16px;
-  font-weight: 600;
   text-align: center;
 }
 @media(max-width:768px){
@@ -573,24 +652,41 @@
   <div class="before_html">
     <img src="{{ 'step.png' | asset_url }}" />
   </div>
-  <div class="free-tip">
-    Spend $46.05 more to enjoy FREE SHIPPING! | Want to enjoy free shipping?  <span>Click here to make it!</span>
+  <div class="free_tip">
+    Spend <span class="tip_bold">$46.05</span> more to enjoy <span class="tip_bold">FREE SHIPPING!</span> | Want to enjoy free shipping?  <span class="tip_link alifont_bold">Click here to make it!</span>
   </div>
-  <div class="cart__content">{{section.settings.content}}</div>
+  
   {% raw %}
   {{!--  cart item  area  --}}
-  <ul id="CartTable" class="cart-table">
-    <li class="cart__row cat_list--title small--hide"> 
+  <div class="cart_title mm-page-limited alifont_bold">
+    <div class="title_left">My cart({{count}})</div>
+    <div class="title_right">
+      <div class="right_subtotal">SUBTOTAL <span class="price_red">{{subtotal}}</span></div>
+      <a class="right_button_product" href="/pages/normal">Add products</a>
+      <form action="/cart" method="post" novalidate class="cart" onsubmit="Mask.show()">
+        <input type="hidden" id="CartUtm" name="attributes[utm]" value="">
+        <script>
+          if($.cookie('utm')) {
+            $('#CartUtm').val($.cookie('utm'));
+          }
+        </script>
+        <button type="submit" class="right_button_checkout" name="checkout">Continue to checkout</button>
+      </form>
+      
+    </div>
+  </div>
+  <ul id="CartTable" class="cart-table cart mm-page-limited">
+    <li class="cart__row cat_list--title small--hide alifont_bold"> 
         <div class="left">
-          <div class="cart__image__box"> </div>
+          <div class="cart__image__box">ITEM</div>
         </div>
-        <div class="middle">{% endraw %}{{ 'cart.items.product_name' | t }}{% raw %}</div>
+        <div class="middle">{% endraw %}ORGINAL PHOTO{% raw %}</div>
         <div class="right">  
-          <div class="cart-item__price cart-item__original-price">{% endraw %}{{ 'cart.items.unit_price' | t }}{% raw %}</div>
-          <div class="js-qty">{% endraw %}{{ 'cart.items.qty' | t }}{% raw %}</div>
-          <div class="cart__cell--total">{% endraw %}{{ 'cart.items.subtotal' | t }}{% raw %}</div>
+          <div class="qty-content">{% endraw %}QUANTITY{% raw %}</div>
+          <div class="cart__cell--total">{% endraw %}PRICE{% raw %}</div>
+          <a class="remove" onclick="Dialog.open('#cart__clear')"><img src="{% endraw %}{{ 'delete.svg' | asset_url }}{% raw %}" /></a>
         </div>  
-        <a class="remove" onclick="Dialog.open('#cart__clear')"><i class="photofont icon photo-delete"></i></a>
+        
         <div class="cart-remove" id="cart__clear"> 
           <button type="button" class="close-new" data-action="close">
             <i class="photofont icon photo-close"></i>
@@ -608,10 +704,23 @@
 
     {{#items}}
     <li class="cart__row"  data-line="{{ line }}">
-        <div class="left">
-          <div class="cart__image__box  cart__image-{{ line }}" onclick="alertImageBox(this)">
-            <i class="photofont icon photo-unie038 zoomimg"></i>            
-            {{#if cropImageUrl}} 
+        <div class="left row_product_content">
+          <div class="left_image">
+          	<img src="{{productImg}}" alt="{{ product_title }}" />
+          </div>
+		  <div class="left_des">
+            <div class="des_title alifont_bold">{{{ product_title }}}</div>
+            <div class="des_options">{{product_options_info}}</div>
+            <div class="des_price" data-money="{{line_price}}">${{sellingPrice}}</div>
+          </div>
+          
+        </div>
+        <div class="middle">
+          
+          <div class="cart__image__box_middle  cart__image-{{ line }}" onclick="alertImageBox(this)">
+            {{#if sunziCartImg}} 
+              <img class="cart__image lazyloaded" src="{{sunziCartImg}}" alt="{{ product_title }}"> 
+            {{else if cropImageUrl}} 
               <img class="cart__image lazyloaded" src="{{cropImageUrl}}" data-engraving="{{engravingCrop}}" alt="{{ product_title }}"> 
             {{else if diamondImage}}  
               <img class="cart__image lazyloaded" src="{{diamondImage}}" alt="{{ product_title }}">
@@ -630,33 +739,9 @@
             {{/if}} 
           </div>
         </div>
-        <div class="middle">
-          {{#if card_message}}
-          	<a class="item_title">{{{ product_title }}}</a> 
-          {{else}}
-          	<a class="item_title" href="{{ url }}">{{{ product_title }}}</a> 
-          {{/if}}
-          <div class="cart__meta-info">
-              <div class="options_info">{{product_options_info}}</div>
-              {{#if alphaText}}
-                <div class="custom_text">({% endraw %}{{'cart.items.text' | t }}{% raw %}: {{alphaText}})</div>
-              {{/if}}
-              {{#if engravingText}}  
-                <div class="custom_text">({% endraw %}{{'cart.items.text' | t }}{% raw %}: {{engravingText}})</div>
-              {{/if}}
-              {{#if card_message}}
-                <div class="custom_text">({% endraw %}{{'cart.items.text' | t }}{% raw %}: {{card_message}})</div>
-              {{/if}}
-          </div>
-          {{#if discountsApplied}}
-            {{#each discounts}}
-            	<div class="cart-item__price cart-item__discount cart__item-total">{{ this.title }}</div>
-            {{/each}}
-          {{/if}}
-        </div>
-        <div class="right">  
-          <div class="cart-item__price cart-item__original-price"><span data-money="{{original_price}}"></span></div>
-          <div class="js-qty">
+        <div class="right">
+          <div class="qty-content">
+            <div class="js-qty">
               {{#if isvip}}
               	<!--<button type="button" class="js-qty__adjust--minus" onclick="Cart.change({line:{{line}},quantity:{{ minus }} })"><i class="photofont icon photo-move"></i></button>-->
               	<input class="js-qty__input" type="text" data-action="input" value="{{ quantity }}" min="1" pattern="[0-9]*" disabled>
@@ -671,55 +756,66 @@
             	<input class="js-qty__input" type="text" data-action="input" value="1 pcs" min="1" pattern="[0-9]*" disabled>
               	<!--<button type="button" class="js-qty__adjust--plus" onclick="Cart.change({line:{{line}},quantity:{{ plus }} })" disabled="disabled"><i class="photofont icon photo-add"></i></button>-->
               {{else if limitPurchase}}  
-            	<button type="button" class="js-qty__adjust--minus" onclick="Cart.change({line:{{line}},quantity:{{ minus }} })"><i class="photofont icon photo-move"></i></button>
+            	<button type="button" class="js-qty__adjust--minus" onclick="Cart.change({line:{{line}},quantity:{{ minus }} })"><img src="{% endraw %}{{ 'minus.svg' | asset_url }}{% raw %}" alt=""></button>
                 <input class="js-qty__input" type="text" data-action="input" value="{{ quantity }}" readonly>
-                <button type="button" class="js-qty__adjust--plus" style="{{qtyPlusStyle}}" onclick="limitCartChange({line:{{line}},quantity:{{ plus }},mask:'#{{@root.sectionId}}' },{{product_id}})"><i class="photofont icon photo-add"></i></button>
+                <button type="button" class="js-qty__adjust--plus" style="{{qtyPlusStyle}}" onclick="limitCartChange({line:{{line}},quantity:{{ plus }},mask:'#{{@root.sectionId}}' },{{product_id}})"><img src="{% endraw %}{{ 'plus.svg' | asset_url }}{% raw %}" alt=""></button>
               {{else}}
-                <button type="button" class="js-qty__adjust--minus" onclick="Cart.change({line:{{line}},quantity:{{ minus }} })"><i class="photofont icon photo-move"></i></button>
+              	{{#if quantityOne }}
+                <button type="button" class="js-qty__adjust--minus button-disable" onclick="Cart.change({line:{{line}},quantity:{{ minus }} })">
+                  <img src="{% endraw %}{{ 'minus-no.svg' | asset_url }}{% raw %}" alt="">
+                </button>
+              	{{else}}
+              	<button type="button" class="js-qty__adjust--minus" onclick="Cart.change({line:{{line}},quantity:{{ minus }} })">
+                  <img src="{% endraw %}{{ 'minus.svg' | asset_url }}{% raw %}" alt="">
+                </button>
+              	{{/if}}
                 <input class="js-qty__input" type="text" data-action="input" value="{{ quantity }}" min="0" pattern="[0-9]*" onblur="Cart.change({line:{{line}},quantity:this.value});">
-                <button type="button" class="js-qty__adjust--plus" onclick="Cart.change({line:{{line}},quantity:{{ plus }} })"><i class="photofont icon photo-add"></i></button>
+                <button type="button" class="js-qty__adjust--plus" onclick="Cart.change({line:{{line}},quantity:{{ plus }} })"><img src="{% endraw %}{{ 'plus.svg' | asset_url }}{% raw %}" alt=""></button>
           	  {{/if}}
           </div>
+          </div>
+          
           <div class="cart__cell--total">
             {{#if discountsApplied}}
               <div><s class="cart-item__price cart-item__original-price"><span data-money="{{original_line_price}}"></span></s></div>
-              <div class="cart-item__price cart__item-total"><span data-money="{{line_price}}"></span></div>
+              <div class="cart-item__price cart__item-total alifont_bold"><span data-money="{{line_price}}"></span></div>
             {{else}}
-              <div class="cart-item__price cart__item-total"><span data-money="{{line_price}}"></span></div>
+              <div class="cart-item__price cart__item-total alifont_bold"><span data-money="{{line_price}}"></span></div>
             {{/if}}
           </div>
-        </div>
-        {{#if isvip}}
-          <a class="remove" style="width:16px"></a>
-          <div class="cart-remove" id="cart__remove_1"> 
-          <div class="cart-remove__remove" id="tempVip-{{ tempVip }}" data-line="{{line}}"></div>
-        {{else if isinsurance}}  
-          <a class="remove" style="width:16px"></a>
-          <div class="cart-remove" id="cart__remove_1"> 
-          <div class="cart-remove__remove" id="tempInsurance-{{ tempInsurance }}" data-line="{{line}}"></div>
-        {{else}}
-        <a class="remove" onclick="Dialog.open('#cart__remove_{{ line }}')"><i class="photofont icon photo-delete"></i></a>
-        <div class="cart-remove" id="cart__remove_{{ line }}"> 
-        <div class="cart-remove__remove">
-          <button type="button" class="close-new" data-action="close">
-            <i class="photofont icon photo-close"></i>
-          </button>
-          <div class="removeitemcart">
-            <p>{% endraw %}{{'cart.items.delete_the_item' | t }}{% raw %}</p>
-            <div class="no-yes"> 
-                <a class="cursor-p" data-action="close">{% endraw %}{{'cart.items.no' | t }}{% raw %}</a>
-                {{#if tempVip}}
-              	<a class="cursor-p" onclick="Cart.change({line:{{line}},tempvip:{{tempVip}},quantity:0}).then(cart => {Dialog.close()})">{% endraw %}{{'cart.items.yes' | t }}{% raw %}</a> 
-              	{{else if tempInsurance}}  
-                <a class="cursor-p" onclick="Cart.change({line:{{line}},tempinsurance:{{tempInsurance}},quantity:0}).then(cart => {Dialog.close()})">{% endraw %}{{'cart.items.yes' | t }}{% raw %}</a> 
-                {{else}}
-                <a class="cursor-p" onclick="doChangeRule({line:{{line}},quantity:0},{{variant_id}})">{% endraw %}{{'cart.items.yes' | t }}{% raw %}</a> 
-                {{/if}}
+          {{#if isvip}}
+            <a class="remove" style="width:16px"></a>
+            <div class="cart-remove" id="cart__remove_1"> 
+            <div class="cart-remove__remove" id="tempVip-{{ tempVip }}" data-line="{{line}}"></div>
+          {{else if isinsurance}}  
+            <a class="remove" style="width:16px"></a>
+            <div class="cart-remove" id="cart__remove_1"> 
+            <div class="cart-remove__remove" id="tempInsurance-{{ tempInsurance }}" data-line="{{line}}"></div>
+          {{else}}
+          <a class="remove" onclick="Dialog.open('#cart__remove_{{ line }}')"><img src="{% endraw %}{{ 'delete.svg' | asset_url }}{% raw %}" /></a>
+          <div class="cart-remove" id="cart__remove_{{ line }}"> 
+          <div class="cart-remove__remove">
+            <button type="button" class="close-new" data-action="close">
+              <i class="photofont icon photo-close"></i>
+            </button>
+            <div class="removeitemcart">
+              <p>{% endraw %}{{'cart.items.delete_the_item' | t }}{% raw %}</p>
+              <div class="no-yes"> 
+                  <a class="cursor-p" data-action="close">{% endraw %}{{'cart.items.no' | t }}{% raw %}</a>
+                  {{#if tempVip}}
+                  <a class="cursor-p" onclick="Cart.change({line:{{line}},tempvip:{{tempVip}},quantity:0}).then(cart => {Dialog.close()})">{% endraw %}{{'cart.items.yes' | t }}{% raw %}</a> 
+                  {{else if tempInsurance}}  
+                  <a class="cursor-p" onclick="Cart.change({line:{{line}},tempinsurance:{{tempInsurance}},quantity:0}).then(cart => {Dialog.close()})">{% endraw %}{{'cart.items.yes' | t }}{% raw %}</a> 
+                  {{else}}
+                  <a class="cursor-p" onclick="doChangeRule({line:{{line}},quantity:0},{{variant_id}})">{% endraw %}{{'cart.items.yes' | t }}{% raw %}</a> 
+                  {{/if}}
+              </div>
             </div>
           </div>
+          </div>
+          {{/if}}
         </div>
-        </div>
-        {{/if}}
+        
       </li>       
     {{/items}}
   </ul> 
@@ -876,6 +972,9 @@ Listener.on([ Listener.cart.refresh ], function(event, cart) {
   var giveaway = false;
   var limitPurchase = false;//是否限购
   var qtyPlusStyle = '';
+  var sunziCartImg = false; // sunzi加车效果图
+  var quantityOne = false; // 数量是否为1
+
   
   // Add each item to our handlebars.js data
   $.each(cart.items, function(index, cartItem) {
@@ -894,6 +993,8 @@ Listener.on([ Listener.cart.refresh ], function(event, cart) {
     giveaway = false;
     limitPurchase = false;//是否限购
     qtyPlusStyle = '';
+    sunziCartImg = false;
+    quantityOne = false;
     if(JSON.stringify(purchaseObj) != '{}'){
       if(typeof purchaseObj[cartItem.product_id] != 'undefined'){
         limitPurchase = true;
@@ -904,7 +1005,6 @@ Listener.on([ Listener.cart.refresh ], function(event, cart) {
         }
       }
     }
-    console.log(qtyPlusStyle);
     /* Hack to get product image thumbnail
       *   - If image is not null
       *     - Remove file extension, add 240x240, and re-add extension
@@ -919,6 +1019,9 @@ Listener.on([ Listener.cart.refresh ], function(event, cart) {
         .replace(/(\.[^.]*)$/, '_240x240$1')
         .replace('http:', '');
     }
+    if(cartItem.quantity == 1) {
+      quantityOne = true;
+    }
 
     if (cartItem.properties !== null) {
       if (Array.isArray(cartItem.properties) == false){
@@ -931,8 +1034,6 @@ Listener.on([ Listener.cart.refresh ], function(event, cart) {
         }
         cartItem.properties = properties;
       }
- 	  console.log(cartItem.properties);
-      console.log(cartItem);
       $.each(cartItem.properties, function(index, item) {
         var key = item.name;
         var value = item.value; 
@@ -1010,6 +1111,9 @@ Listener.on([ Listener.cart.refresh ], function(event, cart) {
         if (key == 'giveaway'){
           giveaway = value;
         }
+        if (key == '_sunzi_cart'){
+          value && (sunziCartImg = JSON.parse(value).image[0]);
+        }
       });
     }
     var optionsInfo = null;
@@ -1060,15 +1164,20 @@ Listener.on([ Listener.cart.refresh ], function(event, cart) {
       giveaway: giveaway,
       limitPurchase:limitPurchase,
       product_id:cartItem.product_id,
-      qtyPlusStyle:qtyPlusStyle
+      qtyPlusStyle:qtyPlusStyle,
+      sellingPrice: cartItem.line_price / 100,
+      sunziCartImg: sunziCartImg,
+      quantityOne: quantityOne
+      
     });
     items.push(cartItem);
   });
-
   var data = {
     //overage: cart.total_price - cart.total_discount - parseInt({{ settings.free_shipping_threshold }}),
     overage: cart.total_price - parseInt({{ settings.free_shipping_threshold }}),
-    items: items
+    items: items,
+    count: cart.item_count,
+    subtotal: `${_sunzi_global_data.shop.currencySymbol}${cart.items_subtotal_price  / 100}`
   };
   //修复弹层数据改变 refresh后数据不变问题 by johnny 20210101
   $('.tingle-modal .tingle-modal-box .tingle-modal-box__content').html("");
@@ -1119,7 +1228,7 @@ $(function(){
 {% schema %}
 {
   "name": "购物车 - 列表设置",
-  "class": "cart-items-section page-width",
+  "class": "cart-items-section",
   "settings": [
     {
       "type": "html",

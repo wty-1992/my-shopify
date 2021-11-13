@@ -1,0 +1,622 @@
+<style>
+	
+  .header-mm {
+  	width: 100%;
+    height: 70px;
+    background: white;
+    position: fixed;
+    z-index: 999;
+    color: #222;
+  }
+  .header-mm-content {
+    height: 100%;
+    padding: 0 27px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .header-mm-mobile,
+  .mm-mobile-submenu {
+    display: none;
+  }
+  .mm-logo {
+  	text-indent: -9999em;
+    width: 173px;
+		height: 40px;
+    flex-shrink: 0;
+  }
+  .mm-logo img {
+    display: block;
+  }
+  .mm-customer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .mm-login-btn,
+  .mm-register-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+  }
+  .mm-register-btn:hover {
+    color: white;
+  }
+  .mm-nav {
+    height: 100%;
+    flex: 1;
+    padding-left: 30px;
+  }
+  .mm-nav ul {
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .mm-nav ul li {
+    height: 100%;
+    margin-left: 30px;
+  }
+  .mm-nav ul li a {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    color: #222;
+  }
+  .mm-nav ul li a:hover,
+  .mm-nav ul li a.active {
+    color: #F9423A;
+  }
+  .mm-nav ul li a .mm-icon_down svg path {
+    fill: #928FA5;
+  }
+  .mm-nav ul li a:hover .mm-icon_down svg path,
+  .mm-nav ul li a.active .mm-icon_down svg path {
+    fill: #F9423A;
+  }
+  .mm-icon_down {
+    margin-left: 4px;
+  }
+  .mm-submenu {
+    margin: 0 auto;
+    padding: 0 230px;
+    position: absolute;
+    left: 50%;
+    top: 70px;
+    transform: translateX(-50%);
+    z-index: 99;
+    display: none;
+  }
+  .mm-submenu.active {
+    display: block;
+  }
+  .mm-layout {
+    background-color: white;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 1px 1px rgba(106,102,136,0.08), 0 4px 16px rgba(183,183,192,0.3);
+    padding: 28px;
+  }
+  .mm-layout-collection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 36px;
+  }
+  .mm-layout-collection a {
+    flex: 1;
+    margin-left: 12px;
+    position: relative;
+    z-index: 0;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .mm-layout-collection a:first-child {
+    margin-left: 0;
+  }
+  .mm-layout-collection a span {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    background-color: rgba(34, 34, 34, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    color: white;
+    transition: all 0.3s cubic-bezier(0.33, 1, 0.68, 1);
+    text-align: center;
+  }
+  .mm-layout-collection a:hover span {
+    background-color: #F9423A;
+  }
+  .mm-layout-collection a img {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .mm-layout-category {
+    display: flex;
+  }
+  .mm-category {
+    padding: 0 32px;
+    border-right: 1px solid rgba(34, 34, 34, 0.08);
+    flex-shrink: 0;
+  }
+  .mm-category:first-child {
+    padding-left: 0;
+  }
+  .mm-category:last-child {
+    padding-right: 0;
+    border-right: none;
+  }
+  .mm-category h5 {
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    font-size: 14px;
+    color: #222;
+    line-height: 36px;
+  }
+  .mm-category h5 a:hover {
+    color: #F9423A;
+  }
+  .mm-category-list {
+    width: max-content;
+    display: flex;
+  }
+  .mm-category ul {
+    margin-right: 30px;
+  }
+  .mm-category ul li a {
+    line-height: 36px;
+    font-size: 14px;
+    color: #222;
+  }
+  .mm-category ul li a:hover {
+    color: #F9423A;
+  }
+  .mm-layout-product {
+    width: 100%;
+    margin-top: 36px;
+  }
+  .mm-layout-product h5 {
+    font-size: 14px;
+    color: #222;
+    text-align: left;
+    line-height: 36px;
+  }
+  .mm-layout-product ul {
+    display: flex;
+    margin-top: 8px;
+  }
+  .mm-layout-product ul li {
+    width: 122px;
+    flex-shrink: 0;
+    margin-right: 28px;
+  }
+  .mm-layout-product ul li img {
+    width: 100%;
+    display: block;
+  }
+  .mm-layout-product ul li span {
+    color: #0EBA9A;
+    padding: 5px 0;
+    display: block;
+    font-size: 14px;
+  }
+  .mm-layout-product ul li p {
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 0;
+    color: #222;
+    line-height: 24px;
+  }
+
+  @media screen and (max-width: 1426px) {
+    .mm-submenu {
+      padding: 0 27px;
+    }
+  }
+  @media screen and (max-width: 1000px) {
+    .header-mm-content {
+      display: none;
+    }
+    .header-mm {
+      height: 56px;
+    }
+    .header-mm-mobile {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      height: 60px;
+    }
+    .mm-mobile-menu {
+      width: 56px;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .mm-mobile-logo {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+    }
+    .mm-mobile-logo img {
+      width: 100%;
+      display: block;
+    }
+    .mm-customer {
+      flex: 1;
+      margin-right: 10px;
+    }
+    .mm-mobile-submenu {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 1010;
+      display: block;
+    }
+    .mm-mobile-submenu .mm-bg {
+      width: 100%;
+      height: 100%;
+      background-color: rgba(34, 34, 34, 0.32);
+      position: relative;
+      z-index: 1;
+    }
+    .mm-mobile-nav {
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 2;
+      width: 74.5%;
+      height: 100%;
+      background-color: white;
+    }
+    .mm-mobile-header {
+      width: 100%;
+      height: 60px;
+      display: flex;
+      box-shadow: 0 -1px 0 rgba(34, 34, 34, 0.12) inset;
+    }
+    .mm-mobile-close {
+      width: 56px;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .mm-mobile-footer {
+      width: 100%;
+      height: 60px;
+      box-shadow: 0 1px 0 rgba(34, 34, 34, 0.12) inset;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+    }
+    .mm-mobile-footer a {
+      flex: 1;
+      height: 36px;
+      text-align: center;
+      font-size: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 5px;
+    }
+    .mm-mobile-footer a:first-child {
+      margin-left: 0;
+    }
+    .mm-mobile-footer a:last-child {
+      margin-right: 0;
+    }
+    .mm-mobile-content {
+      padding: 14px 20px;
+      width: 100%;
+      height: calc(100% - 120px);
+      overflow-x: hidden;
+      overflow-y: auto;
+      color: #222;
+    }
+    .mm-mobile-content .mm-category-first {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 48px;
+	  font-size: 16px;
+      line-height: 48px;
+    }
+    .mm-mobile-content .mm-category-first img {
+      width: 32px;
+    }
+    .mm-mobile-content .mm-category-second {
+/* 	  display: none; */
+    }
+  }
+</style>
+
+<!-- header -->
+<header class="header-mm">
+  <div class="header-mm-content m_col_16">
+    <!-- logo -->
+    <h1 class="mm-logo h_reset">
+      <a href="{{ shop.url }}">
+        <img src="https://cdn.shopify.com/s/files/1/0372/6897/9848/files/red-lr.svg?v=1636433703" alt="{{ shop.name }}"/>
+      </a>
+    </h1>
+    <!-- nav -->
+    <nav class="mm-nav" role="navigation">
+      <ul>
+        {% for link in linklists.main-menu.links %}
+          <li>
+            {% if link.links != blank %}
+              <a href="{{ link.url }}" id="showAll">
+                <span class="alifont">{{ link.title }}</span>
+                <i class="mm-icon mm-icon-small mm-icon_down">{% include 'icon-arrow-full-down' %}</i>
+              </a>
+            {% else %}
+              <a href="{{ link.url }}">
+                <span class="alifont">{{ link.title }}</span>
+              </a>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+    <!-- customer -->
+    <div class="mm-customer">
+      {% if customer %}
+
+      {% else %}
+      <a href="/account/login" class="mm-btn mm-btn-default alifont_bold mm-login-btn">Log in</a>
+      <a href="/account/register" class="mm-btn mm-btn-primary alifont_bold mm-register-btn">Sign up</a>
+      {% endif %}
+    </div>
+  </div>
+  <div class="header-mm-mobile">
+    <a href="javascript:void(0);" class="mm-mobile-menu">
+      <i class="mm-icon">{% include 'icon-mm-menu' %}</i>
+    </a>
+    <a href="/" class="mm-mobile-logo">
+      <img src="https://cdn.shopify.com/s/files/1/0372/6897/9848/files/red-icon.svg?v=1636475424" alt="{{ shop.name }}"/>
+    </a>
+    <!-- customer -->
+    <div class="mm-customer">
+      {% if customer %}
+
+      {% else %}
+      <a href="/account/login" class="mm-btn mm-btn-default alifont_bold mm-login-btn">Log in</a>
+      <a href="/account/register" class="mm-btn mm-btn-primary alifont_bold mm-register-btn">Sign up</a>
+      {% endif %}
+    </div>
+  </div>
+</header>
+
+<!-- submenu -->
+<div class="mm-submenu m_col_16">
+  <div id="menu-layout" class="mm-layout">
+    <!-- collection -->
+    <div class="mm-layout-collection">
+      {% for block in section.blocks %}
+        {% if block.settings.image and block.settings.url %}
+          <a href="{{ block.settings.url }}">
+            {% if block.settings.title != blank %}
+            <span class="alifont_bold">{{ block.settings.title }}</span>
+            {% endif %}
+            <img src="{{ block.settings.image | img_url: '280x' }}"/>
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+    <!-- menu -->
+    {% for link in linklists.main-menu.links %}
+    {% if link.links != blank %}
+      <div class="mm-layout-category">
+      {% for item in link.links %}
+        <div class="mm-category">
+          <h5>
+            <a href="{{ item.url }}" class="alifont_bold">{{ item.title }}</a>
+          </h5>
+          {% if item.links != blank %}
+          <div class="mm-category-list">
+            {% assign count = 0 %}
+            {% for it in item.links %}
+            {% assign count = count | plus: 1 %}
+              {% if count == 1 %}<ul>{% endif %}
+              <li>
+                <a href="{{ it.url }}" class="alifont">{{ it.title }}</a>
+              </li>
+              {% if count == 4 %}
+                {% if item.links.count > 4 %}
+                  </ul><ul>
+                {% else %}
+                  </ul>
+                {% endif %}
+                {% assign count = 0 %}
+              {% endif %}
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+      </div>
+    {% endif %}
+    {% endfor %}
+    <!-- new products -->
+    <div class="mm-layout-product">
+      {% if section.settings.title != blank %}
+      <h5 class="alifont_bold h_reset">{{ section.settings.title }}</h5>
+      {% endif %}
+      {% if section.settings.collection != blank %}
+      <ul>
+        {% assign col = collections[section.settings.collection] %}
+        {% for pd in col.products limit: 5 %}
+        <li>
+          <a href="{{ pd.url }}">
+            <img src="{{ pd.featured_image | img_url: '240x' }}" alt="{{ pd.title }}"/>
+            <span class="alifont_bold">NEW</span>
+            <p class="alifont">{{ pd.title }}</p>
+            <p class="alifont_bold">From {{ pd.price | money_with_currency }}</p>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- submenu mobile -->
+<div class="mm-mobile-submenu">
+  <div class="mm-mobile-nav">
+    <div class="mm-mobile-header">
+      <a href="javascript:void(0);" class="mm-mobile-close mm-event-close">
+        <i class="mm-icon mm-icon-large">{% include 'icon-mm-close' %}</i>
+      </a>
+    </div>
+    <div class="mm-mobile-content">
+      {% for link in linklists.main-menu.links %}
+      <div class="mm-category-first">
+        <span class="alifont_bold">{{ link.title }}</span>
+        <img src="{{ 'next-bottom-light.svg' | asset_url }}" />
+      </div>
+      <div class="mm-category-second">
+        {% for item in link.links %}
+        <div class="mm-category">
+          <h5>
+            <a href="{{ item.url }}" class="alifont_bold">{{ item.title }}</a>
+          </h5>
+          {% if item.links != blank %}
+          <div class="mm-category-list">
+            {% assign count = 0 %}
+            {% for it in item.links %}
+            {% assign count = count | plus: 1 %}
+            {% if count == 1 %}<ul>{% endif %}
+            <li>
+              <a href="{{ it.url }}" class="alifont">{{ it.title }}</a>
+            </li>
+            {% if count == 4 %}
+            {% if item.links.count > 4 %}
+            </ul><ul>
+            {% else %}
+            </ul>
+            {% endif %}
+            {% assign count = 0 %}
+            {% endif %}
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      {% endfor %}
+      
+    </div>
+    <div class="mm-mobile-footer">
+      {% if customer %}
+
+      {% else %}
+      <a href="/account/login" class="mm-btn mm-btn-default alifont_bold">Log in</a>
+      <a href="/account/register" class="mm-btn mm-btn-primary alifont_bold">Sign up</a>
+      {% endif %}
+    </div>
+  </div>
+  <div class="mm-bg"></div>
+</div>
+
+<script defer>
+  var t;
+  $('#showAll').mouseenter(()=>{
+    $('#showAll').addClass('active');
+    $('.mm-submenu').addClass('active');
+    // console.log('go');
+  });
+  $('#showAll').mouseleave(()=>{
+    clearTimeout(t);
+    t = setTimeout(() => {
+      if ($('#menu-layout:hover').length != 0) {
+        // console.log('no');
+      } else {
+        $('#showAll').removeClass('active');
+        $('.mm-submenu').removeClass('active');
+        // console.log('close');
+      }
+    }, 300);
+  });
+  $('#menu-layout').mouseleave(()=>{
+    clearTimeout(t);
+    t = setTimeout(() => {
+      if ($('#showAll:hover').length != 0) {
+        // console.log('no');
+      } else {
+        $('#showAll').removeClass('active');
+        $('.mm-submenu').removeClass('active');
+        // console.log('close');
+      }
+    }, 300);
+  });
+</script>
+
+{% schema %}
+  {
+    "name": "Header settings",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Collection title"
+      },
+      {
+        "type": "collection",
+        "id": "collection",
+        "label": "Choose a collection"
+      }
+    ],
+    "blocks": [
+      {
+        "name": "Collection",
+        "type": "slide",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "url",
+            "id": "url",
+            "label": "Link"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "name"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

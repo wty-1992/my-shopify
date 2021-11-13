@@ -5,12 +5,11 @@
 <style >
   .home-make-money{
     width:100%;
-    background:#FFFFFF; 
-    padding-bottom:112px;
+    background:#FFFFFF;
+    padding-bottom: 120px;
   }
   .make-money-box{
     width:100%
-
   }
   .make-money-text{
     display:flex;
@@ -21,8 +20,15 @@
     width:100%;
     background:#EC463E;
   }
+  .money-boxtitle-title {
+      font-size: 44px;
+      line-height: 60px;
+      color:#ffff;
+  }
   .money-boxtitle-text{
     color:#ffff;
+    font-size: 20px;
+    line-height: 26px;
   }
 
   .calculation-money-box{
@@ -33,7 +39,6 @@
     margin-top:-113px;
   }
   .money-box{
-    width:37.91%;
     display:flex;
     justify-content: center;
     align-items: center;
@@ -64,18 +69,20 @@
     width:40.65%;
   }
   .calculation-text{
-    width:100%; 
+    width: 100%; 
     display:flex;
     justify-content: center;
     align-items: center;
-    margin-bottom:14px;
+    margin-bottom: 14px;
   }
   .explain-box{
     text-align: right;
-    flex:1;
+    flex: 1;
     margin-right:12px;
     font-size:16px;
     line-height:32px;
+    font-family: alibaba-sans, sans-serif;
+    font-style: normal;
   }
   .price-box{
     font-size:20px;
@@ -83,8 +90,10 @@
     margin-right:5px;
   }
   .price-money-box{
-  font-size:28px;
+    font-size:28px;
     line-height:28px;
+    font-weight: 700;
+    font-family: Technology;
   }
   .minus-sign{
     border-top:1px solid #222;
@@ -114,14 +123,32 @@
   }
   .money-box-text{
     display:flex;
-    align-items: end;
+    align-items: center;
   }
   .profit-money-box{
     font-size: 64px;
     line-height: 64px; 
+    font-weight: 700;
+    font-family: Technology;
   }
   .make-money-text-box{
     min-height:185px;
+  }
+  .advantage-button {
+      height: 56px;
+      padding: 0 24px 0 30px;
+      color: #fff;
+      display: flex;
+      font-size: 20px;
+      align-items: center;
+      justify-content: center;
+      background-color: #F9423A;
+      border-radius: 4px;
+      font-family: alibaba-sans, sans-serif;
+      font-style: normal;
+      font-weight: 700;
+      margin: 42px 0 8px 0;
+      cursor: pointer;
   }
   @media screen and (max-width: 768px){
     .home-make-money{
@@ -150,7 +177,10 @@
     }
     .explain-box{
       font-size:12px;
-      line-height:16px;
+      line-height:32px;
+      font-family: alibaba-sans, sans-serif;
+      font-style: normal;
+      color: #222;
     }
     .profit-box{
      font-size:14px;
@@ -193,10 +223,9 @@
 <div class="make-money-box">
   <div class=" make-money-text">
     <div class="make-money-text-box recommend-text-box">
-      <div class="recommend-view-title money-boxtitle-text">{{section.settings.title}}</div>
-      <div class="recommend-view-text money-boxtitle-text">{{section.settings.explain}}</div>
+      <div class="recommend-view-title money-boxtitle-title alifont_bold">{{section.settings.title}}</div>
+      <div class="recommend-view-text money-boxtitle-text alifont">{{section.settings.explain}}</div>
     </div>
-
   </div>
   <div class="calculation-money-box">
     <div class="money-box">
@@ -217,12 +246,12 @@
             <div class="explain-box">{{section.settings.pay_text}}</div>
             <div class="money-box-text">
               <div class="price-box">{{section.settings.currency_text}}</div>
-              <div class=" price-money-box">{{section.settings.pay_price}}</div>
+              <div class="price-money-box">{{section.settings.pay_price}}</div>
             </div>
           </div>
           <div class="line"></div>
           <div class="calculation-text profit-text">
-            <div class=" profit-box">{{section.settings.profit_text}}</div>
+            <div class=" profit-box alifont_bold">{{section.settings.profit_text}}</div>
             <div class="money-box-text">
               <div class="profit-box">{{section.settings.currency_text}}</div>
               <div class="profit-money-box">{{section.settings.profit_price}}</div>
@@ -231,13 +260,17 @@
           </div>
         </div>
       </div>
-      <div class="link-box">
+<!--       <div class="link-box">
         <a class="link"  href="{{section.settings.link}}">
           <span class="link-text">{{section.settings.skip_text}} </span>
           {% include 'icon-arrow' %}
         </a>
-      </div>
-      <div class="advantage-text theme-color">{{section.settings.advantage_text}}</div>
+      </div> -->
+      <a class="advantage-button" href="{{section.settings.link}}">
+        <span>{{section.settings.skip_text}}</span>
+        {% include 'icon-arrow' %}
+      </a>
+      <div class="advantage-text theme-color alifont">{{section.settings.advantage_text}}</div>
     </div>
 
 

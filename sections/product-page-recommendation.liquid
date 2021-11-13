@@ -1,274 +1,280 @@
 <style>
-
-.related-products .section-title {
-    font-size: 20px;
-    letter-spacing: 1px;
-    color: #777;
-    font-weight: 100;
-    text-align: center;
-    text-transform: uppercase;
-    margin: 30px 20px 30px 20px;
-}
-.collection-list-grid{  
-  position: relative;
-  overflow: hidden;
-  width: calc(100% - 60px);
-  height: 300px;
-  margin: 0 auto;
-}
-.product-card__name {
-  line-height: 1.4;
-  font-size: 12px;
-  color: #888;
-  height: 34px;
-  text-align: center;
-  overflow: hidden;
-  margin-top: 25px;
-}
-.collection-off,button.medium-up--btn.btn{
-  display: none;
-}
-.product-card__price {
-  display: flex;
-  justify-content: center;
-  flex-flow: row-reverse;
-  margin-top: 5px;
-}
-.product-card__price .product-card__regular-price {
-  margin-right: 8px;
-  font-weight: 400;
-  font-size: 12px;
-  text-decoration: line-through;
-  color: #000;
-}
-.product-card__price .product-card__sale-price {
-  font-size: 12px;
-  font-weight: 600;
-  color: rgb(202, 13, 13);
-}  
-.product-card__overlay-btn { 
-	display: none; 
-}
-.product-card__image-container picture{
-  position: relative;
-  display: block;
-  margin: 0 auto;
-  width: calc(100% - 60px);
-}
-.product-card__image-container picture .defaultImage {
-  
-}  
-.product-card__image-container picture .hoverImage {
-  position: absolute;
-  left: 0;
-  opacity: 0;
-  z-index: 1;
-}
-.product-card__image-container picture:hover .hoverImage{
-  opacity: 1;
-}
-.product-card__image-container picture:hover .hoverImage~ .defaultImage{
-  opacity: 0;
-}
-.recommendation-collection-list{
-  position: relative;
-  padding-bottom: 60px;
-  border-bottom: 1px solid #eee;
-}
-.collection-list-navigation {
-  width: 100%;
-  position: absolute;
-  display: flex;
-  justify-content: space-between;
-  top: 35%;
-}
-.collection-list-navigation .photofont {
-  font-size: 28px;
-}
-.related-products {
-  margin-bottom: 20px;
-}
-.product-page-recommendation-section{
-  padding-right: 10px;
-  padding-left: 10px;
-}
-.swiper-pagination-bullet-active {
-  background: #F9423A;
-  opacity: 1;
-}
-@media ( max-width:768px ) {
-  .related-products .btn {
-    padding: 15px 0;
-  }
-  .related-products .ratings-fa-star {
-    height:8px;
-  }
-  .product-card__image-container picture{
-    width: 100%;
-  }
-  .collection-list-grid{
-     width: calc(100% - 40px);
-  }
-  .collection-list-navigation{
-    top: 26%;
-    width: calc(100% + 20px);
-    left: -10px;
-  }
-}
-</style>
-{% assign productTagsRelate = product.tags | join:',' %}
-{% if section.settings.show_product_recommendation %}
-  {% assign min = 4 %}
-  {% assign number_of_related_products_to_show = 4 %}
-	{% if section.blocks.size > 0 %}
-        {% for block in section.blocks %}
-            {% if productTagsRelate contains block.settings.info_tag %}
-              {% assign collection_relate = collections[block.settings.collection] %}
-              {% break %}
+    .related-products {
+        padding: 120px 0 80px 0;
+    }
+    .related-products .section-title {
+        font-size: 32px;
+        color: #222;
+        font-weight: bold;
+        text-align: left;
+        padding-bottom: 10px;
+    }
+    .related-products .recommendation-collection-list {
+        padding-bottom: 0;
+        border-bottom: 0;
+    }
+    .related-products .recommendation-collection-list .collection-list-grid {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        padding-bottom: 40px;
+    }
+    .related-products .recommendation-collection-list .collection-list-grid .item {
+        padding: 14px;
+        background-color: rgba(246, 246, 249, 0.5);
+    }
+    .collection-list-grid .item .product-card__image-container picture {
+        width: 100%;
+    }
+    .collection-list-grid .item .product-card__info {
+        padding-top: 14px;
+    }
+    .collection-list-grid .item .product-card__info .product-card__tag {
+        height: 32px;
+        display: flex;
+        align-items: center;
+    }
+    .collection-list-grid .item .product-card__info .product-card__tag .span-label-item {
+        font-size: 14px;
+        font-weight: bold;
+        color: #FEB900;
+        text-transform: uppercase;
+        margin-right: 10px;
+    }
+    .collection-list-grid .item .product-card__info .product-card__tag {
+        height: 32px;
+    }
+    .collection-list-grid .item .product-card__info .product-card__name {
+        font-size: 16px;
+        color: #222;
+        line-height: 24px;
+        overflow:hidden; 
+        text-overflow:ellipsis;
+        display:-webkit-box; 
+        -webkit-box-orient:vertical;
+        -webkit-line-clamp:2; 
+    }
+    .collection-list-grid .item .product-card__info .product-card__price {
+        padding: 14px 0;
+    }
+    .collection-list-grid .item .product-card__info .product-card__price .product-card__sale-price {
+        font-size: 20px;
+        color: #222;
+        font-weight: bold;
+    }
+    .swiper-pagination-bullet-active {
+      background: #F9423A;
+      opacity: 1;
+    }    
+    /* .collection-off,button.medium-up--btn.btn{
+      display: none;
+    }
+    .product-card__price {
+      display: flex;
+      justify-content: center;
+      flex-flow: row-reverse;
+      margin-top: 5px;
+    }
+    .product-card__price .product-card__regular-price {
+      margin-right: 8px;
+      font-weight: 400;
+      font-size: 12px;
+      text-decoration: line-through;
+      color: #000;
+    }
+    .product-card__price .product-card__sale-price {
+      font-size: 12px;
+      font-weight: 600;
+      color: rgb(202, 13, 13);
+    }  
+    .product-card__overlay-btn { 
+        display: none; 
+    }
+    .product-card__image-container picture{
+      position: relative;
+      display: block;
+      margin: 0 auto;
+      width: calc(100% - 60px);
+    }
+    .product-card__image-container picture .defaultImage {
+      
+    }  
+    
+    .recommendation-collection-list{
+      position: relative;
+      padding-bottom: 60px;
+      border-bottom: 1px solid #eee;
+    }
+    .product-page-recommendation-section{
+      padding-right: 10px;
+      padding-left: 10px;
+    }
+    */
+    @media ( max-width:768px ) {
+      .related-products .btn {
+        padding: 15px 0;
+      }
+      .related-products .ratings-fa-star {
+        height:8px;
+      }
+      .product-card__image-container picture{
+        width: 100%;
+      }
+      .collection-list-grid{
+         width: calc(100% - 40px);
+      }
+      /* .collection-list-navigation{
+        top: 26%;
+        width: calc(100% + 20px);
+        left: -10px;
+      } */
+    }
+    </style>
+    {% assign productTagsRelate = product.tags | join:',' %}
+    {% if section.settings.show_product_recommendation %}
+      {% assign min = 4 %}
+      {% assign number_of_related_products_to_show = 4 %}
+        {% if section.blocks.size > 0 %}
+            {% for block in section.blocks %}
+                {% if productTagsRelate contains block.settings.info_tag %}
+                  {% assign collection_relate = collections[block.settings.collection] %}
+                  {% break %}
+                {% endif %}
+            {%endfor%}
+            {% assign max = collection_relate.all_products_count %}
+            {% if max %}
+              {% assign product_collection_relate = collection_relate.products %}
+            {% else %}
+              {% assign collection_relate = collections[section.settings.default_collection] %}
+              {% assign max = collection_relate.all_products_count %}
+              {% assign product_collection_relate = collection_relate.products %}
             {% endif %}
-        {%endfor%}
-        {% assign max = collection_relate.all_products_count %}
-        {% if max %}
-          {% assign product_collection_relate = collection_relate.products %}
-        {% else %}
-          {% assign collection_relate = collections[section.settings.default_collection] %}
-		  {% assign max = collection_relate.all_products_count %}
-          {% assign product_collection_relate = collection_relate.products %}
-        {% endif %}
-        {% assign limit = section.settings.line_num | times: section.settings.row_num %}
-        {% assign diff = max | minus: min %}
-        {% assign randomNumber = "now" | date: "%N" | modulo: diff | plus: min %}
-        {% if randomNumber < limit %}
-          {% assign randomNumber = limit %}
-        {% endif %}
-		{% case section.settings.line_num %}
-          {% when 2 %}
-            {%- assign grid_item_width = 'two-grid-width' -%}
-          {% when 3 %}
-            {%- assign grid_item_width = 'three-grid-width' -%}
-          {% when 4 %}
-            {%- assign grid_item_width = 'four-grid-width' -%}
-        {% endcase %}
-		{% assign randomNumber = randomNumber | divided_by : limit %}
-        {% if product_collection_relate.size > 1 %}          
-            <div class="related-products">
-              <h3 class="section-title">
-                {{ section.settings.recommendation_title }}
-              </h3>
-              <div class="recommendation-collection-list">
-                <div class="collection-list-grid">
-                  <div class="swiper-wrapper">
-                    {% for prods in product_collection_relate limit: 20  %}
-                      {% if prods.handle != product.handle %}
-                      <span style="display: none;">{% increment pro_key %}</span>
-                      <div class="item {{ grid_item_width }} swiper-slide">
-                        {% include 'product-card', product: prods, collection: collection_relate %}
+            {% assign limit = section.settings.line_num | times: section.settings.row_num %}
+            {% assign diff = max | minus: min %}
+            {% assign randomNumber = "now" | date: "%N" | modulo: diff | plus: min %}
+            {% if randomNumber < limit %}
+              {% assign randomNumber = limit %}
+            {% endif %}
+            {% case section.settings.line_num %}
+              {% when 2 %}
+                {%- assign grid_item_width = 'two-grid-width' -%}
+              {% when 3 %}
+                {%- assign grid_item_width = 'three-grid-width' -%}
+              {% when 4 %}
+                {%- assign grid_item_width = 'four-grid-width' -%}
+            {% endcase %}
+            {% assign randomNumber = randomNumber | divided_by : limit %}
+            {% if product_collection_relate.size > 1 %}          
+                <div class="related-products">
+                  <h3 class="section-title alifont_bold">
+                    {{ section.settings.recommendation_title }}
+                  </h3>
+                  <div class="recommendation-collection-list">
+                    <div class="collection-list-grid">
+                      <div class="swiper-wrapper">
+                        {% for prods in product_collection_relate limit: 20  %}
+                          {% if prods.handle != product.handle %}
+                          <span style="display: none;">{% increment pro_key %}</span>
+                          <div class="item {{ grid_item_width }} swiper-slide">
+                            {% include 'product-card', product: prods, collection: collection_relate %}
+                          </div>
+                          {% endif %}
+                        {% endfor %}
                       </div>
-                      {% endif %}
-                    {% endfor %}
+                      <div class="swiper-pagination"></div>
+                    </div>
                   </div>
-                  <div class="swiper-pagination"></div>
-                </div>
-                <div class="collection-list-navigation">
-                  <div class="grid-next"><i class="photofont photo-back"></i></div>
-                  <div class="grid-prev"><i class="photofont photo-jinru"></i></div>
-                </div>
-              </div>
-              
-            </div>          
-          <script>
-            var recommendationSwiper = new Swiper('.collection-list-grid', {
-              slidesPerView: 2,
-			  slidesPerGroup:2,
-              spaceBetween: 10,
-              pagination: {
-                el: '.swiper-pagination',
-                dynamicBullets: true,
-                clickable: true,
-              },
-              breakpoints: {
-                768: {
-                  // show 3.5 product
-                  slidesPerView: 4,
-                  slidesPerGroup:4,
-                  spaceBetween: 40
-                }
-              },
-              navigation: {
-                nextEl: ".grid-prev",
-                prevEl: ".grid-next"
-              }
-            });
-          </script>
-        {% endif %}
-    {% endif %}  
- {% endif %}
-
-{% schema %}
-  {
-	"name": "产品页 - 产品推荐",
-	"class": "product-page-recommendation-section container",
-	"max_blocks": 200,
-    "settings": [
-        {
-          "type": "paragraph",
-          "content":"product-page-recommendation"
-        },
-        {
-          "type": "checkbox",
-          "id": "show_product_recommendation",
-          "label": "显示产品推荐",
-          "default": false
-        },
-		{
-          "type": "text",
-          "id": "recommendation_title",
-          "label": "标题",
-          "default": "<p>product recommendation title support html</p>"
-        },
-        {
-          "type": "collection",
-          "id": "default_collection",
-          "label": "默认集合"
-        },
-        {
-          "type": "range",
-          "id": "line_num",
-          "label": "每行产品数",
-          "min": 2,
-          "max": 4,
-          "step": 1,
-          "default": 4
-        },
-        {
-          "type": "range",
-          "id": "row_num",
-          "label": "行数",
-          "min": 1,
-          "max": 4,
-          "step": 1,
-          "default": 2
-        }
-    ],
-	"blocks": [
-    	{
-		  "type": "collection",
-          "name": "选择产品推荐集合",
-           "settings": [
+                </div>          
+              <script>
+                var recommendationSwiper = new Swiper('.collection-list-grid', {
+                  slidesPerView: 2,
+                  slidesPerGroup: 2,
+                  spaceBetween: 28,
+                  pagination: {
+                    el: '.swiper-pagination',
+                    dynamicBullets: true,
+                    clickable: true,
+                  },
+                  breakpoints: {
+                    768: {
+                      // show 3.5 product
+                      slidesPerView: 4,
+                      slidesPerGroup:4,
+                      spaceBetween: 28
+                    }
+                  }
+                });
+              </script>
+            {% endif %}
+        {% endif %}  
+     {% endif %}
+    
+    {% schema %}
+      {
+        "name": "产品页 - 产品推荐",
+        "class": "product-page-recommendation-section container",
+        "max_blocks": 200,
+        "settings": [
             {
-              "type": "text",
-              "id": "info_tag",
-              "label": "TAG"
+              "type": "paragraph",
+              "content":"product-page-recommendation"
             },
             {
-               "type": "collection",
-               "id": "collection",
-               "label": "Collection"
+              "type": "checkbox",
+              "id": "show_product_recommendation",
+              "label": "显示产品推荐",
+              "default": false
+            },
+            {
+              "type": "text",
+              "id": "recommendation_title",
+              "label": "标题",
+              "default": "<p>product recommendation title support html</p>"
+            },
+            {
+              "type": "collection",
+              "id": "default_collection",
+              "label": "默认集合"
+            },
+            {
+              "type": "range",
+              "id": "line_num",
+              "label": "每行产品数",
+              "min": 2,
+              "max": 4,
+              "step": 1,
+              "default": 4
+            },
+            {
+              "type": "range",
+              "id": "row_num",
+              "label": "行数",
+              "min": 1,
+              "max": 4,
+              "step": 1,
+              "default": 2
             }
-          ]
-		}
-	]
-
-
-  }
-{% endschema %}
+        ],
+        "blocks": [
+            {
+              "type": "collection",
+              "name": "选择产品推荐集合",
+               "settings": [
+                {
+                  "type": "text",
+                  "id": "info_tag",
+                  "label": "TAG"
+                },
+                {
+                   "type": "collection",
+                   "id": "collection",
+                   "label": "Collection"
+                }
+              ]
+            }
+        ]
+    
+    
+      }
+    {% endschema %}
+    

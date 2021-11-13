@@ -5,114 +5,226 @@
 {% endcomment %}
 <style>
   .product-introduce {
-    display: flex;
+    width: 100%;
     padding-top: 88px;
-    max-width: 1263px;
     background: #FAFAFC;
   }
-  .product-introduce .introduce-left {
+  .product-introduce .product-introduce-content {
     display: flex;
-    width: 23%;
-    min-width: 150px;
-    flex-direction: column;
-    align-items: flex-end;
-    font-size: 14px;
+    max-width: 1372px;
+    margin: 0 auto;
   }
-  .product-introduce .introduce-left a {
+  .product-introduce-content .introduce-left {
+    width: 234px;
+  }
+  .product-introduce .introduce-left .introduce-left-item {
+    position: relative;
     display: block;
-    margin-bottom: 30px;
-    padding-right: 20%;
-  }
-  .product-introduce .introduce-left a.introduce-active {
-  	color: red;
-    border-right: 2px solid red;
-  }
-  .product-introduce .introduce-right {
-    padding-left: 4%;
-    color: #333;
-  }
-  .product-introduce .introduce-right a {
-    display: block;
-    font-size: 24px;
-    margin-bottom: 20px;
-    line-height: 1;
-  }
-  .product-introduce .introduce-right p {
-    line-height: 1.5;
-  }
-  .product-introduce .introduce-right .right-item {
-  	margin-bottom: 100px;
-  }
-  .product-introduce .introduce-right .key-features {
-  	display: flex;
-  }
-  .product-introduce .introduce-right .key-features .feature-item {
-    padding: 14px;
-  	width: 32%;
-    text-align: center;
-  }
-  .product-introduce .introduce-right .key-features .feature-item .item-title {
-    padding: 10px;
+    height: 26px;
     font-size: 16px;
+    padding-right: 46px;
+    text-align: right;
+    margin-bottom: 22px;
+    font-family: alibaba-sans, sans-serif;
+    font-weight: 400;
+    font-style: normal;
   }
-  .product-introduce .introduce-right .key-features .feature-item .item-description {
+  .product-introduce .introduce-left .introduce-left-item.active {
+  	color: #F9423A;
+  }
+  .product-introduce .introduce-left .introduce-left-item.active::after {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #F9423A;
+    border-radius: 2px;
+    content: '';
+  }
+  .product-introduce-content .introduce-right {
+    flex: 1;
+    padding: 0 53px 0 63px;
+  }
+  .product-introduce-content .introduce-right .introduce-right-item {
+    padding-bottom: 100px;
+  }
+  .introduce-right-item .title {
+    font-size: 24px;
+    color: #222222;
+    line-height: 32px;
+    margin-bottom: 14px;
+    font-family: alibaba-sans, sans-serif;
+    font-weight: 700;
+    font-style: normal;
+  }
+  .introduce-right-item .content {
+    font-size: 16px;
+    color: #222222;
+    line-height: 32px;
+  }
+  .introduce-right-item.key-features .key-features-content {
+    display: flex;
+  }
+  .introduce-right-item.key-features .key-features-content .feature-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 34px 14px 14px;
+  }
+  .introduce-right-item.key-features .key-features-content .feature-item .item-icon {
+    width: 64px;
+    height: 50px;
+    background-image: url({{ 'key-features-gift.png' | asset_url }});
+    background-size: contain;
+  }
+  .introduce-right-item.key-features .key-features-content .feature-item .item-title {
+    font-size: 16px;
+    color: #222222;
+    padding: 4px 0;
+    line-height: 32px;
+    font-family: alibaba-sans, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  .introduce-right-item.key-features .key-features-content .feature-item .item-description {
     font-size: 12px;
-    color: #999;
-    line-height: 2;
+    color: #928FA5;
+    line-height: 24px;
+    font-family: alibaba-sans, sans-serif;
+    font-weight: 400;
+    font-style: normal;
   }
-  
+  .introduce-right-item.size-guide table {
+    margin-top: 14px;
+  }
+  .introduce-right-item.size-guide table td {
+    font-size: 16px;
+    color: #222;
+    height: 44px;
+    border: 1px solid rgba(34,34,34, 0.08);
+    padding: 0;
+    text-align: center;
+    font-family: alibaba-sans, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  .introduce-right-item.size-guide table thead {
+    background: #F6F6F9;
+  }
+  .introduce-right-item.size-guide table tbody tr td:first-child {
+    background: #F6F6F9;
+  }
+  @media(max-width:768px) {
+    .product-introduce {
+      padding: 40px 20px 20px;
+    }
+    .product-introduce .product-introduce-content {
+      flex-direction: column;
+    }
+    .product-introduce-content .introduce-left {
+      width: 100%;
+      display: flex;
+      overflow-x: auto;
+      padding-bottom: 
+    }
+    .product-introduce-content .introduce-left .introduce-left-item {
+      height: 30px;
+      padding: 0 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-shrink: 0;
+      text-align: center;
+    }
+    .product-introduce .introduce-left .introduce-left-item.active {
+      font-weight: bold;
+    }
+}
 </style>
   
-<div class="container product-introduce">
-  <div class="introduce-left">
-    <a class="introduce-active" href="#about">About</a>
-    <a href="#feature">Key features</a>
-    <a href="#care">Care instructions</a>
-    <a href="#guide">Size guide</a>  
-  </div>
-  <div class="introduce-right">
-    <div class="right-item">
-      <a name="about">About</a>
-      <p>The Alstyle 1301 is a unisex tee for every casual outing. Made 100% with preshrunk cotton, this tee is supremely soft while the classic fit makes it an easy-going choice for a number of occasions. Add your design and create a highly versatile staple for everyday wear.</p>
+<div class="product-introduce">
+  <div class="product-introduce-content">
+    <div class="introduce-left">
+      <div class="introduce-left-item active" href="#about">About</div>
+      <div class="introduce-left-item">Key features</div>
+      <div class="introduce-left-item">Care instructions</div>
+      <div class="introduce-left-item">Size guide</div>  
     </div>
-    <div class="right-item">
-      <a name="feature">Key features</a>
-      <div class=" key-features">
-        <div class="feature-item">
-          <img src="" alt="" />
-          <div class="item-title">Fiber composition</div>
-          <div class="item-description">Solid colors are 100% cotton (Athletic Heather is 90% cotton, 10% polyester; Charcoal Heather and Safety Green are 50% cotton, 50% polyester; Ash is 99% cotton, 1% polyester)</div>
-        </div>
-        <div class="feature-item">
-          <img src="" alt="" />
-          <div class="item-title">Fiber composition</div>
-          <div class="item-description">Solid colors are 100% cotton (Athletic Heather is 90% cotton, 10% polyester; Charcoal Heather and Safety Green are 50% cotton, 50% polyester; Ash is 99% cotton, 1% polyester)</div>
-        </div>
-        <div class="feature-item">
-          <img src="" alt="" />
-          <div class="item-title">Fiber composition</div>
-          <div class="item-description">Solid colors are 100% cotton (Athletic Heather is 90% cotton, 10% polyester; Charcoal Heather and Safety Green are 50% cotton, 50% polyester; Ash is 99% cotton, 1% polyester)</div>
+    <div class="introduce-right">
+      <div class="introduce-right-item about">
+        <div class="title">About</div>
+        <div class="content">The Alstyle 1301 is a unisex tee for every casual outing. Made 100% with preshrunk cotton, this tee is supremely soft while the classic fit makes it an easy-going choice for a number of occasions. Add your design and create a highly versatile staple for everyday wear.</div>
+      </div>
+      <div class="introduce-right-item key-features">
+        <div class="title">Key features</div>
+        <div class="key-features-content">
+          <div class="feature-item">
+            <div class="item-icon"></div>
+            <div class="item-title">Fiber composition</div>
+            <div class="item-description">Solid colors are 100% cotton (Athletic Heather is 90% cotton, 10% polyester; Charcoal Heather and Safety Green are 50% cotton, 50% polyester; Ash is 99% cotton, 1% polyester)</div>
+          </div>
+          <div class="feature-item">
+            <div class="item-icon"></div>
+            <div class="item-title">Fiber composition</div>
+            <div class="item-description">Solid colors are 100% cotton (Athletic Heather is 90% cotton, 10% polyester; Charcoal Heather and Safety Green are 50% cotton, 50% polyester; Ash is 99% cotton, 1% polyester)</div>
+          </div>
+          <div class="feature-item">
+            <div class="item-icon"></div>
+            <div class="item-title">Fiber composition</div>
+            <div class="item-description">Solid colors are 100% cotton (Athletic Heather is 90% cotton, 10% polyester; Charcoal Heather and Safety Green are 50% cotton, 50% polyester; Ash is 99% cotton, 1% polyester)</div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="right-item">
-      <a name="care">Care instructions</a>
-      <p>Machine wash: cold (max 30C or 90F), gentle cycle; Do not bleach; Tumble dry: low heat; Do not bleach; Dryclean.</p>
-    </div>
-    <div class="right-item">
-      <a name="guide">Size guide</a>
-      <p>Machine wash: cold (max 30C or 90F), gentle cycle; Do not bleach; Tumble dry: low heat; Do not bleach; Dryclean.</p>
-      <img src="" alt="">
+      <div class="introduce-right-item">
+        <div class="title">Care instructions</div>
+        <div class="content">Machine wash: cold (max 30C or 90F), gentle cycle; Do not bleach; Tumble dry: low heat; Do not bleach; Dryclean.</div>
+      </div>
+      <div class="introduce-right-item size-guide">
+        <div class="title">Size guide</div>
+        <div class="content">Machine wash: cold (max 30C or 90F), gentle cycle; Do not bleach; Tumble dry: low heat; Do not bleach; Dryclean.</div>
+        <table>
+            <thead>
+                <tr>
+                    <td></td>
+                    <td>S</td>
+                    <td>M</td>
+                    <td>L</td>
+                    <td>XL</td>
+                    <td>2XL</td>
+                    <td>3XL</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Width,in</td>
+                    <td>18.00</td>
+                    <td>20.00</td>
+                    <td>22.00</td>
+                    <td>24.00</td>
+                    <td>26.00</td>
+                    <td>28.00</td>
+                </tr>
+                <tr>
+                    <td>Length,in</td>
+                    <td>27.00</td>
+                    <td>29.00</td>
+                    <td>31.00</td>
+                    <td>32.00</td>
+                    <td>33.00</td>
+                    <td>34.00</td>
+                </tr>
+            </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
   
   
 <script>
-  $('.introduce-left a').on('click', function() {
-    $('.introduce-left a').removeClass('introduce-active');
-  	$(this).addClass('introduce-active');
-  });
+  
 </script>
 
 

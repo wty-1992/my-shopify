@@ -1,29 +1,6 @@
 <style>
-
-.cart-page-templates.empty .cart-empty-section{
-  display:block;
-}
-.cart-page-templates.empty .cart-items-section,.cart-page-templates.empty .cart-gift-card-section,.cart-page-templates.empty .cart-coupons-section,.cart-page-templates.empty .cart-subtotal-section,.cart-page-templates.empty .cart-why-choose{
-  display:none;
-}
-.cart-page-templates{ 
-  background: #eff1f1;
-  padding: 1rem 0 0 0;
-} 
-footer{
-  display:none;
-}
-.cart-page-templates .container{
-  padding:0
-} 
-.footer{
-  display:none;
-}
-.template-cart.empty-body #shopify-section-footer ,.template-cart.empty-body .site-footer{
-  display: block;
-}
 </style>
-<div class="cart-page-templates">
+<div class="cart-page-templates mm-header-height">
   {% section 'cart-items' %}
   {% section 'cart-empty' %}
   {% section 'cart-footer' %}

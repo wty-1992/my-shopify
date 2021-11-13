@@ -336,7 +336,7 @@ $grid-breakpoints: (
 *, *:before, *:after {
   box-sizing: border-box;
   -webkit-tap-highlight-color:transparent;
-  outline:0!important;
+  // outline:0!important;
 }
 
 body, html {
@@ -377,17 +377,17 @@ a {
   background-color: transparent;
 }
 a{
-  color:#444;
+  color:#222;
   text-decoration:none;
-  transition:all .3s
+  // transition:all .3s
 }
 a:focus,a:visited{
   text-decoration:none
 }
 a:hover{
-  color:#e60044;
-  -webkit-transition:color .25s linear;
-  transition:color .25s linear;
+  // color:#e60044;
+  //-webkit-transition:color .25s linear;
+  //transition:color .25s linear;
   text-decoration:none
 }
 :focus{outline:0}
@@ -981,7 +981,7 @@ select {
 a {
   color: $color-text;
   text-decoration: none;
-  transition: color 0.1s ease-in, background-color 0.1s ease-in; 
+  // transition: color 0.1s ease-in, background-color 0.1s ease-in; 
   &:hover,
   &:focus,
   &:active {
@@ -1097,7 +1097,7 @@ $mm-color-gray-1: rgba(34,34,34,0.08);
 {% endcomment %}
 .m_col_16 {
   width: 100%;
-  max-width: 1372px;
+  max-width: 1426px;
 }
 
 .mm-icon {
@@ -1109,6 +1109,12 @@ $mm-color-gray-1: rgba(34,34,34,0.08);
 .mm-icon-small svg {
   width: 10px;
   height: 10px;
+}
+
+.mm-icon-large,
+.mm-icon-large svg {
+  width: 36px;
+  height: 36px;
 }
 
 .mm-btn {
@@ -1153,10 +1159,23 @@ $mm-color-gray-1: rgba(34,34,34,0.08);
   background-color: $mm-color-brand;
   outline: rgba(228, 51, 41, 0.24) solid 3px;
 }
+.mm-header-height {
+  margin-top: 70px;
+}
+.mm-page-limited {
+  width: 100%;
+  max-width: 1400px;
+  padding: 0 14px;
+  margin: 0 auto;
+  color: #222;
+}
 
 {% comment %}
 * global replace *
 {% endcomment %}
+html {
+  scroll-behavior: smooth;
+}
 .h_reset {
   padding: 0;
   margin: 0;

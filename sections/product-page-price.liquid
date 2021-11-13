@@ -1,4 +1,5 @@
 
+{% comment %}
 <style>
 .product-price-info{
   display: flex;
@@ -150,6 +151,19 @@
 }
 }
 </style>
+{% endcomment %}
+<style>
+.product-single__price--special {
+    font-size: 32px;
+    font-weight: bold;
+}
+@media(max-width:768px){
+  .product-price-info { 
+    font-size: 24px;
+    padding: 0;
+  }
+}
+</style>
 {% assign productTags = product.tags | join:',' %}
 {% assign current_variant = product.selected_or_first_available_variant %}
 {% assign productPriceId = "ProductPrice" | append: section.id %}
@@ -158,18 +172,18 @@
 <div class="product-price-info">
   <div class="product-page-price__selling">
     <div class="price-column">
-      <span id="{{ productPriceId }}" class="product-single__price--special" itemprop="price" content="{{ current_variant.price | divided_by: 100.00 }}" data-money="{{ current_variant.price }}"></span>
-      {% if current_variant.compare_at_price > current_variant.price %}  
+      <span id="{{ productPriceId }}" class="product-single__price--special alifont_bold" itemprop="price" content="{{ current_variant.price | divided_by: 100.00 }}" data-money="{{ current_variant.price }}"></span>
+      {% comment %} {% if current_variant.compare_at_price > current_variant.price %}  
       <span id="{{ productComparePriceId }}" class="product-single__price--compare"><s><span data-money="{{ current_variant.compare_at_price }}"></span></s></span>
-      {% endif %}
+      {% endif %} {% endcomment %}
     </div>
-    {% if current_variant.compare_at_price > current_variant.price %}  
+    {% comment %} {% if current_variant.compare_at_price > current_variant.price %}  
       <span class="product-single__price--discount" id="{{ productDiscountPriceId }}">
         <span>{{ current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | money_without_currency | times: 100 | replace: '.0', ''}}</span>% {{ 'product.price.off' | t }}
       </span>
-    {% endif %}
+    {% endif %} {% endcomment %}
   </div>
-  <div class="mb_switchover">
+  {% comment %} <div class="mb_switchover">
     <a href="#my-review-main">
       <div class="my-review-goods-list" data-product-id="{{ product.selected_or_first_available_variant.sku }}"></div>
     </a>
@@ -180,7 +194,7 @@
       <div id="remainTime" data-until="" data-offset='0'></div>
     </div>    
     {% endunless %}
-  </div>
+  </div> {% endcomment %}
 </div>                             
 <div class="product-label-items"> 
 <div class="hide_sku_tag"style="display:none;" >{{ product.selected_or_first_available_variant.sku }}</div>
