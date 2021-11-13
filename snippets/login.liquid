@@ -1,0 +1,539 @@
+<style>
+  .html{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  .search-container,.login_block{
+    display:none;
+  }
+  .container-slide{
+    display:none !important;
+  }
+  .from-box{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #F6F6F9;
+    z-index: 2;
+  }
+  .sign-up-page{
+    display:none
+  }
+  .account-container,.account__templates{
+   display:none!important;
+  }
+  .input-box{
+   width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+  }
+  .password-box{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .input-close{
+  	width:56px;
+    height:56px;
+    background: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    position: absolute;
+    top:60px;
+    left:60px;
+    cursor:pointer;
+   }
+  .input-content{
+    width:470px;
+    padding:0 50px;
+    background: #ffffff;
+  }
+  .input-content-box{
+  	width:100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .input-content .input-content-box img{
+  	margin-bottom:14px;
+    height:88px;
+    margin-top:50px;
+  }
+  .input-content-title{
+    width:100%;
+    color:#222;
+    font-size:24px;
+    line-height:32px;
+    text-align: center;
+    margin-bottom:40px;
+  }
+  .input-box-content {
+    width:100%;
+  }
+  
+  .input-box-content:nth-of-type(1){
+     margin-bottom:20px;
+  }
+  .input-content-box .input-box-content lable{
+ 	color:#222;
+    font-size:14px;
+    line-height:16px;
+    margin-bottom:0px;
+  } 
+  .forget-password{
+  	color:#6C6888;
+    font-size:12px;
+    line-height:14px;
+    cursor: pointer;
+  }
+  .errors{
+    color:#F9423A;
+    font-size:14px;
+    line-height:32px;
+    background: #ffffff;
+    padding: 0;
+    font-size: 14px;
+    line-height: 32px;
+    margin-bottom:0px;
+  }
+  .wrong-password{
+    color:#F9423A;   
+    font-size: 14px;
+    line-height: 32px;
+  }
+
+  .active-password{
+    display:block;
+  }
+  .input-box-content  input{
+    min-height:56px;
+    border-radius: 4px;
+    padding: 17px 28px 17px 28px;
+    font-size:16px;
+    line-height:19px;
+    margin-bottom:0px;
+  }
+  .input-bortton{
+    width:100%;
+    background:#F6F6F9;
+  	color:rgba(146,143,165,0.5);
+    font-size:16px;
+    line-height:19px;
+    border-radius: 4px;
+    margin-top:40px;
+    padding:13px 0px;
+    text-align: center;
+    border-width:0px !important;
+    cursor: pointer
+  }
+  .input-bortton-top{
+    margin-top:32px;
+  }
+  .customer_login{
+    position: relative;
+  }
+  .input-tips{
+    width:100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top:10px;
+    margin-bottom:40px;
+  }
+  .input-tips-text{
+    font-size:13px;
+    line-height:32px;
+    color:#222;
+    margin-top:10px;
+    
+  }
+  .color-special{
+   color:#F9423A;
+    margin-left:8px;
+    cursor: pointer;
+  }
+  .input-box-content .input-password{
+  	padding: 17px 46px 17px 28px;
+  }
+  .form-box{
+    width:100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .submit-email{
+    background-color:#F6F6F9;
+    border-radius: 4px;
+    padding: 14px 0 !important;
+    font-size:16px;
+    line-height:19px;
+    border-radius: 4px !important;
+    color: rgba(146,143,165,0.5);
+  }
+  .form-vertical .new-height{
+    height: 56px !important;
+  }
+  .form-vertical .cancel_text-link{
+    padding: 14px 0 !important;
+    font-size:16px;
+    line-height:19px;
+    border-radius: 4px !important;
+  }
+  .form-vertical .recover-email{
+    padding: 17px 28px 17px 28px !important;
+    font-size:16px;
+    line-height:19px;
+    border-radius: 4px !important;
+  }
+  .recover-password{
+  	padding-bottom:40px !important;
+    border-radius: 4px;
+    width:100%;
+  }
+   .recover-password p{
+  text-align: center;
+  }
+  .login-box,.sign-up-box{
+    width:100%;
+  }
+
+  @media(max-width:768px){
+    .input-close{
+      width:36px;
+      height:36px;
+      position: absolute;
+      top:10px;
+      left:10px;
+    }
+    .input-content{
+      padding:0 20px;
+    }
+    .login-page{
+      background: #ffffff;
+    }
+
+  }
+  .color-active{
+    background:#F9423A;
+    color:#fff;
+  }
+  .active-border{
+    border:2px solid #F9423A !important;
+  }
+  .active-block{
+   display:block;
+  }
+  .active-none{
+  display:none;
+  }
+  .page-none{
+   display:none ;
+  }
+</style>
+{% assign public_logo_resize = section.settings.public_logo.width | append: "x" | append: section.settings.public_logo.height %}
+<div class="login-page from-box">
+  <div class="input-box">
+    <div class="input-close">
+      {% include 'icon-login-close'%}
+    </div>
+    <div class="input-content login-content">
+      <div class="input-content-box">
+        <img  src="{{section.settings.public_logo | img_url: public_logo_resize }}" />
+        <div class="input-content-title">
+          {{section.settings.login_title}}
+        </div>
+
+        <div id="CustomerLoginForm{{ include_id }}" class="login-box">
+   
+          {% assign customer_from_id = 'customer_login' | append: include_id %}
+          {% form 'customer_login',class:"customer_login", id:customer_from_id %} 
+            <div class="input-box-content">
+              <lable class="input-title">{{ 'customer.login.email' | t }}</lable>
+              <input class="email-number" placeholder="{{section.settings.background_email_text}}" type="email" name="customer[email]"/>
+            </div>
+            <div class="input-box-content">
+             
+              <div class="password-box">
+                <lable class="input-title">{{ 'customer.login.password' | t }}</lable>
+              <!--         忘记密码         -->
+                <div id="RecoverPassword"  class="forget-password" >{{ 'customer.login.forgot_password' | t }}?</div>
+              </div>
+              
+               {% if form.password_needed %}
+              <!--       密码          -->
+              <div class="input-password-box">
+                 <input placeholder="{{section.settings.login_background_passwor}}"  value="" class="input-password " type="password" name="customer[password]"/>
+                <div class="icon-password-eye-open"> 
+                  <div class="oblique-line"></div>
+                  {% include 'icon-password-eye-open'%} 
+                </div>
+              </div> 
+              {% endif %}
+            </div>
+          
+          <!--      提交    -->
+            <input class="input-bortton" type="submit" class="btn " value="{{section.settings.login_text}}">
+
+             {% endform %}
+          
+          <div class="input-tips">
+            <span class="input-tips-text">{{section.settings.login_tips_one}}</span>
+            <span class="input-tips-text color-special">{{section.settings.login_tips_two}}</span>
+          </div>
+        </div>
+        <!--  重置密码  -->
+      <div id="RecoverPasswordForm{{ include_id }}" class="hide recover-password"> 
+        <h4>{{ 'customer.recover_password.title' | t }}</h4>
+        <p>{{ 'customer.recover_password.subtext' | t }}</p>
+
+        <div class="form-vertical">
+          {% form 'recover_customer_password' %} 
+            {{ form.errors | default_errors }} 
+            {% comment %}
+              Add a hidden span to indicate the form was submitted succesfully.
+            {% endcomment %}
+            {% if form.posted_successfully? %}
+              <span class="hide reset-password-success"></span>
+            {% endif %}
+            <!--   取消         -->
+            <label for="RecoverEmail" class=" label--hidden">{{ 'customer.recover_password.email' | t }}</label>
+            <input class="recover-email new-height" type="email" value="" name="email" id="RecoverEmail{{ include_id }}" placeholder="{{ 'customer.recover_password.email' | t }}" autocorrect="off" autocapitalize="off" style="height: 40px; padding: 1rem 0.3rem;">
+            <!--          提交  	  -->
+             <p><input type="submit" class="btn submit-email" value="{{ 'customer.recover_password.submit' | t }}"></p>
+            <button type="button" id="HideRecoverPasswordLink{{ include_id }}" class="btn cancel_text-link">{{ 'customer.recover_password.cancel' | t }}</button>
+          {% endform %}
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  //显示注册
+  function showSignup(){
+    $('.login-page').addClass('active-none')
+    $('.sign-up-page').addClass('active-block')
+  }
+  
+  //显示登录
+  if(window.location.href.indexOf('login')===-1&&window.location.href.indexOf('register')===-1){
+    $('.from-box').addClass('page-none')
+    $('html').removeClass('html')
+  }else{
+    $('.from-box').removeClass('page-none')
+    if(window.location.href.indexOf('login')>-1){
+      $('.sign-up-page').addClass('active-none')
+      $('.login-page').addClass('active-block')
+      $('html').addClass('html')
+    }
+  }
+  
+  //改变提交框的样式
+  if($('.login-box #customer_login').find('.errors').length>0){
+    $('.input-bortton').addClass('input-bortton-top')
+  } else{
+    $('.input-bortton').removeClass('input-bortton-top')
+  }
+
+
+  // 点击眼睛
+  $('.login-box .icon-password-eye-open').on('mouseup',function(){
+    $('.login-box .icon-password-eye-open').find('.oblique-line').toggleClass('active-line')
+    if($(".login-box .input-password").attr("type")==="text"){
+
+      $('.login-box .input-password').attr("type","password");
+    }else{
+      $('.login-box .input-password').attr("type","text");
+    }
+  })
+
+  //提交框的样式变化
+  function renderLoginInputColor(emailValue,passwordValue) {
+    if(emailValue!==''&&passwordValue!==''){
+      $('.login-box .input-bortton').addClass('color-active') 
+      return true
+    }else{
+      $('.login-box .input-bortton').removeClass('color-active')
+      return false
+    }
+  }
+
+  renderLoginInputColor($('.email-number').val(),$('.input-password').val())
+
+  // 监听值输入
+  $('.email-number').on('input',function(e){
+    renderLoginInputColor(e.target.value,$('.input-password').val())
+  })
+  $('.login-box .input-password').on('input',function(e){
+    renderLoginInputColor(e.target.value,$('.email-number').val())
+  })
+
+  $('.recover-password .recover-email').on('input',function(e){
+    if(e.target.value!==''){
+      $('.submit-email').addClass('color-active') 
+    }else{
+      $('.submit-email').removeClass('color-active')
+    }
+  })
+
+  //获得焦点
+  $('.email-number').on('focus',function(){
+    $('.email-number').addClass('active-border')	
+  })
+  $('.login-box .input-password').on('focus',function(){
+    $('.login-box .input-password').addClass('active-border')	
+  })
+
+  $('.recover-password .recover-email').on('focus',function(){
+    $('.recover-password .recover-email').addClass('active-border')	
+  })
+
+  // 失去焦点
+  $('.email-number').on('blur',function(){
+    $('.email-number').removeClass('active-border')	
+  })
+  $('.login-box .input-password').on('blur',function(){
+    $('.login-box .input-password').removeClass('active-border')	
+  })
+  $('.recover-password .recover-email').on('blur',function(){
+    $('.recover-password .recover-email').addClass('active-border')	
+  })
+  
+  //去注册
+  $('.login-box .color-special').on('click',function(){
+    showSignup()
+  })
+
+  //关闭登录注册页面
+  $('.input-box .input-close').on('click',function(){
+    $('.login-page').addClass('page-none')
+    $('.sign-up-page').addClass('page-none')
+  })
+
+  {% if form.errors %}
+  if (window.location.pathname == '/account/register'){
+    window.localStorage.setItem('account-magento-register-error', '{{ form.errors | default_errors }}')
+     $('.sign-up-page').addClass('active-block')
+    $('.login-page').addClass('active-none')
+  }
+  {% endif %}
+
+  function register(info, form) {
+    var params = {
+      form_type: 'create_customer',
+      utf8: '✓',
+      customer: {
+        tags: info.gender == 1 ? 'Mr.' : 'Miss.',
+        first_name: "default",
+        last_name: "default",
+        email: info.email,
+        password: info.password
+      }
+    }
+    console.log('Shopify Register', params)
+    //注册
+    $.post("/register", params, function(response) {
+      var tokenRegex = /<div\s+class="errors">(.*?)<\/div>/;
+      var regexResult = tokenRegex.exec(response)
+      console.log(regexResult)
+      if (regexResult != null && regexResult.length == 2 && regexResult[1].length > 10){
+        form.prepend(regexResult[0])
+      }else{
+        window.location.href = '/account';
+      }
+    });
+  }
+
+  function login(info, form) {
+    var params = {
+      form_type: 'customer_login',
+      utf8: '✓',
+      customer: {
+        email: info.email,
+        password: info.password
+      }
+    }
+    console.log('Shopify Login', params);
+    $.post("/account/login", params, function(response) {
+      var resultHtml = $(response).find('#CustomerLoginForm').html();
+      if (typeof(resultHtml) == 'undefined') {
+        console.log('Login Success');
+        window.location.href = '/account';
+      }else{
+        $('#CustomerLoginForm').html(resultHtml)
+      }
+    });
+  }
+
+
+  //校验密码是否错误
+  function doLogin(form) {
+    var email = form.find('[name="customer[email]"]').val();
+    var password = aes.encrypt(form.find('[name="customer[password]"]').val());
+    /*if (email!='habit_shine@163.com'){
+      alert('Habit 在测试，请勿占用资源！')
+      return false;
+    }*/
+    $.ajax({
+      type: "POST",
+      cache: false,
+      dataType: 'json',
+      url: "https://app-p1.imaiyuan.com/shopify/login",
+
+      data: {
+        "email": email,
+        "password": password,
+        "shopifyBaseUri": "https://mysoufeel.myshopify.com"
+      },
+      success: function(res){
+        console.log('res',res)
+        if (res.code == 0 && res.error == 0){
+          var result = res.response;
+          console.log('isShopifyUser', result.isShopifyUser)
+          console.log('isMagentoUser', result.isMagentoUser)
+          if (result.isShopifyUser === true){
+            form.submit();
+          }else if (result.isMagentoUser === true){
+            register({
+              email,
+              password: aes.decrypt(password),
+              ...res.response.customerInfo
+            }, form);
+          }
+        }
+        else{
+          $('.input-password-box').find('.wrong-password').remove();
+          $('.input-password-box').append('<div class="wrong-password">' + res.response+ '</div>')
+        }
+      }
+    });
+  }
+
+  $('.login-box').on('submit', 'form', function(){
+    if ($(this).attr('action') == '/account/login') {
+      doLogin($(this));
+    }else{
+      return true;
+    }
+    return false;
+  })
+
+</script>
+
+  
+  

@@ -4,39 +4,57 @@
 <style >
   .home-talk-sales{
     width:100%;
-    background:#FFFFFF;  
-    padding:0 14.27%;
+    background:#FFFFFF;
+    padding: 0 28px;
   }
   .talk-sales-box{
-    width:100%;
+    max-width: 1372px;
+    margin: 0 auto;
     height:220px;
+    border-radius: 12px;
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
     background-position: center;
     display:flex;
     justify-content: center;
     align-items: center;
-    background-image:url({{section.settings.pc_img  | img_url: pc_resize }})
-
+    background-image: url({{ 'talk-sale-banner.png' | asset_url }});
+    box-shadow: 0 12px 24px rgba(255, 260, 0, 0.08),
+        0 1px 1px rgba(212, 196, 137, 0.8),
+        0 4px 16px rgba(255, 172, 0, 0.36);
   }
   .talk-text-box{
     display:flex;
     justify-content: center;
     align-items: center;
-    margin-left:22.70%;
+  }
+  .talk-text-box-image {
+    width: 200px;
+    background-image: url({{ 'puzzle.png' | asset_url }});
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right;
+  }
+  .talk-text-box-image::before {
+      display: block;
+      padding-top: 70%;
+      content: '';
   }
   .text-inquiry{
+    width: 50%;
     font-size: 32px;
     line-height: 58px;
-    width: 62.32%;
+    padding: 0 40px 0 40px;
+    color: #222;
   }
   .text-skip{
-    padding:14px 29px;
+    padding: 14px 29px;
     font-size: 20px;
     line-height: 24px;
     color:#F9423A;
     border-radius: 4px;
-    background:#fff
+    background:#fff;
+    cursor: pointer;
   }
   @media screen and (max-width: 1120px){
     .text-inquiry{
@@ -81,14 +99,13 @@
 </style > 
 
 <div class="talk-sales-box" >
-  <div class="talk-text-box">
-    <div class="text-inquiry">
-      {{section.settings.inquiry}}
+  <div class="talk-text-box-image"></div>
+  <div class="text-inquiry alifont_bold">
+    {{section.settings.inquiry}}
     </div>
-    <div class="text-skip">
-      {{section.settings.skip-text}}
+    <div class="text-skip alifont_bold">
+        {{section.settings.skip-text}}
     </div>
-  </div>
 </div>
 
 

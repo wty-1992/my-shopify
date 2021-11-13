@@ -1,52 +1,68 @@
 <style >
-  .home-comment{
-    width:100%;
-    background:#FFFFFF;
-    padding-top:148px;
-    padding-bottom:152px;
+  .home-comment {
+    width: 100%;
+    background: #FFFFFF;
+    padding: 148px 28px 152px 28px;
   }
-  .home-comment-box{
-    padding: 0 14.16%;
+  .home-comment-box {
+    max-width: 1372px;
+    margin: 0 auto;
     display:flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
   }
-  .comment-box{
-    margin-top:59px;
-    width:100%;
+  .recommend-text-box {
+    text-align: center;
   }
-  .logo-list{
-    width:100%;
+  .recommend-view-title {
+    font-size: 44px;
+    color: #222222;
+    line-height: 60px;
+    padding-bottom: 40px;
+  }
+  .recommend-view-text {
+    font-size: 22px;
+    color: #222222;
+    line-height: 30px;
+    margin-top: 0;
+  }
+  .comment-box {
+    margin-top: 56px;
+    width: 100%;
+  }
+  .logo-list {
+    width: 100%;
     display:flex;
     align-items: center;
     justify-content: center;
     position: relative;
   }
-  .logo-image-box{
-    width:26.01%;
+  .logo-list .logo-image-box {
+    flex: 1;
     display:flex;
     align-items: center;
     justify-content: center;
     height:88px;
     cursor: pointer;
   }
-  .logo-image{
-    width:40.05%;
+  .logo-image {
+    height: 48px;
     z-index:10px;
   }
-  .comment-content{
+  .logo-image img {
+      height: 100%;
+  }
+  .comment-content {
     width:100%;
-    margin-top:-13px;
     display:flex;
     justify-content:space-around;
     flex-wrap: wrap;
-    padding:0px 10px 14px 10px;
     display:none;
   }
 
   .item-box{
-    width:46%;
+    width: calc((100% - 28px * 2) / 2);
     background: #fff;
     margin: 14px;
     padding:28px;
@@ -56,12 +72,12 @@
     width:101px;
   }
   .comment-text{
-    width:100%;
-    color:#6C6888;
-    margin-top:14px;
-    font-size:16px;
-    line-height:32px;
-    min-height:142px;
+    width: 100%;
+    color: #6C6888;
+    margin-top: 14px;
+    font-size: 16px;
+    line-height: 32px;
+    min-height: 142px;
   }
   .user-information-box{
     display:flex;
@@ -90,10 +106,6 @@
     margin-top:5px;
     display:flex;
   }
-  .comment-link{
-    font-size:16px;
-    line-height:19px;
-  }
   .comment-content-box{
     display: flex;
     justify-content: center;
@@ -101,8 +113,11 @@
     overflow: hidden;
     position:relative;
     width:100%;
-/*     border:1px solid; */
-    }
+    padding: 16px;
+    background-color: #F6F6F9;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+  }
   .multi-circles{
   display:none;
   }
@@ -121,6 +136,21 @@
   .active-box{
     background:#F6F6F9;
     border-radius:12px 12px 0 0;
+  }
+  .link {
+    height: 36px;
+    padding: 0 6px 0 14px;
+    display: flex;
+    background: #F9423A;
+    border-radius: 4px;
+    justify-content: center;
+    align-items: center;
+  }
+  .link .link-text {
+    font-size: 16px;
+    font-family: alibaba-sans, sans-serif;
+    font-weight: 700;
+    font-style: normal;
   }
   @media screen and (max-width: 768px){
     .home-comment{
@@ -176,15 +206,18 @@
       top: 14px;
       right:14px;
     }
-    .comment-link{
+    .comment-link {
       padding:2px 0 2px 8px; 
-      font-size:12px;
+      font-size: 12px;
       line-height:14px;
+      font-family: alibaba-sans, sans-serif;
+      font-weight: 700;
+      font-style: normal;
     }
     .comment-link svg{
         width:28px;
         height:28px;
-  }
+    }
     .multi-circles{
       width:100%;
       display: flex;
@@ -204,8 +237,7 @@
     background:#F9423A;
       margin-left:4px;
     }
-    .comment-content-box{
-    height:312px;
+    .comment-content-box {
     }
   }
 </style >
@@ -213,8 +245,9 @@
  
 <div class="home-comment-box">
   <div class="recommend-text-box comment-text-box">
-    <div class="recommend-view-title">{{section.settings.title}}</div>
-    <div class="recommend-view-text">{{section.settings.explain}}</div>
+    <div class="recommend-view-title alifont_bold">Trusted by over 500+ merchants</div>
+    <div class="recommend-view-text alifont">500K merchants
+Whether you are just getting started or run an enterprise-level e-commerce business, we do everything we can to ensure a positive merchant experience.</div>
   </div>
   <div class="comment-box">
     <ul class="logo-list">
@@ -246,7 +279,7 @@
           <div class="star">
             <img src="{{block.settings.rate_image | img_url: star_resize }}"/>
           </div>
-          <div class="comment-text">{{block.settings.evaluate_one}}</div>
+          <div class="comment-text alifont">{{block.settings.evaluate_one}}</div>
           <div class="user-information-box">
             <div class="information-box">
               <div class="user-image">
@@ -257,15 +290,15 @@
                   <img src="{{block.settings.user_image_logo | img_url: user_logo_resize }}"/>
                 </div>
                 <div class="information-text">
-                  <div class="user-text"> {{block.settings.user_name_one }}，</div>
-                  <div class="user-text"> {{block.settings.user_introduction_one}}</div>
+                  <div class="user-text alifont"> {{block.settings.user_name_one }}，</div>
+                  <div class="user-text alifont"> {{block.settings.user_introduction_one}}</div>
                 </div>
 
               </div>
             </div>
             <div class="comment-products-link">
               <a class="link comment-link"  href="{{block.settings.link_one}}">
-                <span class="link-text comment-link">{{block.settings.link_text_one}} </span>
+                <span class="link-text comment-link">Sign up </span>
                 {% include 'icon-arrow' %}
               </a>
             </div>
@@ -294,7 +327,7 @@
             </div>
             <div class="comment-products-link">
               <a class="link comment-link"  href="{{block.settings.link_two}}">
-                <span class="link-text comment-link">{{block.settings.link_text_two}} </span>
+                <span class="link-text comment-link">Sign up </span>
                 {% include 'icon-arrow' %}
               </a>
             </div>
@@ -323,7 +356,7 @@
             </div>
             <div class="comment-products-link">
               <a class="link comment-link"  href="{{block.settings.link_three}}">
-                <span class="link-text comment-link">{{block.settings.link_text_three}} </span>
+                <span class="link-text comment-link">Sign up </span>
                 {% include 'icon-arrow' %}
               </a>
             </div>
@@ -352,7 +385,7 @@
             </div>
             <div class="comment-products-link">
               <a class="link comment-link"  href="{{block.settings.link_four}}">
-                <span class="link-text comment-link">{{block.settings.link_text_four}} </span>
+                <span class="link-text comment-link">Sign up </span>
                 {% include 'icon-arrow' %}
               </a>
             </div>
@@ -368,6 +401,7 @@
       <li class="circle-box circle-item3"></li>
     </ul>
   </div>
+</div>
 <script defer="defer">
   //点击logo事件
   $(' .logo-list').on('click','.logo-image-box', function() {

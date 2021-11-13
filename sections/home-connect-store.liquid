@@ -1,10 +1,11 @@
 <style >
-  .home-connect-store{
-    padding:150px 0 151px 0;
+  .home-connect-store {
+    padding: 150px 28px 150px 28px;
   }
 
   .home-connect-store,.connect-store-box{
-    width:100%;
+    max-width: 1020px;
+    margin: 0 auto;
     background:#FFFFFF;
   }
   .connect-store-box{
@@ -15,7 +16,16 @@
     flex-direction: column;
   }
   .connect-image{
-    width:53.17%;
+    width: 50%;
+    background-image: url({{ 'Connet-illustration.png' | asset_url }});
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .connect-image::before{
+      display: block;
+      padding-top: 23%;
+      content: '';
   }
   .title-box{
     width:100%;
@@ -43,8 +53,20 @@
     margin-top:14px;
    
   }
-  .cennect-button{
-    margin-top:55px
+  .cennect-button {
+    margin-top:25px;
+  }
+  .cennect-button .link {
+    padding: 0 24px 0 30px;
+    height: 56px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 20px;
+    font-family: alibaba-sans, sans-serif;
+    font-weight: 700;
+    font-style: normal;
   }
 
   @media screen and (max-width: 768px){
@@ -63,8 +85,9 @@
       width:85.06%;
     }
     .cennect-button{
-      padding:0 20px;
+      padding: 0 24px 0 30px;
       width: 100%;
+      height: 56px;
       margin-top:25px;
     }
     .title-box{
@@ -82,20 +105,17 @@
  {% assign pc_resize = section.settings.pc_img.width | append: "x" | append: section.settings.pc_img.height %}
  {% assign mb_resize = section.settings.mb_img.width | append: "x" | append: section.settings.mb_img.height %} 
 <div class="connect-store-box">
-  <div class="title-box">{{section.settings.title}}</div>
-  <div class=" text-connect">{{section.settings.text}}</div>
-  <div class="connect-image" style="background-image:url()">
-    <img src="{{section.settings.pc_img  | img_url: pc_resize }}" 
-         class="lazyload"
-         />
+  <div class="title-box alifont_bold">{{section.settings.title}}</div>
+  <div class=" text-connect alifont">{{section.settings.text}}</div>
+  <div class="connect-image">
   </div>
   <div class="cennect-button">
     <a class="link"  href="{{section.settings.link}}">
-      <span class="link-text">{{section.settings.skip-text}} </span>
+      <span class="link-text">Connect </span>
       {% include 'icon-arrow' %}
     </a>
   </div>
-  <div class="explain">{{section.settings.explain}}</div>
+  <div class="explain alifont">{{section.settings.explain}}</div>
 </div>
 
 {% schema %}

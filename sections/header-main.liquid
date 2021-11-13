@@ -84,6 +84,7 @@
 {% if section.settings.show_search %}
   {% include 'search-slide' %}
 {% endif %}
+
 {% include 'sunzi-solt-template' %}
 <div id='CustomerLogin' style="display:none" class="tingle-modal-box__page">
   {% include 'customers-login', include_id:1 %}
@@ -182,6 +183,86 @@ Listener.on([ Listener.cart.refresh ], function(event, cart) {
       "id": "show_search",
       "label": "是否展示搜索框",
       "default": true
+    },
+
+    {
+      "type": "image_picker",
+      "id": "public_logo",
+      "label": "登录注册的logo"
+    },
+    {
+      "type": "text",
+      "id": "background_email_text",
+      "label": "登录注册的email背景字",
+      "default": "Work e-mail"
+    },
+    {
+      "type": "text",
+      "id": "sign_background_password",
+      "label": "注册的密码背景字",
+	  "default":"Create a password"
+    },
+
+    {
+      "type": "text",
+      "id": "sign_up_title",
+      "label": "注册的标题",
+      "default":"Sign up and start earning for free"
+    },
+    {
+      "type": "text",
+      "id": "sign_up_text",
+      "label": "注册按钮文案",
+      "default":"Sign up"
+    },
+    {
+      "type": "text",
+      "id": "sign_up_tips_one",
+      "label": "注册底部提示1",
+      "default":"Already have an account?"
+    },
+    {
+      "type": "text",
+      "id": "sign_up_tips_two",
+      "label": "注册底部提示2",
+      "default":"Sign in"
+    },
+    {
+      "type": "text",
+      "id": "sign_up_tips_policy",
+      "label": "政策条款提示",
+      "default":"By clicking Sign up you agree to Stylelab’s Terms of Service, Privacy Policy and Intellectual Property Policy"
+    },
+    {
+      "type": "text",
+      "id": "login_background_password",
+      "label": "登录密码背景字",
+	  "default":"Enter a password",
+      "default":"Work e-mail"
+    },
+    {
+      "type": "text",
+      "id": "login_title",
+      "label": "登录的标题",
+      "default":"Welcome back"
+    },
+    {
+      "type": "text",
+      "id": "login_text",
+      "label": "登录按钮文案",
+      "default":"Sign in"
+    },
+    {
+      "type": "text",
+      "id": "login_tips_one",
+      "label": "登录底部提示1",
+      "default":"New to Stylelab?"
+    },
+    {
+      "type": "text",
+      "id": "login_tips_two",
+      "label": "登录底部提示2",
+      "default":"Sign up"
     }
   ]
 }

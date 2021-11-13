@@ -20,7 +20,7 @@
       "login_form_submit": "Tilgå",
       "signup_form_email_label": "E-mail",
       "signup_form_success": "Vi sender en e-mail til dig, lige inden vi åbner.",
-      "admin_link_html": "Ejer du butikken? <a href=\"/admin\" class=\"text-link\">Log ind her</a>",
+      "admin_link_html": "Ejer du butikken? <a href=\"\/admin\" class=\"text-link\">Log ind her<\/a>",
       "password_link": "Brug adgangskode for at få adgang",
       "powered_by_shopify_html": "Denne butik vil blive drevet af {{ shopify }}"
     },
@@ -44,8 +44,8 @@
       "submit": "Søg",
       "read_more": "Læs mere",
       "results_count_html": {
-        "one": "{{ count }} match for <strong>{{ terms }}</strong>",
-        "other": "{{ count }} matches for <strong>{{ terms }}</strong>"
+        "one": "{{ count }} match for <strong>{{ terms }}<\/strong>",
+        "other": "{{ count }} matches for <strong>{{ terms }}<\/strong>"
       },
       "products": "Produkter",
       "pages_and_articles": "Sider og artikler"
@@ -285,7 +285,7 @@
         "other": "{{ count }} tilgængelige"
       },
       "collection_return": "Tilbage til {{ collection }}",
-      "product_added_to_cart_html": "Produkt lagt i indkøbskurv. <span>Se indkøbskurv og gå til kassen</span>.",
+      "product_added_to_cart_html": "Produkt lagt i indkøbskurv. <span>Se indkøbskurv og gå til kassen<\/span>.",
       "stock_unavailable": "Produktet kunne ikke lægges i din indkøbskurv, da der ikke er nok på lager."
     }
   },
@@ -311,7 +311,7 @@
       "get_directions": "Få vejledninger",
       "address_error": "Der opstod en fejl under forsøg på at finde adressen",
       "address_no_results": "Ingen resultater for den adresse",
-      "address_query_limit_html": "Du har overskredet Googles API-brugerbegrænsning. Overvej at opgradere til en <a href=\"https://developers.google.com/maps/premium/usage-limits\">Premium-plan</a>.",
+      "address_query_limit_html": "Du har overskredet Googles API-brugerbegrænsning. Overvej at opgradere til en <a href=\"https:\/\/developers.google.com\/maps\/premium\/usage-limits\">Premium-plan<\/a>.",
       "auth_error_html": "Der opstod en fejl under bekræftelse af din Google Maps API-nøgle."
     }
   },

@@ -1,16 +1,15 @@
 <style>
   .home-tips{
-    width:100%;
-    padding-top:25px;    
+    width:100%; 
     background: #fff;
+    padding: 0 28px;
   }
   .home-tips-box{  
-    width:100%;
+    max-width: 1372px;
+    margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 14.16%;
-
   }  
   .tips-box{
     width:100%;
@@ -20,13 +19,16 @@
     position: relative;
   }
   .tips-item-box{
-    width:31.5%;
+    flex: 1;
     display:flex;
     align-items: center;
     justify-content: flex-start;
     flex-direction: column;
-    min-height: 279px;
-    padding:26px 20px 0 20px;
+    padding:26px 20px 30px 20px;
+    margin-right: 28px;
+  }
+  .tips-item-box:last-child {
+    margin-right: 0;
   }
   .tips-icon{
     width:29.15%;
@@ -59,7 +61,13 @@
     text-align: center;
     font-size:16px;
     line-height:32px;
-    margin-top:7px
+    margin-top:4px;
+    overflow:hidden; 
+    text-overflow:ellipsis;
+    display:-webkit-box; 
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2; 
+    color: #222;
   }
   .products-link{
     width:100%
@@ -78,6 +86,10 @@
     font-size:20px;
     line-height:30px;
     color:#fff;
+  }
+  .tips-text-box{
+      flex:1;
+      padding-top: 10px;
   }
   @media screen and (max-width: 768px){
     .tips-text-box{
@@ -134,14 +146,13 @@
       </div>
       <div class="tips-text-box">
         <div class="tips-text-title">
-          <div class="title-text">
+          <div class="title-text alifont_bold">
             {{block.settings.title}}
           </div>
         </div>
-        <div class="tips-content">
+        <div class="tips-content alifont">
           {{block.settings.content_text}}
         </div>
-        <div class="explain"></div>
       </div>
 
     </div>
