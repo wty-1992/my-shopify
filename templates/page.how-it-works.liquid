@@ -26,16 +26,13 @@
   margin-bottom: 0px;
   font-size: 32px;
   line-height: 48px;
-  font-weight: bold;
   text-align: center;
   color: #222222;
-  font-weight: 500;
 }
 .how-title2{
   font-size: 14px;
   line-height: 24px;
   color: #222222;
-  font-weight: 500;
   text-align: inherit;
 }
 .btn-default {
@@ -144,7 +141,7 @@
   padding: 5px 10px;
   margin: 5px 0;
   border-radius: 3px;
-  max-width: 88px;
+  max-width: 100px;
   cursor: pointer;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,.5);
 }
@@ -222,14 +219,14 @@
 {% comment %} 顶部标题模块 {% endcomment %}
 <div class="how_title_module mm-header-height">
   <div class="how_title_box">
-    <h1 class="how-title1">How it works</h1>
-    <h2 class="how-title2">Mademine simplifies and automates the process of sourcing and creating print on demand products at the best prices on the market.</h2>
-    <p class="how-title3"><a href="#" class="btn btn-default">Start selling</a></p>
+    <h1 class="how-title1 alifont_heavy">How it works</h1>
+    <h2 class="how-title2 alifont">Mademine simplifies and automates the process of sourcing and creating print on demand products at the best prices on the market.</h2>
+    <p class="how-title3"><a href="#" class="btn btn-default alifont_bold">Start selling</a></p>
   </div>
 </div>
 {% comment %} 详情内容模块 {% endcomment %}
 <div id="how_container" class="how_container">
-  <h1 class="how_container_title">Enjoy Mademine services in 4 easy steps</h1>
+  <h1 class="how_container_title alifont_bold">Enjoy Mademine services in 4 easy steps</h1>
 
   {% comment %} 列表数据通过JS动态渲染
   <div class="how_module_item">
@@ -254,10 +251,10 @@
       <img src="{{ 'how_light_bulb.png' | asset_img_url: 'master' }}" alt="Banner">
     </div>
     <div class="how_banner_right">
-      <div class="how_banner_title">Already found what you were looking for?</div>
+      <div class="how_banner_title alifont">Already found what you were looking for?</div>
       <div class="how_banner_bf">
-        <div class="how_banner_btn">Start Selling</div>
-        <div class="how_banner_footer">Make it happen right now.</div>
+        <div class="how_banner_btn alifont_bold">Start Selling</div>
+        <div class="how_banner_footer alifont">Make it happen right now.</div>
       </div>
     </div>
   </div>
@@ -291,9 +288,9 @@
           <img src="${item.imgUrl}" alt="${item.title}">
         </div>
         <div class="how_module_right">
-          <div class="how_index_number">${index + 1}</div>
-          <div class="how_right_title">${item.title}</div>
-          <div class="how_right_content">${item.content}</div>
+          <div class="how_index_number alifont_bold">${index + 1}</div>
+          <div class="how_right_title alifont_bold">${item.title}</div>
+          <div class="how_right_content alifont">${item.content}</div>
         </div>
       </div>
     `
