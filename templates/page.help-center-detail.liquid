@@ -10,6 +10,36 @@
   display: none;
 }
 
+.article_module_search{
+  padding: 20px;
+  background: #F6F6F9;
+}
+.article_search{
+  display: flex;
+  align-items: center;
+  padding: 6px 10px;
+  background: #fff;
+  box-shadow: 0 1px 1px 0 rgba(106, 102, 136, 0.08), 0 4px 16px 0 rgba(183,183,192,0.3);
+  margin: 20px 0;
+  border-radius: 4px;
+}
+.article_search img{
+  width: 20px;
+  height: 20px;
+}
+.article_search input{
+  border: none;
+  background: transparent;
+}
+.article_nav_module{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.article_nav_current{
+  color: #222;
+}
+
 .detail_module{
   background: #F6F6F9;
 }
@@ -64,6 +94,22 @@
 
 /* PC端样式 */
 @media screen and (min-width: 750px){
+  .article_module_search{
+    padding-top: 60px;
+  }
+  .article_search,
+  .article_nav_module{
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .article_search{
+    padding: 8px 30px;
+    margin-bottom: 10px;
+  }
+  .article_nav_last{
+    cursor: pointer;
+  }
+
   .detail_title_author,
   .detail_ima_module,
   .detail_content{
@@ -81,6 +127,24 @@
   }
 }
 </style>
+
+{% comment %} 顶部搜索模块 {% endcomment %}
+<div class="article_module_search">
+  {% comment %} 模块搜索框 {% endcomment %}
+  <div class="article_search">
+    <img src="{{ 'search.svg' | asset_url }}" alt="serach">
+    <input
+      type="text"
+      placeholder="Search for articles"
+      id="searchInput"
+      value=""/>
+  </div>
+  {% comment %} 导航条模块 {% endcomment %}
+  <div class="article_nav_module">
+    <span id="article_nav_last" class="article_nav_last">Help Center</span>
+    <span class="article_nav_current">/ Choose the Sustainable Option with Mademine Option with Mademine</span>
+  </div>
+</div>
 
 {% comment %} 文章标题/作者 {% endcomment %}
 <div class="detail_module">
@@ -104,3 +168,14 @@
 <div class="detail_content">
   With green living on the rise, the idea may have already crossed your mind - should you be offering eco-friendly products to your customers, or switch your existing products to more sustainable options?With green living on the rise, the idea may have already crossed your mind - should you be offering eco-friendly products to your customers, or switch your existing products to more sustainable options?With green living on the rise, the idea may have already crossed your mind - should you be offering eco-friendly products to your customers, or switch your existing products to more sustainable options?With green living on the rise, the idea may have already crossed your mind - should you be offering eco-friendly products to your customers, or switch your existing products to more sustainable options?With green living on the rise, the idea may have already crossed your mind - should you be offering eco-friendly products to your customers, or switch your existing products to more sustainable options?
 </div>
+
+<div>
+Total products in collection: {{ collection.all_products_count }}
+</div>
+
+<script>
+/* 跳转文章列表页面 */
+$('#article_nav_last').on('click', () => {
+  location.href = '/pages/help-center';
+})
+</script>
