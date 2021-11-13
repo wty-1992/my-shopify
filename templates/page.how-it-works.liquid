@@ -113,6 +113,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center right;
+  background-image: url({{ 'how_banner.png' | asset_img_url: 'master' }});
   border-radius: 6px;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
 }
@@ -246,7 +247,7 @@
 </div>
 {% comment %} 底部Banner模块 {% endcomment %}
 <div class="how_banner_module">
-  <div class="how_banner" style="background-image: url({{ 'how_banner.png' | asset_img_url: 'master' }})">
+  <div class="how_banner">
     <div class="how_banner_left">
       <img src="{{ 'how_light_bulb.png' | asset_img_url: 'master' }}" alt="Banner">
     </div>
