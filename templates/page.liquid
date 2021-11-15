@@ -1,6 +1,34 @@
 <style>
 .page_default_container{
   padding: 20px;
+  text-align: left;
+}
+
+/* 设置span,p,h标签字体样式 */
+.page_default_container span,
+.page_default_container p,
+.page_default_container h1,
+.page_default_container h2,
+.page_default_container h3,
+.page_default_container h4,
+.page_default_container h5,
+.page_default_container h6{
+  font-family: alibaba-sans,sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #222;
+  text-align: left;
+  margin: 0;
+}
+.page_default_container h1,
+.page_default_container h2{
+  margin: 14px 0 8px 0;
+  font-weight: 700;
+  font-size: 24px;
+}
+.page_default_container p{
+    margin: 14px 0 8px 0;
+    font-size: 14px;
 }
 
 /* PC端样式 */
@@ -11,6 +39,10 @@
     margin-left: auto;
     margin-right: auto;
   }
+
+  .page_default_container p{
+    font-size: 18px;
+}
 }
 </style>
 
