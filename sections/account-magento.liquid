@@ -164,7 +164,7 @@
                         }
                     }else{
                       currentForm.find('.errors').remove();
-                      currentForm.prepend('<div class="errors"><ul><li>Incorrect email or password.</li></ul></div>')
+                      currentForm.find('.input-botton').before('<div class="errors"><ul><li>Incorrect email or password.</li></ul></div>')
                     }
                 }else{
                     //registerForm.submit();

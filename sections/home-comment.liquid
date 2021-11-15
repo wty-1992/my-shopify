@@ -28,7 +28,7 @@
     margin-top: 0;
   }
   .comment-box {
-    margin-top: 56px;
+    margin-top: 60px;
     width: 100%;
   }
   .logo-list {
@@ -137,7 +137,8 @@
     background:#F6F6F9;
     border-radius:12px 12px 0 0;
   }
-  .link {
+  .comment-products-link .link {
+    min-width: 115px;
     height: 36px;
     padding: 0 6px 0 14px;
     display: flex;
@@ -145,6 +146,15 @@
     border-radius: 4px;
     justify-content: center;
     align-items: center;
+
+  }
+  .comment-products-link .mm-a-link {
+  	display: flex;
+    padding: 0 10px 0 15px;
+  }
+  .comment-products-link .mm-a-link .link-text {
+  	line-height: 36px;
+    font-size: 16px;
   }
   .link .link-text {
     font-size: 16px;
@@ -297,8 +307,8 @@ Whether you are just getting started or run an enterprise-level e-commerce busin
               </div>
             </div>
             <div class="comment-products-link">
-              <a class="link comment-link"  href="{{block.settings.link_one}}">
-                <span class="link-text comment-link">Sign up </span>
+              <a class="mm-btn mm-btn-primary mm-a-link"  href="{{block.settings.link_one}}">
+                <span class="link-text comment-link alifont_bold">Sign up </span>
                 {% include 'icon-arrow' %}
               </a>
             </div>
@@ -326,8 +336,8 @@ Whether you are just getting started or run an enterprise-level e-commerce busin
               </div>
             </div>
             <div class="comment-products-link">
-              <a class="link comment-link"  href="{{block.settings.link_two}}">
-                <span class="link-text comment-link">Sign up </span>
+              <a class="mm-btn mm-btn-primary mm-a-link"  href="{{block.settings.link_two}}">
+                <span class="link-text comment-link alifont_bold">Sign up </span>
                 {% include 'icon-arrow' %}
               </a>
             </div>
@@ -355,8 +365,8 @@ Whether you are just getting started or run an enterprise-level e-commerce busin
               </div>
             </div>
             <div class="comment-products-link">
-              <a class="link comment-link"  href="{{block.settings.link_three}}">
-                <span class="link-text comment-link">Sign up </span>
+              <a class="mm-btn mm-btn-primary mm-a-link"  href="{{block.settings.link_three}}">
+                <span class="link-text comment-link alifont_bold">Sign up </span>
                 {% include 'icon-arrow' %}
               </a>
             </div>
@@ -384,8 +394,8 @@ Whether you are just getting started or run an enterprise-level e-commerce busin
               </div>
             </div>
             <div class="comment-products-link">
-              <a class="link comment-link"  href="{{block.settings.link_four}}">
-                <span class="link-text comment-link">Sign up </span>
+              <a class="mm-btn mm-btn-primary mm-a-link"  href="{{block.settings.link_four}}">
+                <span class="link-text comment-link alifont_bold">Sign up </span>
                 {% include 'icon-arrow' %}
               </a>
             </div>

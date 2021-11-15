@@ -7,33 +7,36 @@
 {% assign advantages = section.settings.advantage | split: ";"  %}
 {% assign title-texts = section.settings.title | split: "."  %}
  
-  <div id="{{swiperContainerId}}" class="swiper-container" data-section-id="{{ section.id }}">
+  <div id="{{swiperContainerId}}" class="swiper-container mm-header-height" data-section-id="{{ section.id }}">
      <!-- text -->
-    <div class="text-box">
-      <div class="text-title alifont_heavy">
-        {%for text-item in title-texts%}
-          <span class="text-title-item">{{text-item}}</span>
-        {% endfor %}
-      </div>
-      <div class="advantage-details-box">
-        {%for advantage-item in advantages%}
-        <div class="advantage-details-item alifont">
-          {% include 'icon-hook' %}
-          <div class="details-text-box">
-            {% assign items = advantage-item | split: "-"  %}
-             {%for item in items%}
-             <span class="details-text">{{item}}</span>
-             {% endfor %}
-          </div>
+    <div class="mm-index-con">
+      <div class="text-box">
+        <div class="text-title alifont_heavy">
+          {%for text-item in title-texts%}
+            <span class="text-title-item">{{text-item}}</span>
+          {% endfor %}
         </div>
-        {% endfor %}
-      </div>
-      <div class="botton-box-pc">
-        <a class="botton botton-sell alifont_bold" href="{{section.settings.skip_sell}}"> {{section.settings.sell_text}}</a> 
-        <a class="botton botton-work alifont_bold"  href="{{section.settings.skip_work}}">{{section.settings.work_text}}</a>
+        <div class="advantage-details-box">
+          {%for advantage-item in advantages%}
+          <div class="advantage-details-item alifont">
+            {% include 'icon-hook' %}
+            <div class="details-text-box">
+              {% assign items = advantage-item | split: "-"  %}
+               {%for item in items%}
+               <span class="details-text">{{item}}</span>
+               {% endfor %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="botton-box-pc">
+          <a class="mm-btn mm-btn-primary alifont_bold mm-btn-sell" href="{{section.settings.skip_sell}}"> {{section.settings.sell_text}}</a> 
+          <a class="mm-btn mm-btn-default alifont_bold mm-btn-work"  href="{{section.settings.skip_work}}">{{section.settings.work_text}}</a>
+        </div>
       </div>
     </div>
      <!-- banner -->
+    {% comment %}
     <div class="swiper-wrapper">
       {% for block in section.blocks %}
       {% assign swiperSlideId = swiperContainerId | append: "-swiper-slide-"  | append: forloop.index %}
@@ -62,6 +65,10 @@
       </div>
       {% endfor %}
     </div>
+    {% endcomment %}
+    <div class="mm-index-kv">
+    </div>
+    
     {% assign prev = swiperContainerId | append: "-button-prev" %}
     {% assign next = swiperContainerId | append: "-button-next" %}
     
@@ -131,7 +138,8 @@
   }
   .template-index .block-banner{margin-top:0;}
   .swiper-container{
-   background: #F6F6F9;
+    margin-top: 70px;
+    background: #F6F6F9;
   }
   .swiper-container::before {
       positon: relative;
@@ -157,7 +165,7 @@
     background:url("{{'vbg.jpg' | asset_url }}") repeat-y center center;  
       /*   background-color:#ffc6d3; */
       position:relative;
-      }
+  }
   @media only screen and (max-width: 768px){
     .template-index  {
       padding-top: 0;
@@ -167,10 +175,10 @@
         }
   }
   .text-box{
-    position: absolute;
+/*     position: absolute;
     top:124px;
     left:15.72%;
-    z-index: 10;
+    z-index: 10; */
   }
   .text-title {
     width:686px;
@@ -187,16 +195,21 @@
     color:#F9423A;
   }
   .advantage-details-box{
-    margin-top:19px
+    margin-top:30px
   }
-  .botton-box-pc{
+  .botton-box-pc {
    margin-top:40px;
   }
+  .botton-box-pc a {
+  	padding: 20px 50px;
+    font-size: 20px;
+    line-height: 1;
+    display: inline-block;
+  }
   .botton{
-    padding: 14px 60px;
-    border-radius: 4px;
-    font-size:20px;
-    line-height:24px;
+    padding: 12px 50px;
+    font-size: 20px;
+    line-height: 1;
   }
   .botton-sell{
     background:#F9423A;
@@ -214,12 +227,54 @@
     align-items: center;
   }
   .details-text-box{
-    margin-left: 5px;
+    margin-left: 10px;
     line-height:32px;
     font-size:16px;
+    color: #222;
   }
   .botton-box-mb,.advantage-list{
     display:none;
+  }
+  /* 补充 */
+  .mm-btn-sell {
+	
+  }
+  .mm-btn-work {
+  	margin-left: 28px;
+  }
+  .mm-index-kv {
+    background-image: url('https://cdn.shopifycdn.net/s/files/1/0372/6897/9848/files/c9d3e62b6621481dd11c67d2f86e2a30.png?v=1636951293');
+    background-position: left bottom;
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 50%;
+    height: 100%;
+    position: absolute;
+    left: 50%;
+    top: 50px;
+  }
+  .mm-index-con {
+  	width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 50%;
+    top: -12%;
+    max-width: 1432px;
+    transform: translateX(-50%);
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+  
+  @media screen and (max-width: 1400px){
+  	.text-title{
+      font-size: 40px;
+      line-height: 1.2em;
+    }
+    .details-text-box {
+      font-size: 14px;
+    }
   }
   @media screen and (max-width: 768px){
     .details-text-key{
@@ -240,7 +295,7 @@
     .text-box{
       top:39px;
       left:20px;
-      display:bock;
+      display:block;
     }
     .text-title{
       font-size:28px;
@@ -311,6 +366,7 @@
       text-align:center;
       transform: scale(0.8);
     }
+    
   }
 </style>
 
@@ -364,7 +420,7 @@
       "type": "text",
       "id": "advantage",
       "label": "优点",
-	  "default":"100%.Free to use;300+.High-Quality Products;Largest.global print network"
+	  "default":"100% Free to use;300+ High-Quality Products;Largest global print network"
     }
 
   ],

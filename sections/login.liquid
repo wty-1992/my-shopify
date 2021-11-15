@@ -1,5 +1,5 @@
 <style>
-  .html{
+  html{
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -21,14 +21,11 @@
     background: #F6F6F9;
     z-index: 1000;
   }
-  .sign-up-page{
-    display:none
-  }
   .account-container,.account__templates{
-   display:none!important;
+    display:none!important;
   }
   .input-box{
-   width: 100%;
+    width: 100%;
     height: 100%;
     position: relative;
     display: flex;
@@ -42,7 +39,7 @@
     align-items: center;
   }
   .input-close{
-  	width:56px;
+    width:56px;
     height:56px;
     background: #ffffff;
     display: flex;
@@ -53,21 +50,21 @@
     top:60px;
     left:60px;
     cursor:pointer;
-   }
+  }
   .input-content{
     width:470px;
     padding:0 50px;
     background: #ffffff;
   }
   .input-content-box{
-  	width:100%;
+    width:100%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
   }
   .input-content .input-content-box img{
-  	margin-bottom:14px;
+    margin-bottom:14px;
     height:88px;
     margin-top:50px;
   }
@@ -82,18 +79,18 @@
   .input-box-content {
     width:100%;
   }
-  
+
   .input-box-content:nth-of-type(1){
-     margin-bottom:20px;
+    margin-bottom:20px;
   }
   .input-content-box .input-box-content lable{
- 	color:#222;
+    color:#222;
     font-size:14px;
     line-height:16px;
-    margin-bottom:0px;
+    margin-bottom:6px;
   } 
   .forget-password{
-  	color:#6C6888;
+    color:#6C6888;
     font-size:12px;
     line-height:14px;
     cursor: pointer;
@@ -125,10 +122,10 @@
     line-height:19px;
     margin-bottom:0px;
   }
-  .input-bortton{
+  .input-botton{
     width:100%;
     background:#F6F6F9;
-  	color:rgba(146,143,165,0.5);
+    color:rgba(146,143,165,0.5);
     font-size:16px;
     line-height:19px;
     border-radius: 4px;
@@ -138,7 +135,7 @@
     border-width:0px !important;
     cursor: pointer
   }
-  .input-bortton-top{
+  .input-botton-top{
     margin-top:32px;
   }
   .customer_login{
@@ -157,15 +154,15 @@
     line-height:32px;
     color:#222;
     margin-top:10px;
-    
+
   }
   .color-special{
-   color:#F9423A;
+    color:#F9423A;
     margin-left:8px;
     cursor: pointer;
   }
   .input-box-content .input-password{
-  	padding: 17px 46px 17px 28px;
+    padding: 17px 46px 17px 28px;
   }
   .form-box{
     width:100%;
@@ -174,7 +171,17 @@
     align-items: center;
     flex-direction: column;
   }
-
+  .oblique-line{
+    width:30px;
+    height:2px;
+    border-bottom:1px solid #6C6888;
+    position:absolute;
+    right:10px;
+    top: 31%;
+    transform: rotateZ(43deg) translate(7px, -50%);
+    background: #fff;
+    display:none;
+  }
   .submit-email{
     background-color:#F6F6F9;
     border-radius: 4px;
@@ -183,6 +190,8 @@
     line-height:19px;
     border-radius: 4px !important;
     color: rgba(146,143,165,0.5);
+    margin-top: 32px;
+    text-transform: none;
   }
   .form-vertical .new-height{
     height: 56px !important;
@@ -192,6 +201,8 @@
     font-size:16px;
     line-height:19px;
     border-radius: 4px !important;
+    text-transform: capitalize;
+    background: #F9423A;
   }
   .form-vertical .recover-email{
     padding: 17px 28px 17px 28px !important;
@@ -200,14 +211,23 @@
     border-radius: 4px !important;
   }
   .recover-password{
-  	padding-bottom:40px !important;
+    padding-bottom:40px !important;
     border-radius: 4px;
     width:100%;
+    color: #222;
+    text-align: center;
   }
-   .recover-password p{
-  text-align: center;
+  .recover-password p{
+    text-align: center;
   }
-  .login-box,.sign-up-box{
+  .recover-password-title{
+    color: #222;
+    font-size:24px;
+    line-height:32px; 
+    margin-bottom: 40px;
+    display: block;
+  }
+  .login-box{
     width:100%;
   }
   .icon-password-eye-open{
@@ -216,7 +236,13 @@
     top:10px;
     cursor: pointer;
   }
-
+  .input-password-box {
+    position: relative;
+    width:100%;
+  }
+  .input-password-box input{
+    margin-bottom:0px;
+  }
   @media(max-width:768px){
     .input-close{
       width:36px;
@@ -241,13 +267,10 @@
     border:2px solid #F9423A !important;
   }
   .active-block{
-   display:block;
+    display:block;
   }
   .active-none{
-  display:none;
-  }
-  .page-none{
-   display:none ;
+    display:none;
   }
 </style>
 {% assign public_logo_resize = section.settings.public_logo.width | append: "x" | append: section.settings.public_logo.height %}
@@ -264,102 +287,111 @@
         </div>
 
         <div id="CustomerLoginForm{{ include_id }}" class="login-box">
-   
           {% assign customer_from_id = 'customer_login' | append: include_id %}
           {% form 'customer_login',class:"customer_login", id:customer_from_id %} 
-            <div class="input-box-content">
-              <lable class="input-title">{{ 'customer.login.email' | t }}</lable>
-              <input class="email-number" placeholder="{{section.settings.background_email_text}}" type="email" name="customer[email]"/>
-            </div>
-            <div class="input-box-content">
-             
-              <div class="password-box">
-                <lable class="input-title">{{ 'customer.login.password' | t }}</lable>
-              <!--         忘记密码         -->
-                <div id="RecoverPassword"  class="forget-password" >{{ 'customer.login.forgot_password' | t }}?</div>
-              </div>
-              
-               {% if form.password_needed %}
-              <!--       密码          -->
-              <div class="input-password-box">
-                 <input placeholder="{{section.settings.login_background_passwor}}"  value="" class="input-password " type="password" name="customer[password]"/>
-                <div class="icon-password-eye-open"> 
-                  <div class="oblique-line"></div>
-                  {% include 'icon-password-eye-open'%} 
-                </div>
-              </div> 
-              {% endif %}
-            </div>
-          
-          <!--      提交    -->
-            <input class="input-bortton" type="submit" class="btn " value="{{section.settings.login_text}}">
+          <div class="input-box-content">
+            <lable class="input-title">{{ 'customer.login.email' | t }}</lable>
+            <input class="email-number" placeholder="{{section.settings.background_email_text}}" type="email" name="customer[email]"/>
+          </div>
+          <div class="input-box-content">
 
-             {% endform %}
-          
+            <div class="password-box">
+              <lable class="input-title">{{ 'customer.login.password' | t }}</lable>
+              <!--         忘记密码         -->
+              <div id="RecoverPassword"  class="forget-password" >{{ 'customer.login.forgot_password' | t }}?</div>
+            </div>
+
+            {% if form.password_needed %}
+            <!--       密码          -->
+            <div class="input-password-box">
+              <input placeholder="{{section.settings.background_password_text}}"  value="" class="input-password " type="password" name="customer[password]"/>
+              <div class="icon-password-eye-open"> 
+                <div class="oblique-line"></div>
+                {% include 'icon-password-eye-open'%} 
+              </div>
+            </div> 
+            {% endif %}
+          </div>
+          {{ form.errors | default_errors }} 
+          <!--      提交    -->
+          <input class="input-botton" type="submit" class="btn " value="{{section.settings.login_text}}">
+          {% endform %}
+
           <div class="input-tips">
             <span class="input-tips-text">{{section.settings.login_tips_one}}</span>
-            <span class="input-tips-text color-special">{{section.settings.login_tips_two}}</span>
+            <a href="/account/register" class="input-tips-text color-special">{{section.settings.login_tips_two}}</a>
           </div>
         </div>
         <!--  重置密码  -->
-      <div id="RecoverPasswordForm{{ include_id }}" class="hide recover-password"> 
-        <h4>{{ 'customer.recover_password.title' | t }}</h4>
-        <p>{{ 'customer.recover_password.subtext' | t }}</p>
+        <div id="RecoverPasswordForm{{ include_id }}" class="hide recover-password"> 
+          <span class="recover-password-title">{{ 'customer.recover_password.title' | t }}</span>
+          <p>{{ 'customer.recover_password.subtext' | t }}</p>
 
-        <div class="form-vertical">
-          {% form 'recover_customer_password' %} 
+          <div class="form-vertical">
+            {% form 'recover_customer_password' %} 
             {{ form.errors | default_errors }} 
             {% comment %}
-              Add a hidden span to indicate the form was submitted succesfully.
+            Add a hidden span to indicate the form was submitted succesfully.
             {% endcomment %}
             {% if form.posted_successfully? %}
-              <span class="hide reset-password-success"></span>
+            <span class="hide reset-password-success"></span>
             {% endif %}
             <!--   取消         -->
             <label for="RecoverEmail" class=" label--hidden">{{ 'customer.recover_password.email' | t }}</label>
             <input class="recover-email new-height" type="email" value="" name="email" id="RecoverEmail{{ include_id }}" placeholder="{{ 'customer.recover_password.email' | t }}" autocorrect="off" autocapitalize="off" style="height: 40px; padding: 1rem 0.3rem;">
             <!--          提交  	  -->
-             <p><input type="submit" class="btn submit-email" value="{{ 'customer.recover_password.submit' | t }}"></p>
+            <p><input type="submit" class="btn submit-email" value="{{ 'customer.recover_password.submit' | t }}"></p>
             <button type="button" id="HideRecoverPasswordLink{{ include_id }}" class="btn cancel_text-link">{{ 'customer.recover_password.cancel' | t }}</button>
-          {% endform %}
+            {% endform %}
+          </div>
         </div>
-      </div>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-  //显示注册
-  function showSignup(){
-    $('.login-page').addClass('active-none')
-    $('.sign-up-page').addClass('active-block')
+  //显示重置密码
+  function showResetPassword(){
+    $('.input-content-title').addClass('active-none')
+    $('.recover-password').removeClass('hide')
+    $('.login-box').addClass('active-none')
   }
-  
-  //显示登录
-  if(window.location.href.indexOf('login')===-1&&window.location.href.indexOf('register')===-1){
-    $('.from-box').addClass('page-none')
-    $('html').removeClass('html')
+  //隐藏重置密码
+  function hideResetPassword(){
+    $('.recover-password').addClass('hide')
+    $('.login-box').removeClass('active-none')
+    $('.input-content-title').removeClass('active-none')
+    $('.recover-email').val('')
+  }
+  if(window.location.href.indexOf('login#recover')>-1){
+    showResetPassword()
   }else{
-    $('.from-box').removeClass('page-none')
-    if(window.location.href.indexOf('login')>-1){
-      $('.sign-up-page').addClass('active-none')
-      $('.login-page').addClass('active-block')
-      $('html').addClass('html')
-    }
+    hideResetPassword()
   }
-  
+
+  //显示登录
+  //   if(window.location.href.indexOf('login')===-1&&window.location.href.indexOf('register')===-1){
+  //     $('.from-box').addClass('page-none')
+  //   }else{
+  //     $('.from-box').removeClass('page-none')
+  //     if(window.location.href.indexOf('login')>-1){
+  //       $('.sign-up-page').addClass('active-none')
+  //       $('.login-page').addClass('active-block')
+  //     }
+  //   }
+
   //改变提交框的样式
   if($('.login-box #customer_login').find('.errors').length>0){
-    $('.input-bortton').addClass('input-bortton-top')
+    $('.input-botton').addClass('input-botton-top')
   } else{
-    $('.input-bortton').removeClass('input-bortton-top')
+    $('.input-botton').removeClass('input-botton-top')
   }
 
 
   // 点击眼睛
   $('.login-box .icon-password-eye-open').on('mouseup',function(){
-    $('.login-box .icon-password-eye-open').find('.oblique-line').toggleClass('active-line')
+    $('.login-box .icon-password-eye-open').find('.oblique-line').toggleClass('active-block')
     if($(".login-box .input-password").attr("type")==="text"){
 
       $('.login-box .input-password').attr("type","password");
@@ -371,10 +403,10 @@
   //提交框的样式变化
   function renderLoginInputColor(emailValue,passwordValue) {
     if(emailValue!==''&&passwordValue!==''){
-      $('.login-box .input-bortton').addClass('color-active') 
+      $('.login-box .input-botton').addClass('color-active') 
       return true
     }else{
-      $('.login-box .input-bortton').removeClass('color-active')
+      $('.login-box .input-botton').removeClass('color-active')
       return false
     }
   }
@@ -389,6 +421,7 @@
     renderLoginInputColor(e.target.value,$('.email-number').val())
   })
 
+  //提交重置密码
   $('.recover-password .recover-email').on('input',function(e){
     if(e.target.value!==''){
       $('.submit-email').addClass('color-active') 
@@ -397,10 +430,22 @@
     }
   })
 
+  //显示重置密码
+  $('#RecoverPassword').on('click',function(){
+    showResetPassword()
+  })
+
+  //取消重置密码
+  $('.cancel_text-link').on('click',function(){
+    hideResetPassword()
+  })
+
+
   //获得焦点
   $('.email-number').on('focus',function(){
     $('.email-number').addClass('active-border')	
   })
+  
   $('.login-box .input-password').on('focus',function(){
     $('.login-box .input-password').addClass('active-border')	
   })
@@ -421,20 +466,20 @@
   })
   
   //去注册
-  $('.login-box .color-special').on('click',function(){
-    showSignup()
-  })
+//   $('.login-box .color-special').on('click',function(){
+// //     showSignup()
+//   })
 
   //关闭登录注册页面
   $('.input-box .input-close').on('click',function(){
-    $('.login-page').addClass('page-none')
-    $('.sign-up-page').addClass('page-none')
+    $('.login-page').addClass('active-none')
+//     $('.sign-up-page').addClass('page-none')
   })
 
   {% if form.errors %}
   if (window.location.pathname == '/account/register'){
     window.localStorage.setItem('account-magento-register-error', '{{ form.errors | default_errors }}')
-     $('.sign-up-page').addClass('active-block')
+//      $('.sign-up-page').addClass('active-block')
     $('.login-page').addClass('active-none')
   }
   {% endif %}
@@ -487,7 +532,7 @@
   }
 
 
-  //校验密码是否错误
+  //登录
   function doLogin(form) {
     var email = form.find('[name="customer[email]"]').val();
     var password = aes.encrypt(form.find('[name="customer[password]"]').val());
@@ -529,17 +574,68 @@
       }
     });
   }
-
-  $('.login-box').on('submit', 'form', function(){
-    if ($(this).attr('action') == '/account/login') {
-      doLogin($(this));
-    }else{
-      return true;
-    }
-    return false;
+  
+  //$('.email-number').val(),$('.input-password').val()
+  
+  $('.login-box .input-botton').on('click',function(){
+		console.log($('.email-number').val(),$('.input-password').val())
+        if($('.email-number').val()!==''&&$('.input-password').val()!==''&&$('#customer_login').attr('action') == '/account/login'){
+           doLogin($('#customer_login'));
+        }else{
+         return false;
+        }
+   
   })
 
-</script>
 
-  
-  
+
+
+</script>
+{% schema %}
+ {
+  "name": "登录配置",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "public_logo",
+      "label": "登录的logo"
+    },
+    {
+      "type": "text",
+      "id": "background_email_text",
+      "label": "登录的email背景字",
+      "default": "Work e-mail"
+    },
+    {
+      "type": "text",
+      "id": "login_background_password",
+      "label": "登录密码背景字",
+      "default": "Enter a password"
+    },
+    {
+      "type": "text",
+      "id": "login_title",
+      "label": "登录的标题",
+      "default": "Welcome back"
+    },
+    {
+      "type": "text",
+      "id": "login_text",
+      "label": "登录按钮文案",
+      "default": "Sign in"
+    },
+    {
+      "type": "text",
+      "id": "login_tips_one",
+      "label": "登录底部提示1",
+      "default": "New to Stylelab?"
+    },
+    {
+      "type": "text",
+      "id": "login_tips_two",
+      "label": "登录底部提示2",
+      "default": "Sign up"
+    }
+  ]
+}
+{% endschema %}

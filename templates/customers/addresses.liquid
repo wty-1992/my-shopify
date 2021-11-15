@@ -196,6 +196,7 @@
 </div>
 
 {% endpaginate %}
+{% section 'addresses' %}
 
 <style>
 
@@ -337,5 +338,21 @@
     }
   };
 
+  // 监听添加国家的select
+  $(' #CountryNew').change(function(){
+    var nowProvinceDom=$("#ProvinceNew")
+    var nowCountryDom=$("#CountryNew")
+    var OriginallyProvinceDom=$('.content-block').find("#AddressProvinceNew")
+    var OriginallyCountryDom=$('.content-block').find("#AddressCountryNew")
+    changeOriginallySelect(nowProvinceDom,nowCountryDom,OriginallyProvinceDom,OriginallyCountryDom )
+    const dom=$('#ProvinceContainerNew')
+    if(dom.css("display")==="none"){
+      $('#grid-box-item-new').addClass('grid-box-item-width')
+      nowProvinceDom.hide()
+    }else{
+      $('#grid-box-item-new').removeClass('grid-box-item-width')
+      nowProvinceDom.show()
+    }
+  })
   
 </script>

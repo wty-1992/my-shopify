@@ -8,10 +8,11 @@
     display: none;
   	position: fixed;
     left: 0;
-    top: 0;
+    top: 70px;
     right: 0;
     bottom: 0;
     z-index: 12;
+    color: #222;
   }
   .cart-shadow {  
     width: 100%;
@@ -24,7 +25,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 0 28px;
+    padding: 70px 28px 0;
     right: 0;
     top: 0;
     /* width: 31%; */
@@ -76,14 +77,19 @@
     width: 320px;
   }
   .cart-popup .cart-modal .popup-container .container-item .item-content .content-top .top-description .des-title {
-    margin-bottom: 8px;
+    margin-bottom: 3px;
+    height:48px;
+    font-size: 16px;
+    line-height: 1.5;
+    display: -webkit-box;
+    overflow: hidden;  
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
-  .cart-popup .cart-modal .popup-container .container-item .item-content .content-top .top-description .des-attribute {
-    font-size: 12px;
-    margin-bottom: 6px;
-  }
+  .cart-popup .cart-modal .popup-container .container-item .item-content .content-top .top-description .des-attribute,
   .cart-popup .cart-modal .popup-container .container-item .item-content .content-top .top-description .des-price {
-    font-size: 12px;
+    font-size: 14px;
+    line-height: 24px;
   }
   .cart-popup .cart-modal .popup-container .container-item .item-content .content-top .top-delete {
     flex: 1;
@@ -91,6 +97,7 @@
     padding-top: 14px;
   }
   .cart-popup .cart-modal .popup-container .container-item .item-content .content-bottom {
+    margin-bottom: -5px;
     display: flex;
     justify-content: space-between;
     height: 36px;
@@ -204,11 +211,11 @@
   }
 </style>
 
-<div class="cart-popup">
+<div class="cart-popup alifont">
   <div class="cart-shadow"></div>
   <div class="cart-modal">
     <div class="popup-header">
-      <div class="header-left">My cart （<span></span>）</div>
+      <div class="header-left alifont_bold">My cart （<span></span>）</div>
       <img class="header-close" src="{{ 'close.svg' | asset_url }}"/>
     </div>
     <div class="popup-container">
@@ -248,9 +255,9 @@
           <div class="item-content">
             <div class="content-top">
               <div class="top-description">
-                <div class="des-title">${item.title}</div>
-                <div class="des-attribute">${item.variant_title}</div>
-                <div class="des-price">${item.price / 100}</div>
+                <div class="des-title alifont_bold">${item.title}</div>
+				<div class="des-attribute">${item.variant_title ? item.variant_title : ""}</div>
+				<div class="des-price">${_sunzi_global_data.priceShow(item.price / 100)}</div>
               </div>
               <div class="top-delete">
 				<img onclick="changeCartQty(0, ${index+1})" src="{{ 'delete.svg' | asset_url }}" alt="">
@@ -273,7 +280,7 @@
 	    `;
     });
     $('.container-area').html(htmlText);
-    var priceText = `<span>${_sunzi_global_data.shop.currencySymbol}</span> ${cart.grandTotal / 100}`;
+    var priceText = `<span>${_sunzi_global_data.shop.currencySymbol}</span> ${cart.total_price / 100}`;
     $('.total-price').html(priceText);
     var cartCount = cart.item_count;
     $('.header-left span').html(cart.item_count);
