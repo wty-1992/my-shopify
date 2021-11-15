@@ -1,12 +1,19 @@
 <style>
-  {% if handle == '90-day-returns' %}
-  .days-return-container ul{
-  	list-style: disc;
-    padding-left: 1.5em;
+.page_default_container{
+  padding: 20px;
+}
+
+/* PC端样式 */
+@media screen and (min-width: 768px){
+  .page_default_container{
+    max-width: 1372px;
+    padding: 30px;
+    margin-left: auto;
+    margin-right: auto;
   }
-  .main-container .catalog-category-bg{
-  	margin-bottom: 70px;
-  }
-  {% endif %}
+}
 </style>
-{{ page.content }}
+
+<div class="page_default_container mm-header-height">
+	{{ page.content }}
+</div>
