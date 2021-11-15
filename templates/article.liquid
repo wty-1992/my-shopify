@@ -1,52 +1,177 @@
+{% comment %} 
+** @name  文章详情页面**
+** @author 陈健辉 **
+** @integrate 陈健辉 **
+** @remarks 暂无作者头像信息 **
+{% endcomment %}
+
 <style>
-.main-content{
-  min-height: 400px;
-  background: #f7f8f9;
+.search-container{
+  display: none;
 }
-.page-width{
-  padding-top: 4%;
-  width: 80%;
-  margin-left: auto;
-  margin-right: auto;
+
+.article_module_search{
+  padding: 20px;
+  background: #F6F6F9;
 }
-.list--no-bullets {
-  list-style: none;
-}.return-link {
-  display: block;
+.article_search{
+  display: flex;
+  align-items: center;
+  padding: 6px 10px;
+  background: #fff;
+  box-shadow: 0 1px 1px 0 rgba(106, 102, 136, 0.08), 0 4px 16px 0 rgba(183,183,192,0.3);
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+.article_search img{
+  width: 20px;
+  height: 20px;
+}
+.article_search input{
+  border: none;
+  background: transparent;
+}
+.article_nav_module{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.article_nav_current{
+  color: #222;
+}
+.detail_module{
+  background: #F6F6F9;
+}
+.detail_title_author{
+  padding: 20px 20px 80px;
+  color: #222;
+}
+.article_detail_title{
+  font-size: 24px;
+  line-height: 32px;
   text-align: center;
-  margin-bottom: 0;
-  font-size: em(24);
 }
-.return-link .icon {
-  fill: currentColor;
+.article_author_time{
+  margin: 26px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 24px;
+}
+.article_time{
+  color: #928FA5;
+}
+
+.detail_ima_module{
+  padding: 0 20px;
+  position: relative;
+  top: -80px;
+}
+.detail_img{
+  border-radius: 4px;
+  overflow: hidden;
+}
+.detail_img img{
+  border-radius: 4px;
+}
+
+.detail_content{
+  margin-top: -40px;
+  margin-bottom: 80px;
+  padding: 0 20px;
+  font-size: 16px;
+  line-height: 36px;
+  color: #222;
+}
+
+/* PC端样式 */
+@media screen and (min-width: 768px){
+  .article_module_search{
+    padding: 60px 30px 20px;
+  }
+  .article_search,
+  .article_nav_module{
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .article_search{
+    padding: 8px 30px;
+    margin-bottom: 10px;
+  }
+  .article_nav_last{
+    cursor: pointer;
+  }
+
+  .detail_title_author,
+  .detail_ima_module,
+  .detail_content{
+    max-width: 1022px;
+    margin: 0 auto;
+  }
+
+  .article_detail_title{
+    margin-top: 20px;
+  }
+
+  .detail_img{
+    display: flex;
+    justify-content: center;
+    height: 500px;
+  }
+  .detail_img img{
+    height: 100%;
+  }
+
+  .detail_content{
+    margin-top: -20px;
+    margin-bottom: 80px;
+  }
 }
 </style>
-<div class="page-width">
-  <article itemscope itemtype="http://schema.org/Article" class="grid">
-    <div class="grid__item{% if blog.all_tags.size > 0 %} medium-up--three-quarters large-up--four-fifths{% endif %}">
-    {% section 'blog-article' %}
-      <div class="full-width full-width--return-link">
-        <a href="{{ blog.url }}" class="h1 return-link">
-         &lt;&lt;
-          {{ 'blogs.article.back_to_blog' | t: title: blog.title }}
-        </a>
-      </div>
-    </div>
-     {% if blog.all_tags.size > 0 %}
-      <div class="grid__item medium-up--one-quarter large-up--one-fifth small--hide">
-        <div class="content-block content-block--small">
-          <h3 class="h6 content-block__title">{{ 'blogs.article.tags' | t }}</h3>
-          <ul class="list--no-bullets list--bold">
-            {% for tag in blog.all_tags %}
-              {% if current_tags contains tag %}
-              <li>{{ tag }}</li>
-              {% else %}
-              <li>{{ tag | link_to_tag: tag }}</li>
-              {% endif %}
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
-    {% endif %}
-  </article>
+
+{% comment %} 顶部搜索模块 {% endcomment %}
+<div class="article_module_search mm-header-height">
+  {% comment %} 模块搜索框 {% endcomment %}
+  <div class="article_search">
+    <img src="{{ 'search.svg' | asset_url }}" alt="serach">
+    <input
+      class="alifont"
+      type="text"
+      placeholder="Search for articles"
+      id="searchInput"
+      value=""/>
+  </div>
+  {% comment %} 导航条模块 {% endcomment %}
+  <div class="article_nav_module">
+    <span id="article_nav_last" class="article_nav_last alifont">Help Center</span>
+    <span class="article_nav_current alifont_bold">/ {{ article.title }}</span>
+  </div>
 </div>
+
+{% comment %} 文章标题/作者 {% endcomment %}
+<div class="detail_module">
+  <div class="detail_title_author">
+    <div class="article_detail_title alifont_bold">{{ article.title }}</div>
+    <div class="article_author_time">
+        <span class="article_author alifont_bold">{{ article.author }}, </span>
+        <span class="article_time alifont">{{ article.updated_at | time_tag: format: 'date' }}</span>
+      </div>
+  </div>
+</div>
+
+{% comment %} 文章图片 {% endcomment %}
+<div class="detail_ima_module">
+  <div class="detail_img">
+    <img src={{ article.image.src | img_url }} alt="image">
+  </div>
+</div>
+
+{% comment %} 文字内容模块 {% endcomment %}
+<div class="detail_content alifont">{{ article.content }}</div>
+
+
+<script>
+/* 跳转文章列表页面 */
+$('#article_nav_last').on('click', () => {
+  location.href = '/blogs/help-center';
+})
+</script>

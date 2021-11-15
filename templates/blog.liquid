@@ -1,120 +1,267 @@
-
+{% comment %} 
+** @name  文章列表页面**
+** @author 陈健辉 **
+** @integrate 陈健辉 **
+** @remarks 暂无作者头像信息 **
+{% endcomment %}
 
 <style>
-.list--no-bullets {
-  list-style: none;
+.search-container{
+  display: none;
 }
-.main-content .breadcrumb {
-    padding: 1.67rem 0;
+
+.article_module_search{
+  padding: 20px;
+  background: #F6F6F9;
 }
-.faq-h1{
-    font-size:1rem;
-    margin: 1rem 0;
+.article_search_title{
+  font-size: 32px;
+  line-height: 48px;
+  text-align: center;
+  color: #222222;
 }
-.page-container {
-    padding: 1.67rem 0 4.17rem; 
-    background: #f7f8f9;
+.article_search{
+  display: flex;
+  align-items: center;
+  padding: 6px 10px;
+  background: #fff;
+  box-shadow: 0 1px 1px 0 rgba(106, 102, 136, 0.08), 0 4px 16px 0 rgba(183,183,192,0.3);
+  margin: 20px 0;
+  border-radius: 4px;
 }
-.faq-content-block{
-    padding-top: 1.67rem ;
-    background-color: #fafafa;
-    padding: 1.67rem 2.5rem 3.25rem;
+.article_search img{
+  width: 20px;
+  height: 20px;
 }
-.faq-content-block ul {
-display:flex; 
-flex-wrap: wrap;
+.article_search input{
+  border: none;
+  background: transparent;
 }
-.faq-content-block ul li{   
+
+.article_list_module{
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 20px;
+}
+.article_item{
+  background: rgba(246,246,249,0.5);
+  border-radius: 4px;
+  color: #222222;
+  line-height: 24px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.article_item::after {
+    display: block;
     width: 100%;
-    color: #bebebe;
-    display: inline-block; 
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1rem;
-    margin: 0.625rem 0;
-    padding: 0 2.5rem 0 0;
+    height: 100%;
+    background: #ccc;
+    position: absolute;
+    content: '';
+    top: 0;
+    left: 0;
+    opacity: 0;
 }
-.faq-content-block ul li a:hover{    text-decoration: underline;}
-.faq-content-block ul li a,.faq-content-block li i.photo-yuandian1{
-    color:#1a74b0;
-}
-.back-faq{
-        text-align: center;
-    margin: 2rem;
-    text-decoration: underline;
-}
-.visually-hidden, .icon__fallback-text {
-  position: absolute !important;
+.article_img{
+  padding: 5px;
   overflow: hidden;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  width: 1px;
-  margin: -1px;
-  padding: 0;
-  border: 0;
+  height: 200px;
+  margin: 0 auto;
 }
-.no-svg .icon__fallback-text {
-  position: static !important;
-  overflow: inherit;
-  clip: none;
-  height: auto;
-  width: auto;
-  margin: 0;
+.article_img img{
+  height: 100%;
 }
-.link-accent-color {
-	color: #333;
-	text-decoration: none;
-	transition: color 0.1s ease-in,background-color 0.1s ease-in
+.article_detail_module{
+  padding: 10px;
 }
-@media(min-width:1024px){
-    .faq-content-block ul li{    width: 49%;}
+.article_title{
+  font-size: 16px;
+}
+.article_author_time{
+  font-size: 12px;
+  margin: 20px 0;
+}
+.article_time{
+  color: #928FA5;
+}
+.article_detail{
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+
+.article_load_more{
+  margin: 20px 0 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #222222;
+}
+.article_current{
+  font-size: 14px;
+  line-height: 20px;
+}
+.article_load_btn{
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  border: 1px solid rgba(34,34,34,0.08);
+  background: #fff;
+  font-size: 16px;
+  padding: 4px 4px 4px 16px;
+}
+
+/* PC端样式 */
+@media screen and (min-width: 768px) {
+  .article_module_search{
+    padding: 60px 30px;
+  }
+  .article_search_title,
+  .article_search{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 8px 30px;
+  }
+  .article_search_title{
+    margin-bottom: 20px;
+  }
+
+  .article_list_module{
+    flex-direction: row;
+    max-width: 1260px;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    gap: 30px;
+    padding: 60px 30px 20px;
+  }
+  .article_item{
+    width: 380px;
+  }
+  .article_img{
+    height: 270px;
+  }
+  .article_item,
+  .article_load_btn{
+    cursor: pointer;
+  }
 }
 </style>
-<div class="faq page-width"> 
-  <h1 class="faq-h1">
-    {% if current_tags %}
-      {{ current_tags.first }}
-    {% else %}
-      {{ blog.title }}
-    {% endif %}
-    <a href="{{ shop.url }}{{ blog.url }}.atom" class="blog__rss-link link-accent-color">
-      <span class="icon__fallback-text">{{ 'blogs.rss' | t }}</span>
-    </a>
-  </h1> 
-  <div class="grid">
-    <div class="grid__item{% if blog.all_tags.size > 0 %} medium-up--three-quarters large-up--four-fifths{% endif %}">
 
-        <div class="faq-content-block">
-          <ul class="blog__title-link">
-            {% for article in blog.articles %}
-                <li>
-                    <i class="icon photofont photo-yuandian1"></i>
-                    <a href="{{ article.url }}">{{ article.title }}</a>
-                </li>
-            {% endfor %}
-
-           </ul>
-       </div>
-       <div class="back-faq"><a href="/pages/faq" > &lt;&lt; {{ 'blogs.back_to_previous_page' | t }}</a></div>
-    </div>
-    {% if blog.all_tags.size > 0 %}
-      <div class="grid__item medium-up--one-quarter large-up--one-fifth small--hide">
-        <div class="content-block content-block--small">
-          <h6 class="content-block__title">{{ 'blogs.article.tags' | t }}</h6>
-          <ul class="list--no-bullets list--bold">
-            <li>
-              <a href="{{ blog.url }}">{{ 'blogs.article.all_tags' | t }}</a>
-            </li>
-            {% for tag in blog.all_tags %}
-              {% if current_tags contains tag %}
-              <li>{{ tag }}</li>
-              {% else %}
-              <li>{{ tag | link_to_tag: tag }}</li>
-              {% endif %}
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
-    {% endif %}
+{% comment %} 顶部搜索模块 {% endcomment %}
+<div class="article_module_search mm-header-height">
+  {% comment %} 模块标题 {% endcomment %}
+  <div class="article_search_title alifont_heavy">
+    Advice and answers from the Mademine Team
+  </div>
+  {% comment %} 模块搜索框 {% endcomment %}
+  <div class="article_search">
+    <img src="{{ 'search.svg' | asset_url }}" alt="serach">
+    <input
+      class="alifont"
+      type="text"
+      placeholder="Search for articles"
+      id="searchInput"
+      value=""/>
   </div>
 </div>
+
+{% comment %} 文字列表模块 {% endcomment %}
+<div id="article_list_module" class="article_list_module">
+  {% comment %} 文章列表数据通过JS动态渲染
+  <div class="article_item">
+    // 文章图片
+    <div class="article_img">
+      <img src="https://cdn.shopify.com/s/files/1/0372/6897/9848/products/B_400x.jpg?v=1588056625" alt="">
+    </div>
+    // 文章描述
+    <div class="article_detail_module">
+      <div class="article_title">How can I create a product with Mademine?</div>
+      <div class="article_author_time">
+        <span class="article_author">Liz Ortner, </span>
+        <span class="article_time">Updated yesterday</span>
+      </div>
+      <div class="article_detail">
+        Mademine currently offers more than 200 unique products for your e-commerce store — from t-shirts to puzzles to pet beds — all of which can be custom-printed with your chosen designs
+      </div>
+    </div>
+  </div>
+  {% endcomment %}
+</div>
+
+{% comment %} 加载更多模块 {% endcomment %}
+<div class="article_load_more">
+  {% comment %} 当前显示数据/总数量 {% endcomment %}
+  <div class="article_current alifont">Show <span id="current_show" class="alifont_bold">0/0</span> tarticles</div>
+  {% comment %} 加载按钮 {% endcomment %}
+  <div id="article_load_btn" class="article_load_btn">
+    <span class="alifont_bold">Show more</span>
+    <img src="{{'next-bottom.svg' | asset_url}}" />
+  </div>
+</div>
+
+<script>
+const articleList = {{blog.articles | json}}; // 获取文章列表数据
+
+let pageNum = 1; // 页码
+let pageSize = 12; // 页容量
+let total = articleList.length || 0; // 总数
+let pages = Math.ceil(total / pageSize); // 总页数
+
+/* 点击加载更多事件 */
+$('#article_load_btn').on('click', () => {
+  pageNum++;
+  load();
+});
+
+/* load */
+load();
+function load(){
+  // 判断是否已经加载全部数据
+  if(pageNum >= pages){
+    $('#article_load_btn').unbind('click');
+    $('#article_load_btn').hide();
+  };
+  const start = (pageNum - 1) * pageSize;
+  let end = pageNum * pageSize;
+  end = end >= total ? total : end;
+  loadMore(articleList.slice(start, end));
+  $('#current_show').html(`${end}/${total}`);
+}
+
+/* 
+ * 加载更多数据
+ * @param listData 需要渲染的列表数据
+ */
+function loadMore(listData){
+  let articleTemplate = "";
+  listData.forEach(item => {
+    articleTemplate += `
+      <div class="article_item" data-handle="${item.handle}">
+        <div class="article_img">
+          <img src="${item.image?.src}" alt="">
+        </div>
+        <div class="article_detail_module">
+          <div class="article_title alifont_bold">${item.title}</div>
+          <div class="article_author_time">
+            <span class="article_author alifont_bold">${item.author}, </span>
+            <span class="article_time alifont">${new Date(item.updated_at).toDateString()}</span>
+          </div>
+          <div class="article_detail alifont">${item.summary_html}</div>
+        </div>
+      </div>
+    `;
+  });
+  $('#article_list_module').append(articleTemplate);
+}
+/* 绑定列表数据模块点击事件 通过事件委托获取事件源 */
+$('#article_list_module').on('click', (event) => {
+  const handle = event.target.dataset.handle;
+  location.href = `/blogs/help-center/${handle}`;
+})
+</script>

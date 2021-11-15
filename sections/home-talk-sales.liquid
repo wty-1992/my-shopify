@@ -19,7 +19,7 @@
   display:flex;
   justify-content: center;
   align-items: center;
-  background-image: url({{ 'talk-sale-banner.png' | asset_img_url: 'master' }});
+  background-image: url({{ 'banner_background_pc.png' | asset_img_url: 'master' }});
   box-shadow: 0 12px 24px rgba(255, 260, 0, 0.08),
       0 1px 1px rgba(212, 196, 137, 0.8),
       0 4px 16px rgba(255, 172, 0, 0.36);
@@ -88,6 +88,7 @@
   .talk-sales-box{
     height:134px;
     padding: 0;
+    background-image: url({{ 'banner_background_mobile.png' | asset_img_url: 'master' }});
   }
   .talk-text-box{
     flex-direction: column;
