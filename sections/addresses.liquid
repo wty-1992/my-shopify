@@ -1,0 +1,858 @@
+<style>
+  .html{
+    width:100%;
+    height:100%;
+    overflow: hidden;
+  }
+  .text-color{
+    color:#222222;
+  }
+  .addresses-page{
+    width:100%;
+    height:100%;
+    position: absolute;
+    background: #fff;
+    z-index: 1000;
+    top:70px;
+    /*     display:none; */
+  }
+  .addresses-title{
+    background:#F6F6F9;
+    padding:30px;
+    color:#222222;
+    font-size:32px;
+    line-height:78px;
+    text-align: center;
+    margin-left:7px;
+
+  }
+  .addresses-box{
+    width:100%;
+    padding:0px 14.27% 170px 14.27%;
+    height:100%;
+    overflow: auto;
+  }
+  .add-address-box{
+    width:100%;
+    padding-bottom: 40px;
+  }
+  .add-tilte{
+    width:100%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    padding:28px 0;
+  }
+
+  .add-tilte-box{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    border:1px solid rgba(34,34,34,0.08);
+    padding: 10px 17px 10px 7px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .add-title-text{
+    font-size:20px;
+    line-height:24px;
+  }
+  .address-head{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    padding:7px 0px;
+    border-bottom:1px solid rgba(34,34,34,0.04);
+  }
+  .icon-add-address-close,.icon-address-delete,.icon-address-edit,.add-icon{
+    width:36px;
+    height:36px; 
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .address-from{
+    width:100%;
+    height:100%;
+    background: rgba(34,34,34,0.32);
+    position: fixed;
+    top:0;
+    right:0;
+    left:0;
+    bottom:0;
+    display: flex;
+    justify-content: end;
+    z-index:10;
+  }
+  .address-from-box{
+    background:#fff;
+    width:585px;
+    padding: 0 28px;
+    height:100%;
+    position: relative;
+  }
+  .add-address-title{
+    font-size:24px;
+    line-height:56px;
+    font-weight: 700;
+  }
+  .grid-box{
+    overflow: auto;
+    height:calc(100% - 156px);
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+    padding-bottom:78px;
+  }
+  .grid-box form{
+    width:100%;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+
+  }
+  .grid-box::-webkit-scrollbar {
+    display: none; /* Chrome Safari */
+  }
+  .grid-box-item{
+    width:253px;
+    margin-bottom:28px;
+  }
+  .grid-box label{
+    font-size:14px;
+    line-height:16px;
+    text-transform:inherit;
+    color:#222222;
+    font-weight: 400;
+    margin-bottom:6px;
+  }
+
+  .grid-box input,.grid-box .select-box {
+    margin-top:10px;
+    color:#222222;
+    font-size:16px;
+    line-height:19px;
+    border:1px solid rgba(34,34,34,0.16);
+    border-radius: 4px;
+    height:56px;
+    background:#fff;
+    margin-bottom:0px;
+    padding:10px;
+    margin-top:0px;
+  }
+  .grid-box p input{
+    width: 24px !important;
+    height:24px;
+  }
+  .grid-box p{
+    display:flex;
+    align-items: center;
+    margin-top:0px;
+    margin-right:14px;
+  }
+  .grid-box .grid-box-item-width-p label{
+    font-size:16px;
+    line-height:19px;
+    margin-bottom:0px;
+  }
+  .grid-box select{
+    width:100%;
+    height:100%;
+    background:#fff;
+    padding:10px;
+    border-width: 0;
+    border-radius: 4px;
+    color: #222222;
+    font-size: 16px;
+    line-height: 19px;
+  }
+  .grid-box .select-box{
+    padding-right:49px;
+    position: relative;
+    padding:0px;
+  }
+  .grid-box-item-width{
+    width:100%;
+    margin-bottom:28px;
+  }
+  .icon-select-down{
+    position: absolute;
+    top: 50%;
+    right: 13px;
+    transform: translate(0px,-50%);
+    display:flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .text-transform-none{
+    text-transform:none;
+  }
+  .add-submit{
+    width:100%;
+    position: absolute;
+    border-bottom:1px solid rgba(34,34,34,0.04);
+    bottom: 0;
+    left:0px;
+    padding: 28px;
+    
+  }
+  .add-submit input{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width:100%;
+    border-radius: 4px;
+    background:#F9423A;
+    cursor: pointer;
+    color:#fff;
+    text-transform: none;
+  }
+  .addresses-list-box{
+    width:100%;
+  }
+  .addresses-list li{
+    margin-bottom:28px;
+    border:1px solid rgba(34,34,34,0.08);
+    padding:19px 28px 19px 31px ;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .icon-address{
+    width:64px;
+    height:64px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .account-name{
+    font-size:24px;
+    line-height:32px;
+    /*     text-align:center; */
+    width:100px;
+    margin-left:8.88%;
+  }
+  .account-addresses{
+    font-size:16px;
+    line-height:24px;
+    margin-left:8.88%;
+    /*     text-align:center; */
+
+  }
+  .account-addresses-one{
+    width:18.12%;
+  }
+  .account-addresses-two{
+    width:32.5%;
+  }
+  .addresses-default{
+    background:#FFE7E5;
+    padding:5px 12px;
+    color:#F9423A;
+    font-size:12px;
+    line-height:14px;
+    border-radius: 4px;
+    margin-left:8.88%;
+  }
+  .icon-operation{
+    width:100px;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .addresses-left{
+    display:flex;
+    align-items: center;
+    flex:1;
+  }
+  .account-addresses-detailed{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    margin-right: 8.88%;
+  }
+  .display-none{
+    display:none;
+  }
+  .grid-box .form-vertical input[type=radio], .form-vertical input[type=checkbox]{
+    border: 2px solid rgba(34,34,34,0.28) !important;
+  }
+
+  @media (max-width: 768px) {
+    .addresses-box{
+      padding:0 20px;
+    }
+    .addresses-title{
+      font-size:24px;
+      line-height:32px;
+      padding:20px;
+    }
+    .addresses-left{
+      display:block;
+    }
+    .addresses-list li{
+      padding:15px 11px 20px 14px;
+      position: relative;
+
+    }
+    .account-name{
+      width:98%;
+      font-size: 16px;
+      line-height: 24px;
+      margin-left:6px;
+      margin-top:16px;
+    }
+    .account-addresses{
+      width:98%;
+      font-size: 13px;
+      line-height: 24px;
+      margin-left:6px;
+    }
+    .icon-operation{
+      display:none;
+    }
+    .add-title-text{
+      font-size: 16px;
+      line-height: 19px;
+    }
+    .add-tilte-box{
+      padding: 0 15px 0 0;
+    }
+    .icon-address{
+      width:46px;
+      height:46px;
+    }
+    .icon-address svg{
+      width:46px;
+      height:46px;
+    }
+    .display-none{
+      display:block;
+    }
+    .account-addresses-item{
+      display:flex;
+    }
+    .icon-operation-mb{
+      width:36px;
+      height:36px;
+      display:block; 
+      position: absolute;
+      right:11px;
+      top:20px;
+    }
+    .icon-operation-box{
+      width:100%;
+      height:100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      cursor: pointer;
+    }
+    .operation-box{
+      padding-left:20px;
+      min-width:128px; 
+      font-size: 14px;
+      line-height: 48px;
+      position: absolute;
+      top:36px;
+      right:0px;
+      box-shadow: 0 4px 16px 0 rgba(183, 183, 192 , 0.3);
+      border-radius: 4px;
+      display:none;
+    }
+    .addresses-default{
+      position: absolute;
+      right:47px;
+      top:26px;
+    }
+    .address-from{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding:20px;
+    }
+    .address-from-box{
+      width:100%;
+      padding:0 20px;
+    }
+    .grid-box-item{
+      width:100%;
+      margin-bottom:20px;
+    }
+    .add-tilte{
+      padding:20px 0;
+    }
+    .address-head{
+      padding:0px;
+
+    }
+    .add-address-title{
+      font-size:20px;
+    }
+    .grid-box{
+      padding-bottom:0px;
+    }
+    .grid-box-item-width{
+     margin-bottom: 20px;
+    }
+    .add-submit{
+      padding: 20px;
+    }
+  }
+</style>
+
+<div class="addresses-page">
+  <div class="addresses-title text-color" >{{section.settings.addresses_title}}</div>
+  <div class="addresses-box">
+    <!--    列表  -->
+    <div class="add-address-box">
+      <div class="add-tilte">
+        <div class="add-tilte-box">
+          <span class="add-icon"> 
+            {% include 'icon-add-address'%}
+          </span>
+          <span class="add-title-text text-color">{{section.settings.add_addresses_title}}</span>
+        </div>
+      </div>
+      <div class="addresses-list-box">
+        <ul class="addresses-list">
+          {% for address in customer.addresses %}
+          <li class="addresses-list-item">
+            <div class="addresses-left">
+              <div class="icon-address">
+                {% include 'icon-address'%}
+              </div>
+              <div class="account-name text-color">
+                <span>{{ address.first_name }}</span>
+                <span>{{ address.last_name }}</span>
+              </div>
+              <div class="account-addresses account-addresses-one text-color">
+                <div class="account-company">{{ address.company }}</div>
+                <div class="account-company">
+                  <span>{{ address.address1 }}</span>
+                  <span>{{ address.address2 }}</span>
+                </div>
+              </div>
+
+
+              <div class="account-addresses-detailed" >
+                <div class="account-addresses account-addresses-two text-color">
+                  <div class="account-addresses-item">
+                    <span>{{ address.city }}</span>
+                    <span>{{ address.province }}</span>
+                  </div>
+                  <div class="account-addresses-item">
+                    {{ address.country }}
+                  </div>
+
+                  <div class="account-addresses-item">
+                    <span class="display-none">{{section.settings.phone}}:</span>
+                    {{ address.phone }}
+                  </div>
+                </div>
+
+                {% if address == customer.default_address %}
+                <div class="addresses-default">{{section.settings.address_default}}</div>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- 		mb时显示	 -->
+            <div class="icon-operation icon-operation-mb display-none">
+              <div  class="icon-operation-box" data-form-id="{{ address.id }}">
+                {% include 'icon-operate-mb'%}
+                <div id="address_box_{{ address.id }}" class="operation-box ">
+                  <div class="address-edit text-color" data-form-id="{{ address.id }}">{{section.settings.address_edit}}</div>
+                  <div class="address-operation-delete text-color" data-form-id="{{ address.id }}">{{section.settings.address_delete}}</div>
+                </div>
+              </div>
+
+            </div>   
+            <!-- 		pc时显示	 -->
+            <div class="icon-operation">
+              <div class="icon-address-edit address-edit" data-form-id="{{ address.id }}">   {% include 'icon-address-edit'%}</div>
+              <div class=" icon-address-delete address-operation-delete" data-form-id="{{ address.id }}">   {% include 'icon-address-delete'%}</div>
+            </div>
+          </li>
+
+          <!--     编辑   -->
+          <div id="Edit_{{ address.id }}" class="Edit_{{ address.id }} address-from hide form-vertical">
+
+            <div class="address-from-box">
+              <div class="address-head">
+                <div class="add-address-title text-color">{{section.settings.edit_addresses_title}}</div> 
+                <div class="icon-add-address-close">
+                  {% include 'icon-add-address-close'%}
+                </div>
+              </div>
+
+              <div class="grid-box">
+                {% form 'customer_address', address %}
+                <div class="grid-box-item">
+                  <label class="text-color " for="FirstName">{{ 'customer.addresses.first_name' | t }}</label>
+                  <input type="text" id="FirstName_{{ form.id }}"  name="address[first_name]" value="{{ form.first_name }}">
+                </div>
+                <div class="grid-box-item ">
+                  <label for="LastName">{{section.settings.addresses_last_name}}</label>
+                  <input type="text" id="LastName_{{ form.id }}" name="address[last_name]" value="{{ form.last_name }}">
+                </div>
+                <div class="grid-box-item-width">
+                  <label for="Company">{{ 'customer.addresses.company' | t }}</label>
+                  <input type="text" id="Company_{{ form.id }}" name="address[company]" value="{{ form.company }}">
+                </div>
+                <div class="grid-box-item-width">
+                  <label for="Address1">{{section.settings.addresses_text}}</label>
+                  <input type="text" id="Address1_{{ form.id }}" name="address[address1]" value="{{ form.address1 }}">
+                </div>
+
+                <div class="grid-box-item-width">
+                  <label for="Address1">{{section.settings.addresses_detailed}}</label>
+                  <input type="text" id="Address2_{{ form.id }}" name="address[address2]" value="{{ form.address2 }}">
+                </div>
+                <div class="grid-box-item ">
+                  <label for="City">{{ 'customer.addresses.city' | t }}</label>
+                  <input type="text" id="City_{{ form.id }}" name="address[city]" value="{{ form.city }}">
+                </div>
+
+                <!--               国家   -->
+                <div class="grid-box-item  select-option-country">
+                  <label for="Country_{{ form.id }}">{{ 'customer.addresses.country' | t }}</label>
+                  <div class="select-box">
+                    <select id="Country_{{ form.id }}" name="address[country]" data-default="{{ form.country }}">{{ country_option_tags }}</select>
+                    <div class="icon-select-down">
+                      {% include 'icon-address-arrow-down'%}
+                    </div>
+                  </div>
+                </div>
+
+                <!--                省份  -->
+                <div class="grid-box-item select-wrapper-optio" id="ProvinceContainer_{{ form.id }}" style="display:none">
+                  <label for="Province_{{ form.id }}">{{ 'customer.addresses.province' | t }}</label>
+                  <div class="select-box">
+                    <select id="Province_{{ form.id }}" name="address[province]" data-default="{{ form.province }}"></select>
+                    <div class="icon-select-down">
+                      {% include 'icon-address-arrow-down'%}
+                    </div>
+                  </div>
+                </div>
+
+                <div id='grid-box-item_{{ form.id }}' class="grid-box-item  text-transform-none">
+                  <label for="Zip">{{section.settings.zip_code}}</label>
+                  <input type="text" id="Zip" name="address[zip]" value="{{ form.zip }}" autocapitalize="characters">
+                </div>
+
+                <div class="grid-box-item-width">
+                  <label for="Zip">{{section.settings.phone}}</label>
+                  <input type="tel" id="Phone" name="address[phone]" value="{{ form.phone }}">
+                </div>
+                <p class="grid-box-item-width-p">
+                  {{ form.set_as_default_checkbox }}
+                  <label for="address_default_address_{{ form.id }} "> {{ 'customer.addresses.set_default' | t }}</label>
+                </p>
+                <div class="add-submit">
+                  <input type="submit" class="btn" value="{{section.settings.edit_addresses}}">
+                </div>
+                {% endform %}
+              </div>
+
+
+            </div>
+
+          </div>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <!--   填写表单   -->
+    <div id="NewForm" class="NewForm address-from hide form-vertical">
+
+      <div class="address-from-box">
+        <div class="address-head">
+          <div class="add-address-title text-color">{{section.settings.add_addresses_title}}</div> 
+          <div class="icon-add-address-close">
+            {% include 'icon-add-address-close'%}
+          </div>
+        </div>
+        <div class="grid-box">
+          {% form 'customer_address', customer.new_address %}
+          <div class="grid-box-item">
+            <label class="text-color " for="FirstNameNew">{{ 'customer.addresses.first_name' | t }}</label>
+            <input type="text" id="FirstNameNew" name="address[first_name]" value="{{ form.first_name }}">
+          </div>
+          <div class="grid-box-item ">
+            <label for="LastNameNew">{{section.settings.addresses_last_name}}</label>
+            <input type="text" id="LastNameNew" name="address[last_name]" value="{{ form.last_name }}">
+          </div>
+          <div class="grid-box-item-width">
+            <label for="CompanyNew">{{ 'customer.addresses.company' | t }}</label>
+            <input type="text" id="CompanyNew" name="address[company]" value="{{ form.company }}">
+          </div>
+          <div class="grid-box-item-width">
+            <label for="Address1New">{{section.settings.addresses_text}}</label>
+            <input type="text" id="Address1New" name="address[address1]" value="{{ form.address1 }}">
+          </div>
+          <div class="grid-box-item-width">
+            <label for="Address1New">{{section.settings.addresses_detailed}}</label>
+            <input type="text" id="Address1New" name="address[address1]" value="{{ form.address2 }}">
+          </div>
+          <div class="grid-box-item-width">
+            <label for="Address1New">{{section.settings.addresses_detailed}}</label>
+            <input type="text" id="Address1New" name="address[address1]" value="{{ form.address2 }}">
+          </div>
+          <div class="grid-box-item ">
+            <label for="CityNew">{{ 'customer.addresses.city' | t }}</label>
+            <input type="text" id="CityNew" name="address[city]" value="{{ form.city }}">
+          </div>
+          <!--国家  -->
+          <div class="grid-box-item">
+            <label for="CountryNew">{{ 'customer.addresses.country' | t }}</label>
+            <div class="select-box">
+              <select id="CountryNew" name="address[country]" data-default="{{ form.country }}">{{ country_option_tags }}</select>
+              <div class="icon-select-down">
+                {% include 'icon-address-arrow-down'%}
+              </div>
+            </div>
+          </div>
+          <!--省份  -->
+          <div class="grid-box-item" id="ProvinceContainerNew">
+            <label for="ProvinceNew">{{ 'customer.addresses.province' | t }}</label>
+            <div class="select-box">
+              <select id="ProvinceNew" name="address[province]" data-default="{{ form.province }}"></select>
+              <div class="icon-select-down">
+                {% include 'icon-address-arrow-down'%}
+              </div>
+            </div>
+          </div>
+
+          <div id="grid-box-item-new" class="grid-box-item  text-transform-none">
+            <label for="ZipNew">{{section.settings.zip_code}}</label>
+            <input type="text" id="ZipNew" name="address[zip]" value="{{ form.zip }}" autocapitalize="characters">
+          </div>
+
+          <div class="grid-box-item-width">
+            <label for="ZipNew">{{section.settings.phone}}</label>
+            <input type="tel" id="PhoneNew" name="address[phone]" value="{{ form.phone }}">
+          </div>
+
+          <p class="grid-box-item-width-p">
+            {{ form.set_as_default_checkbox }}
+            <label for="address_default_address_{{ form.id }}">{{ 'customer.addresses.set_default' | t }}</label>
+          </p>
+          <div class="add-submit">
+            <input type="submit" class="btn" value="{{section.settings.add_addresses}}">
+          </div>
+          {% endform %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  if(window.location.href.indexOf('addresses')>-1){
+    $('html').addClass('html')
+  }else{
+    $('html').removeClass('html')
+  }
+
+  //点击添加
+  $('.add-tilte-box').click(function(){
+    $(".NewForm").removeClass('hide').show();
+    var nowProvinceDom=$("#ProvinceNew")
+    var nowCountryDom=$("#CountryNew")
+    var OriginallyProvinceDom=$('.content-block').find("#AddressProvinceNew")
+    var OriginallyCountryDom=$('.content-block').find("#AddressCountryNew")
+    changeOriginallySelect(nowProvinceDom,nowCountryDom,OriginallyProvinceDom,OriginallyCountryDom)
+  })
+
+  //关闭添加
+  $('.icon-add-address-close').click(function(){
+    $(".address-from").hide();
+  })
+
+  //点击编辑
+  $('.address-edit').click(function(){
+    var current_list = $(this).attr('data-form-id');
+    $('.Edit_'+current_list).removeClass('hide').show();
+  })
+
+
+  //删除
+  $('.address-operation-delete').click(function(){
+    var addressID = $(this).data('form-id');
+    var delTip = $(this).data('confirm-message');
+    return Shopify.CustomerAddress.destroy(addressID,delTip);
+  })
+
+  //mb显示编辑删除操作
+  $('.icon-operation-box').click(function(){ 
+    var current_list = $(this).attr('data-form-id');
+    if( $('#address_box_'+current_list).css('display')==='block'){
+      $('#address_box_'+current_list).hide()
+    }else{
+      $('#address_box_'+current_list).show()
+    }
+  })
+
+  //模拟点击原本的国家的select事件 
+  function  changeOriginallySelect(nowProvinceDom , nowCountryDom,OriginallyProvinceDom,OriginallyCountryDom){
+    const value= nowCountryDom.find("option:selected").text();
+    OriginallyCountryDom.val(value)
+    OriginallyCountryDom.change()
+    const ProvinceValue=OriginallyProvinceDom.find('option').map(function(){
+      return $(this).val()
+    }).get()
+    var html
+    ProvinceValue.forEach(function(item,index){
+      html+=`<option value='${item}'>${item}</option>`
+    })
+    nowProvinceDom.find('option').remove()
+    nowProvinceDom.append(html)
+  }
+
+  //监听编辑国家的select 
+  $('.select-option-country').change(function(){
+    if($('#ProvinceContainer_'+ current_list).css("display")==="none"){
+      $('#grid-box-item_'+ current_list).addClass('grid-box-item-width')
+      $(' #ProvinceContainer_'+ current_list).hide()
+    }else{
+      $('.add-address-box #grid-box-item_'+ current_list).removeClass('grid-box-item-width')
+      $('#ProvinceContainer_'+ current_list).show()
+    }
+  })
+
+  window.onload = prepareAddresses();
+
+  function prepareAddresses(){
+    var address, addressID, addresses, j, l, len, len1, results, select, selectableOptions;
+    new Shopify.CountryProvinceSelector('CountryNew', 'AddressProvinceNew', {
+      hideElement: 'ProvinceContainerNew'
+    });
+    addresses = this.$('.addresses-list-item');
+    if(addresses.length) {
+      for (j = 0, len = addresses.length; j < len; j++) {
+        address = addresses[j];
+
+        addressID = $(address).find('.address-edit').data('form-id');
+        new Shopify.CountryProvinceSelector("Country_" + addressID, "Province_" + addressID, {
+          hideElement: "ProvinceContainer_" + addressID
+        });
+        const dome=`.grid-box #ProvinceContainer_${addressID}`
+        if($( dome).css('display')==="none"){
+          $('.text-transform-none').addClass('grid-box-item-width')
+        }else{
+          $('.text-transform-none').removeClass('grid-box-item-width')
+        }
+      }
+    }
+    selectableOptions = this.$('.select-wrapper select');
+    results = [];
+    for (l = 0, len1 = selectableOptions.length; l < len1; l++) {
+      select = selectableOptions[l];
+      results.push(updateSelectedText(null, select));
+    }
+    return results;
+  } 
+
+  //   更新
+  function updateSelectedText(e, select) {
+    var addressID, selectedValue;
+    select = e ? $(e.target) : $(select);
+    selectedValue = select.find('option:selected').text();
+    if (selectedValue !== '') {
+      select.prev('label').text(selectedValue);
+    }
+    if (select.attr('name') === 'address[country]') {
+      addressID = $(select).attr('id').split('Country_')[1];
+      addressID = addressID ? "#Province_" + addressID : '.new-address-province';
+      return updateSelectedText(null, $(addressID));
+    }
+  };
+
+
+</script>
+
+{% schema %}
+{
+  "name": "地址配置",
+  "settings": [
+    {
+      "type": "text",
+      "id": "addresses_title",
+      "label": "地址标题"
+    },
+   {
+      "type": "text",
+      "id": "add_addresses_title",
+      "label": "添加地址文案",
+      "default": "Add a new address"
+    },
+    {
+      "type": "text",
+      "id": "edit_addresses_title",
+      "label": "编辑地址文案",
+      "default": "Edit street address"
+    },{
+      "type": "text",
+      "id": "add_addresses",
+      "label": "添加地址按钮文案",
+      "default": "Add address"
+    },
+    {
+      "type": "text",
+      "id": "edit_addresses",
+      "label": "编辑地址按钮文案",
+      "default": "Update address"
+    },
+    {
+      "type": "text",
+      "id": "addresses_last_name",
+      "label": "名文案",
+      "default": "Last mame"
+    },
+    {
+      "type": "text",
+      "id": "addresses_text",
+      "label": "地址"
+    },
+    {
+      "type": "text",
+      "id": "addresses_detailed",
+      "label": "公寓、套房等"
+    },
+    {
+      "type": "text",
+      "id": "zip_code",
+      "label": "邮政编码"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "电话"
+    },
+    {
+      "type": "text",
+      "id": "address_default",
+      "label": "默认地址文案"
+    },
+    {
+      "type": "text",
+      "id": "address_edit",
+      "label": "mb编辑文案",
+      "default": "Edit"
+    },
+    {
+      "type": "text",
+      "id": "address_delete",
+      "label": "mb删除分案",
+      "default": "Delete"
+    }
+  ]
+}
+{% endschema %}

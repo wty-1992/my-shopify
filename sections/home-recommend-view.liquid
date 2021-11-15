@@ -22,14 +22,14 @@
   }
   .recommend-view-text1 {
     font-size:20px;
-    line-height:24px;
+    line-height:1.5em;
     color:#222;
     text-align:center;
     width:100%;
   }
   .recommend-view-image{
     width:100%;
-    margin-top:56px;
+    margin-top:60px;
   }
   .bottom-box-item{
     width:31.5%;
@@ -177,9 +177,14 @@
   .top-box-four .image_pc {
       height: 100%;
   }
-  .products-link .link {
-      height: 56px;
-      padding: 0 20px 0 30px;
+  .products-link .mm-a-link {
+    font-size: 20px;
+    display: flex;
+    padding: 10px 25px 10px 30px;
+  }
+  .products-link .mm-a-link span {
+  	line-height: 36px;
+    display: flex;
   }
   .main-text {
       width: 100%;
@@ -241,6 +246,7 @@
       color: #222;
       line-height: 32px;
       text-align: center;
+    padding: 3px 0;
   }
   .content-description {
       font-size: 16px;
@@ -309,6 +315,30 @@
       background-repeat: no-repeat;
       background-position: center;
   }
+  .recommend-text-box {
+    max-width: 70%;
+  }
+  /* 补充 */
+  .line-pd-1 {
+  	overflow: hidden;
+  }
+  .line-pd-1 .line-pd-size {
+  	transition: all 0.2s cubic-bezier(0.33, 1, 0.68, 1);
+  }
+  .line-pd-1:hover {
+  	background-color: #F1F1F5;
+  }
+  .line-pd-1:hover .line-pd-size {
+    transform: scale(1.05);
+  }
+  .line2-items-image {
+  	width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+  
   @media screen and (max-width: 768px){
     .home-recommend-view{
       padding-top:40px;
@@ -415,28 +445,28 @@
     <div class="recommend-view-text1 alifont">{{section.settings.text}}</div>
   </div>
   <div class="products-link">
-    <a class="link"  href="{{section.settings.link}}">
-      <span class="link-text">{{section.settings.skip-text}} </span>
+    <a class="mm-btn mm-btn-primary alifont_bold mm-a-link"  href="{{section.settings.link}}">
+      <span class="">{{section.settings.skip-text}} </span>
       {% include 'icon-arrow' %}
     </a>
   </div>
   <div class="recommend-view-image">
     <div class="line1">
-        <div class="line1-items">
+        <div class="line1-items line-pd-1">
             <div
-                class="line1-items-content"
+                class="line1-items-content line-pd-size"
                 style="background-image: url({{ 'home-list-1.png' | asset_url }})"
             ></div>
         </div>
-        <div class="line1-items">
+        <div class="line1-items line-pd-1">
             <div
-                class="line1-items-content"
+                class="line1-items-content line-pd-size"
                 style="background-image: url({{ 'home-list-2.png' | asset_url }})"
             ></div>
         </div>
-        <div class="line1-items-2x">
+        <div class="line1-items-2x line-pd-1">
             <div
-                class="image-content"
+                class="image-content line-pd-size"
                 style="background-image: url({{ 'home-list-3.png' | asset_url }})"
             >
             </div>
@@ -447,7 +477,7 @@
         </div>
     </div>
     <div class="line2">
-        <div class="line2-items-2x">
+        <div class="line2-items-2x line-pd-1">
             <div class="line2-items-2x-content">
                 <div class="line2-text-content">
                     <div class="content-title alifont_bold">Sell on your terms</div>
@@ -455,11 +485,11 @@
                 </div>
                 <div class="line2-image-content">
                     <div
-                        class="image-content"
+                        class="image-content line-pd-size"
                         style="background-image: url({{ 'home-list-6.png' | asset_url }})"
                     ></div>
                     <div
-                        class="image-content"
+                        class="image-content line-pd-size"
                         style="background-image: url({{ 'home-list-7.png' | asset_url }})"
                     ></div>
                 </div>
@@ -467,13 +497,13 @@
         </div>
         <div class="line2-items-wrapper">
             <div
-                class="line2-items"
-                style="background-image: url({{ 'home-list-4.png' | asset_url }})"
-            ></div>
+                class="line2-items line-pd-1"
+                 ><div class="line2-items-image line-pd-size" style="background-image: url({{ 'home-list-4.png' | asset_url }})"></div>
+            </div>
             <div
-                class="line2-items"
-                style="background-image: url({{ 'home-list-5.png' | asset_url }})"
-            ></div>
+                class="line2-items line-pd-1">
+              <div class="line2-items-image line-pd-size" style="background-image: url({{ 'home-list-5.png' | asset_url }})"></div>
+            </div>
         </div>
     </div>
     {% comment %}
