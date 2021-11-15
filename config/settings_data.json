@@ -41,7 +41,7 @@
         "type": "footer",
         "settings": {
           "before_html": "© Copyright 2009-2021 SOUFEEL <a href=\"\/\" style=\" color:#000\">Personalized Gifts<\/a>",
-          "footer_logo_img": "shopify:\/\/shop_images\/mademine_logo_1d3f6372-c88a-4773-9f7b-d80b3a9d5e9c.png",
+          "footer_logo_img": "shopify:\/\/shop_images\/logo-footer.png",
           "after_html": "",
           "menu_1": "footer",
           "menu_1_text": "TERMS & POLICIES",
@@ -10809,7 +10809,20 @@
         ],
         "settings": {
           "title": "New products",
-          "collection": "new-arrivals"
+          "collection": "new-arrivals",
+          "public_logo": "shopify:\/\/shop_images\/red-icon.png",
+          "background_email_text": "Work e-mail",
+          "sign_background_password": "Create a password",
+          "sign_up_title": "Sign up and start earning for free",
+          "sign_up_text": "Sign up",
+          "sign_up_tips_one": "Already have an account?",
+          "sign_up_tips_two": "Sign in",
+          "sign_up_tips_policy": "By clicking Sign up you agree to Stylelab’s Terms of Service, Privacy Policy and Intellectual Property Policy",
+          "login_background_password": "Enter a password",
+          "login_title": "Welcome back",
+          "login_text": "Sign in",
+          "login_tips_one": "New to Stylelab?",
+          "login_tips_two": "Sign up"
         }
       },
       "1636614992c67c6210": {
@@ -11052,9 +11065,9 @@
             "type": "comment",
             "settings": {
               "site_index": "2",
-              "active_image": "shopify:\/\/shop_images\/soufeel-logo.png",
-              "default_image": "shopify:\/\/shop_images\/logo2.png",
-              "user_image_logo": "shopify:\/\/shop_images\/logo2.png",
+              "active_image": "shopify:\/\/shop_images\/logo_giftlab.png",
+              "default_image": "shopify:\/\/shop_images\/logo_giftlab_28420f46-cef3-42e2-ac69-fc7b3a706b7e.png",
+              "user_image_logo": "shopify:\/\/shop_images\/logo_giftlab.png",
               "user_image_one": "shopify:\/\/shop_images\/3_6e4bd7c4-e499-4bff-a20a-cfdc7461b5a0.png",
               "user_name_one": "Molly Lively",
               "user_introduction_one": "VP, Marketing",
@@ -11086,9 +11099,9 @@
             "type": "comment",
             "settings": {
               "site_index": "3",
-              "active_image": "shopify:\/\/shop_images\/soufeel-logo.png",
-              "default_image": "shopify:\/\/shop_images\/soufeel-logo-01.png",
-              "user_image_logo": "shopify:\/\/shop_images\/soufeel-logo-user.png",
+              "active_image": "shopify:\/\/shop_images\/logo_myfaceboxer.png",
+              "default_image": "shopify:\/\/shop_images\/logo_myfaceboxer_df41001a-3d91-4ec8-827b-46e8feab56ac.png",
+              "user_image_logo": "shopify:\/\/shop_images\/logo_myfaceboxer.png",
               "user_image_one": "shopify:\/\/shop_images\/4_76ac94fe-f71d-43a3-8373-d407e9f6b1f1.png",
               "user_name_one": "Robert",
               "user_introduction_one": "Creative Operations Manager",
@@ -11120,9 +11133,9 @@
             "type": "comment",
             "settings": {
               "site_index": "4",
-              "active_image": "shopify:\/\/shop_images\/soufeel-logo.png",
-              "default_image": "shopify:\/\/shop_images\/soufeel-logo-01.png",
-              "user_image_logo": "shopify:\/\/shop_images\/soufeel-logo-user.png",
+              "active_image": "shopify:\/\/shop_images\/logo_myfacesocks.png",
+              "default_image": "shopify:\/\/shop_images\/logo_myfacesocks_1ff40cd4-e9b3-4e54-884c-62c41077ef09.png",
+              "user_image_logo": "shopify:\/\/shop_images\/logo_myfacesocks.png",
               "user_image_one": "shopify:\/\/shop_images\/1_d0d13330-48d6-49fe-989d-c55cf1bd9e53.png",
               "user_name_one": "Ben Halpern",
               "user_introduction_one": "Global Head of Creative",
@@ -11180,6 +11193,45 @@
           "profit_text": "Your profit",
           "profit_price": "18",
           "advantage_text": "100% Free to use · 300+ Products · Largest print network"
+        }
+      },
+      "addresses": {
+        "type": "addresses",
+        "settings": {
+          "addresses_title": "My addresses",
+          "addresses_last_name": "Last name",
+          "addresses_text": "Address",
+          "addresses_detailed": "Apartment, suite, etc.",
+          "zip_code": "Postal\/Zip code",
+          "phone": "Phone",
+          "address_default": "default address",
+          "address_edit": "Edit",
+          "address_delete": "Delete"
+        }
+      },
+      "login": {
+        "type": "login",
+        "settings": {
+          "public_logo": "shopify:\/\/shop_images\/red-icon.png",
+          "background_email_text": "Work e-mail",
+          "login_background_password": "Enter a password",
+          "login_title": "Welcome back",
+          "login_text": "Sign in",
+          "login_tips_one": "New to Stylelab?",
+          "login_tips_two": "Sign up"
+        }
+      },
+      "register": {
+        "type": "register",
+        "settings": {
+          "public_logo": "shopify:\/\/shop_images\/red-icon.png",
+          "background_email_text": "Work e-mail",
+          "sign_background_password": "Create a password",
+          "sign_up_title": "Sign up and start earning for free",
+          "sign_up_text": "Sign up",
+          "sign_up_tips_one": "Already have an account?",
+          "sign_up_tips_two": "Sign in",
+          "sign_up_tips_policy": "By clicking Sign up you agree to Stylelab’s Terms of Service, Privacy Policy and Intellectual Property Policy"
         }
       }
     },

@@ -96,17 +96,18 @@
     justify-content: center;
     padding: 36px 0 28px;
   }
-  .slide-more a {
+  .slide-more .more-button {
   	width: 366px;
     height: 56px;
-    line-height: 56px;
-    font-size: 18px;
+    line-height: 54px;
+    font-size: 20px;
     text-align: center;
     border: 1px solid #eee;
     border-radius: 4px;
+    background: #fff;
   }
 </style>
-<div class="search-container">
+<div class="search-container mm-header-height">
   <div class="container-input">
     <img src="{{ 'search.svg' | asset_url }}" alt="">
     <input
@@ -120,7 +121,12 @@
   	<div class="slide-text">Im looking for…</div>
     <div class="slide-list"></div>
     <div class="slide-more">
-      <a class="more-button" href="">See matching products（<span>3</span>）→</a>
+      <form action="/search" method="get" class="search-form" role="search">
+        <!-- type is search product olny -->
+        <input type="hidden" name="type" value="product">
+        <input type="hidden" name="q" id="searchFormQuery" value="" >
+        <button type="submit" class="more-button alifont_bold"> See matching products（<span></span>）→ </button>
+      </form>
     </div>
   </div>
 </div>
@@ -134,6 +140,7 @@
   // 监听输入框输入事件
   $('#searchInput').on('input', function() {
     $(this).val().length ? $('.container-slide').show() : $('.container-slide').hide();
+    $('#searchFormQuery').val($(this).val());
 //        sunzi_debounce(renderDomProducts, 1000);
   //   	var result = await searchResult($(this).val())
     if(timer !== null){
@@ -152,13 +159,13 @@
   	for(let i=0;i<productsData.length;i++) {
       if(i == 4) break;
       htmlString += `
-      <div class="list-item">
+	  <a class="list-item" href="${productsData[i].url}">
       	<img class="item-img" src="${productsData[i].featured_image.url}" />
       	<div class="item-content">
           <div class="content-title">${productsData[i].title}</div>
           <div class="content-price">${productsData[i].price}</div>
         </div>
-      </div>
+      </a>
       `;
     }
     htmlString += `<div class="slide-separate"></div>`;
@@ -168,7 +175,7 @@
   
   // 查询接口
   function searchResult() {
-    var searchStr = `q=${$('#searchInput').val()}&resources[type]=product&resources[options][unavailable_products]=hide&resources[options][prefix]=last&section_id={{section.id}}`;
+    var searchStr = `q=${$('#searchInput').val()}&resources[type]=product&resources[options][unavailable_products]=hide&section_id={{section.id}}`;
   	return new Promise((resolve, reject) => {
       $.ajax({
         type: "GET",

@@ -16,7 +16,7 @@
     flex-direction: column;
   }
   .connect-image{
-    width: 50%;
+    width: 100%;
     background-image: url({{ 'Connet-illustration.png' | asset_url }});
     background-size: contain;
     background-repeat: no-repeat;
@@ -50,8 +50,8 @@
     text-align: center;
     font-size: 16px;
     line-height: 32px;
-    margin-top:14px;
-   
+    margin-top:10px;
+    color: #222;
   }
   .cennect-button {
     margin-top:25px;
@@ -67,6 +67,16 @@
     font-family: alibaba-sans, sans-serif;
     font-weight: 700;
     font-style: normal;
+  }
+  
+  .cennect-button .mm-a-link {
+    display: flex;
+    padding: 10px 20px 10px 30px;
+
+  }
+  .cennect-button .mm-a-link .link-text {
+    line-height: 36px;
+    display: inline-block;
   }
 
   @media screen and (max-width: 768px){
@@ -110,8 +120,8 @@
   <div class="connect-image">
   </div>
   <div class="cennect-button">
-    <a class="link"  href="{{section.settings.link}}">
-      <span class="link-text">Connect </span>
+    <a class="mm-btn mm-btn-primary mm-a-link"  href="{{section.settings.link}}">
+      <span class="link-text alifont_bold">Connect</span>
       {% include 'icon-arrow' %}
     </a>
   </div>

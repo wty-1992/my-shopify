@@ -1,4 +1,26 @@
 <style>
+   html{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  .search-container,.login_block{
+    display:none;
+  }
+  .container-slide{
+    display:none !important;
+  }
+  .from-box{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #F6F6F9;
+    z-index: 1000;
+  }
   .password-box{
     display: flex;
     justify-content: space-between;
@@ -65,9 +87,7 @@
           {{section.settings.sign_up_title}}
         </div>
         <div class="sign-up-box form-vertical">
-
           {% form 'create_customer',class:"customer_register" %}
-
           <div class="input-box-content">
             <lable class="input-title">{{ 'customer.login.email' | t }}</lable>
             <input placeholder="{{section.settings.background_email_text}}" class="sign-up-email-number"  name="customer[email]"  type="email" value='' name="customer[email]"/>

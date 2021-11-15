@@ -10,6 +10,7 @@
 }
 .common-collection-swiper #swiper-collection-container-swiper-bestsellers {
   overflow: auto;
+  flex: 1;
 }
 .home-collection-off{
   display: flex;
@@ -188,6 +189,7 @@
 .common-collection-swiper #{{swiperContainerId}} li.swiper-slide img {
   box-sizing: border-box;
   padding: 16px 0;
+  margin: 0;
   width: 100%;
 }
 .common-collection-swiper #{{swiperContainerId}} li.swiper-slide picture{
@@ -206,9 +208,9 @@
   line-height: 1.5;
   text-overflow: ellipsis;
   display: -webkit-box;
-  font-size: 16px;
-  line-height: 1.5;
+  overflow: hidden;  
   -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 .common-collection-swiper #{{swiperContainerId}} li.swiper-slide .box-price {
 }
@@ -236,14 +238,16 @@
   -webkit-font-smoothing: initial;
 }
 .home-best-seller-container {
-  margin: 0 auto;
-  max-width: 1372px;
-  width: 100%;
 }
 .home-best-seller-container .container-list {
   display: flex;
   margin-bottom: 30px;
   width: 100%;
+}
+.home-best-seller-container .container-list .list-left {
+  margin-right: 28px;
+  width: calc((100% - 84px) / 4);  
+  height: 100%;
 }
 .home-best-seller-container .center {
   text-align: center;
@@ -257,8 +261,9 @@
   padding-bottom: 3rem;
 }
 .common-collection-swiper #{{swiperContainerId}} li.swiper-slide .box-price { 
-  margin-top:5px; 
-  padding-bottom:5px;
+  margin-top: 5px;
+  margin-bottom: -18px;
+  padding-bottom: 5px;
 }
 .common-collection-swiper #{{swiperContainerId}} .block-collection-items .item{
   flex:0 1 25%;
@@ -310,12 +315,15 @@
 }
 
 </style>
-<div class="home-best-seller-container alifont">
+<div class="home-best-seller-container alifont mm-page-limited">
   <div class="container-list">
+    <div class="list-left">
+      <img src="{{ section.settings.fixedContent | img_url: '322x' }}" />
+    </div>
   	<div id="{{swiperContainerId}}" class="swiper-container swiper-collection-container collection-container">
       <ul class="swiper-wrapper items">
         {% assign current_collection = collections[section.settings.collection] %}
-          <li class="item swiper-slide">
+          <li class="item">
             <img src="{{ section.settings.fixedContent | img_url: '322x' }}" />
           </li>
         {% if current_collection.products.size > 0%}
@@ -410,17 +418,10 @@
     loop: {{section.settings.loop}},
     keyboard: true,
     breakpoints: {
-      2048: {
+      1000: {
         // show 4.5 product
-        slidesPerView: 4,
-        slidesPerGroup: 4,
-        spaceBetween: 20,
-        slidesOffsetBefore:12
-      },
-      1024: {
-        // show 4.5 product
-        slidesPerView: 4,
-        slidesPerGroup: 4,
+        slidesPerView: 3,
+        slidesPerGroup: 3,
         spaceBetween: 20
       },
       768: {

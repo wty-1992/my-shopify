@@ -18,9 +18,10 @@
 	display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: 0 auto;
+    padding: 0 50px;
     max-width: 1273px;
     width: 100%;
-    margin: 0 auto;
   }
   .footer-container .container-list {
     display: flex;
@@ -48,11 +49,17 @@
     font-size: 14px;
     cursor: pointer;
   }
+  .list-item .item-url:hover {
+    color: #f9423a;
+  }
   .site-footer .footer-cpoyright {
     height: 70px;
     line-height: 70px;
     text-align: center;
     border-top: 1px solid rgb(108 104 136 / 20%);
+  }
+  .footer-container .container-logo img {
+  	width: 240px;
   }
   @media (max-width: 768px) {
     .site-footer {
@@ -97,9 +104,9 @@
           <span>Sell with Stylelab</span>
           <img src="{{ 'next-bottom.svg' | asset_url }}" />
         </div>
-        <a class="item-url">Connect your store</a>
+<!--         <a class="item-url">Connect your store</a>
         <a class="item-url">Sell on Shopify</a>
-        <a class="item-url">Customize Tools</a>
+        <a class="item-url">Customize Tools</a> -->
         <a class="item-url">Service</a>
       </div>
       <div class="list-item">
@@ -107,7 +114,10 @@
           <span>Discover</span>
           <img src="{{ 'next-bottom.svg' | asset_url }}" />
         </div>
-        <a class="item-url">Products</a>
+        <a
+           class="item-url"
+           href="/collections/all"
+        >Products</a>
         <a class="item-url">Shipping rates</a>
         <a class="item-url">Pexels</a>
       </div>
@@ -116,24 +126,48 @@
           <span>Resources</span>
           <img src="{{ 'next-bottom.svg' | asset_url }}" />
         </div>
-        <a class="item-url">How it works</a>
-        <a class="item-url">Help Center</a>
-        <a class="item-url">Shipping</a>
-        <a class="item-url">Returns</a>
+        <a
+          class="item-url"
+          href="/pages/how-it-works"
+        >How it works</a>
+        <a
+          class="item-url"
+          href="/blogs/help-center"
+        >Help Center</a>
+        <a
+          class="item-url"
+          href="/pages/shipping-policy"
+        >Shipping</a>
+        <a
+          class="item-url"
+          href="/pages/return-and-exchange-policy"
+        >Returns</a>
       </div>
       <div class="list-item">
         <div class="item-title alifont_bold">
           <span>Stylelab</span>
           <img src="{{ 'next-bottom.svg' | asset_url }}" />
         </div>
-        <a class="item-url">About</a>
-        <a class="item-url">Contacts</a>
-        <a class="item-url">Terms of Service</a>
-        <a class="item-url">Privacy Policy</a>
+        <a
+           class="item-url"
+           href="/pages/about-us"
+        >About Us</a>
+        <a
+           class="item-url"
+           href="/pages/contact-us"
+        >Contacts Us</a>
+        <a
+           class="item-url"
+           href="/pages/terms-conditions"
+        >Terms & Condition</a>
+        <a
+           class="item-url"
+           href="/pages/privacy-policy"
+        >Privacy Policy</a>
       </div>
     </div>
     <div class="container-logo">
-      <img src="{{ section.settings.footer_logo_img | img_url: '240x' }}" alt="">
+      <img src="{{ section.settings.footer_logo_img | img_url: '480x' }}" alt="">
     </div>
   </div>
   <div class="footer-cpoyright">{{ section.settings.before_html }}</div>

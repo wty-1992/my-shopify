@@ -8,6 +8,10 @@
     z-index: 999;
     color: #222;
   }
+  .header-mm.shadow {
+  	box-shadow: 0 1px 3px rgba(0,0,0,.12);
+  }
+  
   .header-mm-content {
     height: 100%;
     padding: 0 27px;
@@ -71,8 +75,9 @@
     color: #222;
   }
   .mm-nav ul li a:hover,
-  .mm-nav ul li a.active {
+  .mm-nav ul li a span.active {
     color: #F9423A;
+    font-weight: 700;
   }
   .mm-nav ul li a .mm-icon_down svg path {
     fill: #928FA5;
@@ -87,7 +92,7 @@
   .mm-submenu {
     margin: 0 auto;
     padding: 0 230px;
-    position: absolute;
+    position: fixed;
     left: 50%;
     top: 70px;
     transform: translateX(-50%);
@@ -497,37 +502,18 @@
         <span class="alifont_bold">{{ link.title }}</span>
         <img src="{{ 'next-bottom-light.svg' | asset_url }}" />
       </div>
-      <div class="mm-category-second">
         {% for item in link.links %}
-        <div class="mm-category">
-          <h5>
-            <a href="{{ item.url }}" class="alifont_bold">{{ item.title }}</a>
-          </h5>
-          {% if item.links != blank %}
-          <div class="mm-category-list">
-            {% assign count = 0 %}
-            {% for it in item.links %}
-            {% assign count = count | plus: 1 %}
-            {% if count == 1 %}<ul>{% endif %}
-            <li>
-              <a href="{{ it.url }}" class="alifont">{{ it.title }}</a>
-            </li>
-            {% if count == 4 %}
-            {% if item.links.count > 4 %}
-            </ul><ul>
-            {% else %}
-            </ul>
-            {% endif %}
-            {% assign count = 0 %}
-            {% endif %}
-            {% endfor %}
-          </div>
-          {% endif %}
+        <div class="mm-category-second">
+          <span class="alifont_bold">{{ item.title }}</span>
+          <img src="{{ 'next-bottom-light.svg' | asset_url }}" />
         </div>
+        {% if item.links != blank %}
+          {% for it in item.links %}
+            <a href="{{ it.url }}" class="alifont">{{ it.title }}</a>
+          {% endfor %}
+        {% endif %}
         {% endfor %}
-      </div>
       {% endfor %}
-      
     </div>
     <div class="mm-mobile-footer">
       {% if customer %}
@@ -542,7 +528,19 @@
 </div>
 
 <script defer>
-  var t;
+  var t, scrollTop;
+  
+  // scroll
+  $(window).scroll(function(event){
+    scrollTop = $(document).scrollTop();
+    if (scrollTop > 0) {
+    	$('.header-mm').addClass('shadow');
+    } else {
+    	$('.header-mm').removeClass('shadow');
+    }
+    // console.log('scrollTop', scrollTop);
+  });
+  
   $('#showAll').mouseenter(()=>{
     $('#showAll').addClass('active');
     $('.mm-submenu').addClass('active');
@@ -572,51 +570,131 @@
       }
     }, 300);
   });
+  
+  // nav当前页样式标红
+  $('.mm-nav li a').each(function(index, item) {
+    if($(this).attr('href') == '{{page.url}}') {
+  	  $('mm-nav li a span').removeClass('active');
+      $(this).find('span').addClass('active');
+    }    
+  });
 </script>
 
 {% schema %}
   {
-    "name": "Header settings",
-    "settings": [
-      {
-        "type": "text",
-        "id": "title",
-        "label": "Collection title"
-      },
-      {
-        "type": "collection",
-        "id": "collection",
-        "label": "Choose a collection"
-      }
-    ],
-    "blocks": [
-      {
-        "name": "Collection",
-        "type": "slide",
-        "settings": [
-          {
-            "type": "image_picker",
-            "id": "image",
-            "label": "Image"
-          },
-          {
-            "type": "url",
-            "id": "url",
-            "label": "Link"
-          },
-          {
-            "type": "text",
-            "id": "title",
-            "label": "name"
-          }
-        ]
-      }
-    ]
-  }
+  "name": "Header settings",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Collection title"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Choose a collection"
+    },
+    {
+      "type": "image_picker",
+      "id": "public_logo",
+      "label": "登录注册的logo"
+    },
+    {
+      "type": "text",
+      "id": "background_email_text",
+      "label": "登录注册的email背景字",
+      "default": "Work e-mail"
+    },
+    {
+      "type": "text",
+      "id": "sign_background_password",
+      "label": "注册的密码背景字",
+      "default": "Create a password"
+    },
+    {
+      "type": "text",
+      "id": "sign_up_title",
+      "label": "注册的标题",
+      "default": "Sign up and start earning for free"
+    },
+    {
+      "type": "text",
+      "id": "sign_up_text",
+      "label": "注册按钮文案",
+      "default": "Sign up"
+    },
+    {
+      "type": "text",
+      "id": "sign_up_tips_one",
+      "label": "注册底部提示1",
+      "default": "Already have an account?"
+    },
+    {
+      "type": "text",
+      "id": "sign_up_tips_two",
+      "label": "注册底部提示2",
+      "default": "Sign in"
+    },
+    {
+      "type": "text",
+      "id": "sign_up_tips_policy",
+      "label": "政策条款提示",
+      "default": "By clicking Sign up you agree to Stylelab’s Terms of Service, Privacy Policy and Intellectual Property Policy"
+    },
+    {
+      "type": "text",
+      "id": "login_background_password",
+      "label": "登录密码背景字",
+      "default": "Enter a password"
+    },
+    {
+      "type": "text",
+      "id": "login_title",
+      "label": "登录的标题",
+      "default": "Welcome back"
+    },
+    {
+      "type": "text",
+      "id": "login_text",
+      "label": "登录按钮文案",
+      "default": "Sign in"
+    },
+    {
+      "type": "text",
+      "id": "login_tips_one",
+      "label": "登录底部提示1",
+      "default": "New to Stylelab?"
+    },
+    {
+      "type": "text",
+      "id": "login_tips_two",
+      "label": "登录底部提示2",
+      "default": "Sign up"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Collection",
+      "type": "slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "name"
+        }
+      ]
+    }
+  ]
+}
+
 {% endschema %}
-
-{% stylesheet %}
-{% endstylesheet %}
-
-{% javascript %}
-{% endjavascript %}
