@@ -116,7 +116,6 @@
   background-position: center right;
   background-image: url({{ 'banner_background_mobile.png' | asset_img_url: 'master' }});
   border-radius: 6px;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
 }
 .how_banner_left{
   padding: 15px;
@@ -138,18 +137,24 @@
 .how_banner_btn{
   background: #fff;
   text-align: center;
-  color: #F9423A;
   font-size: 12px;
   padding: 5px 10px;
   margin: 5px 0;
   border-radius: 3px;
   max-width: 100px;
   cursor: pointer;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,.5);
+}
+.how_banner_btn a{
+  color: #F9423A;
 }
 .how_banner_footer{
   font-size: 10px;
   color: #222222;
+}
+.banner_box_shadow{
+  box-shadow: 0 12px 24px 0 rgba(255,160,0,0.08),
+  0 1px 1px 0 rgba(212,196,137,0.8),
+  0 4px 16px 0 rgba(255,172,0,0.36);
 }
 
 /* PC端样式 */
@@ -222,7 +227,7 @@
   <div class="how_title_box">
     <h1 class="how-title1 alifont_heavy">How it works</h1>
     <h2 class="how-title2 alifont">Mademine simplifies and automates the process of sourcing and creating print on demand products at the best prices on the market.</h2>
-    <p class="how-title3"><a href="#" class="btn btn-default alifont_bold">Start selling</a></p>
+    <p class="how-title3"><a href="/pages/normal" class="mm-btn-primary btn btn-default alifont_bold">Start selling</a></p>
   </div>
 </div>
 {% comment %} 详情内容模块 {% endcomment %}
@@ -247,14 +252,14 @@
 </div>
 {% comment %} 底部Banner模块 {% endcomment %}
 <div class="how_banner_module">
-  <div class="how_banner">
+  <div class="how_banner banner_box_shadow">
     <div class="how_banner_left">
       <img src="{{ 'how_light_bulb.png' | asset_img_url: 'master' }}" alt="Banner">
     </div>
     <div class="how_banner_right">
       <div class="how_banner_title alifont">Already found what you were looking for?</div>
       <div class="how_banner_bf">
-        <div class="how_banner_btn alifont_bold">Start Selling</div>
+        <div class="how_banner_btn banner_box_shadow alifont_bold"><a href="/pages/normal">Start selling</a></div>
         <div class="how_banner_footer alifont">Make it happen right now.</div>
       </div>
     </div>

@@ -68,10 +68,10 @@
 }
 .detail_img{
   border-radius: 4px;
+  height: 160px;
   overflow: hidden;
-}
-.detail_img img{
-  border-radius: 4px;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .detail_content{
@@ -117,10 +117,6 @@
     justify-content: center;
     height: 500px;
   }
-  .detail_img img{
-    height: 100%;
-  }
-
   .detail_content{
     margin-top: -20px;
     margin-bottom: 80px;
@@ -160,9 +156,7 @@
 
 {% comment %} 文章图片 {% endcomment %}
 <div class="detail_ima_module">
-  <div class="detail_img">
-    <img src={{ article.image.src | img_url }} alt="image">
-  </div>
+  <div class="detail_img" style="background-image: url({{ article.image.src | img_url: 'master' }})"></div>
 </div>
 
 {% comment %} 文字内容模块 {% endcomment %}
