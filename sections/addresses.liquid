@@ -104,6 +104,7 @@
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE 10+ */
     padding-bottom:78px;
+    margin-top:28px;
   }
   .grid-box form{
     width:100%;
@@ -407,7 +408,7 @@
 </style>
 
 <div class="addresses-page">
-  <div class="addresses-title text-color" >{{section.settings.addresses_title}}</div>
+  <div class="addresses-title text-color alifont_bold" >{{section.settings.addresses_title}}</div>
   <div class="addresses-box">
     <!--    列表  -->
     <div class="add-address-box">
@@ -416,11 +417,11 @@
           <span class="add-icon"> 
             {% include 'icon-add-address'%}
           </span>
-          <span class="add-title-text text-color">{{section.settings.add_addresses_title}}</span>
+          <span class="add-title-text text-color alifont_bold">{{section.settings.add_addresses_title}}</span>
         </div>
       </div>
       <div class="addresses-list-box">
-        <ul class="addresses-list">
+        <ul class="addresses-list alifont">
           {% for address in customer.addresses %}
           <li class="addresses-list-item">
             <div class="addresses-left">
@@ -485,13 +486,13 @@
 
             <div class="address-from-box">
               <div class="address-head">
-                <div class="add-address-title text-color">{{section.settings.edit_addresses_title}}</div> 
+                <div class="add-address-title text-color alifont_bold">{{section.settings.edit_addresses_title}}</div> 
                 <div class="icon-add-address-close">
                   {% include 'icon-add-address-close'%}
                 </div>
               </div>
 
-              <div class="grid-box">
+              <div class="grid-box alifont">
                 {% form 'customer_address', address %}
                 <div class="grid-box-item">
                   <label class="text-color " for="FirstName">{{ 'customer.addresses.first_name' | t }}</label>
@@ -574,15 +575,15 @@
 
       <div class="address-from-box">
         <div class="address-head">
-          <div class="add-address-title text-color">{{section.settings.add_addresses_title}}</div> 
+          <div class="add-address-title text-color alifont_bold">{{section.settings.add_addresses_title}}</div> 
           <div class="icon-add-address-close">
             {% include 'icon-add-address-close'%}
           </div>
         </div>
-        <div class="grid-box">
+        <div class="grid-box alifont">
           {% form 'customer_address', customer.new_address %}
-          <div class="grid-box-item">
-            <label class="text-color " for="FirstNameNew">{{ 'customer.addresses.first_name' | t }}</label>
+          <div class="grid-box-item ">
+            <label class="text-color alifont" for="FirstNameNew">{{ 'customer.addresses.first_name' | t }}</label>
             <input type="text" id="FirstNameNew" name="address[first_name]" value="{{ form.first_name }}">
           </div>
           <div class="grid-box-item ">

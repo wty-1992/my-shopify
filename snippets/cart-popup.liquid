@@ -4,14 +4,19 @@
 ** @integrate 王天宇 **
 {% endcomment %}
 <style>
+  html.mask-lock {
+  	height: 100%;
+    overflow: hidden;
+  }
   .cart-popup {
     display: none;
   	position: fixed;
     left: 0;
-    top: 70px;
+    top: 0;
     right: 0;
     bottom: 0;
-    z-index: 12;
+	/*  header-mm zi-index为999    */
+    z-index: 1000;
     color: #222;
   }
   .cart-shadow {  
@@ -25,7 +30,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 70px 28px 0;
+    padding: 0 28px 0;
     right: 0;
     top: 0;
     /* width: 31%; */
@@ -144,9 +149,13 @@
     align-items: center;
     height: 60px;
   }
+  .cart-popup .cart-modal .popup-footer .footer-total .total-text {
+  	font-size: 16px;
+    text-transform: uppercase;
+  }
   .cart-popup .cart-modal .popup-footer .footer-total .total-price {
     color: #E43329;
-    font-size: 18px;
+    font-size: 20px;
   }
   .cart-popup .cart-modal .popup-footer .footer-total .total-price span {
     font-size: 14px;
@@ -158,8 +167,7 @@
     text-align: center;
     line-height: 56px;
     color: #fff;
-    font-size: 18px;
-    background: #E43329;
+    font-size: 20px;
     cursor: pointer;
   }
   .cart-popup .popup-empty {
@@ -225,10 +233,10 @@
     </div>
     <div class="popup-footer">
       <div class="footer-total">
-        <div class="total-text">SUBTOTAL</div>
-        <div class="total-price"></div>
+        <div class="total-text alifont_bold">SUBTOTAL</div>
+        <div class="total-price alifont_bold"></div>
       </div>
-      <div class="footer-button">Continue to checkout</div>
+      <div class="footer-button mm-btn mm-btn-primary alifont_bold">Continue to checkout</div>
     </div>
     <div class="popup-empty">
       <img src="{{ 'cart-empty.svg' | asset_url }}" />
@@ -305,12 +313,12 @@
   // 关闭弹窗
   function closePopUp() {
   	$('.cart-popup').hide();
-    _sunzi_unlock();
+    window_unlock();
   }
   // 开启弹窗
   function openPopUp() {
     $('.cart-popup').show();
-    _sunzi_lock();
+    window_lock();
   }
   // 更改加车数量type 0 删除 type 1 更改数量
   function changeCartQty(type, line, quantity) {
@@ -322,6 +330,22 @@
     else {
       Cart.change({line, quantity: 0});
     }
+  }
+              
+  /** sunzi 屏幕锁定 **/
+  function window_lock() {
+    const root = $('html');
+    root.addClass('mask-lock');
+    const system = _getSystem();
+    if (system.name === 'IOS' && system.version === 15)
+      root.addClass('compatible-IOS15');
+  }
+
+  /** sunzi 屏幕解锁 **/
+  function window_unlock() {
+    const root = $('html');
+    root.removeClass('mask-lock');
+    root.removeClass('compatible-IOS15');
   }
                 
 </script>

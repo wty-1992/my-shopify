@@ -1,4 +1,7 @@
  <style>
+   .page-width {
+   		padding-top: 100px;
+   }
 @media (min-width:220px) {
 .account-list {
 	background:#f7f8f9; 
@@ -87,7 +90,7 @@
 	text-align:center
 }
 .account-list .function ul a li i {
-	color:#e60044;
+	color:#fa4238;
 	font-size:3.6rem;
 	padding-bottom:1rem
 }
@@ -103,7 +106,7 @@
 	text-align:center
 }
 .account-list .function ul a li:hover {
-	background:#e60044;
+	background:#fa4238;
 	color:#fff
 }
 .account-list .function ul a li:hover i {
@@ -165,7 +168,7 @@
         </li>
         -->
         <li>
-          <div class="img"><img src="{{ 'accountLogo.jpg' | asset_url }}"></div>
+          <div class="img"><img src="{{ 'userLogo.svg' | asset_url }}"></div>
           <div class="name">
             <p class="ca1">{{ customer.email }}</p>
           </div>
@@ -243,14 +246,6 @@
             <span>{{ customer.addresses.size | default: 0 }}</span>
             <i class="photofont icon photo-location"></i>
             <p>{{ 'customer.account.address_book' | t }}</p>
-          </li>
-        </a>
-
-        <a href="http://app.soufeel.com/soufeel-app-com">
-          <li class="classification app memebervip">
-            <i class="icon photofont photo-acountvip1"></i>
-            <p>{{ 'customer.account.hundred_coupons_for_new_users' | t }}</p>
-            <p class="vipExpires Priviledges"><u>{{ 'customer.account.download_now' | t }} &gt;</u></p>
           </li>
         </a>
       </ul>

@@ -2,7 +2,9 @@
 {% assign swiperContainerId = "swiper-collection-container-" | append: section.id %}
 
 <style>
-#shopify-section-{{section.id}} .home-best-seller-container{
+#shopify-section-{{section.id}} .home-best-seller-container {
+  padding-top: 36px;
+  padding-right: 0;   
   background:{{section.settings.color}};
   {% if section.settings.IsGradient %}
   background-image: linear-gradient(to {{section.settings.gradient}});
@@ -180,27 +182,47 @@
   background: #F9423A;
 }
 .common-collection-swiper #{{swiperContainerId}} li.swiper-slide {
-  padding: 0 16px;
+  padding: 10px 14px;
+}
+.common-collection-swiper #{{swiperContainerId}} li.swiper-slide .swiper-slide-content {
+  padding: 13px 16px 26px;
   position: relative;
   height: auto;
   background-color: #F6F6F9;
   border-radius: 4px;
 }
+.common-collection-swiper #{{swiperContainerId}} li.swiper-slide .swiper-slide-content:hover {
+  background: #fff;
+  box-shadow: 0 1px 1px rgb(106 102 132 / 8%), 0 4px 10px rgb(183 183 192 / 30%);
+}
+.common-collection-swiper #{{swiperContainerId}} li.swiper-slide .swiper-slide-content .image {
+    width: 100%;
+    background-color: #fff;    
+}
+.common-collection-swiper #{{swiperContainerId}} li.swiper-slide .swiper-slide-content .image::before {
+    display: block;
+    padding-top: 100%;
+    content: '';
+}
+{% comment %}
 .common-collection-swiper #{{swiperContainerId}} li.swiper-slide img {
   box-sizing: border-box;
   padding: 16px 0;
   margin: 0;
   width: 100%;
 }
-.common-collection-swiper #{{swiperContainerId}} li.swiper-slide picture{
+.common-collection-swiper #{{swiperContainerId}} li.swiper-slide picture {
   box-sizing: border-box;
   width: 100%;
 }
+{% endcomment %}
 .common-collection-swiper #{{swiperContainerId}} li.swiper-slide .slide-tag {
   height: 32px;
   line-height: 32px;
   font-size: 14px;
+  padding: 6px 0;
   color: #FEDD00;
+  text-transform: uppercase;
 }
 .common-collection-swiper #{{swiperContainerId}} li.swiper-slide .cheap-title{
   color:{{section.settings.title_color}};
@@ -214,7 +236,7 @@
 }
 .common-collection-swiper #{{swiperContainerId}} li.swiper-slide .box-price {
 }
-.common-collection-swiper #{{swiperContainerId}} li.swiper-slide .box-price .old-price{
+.common-collection-swiper #{{swiperContainerId}} li.swiper-slide .box-price .old-price {
   opacity: 1;
   color: #000;
   font-size: 12px;
@@ -245,10 +267,18 @@
   width: 100%;
 }
 .home-best-seller-container .container-list .list-left {
-  margin-right: 28px;
-  width: calc((100% - 84px) / 4);  
-  height: 100%;
+  position: relative;
+  margin-right: 14px;
+  width: calc((100% - 70px) / 4);
+  padding: 10px 0;
 }
+.home-best-seller-container .container-list .list-left .list-left-content {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  border-radius: 4px;
+}
+  
 .home-best-seller-container .center {
   text-align: center;
   font-size: 16px;
@@ -261,9 +291,7 @@
   padding-bottom: 3rem;
 }
 .common-collection-swiper #{{swiperContainerId}} li.swiper-slide .box-price { 
-  margin-top: 5px;
-  margin-bottom: -18px;
-  padding-bottom: 5px;
+  padding-top: 5px;
 }
 .common-collection-swiper #{{swiperContainerId}} .block-collection-items .item{
   flex:0 1 25%;
@@ -318,7 +346,11 @@
 <div class="home-best-seller-container alifont mm-page-limited">
   <div class="container-list">
     <div class="list-left">
-      <img src="{{ section.settings.fixedContent | img_url: '322x' }}" />
+      <div
+        class="list-left-content"
+        style="background-image: url({{ section.settings.fixedContent | img_url: '600x' }})"
+      >
+      </div>
     </div>
   	<div id="{{swiperContainerId}}" class="swiper-container swiper-collection-container collection-container">
       <ul class="swiper-wrapper items">
@@ -331,43 +363,49 @@
               {% assign firstVariant = item.first_available_variant %}
               {% assign position = section.settings.position | default: 0 %}
               {% assign image = item.images[position]%}
-              <li class="item swiper-slide">            
-                <a href="{{item.url}}">
-                  <picture>
-                    <source data-srcset="{{ image | img_url: '600x' }}" media="(max-width: 750px)" />
-                    <source data-srcset="{{ image | img_url: 'master'  }}" media="(max-width: 1024px)" />
-                    <img
-                        title=""  
-                        data-src="{{ image | img_url: 'master' }}"
-                        class="scrollable-01-div-img lazyload"
-                        alt="{{ image.alt | escape }}" />
-                  </picture>
-                  <div class="slide-tag alifont_bold">BestSeller</div>
-                  <div class="cheap-title">{{ item.title }}</div>
-                  <div class="box-price">
-                    <div class="new-price alifont_bold"><span class="price" data-money="{{ firstVariant.price }}"></span></div>
-                    {% if firstVariant.compare_at_price> firstVariant.price %}
-<!--                     <div class="old-price"><span class="price" data-money="{{ firstVariant.compare_at_price }}"></span></div> -->
-                    {% endif %}
-                    {% if firstVariant.compare_at_price> firstVariant.price %}
-<!--                     <div class="home-collection-off">
-                      <span>                      
-                          {{ firstVariant.compare_at_price | minus: firstVariant.price | times: 100.0 | divided_by: firstVariant.compare_at_price | round}}% {{ 'product.price.off' | t }}                      
-                      </span>
-                    </div> -->
-                    {% endif %}
-                  </div>
-                  {% comment %}
-                  <div class="product-label-items">
-                  {% for tag in item.tags %}
-                    {% if tag contains 'tag-product-' %}
-                      {% assign tag_all = tag | remove: 'tag-product-' %}
-                      <span class="product-label-item">{{ tag_all }}</span>
-                    {% endif %}
-                  {% endfor %}
-                  </div>
-                   {% endcomment %}
-                </a>
+              <li class="item swiper-slide">
+                <div class="swiper-slide-content">
+                  <a href="{{item.url}}">
+                    <div
+                        class="image"
+                        style="background-image: url({{ image | img_url: '600x' }})"
+                    ></div>
+                    {% comment %} <picture>
+                      <source data-srcset="{{  }}" media="(max-width: 750px)" />
+                      <source data-srcset="{{ image | img_url: 'master'  }}" media="(max-width: 1024px)" />
+                      <img
+                          title=""  
+                          data-src="{{ image | img_url: 'master' }}"
+                          class="scrollable-01-div-img lazyload"
+                          alt="{{ image.alt | escape }}" />
+                    </picture> {% endcomment %}
+                    <div class="slide-tag alifont_bold">BestSeller</div>
+                    <div class="cheap-title">{{ item.title }}</div>
+                    <div class="box-price">
+                      <div class="new-price alifont_bold"><span class="price" data-money="{{ firstVariant.price }}"></span></div>
+                      {% comment %} {% if firstVariant.compare_at_price> firstVariant.price %}
+  <!--                     <div class="old-price"><span class="price" data-money="{{ firstVariant.compare_at_price }}"></span></div> -->
+                      {% endif %}
+                      {% if firstVariant.compare_at_price> firstVariant.price %}
+  <!--                     <div class="home-collection-off">
+                        <span>                      
+                            {{ firstVariant.compare_at_price | minus: firstVariant.price | times: 100.0 | divided_by: firstVariant.compare_at_price | round}}% {{ 'product.price.off' | t }}                      
+                        </span>
+                      </div> -->
+                      {% endif %} {% endcomment %}
+                    </div>
+                    {% comment %}
+                    <div class="product-label-items">
+                    {% for tag in item.tags %}
+                      {% if tag contains 'tag-product-' %}
+                        {% assign tag_all = tag | remove: 'tag-product-' %}
+                        <span class="product-label-item">{{ tag_all }}</span>
+                      {% endif %}
+                    {% endfor %}
+                    </div>
+                     {% endcomment %}
+                  </a>
+                <div>
               </li>
             {% endfor %}
         {% endif %}
@@ -409,7 +447,7 @@
     observeParents: true,
     slidesPerView: 2,
     slidesPerGroup : {{section.settings.slides_per_group}},
-    spaceBetween: 10,
+    spaceBetween: 0,
     autoplay: {{section.settings.autoplay}},
     pagination: {
       el: '.{{pagination}}',
@@ -422,13 +460,13 @@
         // show 4.5 product
         slidesPerView: 3,
         slidesPerGroup: 3,
-        spaceBetween: 20
+        spaceBetween: 0
       },
       768: {
         // show 3.5 product
         slidesPerView: 2,
         slidesPerGroup:2,
-        spaceBetween: 10
+        spaceBetween: 0
       }
     },
     navigation: {

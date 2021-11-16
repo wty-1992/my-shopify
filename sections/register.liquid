@@ -1,4 +1,5 @@
 <style>
+
    html{
     width: 100%;
     height: 100%;
@@ -46,8 +47,11 @@
   .icon-password-eye-open{
     position:absolute;
     right:10px;
-    top:10px;
+    top:16px;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .oblique-line{
     width:30px;
@@ -95,8 +99,9 @@
    }
   .input-content{
     width:470px;
-    padding:0 50px;
+    padding:0 28px;
     background: #ffffff;
+    height:732px;
   }
   .input-content-box{
   	width:100%;
@@ -120,9 +125,10 @@
   }
   .input-box-content {
     width:100%;
+    position: relative;
   }
   
-  .input-box-content:nth-of-type(1){
+  .box-margin-bottom{
      margin-bottom:20px;
   }
   .input-content-box .input-box-content lable{
@@ -146,6 +152,9 @@
     font-size: 14px;
     line-height: 32px;
     margin-bottom:0px;
+    font-family: alibaba-sans,sans-serif;
+    font-weight: 400;
+    font-style: normal;
   }
   .wrong-password{
     color:#F9423A;   
@@ -157,12 +166,14 @@
     display:block;
   }
   .input-box-content  input{
-    min-height:56px;
+    height:56px;
     border-radius: 4px;
     padding: 17px 28px 17px 28px;
     font-size:16px;
     line-height:19px;
     margin-bottom:0px;
+    background: #ffffff;
+    margin-top:6px;
   }
   .input-botton{
     width:100%;
@@ -210,6 +221,7 @@
     align-items: center;
     flex-direction: column;
   }
+  
  .oblique-line{
     width:30px;
     height:2px;
@@ -259,8 +271,11 @@
   .icon-password-eye-open{
     position:absolute;
     right:10px;
-    top:10px;
+    top:16px;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .input-password-box {
     position: relative;
@@ -309,40 +324,38 @@
     <div class="input-content sign-up-content">
       <div class="input-content-box">
         <img  src="{{section.settings.public_logo | img_url: public_logo_resize }}" />
-        <div class="input-content-title">
+        <div class="input-content-title alifont_heavy">
           {{section.settings.sign_up_title}}
         </div>
         <div class="sign-up-box form-vertical">
 
           {% form 'create_customer',class:"customer_register" %}
-
-          <div class="input-box-content">
-            <lable class="input-title">{{ 'customer.login.email' | t }}</lable>
-            <input placeholder="{{section.settings.background_email_text}}" class="sign-up-email-number"  name="customer[email]"  type="email" value='' name="customer[email]"/>
+          {{ form.errors | default_errors }}
+          <div class="input-box-content box-margin-bottom">
+            <lable class="input-title alifont_heavy">{{ 'customer.login.email' | t }}</lable>
+            <input placeholder="{{section.settings.background_email_text}}" class="sign-up-email-number alifont"  name="customer[email]"  type="email" value='' name="customer[email]"/>
           </div>
 
           <div class="input-box-content">
-            <lable class="input-title">{{ 'customer.login.password' | t }}</lable>
+            <lable class="input-title alifont_heavy">{{ 'customer.login.password' | t }}</lable>
             <div class="input-password-box">
-              <input placeholder="{{section.settings.sign_background_password}}" class="input-password" type="password" value='' name="customer[password]"/>
+              <input placeholder="{{section.settings.sign_background_password}}" class="input-password alifont" type="password" value='' name="customer[password]"/>
               <div class="icon-password-eye-open"> 
                 <div class="oblique-line"></div>
                 {% include 'icon-password-eye-open'%} 
               </div>
             </div>
           </div>
-           {{ form.errors | default_errors }}
           <!--       提交   -->
-          <input class="input-botton" type="submit" value="{{section.settings.sign_up_text}}" class="btn">
+          <input class="input-botton alifont_bold" type="submit" value="{{section.settings.sign_up_text}}" class="btn">
           {% endform %}
         </div>
-        <!--       <botton class="input-bortton"></botton> -->
-        <div class="input-tips">
-          <span class="input-tips-text">{{section.settings.sign_up_tips_one}}</span>
-          <a href="/account/login" class="input-tips-text color-special">{{section.settings.sign_up_tips_two}}</a>
+        <div class="input-tips ">
+          <span class="input-tips-text alifont">{{section.settings.sign_up_tips_one}}</span>
+          <span href="/account/login" class="input-tips-text color-special alifont_bold">{{section.settings.sign_up_tips_two}}</span>
         </div>
       </div>
-      <div class="tips_policy">{{section.settings.sign_up_tips_policy}}</div>
+      <div class="tips_policy alifont">{{section.settings.sign_up_tips_policy}}</div>
     </div>
   </div>
 </div>
@@ -360,6 +373,8 @@
 //       $('html').addClass('html')
 //     }
 //   }
+
+
 
   // 点击眼睛
   $('.sign-up-box .icon-password-eye-open').on('mouseup',function(){
@@ -410,34 +425,28 @@
   })
 
   //去登录
-//   $('.sign-up-page .input-tips-text').on('click',function(){
-//     $('.sign-up-page').removeClass('active-block')
-//     $('.login-page').removeClass('active-none')
-//   })
+  $('.sign-up-page .input-tips-text').on('click',function(){
+    window.location.replace('/account/login')
+  })
 
-
+  //关闭注册页面
   $('.sign-up-page .input-close').on('click',function(){
-//     $('.login-page').addClass('page-none')
-    $('.sign-up-page').addClass('active-none')
+    window.history.back()
   })
 
   //改变提交框的样式
-  if($('.sign-up-page #create_customer').find('.errors').length>0){
-    $('.input-botton').addClass('sign-up-input-botton-top')
-  } else{
-    $('.input-botton').removeClass('sign-up-input-botton-top')
-  }
-
+//   if($('.sign-up-page #create_customer').find('.errors').length>0){
+//     $('.input-botton').addClass('sign-up-input-botton-top')
+//   } else{
+//     $('.input-botton').removeClass('sign-up-input-botton-top')
+//   }
+  
   {% if form.errors %}
   if (window.location.pathname == '/account/login'){
     window.localStorage.setItem('account-magento-login-error', '{{ form.errors | default_errors }}')
     $('.sign-up-page').removeClass('active-block')
-//     $('.login-page').removeClass('active-none')
   }
-
   {% endif %}
-
-
 
 </script>
 {% schema %}
@@ -489,7 +498,7 @@
       "type": "text",
       "id": "sign_up_tips_policy",
       "label": "政策条款提示",
-      "default": "By clicking Sign up you agree to Stylelab’s Terms of Service, Privacy Policy and Intellectual Property Policy"
+      "default": "By clicking Sign up you agree to MadeMine’s Terms of Service, Privacy Policy and Intellectual Property Policy"
     }
   ]
 }

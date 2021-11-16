@@ -1,7 +1,267 @@
 {% comment %} 
 ** @name  文章列表页面**
 ** @author 陈健辉 **
-** @update 2021-11-16
+** @integrate 陈健辉 **
+** @remarks 暂无作者头像信息 **
 {% endcomment %}
 
-{% section 'help-center' %}
+<style>
+.search-container{
+  display: none;
+}
+
+.article_module_search{
+  padding: 20px;
+  background: #F6F6F9;
+}
+.article_search_title{
+  font-size: 32px;
+  line-height: 48px;
+  text-align: center;
+  color: #222222;
+}
+.article_search{
+  display: flex;
+  align-items: center;
+  padding: 6px 10px;
+  background: #fff;
+  box-shadow: 0 1px 1px 0 rgba(106, 102, 136, 0.08), 0 4px 16px 0 rgba(183,183,192,0.3);
+  margin: 20px 0;
+  border-radius: 4px;
+}
+.article_search img{
+  width: 20px;
+  height: 20px;
+}
+.article_search input{
+  border: none;
+  background: transparent;
+}
+
+.article_list_module{
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 20px;
+}
+.article_item{
+  background: rgba(246,246,249,0.5);
+  border-radius: 4px;
+  padding: 5px;
+  color: #222222;
+  line-height: 24px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.article_item::after {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: #ccc;
+    position: absolute;
+    content: '';
+    top: 0;
+    left: 0;
+    opacity: 0;
+}
+.article_img{
+  border-radius: 4px;
+  overflow: hidden;
+  height: 200px;
+  margin: 0 auto;
+  width: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.article_detail_module{
+  padding: 5px;
+}
+.article_title{
+  font-size: 16px;
+}
+.article_author_time{
+  font-size: 12px;
+  margin: 20px 0;
+}
+.article_time{
+  color: #928FA5;
+}
+.article_detail{
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+
+.article_load_more{
+  margin: 20px 0 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #222222;
+}
+.article_current{
+  font-size: 14px;
+  line-height: 20px;
+}
+.article_load_btn{
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  border: 1px solid rgba(34,34,34,0.08);
+  background: #fff;
+  font-size: 16px;
+  padding: 4px 4px 4px 16px;
+}
+
+/* PC端样式 */
+@media screen and (min-width: 768px) {
+  .article_module_search{
+    padding: 60px 30px;
+  }
+  .article_search_title,
+  .article_search{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 8px 30px;
+  }
+  .article_search_title{
+    margin-bottom: 20px;
+  }
+
+  .article_list_module{
+    flex-direction: row;
+    max-width: 1260px;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    gap: 30px;
+    padding: 60px 30px 20px;
+  }
+  .article_item{
+    width: 380px;
+  }
+  .article_img{
+    height: 260px;
+  }
+  .article_item,
+  .article_load_btn{
+    cursor: pointer;
+  }
+}
+</style>
+
+{% comment %} 顶部搜索模块 {% endcomment %}
+<div class="article_module_search mm-header-height">
+  {% comment %} 模块标题 {% endcomment %}
+  <div class="article_search_title alifont_heavy">
+    Advice and answers from the Mademine Team
+  </div>
+  {% comment %} 模块搜索框 {% endcomment %}
+  <div class="article_search">
+    <img src="{{ 'search.svg' | asset_url }}" alt="serach">
+    <input
+      class="alifont"
+      type="text"
+      placeholder="Search for articles"
+      id="searchInput"
+      value=""/>
+  </div>
+</div>
+
+{% comment %} 文字列表模块 {% endcomment %}
+<div id="article_list_module" class="article_list_module">
+  {% comment %} 文章列表数据通过JS动态渲染
+  <div class="article_item">
+    // 文章图片
+    <div class="article_img">
+      <img src="https://cdn.shopify.com/s/files/1/0372/6897/9848/products/B_400x.jpg?v=1588056625" alt="">
+    </div>
+    // 文章描述
+    <div class="article_detail_module">
+      <div class="article_title">How can I create a product with Mademine?</div>
+      <div class="article_author_time">
+        <span class="article_author">Liz Ortner, </span>
+        <span class="article_time">Updated yesterday</span>
+      </div>
+      <div class="article_detail">
+        Mademine currently offers more than 200 unique products for your e-commerce store — from t-shirts to puzzles to pet beds — all of which can be custom-printed with your chosen designs
+      </div>
+    </div>
+  </div>
+  {% endcomment %}
+</div>
+
+{% comment %} 加载更多模块 {% endcomment %}
+<div class="article_load_more">
+  {% comment %} 当前显示数据/总数量 {% endcomment %}
+  <div class="article_current alifont">Show <span id="current_show" class="alifont_bold">0/0</span> tarticles</div>
+  {% comment %} 加载按钮 {% endcomment %}
+  <div id="article_load_btn" class="article_load_btn">
+    <span class="alifont_bold">Show more</span>
+    <img src="{{'next-bottom.svg' | asset_url}}" />
+  </div>
+</div>
+
+<script>
+const articleList = {{blog.articles | json}}; // 获取文章列表数据
+
+let pageNum = 1; // 页码
+let pageSize = 12; // 页容量
+let total = articleList.length || 0; // 总数
+let pages = Math.ceil(total / pageSize); // 总页数
+
+/* 点击加载更多事件 */
+$('#article_load_btn').on('click', () => {
+  pageNum++;
+  load();
+});
+
+/* load */
+load();
+function load(){
+  // 判断是否已经加载全部数据
+  if(pageNum >= pages){
+    $('#article_load_btn').unbind('click');
+    $('#article_load_btn').hide();
+  };
+  const start = (pageNum - 1) * pageSize;
+  let end = pageNum * pageSize;
+  end = end >= total ? total : end;
+  loadMore(articleList.slice(start, end));
+  $('#current_show').html(`${end}/${total}`);
+}
+
+/* 
+ * 加载更多数据
+ * @param listData 需要渲染的列表数据
+ */
+function loadMore(listData){
+  let articleTemplate = "";
+  listData.forEach(item => {
+    articleTemplate += `
+      <div class="article_item" data-handle="${item.handle}">
+        <div class="article_img" style="background-image: url(${item.image?.src});"></div>
+        <div class="article_detail_module">
+          <div class="article_title alifont_bold">${item.title}</div>
+          <div class="article_author_time">
+            <span class="article_author alifont_bold">${item.author}, </span>
+            <span class="article_time alifont">${new Date(item.updated_at).toDateString()}</span>
+          </div>
+          <div class="article_detail alifont">${item.summary_html}</div>
+        </div>
+      </div>
+    `;
+  });
+  $('#article_list_module').append(articleTemplate);
+}
+/* 绑定列表数据模块点击事件 通过事件委托获取事件源 */
+$('#article_list_module').on('click', (event) => {
+  const handle = event.target.dataset.handle;
+  if(!handle) return; // 无事件源
+  location.href = `/blogs/help-center/${handle}`;
+})
+</script>

@@ -228,6 +228,86 @@
     color: #222;
     line-height: 24px;
   }
+  .headerContainer .headerRight {
+  	display: flex;
+  }
+  .mm-customer .rightCart {
+    position: relative;
+    margin-right: 30px;
+    width: 36px;
+  	height: 36px;
+    cursor: pointer;
+  }
+  .mm-customer .rightCart img {
+    width: 100%ÅÅ
+  	height: 100%;
+  }
+  .mm-customer .rightCart .cartCount {
+  	position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 4px;
+    bottom: 4px;
+    width: 14px;
+    height: 14px;
+    background: #F9423A;
+    font-size: 10px;
+    border-radius: 3px;
+  }
+  .mm-customer .rightCart .cartCount span {
+    transform: scale(0.7);
+    color: #fff;
+  }
+  .mm-customer .rightCart {
+    position: relative;
+    margin-right: 30px;
+    width: 36px;
+  	height: 36px;
+    cursor: pointer;
+  }
+  .mm-customer .rightCart img {
+    width: 100%ÅÅ
+  	height: 100%;
+  }
+  .mm-customer .rightCart .cartCount {
+  	position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 4px;
+    bottom: 4px;
+    width: 14px;
+    height: 14px;
+    background: #F9423A;
+    font-size: 10px;
+    border-radius: 3px;
+  }
+  .mm-customer .rightCart .cartCount span {
+    transform: scale(0.7);
+    color: #fff;
+  }
+  .mm-customer .rightShop {
+    display: flex;
+    margin-left: 6px;
+    margin-right: 30px;
+    align-items: baseline;
+    width: 85px;
+    line-height: 40px;
+    cursor: pointer;
+  }
+  .mm-customer .rightShop p {
+    margin: 0 7px 0 0;
+    width: 85px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 14px;
+  }
+  .mm-customer .rightUser {
+    height: 36px;
+    cursor: pointer;
+  }
 
   @media screen and (max-width: 1426px) {
     .mm-submenu {
@@ -276,7 +356,7 @@
       left: 0;
       top: 0;
       z-index: 1010;
-      display: block;
+      display: none;
     }
     .mm-mobile-submenu .mm-bg {
       width: 100%;
@@ -354,6 +434,7 @@
     .mm-mobile-content .mm-category-second {
 /* 	  display: none; */
     }
+    
   }
 </style>
 
@@ -388,7 +469,17 @@
     <!-- customer -->
     <div class="mm-customer">
       {% if customer %}
-
+      <div class="rightCart">
+        <img src="{{ 'shoppingcart.png' | asset_url }}" />
+        <div class="cartCount"><span></span></div>
+      </div>
+<!--       <div class="rightShop">
+        <img class="shop-logo" src="" />
+        <p>AttentionSurprise</p>
+        <img class="shop-arrow" src="{{ 'showMore.svg' | asset_url }}" />
+      </div> -->
+      <a href="/account"><img class="rightUser" src="{{ 'userLogo.svg' | asset_url }}" /></a>
+      
       {% else %}
       <a href="/account/login" class="mm-btn mm-btn-default alifont_bold mm-login-btn">Log in</a>
       <a href="/account/register" class="mm-btn mm-btn-primary alifont_bold mm-register-btn">Sign up</a>
@@ -571,12 +662,40 @@
     }, 300);
   });
   
+  console.log('shopURL', '{{shop.url}}');
+  
   // nav当前页样式标红
   $('.mm-nav li a').each(function(index, item) {
-    if($(this).attr('href') == '{{page.url}}') {
-  	  $('mm-nav li a span').removeClass('active');
+    var pageURL =  window.location.href.replace("{{shop.url}}", "");
+    if(pageURL == $(this).attr('href')) {
+  	  $('mm-nav li a, mm-nav li a span').removeClass('active');
       $(this).find('span').addClass('active');
+      $(this).addClass('active');
     }    
+  });
+  
+  // 页面渲染执行
+  {% if cart.item_count %}
+  $('.cartCount span').html({{cart.item_count}});
+  $('.cartCount').show();
+  {% else %}
+  $('.cartCount').hide();
+  {% endif %}
+  
+  // 监听加车刷新事件，更新购物车数量
+  Listener.on([ Listener.cart.refresh ], function(event, cart) {
+    var cartCount = cart.item_count;
+    $('.cartCount span').html(cartCount);
+    if(cartCount) {
+      $('.cartCount').show();
+    } else {
+      $('.cartCount').hide();
+    }
+  });
+  // 点击购物车事件
+  $('.rightCart').click(function() {
+    // 在snippets => cart-popup.liquid中定义
+  	openPopUp();
   });
 </script>
 
@@ -593,83 +712,6 @@
       "type": "collection",
       "id": "collection",
       "label": "Choose a collection"
-    },
-    {
-      "type": "image_picker",
-      "id": "public_logo",
-      "label": "登录注册的logo"
-    },
-    {
-      "type": "text",
-      "id": "background_email_text",
-      "label": "登录注册的email背景字",
-      "default": "Work e-mail"
-    },
-    {
-      "type": "text",
-      "id": "sign_background_password",
-      "label": "注册的密码背景字",
-      "default": "Create a password"
-    },
-    {
-      "type": "text",
-      "id": "sign_up_title",
-      "label": "注册的标题",
-      "default": "Sign up and start earning for free"
-    },
-    {
-      "type": "text",
-      "id": "sign_up_text",
-      "label": "注册按钮文案",
-      "default": "Sign up"
-    },
-    {
-      "type": "text",
-      "id": "sign_up_tips_one",
-      "label": "注册底部提示1",
-      "default": "Already have an account?"
-    },
-    {
-      "type": "text",
-      "id": "sign_up_tips_two",
-      "label": "注册底部提示2",
-      "default": "Sign in"
-    },
-    {
-      "type": "text",
-      "id": "sign_up_tips_policy",
-      "label": "政策条款提示",
-      "default": "By clicking Sign up you agree to Stylelab’s Terms of Service, Privacy Policy and Intellectual Property Policy"
-    },
-    {
-      "type": "text",
-      "id": "login_background_password",
-      "label": "登录密码背景字",
-      "default": "Enter a password"
-    },
-    {
-      "type": "text",
-      "id": "login_title",
-      "label": "登录的标题",
-      "default": "Welcome back"
-    },
-    {
-      "type": "text",
-      "id": "login_text",
-      "label": "登录按钮文案",
-      "default": "Sign in"
-    },
-    {
-      "type": "text",
-      "id": "login_tips_one",
-      "label": "登录底部提示1",
-      "default": "New to Stylelab?"
-    },
-    {
-      "type": "text",
-      "id": "login_tips_two",
-      "label": "登录底部提示2",
-      "default": "Sign up"
     }
   ],
   "blocks": [
