@@ -219,7 +219,6 @@
       content: '';
   }
   .line1-items-2x {
-      flex: 1;
       background-color: #F6F6F9;
       border-radius: 12px;
       display: flex;
@@ -338,10 +337,16 @@
     background-repeat: no-repeat;
     background-position: center center;
   }
+
+  @media screen and (min-width: 769px){
+    .line1-items-2x{
+      flex: 1;
+    }
+  }
   
   @media screen and (max-width: 768px){
     .home-recommend-view{
-      padding-top:40px;
+      padding:30px 20px 0;
     }
     .recommend-top-box-four{
       height:139px;
@@ -350,22 +355,82 @@
     }
     .recommend-text-box{
       width:100%;
-      padding: 0 12px;
+      padding: 0;
+      max-width: 100%;
     }
-    .recommend-view-title {
-      font-size:20px;
-      line-height:29px;
+    .recommend-view .recommend-view-title {
+      font-size:22px;
+      line-height:30px;
+      padding: 0 0 20px;
+    }
+    .recommend-view-text1{
+      font-size: 16px;
     }
     .recommend-view-text{
       font-size:16px;
       line-height:19px;
-      margin-top:30px;
+      margin-top:14px;
     }
     .recommend-view-image{
       margin-top:27px;
       padding:0 20px;
       width:100%;
     }
+    .recommend-view .products-link{
+      margin-top: 20px;
+    }
+    .recommend-view .products-link .mm-a-link{
+      font-size: 14px;
+      padding: 5px 20px;
+    }
+    
+    .recommend-view-image{
+      padding: 0;
+    }
+    .line1{
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .line1-items{
+      width: 45%;
+      flex-grow: 1;
+      margin: 0;
+      height: 150px;
+    }
+    .line1-items-2x{
+      width: 100%;
+      justify-content: space-around;
+    }
+    .line1-items-2x .line1-text-content{
+      padding: 0;
+      padding: 15px;
+      flex-grow: 1;
+    }
+    .content-title{
+      font-size: 16px;
+    }
+    .content-description{
+      font-size: 14px;
+    }
+    .line2{
+      flex-wrap: wrap;
+      margin: 0;
+      gap: 10px;
+    }
+    .line2-items-2x{
+      width: 100%;
+      margin: 0;
+    }
+    .line2-items-wrapper{
+      gap: 10px;
+      height: 150px;
+      flex-direction: row;
+    }
+    .line2-items:first-child{
+      margin: 0;
+    }
+    
     .image_pc{
       display:none ;
     }
@@ -402,9 +467,6 @@
     }
     .flex-column{
       flex-direction: column;
-    }
-    .recommend-view-text{
-      margin-top:14px;
     }
     .bottom-box-item{
       width:100%;

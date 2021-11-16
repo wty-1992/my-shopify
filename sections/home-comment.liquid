@@ -43,7 +43,6 @@
     display:flex;
     align-items: center;
     justify-content: center;
-    height:88px;
     cursor: pointer;
   }
   .logo-image {
@@ -162,19 +161,28 @@
     font-weight: 700;
     font-style: normal;
   }
+
+  @media screen and (min-width: 769px){
+    .logo-list .logo-image-box{
+      height: 88px;
+    }
+    .mobile_module{
+      display: none;
+    }
+    .pc_module{
+      display: block;
+    }
+  }
+
   @media screen and (max-width: 768px){
     .home-comment{
-      padding-top:26px;
-      padding-bottom:56px;
+      padding: 30px 20px; 
     }
     .comment-box{
       margin-top:32px;  
     }
     .home-comment-box{
-      padding:0px;
-    }
-    .comment-text-box{
-      padding:0 20px;
+      padding: 0px;
     }
     .comment-text{
       font-size:12px;
@@ -182,8 +190,23 @@
       height:120px;
       width:305px;
     }
+    .recommend-view-title{
+      font-size: 24px;
+      line-height: 34px;
+      padding-bottom: 20px;
+    }
+    .recommend-view-text{
+      font-size: 16px;
+      line-height: 24px;
+    }
     .user-text:nth-of-type(2){
       font-size:12px;
+    }
+    .logo-list{
+      margin-bottom: 10px;
+    }
+    .logo-image{
+      padding: 10px;
     }
     .logo-image-box{
       height:44px;
@@ -191,31 +214,34 @@
     .active-box{
       border-radius: 12px;
     }
+    .mobile_module{
+      display: block;
+    }
+    .pc_module{
+      display: none;
+    }
     .comment-content{
-      margin-top:8px;
       background:#fff;
       flex-wrap: revert;
       justify-content: space-between;
       position: absolute;
       left:0px;
       top:0px;
+      gap: 10px;
+    }
+    .comment-content-box{
+      min-height: 340px;
+      padding: 0;
+      background: #fff;
     }
     .item-box{
       background:#f6f6f9;
       padding:14px;
       position: relative;
-	  margin:0 4px;
-      width:333px
-      
+      width:333px;
+      margin: 0;
     }
-    .logo-list{
-      padding:0 14px;
-    }
-    .comment-products-link{
-      position: absolute;
-      top: 14px;
-      right:14px;
-    }
+
     .comment-link {
       padding:2px 0 2px 8px; 
       font-size: 12px;
@@ -227,6 +253,18 @@
     .comment-link svg{
         width:28px;
         height:28px;
+    }
+    .star {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+    .star img{
+      height: 17px;
+    }
+    .comment-products-link .mm-a-link .link-text{
+      line-height: 30px;
     }
     .multi-circles{
       width:100%;
@@ -247,8 +285,6 @@
     background:#F9423A;
       margin-left:4px;
     }
-    .comment-content-box {
-    }
   }
 </style >
 
@@ -256,8 +292,10 @@
 <div class="home-comment-box">
   <div class="recommend-text-box comment-text-box">
     <div class="recommend-view-title alifont_bold">Trusted by over 500+ merchants</div>
-    <div class="recommend-view-text alifont">500K merchants
-Whether you are just getting started or run an enterprise-level e-commerce business, we do everything we can to ensure a positive merchant experience.</div>
+    <div class="recommend-view-text alifont">
+      <div>500K merchants</div>
+      <div>Whether you are just getting started or run an enterprise-level e-commerce business, we do everything we can to ensure a positive merchant experience.</div>
+    </div>
   </div>
   <div class="comment-box">
     <ul class="logo-list">
@@ -288,6 +326,12 @@ Whether you are just getting started or run an enterprise-level e-commerce busin
         <div class="item-box" sid="0">
           <div class="star">
             <img src="{{block.settings.rate_image | img_url: star_resize }}"/>
+            <div class="comment-products-link mobile_module">
+              <a class="mm-btn mm-btn-primary mm-a-link"  href="{{block.settings.link_one}}">
+                <span class="link-text comment-link alifont_bold">Sign up </span>
+                {% include 'icon-arrow' %}
+              </a>
+            </div>
           </div>
           <div class="comment-text alifont">{{block.settings.evaluate_one}}</div>
           <div class="user-information-box">
@@ -306,7 +350,7 @@ Whether you are just getting started or run an enterprise-level e-commerce busin
 
               </div>
             </div>
-            <div class="comment-products-link">
+            <div class="comment-products-link pc_module">
               <a class="mm-btn mm-btn-primary mm-a-link"  href="{{block.settings.link_one}}">
                 <span class="link-text comment-link alifont_bold">Sign up </span>
                 {% include 'icon-arrow' %}
@@ -318,6 +362,12 @@ Whether you are just getting started or run an enterprise-level e-commerce busin
         <div class="item-box" sid="1">
           <div class="star">
             <img src="{{block.settings.rate_image | img_url: star_resize }}"/>
+            <div class="comment-products-link mobile_module">
+              <a class="mm-btn mm-btn-primary mm-a-link"  href="{{block.settings.link_two}}">
+                <span class="link-text comment-link alifont_bold">Sign up </span>
+                {% include 'icon-arrow' %}
+              </a>
+            </div>
           </div>
           <div class="comment-text">{{block.settings.evaluate_two}}</div>
           <div class="user-information-box">
@@ -335,7 +385,7 @@ Whether you are just getting started or run an enterprise-level e-commerce busin
                 </div>
               </div>
             </div>
-            <div class="comment-products-link">
+            <div class="comment-products-link pc_module">
               <a class="mm-btn mm-btn-primary mm-a-link"  href="{{block.settings.link_two}}">
                 <span class="link-text comment-link alifont_bold">Sign up </span>
                 {% include 'icon-arrow' %}
@@ -347,6 +397,12 @@ Whether you are just getting started or run an enterprise-level e-commerce busin
         <div class="item-box" sid="2">
           <div class="star">
             <img src="{{block.settings.rate_image | img_url: star_resize }}"/>
+            <div class="comment-products-link mobile_module">
+              <a class="mm-btn mm-btn-primary mm-a-link"  href="{{block.settings.link_three}}">
+                <span class="link-text comment-link alifont_bold">Sign up </span>
+                {% include 'icon-arrow' %}
+              </a>
+            </div>
           </div>
           <div class="comment-text">{{block.settings.evaluate_three}}</div>
           <div class="user-information-box">
@@ -364,7 +420,7 @@ Whether you are just getting started or run an enterprise-level e-commerce busin
                 </div>
               </div>
             </div>
-            <div class="comment-products-link">
+            <div class="comment-products-link pc_module">
               <a class="mm-btn mm-btn-primary mm-a-link"  href="{{block.settings.link_three}}">
                 <span class="link-text comment-link alifont_bold">Sign up </span>
                 {% include 'icon-arrow' %}
@@ -376,6 +432,12 @@ Whether you are just getting started or run an enterprise-level e-commerce busin
         <div class="item-box" sid="3">
           <div class="star">
             <img src="{{block.settings.rate_image | img_url: star_resize }}"/>
+            <div class="comment-products-link mobile_module">
+              <a class="mm-btn mm-btn-primary mm-a-link"  href="{{block.settings.link_four}}">
+                <span class="link-text comment-link alifont_bold">Sign up </span>
+                {% include 'icon-arrow' %}
+              </a>
+            </div>
           </div>
           <div class="comment-text">{{block.settings.evaluate_four}}</div>
           <div class="user-information-box">
@@ -393,7 +455,7 @@ Whether you are just getting started or run an enterprise-level e-commerce busin
                 </div>
               </div>
             </div>
-            <div class="comment-products-link">
+            <div class="comment-products-link pc_module">
               <a class="mm-btn mm-btn-primary mm-a-link"  href="{{block.settings.link_four}}">
                 <span class="link-text comment-link alifont_bold">Sign up </span>
                 {% include 'icon-arrow' %}
