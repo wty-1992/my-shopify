@@ -48,6 +48,7 @@
 .article_item{
   background: rgba(246,246,249,0.5);
   border-radius: 4px;
+  padding: 5px;
   color: #222222;
   line-height: 24px;
   position: relative;
@@ -66,16 +67,16 @@
     opacity: 0;
 }
 .article_img{
-  padding: 5px;
+  border-radius: 4px;
   overflow: hidden;
   height: 200px;
   margin: 0 auto;
-}
-.article_img img{
-  height: 100%;
+  width: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 .article_detail_module{
-  padding: 10px;
+  padding: 5px;
 }
 .article_title{
   font-size: 16px;
@@ -144,7 +145,7 @@
     width: 380px;
   }
   .article_img{
-    height: 270px;
+    height: 260px;
   }
   .article_item,
   .article_load_btn{
@@ -243,9 +244,7 @@ function loadMore(listData){
   listData.forEach(item => {
     articleTemplate += `
       <div class="article_item" data-handle="${item.handle}">
-        <div class="article_img">
-          <img src="${item.image?.src}" alt="">
-        </div>
+        <div class="article_img" style="background-image: url(${item.image?.src});"></div>
         <div class="article_detail_module">
           <div class="article_title alifont_bold">${item.title}</div>
           <div class="article_author_time">
@@ -262,6 +261,7 @@ function loadMore(listData){
 /* 绑定列表数据模块点击事件 通过事件委托获取事件源 */
 $('#article_list_module').on('click', (event) => {
   const handle = event.target.dataset.handle;
+  if(!handle) return; // 无事件源
   location.href = `/blogs/help-center/${handle}`;
 })
 </script>
