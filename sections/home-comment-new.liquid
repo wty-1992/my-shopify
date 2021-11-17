@@ -1,6 +1,6 @@
 <style >
   .home-comment-box {
-    margin: 0 auto;
+    margin: 150px auto 0;
     display:flex;
     align-items: center;
     justify-content: center;
@@ -76,8 +76,14 @@
     align-items: center;
     margin-bottom: 14px;
   }
-  .star{
-    width:101px;
+  .star {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  .star img{
+    height: 17px;
   }
   .comment-text{
     width: 100%;
@@ -153,6 +159,8 @@
   }
   .comment-products-link .mm-a-link {
   	display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 0 10px 0 15px;
   }
   .comment-products-link .mm-a-link .link-text {
@@ -185,13 +193,16 @@
   @media screen and (max-width: 768px){
     .home-comment{
       padding-top:26px;
-      padding-bottom:56px;
     }
     .comment-box{
-      margin-top:32px;  
+      padding-top: 20px;
+    }
+    .mm-page-limited{
+      padding: 0 20px;
     }
     .home-comment-box{
       padding:0px;
+      margin: 20px 0 0;
     }
     .comment-text-box{
       padding:0 20px;
@@ -202,11 +213,29 @@
       height:120px;
       width:305px;
     }
+    .recommend-view-title{
+      font-size: 24px;
+      line-height: 34px;
+      padding-bottom: 20px;
+    }
+    .recommend-view-text{
+      font-size: 16px;
+      line-height: 24px;
+      width: 100%;
+    }
     .user-text:nth-of-type(2){
       font-size:12px;
     }
-    .logo-image-box{
-      height:44px;
+    .logo-list{
+      padding:0;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .logo-list .logo-image-box{
+      padding: 5px 10px;
+      width: 30%;
+      margin: 0;
+      flex-grow: 1;
     }
     .comment-content{
       margin-top:8px;
@@ -218,19 +247,10 @@
       top:0px;
     }
     .comment-content-box .item-box {
-      background:#f6f6f9;
       padding:14px;
       position: relative;
 	    margin:0 4px;
-      width:333px
-    }
-    .logo-list{
-      padding:0 14px;
-    }
-    .comment-products-link{
-      position: absolute;
-      top: 14px;
-      right:14px;
+      min-width:335px;
     }
     .comment-link {
       padding:2px 0 2px 8px; 
@@ -243,6 +263,10 @@
     .comment-link svg{
         width:28px;
         height:28px;
+    }
+    .comment-content-box .swiper-container{
+      padding: 0;
+      overflow: unset;
     }
     .multi-circles{
       width:100%;
@@ -295,12 +319,12 @@
               <div class="box-top">
                 <div class="star">
                   <img src="{{block.settings.rate_image | img_url: star_resize }}"/>
-                </div>
-                <div class="comment-products-link">
-                  <a class="mm-btn mm-btn-primary mm-a-link"  href="{{block.settings.link_url}}">
-                    <span class="link-text comment-link alifont_bold">{{block.settings.link_text}}</span>
-                    {% include 'icon-arrow' %}
-                  </a>
+                    <div class="comment-products-link">
+                    <a class="mm-btn mm-btn-primary mm-a-link"  href="{{block.settings.link_url}}">
+                      <span class="link-text comment-link alifont_bold">{{block.settings.link_text}}</span>
+                      {% include 'icon-arrow' %}
+                    </a>
+                  </div>
                 </div>
               </div>
               <div class="comment-text">{{block.settings.evaluate}}</div>
@@ -337,9 +361,7 @@
     observer: true,
     observeParents: true,
     slidesPerView: 2.2,
-    slidesPerGroup : 2,
     spaceBetween: 10,
-    loop: true,
     keyboard: true,
     pagination: {
       el: '.swiper-pagination',
@@ -350,20 +372,17 @@
       2048: {
         // show 4.5 product
         slidesPerView: 4,
-        slidesPerGroup: 4,
         spaceBetween: 20,
         slidesOffsetBefore:12
       },
       1024: {
         // show 4.5 product
         slidesPerView: 4,
-        slidesPerGroup: 4,
         spaceBetween: 28
       },
       768: {
         // show 3.5 product
         slidesPerView: 2,
-        slidesPerGroup:2,
         spaceBetween: 10
       }
     }
