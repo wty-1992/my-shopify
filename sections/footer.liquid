@@ -61,6 +61,9 @@
   .footer-container .container-logo img {
   	width: 240px;
   }
+  .footer_title_bl{
+    display: block;
+  }
   @media (max-width: 768px) {
     .site-footer {
       height: auto;
@@ -94,6 +97,9 @@
       height: 48px;
       line-height: 48px;
     }
+    .footer_title_bl{
+      display: inline;
+    }
   }
 </style>
 <footer class="site-footer alifont"> 
@@ -101,7 +107,7 @@
     <div class="container-list">
       <div class="list-item">
         <div class="item-title alifont_bold">
-          <span>Sell with <br/>Mademine</span>
+          <span>Sell with <span class="footer_title_bl">Mademine</span></span>
           <img src="{{ 'next-bottom.svg' | asset_url }}" />
         </div>
 <!--         <a class="item-url">Connect your store</a>

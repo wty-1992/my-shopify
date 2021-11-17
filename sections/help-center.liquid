@@ -70,6 +70,31 @@
   width: 36px;
   height: 36px;
 }
+<<<<<<< HEAD
+.article_search_empty{
+  padding: 15px 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  color: #222;
+  font-size: 18px;
+  line-height: 24px;
+  text-align: center;
+}
+.article_search_empty img{
+  width: 75px;
+  height: 75px;
+}
+.search_empty_title{
+  margin: 10px;
+}
+.search_empty_text{
+  font-size: 12px;
+  line-height: 20px;
+  color: #928FA5;
+}
+=======
+>>>>>>> a4895a8898e6444c8b17cc72e89d6158a35613fc
 .article_search_list{
   display: none;
 }
@@ -220,6 +245,25 @@
   .article_search_loading{
     padding: 30px;
   }
+<<<<<<< HEAD
+  .article_search_empty{
+  padding: 30px 0;
+  font-size: 24px;
+  line-height: 32px;
+  }
+  .article_search_empty img{
+    width: 100px;
+    height: 100px;
+  }
+  .search_empty_title{
+    margin: 15px;
+  }
+  .search_empty_text{
+    font-size: 16px;
+    line-height: 22px;
+  }
+=======
+>>>>>>> a4895a8898e6444c8b17cc72e89d6158a35613fc
   .article_search_list{
     position: relative;
     flex-wrap: wrap;
@@ -296,12 +340,19 @@
       <div class="article_search_text alifont_bold">Im looking for…</div>
       {% comment %} 加载中 {% endcomment %}
       <div class="article_search_loading"><img src="{{'Loading_icon.gif' | asset_url}}" /></div>
+      {% comment %} 空数据 {% endcomment %}
+      <div class="article_search_empty">
+        <img src="{{'search_empty.png' | asset_img_url}}" alt="">
+        <div class="search_empty_title">No results found！</div>
+        <div class="search_empty_text">Try another keyword or check out articles that might interest you below...</div>
+      </div>
+      <div></div>
       {% comment %} 结果列表 {% endcomment %}
       <div class="article_search_list">
         {% comment %} JS动态渲染 {% endcomment %}
       </div>
       {% comment %} 展示按钮 {% endcomment %}
-      <div class="article_search_btn alifont_bold">See matching products（<span class="search_total"></span>）→</div>
+      <div class="article_search_btn alifont_bold">See matching articles（0）→</div>
     </div>
   </div>
 </div>
@@ -358,13 +409,17 @@ const inputChange = debounce(() => {
   filterArticleList = articleList.filter(item => {
     return item.title.toLowerCase().includes(value);
   });
+  $('.article_search_loading').hide();
   /* 判断是否有搜索结果 */
   if(filterArticleList.length > 0) {
+    $('.article_search_empty').css('display', 'none');
     loadMoreSearch(filterArticleList);
   }else {
-    searchModel('hide');
-    alert('暂无数据');
-  }
+    $('.article_search_list').removeClass('listShow');
+    $('.article_search_list').children().remove(); // 清空子元素
+    $('.article_search_btn').html(`Browse articles →`);
+    $('.article_search_empty').css('display', 'flex');
+  };
 }, 500)
 
 /* 搜索结果弹窗显隐 */
@@ -384,6 +439,7 @@ $('#searchInput').on('input', inputChange);
 /* 点击加载搜索结果列表 */
 $('.article_search_btn').on('click', () => {
   searchModel('hide');
+  if(filterArticleList.length === 0) return;
   pageNum = 1; // 页码
   total = filterArticleList.length || 0; // 总数
   pages = Math.ceil(total / pageSize); // 总页数
@@ -399,7 +455,6 @@ $('#article_load_btn').on('click', () => {
 
 /* 初始化条件 */
 function init(){
-  if(filterArticleList.length === 0) return;
   filterArticleList = []; // 过滤的列表数据
   searchValue = ''; // 搜索条件
   pageNum = 1; // 页码
@@ -470,10 +525,9 @@ function loadMoreSearch(listData){
     })
     $('.article_search_loading').hide();
     $('.article_search_list').html(template);
-    $('.search_total').html(listData.length);
+    $('.article_search_btn').html(`See matching articles（${listData.length}）→`);
     $('.article_search_list').addClass('listShow');
 }
-
 /* 绑定列表数据模块点击事件 通过事件委托获取事件源 */
 $('#article_list_module').on('click', handleEvent);
 $('.article_search_list').on('click', handleEvent);
