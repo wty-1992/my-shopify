@@ -1,0 +1,545 @@
+<style >
+  .home-comment-box {
+    margin: 150px auto 0;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: #222;
+  }
+  .recommend-text-box {
+    text-align: center;
+  }
+  .recommend-view-title {
+    font-size: 44px;
+    line-height: 60px;
+    padding-bottom: 40px;
+  }
+  .recommend-view-text {
+    font-size: 22px;
+    line-height: 30px;
+    margin: 0 auto;
+    width: 66%;
+  }
+  .comment-box {
+    margin-top: 32px;
+    padding-top: 42px;
+    width: 100%;
+    background: #F6F6F9;
+  }
+  .logo-list {
+    width: 100%;
+    display:flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+  }
+  .logo-list .logo-image-box {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    width: calc((100% - 112px) / 5);
+    height:88px;
+    cursor: pointer;
+    background: #fff;
+    box-shadow: 0 1px 1px rgb(106 102 132 / 8%), 0 4px 16px rgb(183 183 192 / 30%);
+    border-radius: 4px;
+  }
+  .logo-image {
+    height: 48px;
+    z-index:10px;
+  }
+  .logo-image img {
+      height: 100%;
+  }
+  .comment-content {
+    width:100%;
+    display:flex;
+    justify-content:space-around;
+    flex-wrap: wrap;
+    display:none;
+  }
+  .comment-content-box .swiper-container {
+  	margin: 0;
+    height: 450px;
+  }
+  .comment-content-box .item-box {
+    padding: 28px 14px 0; 
+    background: #fff;
+    border-radius: 4px;
+  }
+  .item-box .box-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .star {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  .star img{
+    height: 17px;
+  }
+  .comment-text{
+    width: 100%;
+    color: #6C6888;
+    margin-top: 14px;
+    font-size: 14px;
+    line-height: 24px;
+    height: 144px;
+    display: -webkit-box;
+    overflow: hidden;  
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+  }
+  .user-information-box{
+    display:flex;
+    justify-content: space-between;
+    margin-top: 28px;
+  }
+  .information-box{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .user-image{
+    width:68px;
+    height:68px;
+    border-radius: 50%;
+    margin-right:14px;
+  }
+  .logo-box{
+    height:24px;
+  }
+  .logo-box img {
+  	height: 100%;
+  }
+  .information-text{
+    line-height: 1.5;
+    color:#222;
+  }
+  .item-box .information-text .text-user {
+  	font-size: 14px;
+  }
+  .item-box .information-text .text-introduce {
+  	font-size: 12px;
+    line-height: 1.5;
+  }
+  .multi-circles{
+  display:none;
+  }
+  .active_image{
+  }
+  .active-none{
+    display:none;
+  }
+  .active-block{
+    display:block;
+  }
+  .active-flex{
+    display:flex;
+  }
+  .comment-products-link .link {
+    min-width: 120px;
+    height: 36px;
+    padding-left: 8px;
+    display: flex;
+    background: #F9423A;
+    border-radius: 4px;
+    justify-content: center;
+    align-items: center;
+  }
+  .comment-products-link svg{
+  	width: 32px;
+  }
+  .comment-products-link .mm-a-link {
+  	display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px 0 15px;
+  }
+  .comment-products-link .mm-a-link .link-text {
+  	line-height: 32px;
+    font-size: 12px;
+  }
+  .link .link-text {
+    font-size: 16px;
+    font-family: alibaba-sans, sans-serif;
+    font-weight: 700;
+    font-style: normal;
+  }
+  .comment-content-box {
+
+  }
+  .normal-swiper .swiper-wrapper {
+  	margin-bottom: 100px;
+    height: 350px;
+  }
+  .normal-swiper .swiper-pagination-bullets {
+  	bottom: 40px;
+  }
+  .normal-swiper .swiper-pagination-bullet {
+    width: 14px;
+    height: 14px;
+  }
+  .normal-swiper .swiper-pagination-bullet-active {
+  	background: #F9423A;
+  }
+  @media screen and (max-width: 768px){
+    .home-comment{
+      padding-top:26px;
+    }
+    .comment-box{
+      padding-top: 20px;
+    }
+    .mm-page-limited{
+      padding: 0 20px;
+    }
+    .home-comment-box{
+      padding:0px;
+      margin: 20px 0 0;
+    }
+    .comment-text-box{
+      padding:0 20px;
+    }
+    .comment-text{
+      font-size:12px;
+      line-height:24px;  
+      height:120px;
+      width:305px;
+    }
+    .recommend-view-title{
+      font-size: 24px;
+      line-height: 34px;
+      padding-bottom: 20px;
+    }
+    .recommend-view-text{
+      font-size: 16px;
+      line-height: 24px;
+      width: 100%;
+    }
+    .user-text:nth-of-type(2){
+      font-size:12px;
+    }
+    .logo-list{
+      padding:0;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .logo-list .logo-image-box{
+      padding: 5px 10px;
+      width: 30%;
+      margin: 0;
+      flex-grow: 1;
+    }
+    .comment-content{
+      margin-top:8px;
+      background:#fff;
+      flex-wrap: revert;
+      justify-content: space-between;
+      position: absolute;
+      left:0px;
+      top:0px;
+    }
+    .comment-content-box .item-box {
+      padding:14px;
+      position: relative;
+	    margin:0 4px;
+      min-width:335px;
+    }
+    .comment-link {
+      padding:2px 0 2px 8px; 
+      font-size: 12px;
+      line-height:14px;
+      font-family: alibaba-sans, sans-serif;
+      font-weight: 700;
+      font-style: normal;
+    }
+    .comment-link svg{
+        width:28px;
+        height:28px;
+    }
+    .comment-content-box .swiper-container{
+      padding: 0;
+      overflow: unset;
+    }
+    .multi-circles{
+      width:100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top:20px;
+      margin-bottom:40px;
+    }
+    .circle-box{
+     background:#E0E0E5;
+     width:8px;
+     height:8px;
+     border-radius: 50%;
+      margin-left:4px;
+    }
+    .active-circle{
+    background:#F9423A;
+      margin-left:4px;
+    }
+  }
+</style >
+
+ 
+<div class="home-comment-box alifont">
+  <div class="recommend-text-box mm-page-limited comment-text-box">
+    <div class="recommend-view-title alifont_bold">{{section.settings.title}}</div>
+    <div class="recommend-view-text">{{section.settings.explain}}</div>
+  </div>
+  <div class="comment-box">
+    <div class="mm-page-limited">
+      <div class="logo-list">
+        {% for block in section.blocks %}
+        {% if block.type == 'comment' %}
+        {% assign logo_resize = block.settings.active_image.width | append: "x" | append: block.settings.active_image.height %}
+        <div class="logo-image-box">
+          <div class="logo-image">
+            <img class="active_image" src="{{block.settings.active_image | img_url: logo_resize }}"/>
+          </div>
+        </div>
+        {% endif %}
+        {% endfor%}
+      </div>
+      <div class="comment-content-box">
+        <div class="normal-swiper swiper-container">
+          <div class="swiper-wrapper">
+            {% for block in section.blocks %}
+            {% if block.type == 'comment' %}
+            <div class="swiper-slide item-box">
+              <div class="box-top">
+                <div class="star">
+                  <img src="{{block.settings.rate_image | img_url: star_resize }}"/>
+                    <div class="comment-products-link">
+                    <a class="mm-btn mm-btn-primary mm-a-link"  href="{{block.settings.link_url}}">
+                      <span class="link-text comment-link alifont_bold">{{block.settings.link_text}}</span>
+                      {% include 'icon-arrow' %}
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="comment-text">{{block.settings.evaluate}}</div>
+              <div class="user-information-box">
+                <div class="information-box">
+                  <div class="user-image">
+                    <img src="{{block.settings.user_image | img_url: user_resize }}"/>
+                  </div>
+                  <div class="information-box-text">
+                    <div class="logo-box">
+                      <img src="{{block.settings.user_image_logo | img_url: user_logo_resize }}"/>
+                    </div>
+                    <div class="information-text">
+                      <span class="text-user alifont_bold"> {{block.settings.user_name }}，</span>
+                      <span class="text-introduce"> {{block.settings.user_introduction}}</span>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script defer="defer">
+  // 初始化轮播图
+  var swiper = new Swiper('.normal-swiper', {
+    observer: true,
+    observeParents: true,
+    slidesPerView: 2.2,
+    spaceBetween: 10,
+    keyboard: true,
+    pagination: {
+      el: '.swiper-pagination',
+      dynamicBullets: true,
+      clickable: true
+    },
+    breakpoints: {
+      2048: {
+        // show 4.5 product
+        slidesPerView: 4,
+        spaceBetween: 20,
+        slidesOffsetBefore:12
+      },
+      1024: {
+        // show 4.5 product
+        slidesPerView: 4,
+        spaceBetween: 28
+      },
+      768: {
+        // show 3.5 product
+        slidesPerView: 2,
+        spaceBetween: 10
+      }
+    }
+  });
+
+
+
+
+  //点击logo事件
+  $(' .logo-list').on('click','.logo-image-box', function() {
+    console.log($(this).index());
+  	swiper.slideTo($(this).index(), 100, false); 
+  })
+    const screenWidth = document.documentElement.clientWidth
+    if(screenWidth<768){
+      //轮播事件
+      var _focus_num = $(".multi-circles > li").length;
+      var _focus_direction = true;
+      var _focus_pos = 0;
+      var _focus_li_length =$('.item-box').innerWidth();
+      var _focus_max_length = _focus_num * _focus_li_length;
+      var _focus_dsq = null;
+      var _focus_lock = true;
+      function autoExecAnimate() {
+        $(".circle-item" + _focus_pos).addClass("active-circle").siblings("li.active-circle").removeClass("active-circle");
+        var moveLen = _focus_pos * _focus_li_length;
+        $(".comment-content").animate({
+          left: "-" + moveLen + "px"
+        },600);
+        if (_focus_pos == (_focus_num - 1)) {
+          _focus_direction = false
+        }
+        if (_focus_pos == 0) {
+          _focus_direction = true
+        }
+        if (_focus_direction) {
+          _focus_pos++
+        } else {
+          _focus_pos--
+        }
+      }
+
+      _focus_dsq= setInterval("autoExecAnimate()", 3000);
+      
+      
+      $(".item-box").on('touchstart', function() {
+        if (_focus_lock) {
+          clearInterval(_focus_dsq);
+          _focus_lock = false
+        }
+
+      });
+      $(".item-box").on('touchend',function() {
+        if (_focus_lock == false) {
+          _focus_dsq = setInterval("autoExecAnimate()", 3000);
+          _focus_lock = true
+        }
+        
+      });
+    }
+
+
+</script>
+{% schema %}
+{
+  "name": "首页 评论",
+  "class": "home-comment",
+  "settings": [
+    {
+      "type": "text",
+      "id": "private",
+      "label": "程序参考字段默认勿动",
+      "default": "home-comment"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "标题",
+      "default": "Trusted by over 500+ merchants"
+    },
+    {
+      "type": "textarea",
+      "id": "explain",
+      "label": "说明",
+      "default": "500K merchants Whether you are just getting started or run an enterprise-level e-commerce business, we do everything we can to ensure a positive merchant experience."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "comment",
+      "name": "每个站点的评价",
+      "settings": [
+		{
+ 		 "type": "text",
+          "id": "site_index",
+          "label": "站点的顺序"
+		},
+        {
+          "type": "image_picker",
+          "id": "active_image",
+          "label": "logo图片高亮"
+        },
+        
+      {
+          "type": "image_picker",
+          "id": "user_image_logo",
+          "label": "用户评价展示的logo"
+        },
+        {
+          "id": "user_image",
+          "type": "image_picker",
+          "label": "用户头像图"
+        },
+
+        {
+          "id": "user_name",
+          "type": "text",
+          "label": "用户名"
+        },
+        {
+          "id": "user_introduction",
+          "type": "text",
+          "label": "用户介绍"
+        },
+        {
+          "id": "evaluate",
+          "type": "textarea",
+          "label": "评论内容"
+        },
+        {
+          "id": "link_text",
+          "type": "text",
+          "label": "跳转文案"
+        },
+        {
+          "id": "link_url",
+          "type": "text",
+          "label": "跳转链接"
+        },
+        {
+          "id": "rate_image",
+          "type": "image_picker",
+          "label": "星星图片"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "首页 评论",
+      "category": "1-Custom",
+      "blocks": [
+        {
+          "type": "comment"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

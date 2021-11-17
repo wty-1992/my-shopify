@@ -56,6 +56,15 @@
     flex-wrap: wrap;
     flex: 1;
   }
+  .container-slide .slide-list .list-loading {
+  	display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  .container-slide .slide-list .list-loading img {
+  	width: 30px;
+  }
   .slide-list .slide-separate {
   	position: absolute;
     left: 50%;
@@ -125,8 +134,13 @@
         <!-- type is search product olny -->
         <input type="hidden" name="type" value="product">
         <input type="hidden" name="q" id="searchFormQuery" value="" >
-        <button type="submit" class="more-button alifont_bold"> See matching products（<span></span>）→ </button>
+        <input type="hidden" name="options[unavailable_products]" value="hide" />
+        <input type="hidden" name="options[prefix]" value="last" />
+        <button type="submit" class="more-button alifont_bold"> See matching products（<span>0</span>）→ </button>
       </form>
+    </div>
+    <div>
+      
     </div>
   </div>
 </div>
@@ -140,6 +154,7 @@
   // 监听输入框输入事件
   $('#searchInput').on('input', function() {
     $(this).val().length ? $('.container-slide').show() : $('.container-slide').hide();
+    $('.slide-list').html(`<div class="list-loading"><img src="{{'Loading_icon.gif' | asset_url}}" /></div>`);
     $('#searchFormQuery').val($(this).val());
 //        sunzi_debounce(renderDomProducts, 1000);
   //   	var result = await searchResult($(this).val())
@@ -152,25 +167,31 @@
   // 渲染搜索产品
   async function renderDomProducts() {
     var searchValue = $('#searchInput').val();
-    if(!searchValue) return;
     var htmlString = '';
-    var result = await searchResult($('#searchInput').val());
-    var productsData = result.resources.results.products;
-  	for(let i=0;i<productsData.length;i++) {
-      if(i == 4) break;
-      htmlString += `
-	  <a class="list-item" href="${productsData[i].url}">
-      	<img class="item-img" src="${productsData[i].featured_image.url}" />
-      	<div class="item-content">
-          <div class="content-title">${productsData[i].title}</div>
-          <div class="content-price">${productsData[i].price}</div>
-        </div>
-      </a>
-      `;
+    var productsLength = 0;
+    if(!searchValue) {
+      htmlString = "";
+    } else {
+      var result = await searchResult($('#searchInput').val());
+      var productsData = result.resources.results.products;
+      for(let i=0;i<productsData.length;i++) {
+        if(i == 4) break;
+        htmlString += `
+        <a class="list-item" href="${productsData[i].url}">
+          <img class="item-img" src="${productsData[i].featured_image.url}" />
+          <div class="item-content">
+            <div class="content-title">${productsData[i].title}</div>
+            <div class="content-price">${productsData[i].price}</div>
+          </div>
+        </a>
+        `;
+      }
+      htmlString += `<div class="slide-separate"></div>`;
+      productsLength = productsData.length;
     }
-    htmlString += `<div class="slide-separate"></div>`;
+    
     $('.slide-list').html(htmlString);
-    $('.more-button span').html(productsData.length);
+    $('.more-button span').html(productsLength);
   }
   
   // 查询接口

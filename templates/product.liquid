@@ -147,6 +147,15 @@ button.btn.product-form__cart-submit:focus{
   color:#599dd2;
   font-weight: 900;
 }
+  .prelogin {
+  	padding: 20px 0;
+  }
+  .prelogin .prelogin-button {
+    width: 100%;
+    height: 40px;
+    font-size: 16px;
+    text-transform: uppercase;
+  }
 @media(max-width:768px){
   .product-page .row{
     margin:0px; 
@@ -218,8 +227,16 @@ button.btn.product-form__cart-submit:focus{
             </div>
             {% section 'product-page-related' %}
           </div>
-          {% section 'product-page-detail-heengfu' %}            
+          {% section 'product-page-detail-heengfu' %}           
+          {% if customer %}
           {% section 'product-page-add_to_cart' %}                 
+          {% else %}
+            <a class="prelogin" href="/account/login">
+              <button class="prelogin-button mm-btn mm-btn-primary alifont_bold">
+                buy it now
+              </button>
+            </a>
+          {% endif %}
           {% section 'product-page-plans' %}
         </div> 
     </div>

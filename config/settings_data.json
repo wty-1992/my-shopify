@@ -10643,7 +10643,7 @@
           "offcolor": "#e9034d",
           "IsGradient": false,
           "gradient": "bottom right, #c3361a, #ff7d41",
-          "fixedContent": "shopify:\/\/shop_images\/bestsellers.png",
+          "fixedContent": "shopify:\/\/shop_images\/bestseller_6b385151-89c4-4a5a-ab2a-b390ff98de10.png",
           "collection": "diy-custom-diamond-painting",
           "limit": 8,
           "autoplay": false,
@@ -10845,9 +10845,9 @@
           "autoplay": true,
           "title": "Sell custom products，get all ideas.for FREE",
           "sell_text": "Start selling",
-          "skip_sell": "",
+          "skip_sell": "\/pages\/normal",
           "work_text": "How it works",
-          "skip_work": "",
+          "skip_work": "\/pages\/how-it-works",
           "advantage": "100%.Free to use;300+.High-Quality Products;Largest.global print network"
         }
       },
@@ -10958,7 +10958,7 @@
         "settings": {
           "private": "recommend-view",
           "skip-text": "All products",
-          "link": "",
+          "link": "\/pages\/normal",
           "title": "We understand what you need most",
           "text": "200+ bestselling products are recommended to you to ensure that you can easily face all festivals and provide your customers with more high-quality choices."
         }
@@ -11026,6 +11026,7 @@
       },
       "1636616260852d1468": {
         "type": "home-comment",
+        "disabled": true,
         "blocks": {
           "1636616260852d1468-0": {
             "type": "comment",
@@ -11039,26 +11040,26 @@
               "user_introduction_one": "Global Head of Creative",
               "evaluate_one": "Stylelab has been an incredible service for us musicians unable to keep large amount of inventory-now we can create designs previously too expensive to print without having to have 1,000 shirts in our jam space,Thanks Stylelab!",
               "link_text_one": "Sign up",
-              "link_one": "",
+              "link_one": "https:\/\/soufeel.com\/",
               "user_image_two": "shopify:\/\/shop_images\/2_71c6dbf4-c543-4604-812f-a59156f19c9d.png",
               "user_name_two": "Robert",
               "user_introduction_two": "Creative Operations Manager",
               "rate_image": "shopify:\/\/shop_images\/star.png",
               "evaluate_two": "We chose Mademine because of their offerings as well as their incredibly low prices.After several years,their platform just still keeps getting better and better.",
               "link_text_two": "Sign up",
-              "link_two": "",
+              "link_two": "https:\/\/www.giftlab.com\/",
               "user_image_three": "shopify:\/\/shop_images\/3_6e4bd7c4-e499-4bff-a20a-cfdc7461b5a0.png",
               "user_name_three": "Molly Lively",
               "user_introduction_three": "VP, Marketing",
               "evaluate_three": "We chose Mademine because of their offerings as well as their incredibly low prices.After several years,their platform just still keeps getting better and better.",
               "link_text_three": "Sign up",
-              "link_three": "",
+              "link_three": "https:\/\/www.myfacesocks.com\/",
               "user_image_four": "shopify:\/\/shop_images\/4_76ac94fe-f71d-43a3-8373-d407e9f6b1f1.png",
               "user_name_four": "Caner",
               "user_introduction_four": "Chief Marketing Officer",
               "evaluate_four": "We chose Mademine because of their offerings as well as their incredibly low prices.After several years,their platform just still keeps getting better and better.",
               "link_text_four": "Sign up",
-              "link_four": ""
+              "link_four": "https:\/\/myspotifyglass.com\/"
             }
           },
           "c8f790ba-1e66-4376-90e7-7dfc4ecb11b5": {
@@ -11181,7 +11182,7 @@
         "settings": {
           "private": "home-make-money",
           "skip_text": "Start selling",
-          "link": "",
+          "link": "\/pages\/normal",
           "title": "Make Money, Risk-Free",
           "explain": "You pay for fulfillment only when you make a sale",
           "pc_img": "shopify:\/\/shop_images\/8.png",
@@ -11231,7 +11232,179 @@
           "sign_up_text": "Sign up",
           "sign_up_tips_one": "Already have an account?",
           "sign_up_tips_two": "Sign in",
-          "sign_up_tips_policy": "By clicking Sign up you agree to Stylelab’s Terms of Service, Privacy Policy and Intellectual Property Policy"
+          "sign_up_tips_policy": "By clicking Sign up you agree to MadeMine’s Terms of Service, Privacy Policy and Intellectual Property Policy"
+        }
+      },
+      "1636976791d13dc24a": {
+        "type": "home-comment-new",
+        "blocks": {
+          "1636976791d13dc24a-0": {
+            "type": "comment",
+            "settings": {
+              "site_index": "1",
+              "active_image": "shopify:\/\/shop_images\/soufeel-logo.png",
+              "user_image_logo": "shopify:\/\/shop_images\/soufeel-logo-user.png",
+              "user_image": "shopify:\/\/shop_images\/1_d0d13330-48d6-49fe-989d-c55cf1bd9e53.png",
+              "user_name": "Ben Halpern",
+              "user_introduction": "lobal Head of Creative",
+              "evaluate": "Stylelab has been an incredible service for us musicians unable to keep large amount of inventory-now we can create designs previously too expensive to print without having to have 1,000 shirts in our jam space,Thanks Stylelab!",
+              "link_text": "Store link",
+              "link_url": "https:\/\/soufeel.com\/",
+              "rate_image": "shopify:\/\/shop_images\/star.png"
+            }
+          },
+          "ed8cd8f6-6047-48e3-a4eb-bf3754b4be90": {
+            "type": "comment",
+            "settings": {
+              "site_index": "2",
+              "active_image": "shopify:\/\/shop_images\/logo_giftlab.png",
+              "user_image_logo": "shopify:\/\/shop_images\/logo_giftlab.png",
+              "user_image": "shopify:\/\/shop_images\/2_71c6dbf4-c543-4604-812f-a59156f19c9d.png",
+              "user_name": "Robert A.Voltaire",
+              "user_introduction": "VP, Marketing",
+              "evaluate": "We chose Mademine because of their offerings as well as their incredibly low prices.After several years,their platform just still keeps getting better and better.",
+              "link_text": "Store link",
+              "link_url": "",
+              "rate_image": "shopify:\/\/shop_images\/star.png"
+            }
+          },
+          "34f0240a-738e-4085-b4fa-2db69677fc2a": {
+            "type": "comment",
+            "settings": {
+              "site_index": "3",
+              "active_image": "shopify:\/\/shop_images\/logo_myfacesocks.png",
+              "user_image_logo": "shopify:\/\/shop_images\/logo_myfacesocks.png",
+              "user_image": "shopify:\/\/shop_images\/3_6e4bd7c4-e499-4bff-a20a-cfdc7461b5a0.png",
+              "user_name": "Molly Lively",
+              "user_introduction": "VP, Marketing",
+              "evaluate": "We chose Mademine because of their offerings as well as their incredibly low prices.After several years,their platform just still keeps getting better and better.",
+              "link_text": "Store link",
+              "link_url": "",
+              "rate_image": "shopify:\/\/shop_images\/star.png"
+            }
+          },
+          "78d739d8-3bca-41ff-9d65-0cbd8bbf4c04": {
+            "type": "comment",
+            "settings": {
+              "site_index": "4",
+              "active_image": "shopify:\/\/shop_images\/logo_myspotifyglass.png",
+              "user_image_logo": "shopify:\/\/shop_images\/logo_myspotifyglass.png",
+              "user_image": "shopify:\/\/shop_images\/4_76ac94fe-f71d-43a3-8373-d407e9f6b1f1.png",
+              "user_name": "Caner",
+              "user_introduction": "Chief Marketing Officer",
+              "evaluate": "We chose Mademine because of their offerings as well as their incredibly low prices.After several years,their platform just still keeps getting better and better.",
+              "link_text": "Store link",
+              "link_url": "",
+              "rate_image": "shopify:\/\/shop_images\/star.png"
+            }
+          },
+          "e0bd61e7-4b6e-4ffb-8ab2-5ad90ed24031": {
+            "type": "comment",
+            "settings": {
+              "site_index": "5",
+              "active_image": "shopify:\/\/shop_images\/logo_giftlab.png",
+              "user_image_logo": "shopify:\/\/shop_images\/logo_giftlab.png",
+              "user_image": "shopify:\/\/shop_images\/1_d0d13330-48d6-49fe-989d-c55cf1bd9e53.png",
+              "user_name": "Robert A.Voltaire",
+              "user_introduction": "VP, Marketing",
+              "evaluate": "Stylelab has been an incredible service for us musicians unable to keep large amount of inventory-now we can create designs previously too expensive to print without having to have 1,000 shirts in our jam space,Thanks Stylelab!",
+              "link_text": "Store link",
+              "link_url": "",
+              "rate_image": "shopify:\/\/shop_images\/star.png"
+            }
+          },
+          "431cc147-b636-4b63-b7a5-e6e5cf8add76": {
+            "type": "comment",
+            "settings": {
+              "site_index": "6",
+              "active_image": "shopify:\/\/shop_images\/logo_myspotifyglass.png",
+              "user_image_logo": "shopify:\/\/shop_images\/logo_myspotifyglass.png",
+              "user_image": "shopify:\/\/shop_images\/3_6e4bd7c4-e499-4bff-a20a-cfdc7461b5a0.png",
+              "user_name": "Molly Lively",
+              "user_introduction": "VP, Marketing",
+              "evaluate": "We chose Mademine because of their offerings as well as their incredibly low prices.After several years,their platform just still keeps getting better and better.",
+              "link_text": "Store link",
+              "link_url": "",
+              "rate_image": "shopify:\/\/shop_images\/star.png"
+            }
+          },
+          "5e2c0a8a-3045-4034-9fe8-00290034354c": {
+            "type": "comment",
+            "settings": {
+              "site_index": "7",
+              "active_image": "shopify:\/\/shop_images\/logo_myfacesocks.png",
+              "user_image_logo": "shopify:\/\/shop_images\/logo_myfacesocks.png",
+              "user_image": "shopify:\/\/shop_images\/4_76ac94fe-f71d-43a3-8373-d407e9f6b1f1.png",
+              "user_name": "Robert A.Voltaire",
+              "user_introduction": "VP, Marketing",
+              "evaluate": "We chose Mademine because of their offerings as well as their incredibly low prices.After several years,their platform just still keeps getting better and better.",
+              "link_text": "Store link",
+              "link_url": "",
+              "rate_image": "shopify:\/\/shop_images\/star.png"
+            }
+          },
+          "0f7e5159-2c44-4e1a-9cf0-a2be74bc3064": {
+            "type": "comment",
+            "settings": {
+              "site_index": "8",
+              "active_image": "shopify:\/\/shop_images\/logo_myfaceboxer.png",
+              "user_image_logo": "shopify:\/\/shop_images\/logo_myfaceboxer.png",
+              "user_image": "shopify:\/\/shop_images\/1_d0d13330-48d6-49fe-989d-c55cf1bd9e53.png",
+              "user_name": "Ben Halpern",
+              "user_introduction": "Global Head of Creative",
+              "evaluate": "Stylelab has been an incredible service for us musicians unable to keep large amount of inventory-now we can create designs previously too expensive to print without having to have 1,000 shirts in our jam space,Thanks Stylelab!",
+              "link_text": "Store link",
+              "link_url": "",
+              "rate_image": "shopify:\/\/shop_images\/star.png"
+            }
+          },
+          "6f60ee90-3639-4fdf-9efe-e2c1f6b999ed": {
+            "type": "comment",
+            "settings": {
+              "site_index": "9",
+              "active_image": "shopify:\/\/shop_images\/soufeel-logo.png",
+              "user_image_logo": "shopify:\/\/shop_images\/soufeel-logo-user.png",
+              "user_image": "shopify:\/\/shop_images\/3_6e4bd7c4-e499-4bff-a20a-cfdc7461b5a0.png",
+              "user_name": "Molly Lively",
+              "user_introduction": "VP, Marketing",
+              "evaluate": "We chose Mademine because of their offerings as well as their incredibly low prices.After several years,their platform just still keeps getting better and better.",
+              "link_text": "Store link",
+              "link_url": "",
+              "rate_image": "shopify:\/\/shop_images\/star.png"
+            }
+          },
+          "2dedb813-7442-46f0-b1cd-ba243feb9c95": {
+            "type": "comment",
+            "settings": {
+              "site_index": "10",
+              "active_image": "shopify:\/\/shop_images\/logo_giftlab.png",
+              "user_image_logo": "shopify:\/\/shop_images\/logo_giftlab.png",
+              "user_image": "shopify:\/\/shop_images\/4_76ac94fe-f71d-43a3-8373-d407e9f6b1f1.png",
+              "user_name": "Robert A.Voltaire",
+              "user_introduction": "VP, Marketing",
+              "evaluate": "We chose Mademine because of their offerings as well as their incredibly low prices.After several years,their platform just still keeps getting better and better.",
+              "link_text": "Store link",
+              "link_url": "",
+              "rate_image": "shopify:\/\/shop_images\/star.png"
+            }
+          }
+        },
+        "block_order": [
+          "1636976791d13dc24a-0",
+          "ed8cd8f6-6047-48e3-a4eb-bf3754b4be90",
+          "34f0240a-738e-4085-b4fa-2db69677fc2a",
+          "78d739d8-3bca-41ff-9d65-0cbd8bbf4c04",
+          "e0bd61e7-4b6e-4ffb-8ab2-5ad90ed24031",
+          "431cc147-b636-4b63-b7a5-e6e5cf8add76",
+          "5e2c0a8a-3045-4034-9fe8-00290034354c",
+          "0f7e5159-2c44-4e1a-9cf0-a2be74bc3064",
+          "6f60ee90-3639-4fdf-9efe-e2c1f6b999ed",
+          "2dedb813-7442-46f0-b1cd-ba243feb9c95"
+        ],
+        "settings": {
+          "private": "home-comment",
+          "title": "Trusted by over 500+ merchants",
+          "explain": "500K merchants Whether you are just getting started or run an enterprise-level e-commerce business, we do everything we can to ensure a positive merchant experience."
         }
       }
     },
@@ -11243,6 +11416,7 @@
       "16366157270fe5ae0c",
       "1636615953b38dc512",
       "1636616260852d1468",
+      "1636976791d13dc24a",
       "16366164243cdf6596"
     ]
   },

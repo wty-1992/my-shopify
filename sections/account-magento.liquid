@@ -125,6 +125,7 @@
             "password": ciphertext,
             "shopifyBaseUri": "https://{{shop.domain}}"
           };
+          //
         }else{
           var postUrl = "https://socks.soufeel.com/majax/ShopifyCustomer/register";
           var email = registerForm.find('[name="customer[email]"]').val();
@@ -162,9 +163,10 @@
                           window.localStorage.setItem('account-magento-from-register', true);
                           registerForm.submit();
                         }
+//                       window.history.back()
                     }else{
                       currentForm.find('.errors').remove();
-                      currentForm.find('.input-botton').before('<div class="errors"><ul><li>Incorrect email or password.</li></ul></div>')
+                      currentForm.prepend('<div class="errors"><ul><li>Incorrect email or password.</li></ul></div>')
                     }
                 }else{
                     //registerForm.submit();

@@ -1,4 +1,5 @@
 <style>
+
   html{
     width: 100%;
     height: 100%;
@@ -53,8 +54,9 @@
   }
   .input-content{
     width:470px;
-    padding:0 50px;
+    padding:0 28px;
     background: #ffffff;
+    height:614px;
   }
   .input-content-box{
     width:100%;
@@ -78,6 +80,7 @@
   }
   .input-box-content {
     width:100%;
+    position: relative;
   }
 
   .input-box-content:nth-of-type(1){
@@ -104,6 +107,9 @@
     font-size: 14px;
     line-height: 32px;
     margin-bottom:0px;
+    font-family: alibaba-sans,sans-serif;
+    font-weight: 400;
+    font-style: normal;
   }
   .wrong-password{
     color:#F9423A;   
@@ -115,12 +121,14 @@
     display:block;
   }
   .input-box-content  input{
-    min-height:56px;
+    height:56px;
     border-radius: 4px;
     padding: 17px 28px 17px 28px;
     font-size:16px;
     line-height:19px;
     margin-bottom:0px;
+    background: #ffffff;
+    margin-top:6px;
   }
   .input-botton{
     width:100%;
@@ -163,6 +171,9 @@
   }
   .input-box-content .input-password{
     padding: 17px 46px 17px 28px;
+  }
+   .input-box-content:nth-of-type(1){
+     margin-bottom:20px;
   }
   .form-box{
     width:100%;
@@ -209,6 +220,7 @@
     font-size:16px;
     line-height:19px;
     border-radius: 4px !important;
+    background-color:#ffffff;
   }
   .recover-password{
     padding-bottom:40px !important;
@@ -233,8 +245,11 @@
   .icon-password-eye-open{
     position:absolute;
     right:10px;
-    top:10px;
+    top:16px;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .input-password-box {
     position: relative;
@@ -264,6 +279,9 @@
     color:#fff;
   }
   .active-border{
+    width:100%;
+    height:100%;
+/*     position: absolute; */
     border:2px solid #F9423A !important;
   }
   .active-block{
@@ -282,29 +300,30 @@
     <div class="input-content login-content">
       <div class="input-content-box">
         <img  src="{{section.settings.public_logo | img_url: public_logo_resize }}" />
-        <div class="input-content-title">
+        <div class="input-content-title alifont_heavy">
           {{section.settings.login_title}}
         </div>
 
         <div id="CustomerLoginForm{{ include_id }}" class="login-box">
           {% assign customer_from_id = 'customer_login' | append: include_id %}
           {% form 'customer_login',class:"customer_login", id:customer_from_id %} 
-          <div class="input-box-content">
-            <lable class="input-title">{{ 'customer.login.email' | t }}</lable>
-            <input class="email-number" placeholder="{{section.settings.background_email_text}}" type="email" name="customer[email]"/>
+          {{ form.errors | default_errors }} 
+          <div class="input-box-content text-font-family">
+            <lable class="input-title alifont_heavy">{{ 'customer.login.email' | t }}</lable>
+            <input class="email-number alifont" placeholder="{{section.settings.background_email_text}}" type="email" name="customer[email]"/>
           </div>
           <div class="input-box-content">
 
-            <div class="password-box">
-              <lable class="input-title">{{ 'customer.login.password' | t }}</lable>
+            <div class="password-box ">
+              <lable class="input-title alifont_bold">{{ 'customer.login.password' | t }}</lable>
               <!--         忘记密码         -->
-              <div id="RecoverPassword"  class="forget-password" >{{ 'customer.login.forgot_password' | t }}?</div>
+              <div id="RecoverPassword"  class="forget-password alifont" > {{ 'customer.login.forgot_password' | t }}?</div>
             </div>
 
             {% if form.password_needed %}
             <!--       密码          -->
-            <div class="input-password-box">
-              <input placeholder="{{section.settings.background_password_text}}"  value="" class="input-password " type="password" name="customer[password]"/>
+            <div class="input-password-box alifont_bold">
+              <input placeholder="{{section.settings.login_background_password}}"  value="" class="input-password alifont" type="password" name="customer[password]"/>
               <div class="icon-password-eye-open"> 
                 <div class="oblique-line"></div>
                 {% include 'icon-password-eye-open'%} 
@@ -312,37 +331,35 @@
             </div> 
             {% endif %}
           </div>
-          {{ form.errors | default_errors }} 
           <!--      提交    -->
-          <input class="input-botton" type="submit" class="btn " value="{{section.settings.login_text}}">
+          <input class="input-botton alifont_bold" type="submit" class="btn " value="{{section.settings.login_text}}">
           {% endform %}
 
           <div class="input-tips">
-            <span class="input-tips-text">{{section.settings.login_tips_one}}</span>
-            <a href="/account/register" class="input-tips-text color-special">{{section.settings.login_tips_two}}</a>
+            <span class="input-tips-text alifont">{{section.settings.login_tips_one}}</span>
+            <span  class="input-tips-text color-special alifont_bold">{{section.settings.login_tips_two}}</span>
           </div>
         </div>
         <!--  重置密码  -->
         <div id="RecoverPasswordForm{{ include_id }}" class="hide recover-password"> 
-          <span class="recover-password-title">{{ 'customer.recover_password.title' | t }}</span>
-          <p>{{ 'customer.recover_password.subtext' | t }}</p>
+          <span class="recover-password-title alifont_heavy">{{ 'customer.recover_password.title' | t }}</span>
+          <p class="alifont">{{ 'customer.recover_password.subtext' | t }}</p>
 
           <div class="form-vertical">
             {% form 'recover_customer_password' %} 
-            {{ form.errors | default_errors }} 
-            {% comment %}
-            Add a hidden span to indicate the form was submitted succesfully.
-            {% endcomment %}
             {% if form.posted_successfully? %}
             <span class="hide reset-password-success"></span>
             {% endif %}
-            <!--   取消         -->
+            <!--   取消    -->     
             <label for="RecoverEmail" class=" label--hidden">{{ 'customer.recover_password.email' | t }}</label>
             <input class="recover-email new-height" type="email" value="" name="email" id="RecoverEmail{{ include_id }}" placeholder="{{ 'customer.recover_password.email' | t }}" autocorrect="off" autocapitalize="off" style="height: 40px; padding: 1rem 0.3rem;">
+           
             <!--          提交  	  -->
-            <p><input type="submit" class="btn submit-email" value="{{ 'customer.recover_password.submit' | t }}"></p>
-            <button type="button" id="HideRecoverPasswordLink{{ include_id }}" class="btn cancel_text-link">{{ 'customer.recover_password.cancel' | t }}</button>
-            {% endform %}
+            {{ form.errors | default_errors }} 
+            <p><input type="submit" class="btn submit-email alifont_bold" value="{{ 'customer.recover_password.submit' | t }}"></p>
+            <!--  <button type="button" id="HideRecoverPasswordLink{{ include_id }}" class="btn cancel_text-link alifont_bold">{{ 'customer.recover_password.cancel' | t }}</button>
+              -->
+     {% endform %}
           </div>
         </div>
       </div>
@@ -382,11 +399,16 @@
   //   }
 
   //改变提交框的样式
+//   if($('.login-box #customer_login').find('.errors').length>0){
+//     $('.input-botton').addClass('input-botton-top')
+//   } else{
+//     $('.input-botton').removeClass('input-botton-top')
+//   }
+  
   if($('.login-box #customer_login').find('.errors').length>0){
-    $('.input-botton').addClass('input-botton-top')
-  } else{
-    $('.input-botton').removeClass('input-botton-top')
-  }
+    $('.login-box #customer_login').find('.errors').addClass('alifont')
+  } 
+
 
 
   // 点击眼睛
@@ -436,9 +458,9 @@
   })
 
   //取消重置密码
-  $('.cancel_text-link').on('click',function(){
-    hideResetPassword()
-  })
+//   $('.cancel_text-link').on('click',function(){
+//     hideResetPassword()
+//   })
 
 
   //获得焦点
@@ -462,18 +484,18 @@
     $('.login-box .input-password').removeClass('active-border')	
   })
   $('.recover-password .recover-email').on('blur',function(){
-    $('.recover-password .recover-email').addClass('active-border')	
+    $('.recover-password .recover-email').removeClass('active-border')	
   })
   
   //去注册
-//   $('.login-box .color-special').on('click',function(){
-// //     showSignup()
-//   })
+  $('.login-box .color-special').on('click',function(){
+      window.location.replace('/account/register')
+    
+  })
 
-  //关闭登录注册页面
+  //关闭登录页面
   $('.input-box .input-close').on('click',function(){
-    $('.login-page').addClass('active-none')
-//     $('.sign-up-page').addClass('page-none')
+     window.history.back()
   })
 
   {% if form.errors %}
@@ -531,7 +553,6 @@
     });
   }
 
-
   //登录
   function doLogin(form) {
     var email = form.find('[name="customer[email]"]').val();
@@ -566,10 +587,11 @@
               ...res.response.customerInfo
             }, form);
           }
+          window.history.back()
         }
         else{
-          $('.input-password-box').find('.wrong-password').remove();
-          $('.input-password-box').append('<div class="wrong-password">' + res.response+ '</div>')
+          form.find('.errors').remove();
+          form.prepend('<div class="errors"><ul><li>'+ res.response+'</li></ul></div>')
         }
       }
     });
@@ -628,7 +650,7 @@
       "type": "text",
       "id": "login_tips_one",
       "label": "登录底部提示1",
-      "default": "New to Stylelab?"
+      "default": "New to MadeMine?"
     },
     {
       "type": "text",
