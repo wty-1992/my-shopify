@@ -6,10 +6,12 @@
 {% endcomment %}
 
 <style>
+/* 隐藏全局搜索框 */
 .search-container{
   display: none;
 }
 
+/* 顶部搜索栏模块 */
 .article_module_search{
   padding: 20px;
   background: #F6F6F9;
@@ -38,6 +40,7 @@
   border: none;
   background: transparent;
 }
+/* 搜索结果显示模块 */
 .article_search_result {
   position: absolute;
   left: 0;
@@ -49,7 +52,7 @@
   box-shadow: 0 1px 1px 0 rgba(106,102,136,0.08),
   0 4px 16px 0 rgba(183,183,192,0.3);
   border-radius: 4px;
-  display: flex;
+  display: none;
   flex-direction: column;
   padding: 15px;
 }
@@ -58,7 +61,23 @@
   line-height: 20px;
   color: #928FA5;
 }
+.article_search_loading {
+  display: none;
+  padding: 15px;
+  margin: 0 auto;
+}
+.article_search_loading img{
+  width: 36px;
+  height: 36px;
+}
+.article_search_list{
+  display: none;
+}
+.article_search_list.listShow{
+  display: block;
+}
 .article_search_item{
+  position: relative;
   margin: 15px 0;
   display: flex;
 }
@@ -91,6 +110,7 @@
   text-align: center;
 }
 
+/* 文章列表数据模块 */
 .article_list_module{
   background: #fff;
   display: flex;
@@ -107,17 +127,6 @@
   position: relative;
   display: flex;
   flex-direction: column;
-}
-.article_item::after {
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: #ccc;
-  position: absolute;
-  content: '';
-  top: 0;
-  left: 0;
-  opacity: 0;
 }
 .article_img{
   border-radius: 4px;
@@ -145,7 +154,7 @@
   font-size: 13px;
   -webkit-line-clamp: 4;
 }
-
+/* 加载更多模块 */
 .article_load_more{
   margin: 20px 0 80px;
   display: flex;
@@ -176,8 +185,22 @@
   -webkit-box-orient: vertical;
 }
 
+/* 遮罩层 */
+.article_item::after,
+.article_search_item::after{
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  content: '';
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
 /* PC端样式 */
 @media screen and (min-width: 768px) {
+  /* PC端 顶部搜索栏模块 */
   .article_module_search{
     padding: 60px 30px;
   }
@@ -190,21 +213,47 @@
   .article_search_title{
     margin-bottom: 20px;
   }
+  /* PC端 搜索结果显示模块 */
   .article_search_result{
     padding: 30px;
   }
+  .article_search_loading{
+    padding: 30px;
+  }
   .article_search_list{
-    display: flex;
+    position: relative;
     flex-wrap: wrap;
     gap: 20px;
     margin: 30px 0;
+  }
+  .article_search_list.listShow{
+    display: flex;
+  }
+  .article_search_list::after{
+    position: absolute;
+    content: '';
+    width: 1px;
+    height: 100%;
+    top: 0;
+    left: 50%;
+    background: rgba(34,34,34,0.08);
   }
   .article_search_item{
     width: 45%;
     flex-grow: 1;
     margin: 0;
+    padding-right: 50px;
+    cursor: pointer;
+  }
+  .article_search_item:nth-child(2n){
+    padding-right: 0;
+    padding-left: 50px;
+  }
+  .article_search_btn{
+    cursor: pointer;
   }
 
+  /* PC端 文章列表模块 */
   .article_list_module{
     flex-direction: row;
     max-width: 1260px;
@@ -245,75 +294,21 @@
     <div class="article_search_result">
       {% comment %} 提示文字 {% endcomment %}
       <div class="article_search_text alifont_bold">Im looking for…</div>
+      {% comment %} 加载中 {% endcomment %}
+      <div class="article_search_loading"><img src="{{'Loading_icon.gif' | asset_url}}" /></div>
       {% comment %} 结果列表 {% endcomment %}
       <div class="article_search_list">
-        <div class="article_search_item">
-          <div class="article_search_left">
-            <img src="https://cdn.shopify.com/s/files/1/0372/6897/9848/products/puzzle-02-us-10000870-1.jpg?v=1635240291" alt="">
-          </div>
-          <div class="article_search_right">
-            <div class="search_item_title multiline_ellipsis alifong">Enjoy Mademine services in 4 easy steps</div>
-            <div class="search_item_author alifont"><span class="alifont_bold">HuangIris</span>, November 15, 2021</div>
-          </div>
-        </div>
-
-        <div class="article_search_item">
-          <div class="article_search_left">
-            <img src="https://cdn.shopify.com/s/files/1/0372/6897/9848/products/puzzle-02-us-10000870-1.jpg?v=1635240291" alt="">
-          </div>
-          <div class="article_search_right">
-            <div class="search_item_title multiline_ellipsis alifong">Enjoy Mademine services in 4 easy steps</div>
-            <div class="search_item_author alifont"><span class="alifont_bold">HuangIris</span>, November 15, 2021</div>
-          </div>
-        </div>
-
-        <div class="article_search_item">
-          <div class="article_search_left">
-            <img src="https://cdn.shopify.com/s/files/1/0372/6897/9848/products/puzzle-02-us-10000870-1.jpg?v=1635240291" alt="">
-          </div>
-          <div class="article_search_right">
-            <div class="search_item_title multiline_ellipsis alifong">Enjoy Mademine services in 4 easy steps</div>
-            <div class="search_item_author alifont"><span class="alifont_bold">HuangIris</span>, November 15, 2021</div>
-          </div>
-        </div>
-
-        <div class="article_search_item">
-          <div class="article_search_left">
-            <img src="https://cdn.shopify.com/s/files/1/0372/6897/9848/products/puzzle-02-us-10000870-1.jpg?v=1635240291" alt="">
-          </div>
-          <div class="article_search_right">
-            <div class="search_item_title multiline_ellipsis alifong">Enjoy Mademine services in 4 easy steps</div>
-            <div class="search_item_author alifont"><span class="alifont_bold">HuangIris</span>, November 15, 2021</div>
-          </div>
-        </div>
+        {% comment %} JS动态渲染 {% endcomment %}
       </div>
       {% comment %} 展示按钮 {% endcomment %}
-      <div class="article_search_btn alifont_bold">See matching products（3）→</div>
+      <div class="article_search_btn alifont_bold">See matching products（<span class="search_total"></span>）→</div>
     </div>
   </div>
 </div>
 
 {% comment %} 文字列表模块 {% endcomment %}
 <div id="article_list_module" class="article_list_module">
-  {% comment %} 文章列表数据通过JS动态渲染
-  <div class="article_item">
-    // 文章图片
-    <div class="article_img">
-      <img src="https://cdn.shopify.com/s/files/1/0372/6897/9848/products/B_400x.jpg?v=1588056625" alt="">
-    </div>
-    // 文章描述
-    <div class="article_detail_module">
-      <div class="article_title">How can I create a product with Mademine?</div>
-      <div class="article_author_time">
-        <span class="article_author">Liz Ortner, </span>
-        <span class="article_time">Updated yesterday</span>
-      </div>
-      <div class="article_detail">
-        Mademine currently offers more than 200 unique products for your e-commerce store — from t-shirts to puzzles to pet beds — all of which can be custom-printed with your chosen designs
-      </div>
-    </div>
-  </div>
-  {% endcomment %}
+  {% comment %} 文章列表数据通过JS动态渲染 {% endcomment %}
 </div>
 
 {% comment %} 加载更多模块 {% endcomment %}
@@ -327,16 +322,73 @@
   </div>
 </div>
 
+{% comment %} 遮罩层 {% endcomment %}
+
 <script>
 const articleList = {{blog.articles | json}}; // 获取文章列表数据
 
+let filterArticleList = []; // 过滤的列表数据
+let searchValue = ''; // 搜索条件
 let pageNum = 1; // 页码
 let pageSize = 12; // 页容量
 let total = articleList.length || 0; // 总数
 let pages = Math.ceil(total / pageSize); // 总页数
 
-$('#searchInput').on('input', (event) => {
-  console.log(event);
+/* 函数防抖 */
+const debounce = (cb, time, that = null) => {
+  let timer;
+  return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+          cb.apply(that, args);
+      }, time)
+  }
+};
+
+/* 输入框触发函数 */
+const inputChange = debounce(() => {
+  const value = $('#searchInput').val().trim();
+  if(!value) {
+    searchModel('hide');
+    init();
+    return;
+  }
+  searchModel('show');
+  searchValue = value;
+  filterArticleList = articleList.filter(item => {
+    return item.title.toLowerCase().includes(value);
+  });
+  /* 判断是否有搜索结果 */
+  if(filterArticleList.length > 0) {
+    loadMoreSearch(filterArticleList);
+  }else {
+    searchModel('hide');
+    alert('暂无数据');
+  }
+}, 500)
+
+/* 搜索结果弹窗显隐 */
+function searchModel(type = 'hide'){
+  if(type === 'hide'){
+    $('.article_search_result').css('display', 'none');
+    $('.article_search_loading').hide();
+  }else {
+    $('.article_search_result').css('display', 'flex');
+    $('.article_search_loading').show();
+  }
+}
+
+/* 搜索框输入事件 */
+$('#searchInput').on('input', inputChange);
+
+/* 点击加载搜索结果列表 */
+$('.article_search_btn').on('click', () => {
+  searchModel('hide');
+  pageNum = 1; // 页码
+  total = filterArticleList.length || 0; // 总数
+  pages = Math.ceil(total / pageSize); // 总页数
+  $('#article_list_module').children().remove(); // 清空子元素
+  load();
 })
 
 /* 点击加载更多事件 */
@@ -344,6 +396,18 @@ $('#article_load_btn').on('click', () => {
   pageNum++;
   load();
 });
+
+/* 初始化条件 */
+function init(){
+  if(filterArticleList.length === 0) return;
+  filterArticleList = []; // 过滤的列表数据
+  searchValue = ''; // 搜索条件
+  pageNum = 1; // 页码
+  total = articleList.length || 0; // 总数
+  pages = Math.ceil(total / pageSize); // 总页数
+  $('#article_list_module').children().remove(); // 清空子元素
+  load();
+}
 
 /* load */
 load();
@@ -356,7 +420,8 @@ function load(){
   const start = (pageNum - 1) * pageSize;
   let end = pageNum * pageSize;
   end = end >= total ? total : end;
-  loadMore(articleList.slice(start, end));
+  const result = searchValue ? filterArticleList.slice(start, end) : articleList.slice(start, end);
+  loadMore(result);
   $('#current_show').html(`${end}/${total}`);
 }
 
@@ -365,11 +430,11 @@ function load(){
  * @param listData 需要渲染的列表数据
  */
 function loadMore(listData){
-  let articleTemplate = "";
+  let template = "";
   listData.forEach(item => {
-    articleTemplate += `
+    template += `
       <div class="article_item" data-handle="${item.handle}">
-        <div class="article_img" style="background-image: url(${item.image?.src});"></div>
+        <div class="article_img" ${item.image?.src ? `style="background-image: url(${item.image?.src})"`:''}></div>
         <div class="article_detail_module">
           <div class="article_title alifont_bold">${item.title}</div>
           <div class="article_author_time">
@@ -381,12 +446,40 @@ function loadMore(listData){
       </div>
     `;
   });
-  $('#article_list_module').append(articleTemplate);
+  $('#article_list_module').append(template);
 }
+
+/* 
+ * 搜索结果数据
+ * @param listData 需要渲染的数据
+ */
+function loadMoreSearch(listData){
+  let template = '';
+    listData.slice(0, 4).forEach(item => {
+      template += `
+        <div class="article_search_item" data-handle="${item.handle}">
+          <div class="article_search_left">
+            ${item.image?.src ? `<img src="${item.image?.src}" alt="image">`:`<div />`}
+          </div>
+          <div class="article_search_right">
+            <div class="search_item_title multiline_ellipsis alifong">${item.title}</div>
+            <div class="search_item_author alifont"><span class="alifont_bold">${item.author}</span>, ${new Date(item.updated_at).toDateString()}</div>
+          </div>
+        </div>
+      `
+    })
+    $('.article_search_loading').hide();
+    $('.article_search_list').html(template);
+    $('.search_total').html(listData.length);
+    $('.article_search_list').addClass('listShow');
+}
+
 /* 绑定列表数据模块点击事件 通过事件委托获取事件源 */
-$('#article_list_module').on('click', (event) => {
+$('#article_list_module').on('click', handleEvent);
+$('.article_search_list').on('click', handleEvent);
+function handleEvent(event){
   const handle = event.target.dataset.handle;
   if(!handle) return; // 无事件源
   location.href = `/blogs/help-center/${handle}`;
-})
+}
 </script>
