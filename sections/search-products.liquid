@@ -5,7 +5,6 @@
 {% endcomment %}
 <style>
   .main-container-collection {
-    margin: 0 auto 134px;
     padding-top: 56px;
     max-width: 1372px;
     width: 100%;
@@ -98,31 +97,36 @@
     border-radius: 4px;
     cursor: pointer;
   }
-  .collection-pagination {
-  	width: 100%;
-  }
   .footer-more span {}
   .footer-more img {}
-  .collection-pagination {
-  	display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 50px;
-  }
-  .collection-pagination .pagination-button {
+  .colleciton-pagination {
     display: flex;
-    width: 160px;
-    height: 50px;
+    justify-content: center;
+    margin: 30px 0 50px;
+    width: 100%;
+  }
+  .colleciton-pagination .page,
+  .colleciton-pagination .deco {
+    display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+  	width: 36px;
+    height: 36px;
   }
-  .collection-pagination .pagination-button.disabled {
-  	background: #848484;
-    color: #636363;
-    border: none;
+  .colleciton-pagination .prev,
+  .colleciton-pagination .next {
+  	display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 20px;
   }
-  
+  .colleciton-pagination .deco {
+  	padding-bottom: 10px;
+  }
+  .colleciton-pagination .page.current {
+  	border: 1px solid #222;
+    border-radius: 4px;
+  }
   @media (max-width: 768px) {
     .main-container-collection {
       margin-bottom: 80px;
@@ -184,23 +188,9 @@
     </div>
     {% endfor %}
   {% endif %}
-  {% if paginate.previous or paginate.next %}
-    <div class="collection-pagination">
-      <div class="button-previous">
-        {% if paginate.previous %}
-        <a class="pagination-button mm-btn mm-btn-primary" href="{{ paginate.previous.url }}"><span class="text">Previous</span></a>
-        {% else %}
-        <span class="pagination-button mm-btn mm-btn-primary disabled"><span class="text">Previous</span></span>
-        {% endif %}
-      </div>
-      <div class="button-position">Page {{paginate.current_page}} of {{paginate.pages}}</div>
-      <div class="button-next">
-        {% if paginate.next %}
-        <a class="pagination-button  mm-btn mm-btn-primary" href="{{ paginate.next.url }}"><span class="text">Next</span></a>
-        {% else %}
-        <span class="pagination-button mm-btn mm-btn-primary disabled"><span class="text">Next</span></span>
-        {% endif %}
-      </div>
+  {% if paginate.pages > 1 %}
+    <div class="colleciton-pagination">
+      {{ paginate | default_pagination | replace: 'Anterior', '<span class="icon photofont photo-back1"></span>' | replace: 'Siguiente', '<span class="icon photofont photo-back1"></span>'  |remove : "«" |remove : "»"}}
     </div>
   {% endif %}
   {% endpaginate %}
@@ -215,27 +205,27 @@
 
 </div>
 <script>
-//   var productCount = $('.swiper-slide').length;
+  var productCount = $('.swiper-slide').length;
   
-//   if(productCount <= 12) {
-//   	$('.footer-more').hide();
-//     $('.footer-show span').html(`${productCount}/${productCount}`);
-//   } else {
-//     $('.footer-more').show();
-//     $('.footer-show span').html(`12/${productCount}`);
-//     for(let i=12;i<productCount;i++) {
-//       $('.swiper-slide').eq(i).hide();
-//     }
-//   }
+  if(productCount <= 12) {
+  	$('.footer-more').hide();
+    $('.footer-show span').html(`${productCount}/${productCount}`);
+  } else {
+    $('.footer-more').show();
+    $('.footer-show span').html(`12/${productCount}`);
+    for(let i=12;i<productCount;i++) {
+      $('.swiper-slide').eq(i).hide();
+    }
+  }
   
-//   // 更多按钮点击事件
-//   $('.footer-more').on('click', function () {
-//     $(this).hide();
-//   	for(let i=12;i<productCount;i++) {
-//       $('.swiper-slide').eq(i).show();
-//     }
-//     $('.footer-show span').html(`${productCount}/${productCount}`);
-//   });
+  // 更多按钮点击事件
+  $('.footer-more').on('click', function () {
+    $(this).hide();
+  	for(let i=12;i<productCount;i++) {
+      $('.swiper-slide').eq(i).show();
+    }
+    $('.footer-show span').html(`${productCount}/${productCount}`);
+  });
   
 </script>
 
