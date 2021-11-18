@@ -1,0 +1,153 @@
+<style>
+.task_component{
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+}
+.tc_left_module,
+.tc_right_module{
+  position: relative;
+  background: #fff;
+  padding: 25px;
+  width: 485px;
+}
+/* 连接线 */
+.tc_left_module::before,
+.tc_left_module::after,
+.tc_right_module::after{
+  position: absolute;
+  content: '';
+  width: 5px;
+  height: 5px;
+  background: #000;
+  top: 50%;
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+.tc_left_module::before{
+  right: 10px;
+}
+.tc_right_module::after{
+  left: 10px;
+}
+.tc_left_module::after{
+  right: -40px;
+  width: 50px;
+  height: 1px;
+  z-index: 10;
+}
+/* 头部样式 */
+.tc_header{
+  display: flex;
+  justify-content: space-between;
+}
+.tch_title{
+  font-size: 24px;
+  line-height: 32px;
+}
+.tch_describe{
+  font-size: 14px;
+  line-height: 28px;
+  color: #0EBA9A;
+}
+.tch_right img{
+  width: 62px;
+  height: 62px;
+}
+/* 步骤流程 */
+.tc_step{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 25px;
+  padding: 0 15px;
+}
+.tcs_item{
+  font-size: 16px;
+  line-height: 56px;
+  background: #F6F6F9;
+  padding: 0 15px;
+  border-radius: 4px;
+  position: relative;
+}
+.tcs_item::after{
+  position: absolute;
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: #F9423A;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 8px;
+}
+.tcs_item.tcs_detele{
+  text-decoration: line-through;
+  color: #928FA5;
+}
+.tcs_item.tcs_detele::after{
+  content: none;
+}
+/* Next-step */
+.tcr_img{
+  margin: 15px 0;
+}
+.tcr_img img{
+  width: 100px;
+  height: 100px;
+}
+.tcr_describe{
+  font-size: 16px;
+  line-height: 28px;
+}
+.tcr_btn{
+  width: 50%;
+  margin: 25px auto 0;
+}
+.tcr_btn .mm-register-btn{
+  margin-left: 0;
+}
+
+/* 通用类名 */
+.tcr_text_center{
+  text-align: center;
+}
+</style>
+
+<div class="task_component">
+  {% comment %} 左侧模块 {% endcomment %}
+  <div class="tc_left_module">
+    {% comment %} 头部样式 {% endcomment %}
+    <div class="tc_header">
+      <div class="tch_left">
+        <div class="tch_title alifont_bold">Store setup checklist</div>
+        <div class="tch_describe">1 out of 3 steps completed</div>
+      </div>
+      <div class="tch_right alifont">
+        <img src="{{ 'task-progress.png' | asset_img_url }}" alt="task-progress">
+      </div>
+    </div>
+
+    {% comment %} 步骤流程 {% endcomment %}
+    <div class="tc_step">
+      <div class="tcs_item tcs_detele alifont_bold">1. Create a Mademine account</div>
+      <div class="tcs_item alifont_bold">2. Add a store name</div>
+      <div class="tcs_item alifont_bold">3. Connect your store and start selling</div>
+    </div>
+  </div>
+
+  {% comment %} 右侧模块 {% endcomment %}
+  <div class="tc_right_module">
+    <div class="tch_title alifont_bold">Next step</div>
+    <div class="tcr_img tcr_text_center">
+      <img src="{{ 'next-step.png' | asset_img_url }}" alt="next-strp">
+    </div>
+    <div class="tch_title tcr_text_center alifont_bold">Add a store name</div>
+    <div class="tcr_describe tcr_text_center alifont">Create your store name. You can edit it later on.</div>
+    <div class="tcr_btn">
+      <a class="mm-btn mm-btn-primary alifont_bold mm-register-btn" href="#">Create a store name</a>
+    </div>
+  </div>
+</div>

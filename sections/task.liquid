@@ -1,0 +1,52 @@
+<style>
+/* PC端样式 */
+.task_container{
+  margin-left: auto;
+  margin-right: auto;
+  color: #222;
+  background: #F6F6F9;
+  height: calc(100vh - 70px);
+  width: 100%;
+}
+.task_header{
+  font-size: 32px;
+  line-height: 48px;
+  text-align: center;
+  padding: 30px 0;
+}
+
+/* 隐藏底部footer */
+#shopify-section-footer{
+  display: none;
+}
+</style>
+
+{% assign current_collection = collections[section.settings.collection] %}
+
+<div class="task_container mm-header-height">
+  {% comment %} 头部模块 {% endcomment %}
+  <div class="task_header alifont_bold">Welcome！LeBron James</div>
+
+  {% comment %} 店铺信息模块 {% endcomment %}
+  <div class="task_store">{% render 'create-store-component' %}</div>
+
+  {% comment %} 最新产品模块 {% endcomment %}
+  <div class="task_product">{% render 'new-product-component' %}</div>
+
+  {% for item in current_collection.products limit: 5 %}
+    {{ item.title }}
+  {% endfor %}
+</div>
+
+{% schema %}
+  {
+    "name": "店铺创建流程步骤",
+    "settings": [
+      {
+        "type": "collection",
+        "id": "collection",
+        "label": "选择集合"
+      }
+    ]
+  }
+{% endschema %}
