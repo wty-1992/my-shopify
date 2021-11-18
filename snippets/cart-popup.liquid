@@ -33,10 +33,23 @@
     padding: 0 28px 0;
     right: 0;
     top: 0;
-    /* width: 31%; */
     width: 595px;
     height: 100%;
     background: #fff;
+  }
+  .cart-popup .cart-modal .popup-loading {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+  }
+  .cart-popup .cart-modal .popup-loading img {
+    width: 24px;
+    height: 24px;
   }
   .cart-popup .cart-modal .popup-header {
     display: flex;
@@ -104,7 +117,7 @@
   .cart-popup .cart-modal .popup-container .container-item .item-content .content-bottom {
     margin-bottom: -5px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     height: 36px;
   }
   .cart-popup .cart-modal .popup-container .container-item .item-content .content-bottom .bottom-text {
@@ -236,12 +249,15 @@
         <div class="total-text alifont_bold">SUBTOTAL</div>
         <div class="total-price alifont_bold"></div>
       </div>
-      <div class="footer-button mm-btn mm-btn-primary alifont_bold">Continue to checkout</div>
+      <div class="footer-button mm-btn mm-btn-primary alifont_bold">View Cart & Checkout</div>
     </div>
     <div class="popup-empty">
       <img src="{{ 'cart-empty.svg' | asset_url }}" />
       <p>Empty</p>
       <a href="/" >Add products</a>
+    </div>
+    <div class="popup-loading">
+        <img src="{{'Loading_icon.gif' | asset_url}}" />
     </div>
   </div>
 </div>
@@ -253,6 +269,7 @@
   });
   // 更新购物车信息
   Listener.on([ Listener.cart.refresh ], function(event, cart) {
+    $('.popup-loading').css("display", "none");
     var htmlText = ""; 
     cart.items.forEach(function(item, index) {
       htmlText += `
@@ -320,8 +337,10 @@
     $('.cart-popup').show();
     window_lock();
   }
+
   // 更改加车数量type 0 删除 type 1 更改数量
   function changeCartQty(type, line, quantity) {
+    $('.popup-loading').css("display", "flex");
     // 更新数量
     if(type == 1) {
       quantity && Cart.change({line, quantity});

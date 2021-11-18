@@ -51,14 +51,8 @@
   /** sunzi 全局定制化ga **/
   var _sunzi_ga = () => {};
   
-  $(function() {
-    // 隐藏按钮
-    $(_sunzi_global_data["hideButton"]).hide();
-  });
-  
   // 设置全局变量语种
   _sunzi_global_data.shop = _sunzi_global_data["shop-v1"];
-
   // 监听DOMContentLoaded
   window.addEventListener('DOMContentLoaded', function() {
     _dom_content_loaded = true;
