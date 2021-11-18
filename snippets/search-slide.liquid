@@ -49,6 +49,29 @@
     font-size: 24px;
     color: #928FA5;
   }
+  .container-slide .slide-empty {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 0 0;
+  }
+  .container-slide .slide-empty img {
+    width: 132px;
+    height: 127px;
+  }
+  .container-slide .slide-empty .title {
+      color: #222;
+      font-size: 24px;
+      line-height: 32px;
+      padding-top: 16px;
+  }
+  .container-slide .slide-empty .description {
+      color: #928FA5;
+      font-size: 16px;
+      line-height: 24px;
+      padding-top: 10px;
+  }
   .container-slide .slide-list {
     position: relative;
     display: flex;
@@ -128,6 +151,12 @@
   </div>
   <div class="container-slide">
   	<div class="slide-text">Im looking for…</div>
+    <div class="slide-empty">
+
+        <img src="{{ 'search-empty.png' | asset_url }}"></img>
+        <div class="title alifont">No results found！</div>
+        <div class="description alifont">Try another keyword or check out products that might interest you below...</div>
+    </div>
     <div class="slide-list"></div>
     <div class="slide-more">
       <form action="/search" method="get" class="search-form" role="search">
@@ -155,6 +184,7 @@
   $('#searchInput').on('input', function() {
     $(this).val().length ? $('.container-slide').show() : $('.container-slide').hide();
     $('.slide-list').html(`<div class="list-loading"><img src="{{'Loading_icon.gif' | asset_url}}" /></div>`);
+    $('.slide-empty').css('display', 'none');
     $('#searchFormQuery').val($(this).val());
 //        sunzi_debounce(renderDomProducts, 1000);
   //   	var result = await searchResult($(this).val())
@@ -174,6 +204,13 @@
     } else {
       var result = await searchResult($('#searchInput').val());
       var productsData = result.resources.results.products;
+      
+      if (productsData.length === 0) {
+        $('.slide-empty').css('display', 'flex');
+      } else {
+        $('.slide-empty').css('display', 'none');
+      }
+
       for(let i=0;i<productsData.length;i++) {
         if(i == 4) break;
         htmlString += `
@@ -243,7 +280,6 @@
 //     }
 //     return result;
 //   }
-  
 
   
 </script>

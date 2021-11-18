@@ -18,9 +18,9 @@
     font-weight: 500;
     
   }
-  .zen-customer-lr .common-standar_btn {
+/*   .zen-customer-lr .common-standar_btn {
   	display: none;
-  }
+  } */
   html.lock, html.lock body.lock {
     overflow: auto!important;
   }
@@ -117,8 +117,10 @@
     Product.addFormToCart(_sunzi_global_data.domLabel.form, callback);
   };
   // 自定义隐藏dom 部分站点存在多种变体dom形式，需要额外添加变体dom
-  _sunzi_global_data["hideDom"] = [".inline-field-wrapper", ".material-list", "sunzi-color-hidden"];
-                            
+  _sunzi_global_data["hideDom"] = [".inline-field-wrapper", ".material-list", "sunzi-color-hidden", ".zen-customer-lr .common-standar_btn"];
+  
+  // 隐藏button
+  _sunzi_global_data["hideButton"] = ".zen-customer-lr .common-standar_btn";              
 	  
   /** 根据条件设置默认值 **/
   if(!thisPriority) {

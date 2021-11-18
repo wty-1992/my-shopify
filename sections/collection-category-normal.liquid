@@ -14,10 +14,9 @@
     flex-direction: column;
     align-items: center;
     margin: 0 auto;
-    padding: 56px 0 120px;
+    padding: 56px 14px 120px;
     width: 100%;
-    max-width: 1372px;
-    
+    max-width: 1400px;
     color: #222;
   }
   .section-normal-category .category-title {
@@ -33,12 +32,22 @@
     flex-wrap: wrap;
   }
   .category-content .collection-item {
+    display: flex;
     margin-bottom: 28px;
-    width: 32%;
+    width: calc((100% - 28px) / 2);
     border-radius: 4px;
   }
   .collection-item .item-top {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 240px;
+    height: 240px;
+    padding: 28px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: #EBEBEF;
   }
   .item-top .top-featured {
   	width: 100%;
@@ -51,36 +60,52 @@
     background: rgb(34 34 34 / 40%);
   }
   .item-top .top-text {
-  	position: absolute;
-    bottom: 16px;
-    left: 28px;
-    color: #fff;
+    display: flex;
+    flex-direction: column;
+    color: #6C6888;
   }
   .top-text .text-title {
-    height: 32px;
     font-size: 24px;
     line-height: 32px;
   }
   .top-text .text-price {
     display: flex;
     align-items: center;
-    height: 32px;
     font-size: 12px;
     line-height: 32px;
     margin-right: 20px;
   }
-  .top-text .text-price span {
-  	margin-right: 20px;
+  .top-text .text-price span:first-child {
+    padding-right: 4px;
+  }
+  .item-top .top-button {
+    width: fit-content;
+    height: 36px;
+    padding: 0 7px 0 14px;
+    background: #fff;
+    font-size: 16px;
+    color: #222;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid rgba(102, 99, 99, 0.08);
+  }
+  .item-top .top-button img {
+    width: 36px;
+    height: 100%;
   }
   .collection-item .item-bottom {
     display: flex;
-    justify-content: space-around;
     padding-top: 28px;
     background: #fff;
+    align-items: center;
+    padding: 0 34px;
   }
   .item-bottom .bottom-product {
     display: block;
-  	width: 25%;
+    flex: 1;
+    padding: 0 8px;
     margin-bottom: 20px;
     text-align: center;
   }
@@ -122,16 +147,29 @@
       {% if block.type =='category_collection' %}
       {% assign cur_collection = collections[block.settings.collection] %}
       <div class="collection-item">
-        <div class="item-top">
-          <img class="top-featured" src="{{block.settings.position_image | img_url: '500x' }}" alt="">
-          <div class="top-shadow"></div>
+        <div
+            class="item-top"
+            style="background-image: url({{ 'category-bottom.png' | asset_url }});"
+        >
           <div class="top-text">
             <div class="text-title alifont_bold">{{block.settings.title}}</div>
-            <div class="text-price alifont_bold">
-              <span>Starting from {{block.settings.minimum_price}}</span>
-              <img src="{{ 'arrow-right.svg' | asset_url }}" alt="">
+            <div class="text-price alifont">
+              <span>Starting from </span>
+              <span class="alifont_bold">${{block.settings.minimum_price}}</span>
             </div>
           </div>
+          <a
+            class="top-button alifont_bold"
+            href="{{ cur_collection.url }}"
+        >
+              <span>View all</span>
+              <svg width="36px" height="36px" viewBox="0 0 36 36">
+                <title>icon/arrow</title>
+                <g id="icon/arrow" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <path d="M23.5376218,14 C23.7410263,14 23.9395942,14.062028 24.1068318,14.1778078 L28.5722331,17.1734502 C29.0263173,17.4878162 29.1395813,18.1107682 28.8252153,18.5648524 C28.7567811,18.6637018 28.6710824,18.7494004 28.5722331,18.8178346 L24.1068318,21.8181288 C23.6527476,22.1324948 23.0297956,22.0192308 22.7154296,21.5651466 C22.5996498,21.397909 22.5376218,21.1993411 22.5376218,20.9959366 L22.5366218,18.9952107 L8,18.9956424 C7.44771525,18.9956424 7,18.5479272 7,17.9956424 C7,17.4433577 7.44771525,16.9956424 8,16.9956424 L22.5366218,16.9952107 L22.5376218,15 C22.5376218,14.4477153 22.985337,14 23.5376218,14 Z" id="路径" fill="#222222"></path>
+                </g>
+              </svg>
+          </a>
         </div>
         <div class="item-bottom">
           {% for product in cur_collection.products limit:3 %}
