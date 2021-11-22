@@ -1,0 +1,165 @@
+{% comment %} 
+** @name 连接店铺页面**
+** @author 陈健辉 **
+** @update 2021-11-20
+{% endcomment %}
+
+<style>
+/* 面包屑导航样式 */
+.msc_bc,
+.msc_csc{
+  background: #F6F6F9;
+}
+
+/* 连接店铺模块 */
+.msc_module{
+  text-align: center;
+  color: #222;
+  padding: 25px;
+}
+.mscm_title{
+  font-size: 40px;
+  line-height: 60px;
+}
+.mscm_text{
+  font-size: 20px;
+  line-height: 26px;
+  padding: 25px 0;
+}
+.mscm_input{
+  display: none;
+  margin: 10px 0 30px;
+}
+.mscm_input input{
+  background: #F6F6F9;
+  font-size: 14px;
+  line-height: 28px;
+  border: 1px solid rgba(34,34,34,0.08);
+  border-radius: 4px;
+  width: 40%;
+  max-width: 400px;
+  padding: 8px 15px;
+}
+.mscm_input input:focus{
+  border: 1px solid #F9423A;
+  caret-color: #F9423A;
+}
+.mscm_logo{
+  width: 100%;
+  background-image: url({{ 'Connet-illustration.png' | asset_url }});
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 210px;
+  margin: 15px 0;
+}
+.mscm_btn{
+  display: flex;
+  justify-content: center;
+}
+.mm-register-btn{
+  margin-left: 0;
+}
+.mscm_signup{
+  font-size: 14px;
+  line-height: 20px;
+  color: #928FA5;
+  margin-top: 15px;
+}
+.mscms_up{
+  color: #222;
+  cursor: pointer;
+}
+
+/* 隐藏底部footer */
+#shopify-section-footer{
+  display: none;
+}
+</style>
+
+{% comment %} 连接店铺 {% endcomment %}
+<div class="my_store_connect mm-header-height">
+  {% comment %} 面包屑导航组件 {% endcomment %}
+  <div class="msc_bc">{% render 'breadcrumb-component' %}</div>
+  <div class="msc_csc">{% render 'connect-setp-component' %}</div>
+
+  {% comment %} 连接店铺模块 {% endcomment %}
+  <div class="msc_module">
+    {% comment %} 标题文字 {% endcomment %}
+    <div class="mscm_title alifont_bold">Let's connect your shopify store!</div>
+    <div class="mscm_text alifont">Power your Shopify store with an easy Mademine integration</div>
+
+    {% comment %} 步骤二显示 {% endcomment %}
+    <div class="mscm_input">
+      <input id="mscmInput" class="alifont" type="text" placeholder="e.g.my-shop.myshopify.com">
+    </div>
+
+    {% comment %} 步骤一显示 {% endcomment %}
+    <div class="mscm_logo"></div>
+
+    {% comment %} 连接按钮 {% endcomment %}
+    <div class="mscm_btn">
+      <a id="mscmBtn" class="mm-btn mm-btn-primary alifont_bold mm-register-btn" href="javascript:void(0)">
+        <span>Connect</span>
+        {% render 'icon-arrow' %}
+      </a>
+    </div>
+
+    {% comment %} 步骤一显示 {% endcomment %}
+    <div class="mscm_signup">Don't have a Shopify account? <span class="mscms_up alifont_bold">Sign Up</span></div>
+  </div>
+</div>
+
+<script defer="defer">
+/* 初始化面包屑组件内容 initBreadcrumb 为 breadcrumb-component 组件内部方法 */
+const listBreadcrumb = ['My store', 'Connect your store'];
+initBreadcrumb(listBreadcrumb);
+
+/* 点击连接按钮 */
+let currentStep = 1; // 当前在第一步
+$('#mscmBtn').on('click', () => {
+  /* 进入下一步 */
+  if(currentStep === 1){
+    currentStep++;
+    nextStep();
+    return;
+  }
+  /* 链接shopify */
+  if(currentStep === 2){
+    const value = $('#mscmInput').val().trim();
+    if(!value) return; // 未输入内容
+    connectShopify(value);
+  }
+})
+
+/* 进入下一步 */
+function nextStep(){
+  /* 添加一项面包屑 pushBreadcrumb 为 breadcrumb-component 组件内部方法 */
+  pushBreadcrumb('Connect Shopify');
+  /* 步骤流程进一步 furtherStep 为 connect-setp-component 组件内部方法 */
+  furtherStep();
+
+  /* 隐藏帮助/logo元素，显示输入框 */
+  $('.mscm_logo').hide();
+  $('.mscm_signup').hide();
+  $('.mscm_input').show();
+  
+  /* 替换文本内容 */
+  $('.mscm_title').text('Connect Shopify');
+  $('.mscm_text').text('Add your Shopify store URL to connect with Mademine');
+}
+
+/* 链接shopify域名 */
+async function connectShopify(domain){
+  _sunzi_loading(); // loading
+  try{
+    const id = getQueryVariable('id');
+    const URL = `${DOMAIN}/mademine/user/connect?domain=${domain}&shop_id=${id}`;
+    await fetch(URL, { method: 'GET' }).then(res => res.json());
+    /* 链接后重定向到shopify授权 */
+  }catch(err){
+    console.log(err);
+  };
+  _sunzi_hide_loading(); // 关闭loading
+}
+</script>

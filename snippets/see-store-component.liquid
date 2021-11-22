@@ -1,0 +1,364 @@
+{% comment %} 
+** @name  店铺列表组件**
+** @author 陈健辉 **
+** @update 2021-11-22
+{% endcomment %}
+
+<style>
+/* PC端样式 */
+.see_store_component{
+  background: #fff;
+  margin: 0 auto;
+  padding: 25px;
+}
+/* 头部样式 */
+.ssc_header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #222;
+}
+.ssch_title{
+  font-size: 24px;
+  line-height: 32px;
+}
+.ssch_add{
+  font-size: 14px;
+  line-height: 20px;
+  color: #928FA5;
+  cursor: pointer;
+}
+/* 店铺列表样式 */
+.ssc_list_container{
+  margin-top: 25px;
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+}
+/* 店铺超出三个轮播显示 */
+.ssc_list_container.ssc_list_rotation .sscl_item{
+  min-width: calc(100% - 68% - -5px);
+}
+@media screen and (min-width: 1102px) and (max-width: 1176px) {
+  .ssc_list_container.ssc_list_rotation .sscl_item{
+    min-width: calc(100% - 68% - -4px);
+  }
+}
+@media screen and (min-width: 1027px) and (max-width: 1101px) {
+  .ssc_list_container.ssc_list_rotation .sscl_item{
+    min-width: calc(100% - 68% - -3px);
+  }
+}
+@media screen and (min-width: 1015px) and (max-width: 1026px) {
+  .ssc_list_container.ssc_list_rotation .sscl_item{
+    min-width: calc(100% - 68% - -2px);
+  }
+}
+.sscl_item{
+  border: 1px solid rgba(34,34,34,0.08);
+  padding: 25px;
+  width: 45%;
+  flex-grow: 1;
+  border-radius: 4px;
+}
+/* 店铺列表头部样式 */
+.sscli_header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+.sscli_header .sscli_logo{
+  width: 160px;
+}
+.sscli_header .sscli_operate{
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  z-index: 2;
+}
+.ssclio_ul{
+  position: absolute;
+  box-shadow: 0 1px 1px 0 rgba(106,102,136,0.08),
+  0 4px 16px 0 rgba(183,183,192,0.3);
+  background: #fff;
+  right: 0;
+  top: 35px;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 48px;
+  display: none;
+  z-index: 2;
+}
+.ssclio_ul li{
+  cursor: pointer;
+  padding: 0 25px;
+}
+.ssclio_ul li:hover{
+  color: #F9423A;
+}
+/* 店铺列表信息样式 */
+.sscli_info{
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0;
+  gap: 15px;
+}
+.sscli_block{
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(246,246,249,0.5);
+  height: 120px;
+  border-radius: 4px;
+}
+.ssclib_top{
+  height: 50px;
+  font-size: 32px;
+  line-height: 50px;
+  text-align: center;
+}
+/* 店铺列表底部样式 */
+.sscli_footer{
+  text-align: center;
+  font-size: 12px;
+  line-height: 24px;
+  color: #928FA5;
+}
+/* 添加店铺模块 */
+.ssc_add_module{
+  width: 45%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px dashed rgba(34,34,34,0.08);
+  background: rgba(246,246,249,0.5);
+  cursor: pointer;
+  border-radius: 4px;
+}
+.ssc_add_module span{
+  font-size: 24px;
+  line-height: 33px;
+  color: #928FA5;
+  margin-top: 15px;
+}
+/* 遮罩层 */
+.ssc_mask{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  display: none;
+  z-index: 1;
+}
+</style>
+
+<div class="see_store_component mm_pc_container alifont_bold">
+  {% comment %} 头部模块 {% endcomment %}
+  <div class="ssc_header">
+    <span class="ssch_title">My store（<span class="ssch_store_number">0</span>）</span>
+    <span class="ssch_add alifont">Add store +</span>
+  </div>
+
+  {% comment %} 店铺列表容器 {% endcomment %}
+  <div class="ssc_list_container ssc_list_rotation">
+    {% comment %} 店铺列表 通过JS动态渲染 {% endcomment %}
+
+    {% comment %} 添加模块 {% endcomment %}
+    <div class="ssc_add_module">
+      <img src="{{'icon-add.svg' | asset_url}}" />
+      <span class="alifont">Add store</span>
+    </div>
+  </div>
+
+  {% comment %} 遮罩层 {% endcomment %}
+  <div class="ssc_mask"></div>
+</div>
+
+<script defer="defer">
+let pageNum = 1; // 页码
+let pageSize = 10; // 页容量
+let pages = 1; // 总页数
+
+/* 函数防抖 */
+const debounce = (cb, time, that = null) => {
+  let timer;
+  return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+          cb.apply(that, args);
+      }, time)
+  }
+};
+
+/* 打开弹窗事件 openPopup 为 popup-component 组件内部方法*/
+// createShop 为 task父级内部方法
+const configPopup = { confirmText: 'Create', title: 'Add a store name', onConfirm: createShop };
+$('.ssch_add').on('click', () => openPopup(configPopup));
+$('.ssc_add_module').on('click', () => openPopup(configPopup));
+
+/* 遮罩层点击事件 */
+$('.ssc_mask').on('click', (event) => {
+  event.stopPropagation();
+  $('.ssclio_ul').hide();
+  $('.ssc_mask').hide();
+});
+
+/* 更多操作点击事件 */
+let id = '';
+$('.ssc_list_container').on('click', (event) => {
+  event.stopPropagation();
+  const targetClassName = event.target.className;
+  /* 判断是否点击更多按钮 */
+  if(targetClassName === 'sscli_operate'){
+    id = event.target.dataset.id;
+    /* 将其它弹窗隐藏 */
+    $('.ssclio_ul').hide();
+    /* 显示点击的弹窗 */
+    const DOMUL = $(event.target).parent()[0].children[2];
+    $('.ssc_mask').show();
+    $(DOMUL).show();
+  }
+
+  /* 判断是否点击li标签 */
+  if(targetClassName === 'ssclio_li'){
+    const type = event.target.dataset.type;
+    const handleObject = {
+      /* 修改店铺 */
+      'rename': () => {
+        const configPopup = { title: 'Edit', confirmText: 'Save', onConfirm: editShopName };
+        openPopup(configPopup);
+      },
+      /* 链接店铺 */
+      'connect': () => location.href = `/pages/my-store-connect?id=${id}`,
+      /* 删除店铺 */
+      'delete': async () => {
+        const res = await window.confirm('确定删除吗？');
+        res && deleteShop();
+      }
+    }
+    handleObject[type] && handleObject[type]();
+  }
+});
+
+/* 监听店铺列表滚动事件 */
+$('.ssc_list_container').scroll(debounce((event) => {
+  /* 判断是否触底 总宽度 - 已滚动宽度 == 容器宽度 */
+  const {scrollWidth, scrollLeft, clientWidth} = event.target;
+  const load = (scrollWidth - scrollLeft - 100) < clientWidth;
+  /* 加载下一页数据 */
+  if(load && pageNum < pages){
+    pageNum++;
+    getShopList();
+  }
+}, 300));
+
+/* 初始化操作 */
+function initShopList(){
+  pageNum = 1;
+  pages = 1;
+  $('.ssc_list_container').scrollLeft(0);
+  return getShopList();
+};
+
+/* 获取店铺列表 */
+async function getShopList(){
+  _sunzi_loading(); // loading
+  try{
+    const URL = `${DOMAIN}/mademine/shop/list?page=${pageNum}&pageSize=${pageSize}`;
+    const result = await fetch(URL, { method: 'GET' }).then(res => res.json());
+    _sunzi_hide_loading(); // 关闭loading
+    if(result.count === 0) return 0;
+    pages = Math.ceil(result.count / pageSize);
+    $('.ssch_store_number').text(result.count);
+    renderShopList(result.data);
+    return result.count;
+  }catch(err){
+    console.log(err);
+    _sunzi_hide_loading(); // 关闭loading
+  }
+};
+
+/* 修改店铺名称 */
+async function editShopName({ shopName }){
+  const URL = `${DOMAIN}/mademine/shop/edit`;
+  const result = await fetch(URL, {
+    method: 'POST',
+    body: JSON.stringify({ id, shopName }),
+    headers: { 'content-type': 'application/json' }
+  }).then(res => res.json());
+  initShopList();
+};
+
+/* 删除店铺 */
+async function deleteShop(){
+  const URL = `${DOMAIN}/mademine/shop/delete`;
+  const result = await fetch(URL, {
+    method: 'POST', 
+    body: JSON.stringify({id}),
+    headers: { 'content-type': 'application/json' }
+  }).then(res => res.json());
+  initShopList();
+};
+
+/* 渲染店铺列表 */
+function renderShopList(shopList){
+  const template = renderTemplate(shopList);
+  if(pageNum === 1 && shopList.length === 1){
+    $('.ssc_list_container').prepend(template);
+  }else if(pageNum === 1){
+    $('.ssc_list_container').html(template);
+  }else {
+    $('.ssc_list_container').append(template);
+  }
+};
+
+/* 渲染DOM元素 */
+function renderTemplate(shopList){
+  let shopTemplate = '';
+  shopList.forEach(item => {
+    shopTemplate += `
+    {% comment %} 店铺列表 {% endcomment %}
+    <div class="sscl_item">
+      {% comment %} 店铺logo {% endcomment %}
+      <div class="sscli_header">
+        <img class="sscli_logo" src="https://assets.sunzi.cool/attention_surprise_logo.png" alt="logo">
+        <img class="sscli_operate" src="{{ 'operate.svg' | asset_url }}" alt="operate" data-id="${item.id}">
+        <ul class="ssclio_ul alifont">
+          <li class="ssclio_li" data-type="rename">Rename</li>
+          <li class="ssclio_li" data-type="connect">${item.state === 1 ? 'Disconnect' : 'Connected'}</li>
+          <li class="ssclio_li" data-type="delete">Delete</li>
+        </ul>
+      </div>
+      {% comment %} 店铺信息 {% endcomment %}
+      <div class="sscli_info">
+        <div class="sscli_block">
+          <div class="ssclib_top">${item.orderCount > 999 ? '999+' : item.orderCount}</div>
+          <span class="alifont">Orders</span>
+        </div>
+        <div class="sscli_block">
+          <div class="ssclib_top">${item.productCount > 999 ? '999+' : item.productCount}</div>
+          <span class="alifont">Products</span>
+        </div>
+        <div class="sscli_block">
+          <div class="ssclib_top">
+            <div style="display: ${ item.state === 1 ? 'block':'none' };">{% render 'icon-connect-store' %}</div>
+            <div style="display: ${ item.state === 0 ? 'block':'none' }">{% render 'icon-not-connect-store' %}</div>
+          </div>
+          <span class="alifont">Connected</span>
+        </div>
+      </div>
+      {% comment %} 底部 {% endcomment %}
+      <div class="sscli_footer alifont">Automatic, 24h</div>
+    </div>
+    `;
+  });
+  return shopTemplate;
+};
+</script>

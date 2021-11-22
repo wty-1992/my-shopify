@@ -1,0 +1,69 @@
+{% comment %} 
+** @name  最新产品列表显示组件**
+** @author 陈健辉 **
+** @update 2021-11-19
+{% endcomment %}
+
+<style>
+/* PC端样式 */
+.new_product_component{
+  background: #fff;
+  padding: 25px 40px;
+  margin: 0 auto;
+}
+
+/* 头部 */
+.npc_header{
+  font-size: 24px;
+  line-height: 32px;
+  margin-bottom: 25px;
+}
+/* 产品列表 */
+.npc_list{
+  display: flex;
+  gap: 30px;
+}
+.npcl_item{
+  flex-grow: 1;
+  width: 160px;
+  background: rgba(246,246,249,0.5);
+  padding: 10px;
+}
+.npcl_item img{
+  height: 120px;
+}
+.npcl_new{
+  padding-top: 10px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #0EBA9A;
+}
+.npcl_price{
+  font-size: 14px;
+  line-height: 32px;
+}
+</style>
+
+{% comment %} 最新产品列表 {% endcomment %}
+<div class="new_product_component mm_pc_container">
+  {% comment %} 头部 {% endcomment %}
+  <div class="npc_header alifont_bold">Recently updated products</div>
+
+  {% comment %} 产品列表 {% endcomment %}
+  <div class="npc_list">
+    {% for item in products limit: 5 %}
+      <div class="npcl_item">
+        {% comment %} 产品图片 {% endcomment %}
+        <div class="npcl_img">
+          {% if item.featured_image %}
+            {{ item.featured_image | image_url: width: 300 | image_tag }}
+          {% endif %}
+        </div>
+        {% comment %} 产品信息 {% endcomment %}
+        <div class="npcl_new alifont_bold">NEW</div>
+        <div class="npcl_title single_line_ellipsis">{{item.title}}</div>
+        <div class="npcl_price alifont_bold">{{ item.price | money }}</div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
