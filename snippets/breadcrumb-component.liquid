@@ -1,0 +1,58 @@
+{% comment %} 
+** @name  弹窗组件 **
+** @author 陈健辉 **
+** @update 2021-11-19 **
+** @describe {function} initBreadcrumb: 初始化面包屑方法 **
+** @describe {function} pushBreadcrumb: 添加一项面包屑方法 **
+{% endcomment %}
+
+<style>
+/* PC端样式 */
+.breadcrumb_component{
+  display: flex;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 25px;
+  color: #928FA5;
+  margin: 0 auto;
+}
+.br_item_last{
+  color: #222;
+  padding-right: 0;
+}
+</style>
+
+<div class="breadcrumb_component mm_pc_container single_line_ellipsis">
+  <span class="alifont">My store<span class="br_item_last alifont_bold"> / Connect your store</span></span>
+</div>
+
+<script>
+let listCache = [];
+/* 初始化面包屑导航条 */
+const initBreadcrumb = (list) => {
+  listCache = list;
+  renderBreadcrumb(list);
+};
+
+/* 添加一项面包屑 */
+const pushBreadcrumb = (name) => {
+  listCache.push(name);
+  renderBreadcrumb(listCache);
+};
+
+/* 渲染面包屑 */
+const renderBreadcrumb = (list) => {
+  let template = '';
+  list.forEach((item, index) => {
+    if(index === 0){
+      template = `<span class="alifont">${item}`;
+    }else if(index === list.length - 1){
+      template += `<span class="br_item_last alifont_bold"> / ${item}</span></span>`;
+    }else {
+      template += ` / ${item}`;
+    };
+  });
+  $('.breadcrumb_component').html(template);
+}
+
+</script>
