@@ -1,3 +1,9 @@
+{% comment %} 
+** @name 我的店铺页面**
+** @author 陈健辉 **
+** @update 2021-11-20
+{% endcomment %}
+
 <style>
 /* PC端样式 */
 .task_container{
@@ -5,7 +11,6 @@
   margin-right: auto;
   color: #222;
   background: #F6F6F9;
-  height: calc(100vh - 70px);
   width: 100%;
 }
 .task_header{
@@ -14,6 +19,9 @@
   text-align: center;
   padding: 30px 0;
 }
+.task_product{
+  margin-top: 30px;
+}
 
 /* 隐藏底部footer */
 #shopify-section-footer{
@@ -21,22 +29,60 @@
 }
 </style>
 
-{% assign current_collection = collections[section.settings.collection] %}
+<script>
+/* 创建店铺 传递给弹窗组件 */
+async function createShop(params){
+  _sunzi_loading(); // loading
+  try{
+    const { shopName } = params;
+    const URL = `${DOMAIN}/mademine/shop/add`;
+    const result = await fetch(URL, {
+      method: 'POST',
+      body: JSON.stringify({ shopName }),
+      headers: { 'content-type': 'application/json' }
+    }).then(res => res.json());
+    /* 创建成功，请求店铺列表 */
+    init();
+  }catch(err){
+    console.log(err);
+  };
+  _sunzi_hide_loading(); // 关闭loading
+}
+</script>
 
 <div class="task_container mm-header-height">
   {% comment %} 头部模块 {% endcomment %}
   <div class="task_header alifont_bold">Welcome！LeBron James</div>
 
-  {% comment %} 店铺信息模块 {% endcomment %}
-  <div class="task_store">{% render 'create-store-component' %}</div>
+  {% comment %} 未创建店铺模块 {% endcomment %}
+  <div class="task_not_store" style="display: block;">{% render 'create-store-component' %}</div>
 
-  {% comment %} 最新产品模块 {% endcomment %}
-  <div class="task_product">{% render 'new-product-component' %}</div>
+  {% comment %} 已创建店铺模块 {% endcomment %}
+  <div class="task_store" style="display: none;">{% render 'see-store-component',  %}</div>
 
-  {% for item in current_collection.products limit: 5 %}
-    {{ item.title }}
-  {% endfor %}
+  {% comment %} 最新产品模块 生产阶段选择集合：collections[section.settings.collection] {% endcomment %}
+  {% assign current_collection = collections['1111hot-sale'] %}
+  <div class="task_product">{% render 'new-product-component', products: current_collection.products %}</div>
+
+  {% comment %} 弹窗组件 {% endcomment %}
+  {% render 'popup-component' %}
 </div>
+
+<script defer="defer">
+/* 初始化店铺信息 判断是否已有创建的店铺 */
+async function init(){
+  /* 请求店铺列表数据 initShopList 为 see-store-component组件内部方法 */
+  const count = await initShopList();
+  if(count === 0) {
+    $('.task_not_store').show();
+    $('.task_store').hide();
+  }else {
+    $('.task_not_store').hide();
+    $('.task_store').show();
+  }
+}
+init();
+</script>
 
 {% schema %}
   {
