@@ -1,0 +1,134 @@
+{% comment %} 
+** @name  弹窗组件 **
+** @author 陈健辉 **
+** @update 2021-11-19 **
+** @describe {function} openPopup: 打开弹窗方法 @param config 配置对象 title: 弹窗标题 | confirmText: 确定文本 | onConfirm: 确定回调 **
+** @describe {function} closePopup: 关闭弹窗方法 **
+{% endcomment %}
+
+<style>
+.popup_component{
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,.2);
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  cursor: pointer;
+}
+.pc_container{
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: #fff;
+  width: 500px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: default;
+}
+/* 头部 */
+.pcc_header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 24px;
+  line-height: 56px;
+  padding: 0 25px;
+  border-bottom: 1px solid rgba(34,34,34,0.04);
+}
+.pcch_close{
+  cursor: pointer;
+}
+/* 内容区域 */
+.pcc_content{
+  flex-grow: 1;
+  padding: 25px;
+  font-size: 14px;
+}
+.pccc_title{
+  line-height: 20px;
+  margin-bottom: 4px;
+}
+.pccc_input{
+  border: 1px solid rgba(34,34,34,0.16);
+  border-radius: 4px;
+  background: #fff;
+  line-height: 22px;
+  padding: 8px 15px;
+}
+.pccc_input:focus{
+  border: 1px solid #F9423A;
+  caret-color: #F9423A;
+}
+/* 底部按钮 */
+.pcc_footer{
+  padding: 25px;
+  border-top: 1px solid rgba(34,34,34,0.04);
+}
+.pcc_footer .mm-register-btn{
+  margin-left: 0;
+}
+</style>
+
+<div id="popupComponent" class="popup_component">
+  <div class="pc_container">
+    {% comment %} 头部 {% endcomment %}
+    <div class="pcc_header alifont_bold">
+      <div class="pcch_title">Add a store name</div>
+      <img class="pcch_close" src="{{ 'close.svg' | asset_url }}"/>
+    </div>
+
+    {% comment %} 内容区域 {% endcomment %}
+    <div class="pcc_content">
+      <div class="pccc_title alifont_bold">Store name</div>
+      <input class="pccc_input alifont" type="text" placeholder="Attantion Surprise">
+    </div>
+
+    {% comment %} 底部按钮 {% endcomment %}
+    <div class="pcc_footer">
+      <a id="confirmBtn" class="mm-btn mm-btn-primary alifont_bold mm-register-btn" href="javascript:void(0)">Create</a>
+    </div>
+  </div>
+</div>
+
+<script defer="defer">
+  let confirmHandle = null;
+  /* 
+   * 打开弹窗
+   * @param config 配置对象 title: 弹窗标题 | confirmText: 确定文本 | onConfirm: 确定回调
+   */
+  const openPopup = (config) => {
+    const {title = 'Add a store name', confirmText = 'Create', onConfirm = null} = config;
+    $('#confirmBtn').text(confirmText);
+    $('.pcch_title').text(title);
+    confirmHandle = onConfirm;
+    $('#popupComponent').show();
+  };
+
+  /* 关闭弹窗 */
+  const closePopup = () => $('#popupComponent').hide();
+
+  /* 注册关闭按钮事件 */
+  $('.pcch_close').on('click', closePopup);
+  /* 注册遮罩层事件 */
+  $('#popupComponent').on('click', function(event){
+    if(event.target === this) {
+      closePopup();
+    }
+  });
+  /* 确认回调 */
+  $('#confirmBtn').on('click', (event) => {
+    const params = {
+      shopName: $('.pccc_input').val()
+    };
+    confirmHandle && confirmHandle(params);
+    $('.pccc_input').val(''); // 清空文本框
+    closePopup();
+  })
+</script>
