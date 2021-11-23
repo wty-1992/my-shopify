@@ -233,15 +233,32 @@ $('.ssc_list_container').on('click', (event) => {
     const handleObject = {
       /* 修改店铺 */
       'rename': () => {
-        const configPopup = { title: 'Edit', confirmText: 'Save', onConfirm: editShopName };
-        openPopup(configPopup);
+        // 打开弹窗 openPopup 为 popup-component组件内部方法
+        openPopup({ 
+          title: 'Edit',
+          confirmText: 'Save',
+          onConfirm: editShopName
+        });
       },
       /* 链接店铺 */
-      'connect': () => location.href = `/pages/my-store-connect?id=${id}`,
+      'connected': () => {
+        location.href = `/pages/my-store-connect?id=${id}`
+      },
+      /* 断开链接 */
+      'disconnect': () => {
+        // 打开对话框 openDialog 为 dialog-component组件内部方法
+        openDialog({
+          content: 'Are you sure to cancel the store connection?',
+          onConfirm: disconnectShop
+        });
+      },
       /* 删除店铺 */
-      'delete': async () => {
-        const res = await window.confirm('确定删除吗？');
-        res && deleteShop();
+      'delete': () => {
+        // 打开对话框 openDialog 为 dialog-component组件内部方法
+        openDialog({
+          content: 'Are you sure you want to delete the store?',
+          onConfirm: deleteShop
+        });
       }
     }
     handleObject[type] && handleObject[type]();
@@ -301,12 +318,23 @@ async function editShopName({ shopName }){
 async function deleteShop(){
   const URL = `${DOMAIN}/mademine/shop/delete`;
   const result = await fetch(URL, {
-    method: 'POST', 
+    method: 'POST',
     body: JSON.stringify({id}),
     headers: { 'content-type': 'application/json' }
   }).then(res => res.json());
   initShopList();
 };
+
+/* 店铺断开连接 待完善接口 */
+async function disconnectShop(){
+  alert('待完善接口');
+  return
+  const URL = `${DOMAIN}/mademine/user/disconnect?domain=${domain}`;
+  const result = await fetch(URL, {
+    method: 'GET',
+  }).then(res => res.json());
+  initShopList();
+}
 
 /* 渲染店铺列表 */
 function renderShopList(shopList){

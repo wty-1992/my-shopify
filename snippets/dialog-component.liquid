@@ -1,0 +1,97 @@
+{% comment %} 
+** @name  对话框组件 **
+** @author 陈健辉 **
+** @update 2021-11-19 **
+** @describe {function} openDialog: 打开对话框方法 @param config 配置对象 content: 对话框文本 | cancelText: 取消文本 | confirmText: 确定文本 | onConfirm: 确定回调 **
+** @describe {function} closeDialog: 关闭对话框方法 **
+{% endcomment %}
+
+<style>
+/* PC端样式 */
+.dialog_component{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,.2);
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.dc_container{
+  max-width: 345px;
+  background: #fff;
+  padding: 25px;
+  border-radius: 4px;
+  color: #222;
+  text-align: center;
+}
+.dcc_content{
+  font-size: 20px;
+  line-height: 28px;
+}
+.dcc_btns{
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
+  font-size: 16px;
+}
+.dccb_btn{
+  flex-grow: 1;
+  border: 1px solid rgba(34,34,34,0.16);
+  border-radius: 4px;
+  padding: 8px 15px;
+  width: 100px;
+  cursor: pointer;
+}
+.dccb_sure{
+  background: #F9423A;
+  color: #fff;
+  border-color: #F9423A;
+}
+.dccb_sure:hover{
+  background: #E43329;
+  border-color: #E43329;
+}
+</style>
+
+<div class="dialog_component">
+  <div class="dc_container alifont_bold">
+    {% comment %} 文本内容 {% endcomment %}
+    <div class="dcc_content"></div>
+    {% comment %} 按钮模块 {% endcomment %}
+    <div class="dcc_btns">
+      <div class="dccb_btn dccb_cancel">Cancel</div>
+      <div class="dccb_btn dccb_sure">Sure</div>
+    </div>
+  </div>
+</div>
+
+<script defer="defer">
+/* 确认回调方法 */
+let confiremHandle = null;
+/* 打开对话框方法 */
+const openDialog = (config) => {
+  const {content='Are you sure？', cancelText='Cancel', confirmText='Sure', onConfirm=null} = config;
+  confiremHandle = onConfirm;
+  $('.dcc_content').text(content);
+  $('.dccb_cancel').text(cancelText);
+  $('.dccb_sure').text(confirmText);
+  $('.dialog_component').css('display', 'flex');
+};
+
+/* 关闭对话框方法 */
+const closeDialog = () => $('.dialog_component').hide();
+
+/* 点击取消事件 */
+$('.dccb_cancel').on('click', () => closeDialog());
+/* 点击确认事件 */
+$('.dccb_sure').on('click', () => {
+  confiremHandle && confiremHandle();
+  closeDialog();
+});
+</script>
