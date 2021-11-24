@@ -130,6 +130,10 @@ $('#mscmBtn').on('click', () => {
     if(!value) return; // 未输入内容
     connectShopify(value);
   }
+  /* 返回my-store */
+  if(currentStep === 3){
+    location.replace('/pages/task');
+  }
 })
 
 /* 进入下一步 */
@@ -139,14 +143,23 @@ function nextStep(){
   /* 步骤流程进一步 furtherStep 为 connect-setp-component 组件内部方法 */
   furtherStep();
 
-  /* 隐藏帮助/logo元素，显示输入框 */
+  /* 隐藏帮助/logo元素*/
   $('.mscm_logo').hide();
   $('.mscm_signup').hide();
-  $('.mscm_input').show();
-  
-  /* 替换文本内容 */
-  $('.mscm_title').text('Connect Shopify');
-  $('.mscm_text').text('Add your Shopify store URL to connect with Mademine');
+
+  /* 进入第三步骤 */
+  if(currentStep === 3){
+    furtherStep();
+    $('.mscm_title').text('Connect Success');
+    $('.mscm_text').text('Already connected Shopify');
+    $('#mscmBtn > span').text('My Store');
+  }else {
+    /* 显示输入框 */
+    $('.mscm_input').show();
+    /* 替换文本内容 */
+    $('.mscm_title').text('Connect Shopify');
+    $('.mscm_text').text('Add your Shopify store URL to connect with Mademine');
+  }
 }
 
 /* 链接shopify域名 */
@@ -163,4 +176,22 @@ async function connectShopify(domain){
   };
   _sunzi_hide_loading(); // 关闭loading
 }
+
+/* shopify连接店铺成功后会跳转回该页面 */
+/* 判断路径参数是否有connect=success，true则调用接口确认已连接成功 */
+async function shopifyConnectSuccess(){
+  try{
+    const param = getQueryVariable('connect'); // 获取参数
+    if(param !== 'success') return;
+    const search = location.search; // shopify返回的地址栏参数需要传递给后端
+    const URL = `${DOMAIN}/mademine/auth/agree${search}`;
+    const result = await fetch(URL, { method: 'GET' }).then(res => res.json());
+    currentStep = 3;
+    nextStep();
+    console.log(result);
+  }catch(err){
+    console.log(err);
+  }
+}
+shopifyConnectSuccess();
 </script>

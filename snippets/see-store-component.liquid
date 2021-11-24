@@ -246,10 +246,11 @@ $('.ssc_list_container').on('click', (event) => {
       },
       /* 断开链接 */
       'disconnect': () => {
+        const shopurl = event.target.dataset.shopurl;
         // 打开对话框 openDialog 为 dialog-component组件内部方法
         openDialog({
           content: 'Are you sure to cancel the store connection?',
-          onConfirm: disconnectShop
+          onConfirm: () => disconnectShop(shopurl)
         });
       },
       /* 删除店铺 */
@@ -325,14 +326,10 @@ async function deleteShop(){
   initShopList();
 };
 
-/* 店铺断开连接 待完善接口 */
-async function disconnectShop(){
-  alert('待完善接口');
-  return
-  const URL = `${DOMAIN}/mademine/user/disconnect?domain=${domain}`;
-  const result = await fetch(URL, {
-    method: 'GET',
-  }).then(res => res.json());
+/* 店铺断开连接 */
+async function disconnectShop(shopurl){
+  const URL = `${DOMAIN}/mademine/user/disconnect?domain=${shopurl}`;
+  await fetch(URL, {method: 'GET'}).then(res => res.json());
   initShopList();
 }
 
@@ -361,7 +358,7 @@ function renderTemplate(shopList){
         <img class="sscli_operate" src="{{ 'operate.svg' | asset_url }}" alt="operate" data-id="${item.id}">
         <ul class="ssclio_ul alifont">
           <li class="ssclio_li" data-type="rename">Rename</li>
-          <li class="ssclio_li" data-type="${item.state === 1 ? 'disconnect' : 'connected'}">${item.state === 1 ? 'Disconnect' : 'Connected'}</li>
+          <li class="ssclio_li" data-type="${item.state === 1 ? 'disconnect' : 'connected'}" data-shopurl="${item.shopUrl}">${item.state === 1 ? 'Disconnect' : 'Connected'}</li>
           <li class="ssclio_li" data-type="delete">Delete</li>
         </ul>
       </div>
