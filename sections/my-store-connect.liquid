@@ -155,8 +155,9 @@ async function connectShopify(domain){
   try{
     const id = getQueryVariable('id');
     const URL = `${DOMAIN}/mademine/user/connect?domain=${domain}&shop_id=${id}`;
-    await fetch(URL, { method: 'GET' }).then(res => res.json());
+    const result = await fetch(URL, { method: 'GET' }).then(res => res.json());
     /* 链接后重定向到shopify授权 */
+    location.replace(result.data.url);
   }catch(err){
     console.log(err);
   };
