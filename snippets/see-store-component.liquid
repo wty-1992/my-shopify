@@ -306,31 +306,46 @@ async function getShopList(){
 
 /* 修改店铺名称 */
 async function editShopName({ shopName }){
-  const URL = `${DOMAIN}/mademine/shop/edit`;
-  const result = await fetch(URL, {
-    method: 'POST',
-    body: JSON.stringify({ id, shopName }),
-    headers: { 'content-type': 'application/json' }
-  }).then(res => res.json());
-  initShopList();
+  _sunzi_loading(); // loading
+  try{
+    const URL = `${DOMAIN}/mademine/shop/edit`;
+    const result = await fetch(URL, {
+      method: 'POST',
+      body: JSON.stringify({ id, shopName }),
+      headers: { 'content-type': 'application/json' }
+    }).then(res => res.json());
+    initShopList();
+  }catch{
+    _sunzi_hide_loading(); // 关闭loading
+  }
 };
 
 /* 删除店铺 */
 async function deleteShop(){
-  const URL = `${DOMAIN}/mademine/shop/delete`;
-  const result = await fetch(URL, {
-    method: 'POST',
-    body: JSON.stringify({id}),
-    headers: { 'content-type': 'application/json' }
-  }).then(res => res.json());
-  initShopList();
+  _sunzi_loading(); // loading
+  try{
+    const URL = `${DOMAIN}/mademine/shop/delete`;
+    const result = await fetch(URL, {
+      method: 'POST',
+      body: JSON.stringify({id}),
+      headers: { 'content-type': 'application/json' }
+    }).then(res => res.json());
+    initShopList();
+  }catch{
+    _sunzi_hide_loading(); // 关闭loading
+  }
 };
 
 /* 店铺断开连接 */
 async function disconnectShop(shopurl){
-  const URL = `${DOMAIN}/mademine/user/disconnect?domain=${shopurl}`;
-  await fetch(URL, {method: 'GET'}).then(res => res.json());
-  initShopList();
+  _sunzi_loading(); // loading
+  try{
+    const URL = `${DOMAIN}/mademine/user/disconnect?domain=${shopurl}`;
+    await fetch(URL, {method: 'GET'}).then(res => res.json());
+    initShopList();
+  }catch{
+    _sunzi_hide_loading(); // 关闭loading
+  }
 }
 
 /* 渲染店铺列表 */

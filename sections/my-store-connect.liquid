@@ -53,6 +53,28 @@
   height: 210px;
   margin: 15px 0;
 }
+.mscm_connect_success{
+  max-width: 400px;
+  margin: 25px auto;
+  background: #F6F6F9;
+  border-radius: 4px;
+  padding: 25px;
+  display: none;
+}
+.mscmcs_title{
+  font-size: 28px;
+  line-height: 48px;
+}
+.mscmcs_icon{
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #0EBA9A;
+}
+.mscmcsi_text{
+  margin-left: 10px;
+}
 .mscm_btn{
   display: flex;
   justify-content: center;
@@ -97,6 +119,15 @@
     {% comment %} 步骤一显示 {% endcomment %}
     <div class="mscm_logo"></div>
 
+    {% comment %} 步骤三显示 {% endcomment %}
+    <div class="mscm_connect_success">
+      <div class="mscmcs_title alifont_bold">Attention Surprise</div>
+      <div class="mscmcs_icon alifont">
+        {% render 'icon-connect-store' %}
+        <span class="mscmcsi_text">Connected</span>
+      </div>
+    </div>
+
     {% comment %} 连接按钮 {% endcomment %}
     <div class="mscm_btn">
       <a id="mscmBtn" class="mm-btn mm-btn-primary alifont_bold mm-register-btn" href="javascript:void(0)">
@@ -108,6 +139,9 @@
     {% comment %} 步骤一显示 {% endcomment %}
     <div class="mscm_signup">Don't have a Shopify account? <span class="mscms_up alifont_bold">Sign Up</span></div>
   </div>
+
+  {% comment %} 对话框组件 {% endcomment %}
+  {% render 'dialog-component' %}
 </div>
 
 <script defer="defer">
@@ -143,16 +177,17 @@ function nextStep(){
   /* 步骤流程进一步 furtherStep 为 connect-setp-component 组件内部方法 */
   furtherStep();
 
-  /* 隐藏帮助/logo元素*/
+  /* 隐藏logo/帮助元素*/
   $('.mscm_logo').hide();
   $('.mscm_signup').hide();
 
   /* 进入第三步骤 */
   if(currentStep === 3){
     furtherStep();
-    $('.mscm_title').text('Connect Success');
-    $('.mscm_text').text('Already connected Shopify');
-    $('#mscmBtn > span').text('My Store');
+    $('.mscm_connect_success').show();
+    $('.mscm_title').text('Successfully connected to the store');
+    $('.mscm_text').hide();
+    $('#mscmBtn').html('My store');
   }else {
     /* 显示输入框 */
     $('.mscm_input').show();
@@ -169,12 +204,19 @@ async function connectShopify(domain){
     const id = getQueryVariable('id');
     const URL = `${DOMAIN}/mademine/user/connect?domain=${domain}&shop_id=${id}`;
     const result = await fetch(URL, { method: 'GET' }).then(res => res.json());
+    _sunzi_hide_loading(); // 关闭loading
+    /* 提示错误 */
+    if(result.code !== 0){
+      // 打开对话框 openDialog 为 dialog-component组件内部方法
+      openDialog({ content: result.msg });
+      return;
+    }
     /* 链接后重定向到shopify授权 */
     location.replace(result.data.url);
   }catch(err){
+    _sunzi_hide_loading(); // 关闭loading
     console.log(err);
   };
-  _sunzi_hide_loading(); // 关闭loading
 }
 
 /* shopify连接店铺成功后会跳转回该页面 */
@@ -183,13 +225,16 @@ async function shopifyConnectSuccess(){
   try{
     const param = getQueryVariable('connect'); // 获取参数
     if(param !== 'success') return;
+    _sunzi_loading();
     const search = location.search; // shopify返回的地址栏参数需要传递给后端
     const URL = `${DOMAIN}/mademine/auth/agree${search}`;
     const result = await fetch(URL, { method: 'GET' }).then(res => res.json());
+    _sunzi_hide_loading();
     currentStep = 3;
     nextStep();
     console.log(result);
   }catch(err){
+    _sunzi_hide_loading();
     console.log(err);
   }
 }
