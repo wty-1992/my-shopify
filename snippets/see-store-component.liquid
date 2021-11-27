@@ -32,7 +32,6 @@
 .ssc_list_container{
   margin-top: 25px;
   display: flex;
-  gap: 15px;
   overflow-x: auto;
 }
 /* 店铺超出三个轮播显示 */
@@ -60,6 +59,10 @@
   width: 45%;
   flex-grow: 1;
   border-radius: 4px;
+  margin-right: 15px;
+}
+.sscl_item:last-child{
+  margin-right: 0;
 }
 /* 店铺列表头部样式 */
 .sscli_header{
@@ -68,10 +71,28 @@
   justify-content: space-between;
   position: relative;
 }
-.sscli_header .sscli_logo{
-  width: 160px;
+.sscli_logo{
+  display: flex;
+  align-items: center;
 }
-.sscli_header .sscli_operate{
+.sscli_icon{
+  padding: 7px;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  background: rgba(246,246,249,0.5);
+  margin-right: 10px;
+}
+.sscli_icon img{
+  width: 100%;
+  height: 100%;
+}
+.sscli_name{
+  font-size: 20px;
+  line-height: 32px;
+  color: #928FA5;
+}
+.sscli_operate{
   width: 20px;
   height: 20px;
   cursor: pointer;
@@ -102,7 +123,6 @@
   display: flex;
   justify-content: space-between;
   margin: 15px 0;
-  gap: 15px;
 }
 .sscli_block{
   flex-grow: 1;
@@ -114,6 +134,10 @@
   height: 120px;
   border-radius: 4px;
   width: 30px;
+  margin-right: 15px;
+}
+.sscli_block:last-child{
+  margin-right: 0;
 }
 .ssclib_top{
   height: 50px;
@@ -293,7 +317,10 @@ async function getShopList(){
     const URL = `${DOMAIN}/mademine/shop/list?page=${pageNum}&pageSize=${pageSize}`;
     const result = await fetch(URL, { method: 'GET' }).then(res => res.json());
     _sunzi_hide_loading(); // 关闭loading
-    if(result.count === 0) return 0;
+    if(result.count === 0) {
+      storeShowHide(0);
+      return 0;
+    };
     pages = Math.ceil(result.count / pageSize);
     $('.ssch_store_number').text(result.count);
     renderShopList(result.data);
@@ -349,11 +376,14 @@ async function disconnectShop(shopurl){
 }
 
 /* 渲染店铺列表 */
+let addDom = $('.ssc_add_module'); // 添加模块DOM元素
 function renderShopList(shopList){
   const template = renderTemplate(shopList);
   if(pageNum === 1 && shopList.length === 1){
-    $('.ssc_list_container').prepend(template);
+    $('.ssc_list_container').html(template);
+    $('.ssc_list_container').append(addDom);
   }else if(pageNum === 1){
+    /* 隐藏添加DOM */
     $('.ssc_list_container').html(template);
   }else {
     $('.ssc_list_container').append(template);
@@ -369,7 +399,10 @@ function renderTemplate(shopList){
     <div class="sscl_item">
       {% comment %} 店铺logo {% endcomment %}
       <div class="sscli_header">
-        <img class="sscli_logo" src="https://assets.sunzi.cool/attention_surprise_logo.png" alt="logo">
+        <div class="sscli_logo">
+          <div class="sscli_icon"><img src="{{ 'icon-store.svg' | asset_url }}" alt="store"></div>
+          <span class="sscli_name">${item.shopName}</span>
+        </div>
         <img class="sscli_operate" src="{{ 'operate.svg' | asset_url }}" alt="operate" data-id="${item.id}">
         <ul class="ssclio_ul alifont">
           <li class="ssclio_li" data-type="rename">Rename</li>

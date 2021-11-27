@@ -9,7 +9,6 @@
 .create_store_component{
   margin: 0 auto;
   display: flex;
-  gap: 30px;
   justify-content: center;
 }
 .csc_left_module,
@@ -19,6 +18,9 @@
   padding: 25px;
   width: 485px;
   flex-grow: 1;
+}
+.csc_left_module{
+  margin-right: 30px;
 }
 /* 连接线 */
 .csc_left_module::before,
@@ -67,7 +69,6 @@
 .csc_step{
   display: flex;
   flex-direction: column;
-  gap: 15px;
   margin-top: 25px;
   padding: 0 15px;
 }
@@ -78,6 +79,10 @@
   padding: 0 15px;
   border-radius: 4px;
   position: relative;
+  margin-bottom: 15px;
+}
+.cscs_item:last-child{
+  margin-bottom: 0;
 }
 .cscs_item::after{
   position: absolute;
