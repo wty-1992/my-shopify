@@ -1,0 +1,143 @@
+{% comment %} 
+** @name  编辑店铺详情页面**
+** @author 陈健辉 **
+** @update 2021-11-23
+{% endcomment %}
+
+<style>
+/* PC端样式 */
+.my_store_details_edit{
+  background: #F6F6F9;
+}
+/* header样式 */
+.msde_header{
+  font-size: 26px;
+  line-height: 40px;
+  color: #222;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto ;
+  padding: 0 25px;
+}
+.msdeh_btns{
+  display: flex;
+  font-size: 16px;
+  gap: 15px;
+}
+.msdehb_btn{
+  cursor: pointer;
+}
+.msdehb_btn.mm-register-btn{
+  margin-left: 0;
+}
+.msdehb_draft,
+.msdehb_draft.mm-register-btn:hover{
+  background: #fff;
+  border-color: #f9423a;
+  color: #f9423a;
+}
+/* 产品图片组件 */
+.msde_ppc{
+  padding: 25px 0;
+}
+.msde_pdc,
+.msde_pvc,
+.msde_sdc{
+  padding-bottom: 25px;
+}
+
+/* 隐藏底部footer */
+#shopify-section-footer{
+  display: none;
+}
+</style>
+
+{% comment %} 编辑店铺详情 {% endcomment %}
+<div class="my_store_details_edit mm-header-height">
+  {% comment %} 面包屑组件 {% endcomment %}
+  {% render 'breadcrumb-component' %}
+
+  {% comment %} Header头部模块 {% endcomment %}
+  <div class="msde_header mm_pc_container alifont_bold">
+    <div class="msdeh_title">Photo Tapestry Family Gift Custom Wall Art - 50x60 Inches</div>
+    <div class="msdeh_btns">
+      <span id="draft" class="msdehb_btn msdehb_draft mm-btn mm-register-btn">Save as draft</span>
+      <span id="publish" class="msdehb_btn mm-btn mm-btn-primary mm-register-btn">Publish</span>
+    </div>
+  </div>
+
+  {% comment %} 产品图片组件 {% endcomment %}
+  <div class="msde_ppc">{% render 'product-photos-component' %}</div>
+
+  {% comment %} 产品说明组件 {% endcomment %}
+  <div class="msde_pdc">{% render 'product-description-component' %}</div>
+
+  {% comment %} 产品变体组件 {% endcomment %}
+  <div class="msde_pvc">{% render 'product-variants-component' %}</div>
+
+  {% comment %} 店铺说明组件 {% endcomment %}
+  <div class="msde_sdc">{% render 'store-details-component' %}</div>
+
+  {% comment %} 对话框组件 {% endcomment %}
+  {% render 'dialog-component' %}
+</div>
+
+<script>
+/* 初始化面包屑组件内容 initBreadcrumb 为 breadcrumb-component 组件内部方法 */
+const listBreadcrumb = ['My store', 'Attention surprise', 'Edit listing'];
+initBreadcrumb(listBreadcrumb);
+
+/* 请求产品详情数据 */
+getProductDetailData();
+async function getProductDetailData(){
+  _sunzi_loading(); // loading
+  try{
+    const id = getQueryVariable('id');
+    const URL = `${DOMAIN}/mademine/product/productDetail?mademine_product_id=${id}`;
+    const result = await fetch(URL).then(res => res.json());
+    console.log(result);
+    _sunzi_hide_loading();
+    /* 请求错误 */
+    if(result.code !== 0){
+      openDialog({content: result.msg});
+      return;
+    }
+    /* 请求成功 */
+    initImportComponent(result.data);
+  }catch(err){
+    _sunzi_hide_loading();
+    console.log(err);
+  }
+}
+
+/* 初始化引入组件 */
+function initImportComponent(data){
+  const submitPhotosHandle = initProductPhotos(data.images); // 初始化产品图片组件 initProductPhotos 为 product-photos-component组件内部方法
+  const submitDescriptionHandle = initProductDescription(data); // 初始化产品说明组件 initProductDescription 为 product-description-component组件内部方法
+  const submitVariantsHandle = initProductVariants(data); // 初始化产品变体组件 initProductVariants 为 product-variants-component组件内部方法
+  const submitStoreHandle = initStoreDetails(data); // 初始化店铺信息组件 initStoreDetails 为 store-details-component组件内部方法
+
+  /* 监听发布按钮点击事件 */
+  $('#publish').on('click', () => submitPublishOrDraft('publish'));
+  /* 监听保存草稿按钮点击事件 */
+  $('#draft').on('click', () => submitPublishOrDraft('draft'));
+
+  /* 保存方法 */
+  function submitPublishOrDraft(type){
+    /* 获取数据 */
+    const photos = submitPhotosHandle(); // 已选中图片
+    const descript = submitDescriptionHandle(); // 产品说明信息
+    const variants = submitVariantsHandle(); // 产品变体信息
+    const store = submitStoreHandle(); // 店铺信息
+    console.log(descript,descript,variants,store)
+    if(type === 'publish'){
+
+      return;
+    }
+    if(type === 'draft'){
+      
+      return;
+    }
+  }
+};
+</script>

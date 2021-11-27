@@ -1,0 +1,95 @@
+{% comment %} 
+** @name  输入框标签组件**
+** @author 陈健辉 **
+** @update 2021-11-24
+{% endcomment %}
+
+<style>
+/* PC端样式 */
+.isc_input{
+  border: 1px solid rgba(34,34,34,0.16);
+  border-radius: 4px;
+  background: #fff;
+  line-height: 22px;
+  padding: 8px 15px;
+}
+.isc_input:focus{
+  border: 1px solid #F9423A;
+  caret-color: #F9423A;
+}
+/* 标签列表 */
+.isc_tages{
+  display: flex;
+  margin-top: 10px;
+}
+.isct_item {
+  background: #FFF7EC;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin: 0 10px 10px 0;
+}
+.isct_item img {
+  width: 10px;
+  height: 10px;
+  margin-left: 8px;
+  cursor: pointer;
+}
+</style>
+
+<div id="{{ id }}" class="input_select_component mm_pc_container">
+  {% comment %} 输入框 {% endcomment %}
+  <input class="isc_input" type="text" placeholder="{{ placeholder }}">
+
+  {% comment %} 标签列表 {% endcomment %}
+  <div class="isc_tages"></div>
+</div>
+
+<script>
+/* 初始化输入框选择器 */
+function initInputSelect(id, listData){
+  const template = renderTemplateTages(listData);
+  const InputDom = $(id).children().eq(0); // input元素
+  const tagesListDom = $(id).children().eq(1); // 标签列表元素
+  /* 渲染列表 */
+  tagesListDom.html(template);
+  /* 监听回车事件 */
+  InputDom.keydown((event) => {
+    if(event.keyCode !== 13) return;
+    const value = InputDom.val().trim();
+    if(!value) return;
+    listData.push(value);
+    InputDom.val('');
+    tagesListDom.append(renderTemplateTages([value]));
+  })
+  /* 监听点击删除按钮 */
+  $('.isc_tages').on('click', (event) => {
+    if(event.target.className !== 'iscti_close') return;
+    const parant = $(event.target).parent()
+    const val = parant.children('span').text();
+    const index = listData.indexOf(val);
+    if(index === -1) return;
+    listData.slice(index, 1);
+    parant.remove();
+  });
+
+  const getTageList = () => listData;
+  return getTageList;
+}
+
+/* 渲染标签模板 */
+function renderTemplateTages(listData){
+  let template = '';
+  listData.forEach(item => {
+    template += `
+      <div class="isct_item">
+        <span>${item}</span>
+        <img class="iscti_close" src="{{ 'close.svg' | asset_url }}">
+      </div>
+    `;
+  });
+  return template;
+}
+</script>

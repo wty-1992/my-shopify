@@ -1,0 +1,291 @@
+{% comment %} 
+** @name  产品变体组件**
+** @author 陈健辉 **
+** @update 2021-11-25
+{% endcomment %}
+
+<style>
+/* PC端样式 */
+.product_variants_component{
+  background: #fff;
+  margin: 0 auto;
+  padding: 25px;
+  border-radius: 12px;
+  color: #222;
+}
+/* 头部样式 */
+.pvc_header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 22px;
+  line-height: 30px;
+  margin-bottom: 15px;
+}
+.pvch_btns{
+  display: flex;
+}
+.pvch_btn{
+  margin-left: 10px;
+  cursor: pointer;
+}
+.pvch_btn:first-child{
+  margin-left: 0;
+}
+/* 表格模块 */
+.pvc_table{
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+}
+.pvct_header,
+.pvct_row{
+  display: table-row;
+  background: #F6F6F9;
+  color: #928FA5;
+  font-size: 16px;
+  line-height: 24px;
+}
+.pvct_row{
+  background: #fff;
+  border-bottom: 1px solid rgba(34,34,34,0.16);
+}
+.pvct_header > div,
+.pvct_row > div{
+  display: table-cell;
+  padding: 1rem;
+}
+.pvct_select{
+  width: 130px;
+}
+.pvct_all,
+.pvct_input{
+  width: 100px;
+}
+.pvct_input,
+.pvct_select{
+  position: relative;
+}
+.pvct_all > input{
+  margin-right: 10px;
+  vertical-align: bottom;
+}
+.pvct_input > input,
+.pvct_select > select{
+  background: #fff;
+  border-radius: 4px;
+  border: 1px solid rgba(34,34,34,0.16);
+  font-size: 12px;
+  line-height: 28px;
+  padding: 5px 10px;
+}
+.pvct_row .pvct_select:after {
+  position: absolute;
+  display: block;
+  content: '';
+  width: 25px;
+  height: 25px;
+  background: url("{{ 'prev-top.svg' | asset_url }}") no-repeat center;
+  background-size: cover;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%) rotateZ(180deg);
+  pointer-events: none;
+}
+.pvct_row .pvct_select:focus{
+  background: #000;
+}
+.pvct_input > input:focus,
+.pvct_select > select:focus{
+  border-color: rgba(34,34,34,0.16);
+  caret-color: rgba(34,34,34,0.16);
+}
+.pvct_input .pvct_input_symbol_before{
+  padding-left: 50px;
+}
+.pvct_input .pvct_input_symbol_after{
+  padding-right: 50px;
+}
+.pvct_symbol {
+  position: absolute;
+  display: inline-block;
+  line-height: 40px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #ccc;
+  top: 50%;
+  text-align: center;
+  transform: translateY(-50%);
+  background: #F6F6F9;
+  color: rgba(146,143,165,0.5);
+  font-size: 14px;
+}
+.pvct_symbol_before{
+  left: 14px;
+  border-radius: 4px 0 0 4px;
+}
+.pvct_symbol_after{
+  right: 14px;
+  border-radius: 0 4px 4px 0;
+}
+</style>
+
+<div class="product_variants_component mm_pc_container alifont">
+  {% comment %} 头部 {% endcomment %}
+  <div class="pvc_header alifont_bold">
+    <span class="pvch_title">Variants</span>
+    <div class="pvch_btns">
+      <span class="pvch_btn pvch_price mm-btn mm-btn-primary mm-register-btn">Edit price</span>
+      <span class="pvch_btn pvch_profit mm-btn mm-btn-primary mm-register-btn">Edit Profit</span>
+      <span class="pvch_btn pvch_profit_margin mm-btn mm-btn-primary mm-register-btn">Edit Profit margin</span>
+    </div>
+  </div>
+
+  {% comment %} 表格模块 {% endcomment %}
+  <div class="pvc_table">
+    {% comment %} 表头 {% endcomment %}
+    <div class="pvct_header alifont_bold">
+      <div class="pvct_all">
+        <input id="pvctAll" class="radio_box_style" type="checkbox"/>
+        <span for="">Select all</span>
+      </div>
+      <div class="pvct_select">SIZE</div>
+      <div class="pvct_select">Choose Your Style</div>
+      <div class="pvct_input">Retail Price</div>
+      <div class="pvct_input">Profit</div>
+      <div class="pvct_input">Profit margin</div>
+    </div>
+
+    {% comment %} 表行 通过JS渲染 {% endcomment %}
+  </div>
+</div>
+
+<script>
+/* 产品变体初始化方法 */
+function initProductVariants(data){
+  const param = {};
+  data.options.forEach(item => param[item.name] = item.values); // 产品变体配置
+  const template = renderProductVariants(data.variants, param?.Size, param?.Style);
+  $('.pvc_table').append(template);
+  /* 设置下拉菜单value值 */
+  const sizeSelect = $('select[name=size]');
+  const styleSelect = $('select[name=style]');
+  data.variants.forEach((item, index) => {
+    sizeSelect[index].value = item.option1;
+    styleSelect[index].value = item.option2;
+  })
+
+  /* 监听单选框事件 */
+  const checkboxDom = $('.pvct_row input[type=checkbox]');
+  checkboxDom.on('click', () => {
+    const isAll = [...checkboxDom].find(item => item.checked === false);
+    if(isAll){
+      $('#pvctAll').prop('checked', false);
+    }else {
+      $('#pvctAll').prop('checked', true);
+    }
+  })
+
+  /* 返回提交方法 产品变体数据  */
+  const submitVariantsHandle = () => {
+    const variants = [...$('.pvct_row')];
+    variants.forEach((item, index) => {
+      const checked = $(item).children('.pvct_all').children('input')[0].checked;
+      const option1 = $(item).children('.pvct_select').children('select[name=size]').val();
+      const option2 = $(item).children('.pvct_select').children('select[name=style]').val();
+      const price = $(item).children('.pvct_input').children('input[name=price]').val();
+      const params = {checked, option1, option2, price};
+      for(let key in params){
+        data.variants[index][key] = params[key];
+      }
+    })
+    return data.variants;
+  }
+  return submitVariantsHandle;
+}
+
+/* 监听全选按钮 */
+$('#pvctAll').on('click', (event) => {
+  const state = event.target.checked;
+  if(state){
+    $('.pvct_row input[type=checkbox]').prop('checked', true);
+  }else {
+    $('.pvct_row input[type=checkbox]').prop('checked', false);
+  }
+})
+
+/* 监听编辑价格按钮 */
+$('.pvch_price').on('click', () => setInputReadonly('price'));
+/* 监听编辑利润按钮 */
+$('.pvch_profit').on('click', () => setInputReadonly('profit'));
+/* 监听编辑利润率按钮 */
+$('.pvch_profit_margin').on('click', () => setInputReadonly('profitMargin'));
+/* 设置只读状态 */
+function setInputReadonly(type){
+  const state = $(`.pvc_table input[name=${type}]`).prop('readonly');
+  $(`.pvc_table input[name=${type}]`).prop('readonly', !state);
+}
+
+/* 渲染模板 */
+function renderProductVariants(list, size = [], style = []){
+  let template = '';
+  const sizeTemplate = renderVariantsOption(size);
+  const styleTemplate = renderVariantsOption(style);
+
+  /* 计算利润/利润率 */
+  function computeProfit(item, type){
+    if(item.price && item.cost){
+      return {
+        profit: Number(item.price - item.cost).toFixed(2),
+        profitMargin: Number((item.price - item.cost) / item.price * 100).toFixed(2)
+      }
+    }
+    return { profit: '-', profitMargin: '-' };
+  };
+
+  list.forEach((item, index) => {
+    const {profit, profitMargin} = computeProfit(item);
+    template += `
+    <div class="pvct_row alifont" >
+      <div class="pvct_all pvctr_radio">
+        <input class="radio_box_style" type="checkbox"/>
+      </div>
+      <div class="pvct_select">
+        <select name="size">
+          ${sizeTemplate}
+        </select>
+      </div>
+      <div class="pvct_select">
+        <select name="style">
+          ${styleTemplate}
+        </select>
+      </div>
+      <div class="pvct_input">
+        <span class="pvct_symbol pvct_symbol_before">$</span>
+        <input class="pvct_input_symbol_before" type="text" readonly name="price" value="${item.price}" />
+      </div>
+      <div class="pvct_input">
+        <span class="pvct_symbol pvct_symbol_before">$</span>
+        <input class="pvct_input_symbol_before" readonly type="text" name="profit" value="${profit}" />
+      </div>
+      <div class="pvct_input">
+        <span class="pvct_symbol pvct_symbol_after">%</span>
+        <input class="pvct_input_symbol_after" readonly type="text" name="profitMargin" value="${profitMargin}"/>
+      </div>
+    </div>
+    `
+  })
+  return template;
+};
+
+/* 渲染下拉框配置项 */
+function renderVariantsOption(data){
+  let template = '';
+  data.forEach(item => {
+    template += `
+    <option value ="${item}">${item}</option>
+    `
+  })
+  return template;
+}
+</script>

@@ -113,6 +113,7 @@
   background: rgba(246,246,249,0.5);
   height: 120px;
   border-radius: 4px;
+  width: 30px;
 }
 .ssclib_top{
   height: 50px;
@@ -232,15 +233,33 @@ $('.ssc_list_container').on('click', (event) => {
     const handleObject = {
       /* 修改店铺 */
       'rename': () => {
-        const configPopup = { title: 'Edit', confirmText: 'Save', onConfirm: editShopName };
-        openPopup(configPopup);
+        // 打开弹窗 openPopup 为 popup-component组件内部方法
+        openPopup({ 
+          title: 'Edit',
+          confirmText: 'Save',
+          onConfirm: editShopName
+        });
       },
       /* 链接店铺 */
-      'connect': () => location.href = `/pages/my-store-connect?id=${id}`,
+      'connected': () => {
+        location.href = `/pages/my-store-connect?id=${id}`
+      },
+      /* 断开链接 */
+      'disconnect': () => {
+        const shopurl = event.target.dataset.shopurl;
+        // 打开对话框 openDialog 为 dialog-component组件内部方法
+        openDialog({
+          content: 'Are you sure to cancel the store connection?',
+          onConfirm: () => disconnectShop(shopurl)
+        });
+      },
       /* 删除店铺 */
-      'delete': async () => {
-        const res = await window.confirm('确定删除吗？');
-        res && deleteShop();
+      'delete': () => {
+        // 打开对话框 openDialog 为 dialog-component组件内部方法
+        openDialog({
+          content: 'Are you sure you want to delete the store?',
+          onConfirm: deleteShop
+        });
       }
     }
     handleObject[type] && handleObject[type]();
@@ -287,25 +306,47 @@ async function getShopList(){
 
 /* 修改店铺名称 */
 async function editShopName({ shopName }){
-  const URL = `${DOMAIN}/mademine/shop/edit`;
-  const result = await fetch(URL, {
-    method: 'POST',
-    body: JSON.stringify({ id, shopName }),
-    headers: { 'content-type': 'application/json' }
-  }).then(res => res.json());
-  initShopList();
+  _sunzi_loading(); // loading
+  try{
+    const URL = `${DOMAIN}/mademine/shop/edit`;
+    const result = await fetch(URL, {
+      method: 'POST',
+      body: JSON.stringify({ id, shopName }),
+      headers: { 'content-type': 'application/json' }
+    }).then(res => res.json());
+    initShopList();
+  }catch{
+    _sunzi_hide_loading(); // 关闭loading
+  }
 };
 
 /* 删除店铺 */
 async function deleteShop(){
-  const URL = `${DOMAIN}/mademine/shop/delete`;
-  const result = await fetch(URL, {
-    method: 'POST', 
-    body: JSON.stringify({id}),
-    headers: { 'content-type': 'application/json' }
-  }).then(res => res.json());
-  initShopList();
+  _sunzi_loading(); // loading
+  try{
+    const URL = `${DOMAIN}/mademine/shop/delete`;
+    const result = await fetch(URL, {
+      method: 'POST',
+      body: JSON.stringify({id}),
+      headers: { 'content-type': 'application/json' }
+    }).then(res => res.json());
+    initShopList();
+  }catch{
+    _sunzi_hide_loading(); // 关闭loading
+  }
 };
+
+/* 店铺断开连接 */
+async function disconnectShop(shopurl){
+  _sunzi_loading(); // loading
+  try{
+    const URL = `${DOMAIN}/mademine/user/disconnect?domain=${shopurl}`;
+    await fetch(URL, {method: 'GET'}).then(res => res.json());
+    initShopList();
+  }catch{
+    _sunzi_hide_loading(); // 关闭loading
+  }
+}
 
 /* 渲染店铺列表 */
 function renderShopList(shopList){
@@ -332,7 +373,7 @@ function renderTemplate(shopList){
         <img class="sscli_operate" src="{{ 'operate.svg' | asset_url }}" alt="operate" data-id="${item.id}">
         <ul class="ssclio_ul alifont">
           <li class="ssclio_li" data-type="rename">Rename</li>
-          <li class="ssclio_li" data-type="connect">${item.state === 1 ? 'Disconnect' : 'Connected'}</li>
+          <li class="ssclio_li" data-type="${item.state === 1 ? 'disconnect' : 'connected'}" data-shopurl="${item.shopUrl}">${item.state === 1 ? 'Disconnect' : 'Connected'}</li>
           <li class="ssclio_li" data-type="delete">Delete</li>
         </ul>
       </div>

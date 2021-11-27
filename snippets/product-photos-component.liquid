@@ -1,0 +1,93 @@
+{% comment %} 
+** @name  产品图片组件**
+** @author 陈健辉 **
+** @update 2021-11-23
+{% endcomment %}
+
+<style>
+/* PC端样式 */
+.product_photos_component{
+  background: #fff;
+  padding: 25px 0 17.5px;
+  margin: 0 auto;
+  border-radius: 12px;
+  color: #222;
+}
+.ppc_header{
+  font-size: 22px;
+  line-height: 30px;
+  margin-bottom: 7.5px;
+  padding: 0 25px;
+}
+.ppc_img_list{
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 17.5px;
+}
+.ppcil_item{
+  width: 145px;
+  height: 145px;
+  position: relative;
+  padding: 7.5px;
+}
+.ppcili_checkbox {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+}
+.ppcili_image{
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  border: 1px solid rgba(34,34,34,0.16);
+}
+.ppcili_checkbox:checked + .ppcili_image{
+  border: 2px solid #F9423A;
+}
+</style>
+
+<div class="product_photos_component mm_pc_container">
+  {% comment %} 头部 {% endcomment %}
+  <div class="ppc_header alifont_bold">Photos</div>
+
+  {% comment %} 产品图片列表 {% endcomment %}
+  <div class="ppc_img_list"></div>
+</div>
+
+<script>
+/* 产品图片初始化方法 */
+function initProductPhotos(photosList){
+  /* 映射新数组 */
+  const list = photosList.map(item => ({src: item.src, checked: false}));
+  const template = renderProductPhotos(list);
+  $('.ppc_img_list').html(template);
+
+  /* 监听单选框点击事件 */
+  $('.ppc_img_list').on('click', (event) => {
+    if(event.target.className.includes('ppcili_checkbox')){
+      const index = event.target.dataset.index;
+      list[index].checked = !list[index].checked;
+    }
+  });
+
+  /* 返回提交方法 过滤出已选中的图片返回 */
+  const submitPhotosHandle = (item) => list.filter(item => item.checked).map(item => item.src);
+  return submitPhotosHandle;
+}
+
+/* 渲染模板方法 */
+function renderProductPhotos(photosList){
+  let template = '';
+  photosList.forEach((item, index) => {
+    template += `
+      <div class="ppcil_item">
+        <input class="ppcili_checkbox radio_box_style" type="checkbox" data-index="${index}" />
+        <div class="ppcili_image" style="background-image: url(${item.src})"></div>
+      </div>
+    `
+  });
+  return template;
+};
+</script>
