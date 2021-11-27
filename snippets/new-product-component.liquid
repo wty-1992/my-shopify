@@ -30,7 +30,8 @@
   padding: 10px;
 }
 .npcl_item img{
-  height: 120px;
+  width: 100%;
+  height: 100%;
 }
 .npcl_new{
   padding-top: 10px;
@@ -56,7 +57,7 @@
         {% comment %} 产品图片 {% endcomment %}
         <div class="npcl_img">
           {% if item.featured_image %}
-            {{ item.featured_image | image_url: width: 300 | image_tag }}
+            {{ item.featured_image | image_url: width: 300, height: 300 | image_tag }}
           {% endif %}
         </div>
         {% comment %} 产品信息 {% endcomment %}
