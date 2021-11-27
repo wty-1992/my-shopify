@@ -1,0 +1,104 @@
+{% comment %} 
+** @name  产品说明组件**
+** @author 陈健辉 **
+** @update 2021-11-24
+{% endcomment %}
+
+<style>
+/* PC端样式 */
+.product_description_component{
+  padding: 25px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 12px;
+  color: #222;
+}
+/* 头部 */
+.pdc_header{
+  font-size: 22px;
+  line-height: 30px;
+  margin-bottom: 15px;
+}
+/* 模块 */
+.pdc_module{
+  margin-bottom: 15px;
+}
+/* 标题模块 */
+.pdc_module:last-child{
+  margin-bottom: 0;
+}
+.pdc_title{
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 4px;
+}
+.pdc_input{
+  border: 1px solid rgba(34,34,34,0.16);
+  border-radius: 4px;
+  background: #fff;
+  line-height: 22px;
+  padding: 8px 15px;
+}
+.pdc_input:focus{
+  border: 1px solid #F9423A;
+  caret-color: #F9423A;
+}
+/* 富文本编辑器模块 */
+.pdc_select_box{
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.pdc_select_box > span{
+  font-size: 14px;
+  line-height: 22px;
+  color: #222;
+  margin: 0;
+  margin-left: 10px;
+}
+</style>
+
+<div class="product_description_component mm_pc_container alifont">
+  {% comment %} 头部 {% endcomment %}
+  <div class="pdc_header alifont_bold">Product description</div>
+
+  {% comment %} 标题模块 {% endcomment %}
+  <div class="pdc_module">
+    <div class="pdc_title alifont_bold">Title</div>
+    <input class="pdc_input" type="text" placeholder="Attantion Surprise">
+  </div>
+
+  {% comment %} 富文本编辑器模块 {% endcomment %}
+  <div class="pdc_module">
+    <div class="pdc_title alifont_bold">Description</div>
+    <div>富文本编辑器</div>
+    <div class="pdc_select_box">
+      <input class="radio_box_style" type="checkbox"/>
+      <span class="alifont" for="">Add size table to description</span>
+    </div>
+  </div>
+
+  {% comment %} 标签模块 {% endcomment %}
+  <div class="pdc_module">
+    <div class="pdc_title alifont_bold">Tags</div>
+    {% render 'input-select-component', id: 'pdcTags', placeholder: 'Tags...' %}
+  </div>
+</div>
+
+<script>
+/* 产品说明初始化方法 */
+function initProductDescription(data){
+  $('.pdc_input').val(data.title);
+  const getTagsHandle = initInputSelect('#pdcTags', data.tags);
+
+  /* 返回提交方法 返回产品说明信息 */
+  const submitDescriptionHandle = () => {
+    return {
+      title: $('.pdc_input').val(),
+      tags: getTagsHandle()
+    }
+  }
+  return submitDescriptionHandle;
+};
+</script>

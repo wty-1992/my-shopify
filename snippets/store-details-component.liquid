@@ -1,0 +1,120 @@
+{% comment %} 
+** @name  店铺说明组件**
+** @author 陈健辉 **
+** @update 2021-11-25
+{% endcomment %}
+
+<style>
+/* PC端样式 */
+.store_details_component{
+  padding: 25px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 12px;
+  color: #222;
+}
+/* 头部 */
+.sdc_header{
+  font-size: 22px;
+  line-height: 30px;
+  margin-bottom: 15px;
+}
+/* 模块 */
+.sdc_module{
+  margin-bottom: 20px;
+}
+.sdc_module:last-child{
+  margin-bottom: 0;
+}
+.sdc_select_box{
+  display: flex;
+  align-items: center;
+  margin: 10px 0 0 10px;
+}
+.sdc_select_box > span{
+  font-size: 14px;
+  line-height: 22px;
+  color: #222;
+  margin: 0;
+  margin-left: 10px;
+}
+.sdcm_isc{
+  margin-top: 10px;
+}
+</style>
+
+<div class="store_details_component mm_pc_container alifont">
+  {% comment %} 头部 {% endcomment %}
+  <div class="sdc_header alifont_bold">Store details</div>
+
+  {% comment %} 模块 {% endcomment %}
+  <div class="sdc_module">
+    <div class="sdc_title alifont_bold">Publishing</div>
+    <div class="sdc_select_box">
+      <input class="radio_box_style" name="publish" type="checkbox"/>
+      <span class="alifont" for="">Publish product to your Shopify store</span>
+    </div>
+  </div>
+
+  {% comment %} 模块 {% endcomment %}
+  <div class="sdc_module">
+    <div class="sdc_title alifont_bold">Product details to sync with your Shopify store</div>
+    <div class="sdc_select_box">
+      <input class="radio_box_style" name="name" type="checkbox"/>
+      <span class="alifont" for="">Product title</span>
+    </div>
+    <div class="sdc_select_box">
+      <input class="radio_box_style" name="bodyHtml" type="checkbox"/>
+      <span class="alifont" for="">Description</span>
+    </div>
+    <div class="sdc_select_box">
+      <input class="radio_box_style" name="images" type="checkbox"/>
+      <span class="alifont" for="">Photos</span>
+    </div>
+    <div class="sdc_select_box">
+      <input class="radio_box_style" name="variants" type="checkbox"/>
+      <span class="alifont" for="">Colors, Sizes, Prices</span>
+    </div>
+    <div class="sdc_select_box">
+      <input class="radio_box_style" name="tags" type="checkbox"/>
+      <span class="alifont" for="">Tags</span>
+    </div>
+    <div class="sdc_select_box">
+      <input class="radio_box_style" name="tools" disabled type="checkbox"/>
+      <span class="alifont" for="">Customize tools（即将推出）</span>
+    </div>
+  </div>
+
+  {% comment %} 模块 {% endcomment %}
+  <div class="sdc_module">
+    <div class="sdc_title alifont_bold">Shopify collections</div>
+    <div class="sdcm_isc">{% render 'input-select-component', id: "sdcTags", placeholder: 'Select one or multiple collections to publish your product' %}</div>
+  </div>
+</div>
+
+<script>
+/* 店铺信息初始化方法 */
+function initStoreDetails(data){
+  const getTags = initInputSelect('#sdcTags', data.collections || []);
+  const inputArr = $('.sdc_select_box')
+  inputArr.children('input[name=publish]').prop('checked', !!data.isPublish);
+  for(let key in data.params){
+    inputArr.children(`input[name=${key}]`).prop('checked', data.params[key]);
+  }
+
+  /* 返回提交方法 */
+  const submitStoreHandle = () => {
+    const isPublish = inputArr.children('input[name=publish]').prop('checked');
+    const params = {};
+    for(let key in data.params){
+      params[key] = inputArr.children(`input[name=${key}]`).prop('checked');
+    }
+    return {
+      collections: getTags(),
+      isPublish: isPublish ? 1 : 0,
+      params
+    }
+  }
+  return submitStoreHandle;
+}
+</script>
