@@ -1,0 +1,236 @@
+{% comment %} 
+** @name 店铺表格组件**
+** @author 陈健辉 **
+** @update 2021-11-29
+{% endcomment %}
+
+<style>
+/* PC端样式 */
+.store_table_component{
+  margin: 0 auto;
+}
+/* 表格模块 */
+.stc_table{
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+}
+.stct_header,
+.stct_row{
+  display: table-row;
+  background: #F6F6F9;
+  color: #928FA5;
+  font-size: 16px;
+  line-height: 24px;
+}
+.stct_header{
+  text-transform: Uppercase;
+}
+.stct_right{
+  text-align: right;
+}
+/* 表行 */
+.stct_row{
+  background: #fff;
+  border-bottom: 1px solid rgba(34,34,34,0.16);
+  color: #222;
+}
+.stct_cell{
+  display: table-cell;
+  padding: 1rem;
+  vertical-align: middle;
+}
+.stct_current_store{
+  margin-left: 25px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.stct_store_name{
+  transform: translateY(5px);
+}
+.stct_store_name div{
+  display: table-cell;
+  vertical-align: middle;
+  height: 34px;
+}
+.stct_store_name div svg{
+  width: 34px !important;
+  height: 34px !important;
+}
+.stct_edit{
+  text-align: right;
+}
+.stct_edit img{
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+}
+.stct_edit div{
+  display: table-cell;
+  cursor: pointer;
+}
+.stct_edit div img,
+.stct_edit div span{
+  pointer-events: none;
+}
+.stct_connect{
+  background: #0EBA9A;
+  color: #fff;
+  padding-right: 8px;
+  border-radius: 4px;
+  width: 128px;
+  text-align: center;
+}
+.stct_connect.disconnect{
+  background: #F6F6F9;
+  color: #222;
+  padding-right: 6px;
+}
+.stct_connect span{
+  vertical-align: middle;
+}
+.stct_rename{
+  padding: 0 15px;
+}
+</style>
+
+<div class="store_table_component mm_pc_container">
+  {% comment %} 表格模块 {% endcomment %}
+  <div class="stc_table">
+    {% comment %} 表头 {% endcomment %}
+    <div class="stct_header alifont_bold">
+      <div class="stct_cell" style="width: 80px;">Current store</div>
+      <div class="stct_cell" style="width: 150px;">Store name</div>
+      <div class="stct_cell" style="width: 100px;">orders</div>
+      <div class="stct_cell" style="width: 100px;">products</div>
+      <div class="stct_cell stct_right" style="width: 150px;">edit</div>
+    </div>
+
+    {% comment %} 表行 {% endcomment %}
+  </div>
+</div>
+
+<script>
+/* 修改店铺名称 */
+async function editShopName({ shopName, id }){
+  _sunzi_loading(); // loading
+  try{
+    const URL = `${DOMAIN}/mademine/shop/edit`;
+    const result = await fetch(URL, {
+      method: 'POST',
+      body: JSON.stringify({ id, shopName }),
+      headers: { 'content-type': 'application/json' }
+    }).then(res => res.json());
+    reacquireData(); // 重置数据 reacquireData 为 my-store-list父级内部方法
+  }catch{
+    _sunzi_hide_loading(); // 关闭loading
+  }
+};
+
+/* 删除店铺 */
+async function deleteShop(id){
+  _sunzi_loading(); // loading
+  try{
+    const URL = `${DOMAIN}/mademine/shop/delete`;
+    const result = await fetch(URL, {
+      method: 'POST',
+      body: JSON.stringify({id}),
+      headers: { 'content-type': 'application/json' }
+    }).then(res => res.json());
+    reacquireData(1); // 重置数据 reacquireData 为 my-store-list父级内部方法
+  }catch{
+    _sunzi_hide_loading(); // 关闭loading
+  }
+};
+
+/* 店铺断开连接 */
+async function disconnectShop(shopurl){
+  _sunzi_loading(); // loading
+  try{
+    const URL = `${DOMAIN}/mademine/user/disconnect?domain=${shopurl}`;
+    await fetch(URL, {method: 'GET'}).then(res => res.json());
+    reacquireData(); // 重置数据 reacquireData 为 my-store-list父级内部方法
+  }catch{
+    _sunzi_hide_loading(); // 关闭loading
+  }
+}
+
+/* 初始化店铺列表 */
+function initStoreTable(list){
+  const template = renderTemplate(list);
+  /* 删除上一次渲染的元素后重新渲染 */
+  $('.stct_row').remove();
+  $('.stc_table').append(template);
+
+  /* 监听按钮点击事件 */
+  $('.stct_edit').on('click', (event) => {
+    const id = event.currentTarget.dataset.id;
+    const type = event.target.dataset.type;
+    const handleObject = {
+      /* 修改店铺 */
+      'rename': () => {
+        // 打开弹窗 openPopup 为 popup-component组件内部方法
+        openPopup({ 
+          title: 'Edit',
+          confirmText: 'Save',
+          onConfirm: ({shopName}) => editShopName({shopName, id})
+        });
+      },
+      /* 链接店铺 */
+      'connected': () => {
+        location.href = `/pages/my-store-connect?id=${id}`
+      },
+      /* 断开链接 */
+      'disconnect': () => {
+        const shopurl = event.target.dataset.shopurl;
+        // 打开对话框 openDialog 为 dialog-component组件内部方法
+        openDialog({
+          content: 'Are you sure to cancel the store connection?',
+          onConfirm: () => disconnectShop(shopurl)
+        });
+      },
+      /* 删除店铺 */
+      'delete': () => {
+        // 打开对话框 openDialog 为 dialog-component组件内部方法
+        openDialog({
+          content: 'Are you sure you want to delete the store?',
+          onConfirm: () => deleteShop(id)
+        });
+      }
+    }
+    handleObject[type] && handleObject[type]();
+  })
+
+  /* 渲染模板 */
+  function renderTemplate(list){
+    let template = '';
+    list.forEach(item => {
+      let state = item.state === 1; // 是否已链接店铺
+      template += `
+      <div class="stct_row alifont_bold" >
+        <div class="stct_cell">
+          <input class="stct_current_store radio_circular_style" name="currentStore" type="radio"/>
+        </div>
+        <div class="stct_store_name stct_cell alifont">
+          <div style="display: ${ state ? 'tbale-cell':'none' };">{% render 'icon-connect-store' %}</div>
+          <div style="display: ${ item.state === 0 ? 'tbale-cell':'none' }">{% render 'icon-not-connect-store' %}</div>
+          <div style="padding: 0 0 6px 10px;">${item.shopName}</div>
+        </div>
+        <div class="stct_cell">${item.orderCount}</div>
+        <div class="stct_cell">${item.productCount}</div>
+        <div class="stct_edit stct_cell" data-id="${item.id}">
+          <div class="stct_btn stct_connect ${state ? 'disconnect':''}" data-type="${state ? 'disconnect' : 'connected'}" data-shopurl="${item.shopUrl}">
+            <img style="display: ${ state ? 'tbale-cell':'none' };" src="{{ 'icon-onconnected.svg' | asset_url }}">
+            <img style="display: ${ item.state === 0 ? 'tbale-cell':'none' }" src="{{ 'icon-connected.svg' | asset_url }}">
+            <span>${state ? 'Disconnect':'Connect'}</span>
+          </div>
+          <div class="stct_btn stct_rename" data-type="rename"><img src="{{ 'icon-rename.svg' | asset_url }}"></div>
+          <div class="stct_btn stct_delete" data-type="delete"><img src="{{ 'icon-delete.svg' | asset_url }}"></div>
+        </div>
+      </div>
+      `
+    })
+    return template;
+  }
+};
+</script>

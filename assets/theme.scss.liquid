@@ -1210,7 +1210,7 @@ html {
 }
 
 {% comment %}
-* 单选框样式 *
+* 选框样式 方块 *
 {% endcomment %}
 .radio_box_style{
   cursor: pointer;
@@ -1246,4 +1246,36 @@ html {
   background: rgba(34,34,34,0.12);
   border: none;
   cursor: not-allowed;
+}
+
+{% comment %}
+* 单选框样式 圆形 *
+{% endcomment %}
+.radio_circular_style{
+  width: 20px;
+  height: 20px;
+  appearance: none;
+  position: relative;
+  outline: none;
+  border-radius: 50%;
+  border: 2px solid rgba(34,34,34,0.28);
+  background: #fff;
+}
+.radio_circular_style::after{
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  border-radius: 50%;
+}
+{% comment %} 选中状态 {% endcomment %}
+.radio_circular_style:checked{
+  border-color: #F9423A;
+}
+.radio_circular_style:checked::after{
+  background: #F9423A;
 }
