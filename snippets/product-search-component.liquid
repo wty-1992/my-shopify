@@ -12,38 +12,7 @@
 }
 /* 选项卡 */
 .psc_tabs{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: 25px 0;
-}
-.psct_left{
-  display: flex;
-  font-size: 22px;
-  line-height: 56px;
-}
-.psctl_tab{
-  position: relative;
-  margin-right: 30px;
-  cursor: pointer;
-}
-.psctl_tab.current{
-  color: #F9423A;
-  font-weight: 700;
-}
-.psctl_tab.current::after{
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: calc(50% - 15px);
-  width: 30px;
-  border-top: 4px solid #F9423A;
-  border-radius: 4px;
-}
-.psctr_btn{
-  padding: 15px 20px;
-  margin-left: 0;
-  cursor: pointer;
 }
 /* 搜索栏 */
 .psc_search_tabs{
@@ -123,15 +92,7 @@
 
 <div class="product_search_component mm_pc_container">
   {% comment %} 选项卡 {% endcomment %}
-  <div class="psc_tabs">
-    <div class="psct_left">
-      <div class="psctl_tab current" data-type="myProduct">My product</div>
-      <div class="psctl_tab" data-type="externalProduct">External products</div>
-    </div>
-    <div class="psct_right">
-      <span class="psctr_btn mm-btn mm-btn-primary alifont_bold mm-register-btn">Add products</span>
-    </div>
-  </div>
+  <div class="psc_tabs">{% render 'tabs-component' %}</div>
 
   {% comment %} 搜索栏 {% endcomment %}
   <div class="psc_search_tabs">
@@ -170,21 +131,21 @@
 </div>
 
 <script>
-/* 监听产品tab点击事件 */
-let productCurrentTab = 'myProduct'; // 当前选中项
-$('.psctl_tab').on('click', (event) => {
-  const type = event.target.dataset.type;
-  if(type === productCurrentTab) return; // 点击自身无效
-  $('.psctl_tab').removeClass('current');
-  $(event.target).addClass('current');
-  /* 是否显示搜索模块 */
-  if(type !== 'myProduct'){
-    $('.psc_search_tabs').hide();
-  }else {
-    $('.psc_search_tabs').show();
+/* 初始化选项卡组件 initTabsComponent 为 tabs-component组件内部方法 */
+initTabsComponent({
+  data: ['My product', 'External products'],
+  buttonGroup: [{text: 'Add products', onClick: () => {
+    console.log('添加产品')
+  }}],
+  onChange: (current) => {
+    if(+current !== 0){
+      $('.psc_search_tabs').hide();
+    } else {
+      $('.psc_search_tabs').show();
+    }
+    /* 请求数据 */
   }
-  productCurrentTab = type;
-});
+})
 
 /* 监听查询tab点击事件 */
 let queryCurrentTab = 'all'; // 当前选中项

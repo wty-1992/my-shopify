@@ -1,0 +1,110 @@
+{% comment %} 
+** @name 订单表格组件**
+** @author 陈健辉 **
+** @update 2021-11-29
+{% endcomment %}
+
+<style>
+/* PC端样式 */
+.order_table_component{
+  margin: 0 auto;
+}
+/* 表格模块 */
+.otc_table{
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+}
+.otct_header,
+.otct_row{
+  display: table-row;
+  background: #F6F6F9;
+  color: #928FA5;
+  font-size: 16px;
+  line-height: 24px;
+}
+.otct_header{
+  text-transform: Uppercase;
+}
+.otct_cell{
+  display: table-cell;
+  padding: 1rem;
+  vertical-align: middle;
+  font-size: 16px;
+}
+/* 表行 */
+.otct_row{
+  background: #fff;
+  border-bottom: 1px solid rgba(34,34,34,0.16);
+  color: #222;
+  cursor: pointer;
+}
+.otct_row .otct_cell{
+  font-size: 14px;
+}
+.otctc_icon{
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  background-size: 100%;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+.otctc_status{
+  text-transform: capitalize;
+}
+</style>
+
+<div class="order_table_component mm_pc_container">
+  {% comment %} 表格模块 {% endcomment %}
+  <div class="otc_table">
+    {% comment %} 表头 {% endcomment %}
+    <div class="otct_header alifont_bold">
+      <div class="otct_cell" style="width: 100px;">Order no.</div>
+      <div class="otct_cell" style="width: 100px;">date</div>
+      <div class="otct_cell" style="width: 100px;">Payment Status</div>
+      <div class="otct_cell" style="width: 100px;">Shipping Status</div>
+      <div class="otct_cell" style="width: 100px; text-align: right;">Total</div>
+    </div>
+
+    {% comment %} 表行 {% endcomment %}
+  </div>
+</div>
+
+<script>
+/* 类型图标 */
+const ICONOBJ = {
+  'paid': '//cdn.shopify.com/s/files/1/0372/6897/9848/t/32/assets/paid.svg',
+  'failed': '//cdn.shopify.com/s/files/1/0372/6897/9848/t/32/assets/failed.svg',
+  'pending': '//cdn.shopify.com/s/files/1/0372/6897/9848/t/32/assets/to-be-paid.svg',
+  'refunded': '//cdn.shopify.com/s/files/1/0372/6897/9848/t/32/assets/refunded.svg'
+}
+
+/* 初始化订单列表 */
+function initOrderTable(data){
+  const template = renderOrderList(data);
+  /* 删除上次渲染的元素 */
+  $('.otct_row').remove();
+  $('.otc_table').append(template);
+
+  /* 渲染订单列表 */
+  function renderOrderList(data){
+    let template = '';
+    data.forEach(item => {
+      template += `
+        <div class="otct_row alifont">
+          <div class="otct_cell">${item.name}</div>
+          <div class="otct_cell">${new Date(item.createdAt).toDateString()}</div>
+          <div class="otct_cell">
+            <span class="otctc_icon" style="background-image: url('${ICONOBJ[item.financialStatus]}')"></span>
+            <span class="otctc_status">${item.financialStatus}</span>
+          </div>
+          <div class="otct_cell">${item.fulfillmentStatus}</div>
+          <div class="otct_cell alifont_bold" style="text-align: right;">$ ${item.totalPrice}</div>
+        </div>
+      `;
+    })
+    return template;
+  }
+};
+</script>

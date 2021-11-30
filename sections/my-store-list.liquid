@@ -10,17 +10,6 @@
   background: #fff;
   color: #222;
 }
-/* 头部 */
-.msl_header{
-  font-size: 32px;
-  line-height: 78px;
-  padding: 25px;
-  background: #F6F6F9;
-}
-.mslh_box{
-  text-align: center;
-  margin: 0 auto;
-}
 /* 添加按钮 */
 .msl_add_btn{
   margin: 0 auto;
@@ -50,9 +39,7 @@
 {% comment %} 我的店铺列表 {% endcomment %}
 <div class="my_store_list mm-header-height alifont">
   {% comment %} 头部 {% endcomment %}
-  <div class="msl_header alifont_bold">
-    <div class="mslh_box mm_pc_container">My store</div>
-  </div>
+  {% render 'simple-header-component', content: 'My store' %}
 
   {% comment %} 添加按钮 {% endcomment %}
   <div class="msl_add_btn mm_pc_container">
