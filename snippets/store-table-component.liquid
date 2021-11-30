@@ -40,10 +40,13 @@
   padding: 1rem;
   vertical-align: middle;
 }
+.stct_onclick{
+  cursor: pointer;
+  margin: 0;
+}
 .stct_current_store{
   margin-left: 25px;
   vertical-align: middle;
-  cursor: pointer;
 }
 .stct_store_name{
   transform: translateY(5px);
@@ -143,6 +146,24 @@ async function deleteShop(id){
   }
 };
 
+/* 创建店铺 */
+async function switchShop(id){
+  _sunzi_loading(); // loading
+  try{
+    const URL = `${DOMAIN}/mademine/shop/setCurrent`;
+    const result = await fetch(URL, {
+      method: 'POST',
+      body: JSON.stringify({ id }),
+      headers: { 'content-type': 'application/json' }
+    }).then(res => res.json());
+    /* 切换成功，请求店铺列表 */
+    reacquireData();
+  }catch(err){
+    console.log(err);
+  };
+  _sunzi_hide_loading(); // 关闭loading
+}
+
 /* 店铺断开连接 */
 async function disconnectShop(shopurl){
   _sunzi_loading(); // loading
@@ -201,6 +222,16 @@ function initStoreTable(list){
     handleObject[type] && handleObject[type]();
   })
 
+  /* 监听切换当前店铺单选框 */
+  $('.stct_onclick').on('click', (event) => {
+    const id = event.target.dataset.id;
+    /* 打开对话框 */
+    openDialog({
+      content: 'Are you sure to switch stores?',
+      onConfirm: () => switchShop(id)
+    })
+  })
+
   /* 渲染模板 */
   function renderTemplate(list){
     let template = '';
@@ -208,8 +239,10 @@ function initStoreTable(list){
       let state = item.state === 1; // 是否已链接店铺
       template += `
       <div class="stct_row alifont_bold" >
-        <div class="stct_cell">
-          <input class="stct_current_store radio_circular_style" name="currentStore" type="radio"/>
+        <div class="stct_radio stct_cell">
+          <label class="stct_onclick" data-id="${item.id}">
+            <input class="stct_current_store radio_circular_style" name="currentStore" type="radio" disabled ${item.isCurrent ? 'checked':''} />
+          </label>
         </div>
         <div class="stct_store_name stct_cell alifont">
           <div style="display: ${ state ? 'tbale-cell':'none' };">{% render 'icon-connect-store' %}</div>
