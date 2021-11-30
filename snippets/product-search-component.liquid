@@ -133,7 +133,7 @@
 <script>
 /* 初始化选项卡组件 initTabsComponent 为 tabs-component组件内部方法 */
 initTabsComponent({
-  data: ['My product', 'External products'],
+  data: [{ key: 'My product', value: 1 }, { key: 'External products', value: 2 }],
   buttonGroup: [{text: 'Add products', onClick: () => {
     console.log('添加产品')
   }}],
