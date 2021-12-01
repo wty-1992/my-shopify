@@ -1,0 +1,88 @@
+{% comment %} 
+** @name 订单列表页**
+** @author 陈健辉 **
+** @update 2021-11-29
+{% endcomment %}
+
+<style>
+/* PC端样式 */
+.my_order_list{
+  background: #fff;
+  color: #222;
+}
+/* 选项卡 */
+.mol_tabs{
+  padding: 25px 0;
+}
+.mol_pagination_component{
+  padding: 25px;
+}
+/* 隐藏底部footer */
+#shopify-section-footer{
+  display: none;
+}
+</style>
+
+<div class="my_order_list mm-header-height">
+  {% comment %} 头部 {% endcomment %}
+  {% render 'simple-header-component', content: 'My order' %}
+
+  {% comment %} 选项卡 {% endcomment %}
+  <div class="mol_tabs">{% render 'tabs-component' %}</div>
+
+  {% comment %} 订单表格列表 {% endcomment %}
+  {% render 'order-table-component' %}
+
+  {% comment %} 分页组件 {% endcomment %}
+  <div class="mol_pagination_component">{% render 'pagination_component' %}</div>
+</div>
+
+<script>
+let pageNum = 1, // 页码
+    pageSize = 10, // 页容量
+    pages = 1, // 总页数
+    orderType = 1; // 订单类型 1=Attention Surprise、2=Soufeel、3=Other store
+
+/* initTabsComponent 为 tabs-component组件内部方法 */
+initTabsComponent({
+  data: [{ key: 'Attention Surprise', value: 1 }, { key: 'Soufeel', value: 2 }, { key: 'Other store', value: 3 }],
+  onChange: (value) => {
+    orderType = value;
+    pageNum = 1;
+    getOrderList();
+  }
+});
+
+// 获取订单列表
+getOrderList();
+async function getOrderList(){
+  const id = getQueryVariable('id');
+  _sunzi_loading(); // loading
+  try{
+    const URL = `${DOMAIN}/mademine/order/list?shop_id=${id}&page=${pageNum}&pageSize=${pageSize}&type=${orderType}`;
+    const result = await fetch(URL, { method: 'GET' }).then(res => res.json());
+    _sunzi_hide_loading(); // 关闭loading
+    pages = Math.ceil(result.count / pageSize);
+    initListPagination(result.data);
+  }catch(err){
+    console.log(err);
+    _sunzi_hide_loading(); // 关闭loading
+  }
+};
+
+/* 初始化分页/订单列表 */
+function initListPagination(data){
+  /* initOrderTable 为 order-table-component组件内部方法 */
+  initOrderTable(data);
+  /* initPaginationComponent 为 pagination_component组件内部方法 */
+  initPaginationComponent({
+    current: pageNum,
+    pageSize,
+    pages,
+    onCurrent: (current) => {
+      pageNum = current;
+      getOrderList();
+    }
+  })
+}
+</script>

@@ -1,0 +1,133 @@
+{% comment %} 
+** @name 分页组件**
+** @author 陈健辉 **
+** @update 2021-11-29
+{% endcomment %}
+
+<style>
+/* PC端样式 */
+.pagination_component,
+.pc_page_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    user-select: none;
+    color: #222222;
+    font-size: 14px;
+}
+
+.pc_page_btn {
+    width: 34px;
+    height: 34px;
+    font-size: 30px;
+    line-height: 30px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.pc_page_btn.noClick {
+    cursor: not-allowed;
+    color: rgba(146,143,165,0.5);
+}
+
+.pcp_number {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    line-height: 28px;
+    border: 2px solid transparent;
+    border-radius: 4px;
+}
+
+.pcp_number:hover,
+.pcp_number.active {
+    border: 2px solid #222222;
+    font-weight: 700px;
+}
+</style>
+
+{% comment %} 分页组件 {% endcomment %}
+<div class="pagination_component alifont">
+  <div class="pc_page_btn pc_page_prev">&lsaquo;</div>
+  <div class="pc_page_container"></div>
+  <div class="pc_page_btn pc_page_next">&rsaquo;</div>
+</div>
+
+<script>
+// 初始化分页组件
+function initPaginationComponent(config) {
+  /*
+    * current: 页码
+    * pageSize: 页容量
+    * pages: 总页数
+    * pagerCount: 按钮数量
+    */
+  let { current = 1, pageSize = 10, pages = 1, pagerCount = 5, onCurrent = null } = config;
+
+  // 创建分页组件
+  const createPagination = () => {
+    const showPageNumber = []; // 要显示的按钮数组
+    // 总页数小于等于pagerCount
+    if (pages <= pagerCount) {
+      for (let i = 1; i <= pages; i++) {
+          showPageNumber.push(i);
+      }
+    } else {
+      let beforeNumber = current - Math.ceil((pagerCount - 2) / 2),
+        afterNumber = current + Math.ceil((pagerCount - 2) / 2);
+      if (current >= 1 && current < pagerCount - 1) {
+        beforeNumber = 1;
+        afterNumber = pagerCount;
+      } else if (current <= pages && current > pages - (pagerCount - 2)) {
+        beforeNumber = pages - (pagerCount - 1);
+        afterNumber = pages;
+      }
+      for (let i = beforeNumber; i <= afterNumber; i++) {
+        showPageNumber.push(i);
+      }
+    }
+    // 判断左右按钮是否可点击
+    $('.pc_page_btn').removeClass('noClick');
+    if (current === 1) {
+        $('.pc_page_prev').addClass('noClick');
+    }
+    if (current === pages) {
+        $('.pc_page_next').addClass('noClick');
+    }
+    // 渲染按钮
+    let template = '';
+    showPageNumber.forEach((num) => {
+      template += `
+      <div class="pcp_number ${current === num ? 'active':''}">${num}</div>
+      `
+    });
+    $('.pc_page_container').html(template);
+    // 点击数字按钮
+    const _pageNumbers = document.querySelectorAll(".pcp_number");
+    _pageNumbers.forEach((item) => {
+      item.addEventListener("click", () => {
+        // item.innerHTML为字符串 需要转为数字
+        current = parseInt(item.innerHTML);
+        createPagination();
+        onCurrent && onCurrent(current);
+      });
+    });
+  }
+  createPagination();
+  // 上一页
+  $('.pc_page_prev').on('click', () => {
+      if (current === 1) return;
+      current--;
+      createPagination();
+      onCurrent && onCurrent(current);
+  })
+  // 下一页
+  $('.pc_page_next').on('click', () => {
+      if (current === pages) return;
+      current++;
+      createPagination();
+      onCurrent && onCurrent(current);
+  })
+}
+</script>

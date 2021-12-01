@@ -1,0 +1,85 @@
+{% comment %} 
+** @name 我的店铺 > 店铺产品页面**
+** @author 陈健辉 **
+** @update 2021-11-27
+{% endcomment %}
+
+<style>
+/* PC端样式 */
+.my_store_my_products{
+  background: #F6F6F9;
+  color: #222;
+}
+/* 头部样式 */
+.msmp_header{
+  margin: 0 auto;
+  background: #F6F6F9;
+  border-radius: 4px;
+  padding: 0 25px 25px;
+  text-align: center;
+}
+.msmph_title{
+  font-size: 28px;
+  line-height: 48px;
+}
+.msmph_icon{
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #0EBA9A;
+}
+.msmphi_text{
+  margin-left: 10px;
+}
+/* 组件背景色 */
+.msmp_product_search,
+.msmp_product_list,
+.msmp_pagination_component{
+  background: #fff;
+}
+
+.msmp_pagination_component{
+  padding: 25px;
+}
+
+/* 隐藏底部footer */
+#shopify-section-footer{
+  display: none;
+}
+</style>
+
+{% comment %} 我的店铺 产品列表 {% endcomment %}
+<div class="my_store_my_products mm-header-height alifont">
+  {% comment %} 面包屑组件 {% endcomment %}
+  {% render 'breadcrumb-component' %}
+
+  {% comment %} 头部信息 {% endcomment %}
+  <div class="msmp_header">
+    <div class="msmph_title alifont_bold">Attention Surprise</div>
+    <div class="msmph_icon">
+      {% render 'icon-connect-store' %}
+      <span class="msmphi_text">Connected</span>
+    </div>
+  </div>
+
+  {% comment %} 产品列表搜索组件 {% endcomment %}
+  <div class="msmp_product_search">{% render 'product-search-component' %}</div>
+
+  {% comment %} 产品列表组件 {% endcomment %}
+  <div class="msmp_product_list">{% render 'product-list-component' %}</div>
+
+  {% comment %} 分页组件 {% endcomment %}
+  <div class="msmp_pagination_component">{% render 'pagination_component' %}</div>
+</div>
+
+<script>
+initBreadcrumb(['My store', 'Attention Surprise']); // 初始化面包屑 initBreadcrumb 为 breadcrumb-component组件内部方法
+
+initPaginationComponent({
+  current: 1,
+  pageSize: 5,
+  pages: Math.ceil(100 / 5),
+  onCurrent: null
+})
+</script>

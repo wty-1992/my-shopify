@@ -1,0 +1,107 @@
+{% comment %} 
+** @name 产品列表组件**
+** @author 陈健辉 **
+** @update 2021-11-27
+{% endcomment %}
+
+<style>
+/* PC端样式 */
+.product_list_component{
+  margin: 0 auto;
+  padding: 0 25px;
+}
+/* 列表项 */
+.plc_item{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px;
+  border-bottom: 1px solid #F6F6F9;
+}
+.plc_item:first-child{
+  border-top: 1px solid #F6F6F9;
+}
+/* 左侧模块 */
+.plci_left{
+  display: flex;
+  align-items: center;
+}
+.plcil_radio{
+  margin-right: 25px;
+}
+.plcil_img img{
+  width: 120px;
+  height: 120px;
+  margin-right: 10px;
+}
+.plcil_title_price{
+  max-width: 300px;
+  align-self: start;
+}
+.plcil_price{
+  margin-top: 10px;
+  font-size: 14px;
+}
+/* 右侧模块 */
+.plci_right{
+  display: flex;
+  align-items: center;
+}
+.plci_right .mm-btn{
+  margin-left: 0;
+}
+.plci_right .plci_btn{
+  cursor: pointer;
+}
+.plci_see_store,
+.plci_edit_listing{
+  background: #fff;
+  border-color: rgba(34,34,34,.08);
+}
+.plci_see_store:hover,
+.plci_edit_listing:hover{
+  color: #222;
+}
+.plci_right span{
+  margin-right: 15px;
+}
+</style>
+
+<div class="product_list_component mm_pc_container">
+  {% comment %} 列表项 {% endcomment %}
+  <div class="plc_item">
+    <div class="plci_left">
+      <div class="plcil_radio"><input class="radio_box_style" type="checkbox"></div>
+      <div class="plcil_img"><img src="https://cdn.shopify.com/s/files/1/0281/4528/7220/products/CYH591.jpg?v=1632557905"></div>
+      <div class="plcil_title_price">
+        <div class="plcil_title alifont_bold">Custom Face Socks 3D Preview Add Pictures And Name Colorful</div>
+        <div class="plcil_price">{{ 19.89 | money }}</div>
+      </div>
+    </div>
+    <div class="plci_right">
+      <span class="plci_btn plci_publish mm-btn mm-btn-primary alifont_bold mm-register-btn">Publish</span>
+      <span class="plci_btn plci_see_store mm-btn alifont_bold mm-register-btn">See in store</span>
+      <span class="plci_btn plci_edit_listing mm-btn alifont_bold mm-register-btn">Edit listing</span>
+      <span class="plci_btn">{% render 'icon-copy' %}</span>
+      <span class="plci_btn">{% render 'icon-operate' %}</span>
+    </div>
+  </div>
+
+  <div class="plc_item">
+    <div class="plci_left">
+      <div class="plcil_radio"><input class="radio_box_style" type="checkbox"></div>
+      <div class="plcil_img"><img src="https://cdn.shopify.com/s/files/1/0281/4528/7220/products/CYH591.jpg?v=1632557905"></div>
+      <div class="plcil_title_price">
+        <div class="plcil_title alifont_bold">Custom Face Socks 3D Preview Add Pictures And Name Colorful</div>
+        <div class="plcil_price">{{ 19.89 | money }}</div>
+      </div>
+    </div>
+    <div class="plci_right">
+      <span class="plci_btn plci_publish mm-btn mm-btn-primary alifont_bold mm-register-btn">Publish</span>
+      <span class="plci_btn plci_see_store mm-btn alifont_bold mm-register-btn">See in store</span>
+      <span class="plci_btn plci_edit_listing mm-btn alifont_bold mm-register-btn">Edit listing</span>
+      <span class="plci_btn">{% render 'icon-copy' %}</span>
+      <span class="plci_btn">{% render 'icon-operate' %}</span>
+    </div>
+  </div>
+</div>

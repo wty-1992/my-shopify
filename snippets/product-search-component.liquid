@@ -1,0 +1,161 @@
+{% comment %} 
+** @name 产品列表搜索组件**
+** @author 陈健辉 **
+** @update 2021-11-27
+{% endcomment %}
+
+<style>
+/* PC端样式 */
+.product_search_component{
+  margin: 0 auto;
+  padding: 0 25px;
+}
+/* 选项卡 */
+.psc_tabs{
+  padding: 25px 0;
+}
+/* 搜索栏 */
+.psc_search_tabs{
+  background: #F6F6F9;
+  padding: 25px;
+}
+.pscst_search{
+  display: flex;
+  align-items: center;
+  padding: 10px 40px;
+  background: #fff;
+  box-shadow: 0 1px 1px 0 rgba(106, 102, 136, 0.08), 0 4px 16px 0 rgba(183,183,192,0.3);
+  border-radius: 4px;
+}
+.pscst_search img{
+  width: 20px;
+  height: 20px;
+}
+.pscst_search input{
+  border: none;
+  background: transparent;
+}
+/* tab */
+.pscs_tabs{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  margin-top: 10px;
+}
+.pscst_left{
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  position: relative;
+}
+.pscst_left::after{
+  content: '';
+  width: 50px;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: linear-gradient(to right, rgba(246,246,249,0), rgb(246,246,249));
+}
+.pscstl_tab{
+  padding: 5px 8px;
+  background: #fff;
+  margin-right: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.pscstl_tab.current{
+  background: #222;
+  font-weight: 700;
+  color: #fff;
+}
+.pscst_btn{
+  padding-right: 15px;
+  position: relative;
+  cursor: pointer;
+}
+.pscst_btn::after {
+  content: '';
+  position: absolute;
+  border: 5px solid transparent;
+  border-top-color: #979797;
+  right: 0;
+  top: calc(50% - 3px);
+}
+.pscst_right{
+  padding-left: 25px;
+  min-width: 160px;
+}
+</style>
+
+<div class="product_search_component mm_pc_container">
+  {% comment %} 选项卡 {% endcomment %}
+  <div class="psc_tabs">{% render 'tabs-component' %}</div>
+
+  {% comment %} 搜索栏 {% endcomment %}
+  <div class="psc_search_tabs">
+    {% comment %} 模块搜索框 {% endcomment %}
+    <div class="pscst_search">
+      <img src="{{ 'search.svg' | asset_url }}" alt="serach">
+      <input
+        class="alifont"
+        type="text"
+        placeholder="Search for products, brands, categories, and print providers"
+        id="searchInput"
+        value=""/>
+    </div>
+    {% comment %} 标签模块 {% endcomment %}
+    <div class="pscs_tabs">
+      <div class="pscst_left">
+        <div class="pscstl_tab current" data-type="all">All</div>
+        <div class="pscstl_tab" data-type="unPublished">Unpublished</div>
+        <div class="pscstl_tab" data-type="published">Published</div>
+        <div class="pscstl_tab" data-type="hiddenStore">Hidden in store</div>
+        <div class="pscstl_tab" data-type="unPublished">Unpublished</div>
+        <div class="pscstl_tab" data-type="published">Published</div>
+        <div class="pscstl_tab" data-type="hiddenStore">Hidden in store</div>
+        <div class="pscstl_tab" data-type="unPublished">Unpublished</div>
+        <div class="pscstl_tab" data-type="published">Published</div>
+        <div class="pscstl_tab" data-type="hiddenStore">Hidden in store</div>
+        <div class="pscstl_tab" data-type="unPublished">Unpublished</div>
+        <div class="pscstl_tab" data-type="published">Published</div>
+        <div class="pscstl_tab" data-type="hiddenStore">Hidden in store</div>
+      </div>
+      <div class="pscst_right">
+        <div class="pscst_btn">Recently Created</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* 初始化选项卡组件 initTabsComponent 为 tabs-component组件内部方法 */
+initTabsComponent({
+  data: [{ key: 'My product', value: 1 }, { key: 'External products', value: 2 }],
+  buttonGroup: [{text: 'Add products', onClick: () => {
+    console.log('添加产品')
+  }}],
+  onChange: (current) => {
+    if(+current !== 0){
+      $('.psc_search_tabs').hide();
+    } else {
+      $('.psc_search_tabs').show();
+    }
+    /* 请求数据 */
+  }
+})
+
+/* 监听查询tab点击事件 */
+let queryCurrentTab = 'all'; // 当前选中项
+$('.pscst_left').on('click', (event) => {
+  const type = event.target.dataset.type;
+  if(type === queryCurrentTab) return; // 点击自身无效
+  if(event.target.className.includes('pscstl_tab')){
+    $('.pscstl_tab').removeClass('current');
+    $(event.target).addClass('current');
+    queryCurrentTab = type;
+  }
+});
+</script>

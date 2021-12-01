@@ -12,6 +12,7 @@
   color: #222;
   background: #F6F6F9;
   width: 100%;
+  padding: 25px;
 }
 .task_header{
   font-size: 32px;
@@ -76,6 +77,11 @@ async function createShop(params){
 async function init(){
   /* 请求店铺列表数据 initShopList 为 see-store-component组件内部方法 */
   const count = await initShopList();
+  storeShowHide(count);
+}
+init();
+/* 店铺列表显隐 */
+function storeShowHide(count){
   if(count === 0) {
     $('.task_not_store').show();
     $('.task_store').hide();
@@ -83,8 +89,7 @@ async function init(){
     $('.task_not_store').hide();
     $('.task_store').show();
   }
-}
-init();
+};
 </script>
 
 {% schema %}

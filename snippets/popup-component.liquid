@@ -109,10 +109,14 @@
     $('.pcch_title').text(title);
     confirmHandle = onConfirm;
     $('#popupComponent').show();
+    _sunzi_lock(); // 锁定屏幕
   };
 
   /* 关闭弹窗 */
-  const closePopup = () => $('#popupComponent').hide();
+  const closePopup = () => {
+    _sunzi_unlock(); // 屏幕解锁
+    $('#popupComponent').hide();
+  };
 
   /* 注册关闭按钮事件 */
   $('.pcch_close').on('click', closePopup);

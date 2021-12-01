@@ -1,0 +1,108 @@
+{% comment %} 
+** @name 选项卡组件**
+** @author 陈健辉 **
+** @update 2021-11-29
+{% endcomment %}
+
+<style>
+/* 选项卡 */
+.tabs_component{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  padding: 0 25px;
+}
+.tc_left{
+  display: flex;
+  font-size: 22px;
+  line-height: 56px;
+}
+.tcl_tab{
+  position: relative;
+  margin-right: 30px;
+  cursor: pointer;
+}
+.tcl_tab.current{
+  color: #F9423A;
+  font-weight: 700;
+}
+.tcl_tab.current::after{
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: calc(50% - 15px);
+  width: 30px;
+  border-top: 4px solid #F9423A;
+  border-radius: 4px;
+}
+.tc_right{
+  display: flex;
+}
+.tcr_btn{
+  padding: 15px 20px;
+  cursor: pointer;
+}
+</style>
+
+{% comment %} 选项卡 {% endcomment %}
+<div class="tabs_component mm_pc_container">
+  {% comment %} tab {% endcomment %}
+  <div class="tc_left"></div>
+
+  {% comment %} 按钮 {% endcomment %}
+  <div class="tc_right"></div>
+</div>
+
+<script>
+/* 初始化选项卡组件 */
+function initTabsComponent(config){
+  /*
+   * current: 当前项
+   * data: 数据源
+   * buttonGroup: 按钮组 [object] { text: '文字', onClick: fn }
+   * onChange: 改变触发函数
+   */
+  let { current = 0, data = [], buttonGroup = [], onChange = null } = config;
+  /* 选项卡 */
+  const template = renderTemplate(data);
+  $('.tc_left').html(template);
+
+  /* 右侧按钮 */
+  if(buttonGroup.length !== 0){
+    let temp = '';
+    buttonGroup.forEach((item, index) => {
+      temp += `
+        <span class="tcr_btn mm-btn mm-btn-primary alifont_bold mm-register-btn" data-index="${index}">${item.text}</span>
+      `
+    })
+    $('.tc_right').html(temp);
+    /* 监听按钮点击事件 */
+    $('.tcr_btn').on('click', (event) => {
+      const index = event.target.dataset.index;
+      buttonGroup[index].onClick && buttonGroup[index].onClick();
+    })
+  }
+
+  /* 监听选项卡点击事件 */
+  $('.tcl_tab').on('click', (event) => {
+    const index = event.target.dataset.index;
+    if(index === current) return; // 点击自身无效
+    $('.tcl_tab').removeClass('current');
+    $(event.target).addClass('current');
+    current = index;
+    onChange && onChange(data[current].value);
+  });
+
+  /* 渲染模板 */
+  function renderTemplate(list){
+    let template = ``;
+    list.forEach((item, index) => {
+      template += `
+        <div class="tcl_tab ${index === current ? 'current':''}" data-index="${index}">${item.key}</div>
+      `
+    })
+    return template;
+  }
+}
+</script>

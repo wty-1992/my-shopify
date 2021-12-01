@@ -1,0 +1,125 @@
+{% comment %} 
+** @name 店铺列表页面**
+** @author 陈健辉 **
+** @update 2021-11-29
+{% endcomment %}
+
+<style>
+/* PC端样式 */
+.my_store_list{
+  background: #fff;
+  color: #222;
+}
+/* 添加按钮 */
+.msl_add_btn{
+  margin: 0 auto;
+  font-size: 20px;
+  line-height: 27px;
+  text-align: center;
+  background: #fff;
+  padding: 25px;
+}
+.mslab_btn{
+  display: inline-block;
+  border: 1px solid rgba(34,34,34,0.08);
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.msl_pagination_component{
+  padding: 25px;
+}
+
+/* 隐藏底部footer */
+#shopify-section-footer{
+  display: none;
+}
+</style>
+
+{% comment %} 我的店铺列表 {% endcomment %}
+<div class="my_store_list mm-header-height alifont">
+  {% comment %} 头部 {% endcomment %}
+  {% render 'simple-header-component', content: 'My store' %}
+
+  {% comment %} 添加按钮 {% endcomment %}
+  <div class="msl_add_btn mm_pc_container">
+    <span class="mslab_btn alifont_bold">+ Add new store</span>
+  </div>
+
+  {% comment %} 店铺列表表格组件 {% endcomment %}
+  <div class="msl_list_tabel">{% render 'store-table-component' %}</div>
+
+  {% comment %} 分页组件 {% endcomment %}
+  <div class="msl_pagination_component">{% render 'pagination_component' %}</div>
+
+  {% comment %} 弹窗组件 {% endcomment %}
+  {% render 'popup-component' %}
+
+  {% comment %} 对话框组件 {% endcomment %}
+  {% render 'dialog-component' %}
+</div>
+
+<script>
+let pageNum = 1, // 页码
+    pageSize = 6, // 页容量
+    pages = 1; // 总页数
+
+/* 获取店铺列表 */
+getShopList();
+async function getShopList(){
+  _sunzi_loading(); // loading
+  try{
+    const URL = `${DOMAIN}/mademine/shop/list?page=${pageNum}&pageSize=${pageSize}`;
+    const result = await fetch(URL, { method: 'GET' }).then(res => res.json());
+    _sunzi_hide_loading(); // 关闭loading
+    pages = Math.ceil(result.count / pageSize);
+    initListPagination(result.data);
+  }catch(err){
+    console.log(err);
+    _sunzi_hide_loading(); // 关闭loading
+  }
+};
+
+/* 重新获取数据 */
+function reacquireData(current){
+  pageNum = current || pageNum;
+  getShopList();
+}
+
+/* 初始化列表 */
+function initListPagination(data){
+  /* initStoreTable 为 store-table-component组件内部方法 */
+  initStoreTable(data);
+  /* initPaginationComponent 为 pagination_component组件内部方法 */
+  initPaginationComponent({
+    current: pageNum,
+    pageSize,
+    pages,
+    onCurrent: reacquireData
+  })
+}
+
+/* 创建店铺 */
+async function createShop(params){
+  _sunzi_loading(); // loading
+  try{
+    const { shopName } = params;
+    const URL = `${DOMAIN}/mademine/shop/add`;
+    const result = await fetch(URL, {
+      method: 'POST',
+      body: JSON.stringify({ shopName }),
+      headers: { 'content-type': 'application/json' }
+    }).then(res => res.json());
+    /* 创建成功，请求店铺列表 */
+    reacquireData();
+  }catch(err){
+    console.log(err);
+  };
+  _sunzi_hide_loading(); // 关闭loading
+}
+
+/* 监听添加按钮事件 */
+const configPopup = { confirmText: 'Create', title: 'Add a store name', onConfirm: createShop };
+$('.mslab_btn').on('click', () => openPopup(configPopup));
+
+</script>

@@ -1,0 +1,369 @@
+{% comment %} 
+** @name 订单详情弹窗组件**
+** @author 陈健辉 **
+** @update 2021-11-30
+{% endcomment %}
+
+<style>
+/* PC端样式 */
+/* 遮罩层 */
+.order_detail_popup{
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,.2);
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  cursor: pointer;
+}
+/* 容器 */
+.odp_container{
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: #fff;
+  width: 500px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: default;
+  overflow-y: scroll;
+}
+.odp_container::-webkit-scrollbar{
+  display: none;
+}
+/* 头部 */
+.odpc_header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 24px;
+  line-height: 56px;
+  padding: 0 25px;
+  background: #0EBA9A;
+  color: #fff;
+}
+.odpc_close{
+  cursor: pointer;
+}
+/* 内容区域 */
+.odp_content{
+  flex-grow: 1;
+  font-size: 14px;
+  color: #222;
+}
+/* 订单状态 */
+.odpc_status{
+  background: #0EBA9A;
+  color: #fff;
+  padding: 0 25px 25px;
+  font-size: 14px;
+}
+.odpcs_state{
+  margin-bottom: 8px;
+}
+.odpcs_state:last-child{
+  margin-bottom: 0;
+}
+/* 订单总结 */
+.odpc_summary,
+.odpc_address{
+  padding: 25px;
+}
+.odpc_address{
+  padding-top: 0;
+}
+.odpca_title{
+  text-transform: Uppercase;
+  padding: 10px 15px;
+  background: #F6F6F9;
+  color: #928FA5;
+}
+.odpcs_list{
+  padding: 25px 0;
+}
+.odpcsl_item{
+  display: flex;
+  margin-bottom: 15px;
+}
+.odpcsl_item:last-child{
+  margin-bottom: 0;
+}
+.odpcsl_img,
+.odpcsl_img img{
+  width: 80px;
+  height: 80px;
+}
+.odpcsl_name{
+  padding: 0 10px;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 14px;
+}
+.odpcsl_price{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100px;
+  font-size: 12px;
+}
+/* 加载更多 */
+.sdpcs_more{
+  display: none;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  margin: 0 auto;
+  border: 1px solid rgba(34,34,34,0.08);
+  font-size: 16px;
+  cursor: pointer;
+}
+/* 支付 */
+.sdpcs_price{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.sdpcs_price:last-child{
+  margin-bottom: 0;
+}
+/* 灰色字体 */
+.odpcsln_bottom,
+.odpcslp_center,
+.odpcslp_bottom{
+  color: #928FA5;
+  font-size: 12px;
+}
+/* 地址 */
+.odpca_address_name{
+  display: flex;
+  padding: 15px;
+}
+.odpca_icon{
+  margin-right: 15px;
+  position: relative;
+}
+.odpca_connect .odpca_icon:after{
+  position: absolute;
+  content: '';
+  left: 10px;
+  top: 35px;
+  border-left: 1px solid #F6F6F9;
+  height: 50px;
+}
+.odpca_icon img{
+  width: 24px;
+  height: 24px;
+}
+.odpca_info {
+  width: 380px;
+}
+.odpcai_title{
+  color: #928FA5;
+}
+.odpca_name{
+  padding: 6px 0;
+}
+.odpca_detail{
+  font-size: 12px;
+}
+</style>
+
+<div class="order_detail_popup alifont">
+  <div class="odp_container">
+    {% comment %} 头部 {% endcomment %}
+    <div class="odpc_header alifont_bold">
+      <div class="odpc_title">Order No: <span id="orderNo"></span></div>
+      <img class="odpc_close" src="{{ 'close-white.svg' | asset_url }}"/>
+    </div>
+
+    {% comment %} 内容区域 {% endcomment %}
+    <div class="odp_content">
+      {% comment %} 订单状态 {% endcomment %}
+      <div class="odpc_status">
+        <div class="odpcs_state">Payment Status：<span id="payState"></span></div>
+        <div class="odpcs_state">Fulfillment Status：<span id="fulState"></span></div>
+        <div class="odpcs_state">Placed on：<span id="timeState"></span></div>
+      </div>
+
+      {% comment %} 订单总结 {% endcomment %}
+      <div class="odpc_summary">
+        {% comment %} 标题 {% endcomment %}
+        <div class="odpca_title alifont_bold">Summary</div>
+
+        {% comment %} 列表 {% endcomment %}
+        <div id="lineItems" class="odpcs_list"></div>
+
+        {% comment %} 加载更多 列表数据大于三个显示 {% endcomment %}
+        <div class="sdpcs_more">
+          <span class="alifont_bold">Show all</span>
+          <img src="{{'next-bottom.svg' | asset_url}}" />
+        </div>
+
+        {% comment %} 支付 {% endcomment %}
+        <div class="sdpcs_price">
+          <span>Subtotal</span>
+          <span>$ <span id="subtotal">0.00</span></span>
+        </div>
+        <div class="sdpcs_price">
+          <span>Discount</span>
+          <span style="color: #F9423A;">- $ <span id="discount">0.00</span></span>
+        </div>
+        <div class="sdpcs_price">
+          <span>CESHI123 <span style="font-size: 12px;">(Discount code)</span></span>
+          <span style="color: #F9423A;">- $ <span id="discountCode">0.00</span></span>
+        </div>
+        <div class="sdpcs_price">
+          <span>Shipping <span style="font-size: 12px;">(Standard Shipping: Delivery Time 7-10 business days)</span></span>
+          <span>$ <span id="shipping">0.00</span></span>
+        </div>
+        <div class="sdpcs_price alifont_bold">
+          <span>Total</span>
+          <span>$<span id="total" style="font-size: 18px;">0.00</span></span>
+        </div>
+      </div>
+
+      {% comment %} 地址 {% endcomment %}
+      <div class="odpc_address">
+        {% comment %} 标题 {% endcomment %}
+        <div class="odpca_title alifont_bold">Address</div>
+
+        {% comment %} 位置 {% endcomment %}
+        <div id="billingAddress" class="odpca_address_name odpca_connect">
+          <div class="odpca_icon"><img src="{{ 'order.svg' | asset_url }}"></div>
+          <div class="odpca_info">
+            <div class="odpcai_title alifont_bold">Billing Address:</div>
+            <div class="odpca_name alifont_bold"></div>
+            <div class="odpca_detail single_line_ellipsis"></div>
+          </div>
+        </div>
+        <div id="shippingAddress" class="odpca_address_name">
+          <div class="odpca_icon"><img src="{{ 'ship.svg' | asset_url }}"></div>
+          <div class="odpca_info">
+            <div class="odpcai_title alifont_bold">Shipping Address:</div>
+            <div class="odpca_name alifont_bold"></div>
+            <div class="odpca_detail single_line_ellipsis"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* 映射key=元素ID value=数据key值 */
+const mapKeyValue = {
+  'orderNo': 'name',
+  'payState': 'financialStatus',
+  'fulState': 'fulfillmentStatus',
+  'timeState': {
+    handle: (value, domKey) => {
+      const temp = new Date(value).toDateString();
+      $(domKey).text(temp);
+    },
+    value: 'createdAt'
+  },
+  'subtotal': 'subtotalPrice',
+  'discount': 'totalDiscounts',
+  'shipping': 'totalShipping',
+  'total': 'totalPrice',
+  'billingAddress': {
+    handle: (param, domKey) => {
+      const infoDom = $(domKey).children('.odpca_info');
+      infoDom.children('.odpca_name').text(param.name);
+      infoDom.children('.odpca_detail').text(param.address1);
+    },
+    value: 'billingAddress'
+  },
+  'shippingAddress': {
+    handle: (param, domKey) => {
+      const infoDom = $(domKey).children('.odpca_info');
+      infoDom.children('.odpca_name').text(param.name);
+      infoDom.children('.odpca_detail').text(param.address1);
+    },
+    value: 'shippingAddress'
+  },
+  'lineItems': {
+    handle: (param, domKey) => {
+      /* 列表大于2显示加载按钮 */
+      if(param.length > 2){
+        $('.sdpcs_more').css('display', 'flex');
+        $('.sdpcs_more').on('click', () => {
+          /* 加载剩余数据 */
+          renderTemplate(param.slice(2));
+          $('.sdpcs_more').hide();
+        })
+      }
+      /* 渲染列表 */
+      $(domKey).empty(); // 清空上一次渲染数据
+      renderTemplate(param.slice(0,2));
+
+      /* 渲染模板 */
+      function renderTemplate(data){
+        let template = '';
+        data.forEach(item => {
+          template += `
+            <div class="odpcsl_item">
+              <div class="odpcsl_img"><img src="${item.previewSrc}"></div>
+              <div class="odpcsl_name">
+                <div class="odpcsln_top alifont_bold">${item.title}</div>
+                <div class="odpcsln_bottom">SKU：${item.sku}</div>
+              </div>
+              <div class="odpcsl_price">
+                <div class="odpcslp_top">Total: $ 0.00</div>
+                <div class="odpcslp_center">$ ${item.price}</div>
+                <div class="odpcslp_bottom">x ${item.quantity}</div>
+              </div>
+            </div>
+          `
+        })
+        $(domKey).append(template);
+      }
+    },
+    value: 'lineItems'
+  }
+}
+
+/* 
+ * 打开弹窗
+ * @data 订单详情数据
+ */
+const openOrderPopup = (data) => {
+  /* 数据回流 */
+  for(let key in mapKeyValue){
+    let dataKey = mapKeyValue[key];
+    /* 判断是否为对象 */
+    if(typeof dataKey === 'object'){
+      /* 自定义处理函数 */
+      dataKey.handle(data[dataKey.value], `#${key}`);
+    }else {
+      /* 字符串直接渲染 */
+      $(`#${key}`).text(data[dataKey]);
+    }
+  }
+
+  $('.order_detail_popup').show();
+  _sunzi_lock(); // 锁定屏幕
+};
+
+/* 关闭弹窗 */
+const closeOrderPopup = () => {
+  _sunzi_unlock(); // 屏幕解锁
+  $('.order_detail_popup').hide();
+};
+
+/* 注册关闭按钮事件 */
+$('.odpc_close').on('click', closeOrderPopup);
+/* 注册遮罩层关闭事件 */
+$('.order_detail_popup').on('click', function(event){
+  event.target === this && closeOrderPopup();
+});
+</script>
