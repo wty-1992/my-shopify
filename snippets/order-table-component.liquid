@@ -69,6 +69,9 @@
 
     {% comment %} 表行 {% endcomment %}
   </div>
+
+  {% comment %} 订单详情弹窗组件 {% endcomment %}
+  {% render 'order-detail-popup-component' %}
 </div>
 
 <script>
@@ -87,12 +90,17 @@ function initOrderTable(data){
   $('.otct_row').remove();
   $('.otc_table').append(template);
 
+  $('.otct_row').on('click', (event) => {
+    const index = event.currentTarget.dataset.index;
+    openOrderPopup(data[index]);
+  })
+
   /* 渲染订单列表 */
   function renderOrderList(data){
     let template = '';
-    data.forEach(item => {
+    data.forEach((item, index) => {
       template += `
-        <div class="otct_row alifont">
+        <div class="otct_row alifont" data-index="${index}">
           <div class="otct_cell">${item.name}</div>
           <div class="otct_cell">${new Date(item.createdAt).toDateString()}</div>
           <div class="otct_cell">
