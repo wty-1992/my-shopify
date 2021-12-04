@@ -53,6 +53,12 @@
 .plci_right .plci_btn{
   cursor: pointer;
 }
+.plci_hide{
+  display: none;
+}
+.plci_btn svg{
+  pointer-events: none;
+}
 .plci_see_store,
 .plci_edit_listing{
   background: #fff;
@@ -60,7 +66,7 @@
 }
 .plci_see_store:hover,
 .plci_edit_listing:hover{
-  color: #222;
+  color: #f9423a;
 }
 .plci_right span{
   margin-right: 15px;
@@ -69,39 +75,121 @@
 
 <div class="product_list_component mm_pc_container">
   {% comment %} 列表项 {% endcomment %}
-  <div class="plc_item">
-    <div class="plci_left">
-      <div class="plcil_radio"><input class="radio_box_style" type="checkbox"></div>
-      <div class="plcil_img"><img src="https://cdn.shopify.com/s/files/1/0281/4528/7220/products/CYH591.jpg?v=1632557905"></div>
-      <div class="plcil_title_price">
-        <div class="plcil_title alifont_bold">Custom Face Socks 3D Preview Add Pictures And Name Colorful</div>
-        <div class="plcil_price">{{ 19.89 | money }}</div>
-      </div>
-    </div>
-    <div class="plci_right">
-      <span class="plci_btn plci_publish mm-btn mm-btn-primary alifont_bold mm-register-btn">Publish</span>
-      <span class="plci_btn plci_see_store mm-btn alifont_bold mm-register-btn">See in store</span>
-      <span class="plci_btn plci_edit_listing mm-btn alifont_bold mm-register-btn">Edit listing</span>
-      <span class="plci_btn">{% render 'icon-copy' %}</span>
-      <span class="plci_btn">{% render 'icon-operate' %}</span>
-    </div>
-  </div>
-
-  <div class="plc_item">
-    <div class="plci_left">
-      <div class="plcil_radio"><input class="radio_box_style" type="checkbox"></div>
-      <div class="plcil_img"><img src="https://cdn.shopify.com/s/files/1/0281/4528/7220/products/CYH591.jpg?v=1632557905"></div>
-      <div class="plcil_title_price">
-        <div class="plcil_title alifont_bold">Custom Face Socks 3D Preview Add Pictures And Name Colorful</div>
-        <div class="plcil_price">{{ 19.89 | money }}</div>
-      </div>
-    </div>
-    <div class="plci_right">
-      <span class="plci_btn plci_publish mm-btn mm-btn-primary alifont_bold mm-register-btn">Publish</span>
-      <span class="plci_btn plci_see_store mm-btn alifont_bold mm-register-btn">See in store</span>
-      <span class="plci_btn plci_edit_listing mm-btn alifont_bold mm-register-btn">Edit listing</span>
-      <span class="plci_btn">{% render 'icon-copy' %}</span>
-      <span class="plci_btn">{% render 'icon-operate' %}</span>
-    </div>
-  </div>
 </div>
+
+{% render 'migrate-pupop-component' %}
+
+<script>
+/* 产品接口服务 */
+async function procustServer(type, pruductid){
+  _sunzi_loading(); // loading
+  const shop_id = getQueryVariable('id');
+  try{
+    let URL = '';
+    if(type === 'publish'){
+      URL = `${DOMAIN}/mademine/product/publish`;
+    }else if(type === 'copy'){
+      URL = `${DOMAIN}/mademine/product/copy`;
+    }else if(type === 'delete'){
+      URL = `${DOMAIN}/mademine/product/delete`;
+    };
+    const result = await fetch(URL, {
+      method: 'POST',
+      body: JSON.stringify({ id: pruductid, shop_id }),
+      headers: { 'content-type': 'application/json' }
+    }).then(res => res.json());
+    resetData(); // 重置数据
+  }catch(err){
+    console.log(err);
+  };
+  _sunzi_hide_loading(); // 关闭loading
+};
+
+/* 初始化产品列表方法 */
+function initProductList(data, type){
+  renderTemplate(data, type);
+  $('.plci_right').on('click', (event) => {
+    if(event.currentTarget === event.target) return;
+    const type = event.target.dataset.type;
+    const pruductid = event.currentTarget.dataset.pruductid;
+    const handleObj = {
+      // 发布产品按钮
+      publish: () => {
+        // 打开对话框 openDialog 为 dialog-component组件内部方法
+        openDialog({
+          content: 'Are you sure to release the product?',
+          onConfirm: () => procustServer('publish', pruductid)
+        });
+      },
+      // 跳转产品详情按钮
+      seeInStore: () => {
+        const url = event.target.dataset.url;
+        window.open(url);
+      },
+      // 跳转编辑页面按钮
+      editListing: () => {
+        location.href = `/pages/my-store-details-edit?id=${pruductid}`;
+      },
+      // 克隆按钮
+      copy: () => {
+        openDialog({
+          content: 'Are you sure to copy the product?',
+          onConfirm: () => procustServer('copy', pruductid)
+        });
+      },
+      // 删除按钮
+      delete: () => {
+        openDialog({
+          content: 'Are you sure to delete the product?',
+          onConfirm: () => procustServer('delete', pruductid)
+        });
+      },
+      // 迁移产品按钮
+      migrateProduct: () => {
+        const currentProduct = data.find(item => item.id === +pruductid);
+        // 打开迁移弹窗 openMigratePupop 为 migrate-pupop-component组件内部方法
+        openMigratePupop({
+          currentProduct
+        });
+      }
+    };
+    handleObj[type] && handleObj[type]();
+  });
+  
+
+  // 渲染模板
+  function renderTemplate(data, type){
+    let template = '';
+    data.forEach(item => {
+      template += `
+        <div class="plc_item">
+          <div class="plci_left">
+            ${
+              type === 'myProduct' ? '<div class="plcil_radio"><input class="radio_box_style" type="checkbox"></div>':''
+            }
+            <div class="plcil_img"><img src="${item.preview}"></div>
+            <div class="plcil_title_price">
+              <div class="plcil_title alifont_bold">${item.title}</div>
+              <div class="plcil_price">$ ${item.price}</div>
+            </div>
+          </div>
+          <div class="plci_right" data-pruductId="${item.id}">
+            ${
+              type === 'myProduct' ? `
+                <span class="plci_btn plci_publish mm-btn mm-btn-primary alifont_bold mm-register-btn ${item.isPublish === 1 ? 'plci_hide':''}" data-type="publish">Publish</span>
+                <span class="plci_btn plci_see_store mm-btn alifont_bold mm-register-btn ${item.isPublish === 0 ? 'plci_hide':''}" data-type="seeInStore" data-url="${item.url}">See in store</span>
+                <span class="plci_btn plci_edit_listing mm-btn alifont_bold mm-register-btn" data-type="editListing">Edit listing</span>
+                <span class="plci_btn" data-type="copy">{% render 'icon-copy' %}</span>
+                <span class="plci_btn" data-type="delete">{% render 'icon-delete' %}</span>
+              `: `
+                <span class="plci_btn plci_edit_listing mm-btn alifont_bold mm-register-btn" data-type="migrateProduct">Migrate product</span>
+              `
+            }
+          </div>
+        </div>
+      `;
+    });
+    $('.product_list_component').html(template);
+  };
+};
+</script>

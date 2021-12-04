@@ -5,6 +5,9 @@
 {% endcomment %}
 
 <style>
+body::-webkit-scrollbar{
+  display: none;
+}
 /* PC端样式 */
 .my_store_my_products{
   background: #F6F6F9;
@@ -33,12 +36,15 @@
   margin-left: 10px;
 }
 /* 组件背景色 */
+.msmp_product_tabs,
 .msmp_product_search,
 .msmp_product_list,
 .msmp_pagination_component{
   background: #fff;
 }
-
+.msmp_product_tabs{
+  padding: 25px 0;
+}
 .msmp_pagination_component{
   padding: 25px;
 }
@@ -48,6 +54,20 @@
   display: none;
 }
 </style>
+
+<script>
+/* 工具方法 */
+/* 函数防抖 */
+function debounce(cb, time, that = null) {
+  let timer;
+  return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+          cb.apply(that, args);
+      }, time)
+  }
+};
+</script>
 
 {% comment %} 我的店铺 产品列表 {% endcomment %}
 <div class="my_store_my_products mm-header-height alifont">
@@ -63,23 +83,109 @@
     </div>
   </div>
 
+  {% comment %} 产品选项卡组件 {% endcomment %}
+  <div class="msmp_product_tabs">{% render 'tabs-component', id: 'storeTabs' %}</div>
+
   {% comment %} 产品列表搜索组件 {% endcomment %}
-  <div class="msmp_product_search">{% render 'product-search-component' %}</div>
+  <div class="msmp_product_search">{% render 'product-search-component', id: 'storeSearch' %}</div>
 
   {% comment %} 产品列表组件 {% endcomment %}
   <div class="msmp_product_list">{% render 'product-list-component' %}</div>
 
   {% comment %} 分页组件 {% endcomment %}
   <div class="msmp_pagination_component">{% render 'pagination_component' %}</div>
+
+  {% comment %} 对话框组件 {% endcomment %}
+  {% render 'dialog-component' %}
 </div>
 
 <script>
-initBreadcrumb(['My store', 'Attention Surprise']); // 初始化面包屑 initBreadcrumb 为 breadcrumb-component组件内部方法
+let pageNum = 1, // 页码
+    pageSize = 2, // 页容量
+    pages = 1, // 总页数
+    type = 'myProduct', // 产品类型
+    search = '', // 搜索条件
+    status = 0, // 搜索类型
+    sortBy = 'desc'; // 排序方式
 
-initPaginationComponent({
-  current: 1,
-  pageSize: 5,
-  pages: Math.ceil(100 / 5),
-  onCurrent: null
+// 初始化面包屑 initBreadcrumb 为 breadcrumb-component组件内部方法
+initBreadcrumb(['My store', 'Attention Surprise']);
+
+/* 初始化选项卡组件 initTabsComponent 为 tabs-component组件内部方法 */
+initTabsComponent('#storeTabs', {
+  data: [{ key: 'My product', value: 'myProduct' }, { key: 'External products', value: 'externalProduct' }],
+  buttonGroup: [{text: 'Add products', onClick: () => {
+    // 跳转产品页面
+    location.href = '/pages/normal';
+  }}],
+  onChange: (value) => {
+    if(value === 'externalProduct'){
+      $('.msmp_product_search').hide();
+    } else {
+      $('.msmp_product_search').show();
+    }
+    /* 重新请求数据 */
+    type = value;
+    resetData();
+  }
 })
+
+// 初始化产品搜索组件 initProductSearch 为 product-search-component组件内部方法
+initProductSearch('#storeSearch', {
+  handle: (param) => {
+    search = param.search;
+    status = param.status;
+    sortBy = param.sort;
+    resetData();
+  },
+  placeholder: 'Search for products, brands, categories, and print providers'
+});
+
+/* 获取产品列表 */
+async function getProductList(){
+  const id = getQueryVariable('id');
+  _sunzi_loading(); // loading
+  try{
+    let URL = '';
+    /* 判断获取产品类型 */
+    if(type === 'myProduct'){
+      URL = `${DOMAIN}/mademine/product/myProducts`;
+      URL += `?shop_id=${id}&page=${pageNum}&pageSize=${pageSize}&search=${search}&status=${status}&sortBy=${sortBy}`; // 拼接参数
+    }else {
+      URL = `${DOMAIN}/mademine/product/externalProducts`;
+      URL += `?shop_id=${id}&page=${pageNum}&pageSize=${pageSize}`; // 拼接参数
+    };
+    const result = await fetch(URL, { method: 'GET' }).then(res => res.json());
+    _sunzi_hide_loading(); // 关闭loading
+    pages = Math.ceil(result.count / pageSize);
+    initListPagination(result.data, type);
+  }catch(err){
+    console.log(err);
+    _sunzi_hide_loading(); // 关闭loading
+  }
+};
+
+/* 重置数据 */
+resetData();
+function resetData(){
+  pageNum = 1;
+  getProductList();
+}
+
+/* 初始化列表/分页组件 */
+function initListPagination(data, type){
+  // 初始化产品列表 initProductList 为 product-list-component组件内部方法
+  initProductList(data, type);
+
+  // 初始化分页组件 initPaginationComponent 为 pagination_component组件内部方法
+  initPaginationComponent({
+    current: pageNum,
+    pageSize,
+    pages,
+    onCurrent: (current) => {
+      pageNum = current;
+      getProductList();
+    }
+  })
+};
 </script>

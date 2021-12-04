@@ -32,9 +32,12 @@
   position: absolute;
   bottom: 0;
   left: calc(50% - 15px);
-  width: 30px;
+  width: 0;
   border-top: 4px solid #F9423A;
   border-radius: 4px;
+}
+.tcl_tab.current::after{
+  width: 30px;
 }
 .tc_right{
   display: flex;
@@ -46,7 +49,7 @@
 </style>
 
 {% comment %} 选项卡 {% endcomment %}
-<div class="tabs_component mm_pc_container">
+<div id={{id}} class="tabs_component mm_pc_container">
   {% comment %} tab {% endcomment %}
   <div class="tc_left"></div>
 
@@ -56,7 +59,9 @@
 
 <script>
 /* 初始化选项卡组件 */
-function initTabsComponent(config){
+function initTabsComponent(id, config){
+  const tcLeft = $(id).children('.tc_left'),
+        tcRgith = $(id).children('.tc_right');
   /*
    * current: 当前项
    * data: 数据源
@@ -66,7 +71,7 @@ function initTabsComponent(config){
   let { current = 0, data = [], buttonGroup = [], onChange = null } = config;
   /* 选项卡 */
   const template = renderTemplate(data);
-  $('.tc_left').html(template);
+  tcLeft.html(template);
 
   /* 右侧按钮 */
   if(buttonGroup.length !== 0){
@@ -76,19 +81,19 @@ function initTabsComponent(config){
         <span class="tcr_btn mm-btn mm-btn-primary alifont_bold mm-register-btn" data-index="${index}">${item.text}</span>
       `
     })
-    $('.tc_right').html(temp);
+    tcRgith.html(temp);
     /* 监听按钮点击事件 */
-    $('.tcr_btn').on('click', (event) => {
+    tcRgith.children('.tcr_btn').on('click', (event) => {
       const index = event.target.dataset.index;
       buttonGroup[index].onClick && buttonGroup[index].onClick();
     })
   }
 
   /* 监听选项卡点击事件 */
-  $('.tcl_tab').on('click', (event) => {
+  tcLeft.children('.tcl_tab').on('click', (event) => {
     const index = event.target.dataset.index;
     if(index === current) return; // 点击自身无效
-    $('.tcl_tab').removeClass('current');
+    tcLeft.children('.tcl_tab').removeClass('current');
     $(event.target).addClass('current');
     current = index;
     onChange && onChange(data[current].value);
