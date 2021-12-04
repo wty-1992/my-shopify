@@ -1,0 +1,528 @@
+{% comment %} 
+** @name 迁移产品弹窗组件**
+** @author 陈健辉 **
+** @update 2021-12-01
+{% endcomment %}
+
+<style>
+/* PC端样式 */
+.migrate_pupop_component{
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,.2);
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  cursor: pointer;
+}
+.mpc_container{
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: #fff;
+  /* width: 500px; */
+  width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: default;
+  transition: width 0.5s;
+}
+/* 头部 */
+.mpcc_header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 24px;
+  line-height: 56px;
+  padding: 0 25px;
+  border-bottom: 1px solid rgba(34,34,34,0.04);
+}
+.mpcch_close{
+  cursor: pointer;
+}
+/* 内容区域 */
+.mpcc_content{
+  flex-grow: 1;
+  padding: 25px;
+  font-size: 14px;
+  overflow-y: scroll;
+}
+.mpcc_content::-webkit-scrollbar{
+  display: none;
+}
+/* 当前产品 */
+.cpccc_current{
+  display: flex;
+  padding: 10px;
+  background: #F6F6F9;
+  margin-top: 10px;
+  border-radius: 4px;
+}
+.cpccc_left{
+  margin-right: 10px;
+}
+.cpccc_left,
+.cpccc_left img{
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+}
+.cpccc_right{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: rgba(146,143,165,0.5);
+  font-size: 12px;
+}
+/* 产品列表 */
+.cpcccl_item{
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid rgba(34,34,34,0.08);
+}
+.cpccc_radio{
+  margin-right: 10px;
+  padding: 0 10px;
+}
+.cpcccl_item .cpccc_left,
+.cpcccl_item .cpccc_left img{
+  width: 80px;
+  height: 80px;
+}
+.cpcccl_item .cpccc_right{
+  color: #222;
+  align-self: flex-start;
+}
+.cpcccl_item .cpcccr_price{
+  margin-top: 10px;
+}
+/* 其它产品 */
+.cpccc_external{
+  display: none;
+  font-size: 14px;
+  line-height: 44px;
+  margin-top: 10px;
+}
+.cpccce_item,
+.cpccc_second_item > li{
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  padding-left: 10px;
+}
+/* 二级产品 */
+.cpccc_external_second{
+  display: none;
+  color: #222;
+  font-size: 14px;
+  line-height: 44px;
+}
+.cpccc_external_second > .cpccc_second_menu{
+  display: none;
+  border-bottom: 1px solid rgba(34,34,34,0.08);
+}
+.cpccc_crumbs{
+  display: none;
+  color: #928FA5;
+  padding-top: 10px;
+}
+.cpccc_crumbs > span{
+  cursor: pointer;
+}
+/* 三级产品 */
+.cpccc_external_tertiary {
+  margin-top: 10px;
+}
+/* 悬浮效果 */
+.cpcccl_item:hover,
+.cpccce_item:hover,
+.cpccc_second_item > li:hover{
+  background: #f6f6f9;
+}
+
+/* 底部按钮 */
+.mpcc_footer{
+  padding: 25px;
+  border-top: 1px solid rgba(34,34,34,0.04);
+}
+.mpcc_footer .mm-register-btn{
+  margin-left: 0;
+}
+
+/* 修改产品搜索组件样式 */
+.mpcc_content .product_search_component,
+.mpcc_content .tabs_component{
+  padding: 0;
+}
+.mpcc_content .tabs_component{
+  padding-bottom: 30px;
+}
+.mpcc_content .product_search_component,
+.mpcc_content .tabs_component{
+  min-width: 100%;
+  max-width: 100%;
+}
+.mpcc_content .tcl_tab.current::after{
+  border-top-width: 2px;
+  bottom: -20px;
+}
+.mpcc_content .tc_left{
+  font-size: 16px;
+  line-height: 0;
+}
+.mpcc_content .tc_right,
+.mpcc_content .pscst_right{
+  display: none;
+}
+.mpcc_content .psc_search_tabs,
+.mpcc_content .pscst_search{
+  padding: 10px;
+}
+.cpccc_search.hide_tabs .pscs_tabs{
+  display: none;
+}
+</style>
+
+<div class="migrate_pupop_component">
+  <div class="mpc_container">
+    {% comment %} 头部 {% endcomment %}
+    <div class="mpcc_header alifont_bold">
+      <div class="mpcch_title">Migrate product</div>
+    </div>
+
+    {% comment %} 内容区域 {% endcomment %}
+    <div class="mpcc_content">
+      {% comment %} 产品选项卡组件 {% endcomment %}
+      <div class="cpccc_tabs">{% render 'tabs-component', id: 'migrateTabs' %}</div>
+
+      {% comment %} 产品列表搜索组件 {% endcomment %}
+      <div class="cpccc_search">{% render 'product-search-component', id: 'migrateSearch' %}</div>
+
+      {% comment %} 当前产品信息 {% endcomment %}
+      <div class="cpccc_current">
+        <div class="cpccc_left"><img src=""></div>
+        <div class="cpccc_right">
+          <div class="cpcccr_title alifont_bold">Title</div>
+          <div class="cpcccr_price">$ 0.00</div>
+        </div>
+      </div>
+
+      {% comment %} 我的产品列表 {% endcomment %}
+      <div class="cpccc_list"></div>
+
+      {% comment %} 面包屑 {% endcomment %}
+      <div class="cpccc_crumbs">
+        <span class="cpccc_return_one">Catalog /</span>
+        <span class="cpccc_return_two"></span>
+        <span style="color: #222; cursor: not-allowed;" class="cpccc_second_crumbs alifont_bold"></span>
+      </div>
+
+      {% comment %} 其它产品列表 {% endcomment %}
+      <div class="cpccc_external">
+        {% for link_first in linklists.Products.links %}
+          <div class="cpccce_item" data-type="{{link_first.handle}}"><span>{{link_first.title}}</span><img src="//cdn.shopify.com/s/files/1/0372/6897/9848/t/29/assets/next-right-light.svg"></div>
+        {% endfor %}
+      </div>
+      
+      {% comment %} 其它产品二级列表 {% endcomment %}
+      <div class="cpccc_external_second">
+        {% for link_first in linklists.Products.links %}
+          {% for item_second in link_first.links %}
+            <div class="cpccc_second_menu {{link_first.handle}}">
+              <div class="cpccc_second_title alifont_bold">{{ item_second.title }}</div>
+              <ul class="cpccc_second_item">
+                {% for item in item_second.links %}
+                  <li data-type="{{item.handle}}"><span>{{ item.title }}</span><img src="//cdn.shopify.com/s/files/1/0372/6897/9848/t/29/assets/next-right-light.svg"></li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endfor %}
+        {% endfor %}
+      </div>
+      {% comment %} 其它产品三级列表 {% endcomment %}
+      <div class="cpccc_external_tertiary"></div>
+    </div>
+
+    {% comment %} 底部按钮 {% endcomment %}
+    <div class="mpcc_footer">
+      <a id="confirmBtn" class="mm-btn mm-btn-primary alifont_bold mm-register-btn" href="javascript:void(0)">Confirm migrate</a>
+    </div>
+  </div>
+</div>
+
+<script>
+// 参数
+const migrateParam = {
+  type: 'myProduct',
+  search: '',
+  status: 0,
+  pageNum: 1,
+  pageSize: 6,
+  pages: 1,
+  productId: null
+}
+
+/* 获取产品列表 */
+async function getMyProductList(){
+  const { pageNum, pageSize, search, status } = migrateParam;
+  const id = getQueryVariable('id');
+  _sunzi_loading(); // loading
+  try{
+    let URL = `${DOMAIN}/mademine/product/myProducts`;
+    URL += `?shop_id=${id}&page=${pageNum}&pageSize=${pageSize}&search=${search}&status=${status}`; // 拼接参数
+    const result = await fetch(URL, { method: 'GET' }).then(res => res.json());
+    _sunzi_hide_loading(); // 关闭loading
+    migrateParam.pages = Math.ceil(result.count / pageSize);
+    initMyProductList(result.data);
+  }catch(err){
+    console.log(err);
+    _sunzi_hide_loading(); // 关闭loading
+  }
+};
+
+/* 获取其它产品列表 */
+async function getExternalProduct(value) {
+  _sunzi_loading(); // loading
+  try{
+    var searchStr = `/search/suggest.json?q=${value}&resources[type]=product&resources[options][unavailable_products]=hide&section_id={{section.id}}&fields=product_type`;
+    const result = await fetch(searchStr).then(res => res.json());
+    _sunzi_hide_loading(); // 关闭loading
+    const products = result.resources.results.products;
+    const template = renderProductItem(products.map(item => ({ id: item.id, preview: item.image, title: item.title, price: item.price })));
+    $('.cpccc_external_tertiary').html(template);
+  }catch{
+    _sunzi_hide_loading(); // 关闭loading
+  }
+}
+
+/* 迁移产品 */
+async function migrateProduct(param){
+  _sunzi_loading(); // loading
+  try{
+    const URL = `${DOMAIN}/mademine/product/migrate`;
+    const result = await fetch(URL, {
+      method: 'POST',
+      body: JSON.stringify(param),
+      headers: { 'content-type': 'application/json' }
+    }).then(res => res.json());
+    _sunzi_hide_loading(); // 关闭loading
+    if(result.code !== 0){
+      openDialog({
+        content: result.msg
+      });
+      return;
+    }
+    closeMigratePopup(); // 关闭弹窗
+    resetData(); // 重新请求产品数据
+  }catch(err){
+    console.log(err)
+    _sunzi_hide_loading(); // 关闭loading
+  }
+}
+
+/* 监听我的列表滚动事件 */
+$('.mpcc_content').scroll(debounce((event) => {
+  if(migrateParam.type !== 'myProduct') return;
+  /* 判断是否触底 总宽度 - 已滚动宽度 == 容器宽度 */
+  const {scrollHeight, scrollTop, clientHeight} = event.target;
+  const load = (scrollHeight - scrollTop - 100) < clientHeight;
+  /* 加载下一页数据 */
+  if(load && migrateParam.pageNum < migrateParam.pages){
+    migrateParam.pageNum++;
+    getMyProductList();
+  }
+}, 300));
+
+/* 初始化我的产品列表 */
+function initMyProductList(data){
+  const template = renderProductItem(data);
+  if(migrateParam.pageNum === 1){
+    $('.cpccc_list').html(template);
+  }else {
+    $('.cpccc_list').append(template);
+  }
+}
+
+/* 初始化选项卡组件 initTabsComponent 为 tabs-component组件内部方法 */
+initTabsComponent('#migrateTabs', {
+  data: [{ key: 'My product', value: 'myProduct' }, { key: 'External products', value: 'externalProduct' }],
+  onChange: (value) => {
+    if(value === 'externalProduct'){
+      $('.cpccc_search').addClass('hide_tabs');
+      $('.cpccc_external').show();
+      $('.cpccc_list').hide();
+    } else {
+      $('.cpccc_search').removeClass('hide_tabs');
+      $('.cpccc_external').hide();
+      $('.cpccc_external_second').hide();
+      $('.cpccc_list').show();
+    }
+    /* 重新请求数据 */
+    migrateParam.type = value;
+  }
+})
+
+// 初始化产品搜索组件 initProductSearch 为 product-search-component组件内部方法
+initProductSearch('#migrateSearch', {
+  handle: (param) => {
+    migrateParam.search = param.search;
+    migrateParam.status = param.status;
+    migrateParam.pageNum = 1;
+    getMyProductList();
+  },
+  placeholder: 'Search'
+});
+
+/* 其它产品类别转首字母小写 */
+initExternal();
+function initExternal(){
+  $('.cpccce_item span').each((i, dom) => {
+    dom.innerText = initialsCapitalize(dom.innerText);
+  });
+  $('.cpccc_second_title').each((i, dom) => {
+    dom.innerText = initialsCapitalize(dom.innerText);
+  });
+};
+/* 监听其它产品点击事件 */
+$('.cpccc_external').on('click', (event) => {
+  const type = event.target.dataset.type;
+  displayHideState(2, type);
+});
+/* 监听返回一级目录 */
+$('.cpccc_return_one').on('click', () => displayHideState(1));
+
+/* 监听二级目录点击事件 */
+$('.cpccc_second_item').on('click', () => {
+  const type = event.target.dataset.type;
+  if(!type) return;
+  getExternalProduct(type);
+  displayHideState(3, `${$('.cpccc_second_crumbs').text()} /`, type);
+});
+/* 监听返回二级目录 */
+$('.cpccc_return_two').on('click', () => displayHideState('back', $('.cpccc_return_two').text().slice(0, -2)));
+
+/* 删除空的二级类别列表 */
+removeEmptyDom();
+function removeEmptyDom(){
+  $('.cpccc_second_item').each((i, dom) => {
+    const child = $(dom).children().length;
+    if(child === 0){
+      $(dom.parentElement).remove();
+    }
+  })
+};
+
+/* 控制联级组件显隐状态 */
+function displayHideState(level, twoValue, threeValue){
+  if(level === 1){
+    $('.cpccc_crumbs').fadeOut('fast');
+    $('.cpccc_external_second').fadeOut('fast');
+    $('.cpccc_external_tertiary').fadeOut('fast', () => $('.cpccc_external').fadeIn('fast'));
+    return;
+  }
+  if(level === 2){
+    $('.cpccc_external_tertiary').fadeOut('fast');
+    $('.cpccc_external').fadeOut('fast', () => {
+      $('.cpccc_return_two').text('');
+      $('.cpccc_crumbs').fadeIn('fast');
+      $('.cpccc_external_second').fadeIn('fast');
+      $('.cpccc_external_second').children('.cpccc_second_menu').hide();
+      $('.cpccc_second_crumbs').text(initialsCapitalize(twoValue));
+      $('.cpccc_external_second').find(`.${twoValue}`).show();
+    })
+    return
+  }
+  if(level === 'back'){
+    $('.cpccc_external_tertiary').fadeOut('fast', () => {
+      $('.cpccc_return_two').text('');
+      $('.cpccc_second_crumbs').text(initialsCapitalize(twoValue));
+      $('.cpccc_external_second').fadeIn('fast');
+    });
+  }
+  if(level === 3){
+    $('.cpccc_external_second').fadeOut('fast');
+    $('.cpccc_external').fadeOut('fast', () => {
+      $('.cpccc_return_two').text(initialsCapitalize(twoValue));
+      $('.cpccc_second_crumbs').text(initialsCapitalize(threeValue));
+      $('.cpccc_crumbs').fadeIn('fast');
+      $('.cpccc_external_tertiary').fadeIn('fast');
+    })
+  }
+};
+
+/* 打开弹窗 */
+const openMigratePupop = (config) => {
+  migrateParam.pageNum = 1;
+  getMyProductList();
+  const { currentProduct } = config;
+  /* 设置当前产品 */
+  const currentDom = $('.cpccc_current');
+  currentDom.find('.cpccc_left img').prop('src', currentProduct.preview);
+  currentDom.find('.cpcccr_title').text(currentProduct.title);
+  currentDom.find('.cpcccr_price').text(currentProduct.price);
+  migrateParam.productId = currentProduct.id;
+  $('.migrate_pupop_component').show();
+  $('.mpc_container').css('width', 500);
+  _sunzi_lock(); // 锁定屏幕
+}
+
+/* 关闭弹窗 */
+const closeMigratePopup = () => {
+  _sunzi_unlock(); // 屏幕解锁
+  $('.mpc_container').css('width', 0);
+  setTimeout(() => $('.migrate_pupop_component').hide(), 450);
+};
+
+/* 注册关闭按钮事件 */
+$('.pcch_close').on('click', closeMigratePopup);
+/* 注册遮罩层事件 */
+$('.migrate_pupop_component').on('click', function(event){
+  if(event.target === this) {
+    closeMigratePopup();
+  }
+});
+/* 监听确认按钮点击事件 */
+$('#confirmBtn').on('click', () => {
+  const param = { 
+    migrate_product_id: migrateParam.productId,
+    shop_id: getQueryVariable('id')
+  };
+  if(migrateParam.type === 'myProduct'){
+    param.product_id = $('.cpccc_list').find('input:checked').val();
+  }else {
+    param.shopify_product_id = $('.cpccc_external_tertiary').find('input:checked').val();
+  };
+  migrateProduct(param);
+})
+
+/* 渲染产品模板 */
+function renderProductItem(data){
+  let template = '';
+  data.forEach(item => {
+    template += `
+      <div class="cpcccl_item">
+        <div class="cpccc_radio"><input name="myProduct" class="radio_circular_style" type="radio" value="${item.id}"></div>
+        <div class="cpccc_left"><img src="${item.preview}" alt=""></div>
+        <div class="cpccc_right">
+          <div class="cpcccr_title alifont_bold">${item.title}</div>
+          <div class="cpcccr_price">$ ${item.price}</div>
+        </div>
+      </div>
+    `
+  });
+  return template;
+};
+
+/* 首字母大写 */
+function initialsCapitalize(str){
+  if(!str) return '';
+  return str.toLowerCase().replace(/( |^)[a-z]/g,(L)=>L.toUpperCase())
+};
+</script>

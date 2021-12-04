@@ -10,14 +10,21 @@
   margin: 0 auto;
   padding: 0 25px;
 }
+<<<<<<< HEAD
+=======
 /* 选项卡 */
 .psc_tabs{
   padding: 25px 0;
 }
+>>>>>>> e58e7c11246092d3a4478c51f8ff28204c2be803
 /* 搜索栏 */
 .psc_search_tabs{
   background: #F6F6F9;
   padding: 25px;
+<<<<<<< HEAD
+  border-radius: 4px;
+=======
+>>>>>>> e58e7c11246092d3a4478c51f8ff28204c2be803
 }
 .pscst_search{
   display: flex;
@@ -48,6 +55,10 @@
   flex-wrap: nowrap;
   overflow: hidden;
   position: relative;
+<<<<<<< HEAD
+  flex-grow: 1;
+=======
+>>>>>>> e58e7c11246092d3a4478c51f8ff28204c2be803
 }
 .pscst_left::after{
   content: '';
@@ -65,6 +76,13 @@
   border-radius: 4px;
   cursor: pointer;
   flex-shrink: 0;
+<<<<<<< HEAD
+  transition: all 0.3s;
+}
+.pscstl_tab:hover{
+  color: #f9423a;
+=======
+>>>>>>> e58e7c11246092d3a4478c51f8ff28204c2be803
 }
 .pscstl_tab.current{
   background: #222;
@@ -77,12 +95,18 @@
   cursor: pointer;
 }
 .pscst_btn::after {
-  content: '';
+  content: '\25b2';
   position: absolute;
-  border: 5px solid transparent;
-  border-top-color: #979797;
   right: 0;
-  top: calc(50% - 3px);
+  top: 50%;
+  transition: transform 0.3s;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: #979797;
+}
+/* 升序图标 */
+.pscst_btn.asc::after{
+  transform: translateY(-50%) rotate(180deg);
 }
 .pscst_right{
   padding-left: 25px;
@@ -90,38 +114,25 @@
 }
 </style>
 
-<div class="product_search_component mm_pc_container">
-  {% comment %} 选项卡 {% endcomment %}
-  <div class="psc_tabs">{% render 'tabs-component' %}</div>
-
+<div id={{id}} class="product_search_component mm_pc_container">
   {% comment %} 搜索栏 {% endcomment %}
   <div class="psc_search_tabs">
     {% comment %} 模块搜索框 {% endcomment %}
     <div class="pscst_search">
       <img src="{{ 'search.svg' | asset_url }}" alt="serach">
       <input
-        class="alifont"
+        class="alifont search_input"
         type="text"
         placeholder="Search for products, brands, categories, and print providers"
-        id="searchInput"
         value=""/>
     </div>
     {% comment %} 标签模块 {% endcomment %}
     <div class="pscs_tabs">
       <div class="pscst_left">
-        <div class="pscstl_tab current" data-type="all">All</div>
-        <div class="pscstl_tab" data-type="unPublished">Unpublished</div>
-        <div class="pscstl_tab" data-type="published">Published</div>
-        <div class="pscstl_tab" data-type="hiddenStore">Hidden in store</div>
-        <div class="pscstl_tab" data-type="unPublished">Unpublished</div>
-        <div class="pscstl_tab" data-type="published">Published</div>
-        <div class="pscstl_tab" data-type="hiddenStore">Hidden in store</div>
-        <div class="pscstl_tab" data-type="unPublished">Unpublished</div>
-        <div class="pscstl_tab" data-type="published">Published</div>
-        <div class="pscstl_tab" data-type="hiddenStore">Hidden in store</div>
-        <div class="pscstl_tab" data-type="unPublished">Unpublished</div>
-        <div class="pscstl_tab" data-type="published">Published</div>
-        <div class="pscstl_tab" data-type="hiddenStore">Hidden in store</div>
+        <div class="pscstl_tab current" data-value="0">All</div>
+        <div class="pscstl_tab" data-value="1">Unpublished</div>
+        <div class="pscstl_tab" data-value="2">Published</div>
+        <div class="pscstl_tab" data-value="3">Hidden in store</div>
       </div>
       <div class="pscst_right">
         <div class="pscst_btn">Recently Created</div>
@@ -131,31 +142,59 @@
 </div>
 
 <script>
-/* 初始化选项卡组件 initTabsComponent 为 tabs-component组件内部方法 */
-initTabsComponent({
-  data: [{ key: 'My product', value: 1 }, { key: 'External products', value: 2 }],
-  buttonGroup: [{text: 'Add products', onClick: () => {
-    console.log('添加产品')
-  }}],
-  onChange: (current) => {
-    if(+current !== 0){
-      $('.psc_search_tabs').hide();
-    } else {
-      $('.psc_search_tabs').show();
-    }
-    /* 请求数据 */
+/* 初始化产品搜索组件 */
+function initProductSearch(id, config){
+  const { placeholder = '', handle = null } = config;
+  const container = $(id).children('.psc_search_tabs'),
+        pscInput = container.find('.pscst_search > input'),
+        pscLeft = container.find('.pscs_tabs .pscst_left'),
+        pscTab = container.find('.pscs_tabs .pscstl_tab'),
+        pscBtn = container.find('.pscs_tabs .pscst_btn');
+  
+  pscInput.prop('placeholder', placeholder);
+  
+  /* 参数对象 */
+  const param = {
+    search: '',
+    status: 0,
+    sort: 'desc' // asc-升序 desc-降序
   }
-})
 
-/* 监听查询tab点击事件 */
-let queryCurrentTab = 'all'; // 当前选中项
-$('.pscst_left').on('click', (event) => {
-  const type = event.target.dataset.type;
-  if(type === queryCurrentTab) return; // 点击自身无效
-  if(event.target.className.includes('pscstl_tab')){
-    $('.pscstl_tab').removeClass('current');
-    $(event.target).addClass('current');
-    queryCurrentTab = type;
-  }
-});
+  /* 监听输入框输入事件 */
+  const inputChange = debounce(() => {
+    const value = pscInput.val().trim();
+    param.search = value;
+    /* 重新请求数据 */
+    handle && handle(param);
+  }, 500);
+  pscInput.on('input', inputChange);
+
+  /* 监听查询tab点击事件 */
+  pscLeft.on('click', (event) => {
+    const value = event.target.dataset.value;
+    if(value === param.status) return; // 点击自身无效
+    if(event.target.className.includes('pscstl_tab')){
+      pscTab.removeClass('current');
+      $(event.target).addClass('current');
+      param.status = +value;
+      /* 重新请求数据 */
+      handle && handle(param);
+    }
+  });
+
+  /* 监听升序按钮点击事件 */
+  pscBtn.on('click', () => {
+    param.sort = param.sort === 'asc' ? 'desc' : 'asc';
+    if(param.sort === 'asc'){
+      pscBtn.addClass('asc');
+    }else {
+      pscBtn.removeClass('asc');
+    }
+    /* 重新请求数据 */
+    handle && handle(param);
+  });
+
+  /* 返回获取当前参数方法 */
+  return () => param;
+}
 </script>

@@ -132,7 +132,17 @@
   justify-content: space-between;
   margin-bottom: 8px;
 }
-.sdpcs_price:last-child{
+/* 折扣码 */
+.sdpcs_price.sdpcs_discount_code{
+  flex-direction: column;
+}
+.sdpcs_price_code {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.sdpcs_price:last-child,
+.sdpcs_price_code:last-child{
   margin-bottom: 0;
 }
 /* 灰色字体 */
@@ -217,12 +227,11 @@
           <span>Discount</span>
           <span style="color: #F9423A;">- $ <span id="discount">0.00</span></span>
         </div>
+        {% comment %} 折扣码列表 {% endcomment %}
+        <div id="discountCode" class="sdpcs_price sdpcs_discount_code"></div>
+
         <div class="sdpcs_price">
-          <span>CESHI123 <span style="font-size: 12px;">(Discount code)</span></span>
-          <span style="color: #F9423A;">- $ <span id="discountCode">0.00</span></span>
-        </div>
-        <div class="sdpcs_price">
-          <span>Shipping <span style="font-size: 12px;">(Standard Shipping: Delivery Time 7-10 business days)</span></span>
+          <span>Shipping<span style="font-size: 12px;">(Standard Shipping: Delivery Time 7-10 business days)</span></span>
           <span>$ <span id="shipping">0.00</span></span>
         </div>
         <div class="sdpcs_price alifont_bold">
@@ -273,6 +282,30 @@ const mapKeyValue = {
   },
   'subtotal': 'subtotalPrice',
   'discount': 'totalDiscounts',
+  'discountCode': {
+    handle: (param, domKey) => {
+      if(param.length === 0){
+        // 没有折扣码
+        $(domKey).hide();
+      }else {
+        // 渲染折扣码
+        let template = '';
+        param.forEach(item => {
+          template += `
+            <div class="sdpcs_price_code">
+              <span>
+                <span>${item.code}</span>
+                <span style="font-size: 12px;">(Discount code)</span>
+              </span>
+              <span style="color: #F9423A;">- $ <span>${item.amount}</span></span>
+            </div>
+          `;
+        });
+        $(domKey).html(template);
+      }
+    },
+    value: 'discountCodes'
+  },
   'shipping': 'totalShipping',
   'total': 'totalPrice',
   'billingAddress': {
@@ -293,17 +326,19 @@ const mapKeyValue = {
   },
   'lineItems': {
     handle: (param, domKey) => {
+      $(domKey).empty(); // 清空上一次渲染数据
       /* 列表大于2显示加载按钮 */
       if(param.length > 2){
         $('.sdpcs_more').css('display', 'flex');
-        $('.sdpcs_more').on('click', () => {
+        $('.sdpcs_more').one('click', () => {
           /* 加载剩余数据 */
           renderTemplate(param.slice(2));
           $('.sdpcs_more').hide();
         })
+      }else {
+        $('.sdpcs_more').hide();
       }
       /* 渲染列表 */
-      $(domKey).empty(); // 清空上一次渲染数据
       renderTemplate(param.slice(0,2));
 
       /* 渲染模板 */
@@ -318,7 +353,7 @@ const mapKeyValue = {
                 <div class="odpcsln_bottom">SKU：${item.sku}</div>
               </div>
               <div class="odpcsl_price">
-                <div class="odpcslp_top">Total: $ 0.00</div>
+                <div class="odpcslp_top">Total: $ ${(item.price * item.quantity).toFixed(2)}</div>
                 <div class="odpcslp_center">$ ${item.price}</div>
                 <div class="odpcslp_bottom">x ${item.quantity}</div>
               </div>
