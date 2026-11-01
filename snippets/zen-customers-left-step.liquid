@@ -1,4 +1,4 @@
-{%- capture ptype | strip -%}{%- include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "type" -%}{{- verify__rules_json_result | strip -}}{%- endcapture -%}
+{%- capture ptype -%}{%- include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "type" -%}{{- verify__rules_json_result | strip -}}{%- endcapture -%}
 {% assign ptype = ptype | strip %}
 {% capture addprice %}{% include 'func-verify_rules_json', json: product.metafields["global"]["cattribute"], key: "ismarkup" %}{{ verify__rules_json_result }}{% endcapture %}
 {% if addprice contains '.' %}
@@ -54,4 +54,13 @@ flex:0 1 92%
     border:1px solid #e7e7e7
 }
 </style>
-{% endif %}
+{% endif %}{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- capture ptype | strip -%}"
+  to: "{%- capture ptype -%}"
+  position: 0..21
+{%- endcomment -%}

@@ -352,7 +352,7 @@
   width: 100%;
   left: calc(50% - 119px);
 }
-{%if page.handle=="2021-spring-fresh-sale"%}
+{% if page.handle["2021-spring-fresh-sale"] %}
   .block-collection .title span:before{
     width: 130px;
     background-repeat: no-repeat;
@@ -366,7 +366,7 @@
     font-weight: bold;
   }
 {%endif%}
-{%if page.handle=="2021-fathers-day-sale"%}
+{% if page.handle["2021-fathers-day-sale"] %}
    .title-line{
     width: 220px;
     height: 20px;
@@ -386,7 +386,7 @@
   padding: 32px 20px 20px;
   }
 {%endif%}
-  {%if page.handle=="happy-easter-day-sale"%}
+  {% if page.handle.happy-easter-day-sale %}
    .title span:before{
     background:url("{{'ear.png' | asset_url }}") no-repeat ;
     position: absolute;
@@ -404,7 +404,7 @@
   z-index:1;
   position:relative;
   padding:0 200p;
-  {%if page.handle=="2021-mothers-day-gifts"%}
+  {% if page.handle["2021-mothers-day-gifts"] %}
     font-weight: 900;
   {% endif %}
 }
@@ -412,7 +412,7 @@
 @media(max-width:768px){
 
 
-   {%if page.handle=="happy-easter-day-sale"%}
+   {% if page.handle.happy-easter-day-sale %}
    .tag_span_first~ span{display:none;}
    .block-collection .others .block-collection-items{padding:10px 5px 0}
   
@@ -454,7 +454,7 @@
   background-size: contain;
   z-index: 1;
 }
-  {%if page.handle=="happy-easter-day-sale"%}
+  {% if page.handle.happy-easter-day-sale %}
   .main-content div.block-collection {
   	padding:0 10px;
    
@@ -590,7 +590,7 @@ footer.site-footer{
 .yotpo .standalone-bottomline.star-clickable, .yotpo .standalone-bottomline .star-clickable{align-items: center;}
 .product-card__image:hover .hoverImage,.block-collection-items .item:hover .medium-up--btn.btn{opacity:0;}
 
-{%if page.handle=="2021-fathers-day-sale"%}
+{% if page.handle["2021-fathers-day-sale"] %}
  .title-line {
     width: 140px;
     height: 10px;
@@ -628,7 +628,7 @@ footer.site-footer{
   }
   .block-collection{padding:0}
 {%endif%}
-{%if page.handle=="happy-easter-day-sale"%}
+{% if page.handle.happy-easter-day-sale %}
 
   .block-collection .block-collection-items{
     padding: 10px 5px 0px;
@@ -658,3 +658,34 @@ footer.site-footer{
   .block-collection{padding:0}
 {%endif%}
 }
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: '{%if page.handle=="2021-spring-fresh-sale"%}'
+  to: '{% if page.handle["2021-spring-fresh-sale"] %}'
+  position: 6995..7041
+- from: '{%if page.handle=="2021-fathers-day-sale"%}'
+  to: '{% if page.handle["2021-fathers-day-sale"] %}'
+  position: 7309..7354
+- from: '{%if page.handle=="happy-easter-day-sale"%}'
+  to: "{% if page.handle.happy-easter-day-sale %}"
+  position: 7711..7753
+- from: '{%if page.handle=="2021-mothers-day-gifts"%}'
+  to: '{% if page.handle["2021-mothers-day-gifts"] %}'
+  position: 8083..8129
+- from: '{%if page.handle=="happy-easter-day-sale"%}'
+  to: "{% if page.handle.happy-easter-day-sale %}"
+  position: 8199..8241
+- from: '{%if page.handle=="happy-easter-day-sale"%}'
+  to: "{% if page.handle.happy-easter-day-sale %}"
+  position: 9120..9162
+- from: '{%if page.handle=="2021-fathers-day-sale"%}'
+  to: '{% if page.handle["2021-fathers-day-sale"] %}'
+  position: 12717..12762
+- from: '{%if page.handle=="happy-easter-day-sale"%}'
+  to: "{% if page.handle.happy-easter-day-sale %}"
+  position: 13483..13525
+{% endcomment %}

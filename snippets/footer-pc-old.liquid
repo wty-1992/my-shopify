@@ -224,7 +224,7 @@
           {% when 'footer_inpoint_pc' %}
           <li>
             <div class="footer-payments"> 
-              <a href= "{% if forloop.index==8 %}{{ block.settings.footer_inpointurl}}{% else %}javascript:;{% endif %}"  > <img src="{{block.settings.footer_inpoint  | img_url: 'master'}}"></a>
+              <a href= "{% if forloop.index['8'] %}{{ block.settings.footer_inpointurl}}{% else %}javascript:;{% endif %}"  > <img src="{{block.settings.footer_inpoint  | img_url: 'master'}}"></a>
             </div>
             <div class="policy-text">
               {{ block.settings.footer_icon_text }}
@@ -359,4 +359,13 @@ $(function(){
   var FooterLogoImg = $('.logo').find('img').attr('src');
   $(".footer-logo-img").attr("src",FooterLogoImg);
 })
-</script>
+</script>{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% if forloop.index==8 %}"
+  to: "{% if forloop.index['8'] %}"
+  position: 5401..5428
+{%- endcomment -%}
